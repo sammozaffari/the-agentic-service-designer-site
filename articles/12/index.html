@@ -1,0 +1,1335 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Ecosystem Maps &amp; Orchestration: Designing Northgate Health's Care Ecosystem — Healthcare">
+<title>12. Ecosystem Maps &amp; Orchestration: Designing Northgate Health's Care Ecosystem — Agentic Service Designer</title>
+<link rel="stylesheet" href="./assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234f46e5'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'>A</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+</head><body>
+<nav class="nav"><div class="nav-inner">
+  <a class="brand" href="./index.html"><span class="mark">A</span>Agentic Service Designer</a>
+  <div class="nav-links">
+    <a href="./index.html" class="">Home</a>
+    <a href="./concept.html" class="">The concept</a>
+    <a href="./index.html#series" class="on">Case studies</a>
+    <a class="github-link" href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</div></nav>
+<main class="art">
+  <div class="wrap art-hero">
+    <div class="art-meta">
+      <span class="chip chip-track">Mapping &amp; Design</span>
+      <span class="sep">·</span><span>Healthcare</span>
+      <span class="sep">·</span><span><b>Northgate Health</b></span>
+      <span class="sep">·</span><span>14 weeks</span>
+      <span class="chip chip-tool">Claude Code</span><span class="chip chip-tool">OpenCode</span><span class="chip chip-tool">Codex</span><span class="chip chip-tool">GitHub</span>
+    </div>
+    <h1>Ecosystem Maps &amp; Orchestration: Designing Northgate Health's Care Ecosystem</h1>
+    <p class="deck">Fictional composite client. All names, figures, and data are illustrative and anonymized.</p>
+  </div><article class="art-body wrap"><nav class="toc"><b>On this page</b><ol><li><a href="#0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</a></li><li><a href="#1-executive-summary">1. Executive summary</a></li><li><a href="#2-the-brief">2. The brief</a></li><li><a href="#3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</a></li><li><a href="#4-phase-by-phase-narrative">4. Phase-by-phase narrative</a></li><li><a href="#5-artifacts-portfolio">5. Artifacts portfolio</a></li><li><a href="#6-use-cases">6. Use cases</a></li><li><a href="#7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</a></li><li><a href="#8-value-creation-amp-measurement">8. Value creation &amp; measurement</a></li><li><a href="#9-ai-tool-playbook">9. AI tool playbook</a></li><li><a href="#10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</a></li><li><a href="#11-references">11. References</a></li><li><a href="#12-appendix-artifact-index">12. Appendix: artifact index</a></li></ol></nav><h1 id="ecosystem-maps-amp-orchestration-designing-northgate-health39s-care-ecosystem">Ecosystem Maps &amp; Orchestration: Designing Northgate Health&#39;s Care Ecosystem</h1><h2 id="0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</h2><p>Northgate Health is a fictional composite client assembled from patterns across European insurers, telehealth providers, GP networks, and care-coordination programmes; no real member, clinic, partner, or regulator is represented. All names, metrics, datasets, and artifacts are illustrative and anonymized. This article continues the Northgate story from <a href="../02/index.html">article 02</a>: onboarding to telehealth was fixed there; here the focus shifts outward to the wider care ecosystem. The engagement was run AI-first: Claude Code, OpenCode, Codex, and GitHub were the primary working tools, while the human designer retained framing, ethics, and governance judgment.</p>
+<h2 id="1-executive-summary">1. Executive summary</h2><p>Northgate Health had solved the front door problem described in <a href="../02/index.html">article 02</a>: telehealth onboarding was no longer leaking badly. The next constraint was the ecosystem beyond the login. Members still carried paper referrals between GPs and specialists, pharmacists still lacked timely care-plan context after discharge, employers wanted wellness reporting without becoming accidental health-data custodians, and Northgate itself could see only the fragments it owned. Over a 14-week programme, we used service ecosystem mapping (See: <code>12-service-dominant-logic/04-service-ecosystems.md</code>; <code>06-the-service-innovation-handbook/03-understanding-the-service-ecosystem.md</code>) and the Orchestration Canvas (See: <code>08-orchestrating-experiences/03-the-orchestration-canvas.md</code>) to redesign the system around a new coordinating layer: the <strong>Northgate Gateway</strong>, a care-coordination service combining a unified member record, referral orchestration, provider API hub, and member-controlled care-plan toggle. The result was a future-state operating model that reduced referral admin cycle time from 6.0 to 1.2 days, increased referral loop closure from 54% to 88%, cut provider admin time per referral from 22 to 7 minutes, and improved care-gap closure from 58% to 81% in the partner pilot.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Northgate Health (fictional composite)</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>Health insurance + telehealth + partner care network, Benelux</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>Multi-actor referral and care-coordination ecosystem, ~40,000 members</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>Ecosystem mapping, orchestration design, partner governance, pilot blueprint</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>14 weeks</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>1 lead designer + AI agents + client core team + partner council</td>
+</tr>
+<tr>
+<td>AI tools</td>
+<td>Claude Code, OpenCode, Codex, GitHub</td>
+</tr>
+<tr>
+<td>Headline results</td>
+<td>Referral admin cycle 6.0→1.2 days; loop closure 54→88%; provider admin 22→7 min; care-gap closure 58→81%</td>
+</tr>
+</tbody></table>
+<p>What you will learn:</p>
+<ul>
+<li>How to design an ecosystem when no single organization truly owns the whole service, and why the orchestration problem is as much governance as interface design.</li>
+<li>How to combine an SDL ecosystem lens, value-exchange mapping, and the Orchestration Canvas into one AI-executable workflow.</li>
+<li>How to encode cross-partner service design into SOPs, data-sharing templates, and GitHub review gates rather than relying on workshop memory.</li>
+</ul>
+<h2 id="2-the-brief">2. The brief</h2><h3 id="client-portrait">Client portrait</h3><p>Northgate Health is the same fictional mutual insurer introduced in <a href="../02/index.html">article 02</a>: roughly 40,000 members across Belgium and the Netherlands, older-skewing (31% over 65), with a successful but still bounded telehealth partnership with Meridia Telehealth, a 60-clinician platform. The onboarding redesign from article 02 improved the first mile of access, but it also made a more structural problem visible. Members could now enter telehealth more easily, yet the larger care journey remained fragmented across over 520 GP practices where Northgate members were registered, 210 preferred-network GP practices carrying 68% of referral volume, specialist clinics, pharmacies, diagnostics networks, home-care providers, employer wellness programmes, and national health-data utilities.</p>
+<h3 id="the-challenge">The challenge</h3><p>The symptom Northgate named was &quot;slow referrals.&quot; The underlying issue was wider: the member was still acting as the unpaid systems integrator. A GP printed a referral; the specialist owned the booking; diagnostics held results in a separate portal; pharmacy saw prescriptions but not care intent; home care saw discharge tasks but not medication changes; Northgate saw claims after the fact; Meridia saw telehealth episodes but not the whole pathway. Provider portal data showed only 14% use of the referral module and 38% weekly active use across affiliated GP practices. In 24 months of claims and encounter data, OpenCode graph pipelines reconstructed <strong>47,800 referral events</strong> and <strong>11,900 multi-actor care chains</strong>; only 54% of referral outcomes made it back to the referrer within 30 days, and 11% of diagnostics were duplicated within 90 days because results did not follow the member.</p>
+<p>Northgate&#39;s executive team asked a more ambitious question than &quot;Can we make referrals digital?&quot; They asked who should orchestrate the system and under what rules. That is an ecosystem design question, not a channel redesign question (See: <code>09-mapping-experiences/06-other-alignment-diagrams.md</code>; <code>08-orchestrating-experiences/05-channels-and-ecosystems.md</code>).</p>
+<h3 id="success-criteria">Success criteria</h3><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline (illustrative)</th>
+<th>Partner-pilot target</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Median referral admin cycle (send to booked)</td>
+<td>6.0 days</td>
+<td>≤ 1.5 days</td>
+</tr>
+<tr>
+<td>Referral loop closure to referrer within 30 days</td>
+<td>54%</td>
+<td>≥ 85%</td>
+</tr>
+<tr>
+<td>Manual channel share of referrals (paper, fax, phone)</td>
+<td>71%</td>
+<td>≤ 20%</td>
+</tr>
+<tr>
+<td>Provider admin time per referral</td>
+<td>22 min</td>
+<td>≤ 8 min</td>
+</tr>
+<tr>
+<td>Care-gap closure within guideline window</td>
+<td>58%</td>
+<td>≥ 78%</td>
+</tr>
+<tr>
+<td>Member Effort Score on referral journey (1 low, 5 high)</td>
+<td>3.8</td>
+<td>≤ 2.3</td>
+</tr>
+<tr>
+<td>Duplicate diagnostics within 90 days</td>
+<td>11%</td>
+<td>≤ 7%</td>
+</tr>
+<tr>
+<td>Post-discharge 7-day follow-up completion</td>
+<td>61%</td>
+<td>≥ 90%</td>
+</tr>
+</tbody></table>
+<h3 id="constraints">Constraints</h3><p>Budget €240,000; 14 weeks to produce a partner-pilot blueprint and governance pack before 2027 budget cycles; GDPR and national special-category-data rules; no appetite among partners for a Northgate-owned monopoly platform; and a politically sensitive reality that GPs, specialists, pharmacists, and home-care providers each held legitimate professional autonomy. The data-sharing model therefore had to be consensual, reversible, and explicitly non-lock-in. Article 02 proved the front door could improve; article 12 had to prove Northgate could coordinate without overreaching.</p>
+<h3 id="why-service-design">Why service design</h3><p>A linear process map would have hidden the problem by making one organization appear central. Service ecosystem mapping makes the relationships, exchanges, and institutional constraints visible (See: <code>12-service-dominant-logic/04-service-ecosystems.md</code>; <code>06-the-service-innovation-handbook/03-understanding-the-service-ecosystem.md</code>). The Orchestration Canvas then translates that network view into an operating surface: channels, actors, signals, responses, owners, and metrics aligned to a real journey (See: <code>08-orchestrating-experiences/03-the-orchestration-canvas.md</code>). This was also a service-design-in-organizations problem: Northgate needed a federated governance model with shared metrics and partner council decision rights, not another project team and a PDF (See: <code>01-this-is-service-design-doing/09-service-design-in-organizations.md</code>).</p>
+<h2 id="3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</h2><p>We treated the programme as a lighthouse ecosystem project for Northgate&#39;s next maturity step: from fixing one touchpoint to orchestrating a cross-silo, cross-partner journey (See: <code>01-this-is-service-design-doing/09-service-design-in-organizations.md</code>). Structurally it still followed Discover → Define → Develop → Deliver, but we explicitly used that spine as the TISDD loop in practice and as a bridge across Kumar&#39;s modes: sense intent, know context, know people, frame insights, explore concepts, frame solutions, and realize offerings. The core methods were therefore different from article 02: ecosystem fieldwork, value-exchange mapping, orchestration-canvas design, governance specification, and partner pilot preparation.</p>
+<div class="mermaid">
+flowchart LR
+  subgraph DISC["Discover - weeks 1-4"]
+    R1["120 stakeholder interviews"] --> R2["Value-exchange survey n=131 orgs and n=830 members"] --> R3["Claims and encounter graph mining"]
+  end
+  subgraph DEF["Define - weeks 4-6"]
+    S1["Ecosystem map and value-exchange model"] --> S2["Six ecosystem insights and six design principles"]
+  end
+  subgraph DEV["Develop - weeks 7-10"]
+    D1["Orchestration canvas co-build"] --> D2["Gateway concept and future blueprint"] --> D3["Governance model and integration SOPs"]
+  end
+  subgraph DEL["Deliver - weeks 11-14"]
+    P1["Partner pilot with 12 GP practices"] --> M1["Measurement and scale readout"]
+  end
+  DISC --> DEF --> DEV --> DEL
+</div><div class="mermaid">
+gantt
+  title Northgate ecosystem orchestration program - 14 weeks
+  dateFormat YYYY-MM-DD
+  axisFormat %W
+  section Discover
+  Research and ethics setup        :a1, 2026-09-07, 5d
+  Stakeholder fieldwork            :a2, after a1, 10d
+  Graph mining and survey analysis :a3, after a1, 12d
+  section Define
+  Ecosystem mapping studio         :b1, after a2, 7d
+  Value-exchange modelling         :b2, after b1, 7d
+  section Develop
+  Orchestration canvas co-build    :c1, after b2, 7d
+  Gateway blueprint and governance :c2, after c1, 10d
+  section Deliver
+  Pilot sandbox and partner prep   :d1, after c2, 7d
+  Pilot gate                       :milestone, after d1, 0d
+  Live partner pilot               :d2, after d1, 14d
+  Measurement and readout          :d3, after d2, 5d
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>SD method (citation)</th>
+<th>AI tool(s)</th>
+<th>Artifact produced</th>
+<th>Client involvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Discover</td>
+<td>Ecosystem stakeholder mapping, critical incidents, shadow-journey research (06/03, 08/04)</td>
+<td>Claude Code, OpenCode, GitHub</td>
+<td>Actor inventory, evidence register, graph snapshots</td>
+<td>120 interviews, 6 partner roundtables</td>
+</tr>
+<tr>
+<td>Define</td>
+<td>Ecosystem map + value-exchange model (09/06, 12/04)</td>
+<td>Claude Code, OpenCode, Codex</td>
+<td>Ecosystem map, exchange model, six insights</td>
+<td>Partner map review workshop</td>
+</tr>
+<tr>
+<td>Develop</td>
+<td>Orchestration Canvas, channel-role design, governance model (08/03, 08/05, 01/09)</td>
+<td>Claude Code, Codex, GitHub</td>
+<td>Orchestration canvas, Gateway concept, governance templates</td>
+<td>Cross-partner canvas studio</td>
+</tr>
+<tr>
+<td>Deliver</td>
+<td>Blueprinting, partner pilot scoping, integration SOPs (09/05, 01/09)</td>
+<td>Claude Code, OpenCode, GitHub</td>
+<td>Future-state blueprint, SOPs, pilot pack</td>
+<td>12 GP practices + 5 partner orgs in pilot</td>
+</tr>
+</tbody></table>
+<h2 id="4-phase-by-phase-narrative">4. Phase-by-phase narrative</h2><h3 id="phase-1-discover-weeks-14">Phase 1 — Discover (weeks 1–4)</h3><p><strong>Goal.</strong> Understand the ecosystem from the outside in: who creates value, who absorbs risk, and where members are forced to bridge seams themselves.</p>
+<p><strong>Method &amp; SOP.</strong> The research spine combined chronological journey inquiry with ecosystem fieldwork (See: <code>08-orchestrating-experiences/04-understanding-the-journey.md</code>; <code>06-the-service-innovation-handbook/03-understanding-the-service-ecosystem.md</code>). We ran <strong>120 stakeholder interviews</strong>: 34 GP practice staff, 22 specialists and clinic managers, 18 pharmacists, 14 home-care staff, 12 diagnostics and discharge staff, 8 employer programme leads, 6 health-tech vendors, 4 payer and regulator stakeholders, and 2 professional-body representatives. Interviews were anchored in critical incidents: the last failed referral, the last missing result, the last discharge with medication confusion. In parallel, a value-exchange survey captured what each actor believed they gave and received in the ecosystem. OpenCode then mined 24 months of claims and encounter data into a relationship graph to identify chain length, duplicated tests, and missing loop closures.</p>
+<p><strong>AI execution.</strong> Claude Code ran the transcript-processing fan-out: one subagent extracted actor, exchange, channel, and governance evidence; one validated every quoted incident against the transcript line range; one normalized actor names into a canonical ecosystem dictionary. OpenCode handled the graph pipeline:</p>
+<pre><code class="language-bash">opencode run --agent build &quot;Read data/claims_24m.csv, data/encounters_24m.csv,
+and data/provider_portal_usage.csv. Build a graph where nodes are members,
+providers, episodes, diagnostics and referrals. Compute referral chains,
+loop closure rate, duplicated diagnostics within 90 days, and portal-module
+adoption by provider type. Output graph summary tables and a 30-row synthetic
+edge sample to articles/12/data/ecosystem_flows_sample.csv.&quot; </code></pre><p><strong>Human designer judgment.</strong> The designer chose where neutrality mattered most. Northgate&#39;s first instinct was to center the insurer in every interview and canvas. The fieldwork instead centered the member outcome and the care episode, consistent with the A2A ecosystem lens: every participant is a resource-integrating actor, not a subordinate in Northgate&#39;s org chart (See: <code>12-service-dominant-logic/04-service-ecosystems.md</code>).</p>
+<p><strong>Artifact produced.</strong> Actor inventory, coded critical incidents, graph metrics, and a research-backed first pass of the ecosystem map. The most important early finding: <strong>23% of referral coordination still happened by phone chains that Northgate&#39;s owned systems could not see at all.</strong></p>
+<h3 id="phase-2-define-weeks-46">Phase 2 — Define (weeks 4–6)</h3><p><strong>Goal.</strong> Convert evidence into a systemic diagnosis: which exchanges are broken, one-sided, or ownerless, and which institutional constraints are real versus assumed.</p>
+<p><strong>Method &amp; SOP.</strong> We built two alignment artifacts together: an ecosystem map and a value-exchange model (See: <code>09-mapping-experiences/06-other-alignment-diagrams.md</code>; <code>06-the-service-innovation-handbook/03-understanding-the-service-ecosystem.md</code>). Each link was labeled not just by channel but by what actually flowed: information, money, legal authority, care, labor, or trust. Then we overlaid institutional arrangements — GDPR consent rules, professional autonomy norms, and taken-for-granted beliefs such as &quot;the GP should always remain the primary coordinator&quot; (See: <code>12-service-dominant-logic/04-service-ecosystems.md</code>).</p>
+<p><strong>AI execution.</strong> Claude Code drafted the first value-exchange model from the evidence register and graph output, then generated a gap-first reading: unsupported phases, orphaned signals, unowned seams, and one-sided exchanges. Codex was used as an adversarial reviewer, specifically to prevent Northgate&#39;s perspective from dominating the model:</p>
+<pre><code class="language-bash">codex exec --skip-git-repo-check &quot;Read articles/12/README.md draft sections 2 to 5,
+plus research/evidence-register.jsonl and articles/12/data/ecosystem_flows_sample.csv.
+Attack the ecosystem model. Where has the insurer perspective over-centered itself?
+Which partner receives uncompensated work? Which data exchanges lack a lawful basis,
+a visible benefit to the receiving actor, or an exit path?&quot;</code></pre><p>Codex&#39;s most useful challenge was simple: our first map treated provider API adoption as obviously desirable. Interview evidence did not support that. Practices wanted fewer handoffs and less re-keying; they did not want another portal. That distinction forced the design principle <strong>Never re-key</strong> and the architecture choice of API-first plus structured fallback, rather than a portal-first rollout.</p>
+<p><strong>Human designer judgment.</strong> The designer rewrote the insight set from Northgate language into ecosystem language. The headline was not &quot;Northgate lacks visibility.&quot; It was <strong>&quot;The system closes cost loops faster than care loops.&quot;</strong> That reframing shifted the conversation from reporting to coordination.</p>
+<p><strong>Artifact produced.</strong> Six ecosystem insights and six design principles:</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Insight</th>
+<th>Design implication</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>E-01</td>
+<td>Members still carry referral context across actors because the seam has no persistent state</td>
+<td>Orchestrate the seam, not the touchpoint</td>
+</tr>
+<tr>
+<td>E-02</td>
+<td>Outcome information returns to payers and referrers too late or not at all</td>
+<td>Every referral returns</td>
+</tr>
+<tr>
+<td>E-03</td>
+<td>Results do not reliably follow the member across providers</td>
+<td>Shared summary and result push</td>
+</tr>
+<tr>
+<td>E-04</td>
+<td>Practices spend admin labor re-keying the same data into multiple systems</td>
+<td>API-first and pre-filled payloads</td>
+</tr>
+<tr>
+<td>E-05</td>
+<td>Discharge is treated as an event, though recovery is a cross-actor pathway</td>
+<td>Care-plan orchestration across home care and pharmacy</td>
+</tr>
+<tr>
+<td>E-06</td>
+<td>Actors will share data only when value and control are reciprocal</td>
+<td>Consent is a product feature</td>
+</tr>
+</tbody></table>
+<h3 id="phase-3-develop-weeks-710">Phase 3 — Develop (weeks 7–10)</h3><p><strong>Goal.</strong> Translate the diagnosis into an operating design: channel roles, sensing, responding, ownership, governance, and a concrete orchestrating service.</p>
+<p><strong>Method &amp; SOP.</strong> This phase used the Orchestration Canvas as the master boundary object (See: <code>08-orchestrating-experiences/03-the-orchestration-canvas.md</code>). The validated journey spine sat across the top; the rows below captured channels, ecosystem actors, signals, responses, ownership, and metrics. We ran a gap-first diagnostic after the first pass: empty cells, duplicate channels, unsupported high-stakes moments, and ownerless handoffs. The design outcome was the <strong>Northgate Gateway</strong>: a care-coordination service, not a new primary-care platform. It included four bounded capabilities: (1) a unified member record assembled by consented summaries rather than full data takeover; (2) referral orchestration; (3) a provider API hub using open standards; and (4) a member-facing care-plan toggle controlling which actors could see which summaries.</p>
+<p><strong>AI execution.</strong> Claude Code was strong here because the artifact was both structural and textual. The canvas was versioned as markdown tables; partner comments came in as pull-request reviews, not photographed workshop walls. One subagent generated channel-role options from evidence; another checked every row for the sense-and-respond loop; a third generated the governance implications. OpenCode simulated partner states and portal traffic to test whether proposed signals were actually available. The build prompt for the canvas was explicit:</p>
+<pre><code class="language-text">You are ORCHESTRATION-CANVAS-BUILDER.
+Input: validated journey phases, actor dictionary, exchange map, portal usage data.
+For each journey phase, output rows for channel, actor, purpose, signal,
+response, technology and owner.
+Rules:
+- assign one primary channel per phase
+- every signal must trigger a response or be deleted
+- every handoff must have an owner and fallback route
+- if a response depends on partner data Northgate does not control, mark it as
+  negotiated not assumed
+- bias check: no more than 40 percent of primary responses may sit in owned channels
+  unless evidence justifies it</code></pre><p><strong>Human designer judgment.</strong> The designer made the most politically sensitive call of the programme: Northgate would orchestrate the seam but would not attempt to become the clinical source of truth. That kept GPs and specialists in their professional roles, reduced partner resistance, and prevented the Gateway from becoming an insurer-owned lock-in layer disguised as convenience.</p>
+<p><strong>Artifact produced.</strong> A complete Orchestration Canvas, the Gateway concept, and a governance model specifying partner council seats, veto rights on data-use changes, and portability requirements.</p>
+<h3 id="phase-4-deliver-weeks-1114">Phase 4 — Deliver (weeks 11–14)</h3><p><strong>Goal.</strong> Prepare a live partner pilot proving that orchestration can improve outcomes without centralizing every function inside Northgate.</p>
+<p><strong>Method &amp; SOP.</strong> We translated the canvas into a future-state service blueprint, pilot scope, integration SOPs, and governance pack. The pilot included 12 GP practices, 2 pharmacy chains (38 branches), 1 diagnostics network, 2 home-care providers, 1 hospital discharge unit, and Meridia Telehealth, together covering about 3,900 Northgate members attached to those practices. This is the organizationalization move described in <code>01-this-is-service-design-doing/09-service-design-in-organizations.md</code>: a lighthouse project with explicit operating-model consequences.</p>
+<p><strong>AI execution.</strong> GitHub became the system of record. Every seam in the blueprint produced a work item with the blueprint step ID, partner owner, and legal gate. OpenCode generated sandbox payloads for referral, diagnostics, discharge, and pharmacy events so partners could test the API hub without exposing production data. Codex reviewed the data-sharing agreement shell and flagged a re-identification risk in employer reporting; the design adopted a k-anonymity floor of 25 and aggregate-only reporting for employer programmes.</p>
+<p><strong>Human designer judgment.</strong> The designer protected the governance boundary. Northgate could fund and convene the Gateway, but scale depended on trust. That meant writing non-technical artifacts with equal care: council charters, exit clauses, partner-facing SOPs, and member consent copy.</p>
+<p><strong>Artifact produced.</strong> Future-state service blueprint, governance templates, integration SOPs, partner pilot pack, and measurement model.</p>
+<h2 id="5-artifacts-portfolio">5. Artifacts portfolio</h2><p>All figures illustrative.</p>
+<h3 id="a1-customer-journey-map-current-state-referred-patient">A1 — Customer journey map (current state referred patient)</h3><div class="mermaid">
+flowchart TB
+  subgraph P1["Phase 1: GP visit (emotion 3/5)"]
+    A1["GP decides specialist review is needed"] --> A2["Paper referral letter printed and handed to member"]
+  end
+  subgraph P2["Phase 2: Send and wait (emotion 2/5)"]
+    B1["Member posts or faxes letter or phones clinic"] --> B2["No acknowledgement of receipt"]
+    B2 --> B3["Member phones after 6 days to check"]
+  end
+  subgraph P3["Phase 3: Book (emotion 2/5)"]
+    C1["Clinic phones back during work hours"] --> C2["Two missed calls and a letter"]
+    C2 --> C3["Appointment 24 days out at an unfamiliar site"]
+  end
+  subgraph P4["Phase 4: Consult (emotion 3/5)"]
+    D1["Member repeats full history from memory"] --> D2["Specialist reorders two recent blood tests"]
+    D2 --> D3["Member pays again for duplicate tests"]
+  end
+  subgraph P5["Phase 5: Return (emotion 2/5)"]
+    E1["Outcome letter typed and posted to GP"] --> E2["GP unaware for up to two weeks"]
+    E2 --> E3["Member mediates between GP and specialist"]
+  end
+  P1 --> P2 --> P3 --> P4 --> P5
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Emotion (1–5)</th>
+<th>Dominant pain</th>
+<th>Supporting evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GP visit</td>
+<td>3</td>
+<td>Referral starts as a document, not a shared case</td>
+<td>34 GP interviews; 72% printed referral default</td>
+</tr>
+<tr>
+<td>Send and wait</td>
+<td>2</td>
+<td>No acknowledgement or status heartbeat</td>
+<td>Member interviews; portal logs show almost no referral tracking</td>
+</tr>
+<tr>
+<td>Book</td>
+<td>2</td>
+<td>Scheduling is fragmented across phone, letters, and portal silos</td>
+<td>23% of referral coordination invisible to owned systems</td>
+</tr>
+<tr>
+<td>Consult</td>
+<td>3</td>
+<td>Member repeats history; tests duplicated</td>
+<td>Claims graph: 11% duplicate diagnostics within 90 days</td>
+</tr>
+<tr>
+<td>Return</td>
+<td>2</td>
+<td>Outcome returns late or not at all</td>
+<td>Loop closure 54% within 30 days</td>
+</tr>
+</tbody></table>
+<h3 id="a2-future-state-service-blueprint-gateway-referral-flow">A2 — Future-state service blueprint (Gateway referral flow)</h3><div class="mermaid">
+flowchart TB
+  subgraph L1["Physical evidence"]
+    PE1["Referral confirmation SMS with tracking code"] --> PE2["Gateway status page"]
+    PE2 --> PE3["Slot offer with preparation checklist"]
+    PE3 --> PE4["Outcome summary to member and GP"]
+  end
+  subgraph L2["Member actions"]
+    MA1["Consents to referral data sharing"] --> MA2["Chooses slot from live offers"]
+    MA2 --> MA3["Attends with preparation checklist"]
+    MA3 --> MA4["Reads outcome summary and next steps"]
+  end
+  subgraph L3["Frontstage - Gateway care coordination"]
+    FS1["Coordinator dashboard shows referral state"] --> FS2["Slot negotiation and reminders"]
+    FS2 --> FS3["Care navigator call for high-need members"]
+    FS3 --> FS4["Post-consult follow-up and gap check"]
+  end
+  subgraph L4["Backstage - Northgate"]
+    BS1["Eligibility and consent token check"] --> BS2["Referral routing rules engine"]
+    BS2 --> BS3["Chase automation on SLA breach"]
+    BS3 --> BS4["Loop closure audit weekly"]
+  end
+  subgraph L5["Partner ecosystem"]
+    PA1["GP creates structured referral in own system"] --> PA2["Specialist triages within 4 business hours"]
+    PA2 --> PA3["Diagnostics results pushed to record"]
+    PA3 --> PA4["Specialist outcome returned via API"]
+  end
+  subgraph L6["Support systems"]
+    SP1["Unified member record with consent toggles"] --> SP2["Provider API hub FHIR based"]
+    SP2 --> SP3["Scheduling and notification services"]
+    SP3 --> SP4["Audit log and DPIA register"]
+  end
+  L1 --> L2 --> L3 --> L4 --> L5 --> L6
+</div><p>Lane table:</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Physical evidence</th>
+<th>Member action</th>
+<th>Frontstage</th>
+<th>Backstage</th>
+<th>Partner ecosystem</th>
+<th>Support</th>
+<th>Diagnostic</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1 Referral initiated</td>
+<td>Confirmation SMS</td>
+<td>Gives consent once</td>
+<td>Gateway opens case</td>
+<td>Token and eligibility check</td>
+<td>GP sends structured referral</td>
+<td>Unified record</td>
+<td>Fixes A1/P1 document-only seam</td>
+</tr>
+<tr>
+<td>2 Referral routed</td>
+<td>Status page</td>
+<td>Watches status not phone queue</td>
+<td>Coordinator monitors SLA</td>
+<td>Rules route by specialty and urgency</td>
+<td>Specialist receives complete context</td>
+<td>API hub</td>
+<td>Fixes missing acknowledgement</td>
+</tr>
+<tr>
+<td>3 Booking</td>
+<td>Slot offer</td>
+<td>Chooses slot</td>
+<td>Navigator supports complex cases</td>
+<td>Chase automation for stale triage</td>
+<td>Specialist triages in 4h</td>
+<td>Scheduling service</td>
+<td>Fixes book-stage fragmentation</td>
+</tr>
+<tr>
+<td>4 Consult prep</td>
+<td>Prep checklist</td>
+<td>Arrives prepared</td>
+<td>Reminder and navigator call</td>
+<td>Risk flags elevated</td>
+<td>Diagnostics results available</td>
+<td>Notifications</td>
+<td>Reduces no-shows and repeat tests</td>
+</tr>
+<tr>
+<td>5 Outcome return</td>
+<td>Shared summary</td>
+<td>Reads next steps</td>
+<td>Follow-up and gap check</td>
+<td>Weekly loop-closure audit</td>
+<td>Specialist returns outcome to GP</td>
+<td>Audit log</td>
+<td>Fixes 54% loop closure baseline</td>
+</tr>
+</tbody></table>
+<h3 id="a3-stakeholder-map">A3 — Stakeholder map</h3><div class="mermaid">
+quadrantChart
+  title Northgate ecosystem stakeholder map
+  x-axis Low interest --> High interest
+  y-axis Low influence --> High influence
+  quadrant-1 Manage closely
+  quadrant-2 Keep satisfied
+  quadrant-3 Monitor
+  quadrant-4 Keep informed
+  Northgate COO: [0.82, 0.92]
+  Northgate CIO: [0.68, 0.88]
+  Meridia medical director: [0.78, 0.79]
+  GP network representative: [0.86, 0.76]
+  Specialist society liaison: [0.61, 0.73]
+  Pharmacy chain ops lead: [0.57, 0.66]
+  Diagnostics network IT lead: [0.43, 0.71]
+  Home care director: [0.58, 0.52]
+  Hospital discharge lead: [0.72, 0.63]
+  Employer programme director: [0.52, 0.44]
+  Data protection regulator liaison: [0.31, 0.91]
+  Member advisory panel: [0.88, 0.34]
+  Wearables vendor manager: [0.39, 0.28]
+</div><h3 id="a4-ecosystem-map-value-exchange-model-and-orchestration-canvas">A4 — Ecosystem map, value-exchange model, and orchestration canvas</h3><p><strong>A4a — Ecosystem map</strong></p>
+<div class="mermaid">
+flowchart TB
+  subgraph CENTER["Focal actor"]
+    MEM["Member and family"]
+  end
+  subgraph R1["Direct care ring"]
+    GP["GP practice"]
+    SPEC["Specialist clinics"]
+    PHARM["Community pharmacy"]
+    DIAG["Diagnostics labs"]
+    HOME["Home care providers"]
+    TH["Meridia telehealth platform"]
+  end
+  subgraph R2["Enabling ring"]
+    NG["Northgate Health"]
+    EMP["Employer wellness programmes"]
+    WEAR["Wearables vendor"]
+    HOSP["Hospital discharge units"]
+  end
+  subgraph R3["Institutional ring"]
+    REG["Health data regulator"]
+  end
+  MEM <--> GP
+  MEM <--> SPEC
+  MEM <--> PHARM
+  MEM <--> HOME
+  MEM <--> TH
+  MEM <--> NG
+  MEM <--> EMP
+  MEM <--> WEAR
+  GP --> SPEC
+  GP --> DIAG
+  DIAG --> GP
+  GP --> PHARM
+  SPEC --> GP
+  HOSP --> GP
+  HOSP --> HOME
+  TH --> GP
+  NG --> TH
+  NG --> REG
+</div><p><strong>A4b — Value-exchange model</strong></p>
+<div class="mermaid">
+flowchart LR
+  MEM["Member"]
+  GP["GP practice"]
+  SPEC["Specialist"]
+  PHARM["Pharmacy"]
+  DIAG["Diagnostics"]
+  HOME["Home care"]
+  NG["Northgate"]
+  TH["Telehealth"]
+  EMP["Employer programme"]
+  WEAR["Wearables vendor"]
+  MEM -->|symptoms history consent| GP
+  GP -->|referral and clinical context| SPEC
+  SPEC -->|diagnosis and treatment plan| GP
+  GP -->|prescription authority| PHARM
+  PHARM -->|medication and adherence advice| MEM
+  DIAG -->|results| GP
+  DIAG -->|results copy| MEM
+  HOME -->|visit notes and risk flags| GP
+  HOME -->|care and daily living support| MEM
+  NG -->|funding and eligibility| TH
+  TH -->|consult and triage| MEM
+  TH -->|encounter summary| GP
+  MEM -->|premiums| NG
+  NG -->|reimbursement| MEM
+  EMP -->|wellness access| MEM
+  MEM -->|participation data by consent| EMP
+  WEAR -->|activity data feed| MEM
+  MEM -->|opted in activity summary| NG
+  NG -->|prevention incentives| MEM
+</div><p><strong>A4c — Orchestration canvas (excerpt)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Journey phase</th>
+<th>Channel</th>
+<th>Actor</th>
+<th>Purpose and role</th>
+<th>Signal sensed</th>
+<th>Response</th>
+<th>Technology</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Referral initiated</td>
+<td>GP EHR</td>
+<td>GP practice</td>
+<td>Primary channel for structured referral</td>
+<td>Referral submitted with specialty and urgency</td>
+<td>Open Gateway case and acknowledge receipt</td>
+<td>EHR connector + API hub</td>
+<td>GP practice + Gateway ops</td>
+</tr>
+<tr>
+<td>Referral acknowledged</td>
+<td>SMS + web</td>
+<td>Gateway to member</td>
+<td>Primary reassurance channel</td>
+<td>Referral case opened</td>
+<td>Send tracking code and plain-language next step</td>
+<td>Notification service</td>
+<td>Gateway ops</td>
+</tr>
+<tr>
+<td>Specialist triage</td>
+<td>Specialist portal or inbox integration</td>
+<td>Specialist clinic</td>
+<td>Primary decision channel</td>
+<td>Referral waiting &gt;4 business hours</td>
+<td>Chase automation and escalation</td>
+<td>Rules engine + SLA monitor</td>
+<td>Specialist clinic + Gateway ops</td>
+</tr>
+<tr>
+<td>Complex case support</td>
+<td>Phone</td>
+<td>Care navigator</td>
+<td>Recovery and empathy channel</td>
+<td>Risk flag high or member inactive 48h</td>
+<td>Navigator call</td>
+<td>CRM + case dashboard</td>
+<td>Gateway care team</td>
+</tr>
+<tr>
+<td>Diagnostics handoff</td>
+<td>Lab system</td>
+<td>Diagnostics network</td>
+<td>Supporting information channel</td>
+<td>Test result posted</td>
+<td>Push result to unified record and GP</td>
+<td>FHIR message or structured file</td>
+<td>Diagnostics network</td>
+</tr>
+<tr>
+<td>Medication continuity</td>
+<td>Pharmacy system</td>
+<td>Pharmacy</td>
+<td>Supporting recovery channel</td>
+<td>New discharge medication list received</td>
+<td>Prepare dispensing and interaction alert</td>
+<td>Pharmacy integration</td>
+<td>Pharmacy chain ops</td>
+</tr>
+<tr>
+<td>Employer reporting</td>
+<td>Secure dashboard</td>
+<td>Employer programme</td>
+<td>Intentionally limited aggregate channel</td>
+<td>Cohort reaches reporting threshold</td>
+<td>Send anonymized population-level metrics only</td>
+<td>Aggregate reporting service</td>
+<td>Northgate prevention team</td>
+</tr>
+<tr>
+<td>Governance review</td>
+<td>Partner council forum</td>
+<td>All partners</td>
+<td>Ownership and change-control channel</td>
+<td>SLA breach trend or consent issue</td>
+<td>Review, vote, amend</td>
+<td>GitHub issue + council minutes</td>
+<td>Ecosystem council chair</td>
+</tr>
+</tbody></table>
+<h3 id="a5-personas">A5 — Personas</h3><p><strong>Persona 1 — Els Vandenberg, 58, referred patient</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Profile</td>
+<td>58, part-time school administrator, Leuven; lives with type 2 diabetes and hypertension</td>
+</tr>
+<tr>
+<td>Trigger</td>
+<td>New cardiac symptoms after climbing stairs; GP refers her to cardiology</td>
+</tr>
+<tr>
+<td>Goal</td>
+<td>&quot;I want the referral to move without me having to chase three places&quot;</td>
+</tr>
+<tr>
+<td>Frictions today</td>
+<td>Paper letter, missed clinic calls, duplicate diagnostics, no idea who has what</td>
+</tr>
+<tr>
+<td>Data behavior</td>
+<td>Uses the member portal monthly but distrusts invisible data sharing</td>
+</tr>
+<tr>
+<td>What value means</td>
+<td>Fewer calls, one visible timeline, and confidence that her GP sees the outcome</td>
+</tr>
+<tr>
+<td>Quant hook</td>
+<td>Segment average referral effort 3.8/5; 27% of this cohort called twice or more to chase status</td>
+</tr>
+<tr>
+<td>Design hooks</td>
+<td>Tracking code, slot offer, shared summary, care-plan toggle</td>
+</tr>
+</tbody></table>
+<p><strong>Persona 2 — Sofie Janssens, 44, GP practice manager</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Profile</td>
+<td>Runs a 4-GP practice; supervises 5 admin staff; Northgate members are about 12% of list size</td>
+</tr>
+<tr>
+<td>Goal</td>
+<td>&quot;Stop re-keying the same referral into three systems and still not getting the letter back&quot;</td>
+</tr>
+<tr>
+<td>Frictions today</td>
+<td>Fax fallback, manual phone chasing, unreadable specialist PDFs, no audit trail</td>
+</tr>
+<tr>
+<td>Incentive</td>
+<td>Keep clinicians focused on care, not referral admin</td>
+</tr>
+<tr>
+<td>Fear</td>
+<td>Any new insurer tool becoming another extra screen and another password</td>
+</tr>
+<tr>
+<td>Quant hook</td>
+<td>About 7 Northgate-related referrals a week; 22 admin minutes each baseline</td>
+</tr>
+<tr>
+<td>Design hooks</td>
+<td>Structured payload from the existing GP system, same-day acknowledgement, automatic outcome return</td>
+</tr>
+</tbody></table>
+<h3 id="a6-templates">A6 — Templates</h3><p><strong>T1 — Ecosystem audit checklist</strong></p>
+<pre><code class="language-text">ECOSYSTEM AUDIT CHECKLIST — [service] — run by [ ] on [ ]
+A. Actor inventory
+[ ] focal beneficiary named by outcome not by product
+[ ] direct actors listed with roles and incentives
+[ ] backstage and indirect actors listed
+[ ] institutional actors listed (regulators, professional bodies, funders)
+[ ] shadow actors listed (family caregivers, forums, informal advisors)
+B. Exchanges
+[ ] every link labeled with a value type
+[ ] one-sided exchanges flagged
+[ ] fragile or unmonitored links flagged with an owner
+[ ] volume and digital share measured per flow
+C. Institutions
+[ ] regulative constraints mapped per exchange
+[ ] normative constraints mapped per exchange
+[ ] cultural-cognitive assumptions stated explicitly
+D. Governance
+[ ] orchestration role named with decision rights
+[ ] partner council and veto rights defined
+[ ] consent model documented and DPIA current
+[ ] portability and exit path documented</code></pre><p><strong>T2 — Value-exchange canvas</strong></p>
+<pre><code class="language-text">VALUE-EXCHANGE CANVAS — [ecosystem name] — v[ ] — date [ ]
+Focal beneficiary and core outcome:
+Actor pair:
+  from actor:
+  to actor:
+  value type         : information | money | legal authority | care | labor | trust
+  what flows         :
+  medium or channel  :
+  direction          : one-way | two-way
+  value-in-use       : what the receiver can now do
+  fragility          : low | medium | high
+  one-sided exchange : yes/no — who absorbs uncompensated work
+  institution        : law | professional norm | shared belief
+Governance prompts:
+  who owns the seam?
+  who can block it?
+  who is not in the room but affected by it?</code></pre><p><strong>T3 — Orchestration governance model template</strong></p>
+<pre><code class="language-text">ORCHESTRATION GOVERNANCE MODEL — [ecosystem] — v[ ]
+1. Ecosystem outcome and north-star metric:
+2. Orchestrator role (name, legal entity, funding):
+3. Decision rights matrix:
+   referral standards / data schemas / consent model / SLA changes / new partner admission
+4. Partner council:
+   seats / quorum / veto rights / cadence
+5. Shared metrics:
+   cycle time / loop closure / effort / equity / cost to serve
+6. Data governance:
+   DPIA owner / sub-processor register / retention / breach protocol
+7. Dispute resolution and exit terms:
+8. Review cadence:
+   monthly ops / quarterly council / annual strategy</code></pre><p><strong>T4 — Partner integration SOP-as-code</strong></p>
+<pre><code class="language-yaml">sop: NGH-ECO-INT-001
+name: Partner onboarding to the provider API hub
+version: 1.0
+owner: ecosystem_operations_lead
+guardrails:
+  gdpr:
+    lawful_basis: explicit_consent
+    special_category_data: true
+    dpia_required_before: sandbox_access
+  neutrality: partner_terms_identical_for_competing_vendors
+  exit: data_export_and_contract_exit_required
+stages:
+  - id: G1
+    name: eligibility_and_risk_review
+    actor: northgate_gateway
+    checks: [service_fit, legal_role, dpia_scope, security_questionnaire]
+  - id: G2
+    name: data_sharing_agreement
+    actor: legal_and_partner_owner
+    outputs: [signed_dsa, retention_schedule, subprocessors_register]
+  - id: G3
+    name: sandbox_certification
+    actor: partner_it
+    tests: [referral_payload, outcome_return, consent_toggle_respect, audit_logging]
+  - id: G4
+    name: operational_readiness
+    actor: partner_ops
+    checks: [owner_named, SLA_agreed, fallback_route_tested, escalation_path_documented]
+  - id: G5
+    name: go_live_gate
+    actor: partner_council_delegate
+    requires: [all_tests_green, training_complete, member_copy_approved]
+monitoring:
+  first_30_days: daily
+  after_stabilisation: weekly
+kpis: [payload_success_rate, loop_closure_rate, exception_age, partner_effort_minutes]</code></pre><p><strong>T5 — Data-sharing agreement template shell</strong></p>
+<pre><code class="language-text">DATA-SHARING AGREEMENT SHELL — Northgate Gateway — template v[ ]
+1. Parties and roles (controller / processor / joint controller if any)
+2. Exact purpose limitation for care coordination
+3. Data categories and minimum necessary fields
+4. Lawful basis and consent artefact references
+5. Technical and organisational measures
+6. EU residency, retention, deletion and portability terms
+7. Sub-processor register and notification duties
+8. Audit rights and review cadence
+9. Breach notification SLA in hours
+10. Termination and data return
+11. Signatures and DPO contacts</code></pre><h3 id="a7-mock-dataset">A7 — Mock dataset</h3><p>Full file: <a href="data/ecosystem_flows_sample.csv"><code>data/ecosystem_flows_sample.csv</code></a> — 30-row edge list sample consistent with the article&#39;s volumes. It includes referral, diagnostics, pharmacy, claims, employer, and wearable flows; referral-type flows total 460 events per week.</p>
+<pre><code class="language-csv">from_actor,to_actor,flow_type,weekly_volume,digital_percent
+gp_practice,specialist_clinic,referral_request,300,16
+gp_practice,telehealth_platform,referral_request,45,100
+telehealth_platform,specialist_clinic,referral_escalation,30,100
+member,specialist_clinic,self_referral_enquiry,30,15
+specialist_clinic,gp_practice,referral_outcome_letter,178,24
+hospital,gp_practice,discharge_summary,90,41
+hospital,home_care,care_referral,55,10
+home_care,gp_practice,visit_note,210,9
+gp_practice,diagnostics_lab,test_order,2200,33
+diagnostics_lab,gp_practice,test_result,2200,38
+gp_practice,pharmacy,e_prescription,5800,47
+telehealth_platform,pharmacy,e_prescription,340,100</code></pre><p>Referral arithmetic note: manual share = weekly volume × (100 − digital percent). For the five referral rows that total 460 events, manual equivalents are 300×84%=252, 45×0%=0, 30×0%=0, 30×85%=25.5, and 55×90%=49.5, so total manual = 327 of 460, reported as 71% throughout.</p>
+<h3 id="a8-charts">A8 — Charts</h3><div class="mermaid">
+pie title Baseline referral channel mix per week n=460 illustrative
+  "Paper letter carried by member" : 143
+  "Fax" : 101
+  "Phone" : 83
+  "Portal upload" : 64
+  "Telehealth in platform" : 41
+  "Secure email" : 28
+</div><div class="mermaid">
+xychart-beta
+  title Referral cycle days by seam before and after - illustrative
+  x-axis ["Create and send", "Transit and receipt", "Specialist triage", "Member booked", "Outcome letter to GP"]
+  y-axis "Median days" 0 --> 5
+  bar [0.5, 2.5, 2.0, 1.0, 4.5]
+  line [0.2, 0.1, 0.5, 0.4, 0.5]
+</div><div class="mermaid">
+quadrantChart
+  title Partner map dependency versus strategic value
+  x-axis Low dependency --> High dependency
+  y-axis Low strategic value --> High strategic value
+  quadrant-1 Cultivate deeply
+  quadrant-2 Grow strategically
+  quadrant-3 Monitor lightly
+  quadrant-4 Secure and simplify
+  GP network: [0.9, 0.95]
+  Specialist clinics: [0.8, 0.86]
+  Hospital discharge units: [0.77, 0.81]
+  Meridia telehealth: [0.66, 0.9]
+  Pharmacy chains: [0.58, 0.71]
+  Diagnostics labs: [0.72, 0.57]
+  Home care providers: [0.47, 0.76]
+  Employer programmes: [0.31, 0.64]
+  Wearables vendors: [0.22, 0.51]
+  eHealth utilities: [0.84, 0.43]
+</div><h3 id="a9-journey-to-blueprint-traceability">A9 — Journey-to-blueprint traceability</h3><table>
+<thead>
+<tr>
+<th>Ecosystem pain</th>
+<th>Insight</th>
+<th>Design principle</th>
+<th>Gateway change</th>
+<th>KPI moved</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Member carries paper referral between actors</td>
+<td>E-01</td>
+<td>Orchestrate the seam, not the touchpoint</td>
+<td>Structured referral API + case state</td>
+<td>Referral admin cycle 6.0→1.2 days</td>
+</tr>
+<tr>
+<td>Outcome letters return late or not at all</td>
+<td>E-02</td>
+<td>Every referral returns</td>
+<td>Loop-closure audit + automatic outcome push</td>
+<td>Loop closure 54→88%</td>
+</tr>
+<tr>
+<td>Diagnostics results do not follow the member</td>
+<td>E-03</td>
+<td>Results follow the member</td>
+<td>Unified summary + result push</td>
+<td>Duplicate diagnostics 11→6%</td>
+</tr>
+<tr>
+<td>Practices re-key the same data repeatedly</td>
+<td>E-04</td>
+<td>Never re-key</td>
+<td>API-first payload and fallback file spec</td>
+<td>Admin time 22→7 min</td>
+</tr>
+<tr>
+<td>Discharge handoff breaks between hospital, home care and pharmacy</td>
+<td>E-05</td>
+<td>Discharge is a handoff</td>
+<td>Shared care-plan orchestration</td>
+<td>7-day follow-up 61→92%</td>
+</tr>
+<tr>
+<td>Partners distrust opaque data use</td>
+<td>E-06</td>
+<td>Consent is a product feature</td>
+<td>Care-plan toggle + aggregate-only employer reporting</td>
+<td>Employer participation 24→41%</td>
+</tr>
+</tbody></table>
+<h3 id="a10-good-services-audit-ecosystem-view">A10 — Good Services audit (ecosystem view)</h3><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Principle (abridged)</th>
+<th>Before</th>
+<th>After</th>
+<th>Key change</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Easy to find</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Referral tracking visible through one status link</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Clearly explains purpose</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Every partner message states what happens next and why</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Sets expectations upfront</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>SLA-aware acknowledgements and booking windows</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Completes the outcome</td>
+<td>Fail</td>
+<td>Partial</td>
+<td>Referral loop closes; broader chronic-care coverage still expanding</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Works in a familiar way</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Actors stay in their own systems where possible</td>
+</tr>
+<tr>
+<td>6</td>
+<td>No prior knowledge needed</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Member no longer has to understand actor boundaries</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Agnostic of org structure</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Gateway hides insurer, lab and clinic seams</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Minimum possible steps</td>
+<td>Fail</td>
+<td>Partial</td>
+<td>Manual fallback remains for non-digital partners</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Consistent throughout</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Shared summary format and consent vocabulary</td>
+</tr>
+<tr>
+<td>10</td>
+<td>No dead ends</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Every stale referral has a named owner and escalation path</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Usable by everyone equally</td>
+<td>Partial</td>
+<td>Partial</td>
+<td>Digital-first but with navigator support and phone fallback</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Responds to change quickly</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Care-plan updates push to all opted-in actors</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Explains decisions</td>
+<td>Fail</td>
+<td>Partial</td>
+<td>Better status explanations; specialist triage rationale still limited</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Easy to get human assistance</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Gateway navigator for complex or stalled pathways</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Requires the right knowledge</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Members stop acting as human couriers of clinical context</td>
+</tr>
+</tbody></table>
+<h3 id="current-vs-future-line-of-orchestration">Current vs future line of orchestration</h3><div class="mermaid">
+flowchart TB
+  subgraph NOW["Current state - the member is the unpaid integrator"]
+    N1["GP owns the letter"] --> N5["Member carries paper and context"]
+    N2["Specialist owns the booking"] --> N5
+    N3["Pharmacy owns the pickup"] --> N5
+    N4["Northgate owns the claim"] --> N5
+  end
+  subgraph FUT["Future state - the Gateway orchestrates by consent"]
+    F1["GP referral API"] --> F0["Northgate Gateway care coordination service"]
+    F2["Specialist scheduling API"] --> F0
+    F3["Pharmacy dispense feed"] --> F0
+    F4["Unified member record"] --> F0
+    F5["Member care-plan toggle"] --> F0
+  end
+  NOW --> FUT
+</div><h2 id="6-use-cases">6. Use cases</h2><h3 id="use-case-a-gp-to-specialist-digital-handoff">Use case A — GP-to-specialist digital handoff</h3><p><strong>Scenario.</strong> Els Vandenberg, 58, is referred by Dr. Peeters for cardiology follow-up after an abnormal ECG. In the old pathway, Els left with a letter and no tracking. In the new pathway, Dr. Peeters sends a structured referral from the GP system; the Gateway acknowledges it within seconds, offers Els live slots once the clinic triages, and returns the specialist outcome to the GP automatically.</p>
+<p><strong>What was designed.</strong> The core design is the handoff protocol: identity, referral reason, recent diagnostics, urgency, and member consent travel with the referral. The specialist can triage without phoning the practice. If no triage occurs within four business hours, the Gateway chases the case. If Els is inactive for 48 hours, a navigator calls.</p>
+<p><strong>AI working session.</strong> Claude Code drafted the handoff protocol and status copy; OpenCode generated sample payloads and stale-case simulations; Codex reviewed whether the insurer was assuming authority it did not have. The design was tightened so Northgate coordinates but never edits clinical triage.</p>
+<p><strong>Outcome (illustrative).</strong> Median admin cycle for this pathway fell from 6.4 days to 1.0 day; loop closure reached 100% in the bounded pilot cohort; referral-journey CES for similar members fell from 3.8 to 2.0.</p>
+<h3 id="use-case-b-post-discharge-care-plan-across-home-care-and-pharmacy">Use case B — Post-discharge care plan across home care and pharmacy</h3><p><strong>Scenario.</strong> This use case extends <a href="../02/index.html">article 02</a>&#39;s discharge onboarding pattern. A member leaves hospital after a routine orthopaedic stay. Before this programme, home care, the pharmacy, and the GP received partial information on different days. Medication changes were often confirmed by phone after the member was already home.</p>
+<p><strong>What was designed.</strong> The Gateway treats discharge as the start of a care plan, not the end of an episode. With consent captured at discharge, the hospital sends a summary; home care receives the visit schedule; the pharmacy sees the medication list and interaction risks; the GP sees all three updates in one summary thread.</p>
+<div class="mermaid">
+flowchart LR
+  H["Hospital discharge"] --> G["Gateway opens care plan"]
+  G --> HC["Home care visit schedule"]
+  G --> P["Pharmacy medication prep"]
+  G --> GP["GP summary and follow-up task"]
+  HC --> G
+  P --> G
+  GP --> G
+</div><p><strong>AI working session.</strong> OpenCode built the synthetic event stream for discharge, home-care, and dispensing updates. Claude Code turned the event logic into a partner-readable SOP. A Codex challenge pass flagged one over-broad field in the draft pharmacy payload; only medication-relevant fields remained.</p>
+<p><strong>Outcome (illustrative).</strong> Post-discharge 7-day follow-up completion rose from 61% to 92%; medication-reconciliation exceptions fell 64%; duplicate follow-up calls into member services dropped 43% in pilot weeks 2–4.</p>
+<h3 id="use-case-c-employer-wellness-programme-data-exchange">Use case C — Employer wellness programme data exchange</h3><p><strong>Scenario.</strong> Northgate wanted employer programmes to move from generic benefit promotion to more targeted prevention support, but employers did not want raw health data and employees did not trust them with it.</p>
+<p><strong>What was designed.</strong> The Gateway uses a strict aggregate-only reporting model. Members can opt into a prevention programme and optionally share wearable-derived activity summaries with Northgate for incentive calculations; employers receive only cohort-level reporting above a threshold, never individual participation or health status.</p>
+<p><strong>AI working session.</strong> Claude Code drafted the care-plan toggle and reporting rules as policy text; Codex reviewed the re-identification risk and forced a k-anonymity floor of 25 plus suppression of small cohorts; GitHub PR review included legal and HR reviewers, not just product and engineering.</p>
+<p><strong>Outcome (illustrative).</strong> Participation in the pilot employer programme rose from 24% to 41%; there were zero individual data disclosures to employers; member trust scores on the prevention consent flow improved from 61% comprehension in round 1 testing to 88% in round 3.</p>
+<h2 id="7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</h2><p><strong>Encoded SOPs.</strong> Three SOPs carried most of the work.</p>
+<ol>
+<li><strong>Ecosystem-mapping SOP.</strong> Pattern: actor inventory → exchanges → institutions → governance. Output schema: actor list, edge list, one-sided exchange flags, institutional constraints, and governance questions. Acceptance: every actor has a role and incentive; every edge has a value type; every high-risk seam has an owner. Prompt template:</li>
+</ol>
+<pre><code class="language-text">You are ECOSYSTEM-MAPPER.
+Input: interview evidence, graph summary, actor dictionary.
+Produce:
+1. actor inventory grouped by direct, indirect and institutional roles
+2. exchange list with from, to, value type, channel, volume and fragility
+3. governance questions for each fragile seam
+Rules:
+- center the beneficiary and outcome, not the client organization
+- if an actor receives work without visible value back, flag it as one-sided
+- map regulative, normative and cultural-cognitive constraints separately
+- do not recommend a client-owned platform unless evidence shows partner benefit,
+  portability and consent are already resolved</code></pre><ol start="2">
+<li><p><strong>Graph-mining prompt pipeline.</strong> OpenCode was used for evidence that workshops rarely produce: chain length, loop closure, duplicate diagnostics, and hidden phone reliance. Acceptance: every metric must reconcile to the source tables; every synthetic sample must preserve the headline proportions.</p>
+</li>
+<li><p><strong>Orchestration-canvas build SOP.</strong> Journey spine → channels → actors → signals → responses → owners → metrics → gap-first audit. Acceptance: one primary channel per phase, every signal paired with a response, every handoff owned, every fallback explicit.</p>
+</li>
+</ol>
+<p><strong>Meta-SOP.</strong> Research → model the ecosystem → build the journey spine → specify orchestration → blueprint the future state → encode governance → test with partners. The gates matter. We did not allow the Gateway concept to solidify until the value-exchange model showed reciprocal benefit for partners. We did not allow partner reporting to progress until legal review cleared the aggregate-only pattern.</p>
+<p><strong>Guardrails.</strong></p>
+<ul>
+<li><strong>Data-sharing consent.</strong> No cross-partner sharing without explicit, member-visible consent or another lawful basis clearly documented. Care-plan toggles were treated as a product feature, not a footnote.</li>
+<li><strong>No vendor lock-in bias.</strong> Agents were instructed to prefer open standards, equal partner terms, exportability, and structured fallback. The first draft of the architecture over-weighted a proprietary portal; the neutrality guardrail blocked it.</li>
+<li><strong>Evidence discipline.</strong> Quote verification, sample-volume reconciliation, and partner review were mandatory.</li>
+<li><strong>Human sign-off.</strong> Governance, lawful basis, employer reporting, and anything that changed professional roles stayed human-led.</li>
+</ul>
+<p><strong>Failure modes observed.</strong> The main AI failure mode was <strong>over-focusing on owned channels</strong>. The first canvas draft pushed too many primary responses into Northgate or Meridia touchpoints because those were the systems with the richest data. The mitigation was a neutral value-exchange lens plus a hard prompt rule: if a partner-owned channel is the natural primary, Northgate must support it rather than replace it. A second failure mode was graph-mining overconfidence: duplicate diagnostics can look like waste when they are clinically necessary repeats. Those cases were validated with clinicians before using the metric.</p>
+<h2 id="8-value-creation-amp-measurement">8. Value creation &amp; measurement</h2><p><strong>Before/after (illustrative; partner pilot scope unless noted):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline</th>
+<th>Pilot</th>
+<th>Delta</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Referral admin cycle send to booked</td>
+<td>6.0 days</td>
+<td>1.2 days</td>
+<td>−80%</td>
+</tr>
+<tr>
+<td>Referral loop closure within 30 days</td>
+<td>54%</td>
+<td>88%</td>
+<td>+34 pts</td>
+</tr>
+<tr>
+<td>Manual referral channel share</td>
+<td>71%</td>
+<td>18%</td>
+<td>−53 pts</td>
+</tr>
+<tr>
+<td>Provider admin time per referral</td>
+<td>22 min</td>
+<td>7 min</td>
+<td>−68%</td>
+</tr>
+<tr>
+<td>Member Effort Score on referral journey</td>
+<td>3.8</td>
+<td>2.1</td>
+<td>−1.7</td>
+</tr>
+<tr>
+<td>Care-gap closure within guideline window</td>
+<td>58%</td>
+<td>81%</td>
+<td>+23 pts</td>
+</tr>
+<tr>
+<td>Duplicate diagnostics within 90 days</td>
+<td>11%</td>
+<td>6%</td>
+<td>−5 pts</td>
+</tr>
+<tr>
+<td>Post-discharge 7-day follow-up</td>
+<td>61%</td>
+<td>92%</td>
+<td>+31 pts</td>
+</tr>
+<tr>
+<td>Referral-journey NPS</td>
+<td>+4</td>
+<td>+29</td>
+<td>+25</td>
+</tr>
+<tr>
+<td>Employer programme active participation</td>
+<td>24%</td>
+<td>41%</td>
+<td>+17 pts</td>
+</tr>
+</tbody></table>
+<p><strong>Causal logic.</strong> The value creation is both operational and experiential. Admin minutes, duplicate tests, and manual channels are direct efficiency gains. Loop closure, effort, and care-gap closure are experience and safety gains. Following the service-profit-chain logic used in <a href="../05/index.html">article 05</a>, the operational improvements drive reduced failure demand and improved trust; following the SDL lens, the value is realized in use across actors, not captured in one interface (See: <code>12-service-dominant-logic/04-service-ecosystems.md</code>). Estimated annualized network value at scale was about <strong>€630k</strong>: ~€250k from reduced provider admin effort, ~€210k from fewer duplicated diagnostics, and ~€170k from lower failure demand and missed-follow-up remediation.</p>
+<p><strong>Measurement plan.</strong> North-star metric: members whose referral closes as a visible care loop, not a sent document. Driver metrics: send-to-booked cycle time, loop closure, stale-case age, admin minutes per referral, duplicate diagnostics, and care-gap closure. Governance metrics: partner SLA adherence, consent revocation rate, and portability request turnaround.</p>
+<h2 id="9-ai-tool-playbook">9. AI tool playbook</h2><p><strong>Claude Code.</strong> Role: orchestration, synthesis, artifact authoring, and governance drafting. It ran the interview fan-out, generated the ecosystem and value-exchange models, drafted the Orchestration Canvas, and maintained consistency between metrics, diagrams, and templates. It excelled at turning messy multi-actor evidence into structured artifacts. It failed when left to infer political legitimacy from data alone; governance still needed human judgment.</p>
+<p><strong>OpenCode.</strong> Role: graph pipelines, synthetic datasets, payload simulation, and portal-usage analysis. It reconstructed referral chains from claims and encounter logs, created the sample edge list, and generated sandbox event streams for partners. It excelled at multi-file mechanical work and realistic mock data. It failed once by treating all repeated diagnostics as waste; that was corrected through clinician review.</p>
+<p><strong>Codex.</strong> Role: adversarial reviewer. It was pointed at specific questions: where the insurer view was over-centered, whether a payload over-collected data, whether employer reporting created re-identification risk, and whether a governance clause hid vendor lock-in. It excelled at attacking comfortable assumptions. It failed when it suggested centralizing more authority in Northgate than the ecosystem would tolerate; every recommendation was verified, never averaged in.</p>
+<p><strong>GitHub.</strong> Role: system of record and gatekeeper. Issues tracked seams, owners, and legal dependencies. PRs carried diagram, data, copy, and governance changes. Actions-style checks were used for Mermaid validity, CSV shape, and quote traceability. Partner review was easier because comments sat on concrete artifacts, not workshop photos. For an ecosystem project, that mattered: the repository became a neutral working surface.</p>
+<h2 id="10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</h2><ul>
+<li><strong>An ecosystem map without exchange labels collapses into an org chart.</strong> The first draft was visually tidy and strategically useless until every edge named what actually flowed.</li>
+<li><strong>Governance is part of the service, not post-design paperwork.</strong> The Gateway became credible only when partners gained veto rights on data-use changes and a contractual exit path.</li>
+<li><strong>The owned-channel bias is real.</strong> Agents naturally over-invest in the channels that emit the cleanest telemetry. The neutral value-exchange lens is a necessary counterweight.</li>
+<li><strong>Graph mining revealed the shadow journey.</strong> Phone chasing and informal staff workarounds explained more pain than portal analytics did.</li>
+<li><strong>Consent copy needed three rounds.</strong> Members accepted the care-plan toggle only once the wording made the exchange reciprocal and revocable.</li>
+<li><strong>Portals are not orchestration.</strong> Practices wanted fewer screens, not a better insurer portal; the winning move was API-first with structured fallback.</li>
+<li><strong>Done differently next time:</strong> bring the regulator liaison into week 2 rather than week 7, and run one time-and-motion study in a GP practice to baseline admin effort more precisely than self-reporting allowed.</li>
+</ul>
+<h2 id="11-references">11. References</h2><p>Book chapters used (paths under <code>books/</code>):</p>
+<ul>
+<li><code>books/09-mapping-experiences/06-other-alignment-diagrams.md</code> — ecosystem models, alignment-diagram selection</li>
+<li><code>books/08-orchestrating-experiences/03-the-orchestration-canvas.md</code> — orchestration canvas, signals, responses, ownership</li>
+<li><code>books/08-orchestrating-experiences/04-understanding-the-journey.md</code> — outside-in journey, shadow journey, moments that matter</li>
+<li><code>books/08-orchestrating-experiences/05-channels-and-ecosystems.md</code> — channel roles, handoffs, ecosystem actors, graceful degradation</li>
+<li><code>books/12-service-dominant-logic/04-service-ecosystems.md</code> — actor-to-actor lens, institutional arrangements, ecosystem coordination</li>
+<li><code>books/06-the-service-innovation-handbook/03-understanding-the-service-ecosystem.md</code> — stakeholder incentives, value categories, critical incidents</li>
+<li><code>books/01-this-is-service-design-doing/09-service-design-in-organizations.md</code> — lighthouse project, federated governance, journey ownership</li>
+<li><code>books/09-mapping-experiences/05-service-blueprints.md</code> — blueprint lanes and operational handoffs for the Gateway flow</li>
+<li><code>books/05-good-services/02-the-fifteen-principles.md</code> — service-principles audit lens used for A10</li>
+</ul>
+<p>Related series links: <a href="../02/index.html">article 02</a> for Northgate&#39;s telehealth onboarding redesign; <a href="../11/index.html">article 11</a> for blueprinting mechanics; <a href="../13/index.html">article 13</a> for a multi-channel orchestration case from retail. External standards referenced: GDPR (Regulation (EU) 2016/679), HL7 FHIR, WCAG 2.1 AA. All case figures are fictional and illustrative.</p>
+<h2 id="12-appendix-artifact-index">12. Appendix: artifact index</h2><table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Format</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Process overview</td>
+<td>3</td>
+<td>mermaid flowchart</td>
+<td>Discover to Deliver ecosystem process</td>
+</tr>
+<tr>
+<td>14-week plan</td>
+<td>3</td>
+<td>mermaid gantt</td>
+<td>Programme timing and gates</td>
+</tr>
+<tr>
+<td>Phase-method-tool table</td>
+<td>3</td>
+<td>table</td>
+<td>Method to AI execution map</td>
+</tr>
+<tr>
+<td>A1 journey map</td>
+<td>5</td>
+<td>mermaid + table</td>
+<td>Current-state referred-patient journey</td>
+</tr>
+<tr>
+<td>A2 service blueprint</td>
+<td>5</td>
+<td>mermaid + lane table</td>
+<td>Future-state Gateway referral flow</td>
+</tr>
+<tr>
+<td>A3 stakeholder map</td>
+<td>5</td>
+<td>quadrantChart</td>
+<td>Influence and interest alignment</td>
+</tr>
+<tr>
+<td>A4 ecosystem map</td>
+<td>5</td>
+<td>mermaid flowchart</td>
+<td>Actor landscape</td>
+</tr>
+<tr>
+<td>A4 value-exchange model</td>
+<td>5</td>
+<td>mermaid flowchart</td>
+<td>Value-in-use flows between actors</td>
+</tr>
+<tr>
+<td>A4 orchestration canvas</td>
+<td>5</td>
+<td>markdown table</td>
+<td>Channel, actor, signal, response, owner alignment</td>
+</tr>
+<tr>
+<td>A5 personas</td>
+<td>5</td>
+<td>tables</td>
+<td>Referred patient and GP practice manager</td>
+</tr>
+<tr>
+<td>A6 templates</td>
+<td>5</td>
+<td>fenced text and YAML</td>
+<td>Audit, canvas, governance, SOP, data-sharing shell</td>
+</tr>
+<tr>
+<td>A7 dataset</td>
+<td>5 and data/</td>
+<td>CSV + sample</td>
+<td>Ecosystem edge list with volumes and digital share</td>
+</tr>
+<tr>
+<td>A8 charts</td>
+<td>5</td>
+<td>pie, xychart-beta, quadrantChart</td>
+<td>Channel mix, cycle time, partner strategy</td>
+</tr>
+<tr>
+<td>A9 traceability table</td>
+<td>5</td>
+<td>table</td>
+<td>Pain to principle to Gateway change to KPI</td>
+</tr>
+<tr>
+<td>A10 Good Services audit</td>
+<td>5</td>
+<td>table</td>
+<td>Service-principle readout at ecosystem level</td>
+</tr>
+<tr>
+<td>Line of orchestration</td>
+<td>5</td>
+<td>mermaid flowchart</td>
+<td>Current vs future control model</td>
+</tr>
+<tr>
+<td>Use case discharge flow</td>
+<td>6</td>
+<td>mermaid flowchart</td>
+<td>Cross-partner care-plan pathway</td>
+</tr>
+<tr>
+<td>SOP prompts and commands</td>
+<td>4 and 7</td>
+<td>fenced prompt and bash</td>
+<td>Replicable AI workflow</td>
+</tr>
+<tr>
+<td>Value creation table</td>
+<td>8</td>
+<td>table</td>
+<td>Before and after impact evidence</td>
+</tr>
+</tbody></table>
+</article><div class="wrap" style="max-width:880px">
+    <div class="cross-links"><a href="../11/index.html"><span class="lbl">← Previous case</span><span class="ttl">11. Service Blueprints as Operational Diagnostics: Fernwood Council's Housing Repairs Service</span></a><a href="../13/index.html"><span class="lbl">Next case →</span><span class="ttl">13. Orchestrating Multi-Channel Experiences: One Collect-and-Return Service at Juniper Retail</span></a></div>
+    <div class="art-foot">
+      <span>12 figures (12 diagrams) · ~8.3k words · reviewed by an adversarial AI reviewer (Gemini 3.1 Pro High).</span>
+      · <a href="https://github.com/sammozaffari/the-agentic-service-designer/blob/main/articles/12/README.md" target="_blank" rel="noopener">Open source in repo ↗</a>
+    </div>
+  </div></main>
+<footer class="footer"><div class="footer-inner">
+  <span>Agentic Service Designer — 30 service design case studies from an AI-first practice. Fictional, anonymized clients.</span>
+  <span><a href="./index.html">Home</a> · <a href="./concept.html">The concept</a> · <a href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub</a></span>
+</div></footer>
+<script src="./assets/site.js"></script>
+</body></html>

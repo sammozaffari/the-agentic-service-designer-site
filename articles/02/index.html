@@ -1,0 +1,1162 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="From Insight to Implementation: Redesigning Telehealth Onboarding at Northgate Health — Healthcare">
+<title>02. From Insight to Implementation: Redesigning Telehealth Onboarding at Northgate Health — Agentic Service Designer</title>
+<link rel="stylesheet" href="./assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234f46e5'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'>A</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+</head><body>
+<nav class="nav"><div class="nav-inner">
+  <a class="brand" href="./index.html"><span class="mark">A</span>Agentic Service Designer</a>
+  <div class="nav-links">
+    <a href="./index.html" class="">Home</a>
+    <a href="./concept.html" class="">The concept</a>
+    <a href="./index.html#series" class="on">Case studies</a>
+    <a class="github-link" href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</div></nav>
+<main class="art">
+  <div class="wrap art-hero">
+    <div class="art-meta">
+      <span class="chip chip-track">Foundations &amp; Process</span>
+      <span class="sep">·</span><span>Healthcare</span>
+      <span class="sep">·</span><span><b>Northgate Health</b></span>
+      <span class="sep">·</span><span>28 weeks (16 weeks design + 12 weeks live pilot)</span>
+      <span class="chip chip-tool">Claude Code</span><span class="chip chip-tool">OpenCode</span><span class="chip chip-tool">Codex</span><span class="chip chip-tool">GitHub</span>
+    </div>
+    <h1>From Insight to Implementation: Redesigning Telehealth Onboarding at Northgate Health</h1>
+    <p class="deck">Fictional composite client. All names, figures, and data are illustrative and anonymized.</p>
+  </div><article class="art-body wrap"><nav class="toc"><b>On this page</b><ol><li><a href="#0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</a></li><li><a href="#1-executive-summary">1. Executive summary</a></li><li><a href="#2-the-brief">2. The brief</a></li><li><a href="#3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</a></li><li><a href="#4-phase-by-phase-narrative">4. Phase-by-phase narrative</a></li><li><a href="#5-artifacts-portfolio">5. Artifacts portfolio</a></li><li><a href="#6-use-cases">6. Use cases</a></li><li><a href="#7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</a></li><li><a href="#8-value-creation-amp-measurement">8. Value creation &amp; measurement</a></li><li><a href="#9-ai-tool-playbook">9. AI tool playbook</a></li><li><a href="#10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</a></li><li><a href="#11-references">11. References</a></li><li><a href="#12-appendix-artifact-index">12. Appendix: artifact index</a></li></ol></nav><h1 id="from-insight-to-implementation-redesigning-telehealth-onboarding-at-northgate-health">From Insight to Implementation: Redesigning Telehealth Onboarding at Northgate Health</h1><h2 id="0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</h2><p>Northgate Health is a fictional composite client, assembled from patterns observed across several European health insurers and telehealth providers; no real client, member, or clinician is depicted. All names, figures, datasets, and quotes are illustrative and anonymized. The article shares knowledge and process — SOPs, prompts, artifacts, review gates — never client specifics. The engagement ran AI-first: Claude Code, OpenCode, Codex, and GitHub were the primary working tools; the human designer retained framing, ethics, and clinical-safety judgment.</p>
+<h2 id="1-executive-summary">1. Executive summary</h2><p>Northgate Health, a mutual health insurer with roughly 40,000 members in the Benelux, had launched a telehealth benefit with delivery partner Meridia Telehealth — and almost nobody was getting through the front door. Only 45% of members who started enrollment finished, 23% of booked first consultations ended in no-shows, and the median member waited 26 days from first click to first consult. Over 28 weeks, a single lead service designer, amplified by an AI agent team, ran the complete arc from research to live pilot: 20 stakeholder interviews and a 400-member survey synthesized by a Claude Code research team into an evidence register; a current-state journey map and a fail-point-annotated blueprint; insight-grounded ideation producing a two-part concept (concierge onboarding plus a digital enrollment assistant); three rounds of progressive-fidelity prototyping with an OpenCode-built interactive prototype; and a GitHub issue-driven implementation culminating in a 12-week pilot with 5,000 members. Pilot results (illustrative): completion 45% to 76%, no-shows 23% to 7%, time-to-first-consult 26 to 9 days, NPS −8 to +31.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Northgate Health (fictional composite)</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>Health insurance + telehealth, EU (Benelux)</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>Telehealth benefit onboarding, ~40,000 members</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>Discover → Define → Develop → Deliver, end to end</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>28 weeks (16 design + 12 pilot)</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>1 lead designer + AI agents + 2.2 client FTE</td>
+</tr>
+<tr>
+<td>AI tools</td>
+<td>Claude Code, OpenCode, Codex, GitHub</td>
+</tr>
+<tr>
+<td>Headline results</td>
+<td>Completion 45→76%; no-show 23→7%; time-to-first-consult 26→9 days; NPS −8→+31</td>
+</tr>
+</tbody></table>
+<p>What you will learn:</p>
+<ul>
+<li>How to run the full insight-to-implementation arc with a one-designer-plus-agents team without diluting method rigor.</li>
+<li>How to encode research synthesis as an executable SOP for agents — prompts, grounding rules, and hallucination controls that hold up under GDPR and clinical-safety constraints.</li>
+<li>How to drive implementation through GitHub: blueprint-to-backlog issues, PR review gates, and Actions that lint every artifact before a human reads it.</li>
+</ul>
+<h2 id="2-the-brief">2. The brief</h2><h3 id="client-portrait">Client portrait</h3><p>Northgate Health is a mid-sized mutual insurer covering approximately 40,000 members in Belgium and the Netherlands: older-skewing (31% over 65), loyal (median tenure 9 years), and digitally mixed — 68% of members use the portal monthly, but only 22% in the 75+ band. In 2024 Northgate contracted Meridia Telehealth, a 60-clinician platform, to offer video GP and specialist consultations as an included benefit. Eighteen months post-launch, adoption was stuck at 7% of the membership, member services was absorbing a steady stream of &quot;how do I sign up?&quot; calls, and the executive committee was questioning the €410,000 annual platform contract at renewal.</p>
+<h3 id="the-challenge">The challenge</h3><p>Operational data told a story of a leaking funnel and an anxious membership. Of 28,500 members reached by launch campaigns in the trailing six months, 9,800 visited the enrollment page, 6,200 started, and only 2,790 completed — a 45% start-to-complete rate. Of the 1,674 who booked a first consult, 385 never attended (23% no-show). Member Effort Score sat at 4.1 out of 5, onboarding-cohort NPS was −8, and enrollment-related support calls ran at 61 per 100 enrollments — classic failure demand: contacts caused by the organization failing to make the service work the first time (See: 01-this-is-service-design-doing/07-implementation-and-piloting.md). And the contract renewal decision was 30 weeks away.</p>
+<h3 id="success-criteria-agreed-with-the-client">Success criteria (agreed with the client)</h3><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline (illustrative)</th>
+<th>Pilot target</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Start-to-complete enrollment rate</td>
+<td>45%</td>
+<td>≥ 70%</td>
+</tr>
+<tr>
+<td>First-consult no-show rate</td>
+<td>23%</td>
+<td>≤ 10%</td>
+</tr>
+<tr>
+<td>Median days, enrollment start to attended first consult</td>
+<td>26</td>
+<td>≤ 12</td>
+</tr>
+<tr>
+<td>Member Effort Score (1 = low, 5 = high)</td>
+<td>4.1</td>
+<td>≤ 2.5</td>
+</tr>
+<tr>
+<td>Onboarding cohort NPS</td>
+<td>−8</td>
+<td>≥ +25</td>
+</tr>
+<tr>
+<td>Enrollment support calls per 100 enrollments</td>
+<td>61</td>
+<td>≤ 25</td>
+</tr>
+</tbody></table>
+<h3 id="constraints">Constraints</h3><p>Budget €180,000 all-in; 28 weeks to a pilot readout before contract renewal; a 2011-era member master database with batch overnight sync; GDPR plus national health-data rules (special-category data, explicit consent, EU residency); and a non-negotiable rule that any triage or health-content change requires sign-off from Meridia&#39;s medical director.</p>
+<h3 id="why-service-design">Why service design</h3><p>This was not a conversion-rate problem on one web page — the leaks spanned a paper letter, a portal, an identity service, a scheduling engine, a video platform, member services, and the member&#39;s own GP. That is precisely what service design exists for: an experience produced by a socio-technical system whose failures live below the line of visibility (See: 09-mapping-experiences/05-service-blueprints.md). Polaine, Løvlie, and Reason&#39;s arc — research to insight, ideas, prototyping, implementation — provided the governing structure (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md), and the Service Value Equation gave the economic frame: perceived value collapses when access costs (time, paperwork, anxiety) balloon, regardless of clinical quality (See: 20-the-service-profit-chain/03-external-service-value.md). For the series&#39; operating model, see <a href="../01/index.html">article 01</a>.</p>
+<h2 id="3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</h2><p>The engagement followed the Double Diamond with the insight-to-implementation arc as the spine. The designer ran every phase with named AI collaborators: a Claude Code research team for synthesis, OpenCode for data pipelines and the interactive prototype, Codex for deep research and adversarial review, and GitHub as the system of record — every work item an issue, every artifact a PR, every gate a review.</p>
+<div class="mermaid">
+flowchart LR
+  subgraph DISC["Discover - weeks 1-3"]
+    R1["20 stakeholder interviews"] --> R2["Member survey n=400"] --> R3["Claims and event logs"]
+  end
+  subgraph DEF["Define - weeks 3-6"]
+    S1["Affinity synthesis of 312 evidence items"] --> S2["7 insights and 5 design principles"] --> S3["Journey map and blueprint"]
+  end
+  subgraph DEV["Develop - weeks 6-11"]
+    I1["HMW ideation workshop"] --> I2["Concept sheets and DFV scoring"] --> P1["Prototype rounds R1 to R3"]
+  end
+  subgraph DEL["Deliver - weeks 11-28"]
+    T1["Blueprint-to-backlog translation"] --> P2["Pilot with 5000 members"] --> M1["Measurement and handover"]
+  end
+  DISC --> DEF --> DEV --> DEL
+  M1 -. "closed measurement loop" .-> R1
+</div><div class="mermaid">
+gantt
+  title Northgate telehealth onboarding redesign - 28 weeks
+  dateFormat YYYY-MM-DD
+  axisFormat %W
+  section Discover
+  Research plan and ethics        :a1, 2026-01-05, 5d
+  Fieldwork and survey            :a2, after a1, 12d
+  section Define
+  Collaborative synthesis         :b1, after a2, 7d
+  Journey map and blueprint       :b2, after b1, 10d
+  section Develop
+  Ideation and concept selection  :c1, after b2, 9d
+  Prototyping rounds R1 to R3     :c2, after c1, 19d
+  section Deliver
+  Pilot build and staff training  :d1, after c2, 14d
+  Live pilot gate                 :milestone, after d1, 0d
+  Live pilot window               :d2, after d1, 84d
+  Measurement and readout         :d3, after d2, 10d
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>SD method (citation)</th>
+<th>AI tool(s)</th>
+<th>Artifact produced</th>
+<th>Client involvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Research</td>
+<td>Episodic interviews, shadowing, artifact audit (01/04, 03/04)</td>
+<td>Claude Code (transcript processing), GitHub (research ops board)</td>
+<td>Research plan, discussion guides, evidence register</td>
+<td>2 stakeholders joined 6 interviews</td>
+</tr>
+<tr>
+<td>Synthesis</td>
+<td>Collaborative affinity synthesis, insight cards (03/04, 01/04)</td>
+<td>Claude Code research team (3 subagents), Codex (challenge pass)</td>
+<td>7 insight cards, 5 design principles</td>
+<td>Half-day synthesis wall session</td>
+</tr>
+<tr>
+<td>Mapping</td>
+<td>Journey mapping (09/04), blueprinting with fail points (09/05)</td>
+<td>Claude Code (mermaid authoring), Codex (adversarial blueprint review)</td>
+<td>Current-state journey map, future-state blueprint</td>
+<td>Ops + IT blueprint rehearsal</td>
+</tr>
+<tr>
+<td>Ideation</td>
+<td>HMW, co-design workshop, DFV scoring (03/05)</td>
+<td>Claude Code (HMW bank, concept sheet drafts)</td>
+<td>4 concept sheets, evaluation matrix</td>
+<td>11-person workshop incl. 3 members</td>
+</tr>
+<tr>
+<td>Prototyping</td>
+<td>Progressive fidelity: walkthrough, roleplay, Wizard of Oz (01/06, 03/06)</td>
+<td>OpenCode (interactive prototype build), Claude Code (test plans, analysis)</td>
+<td>Prototype v1–v3, observation logs</td>
+<td>14 hallway tests, 40-member WoO</td>
+</tr>
+<tr>
+<td>Implementation</td>
+<td>Blueprint-to-backlog, pilot governance, frontline enablement (03/07, 01/07)</td>
+<td>GitHub (issues, PR gates, Actions), OpenCode (mock data, SOP docs)</td>
+<td>214-ticket backlog, pilot charter, SOPs</td>
+<td>Pilot steering weekly</td>
+</tr>
+<tr>
+<td>Measurement</td>
+<td>Triangulated KPIs, closed loop (01/07, 20/03)</td>
+<td>OpenCode (dashboard pipeline), Claude Code (readout drafting)</td>
+<td>KPI tree, pilot evaluation report</td>
+<td>Gate review with exec sponsor</td>
+</tr>
+</tbody></table>
+<h2 id="4-phase-by-phase-narrative">4. Phase-by-phase narrative</h2><h3 id="41-research-weeks-13">4.1 Research (weeks 1–3)</h3><p><strong>Goal.</strong> Understand why members leak out of the funnel and why those who get through still miss their first consult — across the whole service ecology (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md).</p>
+<p><strong>Method &amp; SOP.</strong> Triangulated fieldwork (See: 01-this-is-service-design-doing/04-research-methods.md): 20 episodic interviews of 60–90 minutes (8 members, 4 Meridia clinicians, 3 back-office staff, 2 member-service agents, 2 GPs, 1 compliance officer) anchored in concrete past episodes; 4 shadowing days on the member-services floor and Meridia triage desk; a survey of 400 members (1,850 invited, 21.6% response); secondary data (24 months of claims, 6 months of enrollment event logs, ~41,000 events); and an artifact audit of all journey communications.</p>
+<p><strong>AI execution.</strong> Fieldwork stayed human — consent, rapport, and clinical sensitivity are not delegable. Everything after the recording was agent-amplified. Interviews were transcribed, pseudonymized (codes P-01…P-20), and processed by a Claude Code subagent team using the transcript-to-evidence prompt in Section 7: one agent extracted evidence items, one verified every quote verbatim against the transcript store (the engagement&#39;s key hallucination control), and one triaged survey open-text responses through the same schema. Result: 312 evidence items, each traceable to a participant code and line range, stored as <code>research/evidence-register.jsonl</code> (PR #14). OpenCode ran the funnel pipeline and generated the mock dataset (A7) in agent mode:</p>
+<pre><code class="language-bash">opencode run --agent build &quot;Read research/event-logs-raw.csv. Compute per-stage
+funnel conversion by segment. Then generate an 85-row anonymized sample CSV
+matching pilot-stage rates to data/enrolment-funnel-sample.csv, seed fixed.&quot;</code></pre><p><strong>Human designer judgment.</strong> Recruitment quotas (oversampling 65+ and post-discharge members), the consent protocol, every live interview, and the decision to pursue &quot;member anxiety&quot; — not &quot;member apathy&quot; — after two early interviews contradicted the client&#39;s working theory.</p>
+<p><strong>Artifact produced.</strong> Research plan and interview guide (A6), evidence register (312 items), funnel baseline, artifact audit wall (23 artifacts, 9 with contradictory next steps).</p>
+<h3 id="42-synthesis-weeks-34">4.2 Synthesis (weeks 3–4)</h3><p><strong>Goal.</strong> Convert 312 evidence items into insights that pass the acid test: each must change what Northgate designs (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md).</p>
+<p><strong>Method &amp; SOP.</strong> Bottom-up affinity synthesis on a shared wall, per the data → themes → insights ladder (See: 01-this-is-service-design-doing/04-research-methods.md), executed as a hybrid session: the designer and two client stakeholders worked a physical wall while Claude Code maintained the digital twin.</p>
+<p><strong>AI execution.</strong> A Claude Code synthesis agent proposed the first-pass clustering (312 items → 47 clusters) under a hard rule that cluster names be active sentences, not nouns — &quot;Members keep paper proof because the service gives them none,&quot; not &quot;Communication.&quot; The humans merged and renamed freely; the agent re-propagated edits to the digital wall between breaks. Convergence: 47 → 11 themes → 7 insight cards in the standard three-part syntax (observed behavior + root cause + design implication). Codex then ran an adversarial challenge pass — a second opinion asked to attack, not agree:</p>
+<pre><code class="language-bash">codex exec --skip-git-repo-check &quot;Read synthesis/insight-cards.md and
+research/evidence-register.jsonl. For each of the 7 insights: (1) check every
+cited quote exists verbatim in the register, (2) argue the strongest
+alternative explanation for the observed behavior, (3) flag any insight whose
+design implication is not actually implied by the evidence. Be adversarial.&quot;</code></pre><p>Codex killed one candidate insight (&quot;members distrust video medicine&quot; rested on one quote and contradicted survey data showing 71% willingness) and forced evidence upgrades on two others. The surviving 7 insights each cite ≥3 independent evidence items from ≥2 methods.</p>
+<p><strong>Human designer judgment.</strong> Naming insights is framing, and framing is political — the designer chose &quot;anxious, not apathetic&quot; for the headline insight because it redirected executive blame away from members, and accepted Codex&#39;s kill without sentiment.</p>
+<p><strong>Artifact produced.</strong> Seven insight cards; three load-bearing examples (illustrative quotes from fictional participants):</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Insight (compressed)</th>
+<th>Evidence</th>
+<th>Implication</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>I-01</td>
+<td>Members keep paper proof (photos, filed letters) because enrollment gives no completion evidence — &quot;I took a photo of the letter in case they say I never signed up&quot; (P-03, member)</td>
+<td>31 items, 3 methods</td>
+<td>Status heartbeat at every milestone</td>
+</tr>
+<tr>
+<td>I-02</td>
+<td>62% of enrollment abandonment clusters at identity verification; capture fails under home lighting and glare — &quot;it kept saying hold still, I held still for ten minutes&quot; (P-11, member, 78)</td>
+<td>44 items + event logs</td>
+<td>Assisted capture, manual review fallback, save-and-resume</td>
+</tr>
+<tr>
+<td>I-05</td>
+<td>No-shows are driven more by consult anxiety than forgetfulness — &quot;I didn&#39;t know what it would be like, so I just didn&#39;t open the app&quot; (P-06, member)</td>
+<td>18 items + no-show reason coding</td>
+<td>Practice call + clinician intro card before the real consult</td>
+</tr>
+</tbody></table>
+<p>Five design principles followed: <strong>D1</strong> One front door. <strong>D2</strong> Never ask twice (pre-fill from the member record, with explicit consent). <strong>D3</strong> Prove it works before it matters (tech check and practice call). <strong>D4</strong> A human is one tap away. <strong>D5</strong> Set expectations, then keep them. The insight set feeds the HMW bank (Section 4.4) and the traceability table (A9).</p>
+<h3 id="43-mapping-weeks-46">4.3 Mapping (weeks 4–6)</h3><p><strong>Goal.</strong> Build the two alignment artifacts everything else hangs on: the current-state journey map (what it is like to be the member) and the future-state service blueprint (how the organization will produce the new experience).</p>
+<p><strong>Method &amp; SOP.</strong> Current-state journey mapping from tagged evidence — phases defined by member goals, never internal stages; pain points strictly separated from opportunities (See: 09-mapping-experiences/04-customer-journey-maps.md). Then future-state blueprinting from the validated journey spine, rehearsed column-by-column with operations and IT in a blueprint rehearsal (See: 03-service-design-from-insight-to-implementation/06-prototyping-services.md).</p>
+<p><strong>AI execution.</strong> Claude Code authored the mermaid diagrams as version-controlled code — journey map and blueprint lived as <code>.md</code> files in Git, diffed in PRs like software. During the blueprint rehearsal, every unanswerable question (&quot;where does the concierge see that a practice call failed?&quot;) became a GitHub issue tagged <code>blueprint-gap</code> on the spot — 23 issues, each later resolved into a backlog ticket. Codex reviewed the blueprint PR adversarially and caught 4 genuine defects, including a missing exception path when identity-verification manual review exceeds 24 hours and an unstaffed discharge-to-concierge handoff. Both were fixed before pilot.</p>
+<p><strong>Human designer judgment.</strong> Choosing where the line of visibility sits for the concierge — backstage casework stays invisible, but the concierge-to-clinician handoff is deliberately visible (&quot;I have briefed Dr. Aerts for you&quot;). Also: refusing IT&#39;s request to split the blueprint per system, which would have re-siloed the artifact.</p>
+<p><strong>Artifacts produced.</strong> A1 journey map and A2 blueprint (Section 5), fail points F-01…F-06 annotated and carried into the traceability table (A9).</p>
+<h3 id="44-ideation-weeks-68">4.4 Ideation (weeks 6–8)</h3><p><strong>Goal.</strong> Convert insights into a coherent, commercially viable service concept — not a pile of idea fragments (See: 03-service-design-from-insight-to-implementation/05-developing-ideas.md).</p>
+<p><strong>Method &amp; SOP.</strong> Structured HMW formulation from insight cards, then a half-day co-design workshop (11 participants: 3 members, 2 member-service agents, 1 Meridia clinician, ops, IT, compliance, designer) with strict divergence/convergence separation, brainwriting, clustering, concept sheets, and Desirability–Feasibility–Viability scoring.</p>
+<p><strong>AI execution.</strong> Claude Code prepared the HMW bank beforehand (5 primary HMWs, 14 sub-prompts, each traced to an insight ID) and acted as workshop scribe: transcribing idea sheets from photos between rounds, clustering 68 raw ideas into 9 themes live, and drafting the four concept sheets during lunch so the afternoon convergence session scored real artifacts, not memories. Example HMW chain: I-05 → &quot;How might we make the first consult feel familiar before it happens?&quot; → &quot;…as familiar as a test call before a job interview?&quot; A Business Model Canvas overlay pass exposed the key economic assumption: concierge staffing pays for itself if it halves no-shows, because each no-show wastes a €65 clinician slot and typically regenerates a €8.50 support call (See: 03-service-design-from-insight-to-implementation/08-service-design-and-business.md).</p>
+<p><strong>Human designer judgment.</strong> Facilitation, member safeguarding, and the convergence call: the designer insisted the concierge was the experience, not a fallback, citing I-03 and I-05.</p>
+<p><strong>Artifact produced.</strong> The selected concept, working name <strong>Guided Entry</strong>: (1) a digital enrollment assistant — conversational, pre-filled with consent, document check, tech-readiness check, practice-call booking; (2) an onboarding concierge — a named human guide who proactively contacts 65+ and post-discharge members on day 1 and follows up after the first consult. DFV scores 4.6 / 3.8 / 4.2 (illustrative).</p>
+<h3 id="45-prototyping-weeks-811">4.5 Prototyping (weeks 8–11)</h3><p><strong>Goal.</strong> Test the riskiest assumptions at the lowest fidelity that answers the question: hypothesis first, prototype second (See: 01-this-is-service-design-doing/06-prototyping-methods.md).</p>
+<p><strong>Method &amp; SOP.</strong> Progressive fidelity in three rounds, each with a written experiment canvas stating the learning question and pass/fail thresholds before anything was built (A6).</p>
+<p><strong>AI execution.</strong></p>
+<ul>
+<li><strong>R1 — Desktop walkthrough + paper wireflows (2 days, 8 internal participants).</strong> Learning question: does the enrollment sequence have orphaned steps? Claude Code generated the wireflow screens as printable paper mockups. Outcome: 3 orphaned steps found (consent revocation, caregiver handoff, practice-call reschedule).- <strong>R2 — Interactive prototype + concierge roleplay (2 weeks).</strong> OpenCode built the clickable enrollment assistant in agent mode — static HTML/JS with stubbed identity and scheduling steps, seeded with the mock dataset so every hallway test used realistic names, conditions, and letter histories, never &quot;Test User&quot;:</li>
+</ul>
+<pre><code class="language-bash">opencode run --agent build &quot;Scaffold a static prototype of the Guided Entry
+enrollment assistant in prototype/. Screens: welcome, consent + pre-fill,
+document check, tech check, practice-call booking, confirmation with status
+timeline. Seed with data/enrolment-funnel-sample.csv. No backend; stub async
+steps with 800ms delays. Plain-language copy at CEFR B1 reading level.&quot;</code></pre><p>Fourteen hallway tests (members from Northgate&#39;s advisory panel) followed; the designer observed while a Claude Code agent tagged observation logs nightly against the plan&#39;s success signals. Median task completion 12 minutes against a 15-minute threshold; the consent screen failed 4 of 14 tests and was rewritten twice.</p>
+<ul>
+<li><strong>R3 — Wizard of Oz concierge (3 weeks, 40 members).</strong> A live landing page offered concierge onboarding to two bounded cohorts; behind the curtain, two member-service agents manually performed pre-fill, scheduling, and reminder calls — testing the business model, not the software. Outcome: 85% accepted concierge help; concierge effort averaged 14 minutes per member; the five request types consuming 70% of concierge time became the pilot automation spec.</li>
+</ul>
+<p><strong>Human designer judgment.</strong> Setting pass/fail thresholds before tests (and holding them when a beloved screen failed), choosing safe cohorts for WoO exposure, and every interaction with elderly participants.</p>
+<p><strong>Artifacts produced.</strong> Prototype plan template (A6), three experiment canvases, observation logs, the working prototype, and a validated automation spec.</p>
+<h3 id="46-implementation-weeks-1126">4.6 Implementation (weeks 11–26)</h3><p><strong>Goal.</strong> Turn the validated concept into a bounded live pilot — implementation as design continued, not handoff.</p>
+<p><strong>Method &amp; SOP.</strong> Blueprint-to-backlog translation, frontline enablement via the capability–authority–motivation triad, and a pilot charter with explicit scale/iterate/kill gates (See: 03-service-design-from-insight-to-implementation/07-implementation.md, 01-this-is-service-design-doing/07-implementation-and-piloting.md).</p>
+<p><strong>AI execution.</strong> The blueprint was walked cell by cell and decomposed into <strong>214 GitHub issues</strong> across four workstreams (IT 96, Operations 58, HR/training 27, Legal/compliance 33), each carrying its blueprint step ID for traceability (A9). Pull requests were the review gates: copy changes needed member-services sign-off; anything touching triage or health content required the clinical-safety label, enforced by a GitHub Action blocking merge without the medical director&#39;s review. The six concierge staff trained with investigative rehearsals scripted from R2/R3 edge cases — angry member, failed video, confused caregiver, out-of-scope medication question. Their incentive metric moved from average handling time to first-contact resolution plus attended-consult rate, the single change that aligned motivation with the new experience.</p>
+<p>Pilot design: 5,000 invited members over 12 weeks, skewed to the hardest cohorts (1,800 members 65+, 300 post-discharge referrals). Rollback guardrails: revert to legacy enrollment within 4 hours if verification failure exceeded 10% for 48 hours; a €3,000 goodwill budget at concierge discretion. Daily standups reviewed a live dashboard; 11 issues were fixed in flight, including reminder SMS timing (24h → 48h + 3h) and a caregiver-consent wording fix.</p>
+<p><strong>Human designer judgment.</strong> Gate criteria negotiation with the executive sponsor, the clinical escalation protocol, and the weekly steering narrative — translating dashboard noise into decisions.</p>
+<p><strong>Artifacts produced.</strong> Pilot charter, 214-ticket backlog, SOP-as-code (A6), training scripts, live KPI dashboard.</p>
+<h3 id="47-measurement-weeks-2628">4.7 Measurement (weeks 26–28)</h3><p><strong>Goal.</strong> Close the loop: triangulated measurement across experience, operations, and finance, feeding the scale decision (See: 01-this-is-service-design-doing/07-implementation-and-piloting.md, 20-the-service-profit-chain/03-external-service-value.md).</p>
+<p><strong>AI execution.</strong> OpenCode maintained the dashboard pipeline (nightly jobs reconciling enrollment events, consult attendance, support-call coding, and survey responses into one KPI table); Claude Code drafted the pilot evaluation report as a steering-group-reviewed PR, every number generated from the same query set — no hand-typed metrics. Gate decision: <strong>scale</strong>, with two conditions (extend concierge to the chronic-care cohort; re-audit the scorecard at 6 months).</p>
+<h2 id="5-artifacts-portfolio">5. Artifacts portfolio</h2><p>All figures illustrative.</p>
+<h3 id="a1-customer-journey-map-current-state">A1 — Customer journey map (current state)</h3><div class="mermaid">
+flowchart TB
+  subgraph P1["Phase 1: Discover (emotion 2/5)"]
+    D1["Receives annual policy mailing mentioning telehealth"] --> D2["Cannot tell if benefit is included or a paid add-on"]
+    D2 --> D3["Calls member services; 9 minute wait"]
+  end
+  subgraph P2["Phase 2: Enroll (emotion 1/5)"]
+    E1["Link in letter lands on generic portal login"] --> E2["Account creation; password rejected twice"]
+    E2 --> E3["Identity verification fails under home lighting"]
+    E3 --> E4["Abandons at document upload; no save-and-resume"]
+  end
+  subgraph P3["Phase 3: Onboard (emotion 2/5)"]
+    O1["Receives welcome email with 14 page PDF handbook"] --> O2["No confirmation that enrollment is complete"]
+    O2 --> O3["Photographs letter as personal proof"]
+  end
+  subgraph P4["Phase 4: First consult (emotion 2/5)"]
+    F1["Earliest bookable slot 3 weeks out"] --> F2["No reminder; anxiety about video consult"]
+    F2 --> F3["Video fails; consult converts to phone mid-call"]
+  end
+  subgraph P5["Phase 5: Ongoing care (emotion 3/5)"]
+    C1["Receives e-prescription by email"] --> C2["GP unaware consult happened"]
+    C2 --> C3["Repeats full medical history at next GP visit"]
+  end
+  P1 --> P2 --> P3 --> P4 --> P5
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Emotion (1–5)</th>
+<th>Dominant pain</th>
+<th>Supporting evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Discover</td>
+<td>2</td>
+<td>Benefit terms unintelligible; &quot;is this for me?&quot; unanswered</td>
+<td>P-02, P-09; survey Q4 (54% unsure of coverage)</td>
+</tr>
+<tr>
+<td>Enroll</td>
+<td>1</td>
+<td>Identity verification failure; no save-and-resume</td>
+<td>Event logs (62% abandonment at verify); P-11</td>
+</tr>
+<tr>
+<td>Onboard</td>
+<td>2</td>
+<td>Zero completion evidence; paper-keeping workaround</td>
+<td>I-01; 31 evidence items</td>
+</tr>
+<tr>
+<td>First consult</td>
+<td>2</td>
+<td>Long wait, no reminder, video anxiety</td>
+<td>No-show coding (A8 pie); P-06</td>
+</tr>
+<tr>
+<td>Ongoing care</td>
+<td>3</td>
+<td>GP out of the loop; repeated history</td>
+<td>GP-02, CL-03 interviews</td>
+</tr>
+</tbody></table>
+<h3 id="a2-service-blueprint-future-state">A2 — Service blueprint (future state)</h3><div class="mermaid">
+flowchart TB
+  subgraph L1["Physical evidence"]
+    PE1["Invite letter with QR and phone option"] --> PE2["Enrollment assistant screens"]
+    PE2 --> PE3["Status heartbeat SMS and email"]
+    PE3 --> PE4["Clinician intro card and practice-call confirmation"]
+    PE4 --> PE5["Visit summary to member and GP"]
+  end
+  subgraph L2["Customer actions"]
+    CA1["Opens invite; chooses app or phone"] --> CA2["Confirms identity; consents to pre-fill"]
+    CA2 --> CA3["Runs tech check and practice call"]
+    CA3 --> CA4["Books and attends first consult"]
+    CA4 --> CA5["Receives summary and next steps"]
+  end
+  subgraph L3["Frontstage"]
+    FS1["Enrollment assistant guides entry"] --> FS2["Concierge call for 65 plus and post-discharge cohorts"]
+    FS2 --> FS3["Tech readiness check and practice call"]
+    FS3 --> FS4["Telehealth clinician consult"]
+    FS4 --> FS5["Concierge follow-up on day 3"]
+  end
+  subgraph L4["Backstage"]
+    BS1["Eligibility check and member-record pre-fill"] --> BS2["Identity verification with manual review fallback"]
+    BS2 --> BS3["Triage and clinician matching"]
+    BS3 --> BS4["Case-note sync and e-prescription"]
+    BS4 --> BS5["Weekly failure-demand review of call drivers"]
+  end
+  subgraph L5["Support processes"]
+    SP1["CRM and consent registry"] --> SP2["eID identity service and document OCR"]
+    SP2 --> SP3["Scheduling engine and reminder service"]
+    SP3 --> SP4["Telehealth video platform and EHR"]
+    SP4 --> SP5["KPI dashboard and survey pipeline"]
+  end
+  L1 --> L2 --> L3 --> L4 --> L5
+</div><p>Lane table (with fail points F and wait points W from the current-state diagnosis; targets illustrative):</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Physical evidence</th>
+<th>Customer action</th>
+<th>Frontstage</th>
+<th>Backstage</th>
+<th>Support</th>
+<th>Diagnostic</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1 Invite</td>
+<td>Letter with QR + phone option</td>
+<td>Chooses app or phone</td>
+<td>Assistant or concierge answers</td>
+<td>Eligibility check</td>
+<td>CRM, consent registry</td>
+<td>Was F-01: dead-end letter; now two live channels</td>
+</tr>
+<tr>
+<td>2 Enroll</td>
+<td>Pre-filled screens</td>
+<td>Confirms identity, consents</td>
+<td>Assisted capture</td>
+<td>Pre-fill, manual review fallback (&lt;24h)</td>
+<td>eID, OCR</td>
+<td>Was F-02: verify abandonment 62%; target &lt;8%</td>
+</tr>
+<tr>
+<td>3 Prove</td>
+<td>Tech-check report</td>
+<td>Runs tech check, practice call</td>
+<td>Concierge or self-serve</td>
+<td>Match practice slot</td>
+<td>Video platform</td>
+<td>Was F-03: video failure at real consult 27% of no-shows</td>
+</tr>
+<tr>
+<td>4 Consult</td>
+<td>Intro card, reminders at 48h and 3h</td>
+<td>Books, attends</td>
+<td>Clinician consult</td>
+<td>Triage, matching</td>
+<td>Scheduling, reminders</td>
+<td>Was W-01: 26-day median; target ≤12; F-04 no reminder</td>
+</tr>
+<tr>
+<td>5 Follow-up</td>
+<td>Summary to member + GP</td>
+<td>Reads summary, next steps</td>
+<td>Concierge day-3 call</td>
+<td>Case-note sync</td>
+<td>EHR, dashboard</td>
+<td>Was F-05: GP unaware; now summary within 24h</td>
+</tr>
+<tr>
+<td>6 Learn</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Failure-demand review</td>
+<td>KPI dashboard</td>
+<td>Was F-06: 61 calls/100 enrollments; target ≤25</td>
+</tr>
+</tbody></table>
+<h3 id="a3-stakeholder-map">A3 — Stakeholder map</h3><div class="mermaid">
+quadrantChart
+  title Northgate telehealth onboarding stakeholder map
+  x-axis Low interest --> High interest
+  y-axis Low influence --> High influence
+  quadrant-1 Manage closely
+  quadrant-2 Keep satisfied
+  quadrant-3 Monitor
+  quadrant-4 Keep informed
+  Executive sponsor COO: [0.75, 0.9]
+  Compliance officer: [0.35, 0.85]
+  Meridia medical director: [0.7, 0.8]
+  Member services manager: [0.8, 0.6]
+  IT platform vendor: [0.4, 0.65]
+  Hospital discharge lead: [0.55, 0.5]
+  GP network representative: [0.5, 0.45]
+  Telehealth clinicians: [0.75, 0.4]
+  Member advisory panel: [0.85, 0.3]
+  Pharmacy partners: [0.25, 0.25]
+</div><h3 id="a4-ecosystem-map">A4 — Ecosystem map</h3><div class="mermaid">
+flowchart LR
+  M["Member"] <--> TH["Meridia telehealth platform"]
+  M <--> GP["General practitioner"]
+  M <--> PH["Community pharmacy"]
+  M <--> INS["Northgate insurer operations"]
+  TH --> SPEC["Specialist clinicians"]
+  GP --> SPEC
+  TH --> PH
+  INS --> TH
+  INS --> GP
+  HOSP["Partner hospital discharge unit"] --> INS
+  HOSP --> M
+</div><p>The map exposed the two relationships the original service ignored: member ↔ GP (F-05) and hospital → insurer (use case C). The expanded ecosystem is developed in <a href="../12/index.html">article 12</a>.</p>
+<h3 id="a5-personas-from-mock-research-data">A5 — Personas (from mock research data)</h3><p><strong>Persona 1 — &quot;Maria, 74, keeps the paper proof&quot;</strong> (senior_65plus; 18 of 85 sample records)</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Profile</td>
+<td>74, retired teacher, Ghent; smartphone user for family photos and banking with daughter&#39;s help</td>
+</tr>
+<tr>
+<td>Devices/connectivity</td>
+<td>Android phone, home Wi-Fi; no laptop</td>
+</tr>
+<tr>
+<td>Health context</td>
+<td>Two chronic conditions; quarterly GP visits; one specialist</td>
+</tr>
+<tr>
+<td>Goal</td>
+<td>&quot;Talk to a doctor without taking two buses&quot;</td>
+</tr>
+<tr>
+<td>Fears</td>
+<td>Doing something wrong and &quot;losing my insurance&quot;; video &quot;not counting&quot; with her GP</td>
+</tr>
+<tr>
+<td>Workaround</td>
+<td>Photographs every letter; daughter Elena handles setup tasks; struggles with her itsme PIN, so identity verification falls back to the manual document upload that fails under home lighting</td>
+</tr>
+<tr>
+<td>Behavioral data</td>
+<td>65+ baseline enrollment completion 29%; 22% of 65+ pilot enrollments caregiver-assisted</td>
+</tr>
+<tr>
+<td>Design hooks</td>
+<td>Caregiver delegation (I-03), concierge-first contact, practice call, GP-loop confirmation</td>
+</tr>
+</tbody></table>
+<p><strong>Persona 2 — &quot;Jonas, 41, discharged Tuesday, working Monday&quot;</strong> (post_discharge; 6 of 85 sample records)</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Profile</td>
+<td>41, logistics supervisor, Antwerp; digitally fluent, time-poor</td>
+</tr>
+<tr>
+<td>Health context</td>
+<td>Post-surgical follow-up after a routine orthopaedic procedure</td>
+</tr>
+<tr>
+<td>Goal</td>
+<td>&quot;Get the follow-up done without another half-day at the hospital&quot;</td>
+</tr>
+<tr>
+<td>Fears</td>
+<td>Missing a complication signal; repeating his history to strangers</td>
+</tr>
+<tr>
+<td>Workaround</td>
+<td>Photographs discharge papers; ignores generic insurer mailings</td>
+</tr>
+<tr>
+<td>Behavioral data</td>
+<td>Baseline: 12% of discharge patients enrolled in telehealth follow-up within 72h</td>
+</tr>
+<tr>
+<td>Design hooks</td>
+<td>Hospital-to-concierge handshake, pre-filled history, 72-hour consult SLA</td>
+</tr>
+</tbody></table>
+<h3 id="a6-templates">A6 — Templates</h3><p><strong>Research plan template</strong></p>
+<pre><code class="language-text">RESEARCH PLAN — [service name] — v[ ] — date [ ]
+1. Research questions      : RQ1 ... RQ2 ... RQ3 ...
+2. Decision each question informs :
+3. Participant profiles    : segment / quota / inclusion &amp; exclusion criteria
+4. Recruitment channel + incentive :
+5. Methods per question    : interview | shadowing | survey | secondary data | artifact audit
+6. Sample sizes + rationale:
+7. Fieldwork logistics     : dates, locations, roles (lead / note-taker / observer)
+8. Ethics                  : consent form version, recording policy, pseudonymization
+                             scheme, GDPR lawful basis, data residency, retention period,
+                             vulnerable-participant protocol
+9. Output contract         : evidence register schema, due date, synthesis session date
+10. Sign-offs              : research lead / compliance / clinical (if health content)</code></pre><p><strong>Semi-structured interview guide (episodic)</strong></p>
+<pre><code class="language-text">INTERVIEW GUIDE — [participant code] — 75 min
+1. Consent + recording agreement                     (5 min)
+2. Warm-up: context, role, devices, usual care route (10 min)
+3. Episode walkthrough: &quot;Tell me about the last time
+   you tried to [task]&quot; — trigger, steps, people,
+   screens, paper, waiting                                (30 min)
+4. Breakdown probing: &quot;What happened next?&quot; / 5 Whys  (15 min)
+5. Emotion laddering: &quot;Why did that matter to you?&quot;   (10 min)
+6. Artifacts: &quot;Can you show me the letter / app?&quot;     (photo, consented)
+7. Magic wand + ideal outcome                         (5 min)
+8. Debrief, incentive, withdrawal rights
+RULES: concrete past episodes only; no hypotheticals; silence is a tool;
+never lead; log workarounds verbatim.</code></pre><p><strong>Prototype experiment canvas</strong></p>
+<pre><code class="language-text">PROTOTYPE PLAN — [name] — round [R#] — fidelity [paper|clickable|WoO|live]
+1. Learning question  : &quot;We believe that ... ; we will know this is true when ...&quot;
+2. Method             : desktop walkthrough | roleplay | wireflow test | Wizard of Oz | live pilot
+3. Frontstage real?   : [what is genuinely built]
+4. Backstage real?    : [what is manual / stubbed / hidden human]
+5. Cohort + n         : [segment, size, recruitment]
+6. Success signals    : [metric, threshold, instrument]
+7. Failure signals    : [metric, threshold, abort rule]
+8. Observation log    : [schema: timestamp, participant, behavior, quote,
+                         friction 1-5, backstage lag, iteration note]
+9. Debrief protocol   : [who, when, decision format]
+10. Gate decision     : iterate | advance fidelity | park | kill — date + decider</code></pre><p><strong>SOP-as-code: enrolment concierge SOP (NGH-ONB-001, v1.3)</strong></p>
+<pre><code class="language-yaml">sop: NGH-ONB-001
+name: Telehealth enrolment concierge operating procedure
+version: 1.3
+owner: member_services_manager
+clinical_content_locked: true        # changes require medical director sign-off
+gdpr:
+  lawful_basis: explicit_consent
+  data_residency: EU
+  retention_days: 365
+  special_category_data: true
+triggers:
+  - member_age &gt;= 65 AND enrolment_started
+  - discharge_referral_received
+  - practice_call_failed
+steps:
+  - id: S1
+    actor: concierge
+    action: outbound_call
+    within: 1 business day of trigger
+    script_ref: scripts/concierge-intro-v3.md
+  - id: S2
+    actor: concierge
+    action: offer_assisted_enrolment
+    delegation_check: caregiver_consent_form_C2   # F-03 fix: caregiver pathway
+  - id: S3
+    actor: system
+    action: prefill_from_member_record
+    consent_token_required: true
+  - id: S4
+    actor: concierge
+    action: book_practice_call
+    fallback: phone_consult_flag                  # if video not viable
+  - id: S5
+    actor: system
+    action: send_reminders
+    schedule: [48h, 3h]
+  - id: S6
+    actor: concierge
+    action: day3_followup
+    escalate_to_clinician_if: symptom_mention     # clinical safety gate
+exceptions:
+  id_manual_review_over_24h: escalate to member_services_manager
+  member_declines_concierge: tag self_serve, send written guide
+kpis: [completion_rate, no_show_rate, ces, failure_demand_calls]
+review_cadence: monthly</code></pre><h3 id="a7-mock-dataset">A7 — Mock dataset</h3><p>Full file: <a href="data/enrolment-funnel-sample.csv"><code>data/enrolment-funnel-sample.csv</code></a> — 85-row anonymized sample of pilot-cohort visitors, fixed seed; stage rates match the pilot funnel (80% start, 76% complete, 83% book, 93% attend; median 9 days; mean CES 2.2).</p>
+<pre><code class="language-csv">member_id,age_band,segment,entry_channel,started_enrolment,completed_enrolment,booked_first_consult,attended_first_consult,days_to_first_consult,ces_score,no_show_reason
+NGH-P-1000,25-34,family,hospital_referral,0,0,0,0,,,
+NGH-P-1001,25-34,post_discharge,hospital_referral,1,0,0,0,,,
+NGH-P-1002,25-34,general,email_link,1,1,1,1,6,2,
+NGH-P-1003,85+,senior_65plus,invite_qr,1,1,0,0,,1,
+NGH-P-1004,65-74,senior_65plus,concierge_phone,1,1,1,1,7,1,
+NGH-P-1005,35-44,post_discharge,hospital_referral,1,1,1,1,8,1,
+NGH-P-1006,55-64,general,hospital_referral,1,1,0,0,,2,
+NGH-P-1007,55-64,general,concierge_phone,1,0,0,0,,,
+NGH-P-1008,55-64,chronic_care,invite_qr,1,1,1,1,9,4,
+NGH-P-1009,35-44,post_discharge,hospital_referral,1,1,1,1,7,2,
+NGH-P-1010,75-84,senior_65plus,invite_qr,1,1,1,1,10,2,
+NGH-P-1011,35-44,family,gp_referral,0,0,0,0,,,</code></pre><h3 id="a8-charts">A8 — Charts</h3><div class="mermaid">
+xychart-beta
+  title "Funnel stage conversion - baseline vs pilot - illustrative"
+  x-axis ["Reach to visit", "Visit to start", "Start to complete", "Complete to book", "Book to attend"]
+  y-axis "Conversion percent" 0 --> 100
+  bar [34, 63, 45, 60, 77]
+  line [47, 80, 76, 83, 93]
+</div><div class="mermaid">
+xychart-beta
+  title "Onboarding cohort NPS - baseline vs pilot months - illustrative"
+  x-axis ["Baseline H2 2025", "Pilot month 1", "Pilot month 2", "Pilot month 3"]
+  y-axis "NPS" -20 --> 40
+  bar [-8, 14, 24, 31]
+</div><div class="mermaid">
+pie title Baseline first-consult no-show reasons - n=385 illustrative
+  "Forgot; no reminder" : 38
+  "Video or app failure" : 27
+  "Anxiety about video consult" : 16
+  "Conflict; reschedule too hard" : 12
+  "Other" : 7
+</div><h3 id="a9-journey-to-blueprint-traceability">A9 — Journey-to-blueprint traceability</h3><table>
+<thead>
+<tr>
+<th>Pain point (journey phase)</th>
+<th>Insight</th>
+<th>Design principle</th>
+<th>Blueprint change (step ID)</th>
+<th>KPI moved (illustrative)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dead-end invite letter (Discover)</td>
+<td>I-01</td>
+<td>D1 One front door</td>
+<td>Step 1: QR + phone option; concierge outbound (S1)</td>
+<td>Reach→visit 34→47%</td>
+</tr>
+<tr>
+<td>Identity verification abandonment (Enroll)</td>
+<td>I-02</td>
+<td>D2 Never ask twice</td>
+<td>Step 2: pre-fill + assisted capture + manual review fallback</td>
+<td>Start→complete 45→76%; verify failure 18→4%</td>
+</tr>
+<tr>
+<td>No completion evidence (Onboard)</td>
+<td>I-01</td>
+<td>D5 Set expectations, keep them</td>
+<td>Step 2/3: status heartbeat SMS/email</td>
+<td>&quot;Did it work?&quot; calls −72%</td>
+</tr>
+<tr>
+<td>No-show from anxiety + no reminder (First consult)</td>
+<td>I-05</td>
+<td>D3 Prove it works before it matters</td>
+<td>Step 3: tech check + practice call; step 4: 48h/3h reminders + intro card</td>
+<td>No-show 23→7%</td>
+</tr>
+<tr>
+<td>GP out of the loop (Ongoing)</td>
+<td>I-04</td>
+<td>D5</td>
+<td>Step 5: summary to member + GP within 24h</td>
+<td>GP duplicate-history complaints −81%</td>
+</tr>
+<tr>
+<td>61 support calls per 100 enrollments (all)</td>
+<td>I-06</td>
+<td>D4 Human one tap away</td>
+<td>Step 6: weekly failure-demand review (BS5)</td>
+<td>Calls per 100 enrollments 61→17</td>
+</tr>
+</tbody></table>
+<h3 id="a10-good-services-15-principles-audit-before-after-pilot">A10 — Good Services 15-principles audit (before → after pilot)</h3><p>Scores: Pass / Partial / Fail, per the book 05 scorecard method (See: 05-good-services/02-the-fifteen-principles.md).</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Principle (abridged)</th>
+<th>Before</th>
+<th>After</th>
+<th>Key change</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Easy to find</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>&quot;Talk to a doctor online&quot; naming; QR + phone entry</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Clearly explains purpose</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>One-line benefit statement on every artifact</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Sets expectations upfront</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Upfront: what you need, how long, what happens next</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Completes the outcome</td>
+<td>Fail</td>
+<td>Partial</td>
+<td>Enrollment-to-consult now one journey; ongoing-care loop still maturing</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Works in a familiar way</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Standard patterns; CEFR B1 copy</td>
+</tr>
+<tr>
+<td>6</td>
+<td>No prior knowledge needed</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Insurance jargon removed; pre-fill replaces codes</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Agnostic of org structure</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Member never sees Northgate/Meridia boundary</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Minimum possible steps</td>
+<td>Fail</td>
+<td>Partial</td>
+<td>11 screens → 5; post-discharge path still has one duplicate step</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Consistent throughout</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Single script source; letter, assistant, phone identical</td>
+</tr>
+<tr>
+<td>10</td>
+<td>No dead ends</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Every failure state has a named next step incl. manual review</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Usable by everyone equally</td>
+<td>Fail</td>
+<td>Partial</td>
+<td>WCAG 2.1 AA on assistant; phone path for non-digital; caregiver delegation</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Responds to change quickly</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Reschedule self-serve; discharge referral triggers same-day contact</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Explains decisions</td>
+<td>Fail</td>
+<td>Partial</td>
+<td>Verification rejections now explain why; triage reasoning still clinical-review only</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Easy to get human assistance</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Concierge one tap/call away; discretion budget €50 per case</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Requires the right knowledge</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Never asks for policy numbers or codes the member cannot know</td>
+</tr>
+</tbody></table>
+<h2 id="6-use-cases">6. Use cases</h2><h3 id="use-case-a-elderly-member-onboarding-with-a-family-caregiver">Use case A — Elderly member onboarding with a family caregiver</h3><p><strong>Scenario.</strong> Maria (persona 1), 74, receives the redesigned invite letter. Her daughter Elena, 52, lives 40 minutes away and handles &quot;the computer things.&quot;
+<strong>What was designed.</strong> The letter offers two equal doors: QR to the assistant, or a phone number to the concierge. Maria calls; concierge Tom verifies her, and — because she asks for Elena — walks the caregiver-consent flow (form C2, signed by Maria with Elena witnessing by video). Elena completes the assistant on Maria&#39;s behalf in 11 minutes, every pre-filled field shown to Maria for confirmation. A practice call is booked for Saturday when Elena visits; the consult happens Tuesday; the GP receives the summary within 24 hours.</p>
+<p><strong>AI working session.</strong> The delegation flow was the hardest interaction in the prototype. OpenCode generated three consent-flow variants overnight; Claude Code reviewed copy for CEFR B1 readability and explicit-consent wording; Codex reviewed the model against GDPR Article 9 and flagged that the caregiver could see visit summaries by default — over-broad. Scope was narrowed: the caregiver can act on enrollment, not view clinical content, unless separately consented.</p>
+<p><strong>Outcome (illustrative).</strong> 65+ enrollment completion rose from 29% to 71%; 22% of 65+ pilot enrollments were caregiver-assisted; zero consent complaints; practice-call attendance 94% in this cohort.</p>
+<h3 id="use-case-b-referred-specialist-pathway">Use case B — Referred specialist pathway</h3><p><strong>Scenario.</strong> A GP refers a member to teledermatology for a persistent skin condition. Before the redesign, the member received a paper referral letter and enrolled from scratch; median referral-to-consult was 21 days and 30% of referrals never converted.</p>
+<p><strong>What was designed.</strong> The GP&#39;s referral triggers a pre-filled enrollment: the member receives an SMS (&quot;Dr. Peeters has referred you to a Northgate skin specialist — tap to confirm&quot;), consents to referral data being used for pre-fill, uploads three guided photos of the skin area (the assistant checks focus and lighting inline — the I-02 fix applied to clinical images), and books a slot from a reserved teledermatology block. A Meridia nurse triages within 8 business hours.</p>
+<p><strong>AI working session.</strong> Claude Code drafted the SMS and photo-guidance copy from the design principles; a subagent then red-teamed it for phishing resemblance, producing a version anchored to the GP&#39;s name and practice — 13/14 hallway-test participants judged it legitimate versus 6/14 for v1. OpenCode stubbed the referral API using the mock dataset&#39;s <code>gp_referral</code> records.</p>
+<p><strong>Outcome (illustrative).</strong> Referral-to-consult median 21 → 6 days; referral conversion 70% → 88%; triage review 6 minutes per case.</p>
+<h3 id="use-case-c-post-discharge-onboarding-from-the-hospital-partner">Use case C — Post-discharge onboarding from the hospital partner</h3><p><strong>Scenario.</strong> Jonas (persona 2) is discharged after orthopaedic surgery. The old pathway: a paper leaflet with a URL; 12% enrolled within 72 hours.</p>
+<p><strong>What was designed.</strong> A discharge handshake: with Jonas&#39;s consent recorded at discharge, the hospital sends a structured referral to Northgate; the concierge calls within 24 hours, enrollment is pre-filled, and a video follow-up is booked inside 72 hours. The clinician receives the discharge summary; Jonas receives a plain-language &quot;what to watch for&quot; card (clinically approved, version-locked).</p>
+<div class="mermaid">
+flowchart LR
+  H["Hospital discharge + consent"] --> R["Structured referral to Northgate"]
+  R --> K["Concierge call within 24h"]
+  K --> E["Pre-filled enrolment, 5 screens"]
+  E --> V["Video follow-up consult within 72h"]
+  V --> S["Summary to member, GP, hospital"]
+</div><p><strong>AI working session.</strong> GitHub issues drove the build: 33 of the 214 backlog tickets trace to this pathway. Codex reviewed referral data minimization and caught over-collection of full medication history in the draft schema — fixed before build. The R3 Wizard of Oz round surfaced that outreach calls placed 4–6pm converted best (working members answer after work) — a finding no stakeholder predicted.</p>
+<p><strong>Outcome (illustrative).</strong> 96% of consented discharge patients enrolled within 72h (vs 12%); median discharge-to-follow-up 2.4 days; 30-day unplanned post-discharge contacts down 18%.</p>
+<h2 id="7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</h2><p><strong>Encoded SOPs.</strong> Three SOPs were encoded for agent execution, each following the same pattern: <em>method → numbered steps → output schema → acceptance criteria → review gate</em>.</p>
+<ol>
+<li><strong>Transcript-to-evidence SOP</strong> (research). Output: JSONL evidence items. Acceptance: every quote verbatim-verifiable against the transcript store; every item carries participant code, role type, journey phase, and line range. Gate: human spot-check of 10% before merge. The prompt template:</li>
+</ol>
+<pre><code class="language-text">You are EVIDENCE-EXTRACTOR. Input: one pseudonymized interview transcript.
+Extract discrete evidence items. For each item output EXACTLY:
+- evidence_id: EV-&lt;transcript&gt;-&lt;seq&gt;
+- participant_code, role_type (member|frontline|backstage|partner)
+- journey_phase (discover|enroll|onboard|first_consult|ongoing|off_journey)
+- type: verbatim_quote | observed_behavior | operational_fact | workaround
+- text: the verbatim quote or factual statement (never paraphrase quotes)
+- emotion_valence: -2..+2
+- candidate_theme: 3-6 word cluster label
+RULES: quote text must be copy-paste exact from the transcript; if unsure,
+drop the item. Output JSONL. No invented content — every item must trace
+to a transcript line range you include as source_lines.</code></pre><ol start="2">
+<li><strong>Research synthesis SOP</strong> (synthesis). Steps: load register → propose clusters (active-sentence names) → map items → draft insight cards (three-part syntax) → human wall session → absorb edits → regenerate. Acceptance: no bare-noun cluster names; every insight cites ≥3 items from ≥2 methods; orphans reported, never dropped. Gate: Codex adversarial pass plus the human session.</li>
+<li><strong>Artifact-change SOP</strong> (implementation). Every change to a member-facing artifact is a PR containing: diff, linked blueprint step ID, readability check, GDPR/consent checklist, clinical label where relevant. Acceptance: CI green (mermaid, markdown, CSV schema) plus required reviewers. Gate: CODEOWNERS routing — member services for copy, medical director for clinical content.</li>
+</ol>
+<p><strong>The meta-SOP.</strong> The engagement itself ran research → synthesize → map → ideate → prototype → measure → deliver, with a hard gate between stages: no ideation before insights passed the acid test; no prototype before a written hypothesis; no pilot before a rehearsed blueprint with zero open <code>blueprint-gap</code> issues; no scale before pilot thresholds were met. Each gate is a GitHub milestone with required reviews — process enforced by tooling, not memory.</p>
+<p><strong>Guardrails.</strong></p>
+<ul>
+<li><strong>Patient data privacy / GDPR.</strong> No real member data in any prompt, ever: agents worked on locally pseudonymized transcripts and synthetic fixed-seed mock data. Consent flows apply data minimization under DPIA review; all processing EU-resident.</li>
+<li><strong>Clinical safety.</strong> Anything touching triage, symptoms, or health content carries a <code>clinical</code> label enforced in CI; merge is blocked without the medical director&#39;s approval. Agents may not draft medical advice except as marked placeholder for clinical rewrite.</li>
+<li><strong>Hallucination control.</strong> Quote verification runs on every synthesis PR: a quoted string not found verbatim in the register fails the build. Insights without evidence IDs fail schema validation.</li>
+<li><strong>Human sign-off points.</strong> Interview conduct; insight naming; concept selection; consent-model changes; clinical content; pilot go/no-go; scale decision.</li>
+</ul>
+<p><strong>Failure modes observed.</strong> (1) Over-clustering: the first pass proposed 61 clusters with six near-duplicates; fixed by active-sentence names plus a similarity merge pass. (2) A confident but wrong survey read (&quot;members prefer phone over video,&quot; drawn from an enrollment question, not a consult question) — caught by requiring every claim to carry the survey question ID. (3) Mermaid drift: early diagrams broke rendering; CI linting killed the class of error permanently.</p>
+<h2 id="8-value-creation-amp-measurement">8. Value creation &amp; measurement</h2><p><strong>Before/after (illustrative; pilot n = 5,000 invited, 12 weeks).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline</th>
+<th>Pilot</th>
+<th>Delta</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Reach→visit conversion</td>
+<td>34%</td>
+<td>47%</td>
+<td>+13 pts</td>
+</tr>
+<tr>
+<td>Start→complete enrollment</td>
+<td>45%</td>
+<td>76%</td>
+<td>+31 pts</td>
+</tr>
+<tr>
+<td>Complete→book (≤30 days)</td>
+<td>60%</td>
+<td>83%</td>
+<td>+23 pts</td>
+</tr>
+<tr>
+<td>First-consult no-show rate</td>
+<td>23%</td>
+<td>7%</td>
+<td>−16 pts</td>
+</tr>
+<tr>
+<td>Median days to first attended consult</td>
+<td>26</td>
+<td>9</td>
+<td>−17 days</td>
+</tr>
+<tr>
+<td>Member Effort Score (1–5, lower better)</td>
+<td>4.1</td>
+<td>2.2</td>
+<td>−1.9</td>
+</tr>
+<tr>
+<td>Onboarding cohort NPS</td>
+<td>−8</td>
+<td>+31</td>
+<td>+39</td>
+</tr>
+<tr>
+<td>Support calls per 100 enrollments</td>
+<td>61</td>
+<td>17</td>
+<td>−72%</td>
+</tr>
+<tr>
+<td>Identity verification failure</td>
+<td>18%</td>
+<td>4%</td>
+<td>−14 pts</td>
+</tr>
+<tr>
+<td>90-day second-consult retention</td>
+<td>34%</td>
+<td>52%</td>
+<td>+18 pts</td>
+</tr>
+</tbody></table>
+<p><strong>Causal logic (Service Profit Chain).</strong> The chain ran as Heskett, Sasser, and Schlesinger describe (See: 20-the-service-profit-chain/03-external-service-value.md): internal service quality (concierge tools, aligned incentives, single case view) raised frontline capability; external service value rose chiefly through the <em>denominator</em> of the value equation — access costs collapsed (34 minutes median enrollment effort to 12, 26 days waiting to 9, anxiety addressed by the practice call); satisfaction and NPS followed; retention and reduced failure demand produced the economics. Estimated annualized effect at full scale (illustrative): failure-demand reduction ≈ €168k, recovered clinician slots ≈ €46k, retention uplift ≈ €90k contribution — roughly €300k/year against €180k implementation cost, payback inside 9 months, before the strategic effect on the €410k platform contract renewal (See: 03-service-design-from-insight-to-implementation/08-service-design-and-business.md).</p>
+<p><strong>KPI tree (abridged).</strong> North-star: members with an attended first consult within 14 days of interest. Drivers: enrollment completion (verify success, pre-fill acceptance), attendance (practice-call completion, reminder delivery), effort (screens, handoffs). Lagging: NPS, 90-day retention, failure-demand volume, cost-to-serve. Reviewed weekly in pilot; monthly in run-state.</p>
+<h2 id="9-ai-tool-playbook">9. AI tool playbook</h2><p><strong>Claude Code — orchestration, research team, artifact authoring.</strong> The engagement&#39;s operating system: ran the parallel subagent research team (extraction, quote verification, survey triage), the synthesis digital wall, all mermaid authoring, HMW and concept-sheet drafting, observation-log tagging, and the pilot report. Excels at: structured extraction against a schema; consistency across dozens of files; 80%-there first drafts. Failed at: judging which insight would land politically; facilitation. Human took over: live research, naming, gates.</p>
+<p><strong>OpenCode — agent-mode pipelines and prototype build.</strong> Built the interactive prototype (R2) from a one-paragraph brief in about 40 minutes including three consent-screen iterations; ran the event-log funnel pipeline; generated the seeded mock dataset (A7); scaffolded the KPI dashboard jobs. Excels at: self-directed multi-file builds, realistic seed data, fast iteration. Failed at: copy tone (first-pass button labels read like a tax form — rewritten to CEFR B1) and method intent (it will happily build a screen the experiment does not need; the written hypothesis was the leash). Human took over: test design, thresholds, copy.</p>
+<p><strong>Codex — deep research and adversarial review.</strong> Second-opinion engine, run via <code>codex exec --skip-git-repo-check</code> with the artifact plus a specific concern, never the whole repo. Delivered the insight challenge pass (one insight killed), the blueprint review (4 real defects), the GDPR consent-model review (1 scope fix), and the referral data-minimization review (1 over-collection fix). Excels at: disagreeing productively — &quot;be adversarial&quot; is a load-bearing instruction. Failed at: occasionally flagged stated client constraints as defects (e.g., demanded real-time sync the 2011 member master cannot do); every finding was verified before action — reconcile by verifying, never by averaging.</p>
+<p><strong>GitHub — the system of record.</strong> Issues as work items (214 tickets with blueprint step IDs), PRs as review gates (CODEOWNERS; clinical label blocking), the board as phase tracker, milestones as stage gates. Actions CI on the artifact repo:</p>
+<pre><code class="language-yaml">name: artifact-gate
+on: [pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint mermaid diagrams
+        run: npx @mermaid-js/mermaid-cli -i diagrams/all.md -o /tmp/out.svg
+      - name: Markdown lint
+        run: npx markdownlint-cli &quot;**/*.md&quot;
+      - name: CSV schema check
+        run: python scripts/check_schema.py data/
+      - name: Quote verification
+        run: python scripts/verify_quotes.py research/ synthesis/
+      - name: Clinical content gate
+        uses: actions/labeler@v5   # 'clinical' label requires medical director review</code></pre><p>Failed at: nothing material; the board stays truthful only with a weekly human groom — the designer&#39;s Friday ritual.</p>
+<h2 id="10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</h2><ul>
+<li><strong>The headline insight was an empathy correction, not a feature idea.</strong> &quot;Anxious, not apathetic&quot; reframed the engagement; the client&#39;s working theory (members do not want telehealth) would have produced a marketing campaign, and the survey alone would have confirmed it. Episodic interviewing broke the theory (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md).</li>
+<li><strong>Verbatim verification is the highest-ROI automation in AI-assisted research.</strong> One grep-style check caught 7 fabricated or misattributed quotes — every one plausible, every one wrong.</li>
+<li><strong>Agents cluster fast and name badly.</strong> Left alone, the synthesis agent produced noun-bucket clusters that would have quietly destroyed insight quality. The active-sentence naming rule, enforced in CI, fixed it in one line.</li>
+<li><strong>The Wizard of Oz round earned its budget three times.</strong> The 4–6pm calling window, the five-request automation spec, and the 14-minute concierge cost basis all came from WoO; none were discoverable in interviews or hallway tests.</li>
+<li><strong>Incentive alignment beat tooling.</strong> The concierge worked because the metric changed (handling time → attended-consult rate). Two earlier internal attempts at &quot;better onboarding comms&quot; failed on this rock (See: 03-service-design-from-insight-to-implementation/07-implementation.md).</li>
+<li><strong>Codex is a reviewer, not an oracle.</strong> Two of its six blueprint findings were contextually wrong; treat it as adversarial counsel whose claims require verification, not as a verdict.</li>
+<li><strong>Done differently next time:</strong> baseline the Good Services scorecard in week 1 (scored in week 5, losing comparative precision), and involve the medical director at ideation, not prototyping — one clinical rework cycle was avoidable.</li>
+</ul>
+<h2 id="11-references">11. References</h2><p>Knowledge library (this repository):</p>
+<ul>
+<li><code>books/03-service-design-from-insight-to-implementation/04-from-research-to-insight.md</code> — ecology-wide research; data→information→insight; insight cards</li>
+<li><code>books/03-service-design-from-insight-to-implementation/05-developing-ideas.md</code> — HMW; co-design; idea→concept→proposition; DFV</li>
+<li><code>books/03-service-design-from-insight-to-implementation/06-prototyping-services.md</code> — progressive fidelity; blueprint rehearsal; concierge/Wizard of Oz</li>
+<li><code>books/03-service-design-from-insight-to-implementation/07-implementation.md</code> — pilots; blueprint-to-backlog; frontline enablement triad</li>
+<li><code>books/03-service-design-from-insight-to-implementation/08-service-design-and-business.md</code> — ROI mechanisms; failure-demand economics</li>
+<li><code>books/01-this-is-service-design-doing/04-research-methods.md</code> — triangulation; episodic interviewing; affinity synthesis; ethics</li>
+<li><code>books/01-this-is-service-design-doing/06-prototyping-methods.md</code> — prototyping to learn; test plans; WoO; live prototyping</li>
+<li><code>books/01-this-is-service-design-doing/07-implementation-and-piloting.md</code> — pilot vs rollout; MVS; KPI triangulation; failure demand</li>
+<li><code>books/09-mapping-experiences/04-customer-journey-maps.md</code> — journey anatomy; emotional curve; pain/opportunity separation</li>
+<li><code>books/09-mapping-experiences/05-service-blueprints.md</code> — blueprint lanes; three lines; F/W annotations</li>
+<li><code>books/20-the-service-profit-chain/03-external-service-value.md</code> — Service Value Equation; access costs</li>
+<li><code>books/05-good-services/02-the-fifteen-principles.md</code> — 15 principles; scorecard method</li>
+</ul>
+<p>External standards referenced: GDPR (Regulation (EU) 2016/679, incl. Article 9 special-category data); WCAG 2.1 AA; CEFR B1 reading level. All case figures are fictional and illustrative.</p>
+<h2 id="12-appendix-artifact-index">12. Appendix: artifact index</h2><table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Format</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Process overview</td>
+<td>3</td>
+<td>mermaid flowchart</td>
+<td>Double Diamond mapped to phases</td>
+</tr>
+<tr>
+<td>Project gantt</td>
+<td>3</td>
+<td>mermaid gantt</td>
+<td>28-week plan with gates</td>
+</tr>
+<tr>
+<td>Phase-method-tool table</td>
+<td>3</td>
+<td>table</td>
+<td>Method citations to AI execution map</td>
+</tr>
+<tr>
+<td>Transcript-to-evidence prompt</td>
+<td>4.1, 7</td>
+<td>fenced prompt</td>
+<td>Evidence extraction SOP</td>
+</tr>
+<tr>
+<td>Baseline success criteria</td>
+<td>2</td>
+<td>table</td>
+<td>Contract for pilot targets</td>
+</tr>
+<tr>
+<td>Insight cards</td>
+<td>4.2</td>
+<td>table</td>
+<td>Research-to-design bridge</td>
+</tr>
+<tr>
+<td>A1 journey map</td>
+<td>5</td>
+<td>mermaid + table</td>
+<td>Current-state experience with emotion scores</td>
+</tr>
+<tr>
+<td>A2 service blueprint</td>
+<td>5</td>
+<td>mermaid + lane table</td>
+<td>Future-state operations with fail points</td>
+</tr>
+<tr>
+<td>A3 stakeholder map</td>
+<td>5</td>
+<td>mermaid quadrantChart</td>
+<td>Influence/interest positioning</td>
+</tr>
+<tr>
+<td>A4 ecosystem map</td>
+<td>5</td>
+<td>mermaid flowchart</td>
+<td>Actor relationships incl. GP and hospital</td>
+</tr>
+<tr>
+<td>A5 personas</td>
+<td>5</td>
+<td>tables</td>
+<td>Two data-grounded personas</td>
+</tr>
+<tr>
+<td>A6 templates</td>
+<td>5</td>
+<td>fenced forms</td>
+<td>Research plan, interview guide, prototype plan, SOP-as-code</td>
+</tr>
+<tr>
+<td>A7 mock dataset</td>
+<td>5, data/</td>
+<td>CSV + sample</td>
+<td>85-row pilot funnel sample</td>
+</tr>
+<tr>
+<td>A8 charts</td>
+<td>5</td>
+<td>xychart-beta, pie</td>
+<td>Funnel conversion, NPS trend, no-show reasons</td>
+</tr>
+<tr>
+<td>A9 traceability table</td>
+<td>5</td>
+<td>table</td>
+<td>Pain → insight → principle → blueprint → KPI</td>
+</tr>
+<tr>
+<td>A10 Good Services audit</td>
+<td>5</td>
+<td>table</td>
+<td>15-principle before/after scoring</td>
+</tr>
+<tr>
+<td>Use case flows</td>
+<td>6</td>
+<td>mermaid + prose</td>
+<td>Caregiver, referral, discharge pathways</td>
+</tr>
+<tr>
+<td>GitHub Actions workflow</td>
+<td>9</td>
+<td>fenced YAML</td>
+<td>Artifact validation gates</td>
+</tr>
+<tr>
+<td>Before/after metrics</td>
+<td>8</td>
+<td>table</td>
+<td>Value creation evidence</td>
+</tr>
+</tbody></table>
+</article><div class="wrap" style="max-width:880px">
+    <div class="cross-links"><a href="../01/index.html"><span class="lbl">← Previous case</span><span class="ttl">01. The AI-First Service Design Operating System</span></a><a href="../03/index.html"><span class="lbl">Next case →</span><span class="ttl">03. Service Design for Business: Turning Claims into an Experience at Aurelia Insurance</span></a></div>
+    <div class="art-foot">
+      <span>10 figures (10 diagrams) · ~8.5k words · reviewed by an adversarial AI reviewer (Gemini 3.1 Pro High).</span>
+      · <a href="https://github.com/sammozaffari/the-agentic-service-designer/blob/main/articles/02/README.md" target="_blank" rel="noopener">Open source in repo ↗</a>
+    </div>
+  </div></main>
+<footer class="footer"><div class="footer-inner">
+  <span>Agentic Service Designer — 30 service design case studies from an AI-first practice. Fictional, anonymized clients.</span>
+  <span><a href="./index.html">Home</a> · <a href="./concept.html">The concept</a> · <a href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub</a></span>
+</div></footer>
+<script src="./assets/site.js"></script>
+</body></html>

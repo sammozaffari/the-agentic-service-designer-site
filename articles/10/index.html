@@ -1,0 +1,1351 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Mental Models &amp; Alignment: Understanding How Users Think — the Gradebook and Parent Communication Redesign at Lumen EdTech — Education (B2B school platform, EU)">
+<title>10. Mental Models &amp; Alignment: Understanding How Users Think — the Gradebook and Parent Communication Redesign at Lumen EdTech — Agentic Service Designer</title>
+<link rel="stylesheet" href="./assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234f46e5'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'>A</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+</head><body>
+<nav class="nav"><div class="nav-inner">
+  <a class="brand" href="./index.html"><span class="mark">A</span>Agentic Service Designer</a>
+  <div class="nav-links">
+    <a href="./index.html" class="">Home</a>
+    <a href="./concept.html" class="">The concept</a>
+    <a href="./index.html#series" class="on">Case studies</a>
+    <a class="github-link" href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</div></nav>
+<main class="art">
+  <div class="wrap art-hero">
+    <div class="art-meta">
+      <span class="chip chip-track">Research &amp; Synthesis</span>
+      <span class="sep">·</span><span>Education (B2B school platform, EU)</span>
+      <span class="sep">·</span><span><b>Lumen EdTech</b></span>
+      <span class="sep">·</span><span>24 weeks (10 research &amp; modeling + 6 design + 8 live pilot)</span>
+      <span class="chip chip-tool">Claude Code</span><span class="chip chip-tool">OpenCode</span><span class="chip chip-tool">Codex</span><span class="chip chip-tool">GitHub</span>
+    </div>
+    <h1>Mental Models &amp; Alignment: Understanding How Users Think — the Gradebook and Parent Communication Redesign at Lumen EdTech</h1>
+    <p class="deck">Fictional composite client. All names, figures, and data are illustrative and anonymized.</p>
+  </div><article class="art-body wrap"><nav class="toc"><b>On this page</b><ol><li><a href="#0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</a></li><li><a href="#1-executive-summary">1. Executive summary</a></li><li><a href="#2-the-brief">2. The brief</a></li><li><a href="#3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</a></li><li><a href="#4-phase-by-phase-narrative">4. Phase-by-phase narrative</a></li><li><a href="#5-artifacts-portfolio">5. Artifacts portfolio</a></li><li><a href="#6-use-cases">6. Use cases</a></li><li><a href="#7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</a></li><li><a href="#8-value-creation-amp-measurement">8. Value creation &amp; measurement</a></li><li><a href="#9-ai-tool-playbook">9. AI tool playbook</a></li><li><a href="#10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</a></li><li><a href="#11-references">11. References</a></li><li><a href="#12-appendix-artifact-index">12. Appendix: artifact index</a></li></ol></nav><h1 id="mental-models-amp-alignment-understanding-how-users-think-the-gradebook-and-parent-communication-redesign-at-lumen-edtech">Mental Models &amp; Alignment: Understanding How Users Think — the Gradebook and Parent Communication Redesign at Lumen EdTech</h1><h2 id="0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</h2><p>Lumen EdTech is a fictional composite client, assembled from patterns observed across several European K-12 platform vendors; no real school, teacher, parent, or student is depicted. All names, figures, datasets, and quotes are illustrative and anonymized, and participant codes refer to fictional interviews. The article shares knowledge and process — SOPs, prompts, artifact templates, review gates — never client specifics. The engagement ran AI-first: Claude Code, OpenCode, Codex, and GitHub were the primary working tools; the human designer retained framing, facilitation, ethics, and every decision involving minors.</p>
+<h2 id="1-executive-summary">1. Executive summary</h2><p>Lumen EdTech, a B2B school platform serving 240 schools across the Netherlands, Belgium, and Germany, had a support problem that was really a mental-model problem. Of 12,000 tickets per quarter, 68% were comprehension failures: parents could not find grades, teachers could not find grading drafts, students missed deadlines buried in a reverse-chronological feed. The platform was engineered around <em>courses and classes</em>, while users thought by child, by grading sitting, and by due date. Over 24 weeks, one lead service designer and an AI agent team extracted those models, made the misalignment explicit, and realigned the product as a unified Communication Hub. Pilot result in 12 schools: support volume down 46%, comprehension tickets down 69%, and flagship task success up 36–46 points.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Lumen EdTech (fictional composite)</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>Education — B2B school platform, EU (NL/BE/DE)</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>Gradebook + parent communication within a school platform</td>
+</tr>
+<tr>
+<td>Scale</td>
+<td>240 schools; 1.4M students; 64,000 teachers; ~1.05M parent accounts</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>Mental-model research → alignment diagnosis → content-model redesign → pilot</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>24 weeks (10 research &amp; modeling + 6 design + 8 pilot)</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>1 lead designer + AI agents + 3 client FTE-equivalents</td>
+</tr>
+<tr>
+<td>AI tools</td>
+<td>Claude Code, OpenCode, Codex, GitHub</td>
+</tr>
+<tr>
+<td>Headline results</td>
+<td>Tickets 12,000→6,540/quarter (−46%); comprehension tickets −69%; parent task success 42→88%; teacher weekly active gradebook use 61→79%</td>
+</tr>
+</tbody></table>
+<p>What you will learn:</p>
+<ul>
+<li>How to extract durable <em>mental models</em> — beliefs, questions, and tasks per actor — from interview evidence with an agent team, under a strict taxonomy that stops agents conflating what users think with what users do.</li>
+<li>How to diagnose misalignment quantitatively: card-sort distance matrices, cluster analysis, and a gap inventory that links each user-model/system-model divergence to ticket volume and task failure.</li>
+<li>How to land a mental-model realignment as engineering work: content-model change proposals as GitHub PRs, alignment metrics as a measurable contract, and a future-state blueprint for a unified Communication Hub.</li>
+</ul>
+<h2 id="2-the-brief">2. The brief</h2><h3 id="client-portrait">Client portrait</h3><p>Lumen EdTech is a mid-sized European edtech vendor headquartered in Utrecht: 310 staff, €38M ARR, and a platform spanning gradebook, assignments, attendance, timetabling, and parent messaging. Its customers are schools; its users are 64,000 teachers, 1.4M students, and just over a million parents. Engineering maturity is high; research maturity is not. Support is a 22-agent team handling ~12,000 tickets a quarter at €7.20 loaded cost per ticket.</p>
+<h3 id="the-challenge">The challenge</h3><p>The support queue was the symptom; the disease was conceptual. One quarter of tickets showed 68% of volume traced to three comprehension failures rather than defects: parents hunting grades across class pages (3,720 tickets), teachers losing grading drafts they believed were saved (2,640), and students missing deadlines buried in a reverse-chronological feed (1,800). Parent NPS sat at −4; teacher weekly active gradebook use at 61%; two municipal districts (9 schools) had signalled non-renewal. The executive theory was &quot;the UI is dated; reskin it.&quot; Research showed the UI was faithfully rendering the wrong model of the world (See: 09-mapping-experiences/06-other-alignment-diagrams.md).</p>
+<h3 id="success-criteria-agreed-with-the-client">Success criteria (agreed with the client)</h3><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline (illustrative)</th>
+<th>Pilot target</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Support tickets per quarter</td>
+<td>12,000</td>
+<td>≤ 7,800</td>
+</tr>
+<tr>
+<td>Comprehension tickets (three categories)</td>
+<td>8,160/quarter</td>
+<td>≤ 3,300/quarter</td>
+</tr>
+<tr>
+<td>Parent task success: &quot;what did my child do today&quot;</td>
+<td>42%</td>
+<td>≥ 80%</td>
+</tr>
+<tr>
+<td>Teacher task success: &quot;resume yesterday&#39;s grading&quot;</td>
+<td>46%</td>
+<td>≥ 85%</td>
+</tr>
+<tr>
+<td>Student task success: &quot;everything due this week, in order&quot;</td>
+<td>58%</td>
+<td>≥ 90%</td>
+</tr>
+<tr>
+<td>Parent &quot;I know what my child did today&quot; CSAT (1–5)</td>
+<td>2.6</td>
+<td>≥ 3.8</td>
+</tr>
+<tr>
+<td>Teacher weekly active gradebook use</td>
+<td>61%</td>
+<td>≥ 75%</td>
+</tr>
+</tbody></table>
+<h3 id="constraints">Constraints</h3><p>Budget €220,000 all-in; 24 weeks to a pilot readout before two district renewal decisions; the immutable school calendar; GDPR plus minors&#39; data constraints (parental consent for student sessions, no student PII in prompts, EU residency); and a legacy content model in which grade history is append-only, constraining how drafts can be restructured.</p>
+<h3 id="why-service-design">Why service design</h3><p>Lumen&#39;s problem was structural, not cosmetic. Kalbach&#39;s diagram-selection logic points straight at the mental model diagram for &quot;durable human purposes vs. feature fit&quot; (See: 09-mapping-experiences/06-other-alignment-diagrams.md). The engagement therefore anchored on Indi Young&#39;s method, supported by representational synthesis (See: 18-universal-methods-of-design/05-representational-and-synthesis-methods.md) and Kumar&#39;s observation → finding → insight ladder (See: 17-101-design-methods/05-mode-4-frame-insights.md). Journey and story methods then translated the realigned model into time (See: 08-orchestrating-experiences/04-understanding-the-journey.md, 10-the-users-journey/01-why-story.md).</p>
+<h2 id="3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</h2><p>The engagement followed the Double Diamond with Kumar&#39;s modes as the reasoning spine: research, mental-model synthesis, realigned content model, pilot. The designer ran every phase with named AI collaborators: Claude Code for extraction, OpenCode for the card-sort and ticket pipelines, Codex for adversarial checks, and GitHub as the system of record — every research question an issue, every content-model change a PR, every gate a review.</p>
+<div class="mermaid">
+flowchart LR
+  subgraph DISC["Discover - weeks 1-6"]
+    R1["100 interviews: 60 teachers 40 parents"] --> R2["9 shadowing days in 6 schools"]
+    R2 --> R3["12000 support tickets categorized"]
+    R3 --> R4["24 baseline usability sessions"]
+  end
+  subgraph DEF["Define - weeks 5-11"]
+    S1["Mental-model extraction from 1180 evidence items"] --> S2["Three actor models plus segment variants"]
+    S2 --> S3["Card sort: distance matrix to clusters"]
+    S3 --> S4["Gap inventory: X Y Z plus two minor gaps"]
+  end
+  subgraph DEV["Develop - weeks 11-14"]
+    D1["Content-model change proposals CMC-01 to 07"] --> D2["Communication Hub future-state blueprint"]
+    D2 --> D3["Story spines per actor"]
+  end
+  subgraph DEL["Deliver - weeks 15-24"]
+    P1["Pilot: 12 schools 8 weeks"] --> M1["Alignment metrics and readout"]
+  end
+  DISC --> DEF --> DEV --> DEL
+  M1 -. "model-match score re-baselined each term" .-> S1
+</div><div class="mermaid">
+gantt
+  title Lumen mental models and alignment engagement - 24 weeks
+  dateFormat YYYY-MM-DD
+  axisFormat %W
+  section Discover
+  Research plan ethics and consent     :a1, 2026-02-02, 5d
+  Interviews shadowing usability       :a2, after a1, 27d
+  Ticket categorization pipeline       :a3, after a1, 14d
+  section Define
+  Mental-model extraction and audit    :b1, after a2, 7d
+  Card sort fieldwork and analysis     :b2, after a2, 14d
+  Gap inventory and alignment baseline :b3, after b1, 10d
+  section Develop
+  Content-model change PRs             :c1, after b3, 12d
+  Blueprint and story spines           :c2, after b3, 18d
+  section Deliver
+  Pilot build and school onboarding    :d1, after c2, 10d
+  Live pilot gate                      :milestone, after d1, 0d
+  Live pilot window                    :d2, after d1, 56d
+  Measurement and readout              :d3, after d2, 12d
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>SD method (citation)</th>
+<th>AI tool(s)</th>
+<th>Artifact produced</th>
+<th>Client involvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Research</td>
+<td>Critical-incident journey interviewing, contextual shadowing, ticket triage (09/03, 08/04)</td>
+<td>Claude Code (transcript processing), OpenCode (ticket pipeline)</td>
+<td>Research plan, consent pack, evidence register</td>
+<td>Product owner joined 8 interviews</td>
+</tr>
+<tr>
+<td>Mental-model synthesis</td>
+<td>Indi Young mental model method: beliefs, questions, tasks, towers, mental spaces (09/06, 18/05)</td>
+<td>Claude Code research team (3 subagents), Codex (taxonomy audit)</td>
+<td>Three actor mental models + segments</td>
+<td>Half-day model walkthrough</td>
+</tr>
+<tr>
+<td>Alignment diagnosis</td>
+<td>Card sorting, cluster analysis, gap inventory, alignment metrics (18/05, 17/05)</td>
+<td>OpenCode (distance matrix, dendrogram), Codex (adversarial gap check)</td>
+<td>Misalignment diagram, gap inventory X/Y/Z</td>
+<td>Product + engineering review</td>
+</tr>
+<tr>
+<td>Design</td>
+<td>Content-model realignment, blueprinting, story spines (09/02, 10/04, 08/04)</td>
+<td>Claude Code (mermaid authoring, copy), GitHub (CMC PRs)</td>
+<td>7 CMC PRs, future-state blueprint</td>
+<td>Engineering architecture review</td>
+</tr>
+<tr>
+<td>Pilot &amp; measurement</td>
+<td>Bounded pilot, alignment metrics, KPI triangulation (08/04, 20/03)</td>
+<td>OpenCode (metrics pipeline), Claude Code (readout)</td>
+<td>Alignment metrics dashboard, pilot report</td>
+<td>Weekly pilot steering</td>
+</tr>
+</tbody></table>
+<h2 id="4-phase-by-phase-narrative">4. Phase-by-phase narrative</h2><h3 id="41-research-capturing-actions-thoughts-and-feelings-weeks-16">4.1 Research: capturing actions, thoughts, and feelings (weeks 1–6)</h3><p><strong>Goal.</strong> Gather empirical evidence of how each actor group actually thinks the service works — not how stakeholders assume they do (See: 09-mapping-experiences/03-understanding-the-user.md).</p>
+<p><strong>Method &amp; SOP.</strong> Triangulated fieldwork captured actions, thoughts, and feelings: 100 critical-incident interviews (60 teachers, 40 parents), nine days of classroom and staffroom shadowing across six schools, 24 moderated baseline usability sessions on the flagship tasks, and the full quarter&#39;s 12,000 support tickets as the quantitative backbone. A week-1 assumption-mapping workshop surfaced internal folklore into an assumptions register, every item tagged <code>[ASSUMP]</code> until verified or killed (See: 09-mapping-experiences/03-understanding-the-user.md).</p>
+<p><strong>AI execution.</strong> Interviews stayed human — consent, rapport, and the ethics of researching around minors are not delegable. Everything after the recording was agent-amplified. Transcripts were pseudonymized (T-01…T-60, P-01…P-40) and processed by a Claude Code subagent team under the extraction SOP in Section 7: one agent extracted evidence items, one classified each under the strict belief/question/task taxonomy, one verified every quote verbatim against the transcript store. Result: 1,180 evidence items in <code>research/evidence-register.jsonl</code> (PR #31). OpenCode ran the ticket pipeline in agent mode:</p>
+<pre><code class="language-bash">opencode run --agent build &quot;Classify analysis/tickets_q1.csv (12000 rows) into
+the taxonomy in analysis/ticket-taxonomy.md. Output ticket_id, topic,
+actor_guess, confidence. Rows under 0.7 confidence go to review_queue.csv.
+Do not invent topics. Print category counts.&quot;</code></pre><p>The support lead human-coded a 400-ticket sample; the pipeline&#39;s precision against it was 94%, and 1,900 low-confidence rows went through human review before the category counts were accepted (A8 pie).</p>
+<p><strong>Human designer judgment.</strong> Recruitment quotas (oversampling secondary-school parents and 15+-year-tenure teachers, the groups the folklore least described), the consent protocol, every live session, and the decision to research students through usability sessions and shadowing rather than interviews — parental-consent logistics for 40 student interviews would have consumed three weeks; observed behavior plus card sorts answered the mental-model questions at lower risk.</p>
+<p><strong>Artifact produced.</strong> Research plan and interview guide (A6), evidence register (1,180 items), assumption register (23 assumptions; 17 killed by data), ticket category baseline (A8).</p>
+<h3 id="42-mental-model-extraction-beliefs-questions-tasks-per-actor-weeks-59">4.2 Mental-model extraction: beliefs, questions, tasks per actor (weeks 5–9)</h3><p><strong>Goal.</strong> Convert 1,180 evidence items into three durable actor mental models — the demand side of the alignment diagram (See: 09-mapping-experiences/06-other-alignment-diagrams.md).</p>
+<p><strong>Method &amp; SOP.</strong> The Indi Young method: extract granular user-voice statements from task-focused interviews, separating <em>beliefs</em> (claims users treat as true about how the system or school works), <em>questions</em> (recurring information needs), and <em>tasks</em> (intended actions); affinity-cluster tasks into towers; group towers into mental spaces. The taxonomy discipline is the method: a belief is not a task, and conflating them produces a collage, not a model. Here, &quot;beliefs, questions, tasks&quot; is a deliberate AI-extraction adaptation of Young&#39;s canonical &quot;tasks, thoughts, feelings&quot; language so agents keep cognitive claims, information needs, and intended actions cleanly separated.</p>
+<p><strong>AI execution.</strong> The Claude Code team structured 639 model elements from the register: 96 beliefs, 212 questions, 331 tasks, each carrying evidence IDs and transcript line ranges — no element without evidence. Tower clustering used the active-sentence naming rule (&quot;Parents assemble one picture per child by hand,&quot; not &quot;Grades&quot;). Codex then ran the adversarial taxonomy audit:</p>
+<pre><code class="language-bash">codex exec --skip-git-repo-check &quot;Read research/evidence-register.jsonl and
+models/mental-model-items.jsonl. (1) Flag every item whose type violates the
+taxonomy: a belief must be a falsifiable claim about how things work, a
+question an information need, a task an intended action. (2) Flag any belief
+supported by fewer than 2 independent participants. (3) Flag any statement
+phrased in system language rather than user voice. Be adversarial.&quot;</code></pre><p>The audit caught 41 misclassified items (3.5% — mostly observed behaviors filed as beliefs, e.g., &quot;teacher opens the gradebook at night&quot; is a behavior, not a belief) and forced evidence upgrades on six beliefs. Every surviving belief cites ≥2 independent participants; headline beliefs cite ≥5.</p>
+<p><strong>Human designer judgment.</strong> Naming the mental spaces (framing is political — &quot;Act when needed&quot; frames parents as partners, which the parent council noticed), the segment call below, and accepting Codex&#39;s demotions without sentiment.</p>
+<p><strong>Guardrail in action — segment, never average.</strong> The first pass produced a single parent model. Codex&#39;s challenge pass flagged that the by-child belief was weakest among German secondary (Gymnasium) parents, who think partly in <em>Fächer</em> (subjects) because report structures are subject-based. The model was split: primary-school parents (pure by-child), NL/BE secondary parents (by-child with subject drill-down), DE secondary parents (by-child summary, subject-primary detail). One averaged model would have been wrong in two directions — the engagement&#39;s most-cited methodological lesson.</p>
+<p><strong>Artifacts produced.</strong> Three actor mental models (Section 5, M1–M3), segment variants, and the belief register feeding the gap inventory.</p>
+<h3 id="43-alignment-diagnosis-card-sorts-and-the-gap-inventory-weeks-811">4.3 Alignment diagnosis: card sorts and the gap inventory (weeks 8–11)</h3><p><strong>Goal.</strong> Quantify the divergence between how users group the world and how the platform structures it, and enumerate the gaps as an evidence-linked inventory.</p>
+<p><strong>Method &amp; SOP.</strong> Open card sort, 40 participants (16 parents, 14 teachers, 10 students), 42 content cards, instruction: &quot;group these the way you would expect to find them when you open the app.&quot; Analysis: pairwise normalized distance (1 − share of participants co-grouping each pair) → average-linkage hierarchical clustering → cut at 0.40 → clusters compared against the platform&#39;s information architecture. Then the gap inventory: overlay the three actor models on the documented system content model and enumerate every divergence as a pair — user belief vs. system truth — classified by severity using ticket volume and task-failure rates (See: 17-101-design-methods/05-mode-4-frame-insights.md).</p>
+<p><strong>AI execution.</strong> OpenCode ran the full card-sort SOP-as-code (Section 7), producing the distance matrix (A7) and cluster report deterministically under a fixed seed; Claude Code rendered the dendrogram (A8) as version-controlled mermaid and drafted the gap inventory with per-gap evidence citations. Codex adversarially attacked the headline gap:</p>
+<pre><code class="language-bash">codex exec --skip-git-repo-check &quot;Read models/parent-mental-model.md and
+models/system-content-model.md. Argue against the claim that parents organize
+by child rather than by course, using only research/evidence-register.jsonl
+and analysis/ticket-topics.csv. If the claim survives, name the weakest
+segment where it holds.&quot;</code></pre><p>The claim survived — strengthened, in fact: ticket text showed parents repeatedly writing &quot;my son/daughter&quot; while navigating screens named after courses. But Codex&#39;s segmentation finding (above) and one genuine catch — the draft-loss gap was partly a <em>concurrent-tab</em> engineering defect, not purely a model gap — both reshaped the final inventory.</p>
+<p><strong>Human designer judgment.</strong> Severity classification (ticket volume is demand; task failure is harm; harm weighted higher for students, because a missed deadline is a real-world consequence), and the decision to publish the misalignment diagram company-wide — an uncomfortable artifact, framed as &quot;the platform is well-built for a world users don&#39;t live in.&quot;</p>
+<p><strong>Artifact produced.</strong> The misalignment diagram (Section 5, M4) with headline gaps <strong>X</strong>, <strong>Y</strong>, <strong>Z</strong>, plus minor gaps <strong>G4</strong> and <strong>G5</strong>. The alignment-metrics baseline (A6) put model-match at 38% (parents), 52% (teachers), 57% (students).</p>
+<h3 id="44-designing-the-aligned-architecture-the-communication-hub-weeks-1114">4.4 Designing the aligned architecture: the Communication Hub (weeks 11–14)</h3><p><strong>Goal.</strong> Realign the product structure to a coherent mental model — not three models, but one hub that presents itself by-child to parents, by-sitting to teachers, and by-due-date to students over a shared event backbone.</p>
+<p><strong>Method &amp; SOP.</strong> Content-model realignment expressed as engineering artifacts, then blueprinting from the validated actor spines (See: 09-mapping-experiences/02-the-anatomy-of-experience-maps.md), and per-actor story spines written before any screen was discussed (See: 10-the-users-journey/04-storymapping-in-practice.md). The parent spine: <em>Every day, Sabine wonders what her children actually did at school. One day, the portal starts answering that question per child. Because of that, she stops hunting across eleven class pages. Until finally, &quot;how was school&quot; becomes a conversation instead of an interrogation.</em></p>
+<p><strong>AI execution.</strong> Each content-model change was drafted by Claude Code as a PR against <code>platform/content-model/</code> using the CMC template (A6). Seven PRs (CMC-01…07) merged after architecture review, including CMC-02 (child aggregation), CMC-04 (GradingSession with explicit states), and CMC-05 (due-date-primary feed ordering). GitHub Actions enforced the artifact contract: mermaid lint, markdown lint, CSV schema, quote verification, and the belief-evidence check. Codex reviewed migration risk on every CMC and caught one load-bearing issue: CMC-04&#39;s first draft allowed silent draft merging across concurrent tabs and was rewritten with optimistic locking plus a visible conflict warning before build.</p>
+<p><strong>Human designer judgment.</strong> The architecture decision that the hub is <em>one service with three presentations</em>, not three portals — splitting would have re-siloed the data and recreated G4; and the sequencing call that CMC-04 (teacher drafts) ships first, because teacher trust was the engagement&#39;s most fragile asset.</p>
+<p><strong>Artifacts produced.</strong> CMC-01…07, the future-state blueprint (A2), per-actor story spines, and the traceability table (A9).</p>
+<h3 id="45-pilot-amp-measurement-weeks-1524">4.5 Pilot &amp; measurement (weeks 15–24)</h3><p><strong>Goal.</strong> Prove the realignment moves alignment metrics and failure demand in the real environment — a bounded pilot with explicit gates.</p>
+<p><strong>Method &amp; SOP.</strong> Twelve schools (NL 7, BE 3, DE 2 — deliberately including Gymnasium-segment parents), 1,050 teachers, 21,000 students, 16,400 parent accounts, eight weeks. Measurement triangulated: telemetry (model-match recomputed weekly from first-click paths), 24 moderated pilot usability sessions mirroring baseline, the weekly ticket pipeline, and CSAT/NPS instruments unchanged for comparability (See: 08-orchestrating-experiences/04-understanding-the-journey.md, 20-the-service-profit-chain/03-external-service-value.md).</p>
+<p><strong>AI execution.</strong> OpenCode maintained the nightly metrics pipeline (events → model-match, task proxies, ticket joins) with every dashboard number generated from the same query set; Claude Code drafted the pilot report as a steering-reviewed PR; GitHub tracked the 87 implementation issues, each carrying its blueprint cell ID.</p>
+<p><strong>Human designer judgment.</strong> Gate negotiation with the two at-risk districts (they demanded parent-facing evidence, not engineering metrics — model-match was translated into &quot;parents find the answer in under two minutes&quot;), the consent posture for student telemetry (aggregated, k-anonymized, DPO-signed), and the go/iterate/kill call: <strong>go</strong>, with one condition — notification defaults revisited after G4&#39;s digest initially <em>raised</em> notification-configuration questions (1,080 → 1,260 tickets), a known and accepted transition cost.</p>
+<p><strong>Artifact produced.</strong> Alignment metrics dashboard, pilot evaluation report, and the before/after table in Section 8.</p>
+<h2 id="5-artifacts-portfolio">5. Artifacts portfolio</h2><p>All figures illustrative.</p>
+<h3 id="m1-mental-model-diagram-the-parent">M1 — Mental model diagram: the parent</h3><div class="mermaid">
+flowchart TB
+  subgraph S1["Mental space: Is my child OK"]
+    B1["Belief: the school tells me if something is wrong"] --> Q1["Question: did my child get to school today"]
+    Q1 --> T1["Task: check the attendance mark for my child"]
+    Q2["Question: is my child keeping up overall"] --> T2["Task: scan latest marks as one picture"]
+  end
+  subgraph S2["Mental space: What happened today"]
+    Q3["Question: what did my child do today"] --> T3["Task: open one view per child"]
+    T3 --> T4["Task: pick one thing to ask about at dinner"]
+  end
+  subgraph S3["Mental space: Act when needed"]
+    Q4["Question: who do I tell about an absence"] --> T5["Task: send one note to the school"]
+    Q5["Question: is this grade a verdict or a signal"] --> T6["Task: decide whether to contact the mentor"]
+  end
+  S1 --> S2 --> S3
+</div><p>Evidence anchors (illustrative quotes, fictional participants): B1 — &quot;If something was wrong, they would call me, surely&quot; (P-12, 34 evidence items); T3 — &quot;I just want her day, not eleven subjects&quot; (P-27).</p>
+<h3 id="m2-mental-model-diagram-the-teacher">M2 — Mental model diagram: the teacher</h3><div class="mermaid">
+flowchart TB
+  subgraph TS1["Mental space: Prepare and teach"]
+    TB1["Belief: the platform mirrors my class list"] --> TQ1["Question: what is on for 3B today"]
+    TQ1 --> TT1["Task: glance at timetable and group notes"]
+  end
+  subgraph TS2["Mental space: Assess in sittings"]
+    TB2["Belief: a spinner that stops means my work is saved"] --> TQ2["Question: where is the grading round I started on Sunday"]
+    TQ2 --> TT2["Task: grade a class set in one sitting"]
+    TT2 --> TT3["Task: resume the same sitting tomorrow"]
+    TB3["Belief: I publish a class set when the sitting is done"] --> TT4["Task: release marks for the whole round at once"]
+  end
+  subgraph TS3["Mental space: Report and respond"]
+    TQ3["Question: which parents need to hear from me this week"] --> TT5["Task: message the mentor or parent of one student"]
+  end
+  TS1 --> TS2 --> TS3
+</div><p>Evidence anchors: TB2 — &quot;It spun, it saved. Then Tuesday it was just... not there&quot; (T-07, 41 items behind the draft-belief cluster); TT2 — shadowing confirmed 6 of 9 observed teachers grade in batches, most often Sunday evening.</p>
+<h3 id="m3-mental-model-diagram-the-student">M3 — Mental model diagram: the student</h3><div class="mermaid">
+flowchart TB
+  subgraph US1["Mental space: What is due next"]
+    UB1["Belief: the top of the feed is what matters now"] --> UQ1["Question: what do I have to hand in this week"]
+    UQ1 --> UT1["Task: list work by deadline"]
+    UT1 --> UT2["Task: do the nearest deadline first"]
+  end
+  subgraph US2["Mental space: How am I doing"]
+    UB2["Belief: teachers can see when I opened something"] --> UQ2["Question: did my mark change after the test week"]
+    UQ2 --> UT3["Task: check latest marks for each subject"]
+  end
+  US1 --> US2
+</div><p>Evidence anchors: UB1 — card sort plus 8 of 10 student participants in moderated sessions treated feed order as priority order; UB2 is false (views are not shared with teachers) and was handled by explicit copy, not left to folklore.</p>
+<h3 id="m4-the-misalignment-diagram-user-models-vs-system-model">M4 — The misalignment diagram: user models vs. system model</h3><div class="mermaid">
+flowchart LR
+  subgraph USER["How users think the service works"]
+    UP["Parent model: everything hangs off my child"]
+    UT["Teacher model: grading happens in sittings with saved state"]
+    US["Student model: work is ordered by what is due next"]
+  end
+  subgraph SYS["How the platform actually works"]
+    SC["Content model: everything hangs off course and class objects"]
+    SG["Gradebook: one autosave draft per assignment column per teacher"]
+    SF["Feed: reverse chronological by posting time"]
+  end
+  UP -. "GAP X: by child vs by course" .-> SC
+  UT -. "GAP Y: sitting drafts vs shared draft queue" .-> SG
+  US -. "GAP Z: due date vs posting date" .-> SF
+</div><table>
+<thead>
+<tr>
+<th>Gap</th>
+<th>User belief (evidence)</th>
+<th>System truth</th>
+<th>Cost signature (illustrative)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>X</strong></td>
+<td>&quot;The portal is about my child&quot; (B-P-01, 38 items)</td>
+<td>Portal mirrors course structure: a two-child secondary parent faced 23 class pages</td>
+<td>3,720 &quot;where is the grade&quot; tickets/quarter; parent task success 42%</td>
+</tr>
+<tr>
+<td><strong>Y</strong></td>
+<td>&quot;Saved means my sitting is saved&quot; (B-T-11, 41 items)</td>
+<td>One autosave draft per (teacher, assignment column); parallel tabs overwrite silently</td>
+<td>2,640 draft tickets/quarter; 46% resume-task success; re-entry ≈ 11 min/teacher/week</td>
+</tr>
+<tr>
+<td><strong>Z</strong></td>
+<td>&quot;The feed is ordered by what matters&quot; (B-S-02, card sort + sessions)</td>
+<td>Feed is reverse-chronological by posting time; late-posted near-term deadlines sink</td>
+<td>1,800 assignment-order tickets/quarter; 58% due-this-week task success</td>
+</tr>
+<tr>
+<td>G4</td>
+<td>&quot;No news is good news&quot; (B-P-04, 22 items)</td>
+<td>Only 23% of parent-relevant events generate any outbound message</td>
+<td>Reassurance calls to mentors; CSAT 2.6</td>
+</tr>
+<tr>
+<td>G5</td>
+<td>&quot;A grade is a verdict on my child&quot; (B-P-07, 17 items)</td>
+<td>Teachers intend most marks as formative signals</td>
+<td>Mentor email volume; conflict escalations</td>
+</tr>
+</tbody></table>
+<h3 id="a1-customer-journey-map-current-state-the-parent-quotwhat-did-my-child-do-todayquot">A1 — Customer journey map (current state): the parent, &quot;what did my child do today&quot;</h3><div class="mermaid">
+flowchart TB
+  subgraph P1["Phase 1: Trigger at the dinner table (emotion 3/5)"]
+    J1["Child shrugs: nothing happened"] --> J2["Parent decides to check the portal"]
+  end
+  subgraph P2["Phase 2: Sign in and choose (emotion 2/5)"]
+    K1["Opens portal; picks one of two children"] --> K2["Faces a list of 11 class pages"]
+  end
+  subgraph P3["Phase 3: The hunt (emotion 1/5)"]
+    L1["Opens class pages one by one"] --> L2["Marks posted weeks apart; no today view"]
+    L2 --> L3["Confuses posting date with test date"]
+  end
+  subgraph P4["Phase 4: Aggregation by hand (emotion 2/5)"]
+    M1["Mentally merges 11 pages into one picture"] --> M2["Unsure whether silence means fine or not entered"]
+  end
+  subgraph P5["Phase 5: Resolution or escalation (emotion 2/5)"]
+    N1["Gives up and emails the mentor"] --> N2["Or calls support asking where the grades are"]
+  end
+  P1 --> P2 --> P3 --> P4 --> P5
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Emotion (1–5)</th>
+<th>Dominant pain</th>
+<th>Supporting evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Trigger</td>
+<td>3</td>
+<td>Child&#39;s account carries no information</td>
+<td>P-12, P-27 interviews</td>
+</tr>
+<tr>
+<td>Sign in and choose</td>
+<td>2</td>
+<td>Child selection exists, but everything below is per class</td>
+<td>Usability baseline, 24 sessions</td>
+</tr>
+<tr>
+<td>The hunt</td>
+<td>1</td>
+<td>23 class pages for a two-child parent; posting date masquerades as event date</td>
+<td>Gap X; 3,720 tickets/quarter</td>
+</tr>
+<tr>
+<td>Aggregation</td>
+<td>2</td>
+<td>Silence is unreadable: fine, or simply not entered</td>
+<td>G4; B-P-04</td>
+</tr>
+<tr>
+<td>Resolution</td>
+<td>2</td>
+<td>Escalation to mentor or support as the only complete path</td>
+<td>Ticket pipeline; mentor interviews</td>
+</tr>
+</tbody></table>
+<h3 id="a2-service-blueprint-future-state-the-unified-communication-hub">A2 — Service blueprint (future state): the unified Communication Hub</h3><div class="mermaid">
+flowchart TB
+  subgraph L1["Physical evidence"]
+    PE1["Child card: today view per child"] --> PE2["Daily digest: one per child"]
+    PE2 --> PE3["GradingSession screen: named sittings with state"]
+    PE3 --> PE4["Student feed: due-date order with posted-versus-due labels"]
+    PE4 --> PE5["Context labels on every mark: formative or summative"]
+  end
+  subgraph L2["Actor actions"]
+    CA1["Parent opens child card"] --> CA2["Teacher resumes a named sitting"]
+    CA2 --> CA3["Teacher publishes the sitting as one act"]
+    CA3 --> CA4["Student scans due-this-week list"]
+    CA4 --> CA5["Parent sends one absence note per child"]
+  end
+  subgraph L3["Frontstage"]
+    FS1["Hub home resolves actor by role: child, sitting, or due date"] --> FS2["Digest composer renders plain-language today summary"]
+    FS2 --> FS3["Sitting resume banner: continue where you stopped"]
+    FS3 --> FS4["Publish confirmation lists exactly who will see what"]
+  end
+  subgraph L4["Backstage"]
+    BS1["Child aggregation over course objects"] --> BS2["GradingSession store with explicit draft and published states"]
+    BS2 --> BS3["Optimistic locking and conflict warning on concurrent tabs"]
+    BS3 --> BS4["Event backbone: every parent-relevant event emit a notification candidate"]
+    BS4 --> BS5["Notification policy engine: digest defaults and quiet hours"]
+  end
+  subgraph L5["Support processes"]
+    SP1["Postgres content model with append-only grade history"] --> SP2["LMS partner sync: BRON Edustandard timetable service"]
+    SP2 --> SP3["Consent registry and GDPR residency controls"]
+    SP3 --> SP4["Alignment metrics pipeline: model-match weekly"]
+  end
+  L1 --> L2 --> L3 --> L4 --> L5
+</div><p>Lane table (targets illustrative):</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Physical evidence</th>
+<th>Actor action</th>
+<th>Frontstage</th>
+<th>Backstage</th>
+<th>Support</th>
+<th>Gap fixed</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1 Today view</td>
+<td>Child card</td>
+<td>Parent opens one view per child</td>
+<td>Role-resolved hub home</td>
+<td>Child aggregation (CMC-02)</td>
+<td>Content model</td>
+<td><strong>X</strong></td>
+</tr>
+<tr>
+<td>2 Digest</td>
+<td>Daily digest per child</td>
+<td>Parent reads in 2 minutes</td>
+<td>Digest composer</td>
+<td>Event backbone, policy engine (CMC-06)</td>
+<td>Notification service</td>
+<td><strong>X, G4</strong></td>
+</tr>
+<tr>
+<td>3 Sitting</td>
+<td>Named GradingSession</td>
+<td>Teacher resumes sitting</td>
+<td>Resume banner</td>
+<td>Explicit states, optimistic locking (CMC-04)</td>
+<td>Grade store</td>
+<td><strong>Y</strong></td>
+</tr>
+<tr>
+<td>4 Publish</td>
+<td>Publish confirmation</td>
+<td>Teacher releases round at once</td>
+<td>Visibility preview</td>
+<td>State transition, grade history append</td>
+<td>Audit log</td>
+<td><strong>Y, G5</strong></td>
+</tr>
+<tr>
+<td>5 Due feed</td>
+<td>Due-date-ordered feed</td>
+<td>Student works nearest deadline</td>
+<td>Posted-versus-due labels (CMC-05)</td>
+<td>Feed re-ranking service</td>
+<td>Feed service</td>
+<td><strong>Z</strong></td>
+</tr>
+<tr>
+<td>6 Context</td>
+<td>Formative/summative labels</td>
+<td>Parent interprets a mark</td>
+<td>Label on every mark (CMC-07)</td>
+<td>Mark metadata</td>
+<td>Content model</td>
+<td><strong>G5</strong></td>
+</tr>
+</tbody></table>
+<h3 id="a3-stakeholder-map">A3 — Stakeholder map</h3><div class="mermaid">
+quadrantChart
+  title Lumen Communication Hub stakeholder map
+  x-axis Low interest --> High interest
+  y-axis Low influence --> High influence
+  quadrant-1 Manage closely
+  quadrant-2 Keep satisfied
+  quadrant-3 Monitor
+  quadrant-4 Keep informed
+  Lumen product owner: [0.85, 0.75]
+  School principals pilot group: [0.7, 0.8]
+  District IT lead: [0.45, 0.85]
+  Data protection officer: [0.35, 0.9]
+  Teacher representatives: [0.8, 0.55]
+  LMS integration partner: [0.4, 0.6]
+  Lumen support lead: [0.7, 0.5]
+  School administrators: [0.55, 0.45]
+  Parent council: [0.75, 0.4]
+  Students: [0.6, 0.25]
+</div><h3 id="a4-ecosystem-map">A4 — Ecosystem map</h3><div class="mermaid">
+flowchart LR
+  P["Parent"] <--> HUB["Lumen Communication Hub"]
+  S["Student"] <--> HUB
+  T["Teacher"] <--> HUB
+  ADM["School administrator"] --> HUB
+  MEN["School mentor"] <--> T
+  MEN <--> P
+  HUB <--> LMS["LMS partner platform"]
+  ADM <--> DIST["School district and municipal IT"]
+  DIST --> HUB
+  HUB --> SUP["Lumen support team"]
+  DPO["Data protection officer"] -.->|"consent and residency oversight"| HUB
+</div><p>The map exposed the two relationships the original service starved: parent ↔ mentor (G4&#39;s reassurance traffic had no structured channel) and district → hub (consent and residency policy arrived as ad-hoc email).</p>
+<h3 id="a5-personas-from-mock-research-data">A5 — Personas (from mock research data)</h3><p><strong>Persona 1 — &quot;Sabine, 43, two children, checks between meetings&quot;</strong> (parent, NL secondary segment; 14 of 40 parent interviews match)</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Profile</td>
+<td>43, policy advisor, Rotterdam; children in years 2 and 4 of secondary school</td>
+</tr>
+<tr>
+<td>Devices/context</td>
+<td>iPhone; portal checks in 3–5 minute windows between meetings; rarely on desktop</td>
+</tr>
+<tr>
+<td>Mental model</td>
+<td>By child, absolutely: &quot;I have two children, not twenty-three courses&quot; (P-27)</td>
+</tr>
+<tr>
+<td>Goal</td>
+<td>Answer &quot;what did my child do today, and is everything OK&quot; in under two minutes</td>
+</tr>
+<tr>
+<td>Fears</td>
+<td>Missing a decline until the report card; being &quot;that parent&quot; who emails the mentor weekly</td>
+</tr>
+<tr>
+<td>Workaround</td>
+<td>Keeps a notes-app list per child; photographs report summaries</td>
+</tr>
+<tr>
+<td>Behavioral data</td>
+<td>Baseline model-match 38%; median 6.5 minutes and 11 pages to answer the daily question</td>
+</tr>
+<tr>
+<td>Design hooks</td>
+<td>Child card with today view; daily digest; silence-means-something notifications (G4)</td>
+</tr>
+</tbody></table>
+<p><strong>Persona 2 — &quot;Jeroen, 52, grades in batches on Sunday&quot;</strong> (teacher, BE secondary segment; 19 of 60 teacher interviews match)</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Profile</td>
+<td>52, mathematics teacher, Ghent; 24 years in the classroom; six classes, ~170 students</td>
+</tr>
+<tr>
+<td>Devices/context</td>
+<td>Staffroom laptop and home desktop; grades on paper first, enters in Sunday-evening sittings</td>
+</tr>
+<tr>
+<td>Mental model</td>
+<td>Grading is a sitting with saved state: &quot;It spun, it saved&quot; (T-07)</td>
+</tr>
+<tr>
+<td>Goal</td>
+<td>Enter a class set in one sitting; resume mid-week without loss; publish when the sitting is done</td>
+</tr>
+<tr>
+<td>Fears</td>
+<td>Losing an hour of marks; students or parents seeing half-finished grading</td>
+</tr>
+<tr>
+<td>Workaround</td>
+<td>Keeps the paper mark book as the system of record; double-enters after any doubt</td>
+</tr>
+<tr>
+<td>Behavioral data</td>
+<td>2,640 draft tickets/quarter estate-wide; 46% resume-task success; ≈11 min/week re-entry</td>
+</tr>
+<tr>
+<td>Design hooks</td>
+<td>Named GradingSessions with explicit states; resume banner; publish-as-one-act</td>
+</tr>
+</tbody></table>
+<h3 id="a6-templates">A6 — Templates</h3><p><strong>Template 1 — Interview analysis schema (mental-model extraction)</strong></p>
+<pre><code class="language-json">{
+  &quot;$schema&quot;: &quot;mental-model-item/v1&quot;,
+  &quot;item_id&quot;: &quot;MM-&lt;actor&gt;-&lt;seq&gt;&quot;,
+  &quot;actor&quot;: &quot;parent | teacher | student&quot;,
+  &quot;segment&quot;: &quot;primary | secondary-NLBE | secondary-DE | teacher-batch | teacher-continuous&quot;,
+  &quot;type&quot;: &quot;belief | question | task&quot;,
+  &quot;statement&quot;: &quot;active sentence in user voice, never system language&quot;,
+  &quot;evidence_ids&quot;: [&quot;EV-T-014-003&quot;, &quot;EV-T-014-011&quot;],
+  &quot;source_lines&quot;: &quot;T-14:88-94&quot;,
+  &quot;mental_space&quot;: &quot;candidate cluster label&quot;,
+  &quot;confidence&quot;: &quot;high | medium | low&quot;
+}</code></pre><p>Taxonomy rules (enforced by Codex audit + CI): a <strong>belief</strong> is a falsifiable claim about how the system or school works that the user treats as true; a <strong>question</strong> is a recurring information need; a <strong>task</strong> is an intended action. Behaviors observed but not verbalized are evidence items, never beliefs. Acceptance: every belief ≥2 independent participants; headline beliefs ≥5; every quote verbatim-verifiable.</p>
+<p><strong>Template 2 — Card-sort protocol + analysis SOP</strong></p>
+<pre><code class="language-text">CARD SORT PROTOCOL — LUM-NL-01 — v2 — 60 min per participant
+1. Participants : 40 (16 parents, 14 teachers, 10 students), recruited per segment quotas
+2. Cards        : 42 content cards; one concept per card; no system jargon on card faces
+3. Instruction  : &quot;Group these the way you would expect to find them when you open the app.
+                   Name your groups in your own words.&quot;
+4. Rules        : open sort; unlimited groups; think-aloud; no interviewer suggestions
+5. Capture      : group membership matrix per participant + group names + think-aloud notes
+ANALYSIS SOP (deterministic, seeded):
+  S1 build co-grouping matrix: share of participants co-grouping each card pair
+  S2 normalized distance = 1 - share; write CSV per data contract (A7)
+  S3 average-linkage hierarchical clustering; cut height 0.40
+  S4 label clusters with active-sentence names; compare against platform IA
+  S5 acceptance: every cluster &gt;= 3 cards or flagged as singleton; merge order printed;
+     report lists cards whose placement conflicts with the platform model</code></pre><p><strong>Template 3 — Mental-model mapping guide</strong></p>
+<pre><code class="language-text">MENTAL-MODEL MAPPING GUIDE — actor: [parent|teacher|student] — segment: [ ]
+1. Load the evidence register filtered to this actor and segment
+2. Extract beliefs / questions / tasks under the v1 schema (template 1)
+3. Cluster tasks into towers; name towers as active sentences
+4. Group towers into 3-5 mental spaces; name spaces from user goals, never features
+5. Draw the line of alignment; place platform offerings beneath the towers they serve
+6. Mark: towers with no offering (unmet need), offerings under no tower (bloat),
+   and beliefs the platform contradicts (misalignment candidates)
+7. Cross-check every misalignment candidate against ticket volume and task failure
+8. Publish with evidence IDs; version in Git; review gate = taxonomy audit + human read</code></pre><p><strong>Template 4 — Content-model change proposal (PR-based)</strong></p>
+<pre><code class="language-yaml"># .github/CMC_TEMPLATE.md — one PR per content-model change
+cmc_id: CMC-04
+title: GradingSession object with explicit draft states
+current_model: one autosave draft per (teacher, assignment column)
+user_mental_model: grading happens in sittings; a sitting has saved state (B-T-11, 41 items)
+evidence: [gap GAP-Y, tickets 2640 per quarter, resume-task success 46 percent]
+proposed_model: GradingSession(teacher, class, assessment, state draft|published, opened_at, updated_at)
+migration_risk: concurrent tabs overwrite; grade history append-only constraint
+mitigations: optimistic locking; visible session-conflict warning; state transition log
+rollback: per-school feature flag; legacy draft queue retained read-only for 2 terms
+affected_services: [gradebook-service, feed-service, notification-service]
+kpi_contract: [draft tickets per quarter, teacher resume-task success, model-match teacher]
+sign_offs: [product_owner, dpo, architecture]</code></pre><p><strong>Template 5 — Alignment metrics spec</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Definition</th>
+<th>Instrument</th>
+<th>Cadence</th>
+<th>Baseline → target (illustrative)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Model-match score (per actor)</td>
+<td>% of top-20 tasks where first click follows the model-predicted path</td>
+<td>Telemetry first-click analysis</td>
+<td>Weekly</td>
+<td>P 38→85+; T 52→90+; S 57→92+</td>
+</tr>
+<tr>
+<td>Flagship task success</td>
+<td>Moderated session pass rate per flagship task</td>
+<td>Usability sessions, fixed protocol</td>
+<td>Per release</td>
+<td>42/46/58% → ≥80/85/90%</td>
+</tr>
+<tr>
+<td>Time-to-answer (parent daily question)</td>
+<td>Median minutes, portal open to stated answer</td>
+<td>Telemetry + session timing</td>
+<td>Weekly</td>
+<td>6.5 → ≤2.0 min</td>
+</tr>
+<tr>
+<td>Comprehension ticket rate</td>
+<td>Three gap-linked categories per 1,000 active accounts</td>
+<td>Ticket pipeline</td>
+<td>Weekly</td>
+<td>8,160/qtr → ≤3,300/qtr</td>
+</tr>
+<tr>
+<td>Belief-drift audit</td>
+<td>Re-test of headline beliefs against new evidence</td>
+<td>10 interviews per term</td>
+<td>Termly</td>
+<td>beliefs hold ≥80%</td>
+</tr>
+</tbody></table>
+<h3 id="a7-mock-dataset-card-sort-distance-sample">A7 — Mock dataset: card-sort distance sample</h3><p>Full file: <a href="data/cardsort_distance_sample.csv"><code>data/cardsort_distance_sample.csv</code></a> — all 66 pairs of the 12-card cross-actor subset, normalized distance = 1 − (co-grouped share of 40 participants), fixed seed 42; consistent with the dendrogram (A8) and the quadrant chart.</p>
+<pre><code class="language-csv">card_a,card_b,normalized_distance,cogrouped_by_n_of_40
+grades,exam_results,0.14,34
+grades,report_summary,0.20,32
+grades,attendance,0.28,29
+grades,homework_due,0.55,18
+grades,timetable,0.45,22
+grades,teacher_message,0.58,17
+grades,class_announcements,0.89,4
+homework_due,timetable,0.18,33
+teacher_message,absence_note,0.19,32
+teacher_message,discipline_notes,0.26,30
+absence_note,discipline_notes,0.28,29
+class_announcements,photo_consent,0.38,25</code></pre><h3 id="a8-charts">A8 — Charts</h3><div class="mermaid">
+pie title Support ticket topics baseline quarter 12000 tickets illustrative
+  "Where is the grade (parents)" : 3720
+  "Where did my draft go (teachers)" : 2640
+  "Assignment order confusion (students)" : 1800
+  "Login and account" : 1440
+  "Notifications" : 1080
+  "Timetable and calendar" : 720
+  "Other" : 600
+</div><div class="mermaid">
+quadrantChart
+  title Concept cards by weekly usage and agreement with the platform model
+  x-axis Low weekly usage --> High weekly usage
+  y-axis Low model agreement --> High model agreement
+  quadrant-1 Aligned and used
+  quadrant-2 Aligned but niche
+  quadrant-3 Neglected
+  quadrant-4 Misaligned and critical
+  grades: [0.92, 0.18]
+  exam results: [0.41, 0.22]
+  teacher message: [0.68, 0.55]
+  homework due: [0.74, 0.3]
+  timetable: [0.63, 0.81]
+  attendance: [0.58, 0.71]
+  absence note: [0.33, 0.66]
+  class announcements: [0.29, 0.47]
+  report summary: [0.22, 0.25]
+  lunch balance: [0.18, 0.78]
+</div><p>The bottom-right quadrant is the redesign backlog: heavily used concepts whose natural grouping the platform contradicts. Agreement is the share of card-sort participants whose grouping matches the platform&#39;s course-based IA.</p>
+<div class="mermaid">
+xychart-beta
+  title "Moderated task success before and after the redesign"
+  x-axis ["Parent finds today by child", "Teacher resumes a draft", "Student lists due this week"]
+  y-axis "Task success percent" 0 --> 100
+  bar [42, 46, 58]
+  line [88, 92, 94]
+</div><div class="mermaid">
+flowchart TB
+  G["grades"] --> MM1["merge at 0.14"]
+  ER["exam results"] --> MM1
+  MM1 --> MM2["merge at 0.22 avg"]
+  RS["report summary"] --> MM2
+  MM2 --> MM3["merge at 0.30 avg"]
+  AT["attendance"] --> MM3
+  MM3 --> CS["Cluster: child status"]
+  HW["homework due"] --> MM4["merge at 0.18"]
+  TT["timetable"] --> MM4
+  MM4 --> MM5["merge at 0.33 avg"]
+  LB["lunch balance"] --> MM5
+  MM5 --> DL["Cluster: day logistics"]
+  TM["teacher message"] --> MM6["merge at 0.19"]
+  AN["absence note"] --> MM6
+  MM6 --> MM7["merge at 0.27 avg"]
+  DN["discipline notes"] --> MM7
+  MM7 --> CV["Cluster: conversations"]
+  CA["class announcements"] --> MM8["merge at 0.38"]
+  PC["photo consent"] --> MM8
+  MM8 --> SA["Cluster: school admin"]
+  CS --> TOP["merge above cut height 0.40"]
+  DL --> TOP
+  CV --> TOP
+  SA --> TOP
+</div><p>The dendrogram is the quantitative fingerprint of Gap X: users group <em>across</em> courses by life theme (my child&#39;s status, the day&#39;s logistics, conversations, school administration); the platform groups by course. Merge heights are average-linkage values from the A7 matrix.</p>
+<h3 id="a9-journeymodel-to-blueprint-traceability">A9 — Journey/model-to-blueprint traceability</h3><table>
+<thead>
+<tr>
+<th>Pain / gap</th>
+<th>Insight</th>
+<th>Design principle</th>
+<th>Blueprint / content change</th>
+<th>KPI moved (illustrative)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GAP X: parent hunts across 23 class pages (journey phases 3–4)</td>
+<td>Parents organize by child, not by course (B-P-01)</td>
+<td>P1 Organize by child, not by course</td>
+<td>CMC-02 child aggregation; blueprint steps 1–2</td>
+<td>Missing-grade tickets 3,720→1,080/qtr; parent task success 42→88%; time-to-answer 6.5→1.8 min</td>
+</tr>
+<tr>
+<td>GAP Y: drafts vanish between sittings</td>
+<td>Grading is a sitting with saved state (B-T-11)</td>
+<td>P2 Drafts belong to sittings, publish is an act</td>
+<td>CMC-04 GradingSession + states; blueprint steps 3–4</td>
+<td>Draft tickets 2,640→610/qtr; resume success 46→92%; re-entry 11→3 min/week</td>
+</tr>
+<tr>
+<td>GAP Z: deadlines buried in feed</td>
+<td>Students read feed order as priority (B-S-02)</td>
+<td>P3 Order work by deadline, label posted vs due</td>
+<td>CMC-05 due-date feed; blueprint step 5</td>
+<td>Assignment tickets 1,800→830/qtr; due-this-week success 58→94%; late submissions in pilot −19%</td>
+</tr>
+<tr>
+<td>G4: silence is unreadable</td>
+<td>No-news-is-good-news belief (B-P-04) vs 23% event coverage</td>
+<td>P4 Silence must mean something</td>
+<td>CMC-06 event backbone + digest defaults; blueprint step 2</td>
+<td>CSAT 2.6→4.1; reassurance calls to mentors −44%</td>
+</tr>
+<tr>
+<td>G5: grade read as verdict</td>
+<td>Marks are signals without labels (B-P-07)</td>
+<td>P5 Label the signal, not just the score</td>
+<td>CMC-07 formative/summative labels; blueprint step 6</td>
+<td>Mentor conflict escalations −31%</td>
+</tr>
+<tr>
+<td>All: model drift over time</td>
+<td>Mental models are durable but not frozen</td>
+<td>P6 Measure alignment as a first-class metric</td>
+<td>Alignment metrics pipeline (A6 template 5)</td>
+<td>Model-match P 38→89%, T 52→93%, S 57→95%</td>
+</tr>
+</tbody></table>
+<h3 id="a10-good-services-15-principles-audit-before-after-pilot">A10 — Good Services 15-principles audit (before → after pilot)</h3><p>Scores: Pass / Partial / Fail (See: 05-good-services/02-the-fifteen-principles.md).</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Principle (abridged)</th>
+<th>Before</th>
+<th>After</th>
+<th>Key change</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Easy to find</td>
+<td>Pass</td>
+<td>Pass</td>
+<td>Portal entry unchanged; the fix was structural, not navigational</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Clearly explains purpose</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Hub home states what it answers per role</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Sets expectations upfront</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Publish confirmation previews exactly who sees what, when</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Completes the outcome</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Parent question answered end to end without mentor escalation</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Works in a familiar way</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>By-child, by-sitting, by-due-date match users&#39; own organization</td>
+</tr>
+<tr>
+<td>6</td>
+<td>No prior knowledge needed</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Course-structure knowledge no longer required of parents</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Agnostic of org structure</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Course and class boundaries hidden behind child/sitting/deadline</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Minimum possible steps</td>
+<td>Fail</td>
+<td>Partial</td>
+<td>23 pages to 1 child card; DE subject drill-down still one extra tap</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Consistent throughout</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>One hub, three role presentations, same event backbone</td>
+</tr>
+<tr>
+<td>10</td>
+<td>No dead ends</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Every empty state names why it is empty (G4: silence means something)</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Usable by everyone equally</td>
+<td>Partial</td>
+<td>Partial</td>
+<td>WCAG 2.1 AA on hub; student research consent limits some cohorts&#39; coverage</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Responds to change quickly</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Sitting resume across devices and days; digest reflects same-day events</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Explains decisions</td>
+<td>Fail</td>
+<td>Partial</td>
+<td>Marks carry formative/summative labels; grading rationale still teacher-authored</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Easy to get human assistance</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Mentor channel structured from the child card; support deflection measured</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Requires the right knowledge</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Never asks parents for course codes or teachers for assignment IDs</td>
+</tr>
+</tbody></table>
+<h2 id="6-use-cases">6. Use cases</h2><h3 id="use-case-a-the-parent-portal-realigned-by-child">Use case A — The parent portal, realigned by child</h3><p><strong>Scenario.</strong> Sabine (persona 1), 6:40 pm, between train and dinner. Old world: she opens the portal, picks her daughter, faces 11 class pages, opens four, finds marks posted last Thursday with no test date, cannot tell whether &quot;nothing new&quot; means &quot;fine&quot; or &quot;not entered,&quot; and emails the mentor — one of 3,720 such escalations that quarter.</p>
+<p><strong>What was designed.</strong> The child card: one today view per child aggregating across courses — attendance mark, work set and returned, marks with formative/summative labels, and an explicit &quot;all events reported&quot; closure line (the G4 fix: silence is rendered, not implied). A daily digest per child at 17:30, quiet hours respected. The parent mental model <em>became the information architecture</em>; courses still exist one tap down for the DE subject-primary segment.</p>
+<p><strong>AI working session.</strong> Claude Code drafted the digest copy from the design principles and the parent belief register; a subagent red-teamed it for false reassurance (a digest must never imply &quot;all is well&quot; — only &quot;all events are reported&quot;), producing the closure-line wording. Codex reviewed the aggregation model against G5 and forced the formative/summative label into the digest, citing B-P-07. OpenCode stubbed the child-aggregate endpoint against the mock dataset for hallway tests.</p>
+<p><strong>Outcome (illustrative).</strong> Parent flagship task success 42% → 88%; median time-to-answer 6.5 → 1.8 minutes; missing-grade tickets −71%; mentor reassurance contacts −44% in pilot schools; Sabine-segment model-match 38% → 89%.</p>
+<h3 id="use-case-b-the-teacher39s-lost-draft-quotwhere-did-my-grading-goquot">Use case B — The teacher&#39;s lost draft: &quot;where did my grading go&quot;</h3><p><strong>Scenario.</strong> Jeroen (persona 2) grades 3B&#39;s algebra test on Sunday evening, enters 22 of 30 marks, closes the laptop. Monday he enters two oral marks from a second tab; Tuesday the single autosave draft has been silently overwritten — Sunday&#39;s sitting is gone. The spinner spun; it saved; it is not there. 2,640 tickets a quarter were this story.</p>
+<p><strong>What was designed.</strong> GradingSessions (CMC-04): every grading episode is a named, first-class object — &quot;3B algebra test, started Sun 21:14&quot; — with explicit draft/published states, a resume banner (&quot;Continue 3B algebra — 22 of 30 entered&quot;), optimistic locking, and a visible conflict warning when a second tab touches the same sitting. Publishing is one deliberate act with a visibility preview (labels shown at publish time — the G5 fix inherited).</p>
+<p><strong>AI working session.</strong> OpenCode built the interactive prototype of the sitting flow in agent mode; Claude Code generated the edge-case script for hallway tests (expired session, two tabs, mid-sitting class merge); Codex&#39;s migration review caught the concurrent-tab overwrite path in the first CMC-04 draft — the exact defect being fixed, reproduced in the fix — and the proposal was rewritten before build.</p>
+<p><strong>Outcome (illustrative).</strong> Resume-task success 46% → 92%; draft tickets −77%; zero lost-grade incidents across 1,050 pilot teachers in eight weeks; teacher weekly active gradebook use 61% → 79%; median re-entry overhead 11 → 3 minutes per teacher per week.</p>
+<h3 id="use-case-c-the-student-feed-posted-order-vs-due-order">Use case C — The student feed: posted order vs. due order</h3><p><strong>Scenario.</strong> A student participant (S-03, moderated session) scrolls Monday&#39;s feed: top item is a teacher announcement posted 9:04 am; below it, a maths worksheet <em>posted Friday</em> but <em>due Tuesday 8:30</em>. She works the announcement&#39;s reading — newest first — and discovers the worksheet at 10 pm. 1,800 tickets a quarter and a steady trickle of late submissions were this story.</p>
+<p><strong>What was designed.</strong> Due-date-primary feed (CMC-05): work is ordered by deadline with explicit posted-vs-due labels (&quot;posted Fri · due Tue 8:30&quot;); announcements live in a separate rail so they cannot crowd out deadlines; &quot;due this week&quot; is a one-tap filter matching the student mental space &quot;What is due next.&quot;</p>
+<p><strong>AI working session.</strong> Claude Code generated two feed variants (pure due-date, and due-date with urgency weighting) and the label copy; the ten student card-sort participants&#39; groupings chose between them — pure due-date won 8 of 10. Codex challenged the urgency-weighted variant&#39;s opacity (a ranking students cannot explain recreates Gap Z in miniature); it was dropped.</p>
+<p><strong>Outcome (illustrative).</strong> Due-this-week task success 58% → 94%; median time 3.8 → 1.1 minutes; assignment-order tickets −54%; late submissions in pilot schools −19%.</p>
+<h2 id="7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</h2><p><strong>Encoded SOPs.</strong> Three SOPs were encoded for agent execution, each following the same pattern: <em>method → numbered steps → output schema → acceptance criteria → review gate</em>.</p>
+<ol>
+<li><strong>Mental-model extraction SOP (evidence per belief).</strong> Output: JSONL model items under the v1 schema (A6 template 1). Acceptance: every belief cites ≥2 independent evidence items from ≥2 participants; every quote verbatim-verifiable; zero taxonomy violations on audit. Gate: Codex taxonomy audit plus human read. The prompt template:</li>
+</ol>
+<pre><code class="language-text">You are MENTAL-MODEL-EXTRACTOR. Input: one pseudonymized interview transcript
+plus the evidence register items already extracted from it.
+Produce model items. For each item output EXACTLY the v1 schema fields.
+TYPE RULES (violations are rejected):
+- belief: a falsifiable claim about how the system or school works that the
+  speaker treats as true (&quot;saved means my sitting is saved&quot;). Never a behavior.
+- question: a recurring information need in user voice (&quot;where is the round
+  I started Sunday&quot;).
+- task: an intended action, active verb, user voice.
+- observed behavior without a verbalized claim is NOT a belief; leave it in
+  the evidence register.
+EVIDENCE RULES: statement text must trace to source_lines you cite; beliefs
+require evidence from at least 2 independent participants (return
+status: candidate if only 1). Never paraphrase quotes. If unsure, drop the
+item and log the drop reason.</code></pre><ol start="2">
+<li><strong>Card-sort pipeline SOP-as-code.</strong> OpenCode executed it end to end; the same command regenerates analysis on new sort waves:</li>
+</ol>
+<pre><code class="language-bash">opencode run --agent build &quot;Read research/cardsort_raw.csv (40 participants x
+42 cards). Compute pairwise normalized distance as 1 minus co-grouping share.
+Run average-linkage hierarchical clustering, cut height 0.40, fixed seed 42.
+Write data/cardsort_distance_sample.csv and reports/clusters.md. Print the
+merge order and flag every card whose placement conflicts with the platform IA
+in models/system-content-model.md. Do not rename clusters with nouns alone.&quot;</code></pre><p>Acceptance: deterministic output under the seed; every cluster ≥3 cards or flagged singleton; cluster names active sentences; a human verifies the conflict list is non-empty (an empty list means the sort measured nothing). Gate: designer reviews clusters against interview explanations — the dendrogram says <em>what</em> groups, interviews say <em>why</em>.</p>
+<ol start="3">
+<li><strong>Alignment-gap enumeration prompt.</strong> Run once per actor model against the system model:</li>
+</ol>
+<pre><code class="language-text">You are ALIGNMENT-AUDITOR. Inputs: one actor mental model (beliefs, questions,
+tasks with evidence IDs) and the documented system content model.
+Enumerate every divergence as a gap record:
+- gap_id: GAP-&lt;actor&gt;-&lt;seq&gt;
+- user_belief: the belief ID and statement, verbatim from the model
+- system_truth: the actual mechanism, cited to the content-model file and line
+- cost_signature: ticket category and volume, task-failure rate, or &quot;unpriced&quot;
+- severity: critical | major | minor (critical = real-world harm, e.g. missed
+  deadline, lost work; major = support demand; minor = friction)
+RULES: no gap without both sides cited. If the divergence is an engineering
+defect rather than a model gap (e.g. concurrent-write loss), classify it
+defect-not-gap and say so. Output JSONL.</code></pre><p><strong>The meta-SOP.</strong> Research → model → diagnose → align → measure, with hard gates: no modeling before the evidence register passes quote verification; no gap inventory before the taxonomy audit is clean; no CMC PR before its gap carries ticket volume and task-failure data; no pilot before all merged CMCs have rollback flags; no scale before model-match targets hold for four consecutive weeks.</p>
+<p><strong>Guardrails.</strong></p>
+<ul>
+<li><strong>Never average mental models.</strong> Per-actor models with explicit segment variants (primary vs. secondary-NLBE vs. secondary-DE parents; batch vs. continuous graders). A single averaged model is wrong for everyone with great confidence — the most dangerous artifact in this method.</li>
+<li><strong>Evidence per belief.</strong> CI fails any PR or model file whose belief claims lack evidence IDs; the quote verifier greps every quoted string against the transcript store.</li>
+<li><strong>Minors&#39; data.</strong> No student PII in any prompt, transcript, or agent context; student research via consented sessions and aggregated telemetry (k-anonymized, DPO-signed); GDPR with EU residency throughout.</li>
+<li><strong>Human sign-off points.</strong> Interview conduct; segment definitions; gap severity classification; CMC merges (product owner + architecture + DPO); pilot go/iterate/kill.</li>
+</ul>
+<p><strong>Failure modes observed.</strong> (1) <strong>Belief/task conflation</strong> — 41 observed behaviors were filed as beliefs; the taxonomy audit caught them. (2) <strong>Segment averaging</strong> — the single parent model hid the DE Gymnasium variant; fixed by segment variants. (3) <strong>Invented belief</strong> — &quot;parents distrust teachers&quot; rested on one vivid quote and contradicted ticket sentiment; the ≥2-participant rule killed it. (4) <strong>Card-sort over-clustering</strong> — an early run proposed nine clusters from noise; the fixed cut height (0.40) produced the stable four. (5) <strong>Mermaid drift</strong> — CI linting killed the class of error permanently.</p>
+<h2 id="8-value-creation-amp-measurement">8. Value creation &amp; measurement</h2><p><strong>Before/after (illustrative; pilot n = 12 schools, 8 weeks; tickets estate-wide annualized from pilot rates).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline</th>
+<th>After pilot</th>
+<th>Delta</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Support tickets per quarter</td>
+<td>12,000</td>
+<td>6,540</td>
+<td>−46%</td>
+</tr>
+<tr>
+<td>&quot;Where is the grade&quot; tickets (parents)</td>
+<td>3,720/qtr</td>
+<td>1,080/qtr</td>
+<td>−71%</td>
+</tr>
+<tr>
+<td>Draft-loss tickets (teachers)</td>
+<td>2,640/qtr</td>
+<td>610/qtr</td>
+<td>−77%</td>
+</tr>
+<tr>
+<td>Assignment-order tickets (students)</td>
+<td>1,800/qtr</td>
+<td>830/qtr</td>
+<td>−54%</td>
+</tr>
+<tr>
+<td>Parent task success (today by child)</td>
+<td>42%</td>
+<td>88%</td>
+<td>+46 pts</td>
+</tr>
+<tr>
+<td>Teacher task success (resume draft)</td>
+<td>46%</td>
+<td>92%</td>
+<td>+46 pts</td>
+</tr>
+<tr>
+<td>Student task success (due this week)</td>
+<td>58%</td>
+<td>94%</td>
+<td>+36 pts</td>
+</tr>
+<tr>
+<td>Parent median time-to-answer</td>
+<td>6.5 min</td>
+<td>1.8 min</td>
+<td>−72%</td>
+</tr>
+<tr>
+<td>Parent CSAT &quot;I know what my child did today&quot;</td>
+<td>2.6</td>
+<td>4.1</td>
+<td>+1.5</td>
+</tr>
+<tr>
+<td>Parent NPS</td>
+<td>−4</td>
+<td>+19</td>
+<td>+23</td>
+</tr>
+<tr>
+<td>Teacher weekly active gradebook use</td>
+<td>61%</td>
+<td>79%</td>
+<td>+18 pts</td>
+</tr>
+<tr>
+<td>Teacher gradebook NPS</td>
+<td>+6</td>
+<td>+27</td>
+<td>+21</td>
+</tr>
+<tr>
+<td>Model-match score (P / T / S)</td>
+<td>38 / 52 / 57%</td>
+<td>89 / 93 / 95%</td>
+<td>+51 / +41 / +38 pts</td>
+</tr>
+<tr>
+<td>Support cost per quarter (€7.20/ticket)</td>
+<td>€86,400</td>
+<td>€47,088</td>
+<td>−€39,312</td>
+</tr>
+</tbody></table>
+<p><strong>Causal logic (Service Profit Chain).</strong> Internal service quality rose first — teachers stopped double-entering grades and weekly active use rose 18 points. External service value then rose: marks appeared sooner, parent access costs collapsed (23 pages to one child card; 6.5 minutes to 1.8), satisfaction and NPS followed, and failure demand fell 46%, releasing ≈ €157,200/year of support capacity. Teacher time is the larger, softer prize: 8 recovered minutes a week across 64,000 teachers and 40 weeks is ≈ 341,000 teacher-hours of annual capacity, claimed as capacity, never as cash. The two at-risk districts renewed after the pilot readout (9 schools, ≈ €1.4M ARR protected, illustrative).</p>
+<p><strong>KPI tree (abridged).</strong> North star: share of parents who can state what their child did today in under two minutes without contacting the school (panel proxy plus telemetry: digest open with no follow-up contact within 7 days). Drivers: model-match per actor, flagship task success, digest delivery and open rates. Lagging: ticket volume by category, NPS/CSAT, renewal intent. Reviewed weekly in pilot; termly in run-state, including the belief-drift audit (A6 template 5) — mental models are durable, not immortal (See: 09-mapping-experiences/06-other-alignment-diagrams.md).</p>
+<h2 id="9-ai-tool-playbook">9. AI tool playbook</h2><p><strong>Claude Code — research team, model authoring, artifact drafting.</strong> Ran the three-subagent extraction team, authored every mermaid diagram as version-controlled code, drafted the CMC proposals, red-teamed digest copy, and drafted the pilot report. Excels at schema-constrained extraction and consistency across hundreds of model elements. Failed at judging which segment distinction mattered; the DE variant was Codex&#39;s catch, confirmed by the designer. Human took over: live research, naming, severity calls, gates.</p>
+<p><strong>OpenCode — agent-mode pipelines.</strong> Ran the 12,000-ticket classification, the deterministic card-sort pipeline, mock-data generation for prototypes, and the nightly alignment-metrics jobs. Excels at reproducible pipelines and fixed-seed discipline. Failed at cluster naming and method intent — it will happily compute a beautiful analysis the research question does not need; the written SOP was the leash.</p>
+<p><strong>Codex — adversarial review of interpretation.</strong> Run via <code>codex exec --skip-git-repo-check</code> with the artifact plus a specific concern, never the whole repo. It delivered the taxonomy audit, the gap challenge (strengthening Gap X, surfacing the DE segment, and reclassifying part of Gap Y as an engineering defect), and the CMC migration reviews (the concurrent-tab catch on CMC-04). Its value was productive disagreement. One false positive — that the due-date feed was &quot;gaming teacher posting behavior&quot; — was rejected against the evidence register. Reconcile by verifying, never by averaging.</p>
+<p><strong>GitHub — the system of record.</strong> Issues as work items (87 implementation issues with blueprint cell IDs; research questions as issues; card-sort waves as milestones), PRs as review gates (7 CMCs through product owner + architecture + DPO CODEOWNERS), the board as phase tracker. Actions CI on the artifact repo:</p>
+<pre><code class="language-yaml">name: artifact-gate
+on: [pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint mermaid diagrams
+        run: npx @mermaid-js/mermaid-cli -i diagrams/all.md -o /tmp/out.svg
+      - name: Markdown lint
+        run: npx markdownlint-cli &quot;**/*.md&quot;
+      - name: CSV schema check
+        run: python scripts/check_schema.py data/
+      - name: Quote verification
+        run: python scripts/verify_quotes.py research/ models/
+      - name: Belief-evidence check
+        run: python scripts/check_beliefs.py models/mental-model-items.jsonl
+      - name: Student data gate
+        uses: actions/labeler@v5   # 'student-data' label requires DPO review</code></pre><p>Failed at: nothing material; the board stays truthful only with a weekly human groom — the designer&#39;s Friday ritual.</p>
+<h2 id="10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</h2><ul>
+<li><strong>The biggest defect was conceptual, not visual.</strong> Lumen&#39;s UI faithfully rendered its content model; no reskin could fix a by-course architecture serving by-child users. The executive &quot;reskin&quot; theory died on the misalignment diagram, not in an argument (See: 09-mapping-experiences/06-other-alignment-diagrams.md).</li>
+<li><strong>Taxonomy discipline is the difference between a model and a collage.</strong> Beliefs, questions, and tasks look identical at transcript speed. The strict v1 schema plus a Codex taxonomy audit caught 41 conflations; without it, the &quot;model&quot; would have been a well-organized list of observations.</li>
+<li><strong>Segment or lie.</strong> The averaged parent model was wrong in two directions; the DE Gymnasium variant changed the drill-down design. Any mental-model SOP should fail CI on a single-undifferentiated-actor model by default.</li>
+<li><strong>Support tickets are a mental-model goldmine.</strong> 68% of ticket volume mapped onto three gaps. Ticket text — parents writing &quot;my daughter&quot; at screens named after courses — was evidence as strong as any interview, and agent classification with a human-reviewed confidence queue made 12,000 tickets tractable.</li>
+<li><strong>Card sorts measure groupings, not reasons.</strong> The dendrogram showed <em>what</em> users group; only interviews explained <em>why</em>. Running the sort without the belief register would have produced an IA tweak, not a realignment (See: 18-universal-methods-of-design/05-representational-and-synthesis-methods.md).</li>
+<li><strong>Codex is counsel, not verdict.</strong> Two headline findings (DE segmentation, the CMC-04 concurrent-tab catch) were engagement-shaping; one was unsupported. Verify every finding against the evidence register; never average adversarial output with your own read.</li>
+<li><strong>Content-model PRs turned alignment into an engineering conversation.</strong> Architects reviewed a diff with a KPI contract and a rollback flag, not a poster. The CMC template is the artifact most worth stealing from this engagement.</li>
+<li><strong>Done differently next time:</strong> baseline the model-match score in week 1 (instrumented in week 9, costing comparative precision), and run the student card sort as its own wave from day one — ten student participants was thin for a three-way segmentation.</li>
+</ul>
+<h2 id="11-references">11. References</h2><p>Knowledge library (this repository):</p>
+<ul>
+<li><code>books/09-mapping-experiences/06-other-alignment-diagrams.md</code> — mental model diagrams (Indi Young); diagram-selection logic; durability of human purposes</li>
+<li><code>books/09-mapping-experiences/02-the-anatomy-of-experience-maps.md</code> — five-part anatomy: lens, context, spine, takeaways, visualization</li>
+<li><code>books/09-mapping-experiences/03-understanding-the-user.md</code> — research-based vs. assumption maps; actions/thoughts/feelings triad; evidence tagging</li>
+<li><code>books/18-universal-methods-of-design/05-representational-and-synthesis-methods.md</code> — affinity clustering; card sorting; behavioral personas; mental model diagramming</li>
+<li><code>books/17-101-design-methods/05-mode-4-frame-insights.md</code> — observation → finding → insight; framing; insight statements</li>
+<li><code>books/10-the-users-journey/01-why-story.md</code> — story thinking vs. feature thinking; narrative arc</li>
+<li><code>books/10-the-users-journey/04-storymapping-in-practice.md</code> — Pixar story spine; narrative plot holes; storymapping process</li>
+<li><code>books/08-orchestrating-experiences/04-understanding-the-journey.md</code> — journey-centric interviewing; moments that matter; shadow journeys</li>
+<li><code>books/20-the-service-profit-chain/03-external-service-value.md</code> — Service Value Equation; access costs</li>
+</ul>
+<p>Related series articles: <a href="../06/index.html">06 — Research Ops at Scale</a>, <a href="../08/index.html">08 — Personas from Messy Data</a>, <a href="../09/index.html">09 — Journey Mapping from Transcripts</a>, <a href="../11/index.html">11 — Service Blueprints: Operational Diagnostics</a>, <a href="../14/index.html">14 — Story Mapping &amp; Narrative Structure</a>.</p>
+<p>External standards referenced: GDPR (Regulation (EU) 2016/679, incl. children&#39;s data provisions); WCAG 2.1 AA. All case figures are fictional and illustrative.</p>
+<h2 id="12-appendix-artifact-index">12. Appendix: artifact index</h2><table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Format</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Process overview</td>
+<td>3</td>
+<td>mermaid flowchart</td>
+<td>Double Diamond mapped to phases and gates</td>
+</tr>
+<tr>
+<td>Project gantt</td>
+<td>3</td>
+<td>mermaid gantt</td>
+<td>24-week plan with pilot gate</td>
+</tr>
+<tr>
+<td>Phase-method-tool table</td>
+<td>3</td>
+<td>table</td>
+<td>Method citations to AI execution map</td>
+</tr>
+<tr>
+<td>Interview analysis schema</td>
+<td>5 (A6), 7</td>
+<td>fenced JSON</td>
+<td>Mental-model extraction contract</td>
+</tr>
+<tr>
+<td>Mental-model extraction prompt</td>
+<td>7</td>
+<td>fenced prompt</td>
+<td>Belief/question/task SOP-as-prompt</td>
+</tr>
+<tr>
+<td>Card-sort pipeline command</td>
+<td>4.3, 7</td>
+<td>fenced bash</td>
+<td>Deterministic sort analysis SOP</td>
+</tr>
+<tr>
+<td>Alignment-gap enumeration prompt</td>
+<td>7</td>
+<td>fenced prompt</td>
+<td>Gap inventory SOP-as-prompt</td>
+</tr>
+<tr>
+<td>M1 parent mental model</td>
+<td>5</td>
+<td>mermaid flowchart</td>
+<td>Beliefs, questions, tasks by mental space</td>
+</tr>
+<tr>
+<td>M2 teacher mental model</td>
+<td>5</td>
+<td>mermaid flowchart</td>
+<td>Sitting-based grading model</td>
+</tr>
+<tr>
+<td>M3 student mental model</td>
+<td>5</td>
+<td>mermaid flowchart</td>
+<td>Due-date-driven model</td>
+</tr>
+<tr>
+<td>M4 misalignment diagram</td>
+<td>5</td>
+<td>mermaid + table</td>
+<td>User models vs. system model, gaps X/Y/Z</td>
+</tr>
+<tr>
+<td>A1 current-state journey</td>
+<td>5</td>
+<td>mermaid + table</td>
+<td>Parent daily-question journey with emotion scores</td>
+</tr>
+<tr>
+<td>A2 future-state blueprint</td>
+<td>5</td>
+<td>mermaid + lane table</td>
+<td>Communication Hub operations</td>
+</tr>
+<tr>
+<td>A3 stakeholder map</td>
+<td>5</td>
+<td>mermaid quadrantChart</td>
+<td>Influence/interest positioning</td>
+</tr>
+<tr>
+<td>A4 ecosystem map</td>
+<td>5</td>
+<td>mermaid flowchart</td>
+<td>Actor and partner value flows</td>
+</tr>
+<tr>
+<td>A5 personas</td>
+<td>5</td>
+<td>tables</td>
+<td>Parent and teacher behavioral personas</td>
+</tr>
+<tr>
+<td>A6 templates</td>
+<td>5</td>
+<td>fenced forms</td>
+<td>Schema, card-sort SOP, mapping guide, CMC template, alignment metrics</td>
+</tr>
+<tr>
+<td>A7 card-sort dataset</td>
+<td>5, data/</td>
+<td>CSV + sample</td>
+<td>66-pair normalized distance matrix</td>
+</tr>
+<tr>
+<td>A8 charts</td>
+<td>5</td>
+<td>pie, quadrantChart, xychart-beta, dendrogram</td>
+<td>Ticket topics, concept alignment, task success, cluster tree</td>
+</tr>
+<tr>
+<td>A9 traceability table</td>
+<td>5</td>
+<td>table</td>
+<td>Gap → insight → principle → change → KPI</td>
+</tr>
+<tr>
+<td>A10 Good Services audit</td>
+<td>5</td>
+<td>table</td>
+<td>15-principle before/after scoring</td>
+</tr>
+<tr>
+<td>Use case flows</td>
+<td>6</td>
+<td>prose + metrics</td>
+<td>Parent, teacher, student realignments</td>
+</tr>
+<tr>
+<td>GitHub Actions workflow</td>
+<td>9</td>
+<td>fenced YAML</td>
+<td>Artifact validation gates</td>
+</tr>
+<tr>
+<td>Before/after metrics</td>
+<td>8</td>
+<td>table</td>
+<td>Value creation evidence</td>
+</tr>
+</tbody></table>
+</article><div class="wrap" style="max-width:880px">
+    <div class="cross-links"><a href="../09/index.html"><span class="lbl">← Previous case</span><span class="ttl">09. Journey Mapping from Transcripts: The Disruption Recovery Map at Albatross Airways</span></a><a href="../11/index.html"><span class="lbl">Next case →</span><span class="ttl">11. Service Blueprints as Operational Diagnostics: Fernwood Council's Housing Repairs Service</span></a></div>
+    <div class="art-foot">
+      <span>14 figures (14 diagrams) · ~9.9k words · reviewed by an adversarial AI reviewer (Gemini 3.1 Pro High).</span>
+      · <a href="https://github.com/sammozaffari/the-agentic-service-designer/blob/main/articles/10/README.md" target="_blank" rel="noopener">Open source in repo ↗</a>
+    </div>
+  </div></main>
+<footer class="footer"><div class="footer-inner">
+  <span>Agentic Service Designer — 30 service design case studies from an AI-first practice. Fictional, anonymized clients.</span>
+  <span><a href="./index.html">Home</a> · <a href="./concept.html">The concept</a> · <a href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub</a></span>
+</div></footer>
+<script src="./assets/site.js"></script>
+</body></html>

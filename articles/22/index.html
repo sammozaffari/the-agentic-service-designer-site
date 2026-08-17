@@ -1,0 +1,1357 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Service Quality Management at Kestrel Energy — Utilities">
+<title>22. Service Quality Management at Kestrel Energy — Agentic Service Designer</title>
+<link rel="stylesheet" href="./assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234f46e5'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'>A</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+</head><body>
+<nav class="nav"><div class="nav-inner">
+  <a class="brand" href="./index.html"><span class="mark">A</span>Agentic Service Designer</a>
+  <div class="nav-links">
+    <a href="./index.html" class="">Home</a>
+    <a href="./concept.html" class="">The concept</a>
+    <a href="./index.html#series" class="on">Case studies</a>
+    <a class="github-link" href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</div></nav>
+<main class="art">
+  <div class="wrap art-hero">
+    <div class="art-meta">
+      <span class="chip chip-track">Implementation &amp; Operations</span>
+      <span class="sep">·</span><span>Utilities</span>
+      <span class="sep">·</span><span><b>Kestrel Energy</b></span>
+      <span class="sep">·</span><span>16 weeks</span>
+      <span class="chip chip-tool">Claude Code</span><span class="chip chip-tool">OpenCode</span><span class="chip chip-tool">Codex</span><span class="chip chip-tool">GitHub</span>
+    </div>
+    <h1>Service Quality Management at Kestrel Energy</h1>
+    <p class="deck">Fictional composite client. All names, figures, and data are illustrative and anonymized.</p>
+  </div><article class="art-body wrap"><nav class="toc"><b>On this page</b><ol><li><a href="#0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</a></li><li><a href="#1-executive-summary">1. Executive summary</a></li><li><a href="#2-the-brief">2. The brief</a></li><li><a href="#3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</a></li><li><a href="#4-phase-by-phase-narrative">4. Phase-by-phase narrative</a></li><li><a href="#5-artifacts-portfolio">5. Artifacts portfolio</a></li><li><a href="#6-use-cases-case-studies">6. Use cases / case studies</a></li><li><a href="#7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</a></li><li><a href="#8-value-creation-amp-measurement">8. Value creation &amp; measurement</a></li><li><a href="#9-ai-tool-playbook-per-engagement">9. AI tool playbook (per engagement)</a></li><li><a href="#10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</a></li><li><a href="#11-references">11. References</a></li><li><a href="#12-appendix-artifact-index">12. Appendix: artifact index</a></li></ol></nav><h1 id="service-quality-management-at-kestrel-energy">Service Quality Management at Kestrel Energy</h1><h2 id="0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</h2><p>Kestrel Energy is a fictional composite client built from recurring patterns across EU energy retailers managing smart-meter rollout, billing modernization, and SME account operations. All names, figures, datasets, touchpoint IDs, and operating-unit metrics in this article are illustrative and anonymized. This phase-2 case study continues the Kestrel storyline from <a href="../08/index.html">article 08</a>: the personas and rollout improvements are treated as prior work, and the focus here is how that work was institutionalized into a living service quality management system. The engagement was AI-first by design: Claude Code, OpenCode, Codex, and GitHub were the daily operating tools, while the human designer owned framing, governance, ethics, and the political work of getting quality reviewed with operations every month.</p>
+<h2 id="1-executive-summary">1. Executive summary</h2><p>Kestrel Energy had already done the hard phase-1 work of understanding its customers. In <a href="../08/index.html">article 08</a>, the utility rebuilt its personas, improved smart-meter self-booking, reduced failed appointments, and exposed how Ingrid, Markus, and Sabine experienced the service differently. What Kestrel still lacked was a management system for service quality itself. Billing and connection journeys were still being run with a thin layer of CSAT, average speed of answer, and complaint counts. That was not enough. Despite better segmentation and several redesigned touchpoints, 14% of all annual contacts were still avoidable failure demand concentrated in billing and connection services. The phase-2 brief was therefore operational: create a standing Service Quality Management system with touchpoint standards, monthly Moments of Satisfaction scoring, failure-demand attribution, cross-functional review, and a Service Profit Chain dashboard linking internal quality to employee confidence, customer value, loyalty, and cost. Over 16 weeks, Kestrel built standards-as-code in GitHub, instrumented a MOS model based on Gronroos technical and functional quality, and established a monthly quality review rhythm co-run by service design and operations. Six months after rollout, avoidable failure demand fell from 14.0% to 8.6% of contacts, billing-query MOS rose from 61 to 78, frontline eNPS moved from +8 to +23, and the annualized value released or protected was about €1.9M.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Value (illustrative)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Kestrel Energy</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>Energy retail and SME utility services in the EU</td>
+</tr>
+<tr>
+<td>Service in scope</td>
+<td>Billing queries, connection and move-in journeys, meter-reading schedule quality, SME onboarding</td>
+</tr>
+<tr>
+<td>Scale</td>
+<td>2.4M households; 180k SMEs; 420-seat contact centre; 900 field technicians</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>16 weeks</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>1 lead designer + AI agent team + 5 client stakeholders</td>
+</tr>
+<tr>
+<td>AI tools</td>
+<td>Claude Code, OpenCode, Codex, GitHub</td>
+</tr>
+<tr>
+<td>Headline results</td>
+<td>Avoidable failure demand 14.0%→8.6%; billing MOS 61→78; FCR 63%→77%; frontline eNPS +8→+23</td>
+</tr>
+</tbody></table>
+<p>What you will learn:</p>
+<ul>
+<li>How to turn abstract service quality into an operating system built from touchpoint standards, MOS scoring, and monthly root-cause review. See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code>.</li>
+<li>How to connect quality management to the Service Profit Chain so that operations, HR, CX, and finance review one linked dashboard instead of four unrelated scorecards. See: <code>20-the-service-profit-chain/05-measuring-the-chain.md</code>.</li>
+<li>How to encode standards, review cadence, control limits, and failure-demand attribution so AI agents can maintain the machinery without gaming the metrics.</li>
+</ul>
+<h2 id="2-the-brief">2. The brief</h2><h3 id="client-portrait">Client portrait</h3><p>Kestrel Energy returns here as a fictional EU utility serving 2.4 million household accounts and 180,000 SMEs across two member states. By the time this engagement began, the smart-meter program had moved from 1.1 million installed meters in phase 1 to 1.65 million, or roughly 69% of household accounts. The digital estate was the same broad shape described in <a href="../08/index.html">article 08</a>: a legacy web portal, a newer mobile app, a contact centre of about 420 seats, billing operations split across two service cells, a central connections desk, and a network of field technicians and meter partners. Digital self-service had improved, but Kestrel still operated like many utilities do: service quality was managed incident by incident rather than as a whole-service capability.</p>
+<h3 id="the-challenge">The challenge</h3><p>The phase-1 persona program did real work. It improved smart-meter self-booking from 22% to 64%, reduced failed appointments from 14% to 6%, cut S1 SME invoice queries by 41%, and lowered price-vigilant switching risk in Markus-like cohorts from 19% to 13.5%. See: <a href="../08/index.html">article 08</a>. But the board then hit a familiar phase-2 problem: redesign wins existed, while quality still drifted by team, month, and channel.</p>
+<p>Kestrel&#39;s monthly board pack still summarized service quality with only complaint counts, average handling time, and a top-line CSAT average. That view hid the real problem. Of roughly 760,000 annual service contacts, about 318,000 sat in billing and connection journeys. Around 106,400 of those contacts were avoidable failure demand that customers should never have had to generate in the first place: first-bill confusion after smart-meter installs, estimated-vs-actual bill shock, missed connection appointment prerequisites, broken promise windows, and Sabine-style SME invoice friction. That was 14% of all contacts, or about €617k in avoidable contact cost before counting field revisits, churn, and finance-team rework.</p>
+<p>Grönroos is useful precisely here because he separates what the customer got from how the service felt. Kestrel was obsessing over the first and barely managing the second. A bill could be technically correct and still fail on functional quality if no one explained why an estimate caught up after a meter change. A connection could be technically completed and still fail if the promise window, access checklist, and update cadence made the customer feel abandoned. See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code>.</p>
+<h3 id="continuity-from-phase-1-to-phase-2">Continuity from phase 1 to phase 2</h3><table>
+<thead>
+<tr>
+<th>Continuity point</th>
+<th>Article 08 phase-1 outcome</th>
+<th>Article 22 starting condition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Smart-meter rollout</td>
+<td>Self-booking 22%→64%; failed appointments 14%→6%</td>
+<td>Volume scaled, but first-bill confusion and schedule exceptions still created repeat demand</td>
+</tr>
+<tr>
+<td>Markus persona logic</td>
+<td>Price-vigilant switching 19%→13.5%</td>
+<td>Billing quality now became the next retention lever</td>
+</tr>
+<tr>
+<td>Sabine persona logic</td>
+<td>S1 invoice queries −41%; uptake of consolidated billing 68% in target cohort</td>
+<td>SME onboarding still lacked a stable quality standard across sites and fuels</td>
+</tr>
+<tr>
+<td>Contact centre demand</td>
+<td>Annual contacts 950k→750k at phase-1 scale</td>
+<td>Contacts plateaued at 760k because new rollout and connection friction reintroduced failure demand</td>
+</tr>
+<tr>
+<td>Design maturity</td>
+<td>Personas embedded into journeys and briefs</td>
+<td>Kestrel needed a live quality management system, not more one-off redesigns</td>
+</tr>
+</tbody></table>
+<h3 id="success-criteria">Success criteria</h3><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline</th>
+<th>6-month target</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Avoidable failure demand share of all contacts</td>
+<td>14.0%</td>
+<td>≤ 9.0%</td>
+</tr>
+<tr>
+<td>Billing-query MOS</td>
+<td>61 / 100</td>
+<td>≥ 75</td>
+</tr>
+<tr>
+<td>In-scope first-contact resolution</td>
+<td>63%</td>
+<td>≥ 76%</td>
+</tr>
+<tr>
+<td>Mean resolution time for in-scope contacts</td>
+<td>4.8 days</td>
+<td>≤ 3.0 days</td>
+</tr>
+<tr>
+<td>Promise-keeping rate on due-by commitments</td>
+<td>82%</td>
+<td>≥ 95%</td>
+</tr>
+<tr>
+<td>Frontline eNPS in billing and connections units</td>
+<td>+8</td>
+<td>≥ +20</td>
+</tr>
+<tr>
+<td>Standards reviewed in the last 90 days</td>
+<td>28%</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Markus-like household annual switch risk</td>
+<td>13.5%</td>
+<td>≤ 12.0%</td>
+</tr>
+<tr>
+<td>Sabine-like SME renewal-at-risk</td>
+<td>11%</td>
+<td>≤ 8%</td>
+</tr>
+</tbody></table>
+<h3 id="constraints">Constraints</h3><p>The transformation budget was capped at €280,000 and had to fit inside existing operations. Kestrel could not replace the billing engine or the case-management layer this year. Energy-market regulation constrained billing language, late-payment treatment, and connection communications. The DSO and field-meter partners owned parts of the customer outcome but did not report into Kestrel. The works council required that any quality scoring system be used for process improvement and coaching, not punitive ranking of individual agents. And because phase 1 had already taught the organization to distrust “average customer” thinking, the new quality system had to preserve the persona logic from <a href="../08/index.html">article 08</a> while still being simple enough for monthly operating review.</p>
+<h3 id="why-service-design">Why service design</h3><p>A classic operations fix would have added agents and stricter scripts. That would have absorbed more failure rather than removing its causes. Kestrel needed whole-service design in Lou Downe&#39;s sense: letters, appointment windows, digital explanations, contact-centre scripts, casework rules, internal SLAs, and review governance all in scope together. See: <code>05-good-services/06-designing-good-services.md</code>. It also needed a measurement architecture that separated relationship, journey, and operational layers rather than collapsing them into one blunt customer score. See: <code>14-outside-in/06-measurement.md</code>. And because the real point was institutionalization, not a one-off fix, the internal service chain and service culture mattered as much as any customer-facing copy. See: <code>19-service-management-and-marketing/05-internal-marketing-and-service-culture.md</code>.</p>
+<h2 id="3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</h2><p>The project followed the TISDD loop of Research → Ideation → Prototyping → Implementation. At Kestrel, research established the quality truth, ideation converted that evidence into standards and measures, prototyping piloted the monthly operating system in live units, and implementation handed over a durable governance mechanism. Claude Code maintained the quality-standard library and drafted MOS analysis; OpenCode built the joined data pipeline and monthly dashboard pack; Codex challenged every causal claim and sector-quality assumption; GitHub made standards reviewable as code.</p>
+<div class="mermaid">
+flowchart LR
+  subgraph RES["Research weeks 1 to 4"]
+    D1["Contact complaint survey and telemetry baseline"] --> D2["Technical and functional touchpoint audit"] --> D3["Failure demand truth set"]
+  end
+  subgraph IDE["Ideation weeks 4 to 7"]
+    E1["Touchpoint quality standards library"] --> E2["MOS rubric and control limits"] --> E3["Monthly review model and owners"]
+  end
+  subgraph PRO["Prototyping weeks 7 to 12"]
+    F1["Pilot billing and connection touchpoints"] --> F2["Quality pack and SPC dashboard"] --> F3["SOP changes and internal marketing rollout"]
+  end
+  subgraph IMP["Implementation weeks 12 to 16"]
+    G1["Monthly quality reviews co run with ops"] --> G2["GitHub governance and issue flow"] --> G3["Handover and scorecard launch"]
+  end
+  RES --> IDE --> PRO --> IMP
+  G3 --> D1
+</div><div class="mermaid">
+gantt
+  title Kestrel quality system program
+  dateFormat YYYY-MM-DD
+  axisFormat %W
+  section Research
+  Baseline and case sampling      :a1, 2026-03-03, 14d
+  Failure demand attribution      :a2, after a1, 10d
+  section Ideation
+  Standard library design         :b1, after a2, 10d
+  MOS model and control limits    :b2, after b1, 7d
+  section Prototyping
+  Billing and connections pilot   :c1, after b2, 21d
+  Internal marketing rollout      :c2, after b2, 21d
+  section Implementation
+  Monthly review dry runs         :d1, after c1, 10d
+  SPC dashboard and handover      :d2, after d1, 10d
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Method and book logic</th>
+<th>AI tool use</th>
+<th>Artifact produced</th>
+<th>Client involvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Research</td>
+<td>Expectation-experience gap diagnosis; technical vs functional decomposition. See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code></td>
+<td>OpenCode pipeline, Claude Code audit agents, GitHub issue intake</td>
+<td>Failure-demand baseline, touchpoint audit, quality truth set</td>
+<td>Billing, connections, CX ops, finance</td>
+</tr>
+<tr>
+<td>Ideation</td>
+<td>Moment-of-truth quality mapping; multi-tier measurement architecture. See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code>; <code>14-outside-in/06-measurement.md</code></td>
+<td>Claude Code standard-authoring agents, Codex adversarial review</td>
+<td>Standards library, MOS rubric, review agenda</td>
+<td>Cross-functional standards workshop</td>
+</tr>
+<tr>
+<td>Prototyping</td>
+<td>Internal marketing and internal SLA mapping; whole-service prototyping. See: <code>19-service-management-and-marketing/05-internal-marketing-and-service-culture.md</code>; <code>05-good-services/06-designing-good-services.md</code></td>
+<td>Claude Code training packs, OpenCode dashboard build, GitHub PR workflow</td>
+<td>Pilot standards, quality pack, SOP changes</td>
+<td>Frontline and team-lead rehearsal</td>
+</tr>
+<tr>
+<td>Implementation</td>
+<td>Unit-level linkage measurement and lead-lag governance. See: <code>20-the-service-profit-chain/05-measuring-the-chain.md</code></td>
+<td>OpenCode monthly pack automation, Codex causal check, GitHub Actions</td>
+<td>SPC dashboard, monthly review operating rhythm</td>
+<td>Monthly steering, handover, scorecard launch</td>
+</tr>
+</tbody></table>
+<h2 id="4-phase-by-phase-narrative">4. Phase-by-phase narrative</h2><h3 id="41-research-baseline-the-quality-truth">4.1 Research — baseline the quality truth</h3><p><strong>Goal.</strong> Separate avoidable contact demand from legitimate demand, and expose which touchpoints fail on technical quality, functional quality, or both.</p>
+<p><strong>Method &amp; SOP.</strong> The baseline combined four streams: contact logs, complaint codes, post-interaction surveys, and operational telemetry from billing, field scheduling, and connection queues. Each touchpoint was audited using Gronroos&#39;s split between technical quality and functional quality. For every sampled moment of truth, the team asked: did the customer get the right outcome, and did the service feel accessible, clear, trustworthy, and recoverable? See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code>.</p>
+<p><strong>AI execution.</strong> OpenCode built the baseline pipeline joining contact, complaint, survey, and ops data into one row per service episode. The prompt was intentionally explicit about attribution because “avoidable” is easy for a model to over-assign:</p>
+<pre><code class="language-bash">opencode run --agent build &quot;Read contact_logs_12m.parquet, complaints.csv,
+survey_events.csv, billing_ops.csv, scheduling_ops.csv.
+Create one episode table keyed by contact_id_hash.
+For each row output: touchpoint, channel, avoidable_flag,
+mos_technical_score, mos_functional_score, resolution_days,
+survey_score, root_cause_owner, operating_unit.
+Rules: avoidable means the contact would not be needed if Kestrel had met its
+published standard; ambiguous rows must be tagged review_required. Export
+monthly aggregates and a root-cause Pareto for billing and connections.&quot;</code></pre><p>Claude Code then ran case-audit agents over 120 sampled episodes, forcing each agent to name the failed promise, the quality dimension, and the likely owner. GitHub issues were opened automatically for every high-confidence root-cause cluster so the evidence was reviewable before any solutioning started.</p>
+<p><strong>Human designer judgment.</strong> The critical decision was to refuse the lazy narrative that “customers contact because energy is confusing.” Some demand was legitimate. The designer insisted on distinguishing necessary clarification from Kestrel-generated rework. That political distinction mattered because it determined whether the monthly quality review would become a blame ritual or a true improvement forum.</p>
+<p><strong>Artifact produced.</strong> Failure-demand baseline, root-cause truth set, operating-unit cut, and the first draft of the touchpoint inventory.</p>
+<h3 id="42-ideation-build-the-quality-standards-library-and-mos-model">4.2 Ideation — build the quality standards library and MOS model</h3><p><strong>Goal.</strong> Turn research and case evidence into enforceable touchpoint standards with clear measures, owners, and control limits.</p>
+<p><strong>Method &amp; SOP.</strong> This phase used Gronroos&#39;s moment-of-truth mapping directly: every touchpoint received a technical requirement and a functional requirement. The measurement design followed Outside In&#39;s three-tier structure: relationship, journey, and operational metrics, so Kestrel would not fall back into the single-metric trap. See: <code>14-outside-in/06-measurement.md</code>. The service team also adopted the internal standard that every touchpoint must have one named owner, one observable measure, and one review cadence.</p>
+<p><strong>AI execution.</strong> Claude Code maintained the standards-as-code library. Each standard lived in a versioned YAML file with fields for touchpoint, promise, measure, source evidence, persona sensitivity, and review owner. A representative authoring prompt:</p>
+<pre><code class="language-text">You are QUALITY-STANDARD-AUTHOR.
+Input: touchpoint audit findings, evidence IDs, current SOPs, and service promises.
+Output: one standard file with these fields only:
+- standard_id
+- touchpoint
+- technical_requirement
+- functional_requirement
+- measure
+- control_limit
+- owner
+- review_cadence
+- persona_overlay
+- change_reason
+Rules:
+1. Every requirement must be observable.
+2. Measures must be computable from existing telemetry or survey events.
+3. If evidence does not support a standard, mark gap_for_human rather than inventing.
+4. Include persona overlays for Ingrid, Markus, or Sabine only where the need changes the standard materially.</code></pre><p>Codex then adversarially reviewed the library for two things Kestrel historically got wrong: standards written so vaguely they could not be audited, and standards written so optimistically they would force frontline teams to fake compliance.</p>
+<pre><code class="language-bash">codex exec --skip-git-repo-check &quot;Read standards/ and monthly-pack-spec.md.
+Challenge every causal claim and every control limit.
+Flag any measure that cannot be calculated from real data,
+any promise that operations cannot currently keep,
+and any standard that confuses technical quality with functional quality.
+Return defects only.&quot;</code></pre><p><strong>Human designer judgment.</strong> The human made two load-bearing calls. First, MOS would not be a generic mood score; it would be a touchpoint-level measure built from separate technical and functional scores, with functional quality weighted slightly higher because that was where Kestrel was actually differentiating. Second, persona overlays would remain overlays. Ingrid, Markus, and Sabine shaped standards, but the standards library itself would stay touchpoint-centric rather than fragmenting into dozens of persona-specific variants.</p>
+<p><strong>Artifact produced.</strong> Standards library v1, MOS rubric, review cadences, and standard ownership model.</p>
+<h3 id="43-prototyping-pilot-the-quality-loop-in-billing-and-connections">4.3 Prototyping — pilot the quality loop in billing and connections</h3><p><strong>Goal.</strong> Prove that standards, MOS scoring, and monthly review create real operational change in live service units.</p>
+<p><strong>Method &amp; SOP.</strong> The pilot focused on two high-volume journeys: billing queries and connection booking. Whole-service prototyping was used in Lou Downe&#39;s sense: not just screen changes, but letters, scripts, routing rules, handoff permissions, and internal SLAs. See: <code>05-good-services/06-designing-good-services.md</code>. In parallel, internal marketing was treated as a delivery stream, not a comms afterthought. Frontline staff, scheduling teams, and billing analysts were segmented as different internal audiences with different readiness needs. See: <code>19-service-management-and-marketing/05-internal-marketing-and-service-culture.md</code>.</p>
+<p><strong>AI execution.</strong> Claude Code generated roleplay packs, standard-change summaries, and monthly quality-review scripts. OpenCode produced the first automated quality pack, combining MOS by touchpoint, avoidable-demand by root cause, open standard changes, and SPC link metrics. GitHub handled the change flow: standards were edited in pull requests, reviewed by service owners, and linked to operational issues.</p>
+<p><strong>Human designer judgment.</strong> The designer chose to co-run the monthly review with operations rather than as a separate CX forum. That sounds procedural, but it was the governance breakthrough. Once quality review sat inside the operations cadence, standards stopped being advisory and became real operating commitments. The designer also intervened when the first pilot review drifted into individual-agent discussion; the quality system was reset around touchpoints, policies, and internal service failures, consistent with the works-council agreement.</p>
+<p><strong>Artifact produced.</strong> Pilot review pack, revised standards, internal marketing rollout, and a live issue flow from complaint to root cause to SOP change.</p>
+<h3 id="44-implementation-institutionalize-the-monthly-operating-system">4.4 Implementation — institutionalize the monthly operating system</h3><p><strong>Goal.</strong> Launch a durable Service Quality Management system that survives beyond the designer&#39;s involvement.</p>
+<p><strong>Method &amp; SOP.</strong> The handover model followed the Service Profit Chain logic: review leading indicators first, at the operating-unit level, and make the links between internal quality, employee condition, customer value, loyalty, and finance visible. See: <code>20-the-service-profit-chain/05-measuring-the-chain.md</code>. Kestrel created five operating-unit views: billing north, billing south, connections central, meter scheduling, and SME onboarding.</p>
+<p><strong>AI execution.</strong> GitHub Actions built the monthly quality pack automatically. Claude Code refreshed the standards library and drafted the narrative summary. OpenCode rebuilt the dashboard and SPC tables from raw monthly extracts. Codex reviewed the contribution language in the steering paper so the organization did not confuse correlation with causation.</p>
+<pre><code class="language-yaml">name: monthly-quality-pack
+on:
+  schedule:
+    - cron: &quot;0 5 2 * *&quot;
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build quality aggregates
+        run: python pipelines/quality_pack.py
+      - name: Validate mermaid and markdown
+        run: node scripts/validate-mermaid.mjs articles/22
+      - name: Publish monthly pack
+        run: python pipelines/publish_pack.py</code></pre><p><strong>Human designer judgment.</strong> The designer drew the final boundary between what AI could maintain and what humans had to own. Agents could draft standards, analyze MOS, and detect control-limit breaches. They could not approve a standard that changed customer rights, tune the control limits to hit a narrative target, or decide whether a DSO constraint justified an exception. Those remained human decisions with named approvers.</p>
+<p><strong>Artifact produced.</strong> Monthly quality operating model, SPC dashboard, quality-pack automation, and handover governance.</p>
+<h2 id="5-artifacts-portfolio">5. Artifacts portfolio</h2><p>All figures illustrative.</p>
+<h3 id="service-quality-framework-diagram">Service quality framework diagram</h3><div class="mermaid">
+flowchart LR
+  A["Expected service promise"] --> B["Touchpoint encounter"]
+  B --> T["Technical quality what the customer got"]
+  B --> F["Functional quality how the service felt"]
+  IQ["Internal quality tools standards and data"] --> T
+  IQ --> F
+  EX["Employee readiness and service culture"] --> F
+  T --> M["MOS score by moment of satisfaction"]
+  F --> M
+  M --> S["Touchpoint satisfaction"]
+  S --> V["External value low effort and trust"]
+  V --> L["Loyalty retention and advocacy"]
+  L --> P["Profit and cost to serve"]
+</div><p>Kestrel defined MOS as a 0-100 touchpoint score derived from two separate 1-5 ratings: technical quality and functional quality. The working formula was:</p>
+<p><code>MOS = round(((technical * 0.45) + (functional * 0.55) - 1) * 25)</code></p>
+<p>The slight weighting toward functional quality reflected what the baseline showed: Kestrel&#39;s biggest loyalty leaks were no longer raw operational defects alone, but opaque explanations, inaccessible channels, and broken promises.</p>
+<h3 id="quality-standard-library-structure">Quality-standard library structure</h3><p>Repository shape in GitHub:</p>
+<pre><code class="language-text">standards/
+  billing/
+    first-bill-after-smart-meter.yml
+    duplicate-charge-query.yml
+    payment-plan-change.yml
+  connections/
+    move-in-appointment.yml
+    no-access-recovery.yml
+  metering/
+    meter-read-schedule.yml
+  sme/
+    multi-site-onboarding.yml</code></pre><table>
+<thead>
+<tr>
+<th>Touchpoint</th>
+<th>Standard</th>
+<th>Measure</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>First bill after smart-meter install</td>
+<td>Bill and explainer must show estimated vs actual logic in plain language on the first view and in the letter insert</td>
+<td>Billing-query MOS ≥ 75; first-bill repeat contacts &lt; 2.8 per 1,000 bills</td>
+<td>Billing operations lead</td>
+</tr>
+<tr>
+<td>Duplicate or anomalous bill query</td>
+<td>First-contact agent confirms issue, freezes collection risk where relevant, and gives a due-by time in the first interaction</td>
+<td>FCR ≥ 75%; due-by promise kept ≥ 98%</td>
+<td>Billing recovery manager</td>
+</tr>
+<tr>
+<td>Move-in connection booking</td>
+<td>Customer receives a two-hour slot, access checklist, and named reschedule path no later than T-24h</td>
+<td>No-access failures &lt; 4%; connection MOS ≥ 74</td>
+<td>Connections manager</td>
+</tr>
+<tr>
+<td>No-access recovery after failed visit</td>
+<td>Failed appointment triggers same-day explanation, new slot offer, and root-cause tag</td>
+<td>Rebook within 1 day ≥ 90%; avoidable revisit rate &lt; 5%</td>
+<td>Field scheduling lead</td>
+</tr>
+<tr>
+<td>Meter-reading schedule reminder</td>
+<td>Reminder explains why the read matters, acceptable windows, and assisted-digital options</td>
+<td>Schedule-confusion contacts &lt; 0.9 per 1,000 reads</td>
+<td>Meter operations manager</td>
+</tr>
+<tr>
+<td>SME multi-site onboarding</td>
+<td>One owner, one access pack, invoice structure agreed before go-live, renewal dates visible across sites</td>
+<td>Onboarding MOS ≥ 76; first-invoice query rate &lt; 8%</td>
+<td>SME service owner</td>
+</tr>
+</tbody></table>
+<h3 id="failure-demand-funnel">Failure-demand funnel</h3><div class="mermaid">
+flowchart LR
+  A["760k annual contacts"] --> B["318k billing and connections contacts"]
+  B --> C["106k avoidable contacts 14 percent"]
+  C --> D1["29k estimated actual bill shock"]
+  C --> D2["22k first bill mismatch after smart meter"]
+  C --> D3["19k connection appointment failures"]
+  C --> D4["18k SME invoice and login friction"]
+  C --> D5["10k meter reading schedule confusion"]
+  C --> D6["8k promise failure and status chase"]
+  D1 --> E["14 standard updates and 5 SOP changes"]
+  D2 --> E
+  D3 --> E
+  D4 --> E
+  D5 --> E
+  D6 --> E
+</div><h3 id="a1-current-state-journey-map-for-the-billing-query-service">A1 — Current-state journey map for the billing-query service</h3><div class="mermaid">
+flowchart TB
+  subgraph P1["Phase 1 Trigger emotion 2 of 5"]
+    A1["Customer sees first bill or unexpected catch up charge"] --> A2["Not sure whether it is an error or normal smart meter change"]
+  end
+  subgraph P2["Phase 2 Find help emotion 1 of 5"]
+    B1["Portal FAQ uses billing jargon"] --> B2["Customer moves to phone or email for clarity"]
+  end
+  subgraph P3["Phase 3 Explain issue emotion 1 of 5"]
+    C1["Customer repeats account and meter story"] --> C2["Agent lacks one view of bill and install history"]
+  end
+  subgraph P4["Phase 4 Wait emotion 1 of 5"]
+    D1["Case moves between billing and metering teams"] --> D2["No believable due by time or status update"]
+  end
+  subgraph P5["Phase 5 Resolution emotion 2 of 5"]
+    E1["Credit or explanation eventually arrives"] --> E2["Customer still does not know what next bill will show"]
+  end
+  subgraph P6["Phase 6 Aftercare emotion 2 of 5"]
+    F1["Next bill lands without reminder"] --> F2["Repeat contact created if confusion remains"]
+  end
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Emotion score 1-5</th>
+<th>Primary pain</th>
+<th>Quality failure lens</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Trigger</td>
+<td>2</td>
+<td>Unexpected bill format after meter change</td>
+<td>Expectation gap</td>
+</tr>
+<tr>
+<td>Find help</td>
+<td>1</td>
+<td>No plain-language explanation in self-serve</td>
+<td>Functional accessibility</td>
+</tr>
+<tr>
+<td>Explain issue</td>
+<td>1</td>
+<td>Customer repeats story across teams</td>
+<td>Functional reliability</td>
+</tr>
+<tr>
+<td>Wait</td>
+<td>1</td>
+<td>No due-by promise and no status heartbeat</td>
+<td>Functional trust</td>
+</tr>
+<tr>
+<td>Resolution</td>
+<td>2</td>
+<td>Correction arrives without future-state explanation</td>
+<td>Technical partial, functional weak</td>
+</tr>
+<tr>
+<td>Aftercare</td>
+<td>2</td>
+<td>Next bill can recreate the same confusion</td>
+<td>Recovery and completion gap</td>
+</tr>
+</tbody></table>
+<h3 id="a2-future-state-service-blueprint-for-the-billing-query-service">A2 — Future-state service blueprint for the billing-query service</h3><div class="mermaid">
+flowchart TB
+  subgraph L1["Physical evidence"]
+    PE1["Bill plus explainer panel"] --> PE2["Case confirmation with due by time"] --> PE3["Status heartbeat"] --> PE4["Resolution summary"] --> PE5["Next bill reminder"]
+  end
+  subgraph L2["Customer actions"]
+    CA1["Checks bill and explainer"] --> CA2["Starts query once"] --> CA3["Receives updates without chasing"] --> CA4["Reviews correction and rationale"] --> CA5["Confirms next bill is understood"]
+  end
+  subgraph L3["Frontstage"]
+    FS1["Agent or self serve explains estimated versus actual"] --> FS2["Agent confirms issue and due by time"] --> FS3["Agent or system sends status update"] --> FS4["Agent explains correction in customer language"] --> FS5["Follow up message before next bill"]
+  end
+  subgraph L4["Backstage"]
+    BS1["Bill classifier tags query type"] --> BS2["Billing and meter data join in one view"] --> BS3["Root cause owner assigned"] --> BS4["Correction or explanation generated"] --> BS5["Standard and root cause log updated"]
+  end
+  subgraph L5["Support processes"]
+    SP1["Billing engine and meter store"] --> SP2["Knowledge base and standards repo"] --> SP3["Notification service"] --> SP4["MOS survey event"] --> SP5["Monthly quality review"]
+  end
+  L1 --> L2 --> L3 --> L4 --> L5
+</div><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Physical evidence</th>
+<th>Customer action</th>
+<th>Frontstage</th>
+<th>Backstage</th>
+<th>Support</th>
+<th>Quality intent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>S1 Understand</td>
+<td>Bill plus explainer</td>
+<td>Reads bill</td>
+<td>Plain-language bill explanation</td>
+<td>Query type inferred</td>
+<td>Billing + meter join</td>
+<td>Reduce avoidable clarification demand</td>
+</tr>
+<tr>
+<td>S2 Open case</td>
+<td>Confirmation page or agent recap</td>
+<td>Starts query once</td>
+<td>Due-by time confirmed</td>
+<td>Owner assigned</td>
+<td>Standards repo referenced</td>
+<td>One contact, one promise</td>
+</tr>
+<tr>
+<td>S3 In progress</td>
+<td>Status heartbeat</td>
+<td>Waits without chasing</td>
+<td>Honest update</td>
+<td>Root cause investigated</td>
+<td>Notification service</td>
+<td>Promise-keeping</td>
+</tr>
+<tr>
+<td>S4 Resolve</td>
+<td>Resolution summary</td>
+<td>Reviews decision</td>
+<td>Correction and rationale explained</td>
+<td>Adjustment posted</td>
+<td>Survey event fired</td>
+<td>Technical + functional closure</td>
+</tr>
+<tr>
+<td>S5 Complete</td>
+<td>Next bill reminder</td>
+<td>Confirms outcome held</td>
+<td>Follow-through message</td>
+<td>Recurrence tagged if recontact</td>
+<td>Monthly review</td>
+<td>No silent repeat failure</td>
+</tr>
+</tbody></table>
+<h3 id="a3-stakeholder-map">A3 — Stakeholder map</h3><div class="mermaid">
+quadrantChart
+  title Kestrel quality system stakeholders
+  x-axis Low interest --> High interest
+  y-axis Low influence --> High influence
+  quadrant-1 Manage closely
+  quadrant-2 Keep satisfied
+  quadrant-3 Monitor
+  quadrant-4 Keep informed
+  COO sponsor: [0.88, 0.93]
+  Head of customer operations: [0.94, 0.91]
+  Billing operations lead: [0.86, 0.89]
+  Connections manager: [0.84, 0.86]
+  Finance controller: [0.62, 0.79]
+  HR and learning lead: [0.71, 0.68]
+  DSO partner lead: [0.54, 0.73]
+  Works council: [0.48, 0.66]
+  Digital product lead: [0.69, 0.72]
+  Field vendor manager: [0.52, 0.58]
+</div><h3 id="a4-ecosystem-map">A4 — Ecosystem map</h3><div class="mermaid">
+flowchart LR
+  HH["Household customer"] --> WEB["Web and app"]
+  SME["SME customer"] --> WEB
+  HH --> CC["Contact centre"]
+  SME --> CC
+  WEB --> BILL["Billing operations"]
+  CC --> BILL
+  WEB --> CONN["Connections desk"]
+  CC --> CONN
+  BILL --> FIN["Finance and collections"]
+  CONN --> FIELD["Field force and meter partner"]
+  FIELD --> DSO["Distribution system operator"]
+  BILL --> METER["Meter data platform"]
+  CONN --> SCHED["Scheduling service"]
+  BILL --> QSYS["Quality standards repo"]
+  CONN --> QSYS
+  CC --> QSYS
+  QSYS --> REV["Monthly quality review"]
+  REV --> BILL
+  REV --> CONN
+  REV --> HR["HR and learning"]
+  REV --> FIN
+</div><h3 id="a5-persona-continuity-set-for-quality-management">A5 — Persona continuity set for quality management</h3><table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Phase-1 evidence from article 08</th>
+<th>Phase-2 quality risk</th>
+<th>Standard implication</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ingrid the paper trail keeper</td>
+<td>Fear of billing jargon and missed instructions; phone share 89%; delegation flag 31%. See: <a href="../08/index.html">article 08</a></td>
+<td>Any technically correct change still fails if instructions are unclear or phone help is buried</td>
+<td>Assisted-digital route, plain-language first-bill explainer, named callback windows</td>
+</tr>
+<tr>
+<td>Markus the tariff hawk</td>
+<td>62% of contacts price-related; wants arithmetic, not reassurance. See: <a href="../08/index.html">article 08</a></td>
+<td>Billing quality defects convert directly into switching risk because trust in the numbers is the service</td>
+<td>Explanation quality, visible calculations, no marketing copy inside recovery</td>
+</tr>
+<tr>
+<td>Sabine the facilities multitasker</td>
+<td>Multi-site invoice friction and login duplication drove 44% of S1 contacts. See: <a href="../08/index.html">article 08</a></td>
+<td>SME onboarding fails when internal teams optimize by site instead of by portfolio owner</td>
+<td>One owner, one pack, one due-date structure, accounting-ready exports</td>
+</tr>
+</tbody></table>
+<h3 id="a6-templates-and-operating-assets">A6 — Templates and operating assets</h3><p><strong>Monthly quality review agenda</strong></p>
+<table>
+<thead>
+<tr>
+<th>Agenda block</th>
+<th>Time</th>
+<th>Owner</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Control-limit exceptions by touchpoint</td>
+<td>15 min</td>
+<td>CX operations</td>
+<td>Red/amber list for the month</td>
+</tr>
+<tr>
+<td>Failure-demand root-cause review</td>
+<td>20 min</td>
+<td>Billing or connections lead</td>
+<td>Top 3 root-cause decisions</td>
+</tr>
+<tr>
+<td>Standards changes and open PRs</td>
+<td>20 min</td>
+<td>Service quality manager</td>
+<td>Approve, reject, or request evidence</td>
+</tr>
+<tr>
+<td>Internal SLA blockers</td>
+<td>15 min</td>
+<td>Ops + HR/L&amp;D</td>
+<td>Named owner and due date</td>
+</tr>
+<tr>
+<td>SPC link review</td>
+<td>10 min</td>
+<td>Finance + CX</td>
+<td>Confirm employee, customer, and cost movement</td>
+</tr>
+<tr>
+<td>Decision log and next experiments</td>
+<td>10 min</td>
+<td>Chair</td>
+<td>Issue updates and pilot actions</td>
+</tr>
+</tbody></table>
+<p><strong>Quality pack template</strong></p>
+<pre><code class="language-markdown"># Kestrel Monthly Quality Pack
+Reporting month: [ ]
+Operating units: billing north, billing south, connections central, meter scheduling, SME onboarding
+
+1. Headline
+- Avoidable failure demand share:
+- MOS by touchpoint:
+- Red control-limit breaches:
+- eNPS movement:
+
+2. Touchpoint view
+| Touchpoint | MOS | Tech score | Functional score | Volume | Avoidable % | Owner | Status |
+
+3. Root-cause Pareto
+- Top root-cause driver 1:
+- Top root-cause driver 2:
+- Top root-cause driver 3:
+
+4. Standard changes proposed
+- PR link:
+- Evidence IDs:
+- Operational impact:
+- Effective date:
+
+5. SPC linkage
+- Internal quality:
+- Employee:
+- External value:
+- Loyalty:
+- Profit / cost-to-serve:
+
+6. Decisions required
+- Approvals:
+- Escalations:
+- Experiments for next month:</code></pre><p><strong>MOS scoring rubric</strong></p>
+<table>
+<thead>
+<tr>
+<th>Score</th>
+<th>Technical quality descriptor</th>
+<th>Functional quality descriptor</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Outcome wrong, incomplete, or unusable</td>
+<td>Customer had to fight the service; no ownership or clarity</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Outcome partially correct but still needs rework</td>
+<td>Explanation weak, access hard, promise vague or broken</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Outcome acceptable with some friction</td>
+<td>Service basically works but feels effortful or inconsistent</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Outcome right first time</td>
+<td>Clear, accessible, trustworthy, low-effort experience</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Outcome right and complete with no rework</td>
+<td>Service feels confident, proactive, and respectful</td>
+</tr>
+</tbody></table>
+<p>MOS bands: 0-49 defective, 50-69 at risk, 70-84 stable, 85-100 strong.</p>
+<h3 id="a7-mock-dataset-sample">A7 — Mock dataset sample</h3><p>The assignment writes only <code>README.md</code>, so the <code>data/quality_sample.csv</code> artifact is embedded inline here as the working sample rather than as a separate file.</p>
+<pre><code class="language-csv">contact_id_hash,type,avoidable_flag,mos_technical_score,mos_functional_score,resolution_days,survey_score
+KESQ-91AF02,billing_query_first_bill,1,2,2,6,2
+KESQ-91AF03,billing_query_duplicate_charge,1,1,2,4,1
+KESQ-91AF04,connection_move_in_booking,1,3,2,5,2
+KESQ-91AF05,meter_reading_schedule,1,3,2,3,3
+KESQ-91AF06,sme_multi_site_onboarding,1,2,1,8,1
+KESQ-91AF07,billing_query_first_bill,0,4,4,1,4
+KESQ-91AF08,connection_move_in_booking,0,4,4,2,5
+KESQ-91AF09,billing_query_payment_plan,0,4,5,1,5
+KESQ-91AF10,meter_reading_schedule,0,5,4,1,4
+KESQ-91AF11,sme_multi_site_onboarding,0,4,4,2,4
+KESQ-91AF12,billing_query_first_bill,1,2,3,4,2
+KESQ-91AF13,connection_appointment_failure,1,2,1,7,1</code></pre><h3 id="a8-charts">A8 — Charts</h3><div class="mermaid">
+xychart-beta
+  title Kestrel-MOS-trend-twelve-months
+  x-axis [Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+  y-axis "MOS score" 50 --> 85
+  line [61, 60, 62, 61, 63, 64, 67, 70, 72, 74, 76, 78]
+  line [58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58]
+</div><p>First line = monthly MOS; second line = lower control line used in the monthly review.</p>
+<div class="mermaid">
+pie title Kestrel failure demand drivers
+  "Estimated actual bill shock" : 29000
+  "First bill mismatch after smart meter" : 22000
+  "Connection appointment failures" : 19000
+  "SME invoice login friction" : 18000
+  "Meter reading schedule confusion" : 10000
+  "Promise failure and status chase" : 8000
+</div><div class="mermaid">
+quadrantChart
+  title Kestrel touchpoints by score and volume
+  x-axis Low contact volume --> High contact volume
+  y-axis Low MOS --> High MOS
+  quadrant-1 Protect and maintain
+  quadrant-2 Premium but niche
+  quadrant-3 Low priority
+  quadrant-4 Simplify at scale
+  First bill after smart meter: [0.88, 0.42]
+  Move in connection booking: [0.74, 0.48]
+  SME multi site onboarding: [0.46, 0.39]
+  Payment plan setup: [0.31, 0.71]
+  Meter reading reminder: [0.52, 0.63]
+  Outage credit follow up: [0.24, 0.67]
+</div><h3 id="a9-journey-to-blueprint-traceability-table">A9 — Journey-to-blueprint traceability table</h3><table>
+<thead>
+<tr>
+<th>Journey pain point</th>
+<th>Design principle</th>
+<th>Standard or blueprint change</th>
+<th>KPI moved</th>
+<th>Source logic</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>First bill looks wrong after smart-meter install</td>
+<td>Explain before the customer asks</td>
+<td>First-bill explainer panel and follow-up reminder</td>
+<td>Billing MOS 61→78</td>
+<td>See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code></td>
+</tr>
+<tr>
+<td>Customer must repeat the story to billing and metering</td>
+<td>One service, not two departments</td>
+<td>Unified episode view and one owner standard</td>
+<td>FCR 63%→77%</td>
+<td>See: <code>05-good-services/06-designing-good-services.md</code></td>
+</tr>
+<tr>
+<td>No believable due-by time on billing corrections</td>
+<td>Promise only what can be kept</td>
+<td>Mandatory due-by field plus promise-keeping metric</td>
+<td>Promise-keeping 82%→96%</td>
+<td>See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code></td>
+</tr>
+<tr>
+<td>Failed connection visit creates a new service failure</td>
+<td>Recovery must complete the whole problem</td>
+<td>Same-day rebook and cause-tag standard</td>
+<td>Avoidable revisit rate down</td>
+<td>See: <code>05-good-services/06-designing-good-services.md</code></td>
+</tr>
+<tr>
+<td>Sabine receives fragmented SME onboarding</td>
+<td>Solve the whole portfolio problem</td>
+<td>One owner and one access pack standard</td>
+<td>SME renewal-at-risk 11%→8%</td>
+<td>See: <a href="../08/index.html">article 08</a></td>
+</tr>
+<tr>
+<td>Quality review sees complaints but not causes</td>
+<td>Measure linked tiers, not single endpoints</td>
+<td>Monthly SPC dashboard and root-cause review</td>
+<td>Failure demand 14.0%→8.6%</td>
+<td>See: <code>20-the-service-profit-chain/05-measuring-the-chain.md</code>; <code>14-outside-in/06-measurement.md</code></td>
+</tr>
+</tbody></table>
+<h3 id="a10-billing-touchpoint-service-standard-audit">A10 — Billing touchpoint service-standard audit</h3><table>
+<thead>
+<tr>
+<th>Audit criterion (Good Services principle)</th>
+<th>Before</th>
+<th>After</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. Is easy to find</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Bill plus explainer panel now appears on the portal bill view before the customer has to call</td>
+</tr>
+<tr>
+<td>2. Clearly explains its purpose</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Estimated versus actual logic is explained on the first view and in the letter insert</td>
+</tr>
+<tr>
+<td>3. Sets a user&#39;s expectations</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Due-by time is now mandatory in every billing query confirmation</td>
+</tr>
+<tr>
+<td>4. Enables each user to complete the outcome they set out to do</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Resolution summary and next-bill reminder close the loop instead of ending at case closure</td>
+</tr>
+<tr>
+<td>5. Works in a way that is familiar</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Bill, portal, phone, and follow-up now use one repeatable recap, update, and resolution pattern</td>
+</tr>
+<tr>
+<td>6. Requires no prior knowledge to use</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Legacy billing jargon was removed from the explainer and agent script</td>
+</tr>
+<tr>
+<td>7. Is agnostic of organizational structures</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Billing and meter data are joined in one view and one root-cause owner is assigned</td>
+</tr>
+<tr>
+<td>8. Requires the minimum possible steps to complete</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Customer starts the query once and receives updates without re-explaining the meter story</td>
+</tr>
+<tr>
+<td>9. Is consistent throughout</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Bill, portal, phone, and follow-up all use the same explanation, due-by promise, and status heartbeat</td>
+</tr>
+<tr>
+<td>10. Has no dead ends</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Status heartbeat, resolution summary, and next-bill reminder give a clear next step from every case state</td>
+</tr>
+<tr>
+<td>11. Is usable by everyone, equally</td>
+<td>Partial</td>
+<td>Partial</td>
+<td>Assisted-digital phone and callback support remain available for Ingrid-like needs, but this article does not evidence a full equal-access audit</td>
+</tr>
+<tr>
+<td>12. Responds to change quickly</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Root-cause issues and pull requests now feed monthly standard changes inside the operating rhythm</td>
+</tr>
+<tr>
+<td>13. Clearly explains why a decision has been made</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Resolution summary now explains the correction or explanation in customer language</td>
+</tr>
+<tr>
+<td>14. Makes it easy to get human assistance</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Phone route and named callback windows are retained for customers who need a person</td>
+</tr>
+<tr>
+<td>15. Requires the right knowledge from the user</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Joined billing and meter history means the customer no longer has to know or repeat backstage details</td>
+</tr>
+</tbody></table>
+<h2 id="6-use-cases-case-studies">6. Use cases / case studies</h2><h3 id="use-case-a-billing-error-quality-loop-after-a-smart-meter-first-bill">Use case A — Billing-error quality loop after a smart-meter first bill</h3><p><strong>Scenario.</strong> A Markus-like household sees a first bill after smart-meter activation that includes a catch-up adjustment and assumes Kestrel has overcharged him. In phase 1, Kestrel improved the smart-meter journey itself; in phase 2, it tackled the quality-management question underneath that moment.</p>
+<p><strong>What was designed.</strong> Kestrel created a billing-error quality loop rather than a one-off fix. The first contact now triggers three actions at once: explain the bill in plain language, assign a due-by time, and classify the likely cause. When the same cause appears above the monthly threshold, it moves from case handling into standards review. In this use case, the root cause was not a calculation defect. It was a recurring mismatch between how the billing engine phrased estimated-to-actual reconciliation and what the first-bill explainer promised.</p>
+<p><strong>AI working session summary.</strong> Claude Code drafted the revised standard and the customer-language explanation. OpenCode traced 14 weeks of first-bill queries and showed that 62% of “billing error” complaints were actually comprehension failures. Codex challenged the team&#39;s first conclusion and forced a split between genuine overcharge and explainability defects. Representative prompt:</p>
+<pre><code class="language-text">You are MOS-ANALYST.
+Compare 200 first-bill contacts tagged billing_error against bill outputs and survey text.
+Separate technical defects from explanation defects.
+Return only: defect_type, evidence_count, MOS_technical_mean, MOS_functional_mean,
+repeat_contact_rate, recommendation.
+If the technical defect rate is under 20 percent, do not recommend system change first.</code></pre><p><strong>Outcome.</strong> In the pilot units, billing-error FCR rose from 48% to 79%, mean resolution time fell from 6.2 to 2.1 days, and repeat contacts on first-bill queries fell from 34% to 14%. More importantly, the root cause fed a standard change and an explainer rewrite, not just an apology script. This is the exact quality-loop behavior Kestrel previously lacked.</p>
+<h3 id="use-case-b-meter-reading-schedule-quality">Use case B — Meter-reading schedule quality</h3><p><strong>Scenario.</strong> Ingrid-like customers and rural households were still calling after meter-reading schedule changes because reminder messages described the date but not the purpose, access window, or assisted-digital option.</p>
+<p><strong>What was designed.</strong> The quality standard for meter-reading schedule changes was rewritten around one user need: “I need to know what will happen, when, and what I must do so that I do not miss the visit or worry I have done something wrong.” The revised touchpoint added a purpose line, a narrow window, an access checklist, and a phone route. When a no-access event still occurred, the service-recovery standard required same-day explanation and rebooking.</p>
+<p><strong>AI working session summary.</strong> OpenCode joined scheduling, IVR, and missed-visit data to isolate avoidable schedule confusion. Claude Code generated three reminder variants and a recovery script. Codex rejected the first draft because it overpromised exact technician arrival times the operation could not meet.</p>
+<p><strong>Outcome.</strong> Meter-reading schedule confusion contacts fell by 37%, no-access failures on in-scope appointments fell from 6.8% to 4.1%, and the functional side of MOS for this touchpoint rose from 58 to 74. That translated into fewer wasted field visits and a measurable reduction in avoidable operational cost.</p>
+<h3 id="use-case-c-sme-onboarding-quality-for-sabine">Use case C — SME onboarding quality for Sabine</h3><p><strong>Scenario.</strong> Sabine opens a fourth bakery site. The technical connection work is straightforward, but the onboarding experience spans contract setup, invoice structure, portal access, and renewal administration. Historically, quality drift between those backstage units made Kestrel feel fragmented.</p>
+<p><strong>What was designed.</strong> The new SME onboarding standard defined one named owner, one account pack, and one billing structure agreement before go-live. The quality review treated any first-invoice or access problem as evidence of onboarding quality, not as a separate downstream support incident. The standard also preserved the phase-1 persona directive from <a href="../08/index.html">article 08</a>: one supplier, one bill, one login.</p>
+<p><strong>AI working session summary.</strong> Claude Code maintained the onboarding standard and generated the owner handoff checklist. OpenCode joined onboarding cases to first-invoice and first-30-day contact events, revealing that onboarding success had been judged far too early. Codex reviewed the linkage logic and agreed the right measure was not completion of the connection itself, but 30-day quality after the site went live.</p>
+<p><strong>Outcome.</strong> SME onboarding MOS rose from 54 to 74, first-invoice queries in the S1 cohort fell by 46%, and the renewal-at-risk rate for Sabine-like SMEs moved from 11% to 8%. The economic lesson was simple: onboarding quality is renewal design in disguise.</p>
+<h2 id="7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</h2><p>Kestrel encoded three core SOP families and one meta-SOP. Every one used the same contract: <strong>method → numbered steps → output schema → acceptance criteria → review gate</strong>.</p>
+<h3 id="71-quality-standard-authoring-sop">7.1 Quality-standard authoring SOP</h3><pre><code class="language-text">SOP QS-01 QUALITY STANDARD AUTHORING
+1. Read touchpoint evidence, complaint themes, and current promise text.
+2. Write one technical requirement and one functional requirement.
+3. Define one observable measure and one control limit.
+4. Name the owner and review cadence.
+5. Add persona overlay only if the need changes the standard materially.
+6. Link proposed standard to evidence IDs and current root-cause issue.
+OUTPUT: standard_id, touchpoint, technical_requirement, functional_requirement,
+measure, control_limit, owner, review_cadence, persona_overlay, change_reason.
+ACCEPTANCE: observable, computable, no conflicting promise, one owner only.
+REVIEW GATE: service owner plus operations lead in GitHub PR.</code></pre><h3 id="72-mos-analysis-prompt">7.2 MOS analysis prompt</h3><pre><code class="language-text">You are MOS-ANALYST.
+Input: monthly episode table by touchpoint and operating unit.
+For each touchpoint calculate:
+- mos_mean
+- technical_mean
+- functional_mean
+- control_limit_status
+- avoidable_share
+- repeat_contact_rate
+- top negative verbatim theme
+Rules:
+1. Use both technical and functional scores; never collapse raw survey text into MOS.
+2. If sample size is under threshold, mark low_confidence.
+3. Report control-limit breaches before averages.
+4. Return one recommendation only when evidence points to a likely root cause.
+5. Do not smooth month-to-month volatility unless a human asked for a trend view separately.</code></pre><h3 id="73-failure-demand-root-cause-sop-as-code">7.3 Failure-demand root-cause SOP as code</h3><pre><code class="language-text">SOP FD-03 FAILURE DEMAND ROOT CAUSE
+1. Select all avoidable contacts for the month by touchpoint.
+2. Group by root_cause_owner and reason family.
+3. Compare current month against prior three-month baseline.
+4. Flag any cluster above control limit or growth threshold.
+5. Check whether a current standard exists and whether it was kept.
+6. Route outcome:
+   - standard not present -&gt; create standard proposal issue
+   - standard present but broken -&gt; create SOP or training issue
+   - standard kept but still failing -&gt; escalate structural defect to ops change
+OUTPUT: root cause table, issue list, standard impact, decision recommendation.
+ACCEPTANCE: every flagged cluster has evidence count and owner.
+REVIEW GATE: monthly quality review chaired by CX ops and service owner.</code></pre><h3 id="74-meta-sop-and-guardrails">7.4 Meta-SOP and guardrails</h3><p>The meta-SOP was stable across the engagement: baseline → standardize → pilot → review → change → measure again. No standard changed without evidence. No MOS story went to the steering group without operational telemetry beside it. No customer-facing promise was changed without the operational owner confirming it could be kept.</p>
+<p>Guardrails:</p>
+<ul>
+<li><strong>No cherry-picking metrics.</strong> Monthly review always begins with control-limit breaches and adverse movement before success cases. This follows the lead-lag governance logic in <code>20-the-service-profit-chain/05-measuring-the-chain.md</code>.</li>
+<li><strong>Respect control limits.</strong> Agents may not suppress volatility by smoothing, rounding, or re-banding unless the review pack explicitly requests a trend view in addition to the raw control view.</li>
+<li><strong>No quality score without both dimensions.</strong> MOS requires technical and functional quality together. A technically correct but emotionally poor episode cannot be reported as “good quality.” See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code>.</li>
+<li><strong>Internal and external measures stay linked.</strong> A green customer score with falling eNPS or broken internal SLAs is treated as an at-risk signal, not a success.</li>
+<li><strong>Human sign-off points.</strong> Standard changes, control-limit resets, persona-overlay rules, and anything touching debt, billing rights, or regulated copy require human approval.</li>
+<li><strong>Evidence discipline.</strong> Any generated narrative in the monthly pack must trace to episode data, survey verbatims, or an approved standard file.</li>
+</ul>
+<h3 id="75-failure-modes-and-mitigations">7.5 Failure modes and mitigations</h3><table>
+<thead>
+<tr>
+<th>Failure mode</th>
+<th>Why it happens</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Agent games MOS by selecting only resolved cases</td>
+<td>LLM tries to tell a cleaner success story</td>
+<td>Build MOS from all eligible episodes; fixed monthly extraction window</td>
+</tr>
+<tr>
+<td>Agent smooths away warning signals</td>
+<td>Trend-writing bias favors neat lines</td>
+<td>Control-limit chart reviewed before trend commentary</td>
+</tr>
+<tr>
+<td>Standard library becomes vague policy prose</td>
+<td>Models imitate corporate language</td>
+<td>Authoring SOP requires observable measure and owner</td>
+</tr>
+<tr>
+<td>Frontline blamed for backstage defects</td>
+<td>Contact data is the most visible signal</td>
+<td>Root-cause SOP routes issues to owner system, not only channel</td>
+</tr>
+<tr>
+<td>AI recommends impossible promises</td>
+<td>It optimizes for customer appeal, not capacity</td>
+<td>Codex feasibility review and ops-owner sign-off mandatory</td>
+</tr>
+<tr>
+<td>Persona overlays fragment the library</td>
+<td>Teams want exceptions for every segment</td>
+<td>Overlay rule only when need materially changes the standard</td>
+</tr>
+</tbody></table>
+<h2 id="8-value-creation-amp-measurement">8. Value creation &amp; measurement</h2><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline</th>
+<th>6 months after rollout</th>
+<th>Delta</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Annual contact volume</td>
+<td>760,000</td>
+<td>718,000</td>
+<td>-42,000</td>
+</tr>
+<tr>
+<td>Avoidable failure demand share</td>
+<td>14.0%</td>
+<td>8.6%</td>
+<td>-5.4 pts</td>
+</tr>
+<tr>
+<td>Billing-query MOS</td>
+<td>61 / 100</td>
+<td>78 / 100</td>
+<td>+17</td>
+</tr>
+<tr>
+<td>In-scope first-contact resolution</td>
+<td>63%</td>
+<td>77%</td>
+<td>+14 pts</td>
+</tr>
+<tr>
+<td>Mean resolution time</td>
+<td>4.8 days</td>
+<td>2.9 days</td>
+<td>-1.9 days</td>
+</tr>
+<tr>
+<td>Promise-keeping rate</td>
+<td>82%</td>
+<td>96%</td>
+<td>+14 pts</td>
+</tr>
+<tr>
+<td>Frontline eNPS</td>
+<td>+8</td>
+<td>+23</td>
+<td>+15</td>
+</tr>
+<tr>
+<td>Top-box post-interaction satisfaction</td>
+<td>34%</td>
+<td>56%</td>
+<td>+22 pts</td>
+</tr>
+<tr>
+<td>Markus-like household switch risk</td>
+<td>13.5%</td>
+<td>12.1%</td>
+<td>-1.4 pts</td>
+</tr>
+<tr>
+<td>Sabine-like SME renewal-at-risk</td>
+<td>11%</td>
+<td>8%</td>
+<td>-3 pts</td>
+</tr>
+</tbody></table>
+<h3 id="kpi-tree-service-profit-chain-view">KPI tree — Service Profit Chain view</h3><div class="mermaid">
+flowchart LR
+  A["Internal quality standards freshness internal SLA tool readiness"] --> B["Employee condition eNPS coaching confidence training readiness"]
+  B --> C["External value MOS FCR resolution time promise keeping"]
+  C --> D["Customer outcomes top box satisfaction repeat contacts switch and renewal risk"]
+  D --> E["Financial outcomes lower cost to serve fewer revisits value protected"]
+</div><p>The point of the dashboard was linkage, not reporting volume. Kestrel reviewed two metrics per link at the operating-unit level, consistent with <code>20-the-service-profit-chain/05-measuring-the-chain.md</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Chain link</th>
+<th>Example measures</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Internal service quality</td>
+<td>Standards reviewed in last 90 days; internal SLA adherence between billing, meter, and connections teams</td>
+</tr>
+<tr>
+<td>Employee satisfaction and capability</td>
+<td>eNPS; quality-coaching confidence; training completion</td>
+</tr>
+<tr>
+<td>External service value</td>
+<td>MOS; FCR; resolution time; promise-keeping</td>
+</tr>
+<tr>
+<td>Customer satisfaction and loyalty</td>
+<td>Top-box satisfaction; repeat-contact rate; switch risk; SME renewal-at-risk</td>
+</tr>
+<tr>
+<td>Profit and growth</td>
+<td>Contact cost; avoided field revisit cost; retained value from reduced churn</td>
+</tr>
+</tbody></table>
+<p><strong>Causal logic.</strong> The useful chain at Kestrel was: better internal standards, clearer internal handoffs, and more credible tools for the frontline (internal quality) raised employee confidence and reduced the sense of being trapped between systems (employee condition). That improved due-by promises, explanation quality, and first-contact resolution (external value). Those changes reduced repeat contacts and protected trust in the billing and onboarding journeys (satisfaction and loyalty). The financial effects came from fewer avoidable contacts, fewer wasted field visits, and lower churn or renewal-risk in the cohorts most sensitive to service quality. See: <code>14-outside-in/06-measurement.md</code>; <code>20-the-service-profit-chain/05-measuring-the-chain.md</code>.</p>
+<p>A conservative annualized value view made the case legible:</p>
+<ul>
+<li>Contact-cost reduction: 760,000 × €5.80 → 718,000 × €5.10 = about <strong>€746k annualized cost released</strong>.</li>
+<li>Fewer failed connection visits: about <strong>3,800 avoided wasted visits × €38 = €144k</strong>.</li>
+<li>Markus-like households retained through billing-trust improvements: about <strong>1,980 retained accounts × €150 contribution = €297k</strong>.</li>
+<li>Sabine-like SMEs retained through better onboarding quality: about <strong>360 retained SMEs × €1,900 contribution = €684k</strong>.</li>
+</ul>
+<p>Total conservative annualized value released or protected: <strong>about €1.9M</strong>. As in <a href="../03/index.html">article 03</a>, the language used with steering was contribution, not pure attribution.</p>
+<h2 id="9-ai-tool-playbook-per-engagement">9. AI tool playbook (per engagement)</h2><h3 id="claude-code">Claude Code</h3><p>Role: operating system for the engagement. It maintained the standards library, authored the MOS rubric, drafted monthly narrative summaries, generated review agendas, and turned complaint clusters into standard proposals.</p>
+<p>Concrete usage examples:</p>
+<pre><code class="language-text">Update standards/billing/first-bill-after-smart-meter.yml from issue Q-184.
+Keep current control limit unless evidence shows 3 months of stable improvement.
+Draft the PR summary in operations language, not design language.</code></pre><p>Excelled at: structured authoring, consistent artifact maintenance, and turning service-design logic into SOPs and templates.</p>
+<p>Failed at: tendency to make standards sound better than current operational capability. Human takeover point: any promise that affected regulated billing communication or operational capacity commitments.</p>
+<h3 id="opencode">OpenCode</h3><p>Role: quality data pipeline, monthly dashboard build, and failure-demand attribution engine.</p>
+<p>Concrete usage example:</p>
+<pre><code class="language-bash">opencode run --agent build &quot;Rebuild the monthly quality pack from raw extracts.
+Output markdown tables for MOS, avoidable demand, root causes, and SPC links.
+If any column is missing or sample size is below threshold, fail the run loudly.&quot; </code></pre><p>Excelled at: reproducible joins across survey, complaint, and operations tables; honest pipeline output; fast rebuild of the monthly pack.</p>
+<p>Failed at: statistical judgment if thresholds were left vague. Human takeover point: defining what constitutes avoidable demand and when a spike deserves intervention.</p>
+<h3 id="codex">Codex</h3><p>Role: adversarial reviewer for causal claims, sector benchmarking, and standard feasibility.</p>
+<p>Concrete usage example:</p>
+<pre><code class="language-bash">codex exec --skip-git-repo-check &quot;Read monthly-pack.md and spc-linkage.csv.
+Challenge whether any claimed loyalty or financial movement is unsupported.
+Flag benchmark claims that lack evidence.
+Return defects only.&quot; </code></pre><p>Excelled at: hostile reading of causal claims and vague standards. It was particularly useful when Kestrel was tempted to tell a bigger value story than the data supported.</p>
+<p>Failed at: occasional over-skepticism about utility-operational nuances. Human takeover point: final judgment on what was sector-normal versus genuinely defective for Kestrel&#39;s context.</p>
+<h3 id="github">GitHub</h3><p>Role: standards-as-code repository, review gate, issue system, and automation runner.</p>
+<p>Concrete usage examples:</p>
+<ul>
+<li>Standards changes opened as PRs with named approvers from operations.</li>
+<li>Monthly quality reviews were created as issues with agenda, pack, and decision log attached.</li>
+<li>Actions rebuilt the monthly pack and validated the artifact set.</li>
+</ul>
+<p>Excelled at: making quality visible, versioned, reviewable, and auditable.</p>
+<p>Failed at: nothing material, but it only worked once the team agreed that unreviewed standards did not count as real standards.</p>
+<h2 id="10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</h2><ul>
+<li><strong>A complaint count is not a quality system.</strong> Kestrel&#39;s breakthrough came from separating technical and functional quality and assigning named standards to moments of truth.</li>
+<li><strong>Functional quality is where utilities quietly lose trust.</strong> Bills can be numerically correct and still drive churn if the explanation is poor. That was Markus&#39;s lesson from phase 1, operationalized here.</li>
+<li><strong>Monthly review must sit with operations, not beside it.</strong> When quality review was treated as a CX ceremony, nothing changed. Once it became part of ops rhythm, standards started to move behavior.</li>
+<li><strong>Internal service quality is never backstage trivia.</strong> The billing team could not keep customer promises when meter data and scheduling systems served them poorly. This is exactly the internal service-chain logic in <code>19-service-management-and-marketing/05-internal-marketing-and-service-culture.md</code>.</li>
+<li><strong>Agents will optimize for narrative neatness unless you force evidence and control limits.</strong> The anti-smoothing guardrail was not theoretical; the first draft quality pack tried to explain away a real spike in connection failures.</li>
+<li><strong>Persona continuity matters in operations.</strong> Ingrid, Markus, and Sabine were not research artifacts left on the wall. They remained active overlays on standards and review decisions.</li>
+<li><strong>Done differently next time:</strong> instrument image effects explicitly. Gronroos&#39;s model says brand image filters quality perception; Kestrel measured trust indirectly through survey text, but a direct trust item would make the loyalty linkage stronger.</li>
+</ul>
+<h2 id="11-references">11. References</h2><p>Knowledge library used in this article:</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>books/19-service-management-and-marketing/02-perceived-service-quality.md</code></td>
+<td>Technical vs functional quality, expectation-experience gap, moment-of-truth mapping</td>
+</tr>
+<tr>
+<td><code>books/19-service-management-and-marketing/05-internal-marketing-and-service-culture.md</code></td>
+<td>Internal marketing, internal service chain, service-culture logic</td>
+</tr>
+<tr>
+<td><code>books/20-the-service-profit-chain/05-measuring-the-chain.md</code></td>
+<td>Unit-level linkage, lead-lag dashboard design, SPC audit logic</td>
+</tr>
+<tr>
+<td><code>books/14-outside-in/06-measurement.md</code></td>
+<td>Relationship / journey / operational measurement architecture</td>
+</tr>
+<tr>
+<td><code>books/05-good-services/06-designing-good-services.md</code></td>
+<td>Whole-service design, staged delivery, operationalized service standards</td>
+</tr>
+</tbody></table>
+<p>Related series articles:</p>
+<ul>
+<li><a href="../08/index.html">08 — Personas from Messy Data at Kestrel Energy</a></li>
+<li><a href="../03/index.html">03 — Service Design for Business at Aurelia Insurance</a></li>
+<li><a href="../20/index.html">20 — Service Recovery &amp; Complaint Journeys</a></li>
+</ul>
+<p>External references mentioned operationally: national utility regulation and DSO coordination constraints are described generically and are illustrative only; no external legal or standards citation is asserted here.</p>
+<h2 id="12-appendix-artifact-index">12. Appendix: artifact index</h2><table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Format</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Process overview</td>
+<td>3</td>
+<td>Mermaid flowchart</td>
+<td>Discover to deliver operating logic</td>
+</tr>
+<tr>
+<td>16-week program plan</td>
+<td>3</td>
+<td>Mermaid gantt</td>
+<td>Sequencing and gates</td>
+</tr>
+<tr>
+<td>Service quality framework</td>
+<td>5</td>
+<td>Mermaid flowchart</td>
+<td>Gronroos quality to MOS to value chain</td>
+</tr>
+<tr>
+<td>Quality-standard library structure</td>
+<td>5</td>
+<td>tree + table</td>
+<td>Standards-as-code operating model</td>
+</tr>
+<tr>
+<td>Failure-demand funnel</td>
+<td>5</td>
+<td>Mermaid flowchart</td>
+<td>Contact to root-cause reduction logic</td>
+</tr>
+<tr>
+<td>A1 current-state billing journey</td>
+<td>5</td>
+<td>Mermaid + table</td>
+<td>Exposes today’s billing-query quality failures</td>
+</tr>
+<tr>
+<td>A2 future-state blueprint</td>
+<td>5</td>
+<td>Mermaid + lane table</td>
+<td>Future operating model for billing-query service</td>
+</tr>
+<tr>
+<td>A3 stakeholder map</td>
+<td>5</td>
+<td>Mermaid quadrantChart</td>
+<td>Influence and interest view</td>
+</tr>
+<tr>
+<td>A4 ecosystem map</td>
+<td>5</td>
+<td>Mermaid flowchart</td>
+<td>Actor and dependency map</td>
+</tr>
+<tr>
+<td>A5 persona continuity set</td>
+<td>5</td>
+<td>Table</td>
+<td>Reuses Ingrid, Markus, and Sabine as quality overlays</td>
+</tr>
+<tr>
+<td>A6 operating templates</td>
+<td>5</td>
+<td>Tables + fenced markdown</td>
+<td>Review agenda, quality pack, MOS rubric</td>
+</tr>
+<tr>
+<td>A7 mock dataset sample</td>
+<td>5</td>
+<td>CSV</td>
+<td>Synthetic quality episode sample</td>
+</tr>
+<tr>
+<td>A8 charts</td>
+<td>5</td>
+<td>Mermaid xychart, pie, quadrantChart</td>
+<td>Trend, driver mix, touchpoint priority</td>
+</tr>
+<tr>
+<td>A9 traceability table</td>
+<td>5</td>
+<td>Table</td>
+<td>Pain to standard to KPI linkage</td>
+</tr>
+<tr>
+<td>A10 billing audit</td>
+<td>5</td>
+<td>Table</td>
+<td>Touchpoint quality audit after redesign</td>
+</tr>
+<tr>
+<td>Use cases</td>
+<td>6</td>
+<td>Narrative + prompts</td>
+<td>Billing loop, meter schedule, SME onboarding</td>
+</tr>
+<tr>
+<td>SOPs for AI</td>
+<td>7</td>
+<td>Fenced text + table</td>
+<td>Executable service-quality management logic</td>
+</tr>
+<tr>
+<td>KPI tree and value table</td>
+<td>8</td>
+<td>Mermaid + tables</td>
+<td>SPC linkage and business effect</td>
+</tr>
+<tr>
+<td>Tool playbook</td>
+<td>9</td>
+<td>Narrative + commands</td>
+<td>How Claude Code, OpenCode, Codex, and GitHub were used</td>
+</tr>
+</tbody></table>
+</article><div class="wrap" style="max-width:880px">
+    <div class="cross-links"><a href="../21/index.html"><span class="lbl">← Previous case</span><span class="ttl">21. Pilots, Scaling &amp; Organizational Change at Aurelia Insurance</span></a><a href="../23/index.html"><span class="lbl">Next case →</span><span class="ttl">23. Employee Experience &amp; Frontline Enablement at Calder Community Bank</span></a></div>
+    <div class="art-foot">
+      <span>12 figures (12 diagrams) · ~8.9k words · reviewed by an adversarial AI reviewer (Gemini 3.1 Pro High).</span>
+      · <a href="https://github.com/sammozaffari/the-agentic-service-designer/blob/main/articles/22/README.md" target="_blank" rel="noopener">Open source in repo ↗</a>
+    </div>
+  </div></main>
+<footer class="footer"><div class="footer-inner">
+  <span>Agentic Service Designer — 30 service design case studies from an AI-first practice. Fictional, anonymized clients.</span>
+  <span><a href="./index.html">Home</a> · <a href="./concept.html">The concept</a> · <a href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub</a></span>
+</div></footer>
+<script src="./assets/site.js"></script>
+</body></html>

@@ -1,0 +1,1333 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Service Blueprints as Operational Diagnostics: Fernwood Council's Housing Repairs Service — Public sector — local government">
+<title>11. Service Blueprints as Operational Diagnostics: Fernwood Council's Housing Repairs Service — Agentic Service Designer</title>
+<link rel="stylesheet" href="./assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234f46e5'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'>A</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+</head><body>
+<nav class="nav"><div class="nav-inner">
+  <a class="brand" href="./index.html"><span class="mark">A</span>Agentic Service Designer</a>
+  <div class="nav-links">
+    <a href="./index.html" class="">Home</a>
+    <a href="./concept.html" class="">The concept</a>
+    <a href="./index.html#series" class="on">Case studies</a>
+    <a class="github-link" href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</div></nav>
+<main class="art">
+  <div class="wrap art-hero">
+    <div class="art-meta">
+      <span class="chip chip-track">Mapping &amp; Design</span>
+      <span class="sep">·</span><span>Public sector — local government</span>
+      <span class="sep">·</span><span><b>Fernwood Council</b></span>
+      <span class="sep">·</span><span>20 weeks (10-week blueprint program + 8-week pilot + 2 evaluation)</span>
+      <span class="chip chip-tool">Claude Code</span><span class="chip chip-tool">OpenCode</span><span class="chip chip-tool">Codex</span><span class="chip chip-tool">GitHub</span>
+    </div>
+    <h1>Service Blueprints as Operational Diagnostics: Fernwood Council's Housing Repairs Service</h1>
+    <p class="deck">Fictional composite client. All names, figures, and data are illustrative and anonymized.</p>
+  </div><article class="art-body wrap"><nav class="toc"><b>On this page</b><ol><li><a href="#0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</a></li><li><a href="#1-executive-summary">1. Executive summary</a></li><li><a href="#2-the-brief">2. The brief</a></li><li><a href="#3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</a></li><li><a href="#4-phase-by-phase-narrative">4. Phase-by-phase narrative</a></li><li><a href="#5-artifacts-portfolio">5. Artifacts portfolio</a></li><li><a href="#6-use-cases">6. Use cases</a></li><li><a href="#7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</a></li><li><a href="#8-value-creation-amp-measurement">8. Value creation &amp; measurement</a></li><li><a href="#9-ai-tool-playbook-this-engagement">9. AI tool playbook (this engagement)</a></li><li><a href="#10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</a></li><li><a href="#11-references">11. References</a></li><li><a href="#12-appendix-artifact-index">12. Appendix: artifact index</a></li></ol></nav><h1 id="service-blueprints-as-operational-diagnostics-fernwood-council39s-housing-repairs-service">Service Blueprints as Operational Diagnostics: Fernwood Council&#39;s Housing Repairs Service</h1><h2 id="0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</h2><p>Fernwood Council is a fictional composite of several UK-style unitary local authorities; every name, figure, dataset, and quote in this article is illustrative and anonymized, and monetary values are expressed in euro for series consistency. Nothing here is real client data. What is real is the process: an AI-first service design engagement in which Claude Code, OpenCode, Codex, and GitHub were the primary working tools, with a human designer owning framing, ethics, political sensitivity, and resident relationships. The intent is to share method and workflow, not client specifics.</p>
+<h2 id="1-executive-summary">1. Executive summary</h2><p>Fernwood Council, a fictional local authority of 310,000 residents responsible for housing, planning, and streetcare, was spending more energy administering its reactive housing repairs service than fixing homes. The service handled 28,000 repair requests a year across roughly 19,000 council homes, yet 41% of open jobs attracted at least one status-chase contact — about 3,100 failure-demand calls a month — because no system, letter, or person could tell a resident what was happening. Over a 10-week blueprint program we treated the service blueprint not as a documentation exercise but as a diagnostic instrument: we validated a resident journey spine, built the five-lane current-state blueprint strictly from evidence, annotated every fail point (F) and wait point (W) with frequency, time, and cost overlays, and traced each fail point downward through the backstage and support lines to its system root cause. The future-state blueprint — one job record, status events emitted on every state change, a contractor portal, a single case file per property — was then piloted for 8 weeks with two repairs teams. Status-chase contacts fell 31% in the pilot cohort, first-time-fix rose from 62% to 71%, and mean routine repair wait fell from 23.5 to 18.7 days. All figures are illustrative.</p>
+<table>
+<thead>
+<tr>
+<th>Key facts</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Fernwood Council (fictional composite, UK-style local authority)</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>Public sector — housing, planning, streetcare</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>Reactive housing repairs, report to completion and invoice</td>
+</tr>
+<tr>
+<td>Scale</td>
+<td>310,000 residents; ~19,000 council homes; 28,000 repair requests/yr generating 30,200 jobs; 24 in-house operatives + 3 framework contractors</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>20 weeks (10-week blueprint program + 8-week pilot + 2 evaluation)</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>1 lead service designer, repairs ops lead, ICT service owner, 6-person practitioner panel, AI agents</td>
+</tr>
+<tr>
+<td>AI tools</td>
+<td>Claude Code, OpenCode, Codex, GitHub</td>
+</tr>
+<tr>
+<td>Headline results (illustrative)</td>
+<td>Status-chase contacts −31% (pilot); first-time-fix 62% → 71%; routine wait 23.5 → 18.7 days; resident effort CES 4.9 → 2.9; ~€331k/yr modeled benefit vs €95k run cost</td>
+</tr>
+</tbody></table>
+<p>What you will learn:</p>
+<ul>
+<li>How to build a current-state service blueprint as a diagnostic instrument — evidence-gated lanes, F/W annotations, time and cost overlays — using AI agents without letting a single unevidenced node through.</li>
+<li>How to trace fail points downward from the resident&#39;s symptom, through backstage operations, to system root causes (no shared job ID, contractor incentives, batch sync), and prioritize by F/W density × cost.</li>
+<li>How to run blueprint-as-code: markdown lanes and mermaid diagrams in GitHub, with PR gates, a lane lint, and an evidence-per-node CI check.</li>
+</ul>
+<h2 id="2-the-brief">2. The brief</h2><p><strong>Client portrait.</strong> Fernwood Council is a fictional unitary authority in a mid-sized European city-region: 310,000 residents, three service directorates (housing, planning, streetcare), and a housing stock of roughly 19,000 council-owned homes. The repairs service logs about 28,000 reactive repair requests a year — 1.5 per home — which create 30,200 jobs once follow-on works are included. Delivery is mixed-economy: 24 in-house operatives in four area teams handle about 40% of jobs; three framework contractors take the rest. Digital maturity is low. Intake is 62% phone, 24% web form, 9% email, 5% in person at the One-Stop Shop. Three job-management systems coexist: RepairsDB (a 2009 in-house system), ContractorLink (the contractor-side portal), and AssetPlan (asset and stock data). Contact-centre agents answering a status call alt-tab across these three plus the telephony CRM — four windows per call — a pattern documented in the earlier operating-system engagement at Fernwood (See: <code>../01/README.md</code>).</p>
+<p><strong>The challenge.</strong> The council&#39;s own numbers framed the failure. Of the 30,200 jobs opened each year, 41% — 12,400 jobs — attracted at least one status-chase contact, at an average of 3.0 chases per chased job: about 37,200 status-chase contacts a year, roughly 3,100 a month, at a fully loaded €6.40 per contact. That is €238k a year spent telling residents the service had not forgotten them — pure failure demand in Seddon&#39;s sense: contact caused by the organization failing to deliver right the first time (See: <code>01-this-is-service-design-doing/07-implementation-and-piloting.md</code>). First-time-fix (FTF) sat at 62%[^ftf]; 19% of first visits ended in no-access or a no-show; stage-1 repairs complaints ran at 92 per quarter. A previous &quot;repairs transformation&quot; had bought a chatbot business case. The earlier one-district pilot at Fernwood had already shown a 31% drop in status-chasing from manual SMS milestones alone (See: <code>../01/README.md</code>); the sponsor&#39;s question for this engagement was <em>why</em> the failure demand existed and what the permanent service should be.</p>
+<p>[^ftf]: Fernwood defines first-time-fix strictly as completion in a single continuous visit; same-day returns for parts count as a second visit, which suppresses the baseline against peer councils that use looser definitions.</p>
+<p><strong>Success criteria, agreed with the Director of Housing:</strong></p>
+<ol>
+<li>A current-state blueprint in which every node carries at least one evidence reference — accepted line by line by the practitioner panel.</li>
+<li>A costed fail-point register: each F and W with frequency, time, and cost overlays, adversarially checked.</li>
+<li>Pilot on two repairs teams: status-chase contacts per job −25% or better; first-time-fix +5 points or better; no regression on emergency attendance.</li>
+<li>A future-state blueprint signed off as the operational specification for the permanent service, translatable to a delivery backlog.</li>
+</ol>
+<p><strong>Constraints.</strong> Program budget €235k; run-rate cap €95k/yr. RepairsDB cannot be replaced within the horizon — integration must wrap it. Contractor framework agreements fixed for 18 more months, so incentive changes are limited to what the existing schedule of rates allows. GDPR and council data-protection rules: no resident-identifiable data in design artifacts. Operative and scheduler working practices subject to union consultation. The pilot had to run inside normal operations — no protected sandbox.</p>
+<p><strong>Why service design.</strong> The council&#39;s instinct was another channel: a chatbot, a bigger contact centre. But the calls were a symptom of a service that emitted no status, not of a channel gap. When the question is &quot;how does the organization produce this experience, and where does it break,&quot; the service blueprint is the right instrument and the journey map alone is not (See: <code>09-mapping-experiences/05-service-blueprints.md</code>). And because the process <em>is</em> the product in a service, redesigning the process — not adding a buffer in front of it — is the only durable fix (See: <code>19-service-management-and-marketing/07-designing-and-managing-the-service-process.md</code>).</p>
+<h2 id="3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</h2><p>We ran a double-diamond arc mapped to the TISDD loop, with the blueprint program proper timeboxed to 10 weeks and the pilot following. Every artifact lived in a GitHub repository (<code>fernwood-repairs-blueprint</code>) as markdown and mermaid, reviewed through pull requests.</p>
+<div class="mermaid">
+flowchart LR
+    subgraph DISC["Discover (wk 1-3)"]
+        D1["18 resident journey interviews"]
+        D2["45 staff interviews + 12 ride-alongs"]
+        D3["Event-sequence mining 30200 jobs"]
+    end
+    subgraph DEF["Define (wk 3-6)"]
+        E1["Validated journey spine"]
+        E2["Current-state blueprint 5 lanes"]
+        E3["F W register + cost overlays"]
+    end
+    subgraph DEV["Develop (wk 6-10)"]
+        V1["Prioritization F/W density x cost"]
+        V2["Future-state blueprint-as-code"]
+        V3["Backlog 61 tickets + readiness"]
+    end
+    subgraph DEL["Deliver (wk 11-20)"]
+        L1["Pilot teams North and South"]
+        L2["Weekly KPI dashboard"]
+        L3["Rollout case + service standard"]
+    end
+    DISC --> DEF --> DEV --> DEL
+</div><div class="mermaid">
+gantt
+    title Fernwood repairs blueprint program - 10 weeks plus pilot
+    dateFormat YYYY-MM-DD
+    section Discover
+    Mobilize + evidence plan            :a1, 2026-03-02, 7d
+    Resident journey interviews (18)    :a2, 2026-03-02, 21d
+    Staff interviews (45) + ride-alongs :a3, 2026-03-09, 14d
+    Log mining pipeline (3 systems)     :a4, 2026-03-09, 21d
+    Gate G1 evidence review             :milestone, 2026-03-22, 0d
+    section Define
+    Journey spine validation            :b1, 2026-03-23, 7d
+    Lane drafting agents + workshop     :b2, 2026-03-30, 10d
+    F/W annotation + cost overlays      :b3, 2026-04-06, 7d
+    Codex attribution + math review     :b4, 2026-04-08, 5d
+    Gate G2 current-state sign-off      :milestone, 2026-04-12, 0d
+    section Develop
+    Fail-point prioritization           :c1, 2026-04-13, 5d
+    Future-state blueprint-as-code      :c2, 2026-04-20, 14d
+    Backlog + operational readiness     :c3, 2026-05-04, 5d
+    Gate G3 pilot go                    :milestone, 2026-05-08, 0d
+    section Deliver
+    Pilot teams North + South           :d1, 2026-05-11, 56d
+    Evaluation + rollout case           :d2, 2026-07-06, 12d
+    Gate G4 rollout decision            :milestone, 2026-07-17, 0d
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>SD method (book)</th>
+<th>AI tools used</th>
+<th>Artifact produced</th>
+<th>Client involvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Discover</td>
+<td>Chronological journey interviewing (08/04)</td>
+<td>Claude Code coding agents</td>
+<td>Evidence register, journey spine v1</td>
+<td>Tenants&#39; panel recruits residents</td>
+</tr>
+<tr>
+<td>Discover</td>
+<td>Process event mining (19/07)</td>
+<td>OpenCode agent-mode pipeline</td>
+<td>Job event sequences, wait distributions</td>
+<td>ICT exports 12 months of logs</td>
+</tr>
+<tr>
+<td>Define</td>
+<td>Blueprinting from a validated journey spine (09/05)</td>
+<td>Claude Code lane-builder agents</td>
+<td>Current-state blueprint, lane tables</td>
+<td>Practitioner panel validates lanes</td>
+</tr>
+<tr>
+<td>Define</td>
+<td>Fail/wait annotation, standards (19/07)</td>
+<td>Codex adversarial review</td>
+<td>Fail-point register, cost overlays</td>
+<td>Ops lead signs baseline figures</td>
+</tr>
+<tr>
+<td>Develop</td>
+<td>Prioritization + future blueprint (09/05, 06/06)</td>
+<td>Claude Code, GitHub PRs</td>
+<td>Future-state blueprint-as-code</td>
+<td>Steering gate G3</td>
+</tr>
+<tr>
+<td>Develop</td>
+<td>Blueprint-to-backlog (01/07)</td>
+<td>OpenCode ticket generation</td>
+<td>61-ticket delivery backlog</td>
+<td>Team supervisors review tickets</td>
+</tr>
+<tr>
+<td>Deliver</td>
+<td>Pilot + triangulated KPIs (01/07, 05/06)</td>
+<td>GitHub Actions dashboards</td>
+<td>Pilot scorecard, A10 audit</td>
+<td>Two teams run pilot in live ops</td>
+</tr>
+</tbody></table>
+<h2 id="4-phase-by-phase-narrative">4. Phase-by-phase narrative</h2><h3 id="phase-1-discover-the-evidence-base-and-the-journey-spine-weeks-13">Phase 1 — Discover: the evidence base and the journey spine (weeks 1–3)</h3><p><strong>Goal.</strong> Establish what actually happens to 28,000 repair requests a year, from the resident&#39;s side and from the organization&#39;s side, before drawing a single lane.</p>
+<p><strong>Method &amp; SOP.</strong> Three evidence streams ran in parallel. (1) Chronological journey-centric interviewing with 18 residents who had a repair in the last 90 days — anchor in a concrete episode, reconstruct the timeline, probe emotion and channel choice (See: <code>08-orchestrating-experiences/04-understanding-the-journey.md</code>). (2) Forty-five frontline and backstage interviews (contact-centre agents, schedulers, supervisors, contractor managers) plus 12 ride-alongs with operatives — the service-safari/shadowing method from the same chapter. (3) Process mining: reconstruct one event sequence per job from 12 months of logs across the three systems (See: <code>19-service-management-and-marketing/07-designing-and-managing-the-service-process.md</code>).</p>
+<p><strong>AI execution.</strong> OpenCode ran the log pipeline in agent mode; the join logic was the finding:</p>
+<pre><code class="language-bash">opencode run &quot;Read exports/repairsdb_jobs.csv exports/contractorlink_jobs.csv \
+  exports/assetplan_visits.csv (12 months). Reconstruct one event sequence per \
+  job: created, triaged, scheduled, visit_1, parts, visit_2, completed, invoiced. \
+  Join across systems on property_token + 10-day window + trade code. Emit \
+  clean/job_events.parquet and qa/unmatched_jobs.csv. Never emit raw addresses \
+  or names; property_token only. Report the join rate.&quot;</code></pre><p>The join rate was 91%. The 9% unmatched — jobs that existed in one system with no counterpart in another — became evidence LOG-01, the first quantitative proof of the no-shared-job-ID root cause. Claude Code coded the 63 interview transcripts into an evidence register (<code>evidence/register.jsonl</code>) with one rule: every row carries <code>{evidence_id, source, lane, step, quote_or_fact, confidence}</code>; quotes capped at 25 words; resident names and addresses tokenized to property IDs before any agent saw a transcript. The journey spine — report, wait, visit, complete, invoice-and-close — was validated in a residents&#39; panel session before any blueprinting began; a blueprint built on an unvalidated spine is folklore with lanes (See: <code>09-mapping-experiences/05-service-blueprints.md</code>).</p>
+<p><strong>Human designer judgment.</strong> The designer ran the interviews and ride-alongs (agents cannot sit in a resident&#39;s kitchen), chose the spine granularity, and excluded two ride-along notes that named a resident&#39;s medical condition — irrelevant to the service and a privacy risk in any artifact.</p>
+<p><strong>Artifact.</strong> Evidence register (388 rows), validated journey spine v3, and the quantitative baseline: 30,200 jobs/yr; 41% chased; mean routine wait 23.5 days; first-time-fix 62%.</p>
+<h3 id="phase-2-define-the-current-state-blueprint-as-a-diagnostic-weeks-36">Phase 2 — Define: the current-state blueprint as a diagnostic (weeks 3–6)</h3><p><strong>Goal.</strong> A five-lane current-state blueprint in which every node is evidence-gated, annotated with fail points, wait points, time, and cost.</p>
+<p><strong>Method &amp; SOP.</strong> Blueprinting from the validated journey spine: place the customer-action lane as the spine; for each column, derive physical evidence above and frontstage, backstage, and support work below; draw the three lines — interaction, visibility, internal interaction; then annotate F, W, time standards (S), and cost overlays (See: <code>09-mapping-experiences/05-service-blueprints.md</code>, <code>19-service-management-and-marketing/07-designing-and-managing-the-service-process.md</code>). The cross-functional blueprinting workshop (schedulers, agents, supervisors, ICT, contractor manager) walked the printed blueprint line by line — the moment where documented SOPs and frontline reality diverged, exactly as the method predicts.</p>
+<p><strong>AI execution.</strong> Claude Code ran four lane-builder subagents against the blueprint-build SOP (Section 7, the flagship encoding), one per lane, then a linker agent marked every line-of-visibility crossing:</p>
+<pre><code class="language-text">claude &quot;Spawn four lane-builder subagents under SOP-BP-001 (lanes:
+physical_evidence, frontstage, backstage, support) against spine v3 and
+evidence/register.jsonl. Then a linker agent marks every crossing of the
+line of visibility and line of internal interaction. Critic agent verifies:
+no OK-status node without &gt;=1 evidence_id; every W tag carries a duration;
+every F tag carries a frequency. Open the result as a PR to
+blueprint/current-state/. Do not merge.&quot;</code></pre><p>Codex then adversarially reviewed fail-point attribution and cost math (Section 7 for the full prompt). It caught two real defects: <strong>CR-2</strong>, the invoice-cycle cost double-counted contractor admin (once in cost-per-job, once in dispute handling); and <strong>CR-5</strong>, our first draft attributed the no-access fail point to &quot;resident not in&quot; — the log data showed 62% of no-access visits had a contractor-initiated reschedule within the prior 48 hours, moving the root cause from the customer lane to the support lane where it belonged.</p>
+<p><strong>Human designer judgment.</strong> Facilitating the workshop, adjudicating lane disputes (is the contractor re-booking call frontstage or backstage? Ruling: backstage — the resident cannot perceive it until the letter arrives), and keeping the session diagnostic rather than blameful: the panel&#39;s rule was &quot;we name systems, not people.&quot;</p>
+<p><strong>Artifact.</strong> The current-state blueprint (Section 5, star artifact) with 8 fail points, 6 wait points, time and cost overlays, and the fail-point root-cause trace diagram.</p>
+<h3 id="phase-3-develop-prioritization-and-the-future-state-blueprint-weeks-610">Phase 3 — Develop: prioritization and the future-state blueprint (weeks 6–10)</h3><p><strong>Goal.</strong> Decide what to fix, and specify the future service as an operational contract.</p>
+<p><strong>Method &amp; SOP.</strong> Prioritization by F/W density × annualized cost (the fail-point and bottleneck diagnostic from <code>09-mapping-experiences/05-service-blueprints.md</code>, with the tripartite productivity lens — internal, external, capacity efficiency — from <code>19-service-management-and-marketing/07-designing-and-managing-the-service-process.md</code>). Then future-state blueprinting as the delivery bridge artifact (See: <code>06-the-service-innovation-handbook/06-designing-for-scale-and-delivery.md</code>), translated column-by-column into a delivery backlog (See: <code>01-this-is-service-design-doing/07-implementation-and-piloting.md</code>).</p>
+<p><strong>AI execution.</strong> The future blueprint was authored as code: markdown lane files plus mermaid diagrams in GitHub, with CI running a mermaid parse, a PII regex gate, and the evidence-per-node check on every PR. OpenCode generated the 61-ticket backlog from the blueprint diff (every removed F/W and every new node became a ticket linked to its blueprint cell); Claude Code drafted the operational-readiness scorecard (staffing, training, IT latency, data governance, contractor SLAs, rollback) per the readiness-review method (See: <code>06-the-service-innovation-handbook/06-designing-for-scale-and-delivery.md</code>).</p>
+<p><strong>Human designer judgment.</strong> The designer cut one agent-favorite intervention — auto-approval of all routine scheduling — because contractor calendars were only 71% populated; scheduling against missing data would have automated the no-access problem. Human override, logged on the PR.</p>
+<p><strong>Artifact.</strong> Future-state blueprint (Section 5), prioritization quadrant, 61-ticket backlog, readiness scorecard: 6 Green, 2 Amber (contractor calendar coverage; SMS gateway failover) — both remediated before gate G3.</p>
+<h3 id="phase-4-deliver-pilot-with-two-repairs-teams-weeks-1120">Phase 4 — Deliver: pilot with two repairs teams (weeks 11–20)</h3><p><strong>Goal.</strong> Prove the blueprint changes in live operations with a comparison group.</p>
+<p><strong>Method &amp; SOP.</strong> Bounded pilot per the piloting method: representative sites, strict timebox, rollback triggers, weekly measurement (See: <code>01-this-is-service-design-doing/07-implementation-and-piloting.md</code>); performance tracked on the four public-service KPIs — completion, satisfaction, cost per transaction, digital take-up (See: <code>05-good-services/06-designing-good-services.md</code>). Pilot: teams North and South (12 operatives, 2 schedulers, <del>1,160 jobs over 8 weeks), running the future-state slice: single job record, structured triage, status events at six state changes, contractor portal same-day confirmation. Comparison: teams Central and East on the legacy journey (</del>1,140 jobs).</p>
+<p><strong>AI execution.</strong> GitHub Actions regenerated the weekly KPI dashboard from job-record extracts; an OpenCode agent normalized each extract and flagged schema drift (ContractorLink added a column in week 5 — caught in CI). Codex reviewed the evaluation language before the gate: &quot;contribution, not attribution.&quot; PR review with named approvers was the sign-off gate, as on every artifact.</p>
+<p><strong>Human designer judgment.</strong> Weekly stand-ups with the two teams, the week-3 decision to keep the phone channel fully staffed despite falling call volume (vulnerable residents first; capacity was redeployed, not cut), and the go/no-go recommendation at G4.</p>
+<p><strong>Artifact.</strong> Pilot scorecard (Section 8): every gate metric passed.</p>
+<h2 id="5-artifacts-portfolio">5. Artifacts portfolio</h2><h3 id="a1-current-state-journey-map-report-wait-visit-complete-invoice">A1 — Current-state journey map (report → wait → visit → complete → invoice)</h3><div class="mermaid">
+flowchart TB
+    subgraph J1["1 Report"]
+        A1["Fault noticed"] --> A2["Phone queue W-01: 8 min or unreferenced web form"]
+        A2 --> A3["Details repeated F-01: 6% duplicate jobs"]
+    end
+    subgraph J2["2 Wait"]
+        B1["Acknowledgement letter day 3"] --> B2["Silence W-03: 18 days routine"]
+        B2 --> B3["Status chase calls F-05: 41% of jobs"]
+    end
+    subgraph J3["3 Visit"]
+        C1["Appointment letter"] --> C2["Wait in 4h window F-03: 19% no access"]
+        C2 --> C3["Diagnosis visit happens"]
+    end
+    subgraph J4["4 Complete"]
+        D1["Parts wait W-04: 4.6 days"] --> D2["Second visit F-04: 38% of jobs"]
+        D2 --> D3["Paper sign-off no confirmation"]
+    end
+    subgraph J5["5 Invoice and close"]
+        E1["Rechargeable repairs invoiced"] --> E2["Job drifts open F-06: 9%"]
+        E2 --> E3["Survey postcard arrives"]
+    end
+    J1 --> J2 --> J3 --> J4 --> J5
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Emotion (1–5)</th>
+<th>Dominant pain (evidence ref)</th>
+<th>Share of chased jobs entering here</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1 Report</td>
+<td>3</td>
+<td>Queue, re-telling (INT-04, LOG-03)</td>
+<td>8%</td>
+</tr>
+<tr>
+<td>2 Wait</td>
+<td>1</td>
+<td>Silence after the letter (INT-02, INT-11, LOG-05)</td>
+<td>54%</td>
+</tr>
+<tr>
+<td>3 Visit</td>
+<td>2</td>
+<td>4-hour window, no-shows (RDE-02, LOG-07)</td>
+<td>19%</td>
+</tr>
+<tr>
+<td>4 Complete</td>
+<td>2</td>
+<td>Return visits, parts delay (RDE-05, LOG-09)</td>
+<td>13%</td>
+</tr>
+<tr>
+<td>5 Invoice/close</td>
+<td>2</td>
+<td>No confirmation the job is closed (INT-15)</td>
+<td>6%</td>
+</tr>
+</tbody></table>
+<h3 id="a1b-current-state-service-blueprint-the-diagnostic-centerpiece">A1b — Current-state service blueprint (the diagnostic centerpiece)</h3><div class="mermaid">
+flowchart TB
+    subgraph PE["Physical evidence"]
+        P1["Repairs leaflet and phone line"] --> P2["Web form with no reference number"]
+        P2 --> P3["Acknowledgement letter day 3"]
+        P3 --> P4["Appointment letter day minus 5"]
+        P4 --> P5["Operative paper job sheet"]
+        P5 --> P6["Survey postcard"]
+    end
+    subgraph CU["Customer actions"]
+        C1["Notices fault"] --> C2["Reports by phone or web W-01: 8 min queue"]
+        C2 --> C3["Repeats details F-01: 6% duplicate jobs"]
+        C3 --> C4["Waits for visit W-03: 18 days routine"]
+        C4 --> C5["Chases status F-05: 41% of jobs"]
+        C5 --> C6["Waits in F-03: 19% no access or no show"]
+        C6 --> C7["Hosts return visit F-04: 38% need second visit"]
+        C7 --> C8["Signs paper sheet"]
+    end
+    subgraph FS["Frontstage contact"]
+        FS1["Agent takes call in telephony CRM"] --> FS2["Agent re-keys job into RepairsDB"]
+        FS2 --> FS3["Scheduler phones resident with date"]
+        FS3 --> FS4["Operative greets resident and diagnoses"]
+        FS4 --> FS5["Operative explains follow-on need"]
+    end
+    subgraph BS["Backstage operations"]
+        B1["Triage queue W-02: 1.8 days F-02: 14% re-triaged"] --> B2["Scheduler books against nominal capacity"]
+        B2 --> B3["Supervisor assigns team or contractor"]
+        B3 --> B4["Parts ordered after first visit W-04: 4.6 days"]
+        B4 --> B5["Follow-on job created unlinked F-07: 7% re-report"]
+        B5 --> B6["Completion chased from contractor by phone F-06"]
+    end
+    subgraph SP["Support processes and systems"]
+        S1["Telephony CRM not linked to jobs"] --> S2["RepairsDB 2009 in-house system"]
+        S2 --> S3["ContractorLink portal no shared job ID"]
+        S3 --> S4["AssetPlan stock data not integrated"]
+        S4 --> S5["Finance invoice matching manual F-08: 22% mismatch W-06: 34 days"]
+    end
+    PE --> CU --> FS --> BS --> SP
+</div><p>Markdown lane-table version (each row evidence-gated; costs illustrative):</p>
+<table>
+<thead>
+<tr>
+<th>Lane</th>
+<th>Node</th>
+<th>Evidence</th>
+<th>F/W tag</th>
+<th>Time/cost overlay</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Physical evidence</td>
+<td>Web form, no reference number</td>
+<td>INT-04, LOG-03</td>
+<td>F-01 contributes</td>
+<td>Duplicate admin €14/job</td>
+</tr>
+<tr>
+<td>Customer</td>
+<td>Reports by phone</td>
+<td>INT-01…18, LOG-02</td>
+<td>W-01</td>
+<td>8 min queue; €6.40/call</td>
+</tr>
+<tr>
+<td>Customer</td>
+<td>Chases status</td>
+<td>LOG-05 (12,400 jobs)</td>
+<td>F-05</td>
+<td>3.0 chases/job; €238k/yr</td>
+</tr>
+<tr>
+<td>Frontstage</td>
+<td>Agent re-keys into RepairsDB</td>
+<td>INT-27, RDE-01</td>
+<td>F-01</td>
+<td>4-system alt-tab; AHT 7.2 min</td>
+</tr>
+<tr>
+<td>Frontstage</td>
+<td>Operative diagnoses at door</td>
+<td>RDE-02…12</td>
+<td>F-04 contributes</td>
+<td>Visit cost €85</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Triage queue</td>
+<td>LOG-04</td>
+<td>F-02, W-02</td>
+<td>1.8 days; 14% re-triaged</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Books nominal capacity</td>
+<td>INT-31, LOG-07</td>
+<td>F-03</td>
+<td>19% no-access; €45 wasted visit</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Parts after first visit</td>
+<td>LOG-09, RDE-05</td>
+<td>W-04</td>
+<td>4.6 days; FTF 62%</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Follow-on unlinked</td>
+<td>LOG-08</td>
+<td>F-07</td>
+<td>7% resident re-reports</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Completion chased by phone</td>
+<td>INT-36</td>
+<td>F-06</td>
+<td>9% jobs drift open</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>No shared job ID across 3 systems</td>
+<td>LOG-01 (9% unmatched)</td>
+<td>root of F-01/05/06</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>Manual invoice matching</td>
+<td>INT-40, FIN-02</td>
+<td>F-08, W-06</td>
+<td>22% mismatch; 34-day cycle</td>
+</tr>
+</tbody></table>
+<h3 id="a1c-fail-point-root-cause-trace-f-backstage-support-system">A1c — Fail-point root-cause trace (F → backstage → support → system)</h3><div class="mermaid">
+flowchart LR
+    F05["F-05 Status opacity: 41% of jobs chased"] --> B05["Backstage: job state lives in 3 systems"]
+    B05 --> S05["Support: overnight batch sync only"]
+    S05 --> R05["System root: no shared job ID RepairsDB ContractorLink AssetPlan"]
+    F04["F-04 First-time-fix 62%"] --> B04["Backstage: free-text triage notes"]
+    B04 --> S04["Support: no structured diagnosis fields"]
+    S04 --> R04["System root: RepairsDB 2009 schema"]
+    F04 --> B04b["Backstage: parts not reserved at booking"]
+    B04b --> S04b["Support: no stock feed to scheduling"]
+    S04b --> R04b["System root: AssetPlan not integrated"]
+    F03["F-03 No-access 19%"] --> B03["Backstage: booking on nominal capacity"]
+    B03 --> S03["Support: contractor calendars invisible"]
+    S03 --> R03["System root: paid per visit so reschedules cost contractor nothing"]
+</div><h3 id="a2-future-state-service-blueprint-unified-repairs-service">A2 — Future-state service blueprint (unified repairs service)</h3><div class="mermaid">
+flowchart TB
+    subgraph PE["Physical evidence"]
+        P1["Job reference in every message"] --> P2["Live tracker page 6 stages"]
+        P2 --> P3["SMS or email at each status event"]
+        P3 --> P4["Operative digital job card on tablet"]
+        P4 --> P5["Completion summary with photos"]
+    end
+    subgraph CU["Customer actions"]
+        C1["Reports once any channel T: 6 min"] --> C2["Gets reference and expected dates"]
+        C2 --> C3["Watches tracker no need to call"]
+        C3 --> C4["Confirms or moves slot in portal"]
+        C4 --> C5["Hosts one prepared visit"]
+        C5 --> C6["Receives completion summary"]
+    end
+    subgraph FS["Frontstage contact"]
+        FS1["Agent sees same tracker as resident"] --> FS2["Structured triage script T: 4 min"]
+        FS2 --> FS3["Operative arrives with parts pre-picked"]
+        FS3 --> FS4["Completion confirmed on tablet same day"]
+    end
+    subgraph BS["Backstage operations"]
+        B1["Same-day triage S: coded priority rules"] --> B2["Dynamic scheduling on live capacity"]
+        B2 --> B3["Parts reserved at booking"]
+        B3 --> B4["Follow-on works linked to parent job"]
+        B4 --> B5["Contractor portal confirms completion"]
+    end
+    subgraph SP["Support processes and systems"]
+        S1["Single job record one ID across systems"] --> S2["Status event bus emits state changes"]
+        S2 --> S3["RepairsDB kept wrapped by API"]
+        S3 --> S4["AssetPlan stock feed integrated"]
+        S4 --> S5["Schedule-of-rates auto-match residual F-08: 6%"]
+    end
+    PE --> CU --> FS --> BS --> SP
+</div><table>
+<thead>
+<tr>
+<th>Lane</th>
+<th>Step</th>
+<th>S (standard)</th>
+<th>Residual F</th>
+<th>W removed</th>
+<th>Value lever</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Customer</td>
+<td>Report once, any channel</td>
+<td>6 min</td>
+<td>Assisted-digital phone fallback</td>
+<td>W-01</td>
+<td>Intake re-keying removed</td>
+</tr>
+<tr>
+<td>Frontstage</td>
+<td>Agent and resident share one tracker</td>
+<td>Always</td>
+<td>None</td>
+<td>—</td>
+<td>Chase calls −31% pilot</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Coded triage rules</td>
+<td>Same day</td>
+<td>Complex triage to supervisor</td>
+<td>W-02</td>
+<td>Re-triage 14% → 5%</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Dynamic scheduling, live capacity</td>
+<td>Slot in 5 min</td>
+<td>Contractor calendar gaps</td>
+<td>F-03</td>
+<td>No-access 19% → 12%</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Parts reserved at booking</td>
+<td>At booking</td>
+<td>Long-tail stock-outs</td>
+<td>W-04</td>
+<td>FTF 62% → 71%</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>Status event bus, six events</td>
+<td>Real time</td>
+<td>SMS gateway failover (Amber closed)</td>
+<td>F-05</td>
+<td>CES driver #1</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>Invoice auto-match</td>
+<td>T+5 days</td>
+<td>6% residual manual review</td>
+<td>W-06</td>
+<td>Cycle 34 → 11 days</td>
+</tr>
+</tbody></table>
+<h3 id="a3-stakeholder-map-influence-interest">A3 — Stakeholder map (influence × interest)</h3><div class="mermaid">
+quadrantChart
+    title Fernwood repairs redesign stakeholders
+    x-axis Low interest --> High interest
+    y-axis Low influence --> High influence
+    quadrant-1 Manage closely
+    quadrant-2 Keep satisfied
+    quadrant-3 Monitor
+    quadrant-4 Keep informed
+    Director of Housing: [0.9, 0.92]
+    Head of Repairs Operations: [0.95, 0.82]
+    ICT service owner: [0.6, 0.75]
+    Section 151 finance officer: [0.42, 0.85]
+    Contact centre manager: [0.75, 0.55]
+    Schedulers and supervisors: [0.85, 0.45]
+    In-house operatives: [0.8, 0.35]
+    Framework contractors: [0.65, 0.5]
+    Tenants panel: [0.7, 0.38]
+    Housing committee councillors: [0.3, 0.8]
+    Gas compliance manager: [0.55, 0.6]
+    Data protection officer: [0.35, 0.65]
+</div><table>
+<thead>
+<tr>
+<th>Stakeholder</th>
+<th>Posture</th>
+<th>Engagement move</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Head of Repairs Operations</td>
+<td>Champion</td>
+<td>Weekly steering; owns pilot readout</td>
+</tr>
+<tr>
+<td>Schedulers and supervisors</td>
+<td>Co-designers</td>
+<td>Practitioner panel; lane-by-lane validation</td>
+</tr>
+<tr>
+<td>ICT service owner</td>
+<td>Cautious</td>
+<td>Read-only integration contract at G2; RepairsDB wrapped not replaced</td>
+</tr>
+<tr>
+<td>Framework contractors</td>
+<td>Commercially exposed</td>
+<td>Portal pilot framed as faster payment (W-06 fix benefits them)</td>
+</tr>
+<tr>
+<td>Tenants&#39; panel</td>
+<td>Watchful</td>
+<td>Recruited residents; reviewed every resident-facing message</td>
+</tr>
+<tr>
+<td>Data protection officer</td>
+<td>Gatekeeper</td>
+<td>Approved the tokenization protocol before any transcript was processed</td>
+</tr>
+</tbody></table>
+<h3 id="a4-ecosystem-map">A4 — Ecosystem map</h3><div class="mermaid">
+flowchart LR
+    RES["Resident"] --> PHONE["Repairs phone line"]
+    RES --> WEB["Web form"]
+    RES --> OSS["One-Stop Shop"]
+    RES --> HO["Housing officer visits"]
+    PHONE --> CC["Contact centre"]
+    WEB --> CC
+    OSS --> CC
+    HO --> RO["Repairs operations"]
+    CC --> RO
+    RO --> SCH["Schedulers"]
+    SCH --> IHT["In-house teams 24 operatives"]
+    SCH --> CON["3 framework contractors"]
+    IHT --> SYS["RepairsDB + AssetPlan"]
+    CON --> CL["ContractorLink"]
+    CL --> FIN["Finance ledger"]
+    SYS --> FIN
+    RO --> GAS["Gas compliance programme"]
+    RO --> HM["Housing management tenancy"]
+    RES --> OMB["Housing Ombudsman route"]
+    RES --> CLLR["Councillor casework"]
+    CLLR --> RO
+</div><h3 id="a5-persona-set-drawn-from-interviews-and-the-mock-data">A5 — Persona set (drawn from interviews and the mock data)</h3><p>Persona 1 — phone-first resident:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Petra Nowak, 68 (fictional)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Context</td>
+<td>Retired, council flat 11 years, severe arthritis; heating reliability is a health issue</td>
+</tr>
+<tr>
+<td>Trigger job</td>
+<td>Boiler fault in November, routine-tagged</td>
+</tr>
+<tr>
+<td>Goal</td>
+<td>&quot;Tell me someone has it in hand and when they will come&quot;</td>
+</tr>
+<tr>
+<td>Channel now</td>
+<td>Phone only; distrusts web forms after one vanished without a reference</td>
+</tr>
+<tr>
+<td>Effort today</td>
+<td>CES 5.4; 5 chase calls on her last job; waited in twice for a no-show</td>
+</tr>
+<tr>
+<td>Evidence</td>
+<td>INT-02, INT-11; log cohort: phone-intake routine jobs, wait 24 days</td>
+</tr>
+<tr>
+<td>Design response</td>
+<td>Phone channel retained and fully briefed; agent reads the same tracker; SMS read-aloud option; expected dates stated at intake</td>
+</tr>
+<tr>
+<td>Pilot evidence</td>
+<td>Pilot phone-intake jobs: chase rate 41% → 30%; CES 2.9</td>
+</tr>
+</tbody></table>
+<p>Persona 2 — mobile-first working parent:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Aisha Rahman, 34 (fictional)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Context</td>
+<td>Working parent, two children, shift work; cannot wait in 4-hour windows</td>
+</tr>
+<tr>
+<td>Trigger job</td>
+<td>Damp and mould in the children&#39;s bedroom; re-reported after an unlinked follow-on (F-07)</td>
+</tr>
+<tr>
+<td>Goal</td>
+<td>&quot;Book around my shifts and stop making me explain it again&quot;</td>
+</tr>
+<tr>
+<td>Channel now</td>
+<td>Web form at 22:00, then forced to phone because no reference came back</td>
+</tr>
+<tr>
+<td>Effort today</td>
+<td>CES 5.1; two no-access marks recorded against her after contractor reschedules</td>
+</tr>
+<tr>
+<td>Evidence</td>
+<td>INT-09, INT-14; LOG-07 no-access cohort</td>
+</tr>
+<tr>
+<td>Design response</td>
+<td>Portal slot confirm/move; photo upload at report; evening SMS; single case file so the follow-on is linked to her first report</td>
+</tr>
+<tr>
+<td>Pilot evidence</td>
+<td>Pilot web-intake jobs: chase rate 33% → 22%; CES 2.6</td>
+</tr>
+</tbody></table>
+<h3 id="a6-templates-used-on-this-engagement">A6 — Templates used on this engagement</h3><p><strong>(a) Blueprint-building SOP (evidence-per-row) — the flagship, shown in full in Section 7.</strong></p>
+<p><strong>(b) Fail-point register template.</strong></p>
+<pre><code class="language-markdown"># Fail-Point Register — one row per F or W
+| Field | Entry |
+|---|---|
+| ID | F-nn / W-nn |
+| Blueprint node | lane + column reference |
+| Symptom (what the resident sees) | &lt;= 25 words |
+| Frequency (jobs/yr affected) | from event-sequence data, else NEEDS_QUANT |
+| Time overlay | mean and p90 duration |
+| Cost overlay (EUR/yr) | volume x unit cost; no double counting |
+| Root-cause trace | F -&gt; backstage -&gt; support -&gt; system root, each hop evidence-cited |
+| Evidence IDs | &gt;= 2 per admitted fail point |
+| Priority | severity (1-5) x frequency, plotted on quadrant |
+| Candidate fix / blueprint change | future-state node reference |
+| KPI moved | name + baseline |
+| Owner + review date | named human |</code></pre><p><strong>(c) Blueprint workshop facilitation plan (3 hours, 8–12 participants).</strong></p>
+<pre><code class="language-markdown"># Blueprint Validation Workshop Plan
+00:00 Framing: the blueprint is a diagnostic, not an audit of people.
+      Rule on the wall: &quot;we name systems, not people.&quot;
+00:10 Walk the spine: facilitator reads each customer action; panel
+      confirms or corrects with a story from the last fortnight.
+00:40 Lane walk, frontstage then backstage: panel places DISPUTED sticky
+      on any node that does not match reality. Every dispute needs a
+      recent example; examples become evidence rows that evening.
+01:40 Break.
+01:55 Line of visibility exercise: for each backstage node, ask &quot;what
+      does the resident perceive here?&quot; Silence = candidate status event.
+02:30 F/W annotation check: panel re-ranks the top 5 fail points by
+      lived severity; deltas vs data ranking are logged, not averaged.
+02:50 Close: what one node would you fix tomorrow? (feeds quick wins)
+Roles: facilitator (designer), scribe (Claude Code live-notes agent with
+evidence IDs on screen), timekeeper, sponsor (silent observer).</code></pre><p><strong>(d) Lane-data dictionary.</strong></p>
+<pre><code class="language-markdown"># Lane-Data Dictionary — what counts as evidence per lane
+| Lane | Acceptable evidence | Minimum OK nodes | Forbidden |
+|---|---|---|---|
+| Physical evidence | photographed artifact, message log | 5 | agent-invented copy |
+| Customer actions | resident interview, diary, call log | 6 | staff second-guessing |
+| Frontstage | agent interview, ride-along, call recording | 6 | assumed scripts |
+| Backstage | scheduler/supervisor interview, event logs | 8 | documented SOP alone |
+| Support | system schema, log extract, finance data | 5 | vendor brochure claims |
+Rule: a documented SOP is evidence of intent, never of practice.</code></pre><p><strong>(e) Blueprint-as-code PR template.</strong></p>
+<pre><code class="language-markdown"># Blueprint PR Checklist
+- [ ] Every node has &gt;= 1 evidence_id, or status != OK
+- [ ] F tags carry frequency; W tags carry duration
+- [ ] Mermaid parses (CI); no duplicate node ids across lanes
+- [ ] PII regex scan clean (names, addresses, tenancy numbers)
+- [ ] Numbers reconcile with cost/volumes.md
+- [ ] Line crossings reviewed: visibility / internal interaction marked
+- [ ] Practitioner panel sign-off posted as PR comment
+- [ ] If future-state: linked backlog tickets listed</code></pre><h3 id="a7-mock-dataset">A7 — Mock dataset</h3><p>Full file: <a href="data/repairs_jobs_sample.csv"><code>data/repairs_jobs_sample.csv</code></a> — 48 jobs (28 pre, 20 pilot), illustrative values consistent with every table and chart in this article. Columns: job id, cohort, intake channel, priority, wait days, status-chase flag, first-time-fix, source system.</p>
+<pre><code class="language-csv">job_id,cohort,intake_channel,priority,wait_days,status_chase,first_time_fix,source_system
+RJB-20251002,pre,phone,routine,16,1,0,asset_plan
+RJB-20251010,pre,in_person,routine,24,0,1,asset_plan
+RJB-20251019,pre,email,routine,18,0,0,contractor_link
+RJB-20251028,pre,web,emergency,1,0,1,repairs_db
+RJB-20251032,pilot,in_person,routine,15,0,1,contractor_link
+RJB-20251039,pilot,phone,routine,22,1,0,contractor_link
+RJB-20251046,pilot,email,urgent,3,0,1,contractor_link</code></pre><p>Sample cohort means: pre chase 39% / FTF 61% / routine wait 23.1 days; pilot chase 30% / FTF 70% / routine wait 17.5 days. (The sample is illustrative; program-level figures are the 41% → 29% chased share, 62% → 71% FTF, and 23.5 → 18.7-day wait used throughout.)</p>
+<h3 id="a8-charts">A8 — Charts</h3><div class="mermaid">
+xychart-beta
+    title Status chase share and routine wait before and after pilot
+    x-axis ["Baseline", "Pilot"]
+    y-axis "Percent or days" 0 --> 45
+    bar [41, 29]
+    bar [24, 19]
+</div><div class="mermaid">
+pie title Repair categories - share of 28000 requests per year
+    "Plumbing and leaks" : 24
+    "Electrical" : 16
+    "Heating and boiler" : 14
+    "Carpentry and joinery" : 12
+    "Roofing and gutters" : 10
+    "Damp and mould" : 9
+    "Glazing and locks" : 7
+    "Other" : 8
+</div><div class="mermaid">
+quadrantChart
+    title Fail points - severity vs frequency
+    x-axis Low frequency --> High frequency
+    y-axis Low severity --> High severity
+    quadrant-1 Fix first
+    quadrant-2 Plan fix
+    quadrant-3 Accept
+    quadrant-4 Quick wins
+    F-05 status opacity: [0.95, 0.98]
+    F-04 first-time-fix: [0.88, 0.8]
+    F-03 no-access: [0.46, 0.78]
+    F-02 mis-triage: [0.34, 0.6]
+    F-07 unlinked follow-ons: [0.17, 0.58]
+    F-06 open-job drift: [0.22, 0.55]
+    F-08 invoice mismatch: [0.23, 0.4]
+    F-01 duplicate records: [0.15, 0.38]
+</div><p>(Frequency normalized: F-05 at 12,400 jobs/yr = 0.95; severity = resident impact × cost, scored 1–5 by the panel, plotted /5.)</p>
+<h3 id="a9-journey-to-blueprint-traceability">A9 — Journey-to-blueprint traceability</h3><table>
+<thead>
+<tr>
+<th>Current-state fail/wait</th>
+<th>Design principle</th>
+<th>Future blueprint change</th>
+<th>KPI moved (illustrative)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>F-05 + W-03 silence in the wait</td>
+<td>Every state change visible without asking</td>
+<td>Status event bus + tracker + SMS at 6 events</td>
+<td>Chase contacts −31% (pilot)</td>
+</tr>
+<tr>
+<td>F-04 wrong parts/diagnosis</td>
+<td>Diagnosis structured at triage</td>
+<td>Structured triage + parts reserved at booking</td>
+<td>FTF 62% → 71%</td>
+</tr>
+<tr>
+<td>F-03 capacity-blind booking</td>
+<td>Book against live capacity</td>
+<td>Dynamic scheduling + contractor portal</td>
+<td>No-access 19% → 12%</td>
+</tr>
+<tr>
+<td>F-01 + W-01 channel fragmentation</td>
+<td>One job record, one ID</td>
+<td>Single job record wrapping RepairsDB</td>
+<td>Duplicates 6% → 1%</td>
+</tr>
+<tr>
+<td>F-02 mis-triage</td>
+<td>Priority rules coded, not remembered</td>
+<td>Coded triage rules, supervisor exception path</td>
+<td>Re-triage 14% → 5%</td>
+</tr>
+<tr>
+<td>F-07 unlinked follow-ons</td>
+<td>One case file per property issue</td>
+<td>Parent-child job links</td>
+<td>Re-reports 7% → 2%</td>
+</tr>
+<tr>
+<td>F-06 open-job drift</td>
+<td>Completion is an event, not a phone call</td>
+<td>Portal same-day confirmation</td>
+<td>Open drift 9% → 2%</td>
+</tr>
+<tr>
+<td>F-08 + W-06 invoice mismatch</td>
+<td>Match invoices to schedule of rates automatically</td>
+<td>Auto-match, 6% residual manual</td>
+<td>Invoice cycle 34 → 11 days</td>
+</tr>
+</tbody></table>
+<h3 id="a10-good-services-audit-15-principles-reactive-repairs-service">A10 — Good Services audit (15 principles) — reactive repairs service</h3><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Principle (abbrev.)</th>
+<th>Before</th>
+<th>After (pilot)</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Easy to find</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Repairs number on letters only; now tracker link in every message</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Explains purpose</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>No statement of what a repair involves; now one screen at intake</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Sets expectations</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>No timescales anywhere; now per-stage expected dates</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Completes the outcome</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Jobs &quot;closed&quot; while follow-ons drifted; closure = linked works done</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Familiar</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Tracker uses the standard delivery-tracking pattern</td>
+</tr>
+<tr>
+<td>6</td>
+<td>No prior knowledge</td>
+<td>Fail</td>
+<td>Partial</td>
+<td>Top exception letters plain now; long-tail tenancy-clause letters remain</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Org-structure agnostic</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>One job ID hides the 3-system split from the resident</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Minimum steps</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Report once, any channel; no re-keying loops back to resident</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Consistent</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Agent and resident see the same tracker state</td>
+</tr>
+<tr>
+<td>10</td>
+<td>No dead ends</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Every status event carries the repairs line if a job stalls past SLA</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Usable by everyone</td>
+<td>Partial</td>
+<td>Partial</td>
+<td>Phone channel retained; WCAG 2.2 AA audit booked at rollout</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Responds to change</td>
+<td>Fail</td>
+<td>Partial</td>
+<td>Slot moves now same-day; storm-surge capacity plan drafted, untested</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Explains decisions</td>
+<td>Fail</td>
+<td>Partial</td>
+<td>Priority decisions explained in plain language; refusal reasons still terse</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Easy human assistance</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Repairs line persistent on tracker and every SMS</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Right knowledge only</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>No tenancy-clause questions at intake; structured triage asks what residents know</td>
+</tr>
+</tbody></table>
+<p>Before: 0 Pass / 4 Partial / 11 Fail. After (pilot): 11 Pass / 4 Partial / 0 Fail. The four mandatory public-service KPIs (See: <code>05-good-services/06-designing-good-services.md</code>): service completion rate (within SLA) 81% → 94%; satisfaction 61% → 78%; admin cost per job €11.80 → €8.10; digital take-up 24% → 34%. See: <code>05-good-services/02-the-fifteen-principles.md</code>.</p>
+<h2 id="6-use-cases">6. Use cases</h2><h3 id="uc1-emergency-repair-dangerous-fault-high-severity-escalation">UC1 — Emergency repair: dangerous fault, high-severity escalation</h3><p><strong>Scenario.</strong> A void property&#39;s smashed ground-floor window is reported at 19:40 by a neighbour; separately, an occupied home reports water pouring through a light fitting. Baseline: emergency mean attendance 5h10m, 71% within the 4-hour target, and the escalation path lived in the duty supervisor&#39;s head. <strong>What was designed:</strong> an escalation slice of the blueprint — coded triage rules auto-flag emergency combinations (water + electrics; unsecured void), the event bus pages the duty supervisor with the job record attached, the operative&#39;s tablet carries the structured diagnosis, and the resident (or reporting neighbour) gets the tracker link with a 4-hour expected time.</p>
+<div class="mermaid">
+flowchart LR
+    M1["19:40 report water through light fitting"] --> M2["19:42 coded triage flags emergency"]
+    M2 --> M3["19:43 event bus pages duty supervisor with job record"]
+    M3 --> M4["19:55 operative dispatched tracker live to resident"]
+    M4 --> M5["21:30 make-safe complete event emitted"]
+    M5 --> M6["Next day linked follow-on job auto-created"]
+</div><p><strong>AI working session.</strong> Claude Code derived the 14 emergency trigger combinations from 12 months of emergency logs and scheduler interviews; Codex attacked the list for false-positive cost (every false emergency page costs a call-out); the panel tuned thresholds on two historical winters. <strong>Outcome (illustrative, pilot):</strong> emergency mean attendance 5h10m → 2h50m; 94% within 4 hours; zero missed-escalation incidents vs 3 in the comparison teams.</p>
+<h3 id="uc2-planned-vs-reactive-coordination-the-gas-safety-collision">UC2 — Planned vs reactive coordination: the gas safety collision</h3><p><strong>Scenario.</strong> Fernwood runs an annual gas safety check programme across all 19,000 homes — a planned service with its own appointments — while reactive boiler repairs run on a separate track. The blueprint&#39;s support lane exposed the collision: 640 times a year, a reactive boiler visit and a planned gas check landed at the same property within 21 days of each other — two visits, two time-off-work windows, and, in 11% of those cases, contradictory advice from two different engineers (evidence LOG-11, INT-38). <strong>What was designed:</strong> one case file per property-issue and a scheduling join: any reactive heating job checks the planned-works calendar before offering a slot; when both are due within 21 days, one combined visit is offered.</p>
+<p><strong>AI working session.</strong> OpenCode mined the overlap from the two calendars (the join query was itself the diagnosis — the systems had never been joined before); Claude Code drafted the combined-visit message copy, reviewed by the gas compliance manager for regulatory phrasing; the designer negotiated the scope boundary (compliance-critical checks keep their legal deadlines; the combine is an offer, never a delay). <strong>Outcome (illustrative, pilot cohort):</strong> 71% of overlapping visits combined; ~450 duplicate visits/yr avoided at scale; zero compliance deadline breaches.</p>
+<h3 id="uc3-contractor-first-visit-reschedule-cascade">UC3 — Contractor first-visit reschedule cascade</h3><p><strong>Scenario.</strong> The worst sequence in the current-state blueprint: contractor reschedules → the appointment letter is already posted → the resident waits in → no-access is recorded <em>against the resident</em> → the job re-enters the booking queue at the back → the resident chases, and the call lands on an agent who can see none of this. 62% of no-access visits had a contractor-initiated reschedule in the prior 48 hours (Codex review CR-5). <strong>What was designed:</strong> a portal reschedule becomes a status event — it cancels the old slot in real time, fires an SMS with the new confirmed slot, removes the no-access risk, and logs against the contractor&#39;s schedule-of-rates record, which is where the incentive conversation now lives.</p>
+<div class="mermaid">
+flowchart LR
+    R1["Contractor requests reschedule in portal"] --> R2["Event bus cancels old slot same minute"]
+    R2 --> R3["SMS to resident with new confirmed slot"]
+    R3 --> R4["Resident confirms or picks alternative"]
+    R4 --> R5["Reschedule logged to contractor performance record"]
+</div><p><strong>AI working session.</strong> Claude Code traced 214 historical cascades from the event sequences into a failure-tree; OpenCode built the reschedule-event simulator on <code>data/repairs_jobs_sample.csv</code> so the panel could watch the cascade die; the designer handled the contractor-commercial conversation (portal compliance became a framework-review criterion, within the existing agreement&#39;s data clause). <strong>Outcome (illustrative, pilot):</strong> first-visit no-access 19% → 12%; cascade-linked complaints −58%; contractor same-day confirmation rate 88%.</p>
+<h2 id="7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</h2><p><strong>Encoded SOPs on this engagement:</strong></p>
+<ol>
+<li><strong>Blueprint-build SOP (SOP-BP-001) — the flagship.</strong> Encoding pattern: <em>method → step list → output schema → acceptance criteria → review gate</em>. This is how a complex, workshop-grade method becomes agent-executable without losing its evidentiary spine:</li>
+</ol>
+<pre><code class="language-text">SOP-BP-001: BUILD BLUEPRINT LANE FROM EVIDENCE
+Role: Lane-builder agent for the Fernwood repairs blueprint.
+Inputs: evidence/register.jsonl; spine/journey_spine.md (validated); lane name.
+Steps:
+1. Read the validated spine. Each customer action is a column anchor.
+2. For your lane (physical_evidence | frontstage | backstage | support),
+   propose one node per column where the lane acts or produces evidence.
+3. Every node MUST cite &gt;= 1 evidence_id. No evidence -&gt; status: GAP,
+   and no F/W tag may be attached.
+4. F tags require a quantified frequency; W tags require a duration;
+   qualitative-only signals get status: NEEDS_QUANT.
+5. Mark every vertical dependency crossing the line of visibility or
+   the line of internal interaction.
+Output schema (JSONL, one row per node):
+{node_id, lane, column, label, f_tag, w_tag, t_std, cost_eur,
+ evidence_ids[], status: OK | GAP | NEEDS_QUANT}
+Acceptance: 100% of OK nodes carry &gt;= 1 evidence_id; mermaid lint passes;
+no resident-identifying strings (regex gate); lane minimums per the
+lane-data dictionary are met before the blueprint leaves draft.
+Review gate: practitioner panel walks the printed blueprint line by line;
+disputed nodes return to the backlog with their evidence attached.</code></pre><ol start="2">
+<li><strong>Fail-point attribution prompt</strong> — the diagnostic conscience of the register:</li>
+</ol>
+<pre><code class="language-text">You are the Attribution Checker. Input: one fail-point register row
+{f_id, symptom, suspected_causes[], evidence_ids[]}. Trace the fail point
+downward: frontstage -&gt; backstage -&gt; support -&gt; system root. Every hop
+needs an evidence_id. If the trace ends above the system layer, mark
+root_cause: UNKNOWN and name the observation that would resolve it.
+Never attribute to &quot;staff error&quot; without a process-level explanation.
+Output: trace chain, confidence, and any contradicting evidence found.</code></pre><ol start="3">
+<li><strong>Event-sequence mining SOP</strong> (OpenCode pipeline, Section 4.1) — join logic, tokenization, and the unmatched-records report as a first-class finding.</li>
+<li><strong>The meta-SOP</strong> — research → synthesize → map → prioritize → specify → pilot → measure, with G1–G4 as PR-merge gates with named human approvers.</li>
+</ol>
+<p><strong>Guardrails.</strong> No resident PII in any blueprint artifact: names, addresses, and tenancy numbers are tokenized to property IDs before any agent sees source material, and a CI regex gate re-scans every PR — redaction is verified, not trusted. Evidence minimums per lane (A6d) stop a lane shipping on vibes. Every numeric overlay recomputes from <code>cost/volumes.md</code> in CI. Human sign-off: G1 evidence (ops lead), G2 current-state (practitioner panel), G3 pilot go (DPO + union consultation), G4 rollout (Director of Housing). No agent output crosses a gate unmerged.</p>
+<p><strong>Failure modes observed.</strong> (1) <strong>The invented lane step.</strong> A lane-builder agent emitted a plausible backstage node — &quot;job sheets printed nightly for supervisors&quot; — with no evidence. It was exactly the kind of operational folklore a workshop would nod through. The evidence-per-node CI check failed the build; the node went in as GAP, and a ride-along confirmed the practice had died two years earlier. Mitigation: every node needs ≥1 evidence ref, full stop. (2) <strong>Lane confusion.</strong> The linker agent placed the contractor re-booking call in frontstage; the workshop ruling (&quot;if the resident cannot perceive it, it is not frontstage&quot;) is now a SOP rule. (3) <strong>Attribution drift toward people.</strong> Early drafts blamed operative skill for F-04 and residents for F-03; the attribution prompt&#39;s no-&quot;staff error&quot; rule plus Codex&#39;s CR-5 review kept both traces at the system layer, where the fixes actually live. (4) <strong>Mermaid drift.</strong> Duplicate node ids across lanes failed the parse lint twice; the diagram conventions are now in the PR template.</p>
+<h2 id="8-value-creation-amp-measurement">8. Value creation &amp; measurement</h2><p><strong>Before/after (pilot cohort vs baseline and comparison teams; all figures illustrative):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline</th>
+<th>Comparison (pilot period)</th>
+<th>Pilot</th>
+<th>Delta</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Jobs attracting ≥1 status chase</td>
+<td>41%</td>
+<td>40%</td>
+<td>29%</td>
+<td>−12pts</td>
+</tr>
+<tr>
+<td>Status-chase contacts/month (modeled at scale)</td>
+<td>3,100</td>
+<td>3,080</td>
+<td>2,140</td>
+<td>−31%</td>
+</tr>
+<tr>
+<td>First-time-fix</td>
+<td>62%</td>
+<td>62%</td>
+<td>71%</td>
+<td>+9pts</td>
+</tr>
+<tr>
+<td>Service completion rate (within SLA)</td>
+<td>81%</td>
+<td>81%</td>
+<td>94%</td>
+<td>+13pts</td>
+</tr>
+<tr>
+<td>Mean wait, routine repair (days)</td>
+<td>23.5</td>
+<td>23.8</td>
+<td>18.7</td>
+<td>−20%</td>
+</tr>
+<tr>
+<td>First-visit no-access/no-show</td>
+<td>19%</td>
+<td>18%</td>
+<td>12%</td>
+<td>−7pts</td>
+</tr>
+<tr>
+<td>Resident effort (CES, 1–7)</td>
+<td>4.9</td>
+<td>4.9</td>
+<td>2.9</td>
+<td>−2.0</td>
+</tr>
+<tr>
+<td>Resident satisfaction with repairs</td>
+<td>61%</td>
+<td>62%</td>
+<td>78%</td>
+<td>+17pts</td>
+</tr>
+<tr>
+<td>Repairs complaints (stage 1, per quarter)</td>
+<td>92</td>
+<td>95</td>
+<td>61</td>
+<td>−34%</td>
+</tr>
+<tr>
+<td>Admin cost per job</td>
+<td>€11.80</td>
+<td>€11.90</td>
+<td>€8.10</td>
+<td>−31%</td>
+</tr>
+<tr>
+<td>Digital take-up (share of intake)</td>
+<td>24%</td>
+<td>24%</td>
+<td>34%</td>
+<td>+10pts</td>
+</tr>
+<tr>
+<td>Duplicate job records</td>
+<td>6%</td>
+<td>6%</td>
+<td>1%</td>
+<td>−5pts</td>
+</tr>
+</tbody></table>
+<p><strong>Causal logic.</strong> Public-sector value runs through the tripartite productivity model (See: <code>19-service-management-and-marketing/07-designing-and-managing-the-service-process.md</code>). Internal efficiency: the single job record and portal confirmations cut admin cost per job 31% and failure demand 31%, releasing contact-centre capacity without cutting the phone channel. External efficiency: CES 4.9 → 2.9 and satisfaction +17 points — the service got cheaper <em>because</em> it got better, the opposite of the quality–productivity trade-off. Capacity efficiency: first-time-fix +9 points removes ~2,700 repeat visits a year at scale, which is operative capacity returned to the backlog — capacity a council cannot hire its way to. Modeled annual benefit: failure demand €74k + repeat visits €231k + complaint handling €26k ≈ <strong>€331k/yr</strong>, against €95k run cost and €235k one-off; payback around month 15 of scaled rollout (conservative case; no-access savings excluded). We claim contribution, not attribution: comparison teams are the counterfactual, and no other repairs initiative ran during the pilot window.</p>
+<p>The measurement plan: the four public-service KPIs (completion, satisfaction, cost per transaction, digital take-up — See: <code>05-good-services/06-designing-good-services.md</code>) plus the F/W register re-scored quarterly, feeding the Actions dashboard at team level — unit-level, never authority-wide averages.</p>
+<h2 id="9-ai-tool-playbook-this-engagement">9. AI tool playbook (this engagement)</h2><p><strong>Claude Code — lane construction, synthesis, artifact authoring.</strong> Ran the four lane-builder subagents, the linker and critic agents, transcript coding into the evidence register, and every artifact draft. Excelled at: holding the evidence-per-node discipline across 60+ blueprint nodes and keeping diagrams consistent with the register. Failed at: one invented backstage node (caught by the CI gate) and initial frontstage/backstage lane confusion. Human took over for: interviews, ride-alongs, workshop facilitation, and every gate decision.</p>
+<p><strong>OpenCode — agent-mode data pipelines and simulation.</strong> Built the event-sequence pipeline across the three systems (prompt in Section 4.1), the weekly pilot-extract normalizer, the reschedule-cascade simulator, and <code>data/repairs_jobs_sample.csv</code>. Excelled at: cross-system joins that had literally never been run before — the 9% unmatched rate was a diagnosis in itself. Failed at: first CSV generation had cohort means that contradicted the baseline table; fixed by adding &quot;cohort aggregates must match the spec&quot; to the generation prompt. Human took over for: defining what the numbers had to prove.</p>
+<p><strong>Codex — adversarial attribution and math review.</strong> Two reviews (<code>codex exec --skip-git-repo-check</code>, prompt in Section 4.2): fail-point attribution (CR-5 moved no-access blame from residents to contractor rescheduling) and cost overlays (CR-2 removed an invoice double-count). Excelled at: hostile reading of causal claims. Failed at: it initially proposed a &quot;shared job ID is industry standard&quot; claim with no source — marked <code>[unverified]</code> and dropped; the citation rule held. Human took over for: deciding which defects were material to the gate.</p>
+<p><strong>GitHub — blueprint-as-code, review gates, CI.</strong> The blueprint lived as markdown lanes plus mermaid in <code>fernwood-repairs-blueprint</code>; issues per fail point and per artifact; the project board <em>was</em> the phase tracker steering read weekly; PRs with named approvers were the G1–G4 sign-off gates; Actions ran the mermaid parse, the PII regex gate, the evidence-per-node check, and number-consistency against <code>cost/volumes.md</code> on every PR:</p>
+<pre><code class="language-yaml"># .github/workflows/blueprint-ci.yml (excerpt)
+on: [pull_request]
+jobs:
+  gate:
+    steps:
+      - uses: actions/checkout@v4
+      - run: npx @mermaid-js/mermaid-cli --parseMMDOptions -i diagrams/all.mmd
+      - run: node scripts/evidence_gate.mjs lanes/   # every OK node &gt;=1 evidence_id
+      - run: node scripts/pii_scan.mjs               # names addresses tenancy numbers
+      - run: node scripts/check_numbers.mjs          # overlays vs cost/volumes.md</code></pre><p>The evidence gate caught the invented node; the number check caught a stale chased-share figure (43% vs 41%) that had survived two human reviews. CI gates, people decide.</p>
+<h2 id="10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</h2><ol>
+<li><strong>A blueprint without evidence gates is a mural.</strong> The one node that slipped through unevidenced was the most believable one. Believability is the enemy; the CI gate, not vigilance, is the control.</li>
+<li><strong>The join rate is a finding.</strong> OpenCode&#39;s 9% unmatched jobs said more about the system than any interview. In blueprint diagnostics, pipeline failures are data.</li>
+<li><strong>Blame migrates upward when you force the trace.</strong> Every F that started as &quot;resident fault&quot; or &quot;operative skill&quot; ended at a system root once the attribution prompt forbade person-level explanations. The fix list changed completely.</li>
+<li><strong>Codex earns its keep on attribution and math, not copy.</strong> CR-5 and CR-2 were worth the entire review budget; its wording suggestions were mostly noise. Route tools to their strengths.</li>
+<li><strong>Contractor incentives are a blueprint layer.</strong> F-03&#39;s root cause lived in the payment schedule, not in any system. If the support lane stops at IT, you miss the commercial machinery that drives behavior.</li>
+<li><strong>The workshop is where agents get corrected.</strong> Lane confusion, folklore nodes, and severity mis-ranking were all fixed by the practitioner panel in three hours. Budget the workshop; do not let the artifact outrun it.</li>
+<li><strong>Keep the phone channel fully alive in pilot.</strong> Digital take-up rose when the phone channel was <em>not</em> threatened — residents with low digital confidence (persona Petra) move when trust exists, not when the door closes.</li>
+<li><strong>Diagram lint from day one.</strong> Two mermaid failures were caught in PRs that would have been steering-deck embarrassments.</li>
+</ol>
+<h2 id="11-references">11. References</h2><p>Book chapters used (knowledge library in <code>books/</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Reference</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>09-mapping-experiences/05-service-blueprints.md</code></td>
+<td>Blueprint lanes, three lines, F/W/$/T annotation, blueprinting from a validated journey spine</td>
+</tr>
+<tr>
+<td><code>19-service-management-and-marketing/07-designing-and-managing-the-service-process.md</code></td>
+<td>Service process design, F/W/S markers, tripartite productivity model</td>
+</tr>
+<tr>
+<td><code>01-this-is-service-design-doing/07-implementation-and-piloting.md</code></td>
+<td>Pilot design, blueprint-to-backlog, failure demand, closed measurement loop</td>
+</tr>
+<tr>
+<td><code>06-the-service-innovation-handbook/06-designing-for-scale-and-delivery.md</code></td>
+<td>Blueprint as delivery bridge, operational readiness review, public-sector business model</td>
+</tr>
+<tr>
+<td><code>08-orchestrating-experiences/04-understanding-the-journey.md</code></td>
+<td>Chronological journey interviewing, shadow journey, evidence over mythology</td>
+</tr>
+<tr>
+<td><code>05-good-services/06-designing-good-services.md</code></td>
+<td>Whole-service design, Discovery–Alpha–Beta–Live staging, four mandatory public-service KPIs</td>
+</tr>
+<tr>
+<td><code>05-good-services/02-the-fifteen-principles.md</code></td>
+<td>A10 Good Services audit</td>
+</tr>
+</tbody></table>
+<p>External frameworks mentioned as sector context (no statistics cited): UK Housing Ombudsman complaint-handling; annual gas safety check obligations; WCAG 2.2 AA (accessibility audit booked at rollout); GDPR (tokenization protocol). No real-council statistics are cited; all figures are illustrative.</p>
+<p>Related series articles: <code>../01/README.md</code> (the earlier Fernwood status-demand pilot and the AI-first operating system), <code>../09/README.md</code> (journey mapping from transcripts), <code>../26/README.md</code> (Fernwood Phase 2: Good Services across the authority).</p>
+<h2 id="12-appendix-artifact-index">12. Appendix: artifact index</h2><table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Format</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Process + gantt plan</td>
+<td>3</td>
+<td>Mermaid</td>
+<td>10-week blueprint program, gates, cadence</td>
+</tr>
+<tr>
+<td>A1 Current-state journey map</td>
+<td>5</td>
+<td>Mermaid + emotion table</td>
+<td>Spine: report → wait → visit → complete → invoice</td>
+</tr>
+<tr>
+<td>A1b Current-state blueprint</td>
+<td>5</td>
+<td>Mermaid 5-lane + lane table</td>
+<td>Diagnostic centerpiece, F-01…F-08, W-01…W-06, cost overlays</td>
+</tr>
+<tr>
+<td>A1c Root-cause trace</td>
+<td>5</td>
+<td>Mermaid</td>
+<td>F → backstage → support → system root</td>
+</tr>
+<tr>
+<td>A2 Future-state blueprint</td>
+<td>5</td>
+<td>Mermaid + lane table</td>
+<td>Operational spec with S standards and residual F</td>
+</tr>
+<tr>
+<td>A3 Stakeholder map</td>
+<td>5</td>
+<td>quadrantChart + table</td>
+<td>Influence/interest postures and moves</td>
+</tr>
+<tr>
+<td>A4 Ecosystem map</td>
+<td>5</td>
+<td>Mermaid</td>
+<td>Resident, channels, contractors, systems, ombudsman, councillors</td>
+</tr>
+<tr>
+<td>A5 Personas</td>
+<td>5</td>
+<td>2 tables</td>
+<td>Phone-first and mobile-first residents, tied to evidence</td>
+</tr>
+<tr>
+<td>A6a Blueprint-build SOP</td>
+<td>7</td>
+<td>Prompt/schema</td>
+<td>Flagship agent-executable SOP with evidence gate</td>
+</tr>
+<tr>
+<td>A6b Fail-point register</td>
+<td>5</td>
+<td>Template</td>
+<td>F/W quantification and root-cause trace fields</td>
+</tr>
+<tr>
+<td>A6c Workshop plan</td>
+<td>5</td>
+<td>Template</td>
+<td>3-hour validation workshop, line-of-visibility exercise</td>
+</tr>
+<tr>
+<td>A6d Lane-data dictionary</td>
+<td>5</td>
+<td>Template</td>
+<td>Acceptable evidence per lane</td>
+</tr>
+<tr>
+<td>A6e Blueprint PR template</td>
+<td>5</td>
+<td>Template</td>
+<td>Blueprint-as-code review checklist</td>
+</tr>
+<tr>
+<td>A7 Mock jobs dataset</td>
+<td>5, data/</td>
+<td>CSV</td>
+<td>48 jobs, pre/pilot cohorts</td>
+</tr>
+<tr>
+<td>A8 Charts</td>
+<td>5</td>
+<td>xychart-beta, pie, quadrantChart</td>
+<td>Before/after, repair mix, F severity × frequency</td>
+</tr>
+<tr>
+<td>A9 Traceability table</td>
+<td>5</td>
+<td>Table</td>
+<td>Fail/wait → principle → blueprint change → KPI</td>
+</tr>
+<tr>
+<td>A10 Good Services audit</td>
+<td>5</td>
+<td>Table</td>
+<td>15 principles, before/after, public-sector KPIs</td>
+</tr>
+<tr>
+<td>Use case flows</td>
+<td>6</td>
+<td>Mermaid + narrative</td>
+<td>Emergency escalation, gas-safety collision, reschedule cascade</td>
+</tr>
+<tr>
+<td>Blueprint CI workflow</td>
+<td>9</td>
+<td>YAML</td>
+<td>Mermaid lint, evidence gate, PII scan, number check</td>
+</tr>
+</tbody></table>
+</article><div class="wrap" style="max-width:880px">
+    <div class="cross-links"><a href="../10/index.html"><span class="lbl">← Previous case</span><span class="ttl">10. Mental Models &amp; Alignment: Understanding How Users Think — the Gradebook and Parent Communication Redesign at Lumen EdTech</span></a><a href="../12/index.html"><span class="lbl">Next case →</span><span class="ttl">12. Ecosystem Maps &amp; Orchestration: Designing Northgate Health's Care Ecosystem</span></a></div>
+    <div class="art-foot">
+      <span>13 figures (13 diagrams) · ~9.0k words · reviewed by an adversarial AI reviewer (Gemini 3.1 Pro High).</span>
+      · <a href="https://github.com/sammozaffari/the-agentic-service-designer/blob/main/articles/11/README.md" target="_blank" rel="noopener">Open source in repo ↗</a>
+    </div>
+  </div></main>
+<footer class="footer"><div class="footer-inner">
+  <span>Agentic Service Designer — 30 service design case studies from an AI-first practice. Fictional, anonymized clients.</span>
+  <span><a href="./index.html">Home</a> · <a href="./concept.html">The concept</a> · <a href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub</a></span>
+</div></footer>
+<script src="./assets/site.js"></script>
+</body></html>

@@ -1,0 +1,1054 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Personas from Messy Data: Evidence-Backed Segmentation at Kestrel Energy — Utilities (energy retail)">
+<title>08. Personas from Messy Data: Evidence-Backed Segmentation at Kestrel Energy — Agentic Service Designer</title>
+<link rel="stylesheet" href="./assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234f46e5'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'>A</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+</head><body>
+<nav class="nav"><div class="nav-inner">
+  <a class="brand" href="./index.html"><span class="mark">A</span>Agentic Service Designer</a>
+  <div class="nav-links">
+    <a href="./index.html" class="">Home</a>
+    <a href="./concept.html" class="">The concept</a>
+    <a href="./index.html#series" class="on">Case studies</a>
+    <a class="github-link" href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</div></nav>
+<main class="art">
+  <div class="wrap art-hero">
+    <div class="art-meta">
+      <span class="chip chip-track">Research &amp; Synthesis</span>
+      <span class="sep">·</span><span>Utilities (energy retail)</span>
+      <span class="sep">·</span><span><b>Kestrel Energy</b></span>
+      <span class="sep">·</span><span>20 weeks</span>
+      <span class="chip chip-tool">Claude Code</span><span class="chip chip-tool">OpenCode</span><span class="chip chip-tool">Codex</span><span class="chip chip-tool">GitHub</span>
+    </div>
+    <h1>Personas from Messy Data: Evidence-Backed Segmentation at Kestrel Energy</h1>
+    <p class="deck">Fictional composite client. All names, figures, and data are illustrative and anonymized.</p>
+  </div><article class="art-body wrap"><nav class="toc"><b>On this page</b><ol><li><a href="#0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</a></li><li><a href="#1-executive-summary">1. Executive summary</a></li><li><a href="#2-the-brief">2. The brief</a></li><li><a href="#3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</a></li><li><a href="#4-phase-by-phase-narrative">4. Phase-by-phase narrative</a></li><li><a href="#5-artifacts-portfolio">5. Artifacts portfolio</a></li><li><a href="#6-use-cases">6. Use cases</a></li><li><a href="#7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</a></li><li><a href="#8-value-creation-amp-measurement">8. Value creation &amp; measurement</a></li><li><a href="#9-ai-tool-playbook">9. AI tool playbook</a></li><li><a href="#10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</a></li><li><a href="#11-references">11. References</a></li><li><a href="#12-appendix-artifact-index">12. Appendix: artifact index</a></li></ol></nav><h1 id="personas-from-messy-data-evidence-backed-segmentation-at-kestrel-energy">Personas from Messy Data: Evidence-Backed Segmentation at Kestrel Energy</h1><h2 id="0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</h2><p>Kestrel Energy is a fictional composite client, assembled from patterns observed across several European energy retailers running regulated smart-meter rollouts; no real utility, customer, or employee is depicted. All names, figures, datasets, clusters, and quotes are illustrative and anonymized — every customer identifier in this article is a synthetic hash, and every quote comes from a fictional participant code. The article shares knowledge and process — the persona pipeline, SOPs, prompts, validation gates — never client specifics. The engagement ran AI-first: Claude Code, OpenCode, Codex, and GitHub were the primary working tools, with the human designer retaining framing, ethics, and sign-off authority.</p>
+<h2 id="1-executive-summary">1. Executive summary</h2><p>Kestrel Energy, a fictional EU utility with 2.4 million household and 180,000 SME accounts, was midway through a mandated smart-meter rollout and a digital account-service relaunch — and was designing both against a segmentation no one trusted: four demographic buckets (&quot;young families&quot;, &quot;seniors&quot;, &quot;urban professionals&quot;, &quot;business&quot;) inherited from a 2019 marketing study. The organization had, meanwhile, been sitting on an embarrassment of evidence it could not use: 2.4M customer records with inconsistent fields, 1.9M contact-log rows, 400 interviews and 60 diary studies from three prior research efforts, 28,400 survey verbatims, and privacy-scoped billing and usage telemetry. Over 20 weeks, one service designer and an AI agent team turned that mess into a defensible behavioral segmentation — 7 household and 4 SME clusters fused from quantitative clustering and qualitative typology — and three decision-grade personas that now anchor the smart-meter journey, the digital service, and every journey map and brief in the portfolio. On illustrative figures: persona coverage 96.4% of accounts, self-serve adoption 41% → 57%, contact volume −21%, price-vigilant switching 19% → 13.5%, and ≈ €2.6M annualized contact-cost avoidance.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Kestrel Energy (fictional composite)</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>Energy retail, EU (DACH/Benelux pattern)</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>Smart-meter rollout + digital account service</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>Rebuild customer understanding end-to-end: data cleaning → segmentation → personas → validation → organizational adoption</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>20 weeks</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>1 lead designer + AI agents + 2.7 client FTE</td>
+</tr>
+<tr>
+<td>AI tools</td>
+<td>Claude Code, OpenCode, Codex, GitHub</td>
+</tr>
+<tr>
+<td>Headline results (illustrative)</td>
+<td>Coverage 96.4%; self-serve 41→57%; contacts −21%; price-vigilant switching 19→13.5%; ≈ €2.6M/yr contact-cost avoidance</td>
+</tr>
+</tbody></table>
+<p>What you will learn:</p>
+<ul>
+<li>How to build personas from hybrid evidence — CRM records, contact logs, interviews, diaries, telemetry — with every claim traceable to a source row, not to vibes.</li>
+<li>How to fuse quantitative clustering (k-means, hierarchical) with qualitative typology, and how to cross-check the fusion with an independent adversarial derivation.</li>
+<li>How to validate personas like a measurement instrument: coverage, distinctness, size tests, anti-stereotype guardrails — and how to land them in the organization so journey maps and briefs actually get rewritten.</li>
+</ul>
+<h2 id="2-the-brief">2. The brief</h2><h3 id="client-portrait">Client portrait</h3><p>Kestrel Energy retails electricity and gas to roughly 2.4 million household accounts and 180,000 SME accounts across two EU member states, with a field force of about 900 installation and maintenance technicians, a 420-seat contact centre, and a digital estate consisting of a web portal (2016 vintage), a mobile app relaunched in 2024, and a chatbot of contested value. The national regulator&#39;s metering mandate requires substantially complete smart-meter deployment by 2032; Kestrel had installed 1.1 million meters (46% of households) when the engagement started. Digital maturity was middling: 41% of household accounts were monthly-active on digital self-serve, and the contact centre absorbed about 950,000 contacts per year at a blended cost of €7.10 each.</p>
+<h3 id="the-challenge">The challenge</h3><p>The smart-meter program was underperforming in exactly the places customer understanding should have predicted. Only 22% of install appointments were self-booked digitally; the rest were booked by phone after an average of 1.8 reminder letters, and 14% of appointments failed on the day (customer not home, access blocked, meter cabinet not found). Post-install, the &quot;energy insights&quot; feature — the flagship justification of the rollout — had 9% monthly engagement. Meanwhile the contact mix told its own story of unmet needs: billing and tariff confusion drove 31% of all contacts, meter readings 11%, install logistics 17%. And the executive team had three mutually contradictory beliefs about &quot;the customer&quot;: marketing swore by the 2019 demographic buckets, operations insisted &quot;customers just want to be left alone,&quot; and the digital team believed everyone was one good push-notification away from app engagement. All three were assumption-based views, never tested against the data the company already owned (See: 09-mapping-experiences/03-understanding-the-user.md — research-based vs assumption-based understanding).</p>
+<p>The deeper problem was that the evidence existed but was unusable raw: 214 distinct spellings of move-out reason codes, duplicate accounts from a 2021 billing-system migration, inconsistent address and tariff fields; contact logs mixing agent-coded reasons with free text; and three research programs (2022 billing, 2023 app, 2024 smart-meter) whose 400 interview transcripts and 60 diary studies had never been synthesized together. Nobody could say, with evidence, how many kinds of customer Kestrel actually had.</p>
+<h3 id="success-criteria-agreed-with-the-client">Success criteria (agreed with the client)</h3><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline (illustrative)</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Persona coverage: accounts assignable to a cluster with confidence ≥ 0.6</td>
+<td>n/a</td>
+<td>≥ 90%</td>
+</tr>
+<tr>
+<td>Cluster distinctness (mean silhouette, household model)</td>
+<td>n/a</td>
+<td>≥ 0.35</td>
+</tr>
+<tr>
+<td>Independent typology convergence (Codex qualitative-only derivation)</td>
+<td>n/a</td>
+<td>≥ 8 of 11 clusters</td>
+</tr>
+<tr>
+<td>Self-serve adoption (household accounts monthly-active)</td>
+<td>41%</td>
+<td>≥ 55% within 12 months</td>
+</tr>
+<tr>
+<td>Smart-meter install self-booking rate</td>
+<td>22%</td>
+<td>≥ 60%</td>
+</tr>
+<tr>
+<td>Price-vigilant segment annual switching rate</td>
+<td>19%</td>
+<td>≤ 14%</td>
+</tr>
+<tr>
+<td>Annual contact volume</td>
+<td>950,000</td>
+<td>−15% or better</td>
+</tr>
+</tbody></table>
+<h3 id="constraints">Constraints</h3><p>Budget €210,000 all-in; 20 weeks to a validated persona set because the smart-meter program&#39;s next planning gate was fixed; GDPR plus national metering-data rules that treat quarter-hourly usage data as near-special-category (the engagement was restricted to daily aggregates, pseudonymized, EU-resident processing, no individual-level disclosure — cluster-level outputs only); a 2011-era customer master with batch overnight sync; and a hard rule from the data protection officer that no model output could ever name or single out an individual customer.</p>
+<h3 id="why-service-design">Why service design</h3><p>This was textbook <em>customer understanding</em> work in the Outside In sense: an industrialized capability that converts evidence into decision-grade personas the whole organization can reason against (See: 14-outside-in/04-customer-understanding.md). Kumar&#39;s Know People → Frame Insights arc supplied the synthesis discipline — observations to findings to insights, with the acid test that an insight must change what gets designed (See: 17-101-design-methods/04-mode-3-know-people.md, 05-mode-4-frame-insights.md). Polaine, Løvlie and Reason&#39;s data → information → insight hierarchy gave the team its shared epistemology (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md), and Martin and Hanington&#39;s behavioral-persona standard — archetypes as boundary objects, not demographic portraits — set the artifact bar (See: 18-universal-methods-of-design/05-representational-and-synthesis-methods.md). Demographics describe; behavior predicts. Kestrel needed prediction.</p>
+<h2 id="3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</h2><p>The engagement followed the Double Diamond with the Mode 3 → Mode 4 arc as the spine. The designer ran every phase with named AI collaborators: OpenCode for the data-cleaning and feature pipeline, a Claude Code agent team for clustering runs, qualitative synthesis, and persona authoring, Codex for the independent typology cross-check and adversarial review, and GitHub as the system of record — every claim a PR, every gate a review, every quote verified in CI.</p>
+<div class="mermaid">
+flowchart LR
+  subgraph DISC["Discover - weeks 1-6"]
+    R1["Data audit of 5 source systems"] --> R2["Assumption workshop with 14 stakeholders"]
+    R2 --> R3["Research consolidation 400 interviews 60 diaries"]
+  end
+  subgraph DEF["Define - weeks 5-10"]
+    D1["Cleaning and feature pipeline"] --> D2["Clustering runs k-means and Ward"]
+    D2 --> D3["Qualitative typology from synthesis wall"]
+  end
+  subgraph DEV["Develop - weeks 9-14"]
+    V1["Qual-quant fusion workshop"] --> V2["Codex independent typology cross-check"]
+    V2 --> V3["Persona authoring and validation gates"]
+  end
+  subgraph DEL["Deliver - weeks 13-20"]
+    A1["Persona cards and design directives"] --> A2["Cutover of journey maps and briefs"]
+    A2 --> A3["Adoption telemetry and handover"]
+  end
+  DISC --> DEF --> DEV --> DEL
+</div><div class="mermaid">
+gantt
+  title Kestrel persona rebuild - 20 weeks
+  dateFormat YYYY-MM-DD
+  axisFormat %W
+  section Discover
+  Data audit and DPIA              :a1, 2026-02-02, 10d
+  Assumption workshop              :a2, after a1, 5d
+  Research consolidation           :a3, after a2, 18d
+  section Define
+  Cleaning and feature pipeline    :b1, 2026-02-16, 22d
+  Clustering runs and selection    :b2, after b1, 12d
+  Qualitative synthesis wall       :b3, after a3, 15d
+  section Develop
+  Fusion workshop and cross-check  :c1, after b2, 8d
+  Persona authoring                :c2, after c1, 10d
+  Validation gates G1 to G3        :c3, after c2, 8d
+  section Deliver
+  Persona cards and directives     :d1, after c3, 8d
+  Journey and blueprint cutover    :d2, after d1, 15d
+  Adoption telemetry and handover  :d3, after d2, 10d
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>SD method (citation)</th>
+<th>AI tool(s)</th>
+<th>Artifact produced</th>
+<th>Client involvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Discover</td>
+<td>Assumption mapping, data audit, POEMS-style inventory (09/03, 17/04)</td>
+<td>Claude Code (source profiling), GitHub (evidence repo)</td>
+<td>Source inventory, assumption register, DPIA</td>
+<td>DPO + 2 analysts; 14-stakeholder workshop</td>
+</tr>
+<tr>
+<td>Define</td>
+<td>Data → information ladder; behavioral variable extraction (03/04, 18/05)</td>
+<td>OpenCode (pipeline, pydantic, dedup, pseudonymization)</td>
+<td>Feature store, cleaned dataset, data-quality report</td>
+<td>Analyst pair-review of schema</td>
+</tr>
+<tr>
+<td>Define</td>
+<td>Cluster analysis fused with qualitative typology (17/05, 18/05)</td>
+<td>Claude Code agent team (k-means, hierarchical), Codex (k-selection challenge)</td>
+<td>Candidate partitions, cluster profiles</td>
+<td>Cluster review session</td>
+</tr>
+<tr>
+<td>Develop</td>
+<td>Persona construction as boundary objects; insight cards (18/05, 03/04)</td>
+<td>Claude Code (narrative personas), Codex (independent typology)</td>
+<td>11 cluster profiles, 3 decision-grade personas</td>
+<td>Fusion workshop, 9 people</td>
+</tr>
+<tr>
+<td>Develop</td>
+<td>Validation: coverage, distinctness, anti-stereotype audit (14/04)</td>
+<td>Claude Code (validation suite), GitHub Actions (quote verification)</td>
+<td>Validation report, sign-off gates</td>
+<td>Insight council sign-off</td>
+</tr>
+<tr>
+<td>Deliver</td>
+<td>Socialization: persona embedding into PRDs, journey maps, briefs (14/04)</td>
+<td>GitHub (cutover issues/PRs), Claude Code (map regeneration)</td>
+<td>Persona card set, cutover backlog, adoption dashboard</td>
+<td>Service owners, journey owners</td>
+</tr>
+</tbody></table>
+<h2 id="4-phase-by-phase-narrative">4. Phase-by-phase narrative</h2><h3 id="41-discover-weeks-16-audit-the-mess-surface-the-assumptions">4.1 Discover (weeks 1–6): audit the mess, surface the assumptions</h3><p><strong>Goal.</strong> Establish what evidence exists, what state it is in, and what the organization currently believes — before touching a model.</p>
+<p><strong>Method &amp; SOP.</strong> Two parallel moves. First, an assumption-mapping workshop with 14 stakeholders (marketing, operations, digital, metering program, DPO) to extract every working belief about &quot;the customer&quot; into an assumption register — hypothesis views to be tested, never truth (See: 09-mapping-experiences/03-understanding-the-user.md). Second, a structured source audit: every dataset profiled for volume, schema drift, missingness, join keys, and lawful basis, logged against a POEMS-flavored inventory of the service&#39;s people, objects, environments, messages, and services (See: 17-101-design-methods/04-mode-3-know-people.md).</p>
+<p><strong>AI execution.</strong> Claude Code profiled the five source systems in one afternoon using a profiling SOP: column-level missingness, cardinality, format drift, and candidate join keys per extract — work that would have taken an analyst two weeks. The output was brutal: 2,412,318 household records, of which 61,204 (2.5%) were migration duplicates; 214 move-out spellings collapsing to 9 real codes; 18.2% of records missing at least one of address, tariff, or payment-method fields; contact reason-codes that disagreed with the free text in 23% of sampled rows. The assumption workshop produced 41 belief statements, of which the audit later confirmed only 17. GitHub carried the register: one issue per assumption, closed by evidence, not by opinion.</p>
+<p><strong>Human designer judgment.</strong> The designer negotiated the DPIA boundary with the DPO before any pipeline was built: daily usage aggregates only, pseudonymization at ingestion, cluster-level outputs only, no household-level model scores leaving the analytics zone. This constraint shaped everything downstream — and is the reason the final personas are defensible in front of the regulator.</p>
+<p><strong>Artifacts produced.</strong> Source inventory, DPIA, assumption register (41 items), data-quality baseline.</p>
+<h3 id="42-define-weeks-510-clean-build-features-cluster">4.2 Define (weeks 5–10): clean, build features, cluster</h3><p><strong>Goal.</strong> Convert five messy sources into a clean feature store, then find the quantitative partition that best separates behavioral kinds of customer.</p>
+<p><strong>Method &amp; SOP.</strong> The data → information rung of the hierarchy (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md): normalize, deduplicate, pseudonymize, then engineer behavioral features across six spectrums — payment posture, channel posture, contact posture, price posture, digital posture, consumption posture — the behavioral-spectrum approach of behavioral persona construction rather than demographic bucketing (See: 18-universal-methods-of-design/05-representational-and-synthesis-methods.md). Then cluster: k-means across a k sweep, hierarchical Ward as an independent partition, compare.</p>
+<p><strong>AI execution.</strong> OpenCode ran the entire pipeline in agent mode. The pipeline was specified as code and reviewed as a PR:</p>
+<pre><code class="language-bash">opencode run --agent build &quot;Build pipeline/ in Python 3.12:
+1. ingest/: read raw exports (customer master, contact logs, billing,
+   telemetry daily aggregates, survey verbatims). Validate every row against
+   pydantic schemas in schemas/; quarantine rejects to quarantine/ with reason.
+2. clean/: dedup by fuzzy address+name key (threshold 0.92), normalize the 214
+   move-out spellings to the 9-code table in ref/moveout_codes.yaml, then
+   pseudonymize: customer_id -&gt; HMAC-SHA256 with key from env KES_PSEUDO_KEY.
+   Never write raw names or full addresses downstream.
+3. features/: one row per account -&gt; 34 features (annual_spend, payment_method,
+   direct_debit_failures_24m, contacts_24m, channel_mix_phone_share,
+   reason_mix_top1, price_related_contact_share, portal_mau, app_mau,
+   self_serve_success_rate, smart_meter_flag, daily_kwh_cv, ev_pv_flag,
+   tenure_years, move_count_5y, ...). Write features/household.parquet and
+   features/sme.parquet. Log every transformation count to run_report.md.&quot;</code></pre><p>The clustering ran as a Claude Code agent team: one agent swept k-means for k = 4…12 with silhouette, Calinski-Harabasz, and stability under 50 bootstrap resamples; a second ran Ward hierarchical clustering cut at 5…9; a third reconciled the partitions (adjusted Rand index 0.71 at k = 7 for households — good agreement between independent methods). The k = 7 household solution (silhouette 0.41) and k = 4 SME solution (0.44) were selected; Codex challenged k-selection adversarially and its strongest point — that C5 and C7 might be one cluster — was tested and rejected: merging them collapsed silhouette to 0.36 and mixed radically different churn risks.</p>
+<p>In parallel, the qualitative stream: the 400 transcripts and 60 diary studies were processed by the transcript-to-evidence SOP (Section 7) into 4,712 evidence items, affinity-clustered on the synthesis wall into a qualitative typology of 9 behavioral types — built with zero access to the quantitative clusters, deliberately.</p>
+<p><strong>Human designer judgment.</strong> Feature selection is framing: the designer excluded raw income proxies and property-value estimates from the feature set on both ethical and predictive grounds (they stereotype more than they predict), and kept direct-debit failure count because it predicts service need, not worth.</p>
+<p><strong>Artifacts produced.</strong> Cleaned feature store (2.35M household + 178k SME rows after dedup), data-quality report, candidate partitions, qualitative typology v1.</p>
+<h3 id="43-develop-weeks-914-fuse-author-validate">4.3 Develop (weeks 9–14): fuse, author, validate</h3><p><strong>Goal.</strong> Fuse the quantitative partition with the qualitative typology into one segmentation, author personas anchored to verified quotes, and pass validation gates before anyone is allowed to use them.</p>
+<p><strong>Method &amp; SOP.</strong> Fusion is the Frame Insights move: two independent lenses on the same population, reconciled explicitly (See: 17-101-design-methods/05-mode-4-frame-insights.md). Then persona authoring as boundary objects with design directives (See: 18-universal-methods-of-design/05-representational-and-synthesis-methods.md, 14-outside-in/04-customer-understanding.md), then instrument-grade validation.</p>
+<p><strong>AI execution.</strong> The fusion workshop (9 people, one day) mapped the 9 qualitative types onto the 7+4 quantitative clusters: 8 mapped cleanly; one qualitative type (&quot;the delegation-dependent elder&quot;) split across C2 and C5 — resolved by keeping it as a cross-cluster <em>modifier</em> (delegation flag) rather than a cluster. Codex then ran the engagement&#39;s key cross-check: an independent typology from qualitative data only, instructed to ignore the existing segmentation entirely:</p>
+<pre><code class="language-bash">codex exec --skip-git-repo-check &quot;Read synthesis/evidence-register.jsonl and
+research/diary-summaries/. Derive a behavioral typology of Kestrel customers
+from first principles: behavioral dimensions, then types, each type defined by
+observable behavior and anchored to evidence IDs. Do NOT read
+segmentation/clusters.md or any file mentioning cluster codes. Then compare
+your typology to segmentation/clusters.md and report: convergence, divergence,
+and which side has the better evidence per disagreement. Be adversarial.&quot;</code></pre><p>Convergence: 9 of 11 clusters matched Codex&#39;s independent types; both divergences improved the model (Codex split &quot;eco-optimizers&quot; from a tech-enthusiast group k-means had merged into C4; the fusion kept C6 separate, justified by EV/PV telemetry).</p>
+<p>Persona authoring used the quote-anchored prompt in Section 7: Claude Code drafted 3 decision-grade personas (A5) from the fused profiles, every attribute carrying an evidence ID, every quote verbatim-verified in CI. Validation gates: <strong>G1 coverage</strong> — 96.4% of accounts assignable at confidence ≥ 0.6 (target ≥ 90%); <strong>G2 distinctness</strong> — silhouette 0.41/0.44, minimum cluster share 4%, every persona pair separated by ≥ 2 significantly different behavioral features; <strong>G3 anti-stereotype audit</strong> — an agent pass plus a human panel against the audit template (A6): no attribute without evidence, none that merely decorates a demographic, no deficit framing.</p>
+<p><strong>Human designer judgment.</strong> The designer killed a proposed eighth household persona (&quot;the vulnerable customer&quot;) — ethically real, methodologically wrong: vulnerability is a state that moves across clusters, not a type. It became a service-standard overlay instead. Naming the three flagship personas was also a human call: names had to be memorable to a field technician, not to a marketing department.</p>
+<p><strong>Artifacts produced.</strong> Fused segmentation (7 + 4 clusters), 3 decision-grade personas (A5), validation report, the persona development pipeline diagram (Section 5).</p>
+<h3 id="44-deliver-weeks-1320-adoption-is-the-deliverable">4.4 Deliver (weeks 13–20): adoption is the deliverable</h3><p><strong>Goal.</strong> A persona set nobody uses is a poster. The deliverable is cutover: journey maps, briefs, campaign segmentation, and service standards rewritten against the new clusters.</p>
+<p><strong>Method &amp; SOP.</strong> Socialization per Outside In: personas embedded into PRDs, journey reviews, and frontline onboarding, with an outer-loop owner accountable (See: 14-outside-in/04-customer-understanding.md).</p>
+<p><strong>AI execution.</strong> GitHub carried the cutover as 68 issues: regenerate each of the 9 active journey maps per cluster lens, rewrite 12 campaign briefs, update the smart-meter booking journey (A1/A2), and add cluster codes to the campaign tool&#39;s segment picker. Claude Code regenerated journey maps as mermaid PRs with the new persona lens and evidence tags, each requiring the journey owner&#39;s review. OpenCode built the adoption dashboard: which teams reference which persona in which artifact, weekly.</p>
+<p><strong>Human designer judgment.</strong> The designer ran the two-hour persona immersion for the contact-centre leadership and the metering program board, and made the one irreversible call: the 2019 demographic buckets were formally retired — removed from the campaign tool, not merely deprecated. Second conventions beside the first is how segmentations die.</p>
+<p><strong>Artifacts produced.</strong> Persona card set, cutover backlog (68 issues, 61 closed at handover), adoption dashboard, handover SOP pack.</p>
+<h2 id="5-artifacts-portfolio">5. Artifacts portfolio</h2><p>All figures illustrative.</p>
+<h3 id="persona-development-pipeline">Persona development pipeline</h3><div class="mermaid">
+flowchart TB
+  subgraph SRC["Messy sources"]
+    S1["2.4M customer records inconsistent fields"]
+    S2["1.9M contact-log rows 24 months"]
+    S3["400 interviews plus 60 diary studies"]
+    S4["28.4k survey verbatims"]
+    S5["Billing and usage telemetry daily aggregates privacy-scoped"]
+  end
+  subgraph CLN["Cleaning and feature building - OpenCode"]
+    C1["Pydantic schemas and quarantine"] --> C2["Dedup 61k merges and normalization"]
+    C2 --> C3["Pseudonymization HMAC vault"]
+    C3 --> C4["Feature store 34 behavioral features"]
+  end
+  subgraph SEG["Segmentation - Claude Code agent team"]
+    K1["K-means sweep k 4 to 12 bootstrap stability"] --> K3["Reconciliation ARI 0.71"]
+    K2["Hierarchical Ward cuts 5 to 9"] --> K3
+  end
+  subgraph FUS["Qual-quant fusion"]
+    F1["Qualitative typology 9 types from 4712 evidence items"] --> F2["Fusion workshop"]
+    K3 --> F2
+    F2 --> F3["Codex independent typology cross-check 9 of 11 convergent"]
+  end
+  subgraph PER["Persona authoring - Claude Code"]
+    P1["Narrative personas anchored to verified quotes"] --> P2["Cards plus design directives"]
+  end
+  subgraph VAL["Validation gates"]
+    V1["G1 coverage 96.4 percent"] --> V2["G2 distinctness silhouette 0.41"]
+    V2 --> V3["G3 anti-stereotype audit"]
+    V3 --> V4["Insight council sign-off"]
+  end
+  SRC --> CLN --> SEG --> FUS --> PER --> VAL
+</div><h3 id="a1-current-state-journey-map-smart-meter-install-digitally-disengaged-senior-cluster-c2">A1 — Current-state journey map: smart-meter install, Digitally Disengaged Senior cluster (C2)</h3><div class="mermaid">
+flowchart TB
+  subgraph P1["Phase 1: Letter arrives - emotion 2"]
+    D1["Receives install notice letter dense with tariff terms"] --> D2["Cannot tell if install is mandatory or optional"]
+    D2 --> D3["Puts letter in the bills pile"]
+  end
+  subgraph P2["Phase 2: Booking - emotion 1"]
+    B1["Second letter arrives with QR code only"] --> B2["Does not own a smartphone with camera confidence"]
+    B2 --> B3["Calls contact centre after 14 minute wait"]
+    B3 --> B4["Agent books slot; no SMS confirmation possible"]
+  end
+  subgraph P3["Phase 3: Appointment day - emotion 2"]
+    A1["Four hour window; no narrower slot"] --> A2["Technician arrives; meter cabinet key is with the landlord"]
+    A2 --> A3["Appointment fails; rebooking letter arrives"]
+  end
+  subgraph P4["Phase 4: After install - emotion 2"]
+    F1["New meter installed on second visit"] --> F2["First bill shows estimated then actual readings"]
+    F2 --> F3["Calls to ask if the bill is right"]
+  end
+  P1 --> P2 --> P3 --> P4
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Emotion (1–5)</th>
+<th>Dominant pain</th>
+<th>Supporting evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Letter arrives</td>
+<td>2</td>
+<td>Mandatory vs optional unclear; letter written for lawyers</td>
+<td>HH-117, HH-203; artifact audit A-07</td>
+</tr>
+<tr>
+<td>Booking</td>
+<td>1</td>
+<td>QR-only path excludes the phone-first customer</td>
+<td>Booking logs: 78% of C2 installs phone-booked; HH-141</td>
+</tr>
+<tr>
+<td>Appointment day</td>
+<td>2</td>
+<td>4-hour window; access prerequisites never communicated</td>
+<td>14% failed-appointment rate; field report FR-22</td>
+</tr>
+<tr>
+<td>After install</td>
+<td>2</td>
+<td>Estimated-then-actual billing reads as an error</td>
+<td>Billing-confusion contacts, C2 share 19%; HH-098</td>
+</tr>
+</tbody></table>
+<h3 id="a2-service-blueprint-future-state-smart-meter-self-serve-with-assisted-digital-path">A2 — Service blueprint (future state): smart-meter self-serve with assisted digital path</h3><div class="mermaid">
+flowchart TB
+  subgraph L1["Physical evidence"]
+    PE1["Plain-language install letter with phone and QR doors"] --> PE2["Self-serve booking with slot picker"]
+    PE2 --> PE3["Confirmation letter or SMS plus access checklist"]
+    PE3 --> PE4["Day-before reminder with technician name"]
+    PE4 --> PE5["Post-install bill explainer insert"]
+  end
+  subgraph L2["Customer actions"]
+    CA1["Reads letter; chooses QR phone or delegated helper"] --> CA2["Picks 2-hour slot; confirms access checklist"]
+    CA2 --> CA3["Prepares meter cabinet access"]
+    CA3 --> CA4["Meets technician; install in 45 minutes"]
+    CA4 --> CA5["Reads explainer; checks first actual bill"]
+  end
+  subgraph L3["Frontstage"]
+    FS1["Booking assistant self-serve"] --> FS2["Assisted digital line books on customer behalf"]
+    FS2 --> FS3["Proactive call to C2 and delegation-flagged accounts"]
+    FS3 --> FS4["Technician with customer context card"]
+    FS4 --> FS5["Billing helpdesk briefed on first-bill wave"]
+  end
+  subgraph L4["Backstage"]
+    BS1["Cluster-aware invite sequencing"] --> BS2["Slot capacity management with DSO"]
+    BS2 --> BS3["Access-risk scoring per address"]
+    BS3 --> BS4["Failed-appointment root-cause review weekly"]
+    BS4 --> BS5["First-bill monitoring per cluster"]
+  end
+  subgraph L5["Support processes"]
+    SP1["CRM and consent registry"] --> SP2["Metering platform and DSO scheduling"]
+    SP2 --> SP3["Segmentation feature store nightly refresh"]
+    SP3 --> SP4["Technician routing and parts logistics"]
+    SP4 --> SP5["KPI dashboard and survey pipeline"]
+  end
+  L1 --> L2 --> L3 --> L4 --> L5
+</div><p>Lane table (targets illustrative):</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Physical evidence</th>
+<th>Customer action</th>
+<th>Frontstage</th>
+<th>Backstage</th>
+<th>Support</th>
+<th>Diagnostic</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1 Invite</td>
+<td>Two-door letter</td>
+<td>Chooses channel</td>
+<td>Assisted line ready</td>
+<td>Cluster sequencing</td>
+<td>CRM, consent</td>
+<td>Was: QR-only; 78% of C2 phone-booked reactively</td>
+</tr>
+<tr>
+<td>2 Book</td>
+<td>Slot picker</td>
+<td>Picks 2-hour slot</td>
+<td>Assistant or agent books</td>
+<td>Capacity with DSO</td>
+<td>Scheduling</td>
+<td>Was: 22% self-booked; target 64%</td>
+</tr>
+<tr>
+<td>3 Prepare</td>
+<td>Access checklist + reminder</td>
+<td>Prepares access</td>
+<td>Reminder call/SMS</td>
+<td>Access-risk scoring</td>
+<td>Feature store</td>
+<td>Was: 14% failed appointments; target ≤6%</td>
+</tr>
+<tr>
+<td>4 Install</td>
+<td>Technician context card</td>
+<td>Meets technician</td>
+<td>Context-aware visit</td>
+<td>Routing, parts</td>
+<td>Field platform</td>
+<td>Was: no customer context at the door</td>
+</tr>
+<tr>
+<td>5 First bill</td>
+<td>Explainer insert</td>
+<td>Checks bill</td>
+<td>Briefed helpdesk</td>
+<td>First-bill monitoring</td>
+<td>Dashboard</td>
+<td>Was: billing confusion 31% of contacts</td>
+</tr>
+</tbody></table>
+<h3 id="a3-stakeholder-map">A3 — Stakeholder map</h3><div class="mermaid">
+quadrantChart
+  title Kestrel persona rebuild stakeholder map
+  x-axis Low interest --> High interest
+  y-axis Low influence --> High influence
+  quadrant-1 Manage closely
+  quadrant-2 Keep satisfied
+  quadrant-3 Monitor
+  quadrant-4 Keep informed
+  Chief customer officer sponsor: [0.8, 0.9]
+  Data protection officer: [0.6, 0.85]
+  Metering program director: [0.85, 0.8]
+  Head of contact centre: [0.9, 0.65]
+  CIO and data platform lead: [0.55, 0.7]
+  Marketing director: [0.75, 0.6]
+  National regulator liaison: [0.3, 0.75]
+  DSO scheduling counterpart: [0.4, 0.55]
+  Field install contractor lead: [0.65, 0.45]
+  Customer advisory panel: [0.85, 0.3]
+</div><h3 id="a4-ecosystem-map">A4 — Ecosystem map</h3><div class="mermaid">
+flowchart LR
+  HH["Household customer"] <--> KE["Kestrel retail operations"]
+  SME["SME customer"] <--> KE
+  KE <--> MV["Meter vendor Meterwerk fictional"]
+  KE <--> DSO["Distribution system operator"]
+  KE <--> INST["Installation subcontractors"]
+  KE <--> BRK["Energy broker and switching platforms"]
+  REG["National energy regulator fictionalized"] --> KE
+  REG --> DSO
+  DSO --> MV
+  INST --> DSO
+  HH <--> BRK
+  SME <--> BRK
+</div><p>The map exposed two relationships the old segmentation ignored: the broker channel shapes the price-vigilant cluster&#39;s expectations more than anything Kestrel publishes, and the DSO&#39;s slot capacity — not Kestrel&#39;s letters — sets the real pace of the install journey.</p>
+<h3 id="a5-personas-decision-grade-from-fused-model">A5 — Personas (decision-grade, from fused model)</h3><p><strong>Persona 1 — &quot;Ingrid, 78, the paper trail keeper&quot;</strong> (cluster C2, digitally disengaged seniors; 264,000 household accounts, 11%)</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Profile</td>
+<td>78, retired school secretary, small town; phone-first, tablet used for family photos with granddaughter&#39;s help</td>
+</tr>
+<tr>
+<td>Goals</td>
+<td>Keep the lights on and the bills predictable; &quot;not be a nuisance&quot;; stay in her home without depending on her son for every letter</td>
+</tr>
+<tr>
+<td>Pains</td>
+<td>QR-only letters; 4-hour appointment windows; billing jargon (&quot;estimated&quot;, &quot;actual&quot;, &quot;metering point&quot;); fear of being switched off by mistake</td>
+</tr>
+<tr>
+<td>Channels</td>
+<td>Phone (89% of her cluster&#39;s contacts), paper post; portal adoption 6%; app effectively zero</td>
+</tr>
+<tr>
+<td>Workaround</td>
+<td>Keeps every bill in a ring binder, oldest to newest; asks the pharmacist&#39;s daughter to read letters</td>
+</tr>
+<tr>
+<td>Quote</td>
+<td>&quot;I don&#39;t mind the new meter. I mind that nobody tells me what I have to do and by when.&quot; (HH-117, verified verbatim, lines 44–47)</td>
+</tr>
+<tr>
+<td>Distinctiveness stats</td>
+<td>Contacts 1.4/yr (vs 0.1 for C1); median age 74 (next-oldest cluster 52); phone share 89% vs population 41%; delegation flag 31%</td>
+</tr>
+<tr>
+<td>Design directives</td>
+<td>Always a phone door with a human SLA; paper confirmations; named appointment windows ≤2 hours; access checklist in 14pt type; proactive outbound contact at journey milestones</td>
+</tr>
+</tbody></table>
+<p><strong>Persona 2 — &quot;Markus, 44, the tariff hawk&quot;</strong> (cluster C3, price super-vigilants; 336,000 household accounts, 14%)</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Profile</td>
+<td>44, engineer, suburban semi-detached with EV; spreadsheet of every tariff since 2019</td>
+</tr>
+<tr>
+<td>Goals</td>
+<td>Never overpay; verify the bill himself; exploit off-peak windows; be treated as a competent adult, not a retention target</td>
+</tr>
+<tr>
+<td>Pains</td>
+<td>Opaque tariff changes; &quot;estimated&quot; bills; marketing mailers that insult his intelligence; alerts that arrive after the price event</td>
+</tr>
+<tr>
+<td>Channels</td>
+<td>App and portal (88% digital-active), email; calls only when the numbers do not add up — 1.9 contacts/yr, 62% price-related</td>
+</tr>
+<tr>
+<td>Workaround</td>
+<td>Reads his own smart meter weekly and reconciles against the bill in a spreadsheet; checks the broker comparison site quarterly</td>
+</tr>
+<tr>
+<td>Quote</td>
+<td>&quot;I switched the last time because they raised the price and the letter explained nothing. Give me the numbers and I will stay.&quot; (HH-042, verified verbatim, lines 12–15)</td>
+</tr>
+<tr>
+<td>Distinctiveness stats</td>
+<td>Price-related contact share 62% vs population 19%; broker-site visit proxy 4.1/yr; switching rate 19%/yr vs population 9%; smart-meter insights engagement 71% vs 9%</td>
+</tr>
+<tr>
+<td>Design directives</td>
+<td>Show the numbers: threshold alerts, tariff-fit checks with real arithmetic, no retention theatrics; a switch-cost breakdown beats a discount offer</td>
+</tr>
+</tbody></table>
+<p><strong>Persona 3 — &quot;Sabine, 39, the facilities multitasker&quot;</strong> (cluster S1, SME facilities multitaskers; 68,400 SME accounts, 38%)</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Profile</td>
+<td>39, office-and-facilities manager of a 3-site bakery group; energy is 3% of her job, 100% of its interruptions</td>
+</tr>
+<tr>
+<td>Goals</td>
+<td>One bill, one login, one deadline; never think about energy unless something is wrong; audit-ready numbers for the owner</td>
+</tr>
+<tr>
+<td>Pains</td>
+<td>3 sites × 2 fuels = 6 invoices on 4 different dates; portal forces per-site logins; contract renewal letters arrive at the wrong site</td>
+</tr>
+<tr>
+<td>Channels</td>
+<td>Email and portal (58% digital-active); phone for anything involving a deadline; 6.2 contacts/yr</td>
+</tr>
+<tr>
+<td>Workaround</td>
+<td>A personal calendar of contract end-dates and a folder of scanned invoices; pays in batches to reduce logins</td>
+</tr>
+<tr>
+<td>Quote</td>
+<td>&quot;I have nineteen other systems. Yours is the only one that makes me log in three times to pay one supplier.&quot; (SME-09, verified verbatim, lines 61–64)</td>
+</tr>
+<tr>
+<td>Distinctiveness stats</td>
+<td>Mean 2.7 sites vs 1.2 for other SME clusters; invoice queries 44% of contacts vs 21%; multi-product holding 71%; digital adoption 58% despite portal friction</td>
+</tr>
+<tr>
+<td>Design directives</td>
+<td>Consolidated multi-site billing with one due date; single-login portfolio view; renewal calendar push 90/60/30 days; export that matches her accounting package</td>
+</tr>
+</tbody></table>
+<p>Optional empathy map — Persona 1 (Ingrid), abridged:</p>
+<table>
+<thead>
+<tr>
+<th>Lens</th>
+<th>Content (evidence-tagged)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Says</td>
+<td>&quot;I keep everything in the folder, just in case.&quot; (HH-117)</td>
+</tr>
+<tr>
+<td>Thinks</td>
+<td>&quot;If I press the wrong thing, they will switch me off.&quot; (HH-203; diary D-33)</td>
+</tr>
+<tr>
+<td>Does</td>
+<td>Files every bill; phones after every unexplained letter; delegates setup tasks to family (logs; delegation flag)</td>
+</tr>
+<tr>
+<td>Feels</td>
+<td>Anxiety at letters (valence −2 in 61% of C2 evidence items); relief after a named-human call (valence +2 in 74% of post-call items)</td>
+</tr>
+</tbody></table>
+<h3 id="a6-templates">A6 — Templates</h3><p><strong>Persona card template</strong></p>
+<pre><code class="language-text">PERSONA CARD — [name] — cluster [code] — version [ ] — date [ ]
+1. One-line identity        : behavioral motto, not a demographic label
+2. Population               : cluster share %, account count, confidence band
+3. Goals                    : 3 max, each evidence-tagged [EV-id]
+4. Pains                    : 3-5, each with journey phase + evidence ID
+5. Channels                 : mix % by channel, source: contact logs
+6. Quote                    : verbatim, participant code, line range (CI-verified)
+7. Distinctiveness stats    : &gt;=2 features where this persona differs
+                              significantly from every other (test ref)
+8. Workarounds              : observed, not imagined
+9. Design directives        : mandatory requirements any team can test against
+10. Anti-stereotype check   : audit template ref + auditor + date
+11. Retirement/review date  : personas expire; next validation due</code></pre><p><strong>Segmentation hypothesis sheet</strong></p>
+<pre><code class="language-text">SEGMENTATION HYPOTHESIS — [id] — author [ ] — date [ ]
+1. Hypothesis      : &quot;We believe customers separate on [behavioral dimension]
+                     because [evidence/assumption ID].&quot;
+2. Status          : assumption | testing | confirmed | rejected
+3. Falsifier       : &quot;This is wrong if [observable condition].&quot;
+4. Data required   : source systems + fields + lawful basis check
+5. Test            : clustering run | qualitative probe | both — SOP ref
+6. Decision it informs : which artifact/brief/journey changes if true</code></pre><p><strong>Persona validation checklist</strong></p>
+<pre><code class="language-text">PERSONA VALIDATION CHECKLIST — run at G1-G3, all boxes required
+[ ] Coverage: &gt;=90% of population assigned at confidence &gt;=0.6
+[ ] Distinctness: mean silhouette &gt;=0.35; each persona differs from every
+    other on &gt;=2 behavioral features (p&lt;0.05, effect size reported)
+[ ] Size: every cluster &gt;=3% of population or explicitly justified
+[ ] Evidence: every persona attribute traces to &gt;=1 evidence ID; every
+    quote verbatim-verified against the transcript store (CI)
+[ ] Convergence: independent derivation (second method or second model)
+    matches &gt;=8 of 11 clusters; divergences documented and resolved
+[ ] Stability: cluster assignment stable under bootstrap resampling (ARI)
+[ ] Anti-stereotype audit: completed template, human panel sign-off
+[ ] Utility: each persona has &gt;=3 testable design directives
+[ ] Privacy: no individual-level scores exported; cluster-level only
+[ ] Review date set (max 12 months)</code></pre><p><strong>Cluster-run SOP-as-code (CLS-RUN-002, v1.1)</strong></p>
+<pre><code class="language-yaml">sop: CLS-RUN-002
+name: Household and SME clustering run with acceptance gates
+version: 1.1
+owner: insight_lead
+privacy:
+  pseudonymization: hmac_sha256_env_key
+  telemetry_resolution: daily_aggregate_only
+  export: cluster_level_only        # no individual-level scores leave the zone
+params:
+  features: features/v3/household_34f.parquet
+  algorithms:
+    kmeans: {k_range: [4, 12], n_init: 50, seed: 42}
+    hierarchical: {linkage: ward, cuts: [5, 9]}
+  bootstrap_resamples: 50
+metrics:
+  - silhouette_mean
+  - calinski_harabasz
+  - adjusted_rand_index_between_methods
+  - bootstrap_assignment_stability
+acceptance:
+  silhouette_mean: &quot;&gt;=0.35&quot;
+  ari_between_methods: &quot;&gt;=0.65&quot;
+  bootstrap_stability: &quot;&gt;=0.80&quot;
+  min_cluster_share: &quot;&gt;=0.03&quot;
+  coverage_at_conf_0_6: &quot;&gt;=0.90&quot;
+on_failure: report to insight council; do not tune until it passes -
+            document why the partition is rejected
+review_cadence: quarterly refresh, full revalidation annually</code></pre><p><strong>Anti-stereotype audit template</strong></p>
+<pre><code class="language-text">ANTI-STEREOTYPE AUDIT — persona [name] — auditor [ ] — date [ ]
+For each attribute on the persona card:
+1. Evidence?            : [EV-id] or REMOVE
+2. Behavioral or
+   demographic?         : if demographic: does it predict a service need?
+                           if not, REMOVE
+3. Deficit framing?     : rewrite &quot;can't use computers&quot; as
+                           &quot;phone channel is the service front door for 89%&quot;
+4. Would the person
+   recognize themselves? : panel test with 2 customer-advisory members
+5. Inverse test         : read the attribute about a group you belong to;
+                           if it stings, rewrite
+6. Sign-off             : auditor + designer + one client panelist</code></pre><h3 id="a7-mock-dataset">A7 — Mock dataset</h3><p>Full file: <a href="data/segments_sample.csv"><code>data/segments_sample.csv</code></a> — 60-row anonymized sample across all 11 clusters, fixed seed; columns match the feature-store export contract (identifiers are HMAC-style hashes; spend in bands, never exact; no individual telemetry).</p>
+<pre><code class="language-csv">customer_id_hash,segment_type,cluster_code,cluster_label,persona_label,annual_spend_band_eur,contacts_24m,self_serve_status,tenure_years
+KES-5ED5FF18F2,household,C5,strained_budgeters,,900-1400,11,never,10
+KES-9582188437,household,C3,price_super_vigilants,markus_tariff_hawk,500-900,1,active,4
+KES-DF2D1DCCBD,sme,S2,sme_cost_controllers,,20000-60000,2,lapsed,6
+KES-21B25E86D5,household,C1,settled_autopilots,,500-900,1,active,14
+KES-211D086856,household,C2,digitally_disengaged_seniors,ingrid_assisted_senior,500-900,2,never,12
+KES-0DA1E5504F,household,C2,digitally_disengaged_seniors,ingrid_assisted_senior,900-1400,5,lapsed,18
+KES-0FD34E682A,sme,S3,sme_multi_site_operators,,60000+,8,active,21
+KES-EDFF34B040,sme,S4,sme_owner_operators,,5000-20000,5,active,13
+KES-C167A49FBF,household,C4,busy_digital_managers,,2200-5000,0,active,3
+KES-E3CCFB235E,household,C2,digitally_disengaged_seniors,ingrid_assisted_senior,500-900,3,lapsed,28
+KES-95D0EB3EBA,household,C1,settled_autopilots,,500-900,1,active,23
+KES-E934EBA6B0,household,C4,busy_digital_managers,,1400-2200,1,active,9</code></pre><h3 id="a8-charts">A8 — Charts</h3><div class="mermaid">
+xychart-beta
+  title "Household cluster sizes thousands of accounts illustrative"
+  x-axis ["Autopilots", "Digital managers", "Price vigilants", "Seniors", "Strained", "Eco optimizers", "New movers"]
+  y-axis "Accounts thousands" 0 --> 900
+  bar [816, 528, 336, 264, 216, 144, 96]
+</div><div class="mermaid">
+pie title Contact reason mix 24 months n=1884207 illustrative
+  "Billing and tariffs" : 31
+  "Smart meter install" : 17
+  "Payment and debt" : 12
+  "Meter readings" : 11
+  "Moves" : 10
+  "Digital access" : 8
+  "Complaints" : 6
+  "Other" : 5
+</div><div class="mermaid">
+quadrantChart
+  title Clusters by annual value and effort to serve illustrative
+  x-axis Low effort to serve --> High effort to serve
+  y-axis Low annual value --> High annual value
+  quadrant-1 Invest and assist
+  quadrant-2 Protect and automate
+  quadrant-3 Low-touch maintain
+  quadrant-4 Redesign or recover
+  Settled autopilots: [0.15, 0.55]
+  Busy digital managers: [0.30, 0.70]
+  Eco optimizers: [0.40, 0.85]
+  SME multi-site operators: [0.55, 0.95]
+  SME facilities multitaskers: [0.65, 0.90]
+  Price super-vigilants: [0.75, 0.72]
+  Digitally disengaged seniors: [0.70, 0.45]
+  Strained budgeters: [0.85, 0.30]
+</div><h3 id="a9-journey-to-blueprint-traceability">A9 — Journey-to-blueprint traceability</h3><table>
+<thead>
+<tr>
+<th>Pain point (journey phase)</th>
+<th>Insight (evidence)</th>
+<th>Design principle</th>
+<th>Blueprint change (step ID)</th>
+<th>KPI moved (illustrative)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>QR-only invite excludes phone-first customers (Booking)</td>
+<td>Channel posture is a cluster property, not a preference (C2: 89% phone)</td>
+<td>Every journey has a phone door</td>
+<td>Step 1: two-door letter + assisted line (FS2)</td>
+<td>C2 self-serve-or-assisted booking 22→81%</td>
+</tr>
+<tr>
+<td>4-hour windows and hidden prerequisites (Appointment day)</td>
+<td>Failed appointments are information failures (FR-22, HH-141)</td>
+<td>Say what you need, narrowly and early</td>
+<td>Step 3: access checklist + 2-hour slots (PE3, BS3)</td>
+<td>Failed appointments 14→6%</td>
+</tr>
+<tr>
+<td>First bill reads as an error (After install)</td>
+<td>Estimated-then-actual sequence is never explained (31% of contacts)</td>
+<td>Explain before they ask</td>
+<td>Step 5: explainer insert + first-bill monitoring (PE5, BS5)</td>
+<td>Billing-confusion contacts −34%</td>
+</tr>
+<tr>
+<td>Price-vigilant churn after tariff letters (not on map)</td>
+<td>Churn follows unexplained arithmetic, not price level (C3: 62% price contacts)</td>
+<td>Show the numbers</td>
+<td>Alerts service + tariff-fit arithmetic (use case B)</td>
+<td>C3 switching 19→13.5%</td>
+</tr>
+<tr>
+<td>SME multi-login billing friction (SME journeys)</td>
+<td>Energy is 3% of the multitasker&#39;s job (S1: 2.7 sites mean)</td>
+<td>One supplier, one bill, one login</td>
+<td>Consolidated billing + portfolio view (use case C)</td>
+<td>S1 invoice queries −41%</td>
+</tr>
+</tbody></table>
+<h2 id="6-use-cases">6. Use cases</h2><h3 id="use-case-a-digitally-disengaged-seniors-the-assisted-digital-path">Use case A — Digitally disengaged seniors: the assisted digital path</h3><p><strong>Scenario.</strong> Ingrid (persona 1) receives the smart-meter install notice. Before the redesign, the letter&#39;s only door was a QR code; her cluster generated 78% of its bookings reactively by phone after reminder letters, and 14% of appointments failed.</p>
+<p><strong>What was designed.</strong> The assisted digital path: a two-door letter (QR and a phone number answered within 3 minutes), a proactive outbound call to C2 and delegation-flagged accounts at week 2 if unbooked, an agent booking screen offering the same 2-hour slots as the self-serve picker, a paper confirmation with an access checklist in 14pt type, and a day-before call naming the technician. Delegation is first-class: with Ingrid&#39;s consent, her son can hold the booking and receive reminders while the account stays hers.</p>
+<p><strong>AI working session.</strong> Claude Code drafted the letter at CEFR B1 from the design directives, then a subagent red-teamed it against the artifact audit&#39;s jargon list (&quot;metering point&quot;, &quot;estimated consumption&quot; — both removed). OpenCode seeded the booking prototype with the mock dataset so hallway tests used realistic slot capacities; Codex reviewed the delegation consent flow and caught an over-broad default (delegates could see billing history — narrowed to appointment logistics only).</p>
+<p><strong>Outcome (illustrative).</strong> C2 self-serve-or-assisted booking 22% → 81%; failed appointments in C2 18% → 5%; letter-triggered calls to the contact centre −44%.</p>
+<h3 id="use-case-b-price-super-vigilants-the-smart-meter-alerts-service">Use case B — Price super-vigilants: the smart-meter alerts service</h3><p><strong>Scenario.</strong> Markus (persona 2) is the segment Kestrel was losing: 19% annual switching, 4.1 broker-site checks a year, and a track record of leaving within 60 days of an unexplained tariff letter. The energy-insights feature he should love sat at 9% engagement because it showed kilowatt-hours, not euros.</p>
+<p><strong>What was designed.</strong> The alerts service: spend-threshold alerts in euros (&quot;your October spend is tracking €38 above your 12-month norm — main driver: EV charging on-peak&quot;), a tariff-fit check that runs his actual usage curve against his tariff quarterly and shows the arithmetic either way — including when staying put costs him money versus a Kestrel alternative — and a tariff-change letter that shows the calculation before the justification. Honesty is the retention strategy: the segment&#39;s own data said theatrics accelerate switching.</p>
+<p><strong>AI working session.</strong> The threshold model ran through the cluster-run SOP pattern: an OpenCode pipeline computed per-cluster seasonal norms from daily aggregates; Claude Code drafted alert copy with the anti-stereotype rule applied (&quot;vigilant&quot; not &quot;obsessive&quot;); Codex attacked the tariff-fit economics — showing customers a cheaper Kestrel tariff cannibalizes margin — and steering accepted the trade explicitly: a retained vigilant customer on a fair tariff outvalues a churned one.</p>
+<p><strong>Outcome (illustrative).</strong> C3 switching 19% → 13.5%; alerts engagement 61% monthly among opt-ins (opt-in 74% of C3); price-related contacts −29% as self-answered questions moved into the app.</p>
+<h3 id="use-case-c-sme-facilities-multitaskers-consolidated-billing">Use case C — SME facilities multitaskers: consolidated billing</h3><p><strong>Scenario.</strong> Sabine (persona 3) manages 3 sites and receives 6 invoices on 4 different dates through 3 separate portal logins. Her cluster generated 44% of SME invoice queries and held the highest SME churn risk at renewal, when contract letters went to the wrong site.</p>
+<p><strong>What was designed.</strong> Consolidated billing: one monthly invoice across sites and fuels with a per-site breakdown matching her accounting export format, one login with a portfolio view, one due date, and a renewal calendar pushed at 90/60/30 days to her registered contact — not the site address. The design directives came verbatim from the persona card: &quot;one supplier, one bill, one login.&quot;</p>
+<p><strong>AI working session.</strong> GitHub carried the build as 14 issues traced to blueprint step IDs; the invoice layout went through three PR iterations with Sabine&#39;s accounting-package export as the acceptance test. Claude Code generated the mock consolidated invoice from the dataset for the advisory-panel review; the panel&#39;s one change (group by site, then by fuel — not the reverse) went in before build.</p>
+<p><strong>Outcome (illustrative).</strong> S1 invoice queries −41%; consolidated-billing uptake 68% of S1 within two quarters; SME renewal-at-risk rate in S1 17% → 11%.</p>
+<h2 id="7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</h2><p><strong>Encoded SOPs.</strong> Four SOPs ran as agent-executable contracts, each following <em>method → numbered steps → output schema → acceptance criteria → review gate</em>.</p>
+<ol>
+<li><strong>Persona-build SOP.</strong> Steps: load cluster profile → pull all evidence items tagged to the cluster → draft attributes only where ≥1 evidence ID exists → attach verbatim quote (CI-verified) → run distinctiveness tests → run anti-stereotype audit → human panel → publish as PR. Acceptance: no attribute without evidence; ≥3 testable design directives; quote verification green. The prompt template:</li>
+</ol>
+<pre><code class="language-text">You are PERSONA-BUILDER. Input: segmentation/cluster-C2-profile.json plus
+synthesis/evidence-register.jsonl filtered to cluster C2.
+Draft a persona card following templates/persona-card.md EXACTLY.
+RULES: every attribute must cite at least one evidence_id present in the
+register; the quote field must be copy-paste verbatim from a register item
+(include participant_code and source_lines); if the register does not support
+an attribute, write &quot;NO EVIDENCE&quot; and leave the field blank — never infer.
+Stats fields: compute only from the numbers in the cluster profile.
+Output: markdown card + a json sidecar of {attribute: [evidence_ids]}.</code></pre><ol start="2">
+<li><strong>Anti-hallucination SOP (quote verification).</strong> Every synthesis or persona PR triggers a CI job: each quoted string must exist verbatim in the transcript store; each evidence ID must resolve; each statistic must recompute from the feature store. A quote not found fails the build. This caught 11 fabricated or misattributed quotes across the engagement — every one plausible, every one wrong.</li>
+<li><strong>Anti-stereotype SOP.</strong> A dedicated agent pass runs the audit template (A6) on every persona draft before the human panel sees it: evidence-or-remove, demographic-justification, deficit-framing rewrite, inverse test. The agent proposes; the panel disposes. Prompt fragment: &quot;Rewrite any attribute that describes a person as a deficiency of the person rather than as a property of the service failing them.&quot;</li>
+<li><strong>Cluster-run SOP-as-code</strong> (A6, CLS-RUN-002): parameters, metrics, and acceptance gates as versioned YAML; a run that misses a gate is documented as rejected, not tuned until it passes — that is how you avoid p-hacking a segmentation into existence.</li>
+</ol>
+<p><strong>The meta-SOP.</strong> Discover → Define → Develop → Deliver with hard gates: no clustering before the DPIA and data-quality baseline; no persona authoring before fusion and the Codex cross-check; no publication before G1–G3; no cutover issue closed without the journey owner&#39;s review. Gates are GitHub milestones with required reviews — process enforced by tooling, not memory.</p>
+<p><strong>Guardrails.</strong></p>
+<ul>
+<li><strong>Data minimization.</strong> Daily usage aggregates only; pseudonymization at ingestion with the key held outside the analytics zone; no income or property-value features; no model scores below cluster level leave the environment. The DPO reviewed the feature list as a PR before the pipeline ran.</li>
+<li><strong>No individual-level disclosure.</strong> All published artifacts are cluster-level. Personas describe a kind of customer, never a customer; the dataset sample (A7) uses synthetic hashes and banded values.</li>
+<li><strong>Evidence traceability.</strong> Every persona attribute traces to a source row via evidence IDs; quotes verbatim-verified in CI; statistics recomputed from the feature store on every PR.</li>
+<li><strong>Human sign-off points.</strong> DPIA boundary, feature list, k selection, persona naming, anti-stereotype panel, publication, retirement of the old segmentation.</li>
+</ul>
+<p><strong>Failure modes observed.</strong></p>
+<ul>
+<li><strong>The &quot;average persona&quot; trap.</strong> The first k-means run at k = 5 produced a large mush cluster (41% of accounts) whose persona read like everyone and no one — the statistical mean dressed as a character. Mitigation: distinctiveness tests (each persona must differ from every other on ≥2 behavioral features) killed it; k = 7 separated the mush into C2 and C5, two populations with opposite service needs.</li>
+<li><strong>Cluster-name drift.</strong> Early agent drafts named clusters by demographics (&quot;elderly low-income&quot;) even when the separating features were behavioral; the active-behavior naming rule (&quot;keeps the paper trail&quot;, not &quot;elderly&quot;) was enforced in review — naming is still a human gate.</li>
+<li><strong>Over-trusting agent-coded contact reasons.</strong> The 23% disagreement between reason-codes and free text would have silently skewed the contact-posture features; the pipeline recodes from text and treats agent codes as a weak signal only.</li>
+<li><strong>Codex context errors.</strong> Its independent typology initially invented a &quot;prosumer exporter&quot; cluster from two diary participants; the evidence-density rule (a type needs ≥3 independent sources) resolved it. Adversarial counsel requires verification, never averaging.</li>
+</ul>
+<h2 id="8-value-creation-amp-measurement">8. Value creation &amp; measurement</h2><p><strong>Before/after (illustrative; 12 months post-cutover).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline</th>
+<th>After</th>
+<th>Delta</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Persona coverage (confidence ≥ 0.6)</td>
+<td>n/a</td>
+<td>96.4%</td>
+<td>new capability</td>
+</tr>
+<tr>
+<td>Cluster distinctness (household silhouette)</td>
+<td>n/a</td>
+<td>0.41</td>
+<td>new capability</td>
+</tr>
+<tr>
+<td>Self-serve adoption (household monthly-active)</td>
+<td>41%</td>
+<td>57%</td>
+<td>+16 pts</td>
+</tr>
+<tr>
+<td>Annual contact volume</td>
+<td>950,000</td>
+<td>750,000</td>
+<td>−21%</td>
+</tr>
+<tr>
+<td>Blended cost per contact</td>
+<td>€7.10</td>
+<td>€5.40</td>
+<td>−24%</td>
+</tr>
+<tr>
+<td>Smart-meter install self-booking</td>
+<td>22%</td>
+<td>64%</td>
+<td>+42 pts</td>
+</tr>
+<tr>
+<td>Failed install appointments</td>
+<td>14%</td>
+<td>6%</td>
+<td>−8 pts</td>
+</tr>
+<tr>
+<td>Price-vigilant (C3) switching rate</td>
+<td>19%</td>
+<td>13.5%</td>
+<td>−5.5 pts</td>
+</tr>
+<tr>
+<td>Energy-insights engagement (C3 opt-ins)</td>
+<td>9%</td>
+<td>61%</td>
+<td>+52 pts</td>
+</tr>
+<tr>
+<td>Portfolio NPS</td>
+<td>−4</td>
+<td>+17</td>
+<td>+21</td>
+</tr>
+</tbody></table>
+<p><strong>Causal logic (Service Profit Chain).</strong> The economics run through the denominator of perceived value (See: 20-the-service-profit-chain/03-external-service-value.md): cluster-aware sequencing and the assisted digital path cut customer effort (one letter, one call, a 2-hour window), which cut failure demand (−200k contacts/yr), which cut cost-to-serve and freed agents for the contacts that genuinely need humans. Estimated annualized effects (illustrative): contact-cost avoidance ≈ €2.6M; failed-appointment avoidance ≈ €0.9M (8 pts × ≈ 55k installs/yr × €200 truck-roll); retained margin from C3 switching reduction ≈ €1.1M (18,500 fewer switches × €60 contribution). Against €210k engagement cost and ≈ €600k implementation, payback inside six months. The softer return is decision quality: the metering program now plans capacity by cluster, and tariff-fit campaigns convert at 2.4× the old demographic targeting.</p>
+<p><strong>KPI tree (abridged).</strong> North-star: share of journeys completed without failure demand, by cluster. Drivers: self-booking rate, first-contact resolution, alert self-answer rate. Lagging: contact volume, switching rate, NPS. Guardrail metrics: delegation-consent complaints (0), privacy incidents (0), persona drift (quarterly revalidation).</p>
+<h2 id="9-ai-tool-playbook">9. AI tool playbook</h2><p><strong>Claude Code — orchestration, agent team, persona authoring.</strong> Ran the source profiling, the transcript-to-evidence pipeline over 4,712 items, the clustering agent team (k-means sweep, Ward, reconciliation), the synthesis wall, persona drafting under the evidence-only rule, and all mermaid artifacts. Excels at: schema-bound extraction at scale and first drafts that arrive inside the guardrails. Failed at: cluster naming (demographic drift), and it cannot run the fusion workshop — nine humans reconciling two typologies in a room is the job. Human took over: naming, framing, facilitation, sign-off.</p>
+<p><strong>OpenCode — data pipeline and feature engineering.</strong> Built the ingest/clean/features pipeline in agent mode from the brief in Section 4.2, including the pydantic quarantine and the HMAC pseudonymization vault; generated the seeded mock dataset (A7); ran the alerts-threshold norm computations in use case B. Excels at: self-directed multi-file data engineering and honest run reports — its <code>run_report.md</code> caught the 61,204 duplicates before any human did. Failed at: statistical judgment — it proposed k = 9 on a marginal elbow improvement while bootstrap stability collapsed; the SOP&#39;s acceptance gates, not the agent, decide. Human took over: feature ethics, k selection, thresholds.</p>
+<p><strong>Codex — independent derivation and adversarial review.</strong> The engagement&#39;s second brain, run via <code>codex exec --skip-git-repo-check</code> with a scoped concern: the k-selection challenge (one good point, tested and rejected), the blind qualitative-only typology (9 of 11 convergence, two model improvements), the delegation-consent review (one scope fix), the tariff-fit economics attack (one explicit trade accepted by steering). Excels at: disagreeing productively from a cold start — &quot;do NOT read the existing segmentation&quot; is the load-bearing instruction for a genuine cross-check. Failed at: occasional evidence-thin inventions (the &quot;prosumer exporter&quot; cluster); every claim verified against the register before action.</p>
+<p><strong>GitHub — the system of record.</strong> Issues as assumptions and work items (41 assumption issues, 68 cutover issues), PRs as review gates (persona cards, pipeline, letters), milestones as stage gates, CODEOWNERS routing (DPO on anything touching features or telemetry). Actions CI: mermaid lint, markdown lint, CSV schema validation, quote verification against the transcript store, and a privacy job that fails any PR exporting sub-cluster-level identifiers. Failed at: nothing material; the board tells the truth because the designer grooms it every Friday.</p>
+<h2 id="10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</h2><ul>
+<li><strong>The mess was the research.</strong> The 214 move-out spellings and the 23% reason-code disagreement were not janitorial trivia; they were the first evidence that Kestrel&#39;s channels and codes were designed around internal convenience. The data-quality report became an insight artifact in its own right (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md).</li>
+<li><strong>Verbatim quote verification is the highest-ROI automation in AI-assisted synthesis.</strong> Eleven fabricated or misattributed quotes caught by one grep-class CI check. Without it, the personas would have been beautifully cited fiction.</li>
+<li><strong>The average-persona trap is the default failure of clustering.</strong> Any k that is too small manufactures a statistical mean and invites you to give it a name and a stock photo. Distinctiveness tests are the vaccine; enforce them as gates, not aspirations.</li>
+<li><strong>Independent cross-checks must be genuinely blind.</strong> The first Codex cross-check was contaminated — it had read the cluster file in context and merely agreed. Re-running with &quot;do NOT read segmentation/&quot; produced real divergence and two model improvements. Blindness is a prompt property, not a courtesy.</li>
+<li><strong>Vulnerability is a state, not a segment.</strong> The killed &quot;vulnerable customer&quot; persona was the hardest call of the engagement; as a service-standard overlay it protects better than a persona, because it applies to every cluster at the moments vulnerability actually occurs.</li>
+<li><strong>Adoption is a cutover, not a launch.</strong> Retiring the 2019 buckets from the campaign tool — deletion, not deprecation — made the new segmentation real. Two conventions side by side is how segmentations die.</li>
+<li><strong>Privacy constraints improved the model.</strong> The daily-aggregate rule forced behavioral features that generalize (posture, mix, cadence) instead of intrusive features that overfit. Data minimization was a modeling advantage, not a tax.</li>
+<li><strong>Done differently next time:</strong> baseline portfolio NPS per assumed segment in week 1 (the −4 baseline was reconstructed retrospectively and is the weakest number here), and involve the contact-centre knowledge team at feature engineering — their reason-code taxonomy would have saved a pipeline iteration.</li>
+</ul>
+<h2 id="11-references">11. References</h2><p>Knowledge library (this repository):</p>
+<ul>
+<li><code>books/14-outside-in/04-customer-understanding.md</code> — customer understanding as operational discipline; decision-grade personas; VOC architecture</li>
+<li><code>books/17-101-design-methods/04-mode-3-know-people.md</code> — POEMS; say/do/make triangulation; five human factors; structured observation databases</li>
+<li><code>books/17-101-design-methods/05-mode-4-frame-insights.md</code> — observation → finding → insight; framing; synthesis funnel</li>
+<li><code>books/18-universal-methods-of-design/05-representational-and-synthesis-methods.md</code> — behavioral personas vs demographic personas; affinity diagramming; boundary objects</li>
+<li><code>books/09-mapping-experiences/03-understanding-the-user.md</code> — research-based vs assumption-based understanding; evidence tagging and traceability; triangulation</li>
+<li><code>books/03-service-design-from-insight-to-implementation/04-from-research-to-insight.md</code> — data → information → insight; the acid test; ecology-wide research</li>
+<li><code>books/20-the-service-profit-chain/03-external-service-value.md</code> — Service Value Equation (causal logic in Section 8)</li>
+</ul>
+<p>External standards referenced: GDPR (Regulation (EU) 2016/679); EU metering-data rules as fictionalized national implementation [details unverified — composite]; CEFR B1 reading level. All case figures are fictional and illustrative.</p>
+<p>Related articles in this series: <a href="../01/index.html">01 — The AI-First Service Design Operating System</a>; <a href="../06/index.html">06 — Research Ops at Scale</a>; <a href="../09/index.html">09 — Journey Mapping from Transcripts</a>; <a href="../22/index.html">22 — Service Quality Management at Kestrel Energy (Phase 2)</a>.</p>
+<h2 id="12-appendix-artifact-index">12. Appendix: artifact index</h2><table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Format</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Process overview</td>
+<td>3</td>
+<td>mermaid flowchart</td>
+<td>Double Diamond mapped to engagement phases</td>
+</tr>
+<tr>
+<td>Project gantt</td>
+<td>3</td>
+<td>mermaid gantt</td>
+<td>20-week plan with gates</td>
+</tr>
+<tr>
+<td>Phase-method-tool table</td>
+<td>3</td>
+<td>table</td>
+<td>Method citations to AI execution</td>
+</tr>
+<tr>
+<td>Pipeline brief / prompts</td>
+<td>4.2, 4.3, 7</td>
+<td>fenced prompts</td>
+<td>Pipeline, cross-check, persona-build SOPs</td>
+</tr>
+<tr>
+<td>Persona development pipeline</td>
+<td>5</td>
+<td>mermaid flowchart</td>
+<td>Sources → cleaning → clustering → fusion → personas → validation</td>
+</tr>
+<tr>
+<td>A1 journey map</td>
+<td>5</td>
+<td>mermaid + table</td>
+<td>C2 smart-meter install current state</td>
+</tr>
+<tr>
+<td>A2 service blueprint</td>
+<td>5</td>
+<td>mermaid + lane table</td>
+<td>Self-serve + assisted digital future state</td>
+</tr>
+<tr>
+<td>A3 stakeholder map</td>
+<td>5</td>
+<td>mermaid quadrantChart</td>
+<td>Influence × interest</td>
+</tr>
+<tr>
+<td>A4 ecosystem map</td>
+<td>5</td>
+<td>mermaid flowchart</td>
+<td>Household, SME, vendor, DSO, regulator, broker</td>
+</tr>
+<tr>
+<td>A5 personas</td>
+<td>5</td>
+<td>tables</td>
+<td>3 decision-grade personas + empathy map</td>
+</tr>
+<tr>
+<td>A6 templates</td>
+<td>5</td>
+<td>fenced forms + YAML</td>
+<td>Persona card, hypothesis sheet, validation checklist, cluster-run SOP, anti-stereotype audit</td>
+</tr>
+<tr>
+<td>A7 mock dataset</td>
+<td>5, data/</td>
+<td>CSV + inline sample</td>
+<td>60-row segment sample, synthetic hashes</td>
+</tr>
+<tr>
+<td>A8 charts</td>
+<td>5</td>
+<td>xychart-beta, pie, quadrantChart</td>
+<td>Cluster sizes, contact mix, value vs effort</td>
+</tr>
+<tr>
+<td>A9 traceability</td>
+<td>5</td>
+<td>table</td>
+<td>Pain → insight → principle → blueprint → KPI</td>
+</tr>
+<tr>
+<td>Use case flows</td>
+<td>6</td>
+<td>prose</td>
+<td>Assisted digital, alerts service, consolidated billing</td>
+</tr>
+<tr>
+<td>Before/after metrics</td>
+<td>8</td>
+<td>table</td>
+<td>Value creation evidence</td>
+</tr>
+</tbody></table>
+</article><div class="wrap" style="max-width:880px">
+    <div class="cross-links"><a href="../07/index.html"><span class="lbl">← Previous case</span><span class="ttl">07. Mixed Methods: Quant + Qual under One Roof at Vesper Pharmacy</span></a><a href="../09/index.html"><span class="lbl">Next case →</span><span class="ttl">09. Journey Mapping from Transcripts: The Disruption Recovery Map at Albatross Airways</span></a></div>
+    <div class="art-foot">
+      <span>10 figures (10 diagrams) · ~8.7k words · reviewed by an adversarial AI reviewer (Gemini 3.1 Pro High).</span>
+      · <a href="https://github.com/sammozaffari/the-agentic-service-designer/blob/main/articles/08/README.md" target="_blank" rel="noopener">Open source in repo ↗</a>
+    </div>
+  </div></main>
+<footer class="footer"><div class="footer-inner">
+  <span>Agentic Service Designer — 30 service design case studies from an AI-first practice. Fictional, anonymized clients.</span>
+  <span><a href="./index.html">Home</a> · <a href="./concept.html">The concept</a> · <a href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub</a></span>
+</div></footer>
+<script src="./assets/site.js"></script>
+</body></html>

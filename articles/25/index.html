@@ -1,0 +1,1432 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Operations Design &amp; Process Engineering: Halcyon's Order-to-Cash Backbone — Logistics (3PL)">
+<title>25. Operations Design &amp; Process Engineering: Halcyon's Order-to-Cash Backbone — Agentic Service Designer</title>
+<link rel="stylesheet" href="./assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234f46e5'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'>A</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+</head><body>
+<nav class="nav"><div class="nav-inner">
+  <a class="brand" href="./index.html"><span class="mark">A</span>Agentic Service Designer</a>
+  <div class="nav-links">
+    <a href="./index.html" class="">Home</a>
+    <a href="./concept.html" class="">The concept</a>
+    <a href="./index.html#series" class="on">Case studies</a>
+    <a class="github-link" href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</div></nav>
+<main class="art">
+  <div class="wrap art-hero">
+    <div class="art-meta">
+      <span class="chip chip-track">Implementation &amp; Operations</span>
+      <span class="sep">·</span><span>Logistics (3PL)</span>
+      <span class="sep">·</span><span><b>Halcyon Logistics</b></span>
+      <span class="sep">·</span><span>20 weeks</span>
+      <span class="chip chip-tool">Claude Code</span><span class="chip chip-tool">OpenCode</span><span class="chip chip-tool">Codex</span><span class="chip chip-tool">GitHub</span>
+    </div>
+    <h1>Operations Design &amp; Process Engineering: Halcyon's Order-to-Cash Backbone</h1>
+    <p class="deck">Fictional composite client. All names, figures, and data are illustrative and anonymized.</p>
+  </div><article class="art-body wrap"><nav class="toc"><b>On this page</b><ol><li><a href="#0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</a></li><li><a href="#1-executive-summary">1. Executive summary</a></li><li><a href="#2-the-brief">2. The brief</a></li><li><a href="#3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</a></li><li><a href="#4-phase-by-phase-narrative">4. Phase-by-phase narrative</a></li><li><a href="#5-artifacts-portfolio">5. Artifacts portfolio</a></li><li><a href="#6-use-cases">6. Use cases</a></li><li><a href="#7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</a></li><li><a href="#8-value-creation-amp-measurement">8. Value creation &amp; measurement</a></li><li><a href="#9-ai-tool-playbook">9. AI tool playbook</a></li><li><a href="#10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</a></li><li><a href="#11-references">11. References</a></li><li><a href="#12-appendix-artifact-index">12. Appendix: artifact index</a></li></ol></nav><h1 id="operations-design-amp-process-engineering-halcyon39s-order-to-cash-backbone">Operations Design &amp; Process Engineering: Halcyon&#39;s Order-to-Cash Backbone</h1><h2 id="0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</h2><p>Halcyon Logistics is a fictional composite European third-party logistics provider. Every warehouse name, account, shipment volume, cost, cycle time, and dataset row in this article is illustrative and anonymized; nothing here describes a real company or live client data. What is real is the method: an AI-first service design engagement in which Claude Code, OpenCode, Codex, and GitHub were the main working tools, while the human designer owned framing, cross-functional alignment, and all consequential decisions.</p>
+<h2 id="1-executive-summary">1. Executive summary</h2><p>Article 05 in this series redesigned Halcyon&#39;s account experience and proved that proactive alerts, weekly reviews, and returns visibility could lift a 60-account pilot cohort from 87.4% to 93.1% SLA attainment. But the improvement was fragile. Account managers and dispatchers were still carrying too much of the performance with manual exception chasing, warehouse-by-warehouse workarounds, and inconsistent queue rules. This phase-2 programme moved below the line of visibility and treated the service blueprint as a process-engineering instrument: not a poster of how things should work, but a control surface for work-in-progress, cycle time, failure demand, queue design, and fail-safes. Over 20 weeks, Halcyon created a versioned process catalog for order-to-cash, piloted a redesigned outbound shipment plus returns flow in three warehouses, digitized key controls, and established cross-functional ownership. Median outbound cycle time fell from 11.6 hours to 8.4 hours, first-pass yield rose from 91.2% to 97.1%, labor cost per shipped unit dropped 10.6%, and the rollout warehouses improved outbound SLA from 88.2% to 92.0% while the original phase-1 pilot cohort held 93.1% with 36% less manual intervention.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Value (illustrative)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Halcyon Logistics (fictional composite 3PL)</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>B2B logistics: freight, warehousing, returns</td>
+</tr>
+<tr>
+<td>Footprint</td>
+<td>12 warehouses in NL, BE, DE, PL; 640 employees; ~1.84M shipments/yr</td>
+</tr>
+<tr>
+<td>Account base</td>
+<td>4,200 B2B accounts; €285M annual revenue</td>
+</tr>
+<tr>
+<td>Phase-2 scope</td>
+<td>Underlying order-to-cash operations for outbound shipments and returns</td>
+</tr>
+<tr>
+<td>Pilot footprint</td>
+<td>3 warehouses representing 46% of outbound volume and 51% of returns volume</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>20 weeks including an 8-week live ops pilot</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>1 service designer + AI agents + COO sponsor + network ops director + 3 site leaders</td>
+</tr>
+<tr>
+<td>AI tools</td>
+<td>Claude Code, OpenCode, Codex, GitHub</td>
+</tr>
+<tr>
+<td>Headline results</td>
+<td>Median cycle time 11.6h → 8.4h; first-pass yield 91.2% → 97.1%; labor cost/unit €4.82 → €4.31; outbound SLA 88.2% → 92.0%; article-05 pilot cohort sustained 93.1%</td>
+</tr>
+</tbody></table>
+<p><strong>Continuity with article 05 (<code>See: ../05/README.md</code>).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Continuity item</th>
+<th>Article 05 result</th>
+<th>Article 25 implication</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pilot cohort SLA</td>
+<td>87.4% → 93.1%</td>
+<td>Hold 93.1% without heroics by redesigning the underlying process</td>
+</tr>
+<tr>
+<td>WISMO reduction</td>
+<td>-40% in pilot</td>
+<td>Sustain the reduction with telemetry, queue controls, and fail-safes</td>
+</tr>
+<tr>
+<td>Dock delay use case</td>
+<td>Threshold tuning for retail peaks</td>
+<td>Re-engineer dock queue design and scan-to-load release rules</td>
+</tr>
+<tr>
+<td>Cold-chain excursion</td>
+<td>22-minute customer notification</td>
+<td>Codify temperature excursion handling as a standard process</td>
+</tr>
+<tr>
+<td>Returns visibility</td>
+<td>Returns contacts -52%</td>
+<td>Convert returns from a blind queue into a versioned cross-dock process</td>
+</tr>
+</tbody></table>
+<p>What you will learn:</p>
+<ul>
+<li>How to use a service blueprint as an operational engineering instrument with explicit WIP, queue, fail-point, and standard overlays rather than as static documentation alone. See: <code>19-service-management-and-marketing/07-designing-and-managing-the-service-process.md</code> and <code>09-mapping-experiences/05-service-blueprints.md</code>.</li>
+<li>How to create a process catalog in GitHub where every repeatable service process is versioned, reviewable, and tied to telemetry, controls, and named owners.</li>
+<li>How to run process engineering AI-first: Claude Code for process maps and standards, OpenCode for telemetry and exception analytics, Codex for cycle-time math and adversarial critique, and GitHub for review gates and operating governance.</li>
+</ul>
+<h2 id="2-the-brief">2. The brief</h2><p><strong>Client portrait.</strong> Halcyon Logistics is the same fictional Rotterdam-headquartered 3PL introduced in article 05: 12 warehouses across the Netherlands, Belgium, Germany, and Poland; roughly 4,200 B2B accounts; 38 account managers; ~1.84 million annual shipments; and a mixed footprint of palletized retail replenishment, industrial spare parts, cold-chain pharma, and e-commerce returns. The digital estate is capable but uneven: TMS, WMS, dock scheduling, carrier telemetry, and finance workflow all exist, yet they speak in batches, different exception codes, and site-specific operating habits.</p>
+<p><strong>Why phase 2 existed.</strong> The account-experience pilot in article 05 worked, but the board review exposed an uncomfortable truth. The new customer-facing promise sat on top of an unstable operating machine. Three symptoms mattered:</p>
+<ol>
+<li><strong>The promise relied on manual effort.</strong> In the 60-account pilot, dispatchers and account managers averaged 2.4 manual touches per severity-1 or severity-2 exception because the process emitted incomplete or conflicting status.</li>
+<li><strong>Local optimization beat end-to-end flow.</strong> Warehouse teams were measured on pick productivity, transport planners on trailer fill, finance on invoice completeness, and account teams on customer retention. Nobody owned the order-to-cash journey horizontally. See: <code>04-service-design-for-business/06-organizational-change.md</code>.</li>
+<li><strong>The same process had 17 local variants.</strong> Order release, dock appointment handling, return receipt, and proof-of-delivery closure all differed by site. Documented SOPs existed, but they were static PDFs with no event data, no PR gate, and no process owner who could change the standard across silos.</li>
+</ol>
+<p><strong>The challenge.</strong> Halcyon asked for a phase-2 programme that would make the article-05 gains durable. The brief was explicitly operational: redesign the outbound shipment and returns process so the improved customer experience is produced by the system, not by heroic people compensating for it. This meant using service design below the line of visibility: queue design, takt and slotting logic, exception handling, process ownership, and digitized controls. As Grönroos argues, in services the process <em>is</em> the product. See: <code>19-service-management-and-marketing/07-designing-and-managing-the-service-process.md</code>.</p>
+<p><strong>Success criteria (agreed at mobilization):</strong></p>
+<ol>
+<li>Create a versioned process catalog covering the 12 highest-value repeatable processes in order-to-cash, with named owners, telemetry hooks, and PR review rules.</li>
+<li>In the three-site pilot, reduce median outbound cycle time from 11.6 hours to below 9.0 hours and raise first-pass yield from 91.2% to at least 96.5%.</li>
+<li>Reduce failure demand linked to outbound and returns from 17.1 to below 11 WISMO-equivalent contacts per 1,000 shipments while maintaining the article-05 pilot cohort at 93.1% SLA attainment or better.</li>
+<li>Reduce labor cost per shipped unit by at least 8% without shifting work to the customer or degrading cold-chain and compliance performance.</li>
+<li>Establish horizontal order-to-cash governance: a named process owner, monthly process board, and a telemetry pack tying operational, journey, and business metrics together. See: <code>14-outside-in/06-measurement.md</code>.</li>
+</ol>
+<p><strong>Constraints.</strong> Budget €420k. No WMS or TMS replacement in-year. GDP rules for cold-chain traffic. Carrier contracts fixed until annual review. Works-council consultation required for any change in scan discipline or performance measurement. A 20-week runway to an executive decision on network-wide rollout. And, crucially, the process redesign could not “win” by hiding pain from customers while making the internal service worse; the tripartite productivity model was an explicit guardrail. See: <code>19-service-management-and-marketing/07-designing-and-managing-the-service-process.md</code>.</p>
+<p><strong>Why service design.</strong> Halcyon did not need industrial engineering separated from customer experience; it needed service design at operational depth. Blueprinting from a validated journey spine exposes how backstage work produces frontstage promises. Kimbell&#39;s delivery framing says the blueprint is the bridge artifact between concept and operational reality. Reason, Løvlie, and Flu add the missing governance point: unless somebody owns the journey horizontally, the old silo incentives return. See: <code>09-mapping-experiences/05-service-blueprints.md</code>, <code>06-the-service-innovation-handbook/06-designing-for-scale-and-delivery.md</code>, and <code>04-service-design-for-business/06-organizational-change.md</code>.</p>
+<h2 id="3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</h2><p>We ran a four-phase programme that mapped the Double Diamond&#39;s Discover → Define → Develop → Deliver spine and Kumar&#39;s 7 modes onto an operations design agenda: evidence and process mining, blueprint diagnosis, standards and fail-safes, then pilot and embed. The working rule was simple: no process standard without evidence, no metric without an owner, and no local optimization without a journey-level check.</p>
+<div class="mermaid">
+flowchart LR
+  D1[Discover process evidence and failure demand] --> D2[Define current-state blueprint and queue model]
+  D2 --> D3[Develop future standards and controls]
+  D3 --> D4[Deliver pilot governance and rollout case]
+  D4 -. iterate .-> D1
+  T1[Journey spine from article 05] -. anchors .-> D1
+  T2[Order to cash process owner and process catalog] -. embeds .-> D4
+</div><div class="mermaid">
+gantt
+  title Halcyon operations design program 20 weeks
+  dateFormat YYYY-MM-DD
+  section Discover
+  Site walks and event extraction           :2026-07-06, 3w
+  Failure demand and queue baseline         :2026-07-06, 4w
+  section Define
+  Blueprint workshop and root cause trace   :2026-07-27, 3w
+  Queue model and target standards          :2026-08-10, 2w
+  section Develop
+  Process catalog and SOP library           :2026-08-24, 4w
+  Fail safes and telemetry controls         :2026-08-31, 4w
+  section Deliver
+  Three site live pilot                     :2026-09-21, 8w
+  Governance handover and rollout case      :2026-11-02, 2w
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>SD method (book)</th>
+<th>AI tools used</th>
+<th>Artifact produced</th>
+<th>Client involvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Discover</td>
+<td>Service process diagnosis, process mining, failure demand analysis (<code>19/07</code>, <code>14/06</code>)</td>
+<td>Claude Code synthesis agents; OpenCode telemetry pipeline; Codex data audit</td>
+<td>Baseline pack, process taxonomy, failure-demand register</td>
+<td>COO sponsor, 3 site walks, ops interviews</td>
+</tr>
+<tr>
+<td>Define</td>
+<td>Blueprinting from validated journey spine, F/W diagnostic, queue modeling (<code>09/05</code>, <code>19/07</code>)</td>
+<td>Claude Code lane-builder agents; OpenCode exception analyzer; Codex adversarial critique</td>
+<td>Current-state blueprint, queue table, owner map</td>
+<td>2 cross-functional workshops</td>
+</tr>
+<tr>
+<td>Develop</td>
+<td>Scale-and-delivery blueprinting, readiness review, organizational change charter (<code>06/06</code>, <code>04/06</code>)</td>
+<td>Claude Code process-standard authoring; OpenCode event stream mock; GitHub PR gates</td>
+<td>Future-state blueprint, process catalog, SOP library</td>
+<td>Process board, legal/compliance, works council</td>
+</tr>
+<tr>
+<td>Deliver</td>
+<td>Pilot instrumentation and multi-tier measurement (<code>14/06</code>, <code>06/06</code>)</td>
+<td>GitHub weekly scorecards; OpenCode dashboards; Codex cycle-time review</td>
+<td>Pilot KPI pack, governance charter, rollout business case</td>
+<td>Monthly process board, weekly site standups</td>
+</tr>
+</tbody></table>
+<h2 id="4-phase-by-phase-narrative">4. Phase-by-phase narrative</h2><h3 id="phase-1-discover-establish-the-operational-truth-weeks-14">Phase 1 — Discover: establish the operational truth (weeks 1–4)</h3><p><strong>Goal.</strong> Build one trustworthy view of how outbound shipment and returns actually flow through Halcyon&#39;s network, where work waits, and which queues create customer-visible failure demand.</p>
+<p><strong>Method &amp; SOP.</strong> We started from the validated experience spine established in article 05 — book, plan, pick, dispatch, track, settle, return — and then moved underneath it with three evidence streams. First, event-sequence extraction from WMS, TMS, dock scheduling, and finance logs for 22 weeks of activity across the three pilot sites. Second, genba-style site walks and structured interviews with 34 practitioners: site managers, team leaders, pickers, dispatch planners, returns clerks, QA, account managers, and finance analysts. Third, failure-demand linkage: for every WISMO, dock-delay, temperature, POD, or returns-status contact in the account-service logs, trace the originating operational event or missing event. The method combined Kalbach&#39;s blueprinting discipline with Grönroos&#39;s insistence on fail points, waiting points, and standards. See: <code>09-mapping-experiences/05-service-blueprints.md</code> and <code>19-service-management-and-marketing/07-designing-and-managing-the-service-process.md</code>.</p>
+<p><strong>AI execution.</strong> OpenCode built the telemetry pipeline first because without event truth the rest would have been theater. The agent-mode brief was precise:</p>
+<pre><code class="language-bash">opencode run &quot;Read exports from WMS TMS dock scheduler finance and returns logs. \
+Reconstruct one event sequence per order_id across stations cut_off wave_release pick \
+pack dock dispatch pod invoice return_receipt return_disposition. Emit clean/process_events.parquet \
+and qa/missing_events.csv. Flag dwell times greater than site threshold and preserve \
+exception_flag and rework_flag. No names or addresses.&quot;</code></pre><p>Claude Code ran synthesis agents over the site-walk notes and interview transcripts, extracting queue causes, local workaround patterns, and evidence-linked variants. It also produced the first process family taxonomy: 27 repeatable processes, of which 12 drove 84% of volume or failure demand. Codex then reviewed the join logic and the first-pass yield math. Its most useful intervention was adversarially checking whether “long cycle time” was really one problem; it argued, correctly, that Halcyon had at least four distinct queues hiding inside one metric: cut-off misses, wave-release delay, dispatch hold, and returns disposition delay.</p>
+<p><strong>Human designer judgment.</strong> The designer chose the boundaries of the service. That mattered. Halcyon initially wanted “warehouse productivity” as the frame, which would have invited local efficiency gains. The design reframing was order-to-cash: from customer order acceptance through dispatch, proof of delivery, invoice trigger, and returns closure. The designer also ruled that any “standardized” process with no failure-demand evidence would stay out of scope; the programme was not a documentation factory.</p>
+<p><strong>Artifact produced.</strong> A baseline pack that made the operational challenge explicit. In the three pilot sites, 355,740 outbound orders and 26,488 returns were analyzed across the same 154-calendar-day extraction window used in the queue model. Median outbound cycle time sat at 11.6 hours, p95 at 26.4 hours, and first-pass yield at ship-confirm was 91.2%. Four queues dominated customer pain: wave-release wait (median 96 minutes), dispatch hold (74 minutes), returns disposition (2.9 days), and POD-to-invoice release (1.6 days). Failure demand traced cleanly: 64% of WISMO contacts tied to missing or late milestone events rather than late trucks themselves.</p>
+<h3 id="phase-2-define-blueprint-the-current-state-as-a-diagnostic-weeks-58">Phase 2 — Define: blueprint the current state as a diagnostic (weeks 5–8)</h3><p><strong>Goal.</strong> Turn a pile of events and interviews into one evidence-gated current-state blueprint that exposes where the service breaks, where work waits, and who actually owns each handoff.</p>
+<p><strong>Method &amp; SOP.</strong> We used blueprinting from a validated journey spine exactly as the chapter prescribes: customer action lane on top, frontstage below the line of interaction, backstage below the line of visibility, and support processes below the line of internal interaction. Then we added what Halcyon had never put on one page before: queue lengths, WIP age, fail-point frequency, time standards, and site-level variation. We also ran a cross-functional blueprint workshop to surface where documented SOPs diverged from real work. This was the moment the organization saw its own contradiction: PDF SOPs described a linear process, but the event logs showed repeated loops, rework, and silent waiting. See: <code>09-mapping-experiences/05-service-blueprints.md</code>.</p>
+<p><strong>AI execution.</strong> Claude Code generated the first blueprint draft lane by lane with an evidence-per-node rule. Representative prompt:</p>
+<pre><code class="language-text">SOP BP HALCYON 001
+Role: lane builder for the current-state outbound blueprint.
+Input: journey spine, process_events.parquet summary, site interview notes.
+For each column propose one lane node only if evidence exists.
+Tag F with quantified frequency, W with dwell time, and Q with average queue size.
+Output a markdown lane table and mermaid-safe labels.
+If support-system evidence conflicts across sites, keep the node and mark variant_count.</code></pre><p>OpenCode built the exception-queue analyzer, which bucketed exceptions by age, owner, and rework risk. That produced the most politically useful chart of the phase: 26% of exceptions older than 2 hours had no named owner. Codex then attacked the queue model. It rejected an early draft recommendation to “raise pick productivity” because the cycle-time model showed the real bottleneck had already moved downstream to dispatch release; speeding pick without changing dock logic would have increased WIP and hidden damage.</p>
+<p><strong>Human designer judgment.</strong> The designer facilitated the workshop, forced the conversation away from blame and toward system behavior, and brokered the governance decision that made the whole article possible: Halcyon appointed a cross-functional <strong>Order-to-Cash Process Owner</strong> accountable for process standards, exception taxonomy, and KPI review across warehouse, dispatch, account service, and finance. That is textbook organizational change applied to service operations. See: <code>04-service-design-for-business/06-organizational-change.md</code>.</p>
+<p><strong>Artifact produced.</strong> The evidence-gated current-state blueprint, the queue/cycle-time model, the stakeholder map, and a process-ownership matrix. The key finding was not just that the process was slow. It was that the service promise was being manufactured by unmanaged variance: 17 local process variants, nine names for the same exception, and three different release rules for the same outbound move.</p>
+<h3 id="phase-3-develop-engineer-the-future-process-and-the-catalog-weeks-914">Phase 3 — Develop: engineer the future process and the catalog (weeks 9–14)</h3><p><strong>Goal.</strong> Specify a future-state outbound and returns process that can be operated repeatably across sites, with explicit fail-safes, controls, telemetry, and standards.</p>
+<p><strong>Method &amp; SOP.</strong> This phase treated the blueprint as the bridge artifact into delivery. We designed not just new steps but the control system around them: fail-safes, queue thresholds, ownership, telemetry, and PR-reviewed process standards. Kimbell&#39;s scale-and-delivery framing was especially useful here. The question was not “what would the ideal journey look like?” but “what socio-technical arrangement can Halcyon run next Monday at scale?” See: <code>06-the-service-innovation-handbook/06-designing-for-scale-and-delivery.md</code>.</p>
+<p>The programme&#39;s anchor idea was the <strong>process catalog</strong>: every repeatable operational service process becomes a versioned object in GitHub with the same minimum fields — scope, trigger, owner, input and output events, WIP limit, fail-safes, queue thresholds, telemetry queries, and review gate. Outbound shipment release and returns cross-dock were the pilot standards, but the catalog format applied equally to order acceptance, cold-chain exception handling, dock re-slotting, POD closure, and invoice trigger.</p>
+<p><strong>AI execution.</strong> Claude Code drafted the catalog template, the standards library, the future-state blueprint, and the initial operating board pack. OpenCode built a mocked event-stream layer so the future-state controls could be tested against historical and live-like data before any permanent system change. Codex reviewed the cycle-time assumptions and attacked the proposed standards for local-optimization bias. One example: a draft pack target of “load trailer within 12 minutes of dock arrival” looked good locally, but Codex pointed out it would incent dispatch to pull forward incomplete loads and hurt linehaul reliability. The standard was rewritten to optimize <em>dispatch-ready completeness within promise window</em>, not speed in isolation.</p>
+<p>GitHub became the process library. Representative structure:</p>
+<pre><code class="language-text">halcyon-process-library/
+  process.order-cutoff.md
+  process.outbound-dispatch-release.md
+  process.temperature-excursion.md
+  process.return-crossdock.md
+  metrics/query.outbound_cycle_time.sql
+  diagrams/outbound_future_state.mmd
+  .github/workflows/process-gate.yml</code></pre><p><strong>Human designer judgment.</strong> Three decisions required human framing. First, which site differences were legitimate and which were wasteful variation. A pharma site can keep tighter cold-chain controls; it cannot keep a bespoke dock-release spreadsheet because “that is how we have always done it.” Second, where to place discretion. Team leaders retained override authority on severe exceptions, but every override had to create a reason code. Third, how to write standards without weaponizing them into performance surveillance. The works council approved telemetry because the unit of control was the process and queue, not individual picker league tables.</p>
+<p><strong>Artifact produced.</strong> A future-state blueprint with explicit poka-yoke controls, a versioned catalog template, one filled process standard for outbound dispatch release, a returns cross-dock standard, and the exception-handling flow tying severe events to queue ownership and customer communication.</p>
+<h3 id="phase-4-deliver-pilot-measure-and-embed-governance-weeks-1520">Phase 4 — Deliver: pilot, measure, and embed governance (weeks 15–20)</h3><p><strong>Goal.</strong> Prove that the redesigned process works in live operations, and institutionalize the operating cadence so the process stays designed after the designers leave.</p>
+<p><strong>Method &amp; SOP.</strong> The pilot ran for eight live weeks in Eindhoven, Venlo, and Łódź, chosen because together they represented the most painful combination of retail peaks, industrial outbound complexity, and returns volume. Measurement followed the three-tier architecture from <em>Outside In</em>: relationship and business outcomes, journey and episode metrics, and operational telemetry. The process board reviewed all three together so a “cost improvement” that harmed ease or emotion would be caught. See: <code>14-outside-in/06-measurement.md</code>.</p>
+<p><strong>AI execution.</strong> OpenCode refreshed the process KPI pack daily from the event stream and generated queue-age alerts. Claude Code produced the weekly narrative synthesis, comparing pilot vs. comparison warehouses and flagging standard breaches that repeated more than three times in seven days. GitHub enforced the control loop: each proposed standard change opened as a PR against the process library, with site evidence attached, Codex math review when thresholds moved, and named human approvers before merge. Representative Codex command:</p>
+<pre><code class="language-bash">codex exec --skip-git-repo-check &quot;Review process.outbound-dispatch-release.md and metrics/query.outbound_cycle_time.sql. \
+Check Little's Law assumptions, queue threshold math, and whether any standard improves a local sub-process \
+at the expense of end-to-end promise attainment. Flag unsupported claims only.&quot;</code></pre><p><strong>Human designer judgment.</strong> The designer ran the first two process boards, coached site leaders to treat exceptions as design data rather than personal failure, and blocked one attempted shortcut: finance wanted to defer POD event cleanup until after rollout, but the measurement architecture made clear that silent POD queues would re-create the same invoice uncertainty that article 05 had already fixed from the customer side. The process had to stay end to end.</p>
+<p><strong>Artifact produced.</strong> The live pilot KPI pack, governance charter, and rollout case. Results were strong enough to scale: median cycle time 11.6h → 8.4h, first-pass yield 91.2% → 97.1%, labor cost/unit €4.82 → €4.31, WISMO-equivalent contacts 17.1 → 10.2 per 1,000 shipments, returns disposition 6.8 → 3.2 days, and outbound SLA in the pilot warehouses 88.2% → 92.0%. The earlier article-05 pilot cohort kept 93.1% with 36% fewer manual interventions per exception.</p>
+<h2 id="5-artifacts-portfolio">5. Artifacts portfolio</h2><h3 id="a1-current-state-high-level-process-map">A1 — Current-state high-level process map</h3><div class="mermaid">
+flowchart TB
+  subgraph O[ORDER]
+    o1[Order and ASN received] --> o2[Cut off confirmed by account team]
+  end
+  subgraph P[PLAN]
+    p1[Wave planned by site] --> p2[Dock slot requested]
+  end
+  subgraph K[PICK]
+    k1[Pick tasks released] --> k2[Exceptions requeued locally]
+  end
+  subgraph PK[PACK]
+    pk1[Pack and label] --> pk2[Manifest built]
+  end
+  subgraph D[DISPATCH]
+    d1[Dock stage and load] --> d2[Dispatch confirm to TMS]
+  end
+  subgraph T[TRACK]
+    t1[Milestone events emitted] --> t2[Account team monitors severe exceptions]
+  end
+  subgraph S[SETTLE]
+    s1[POD captured] --> s2[Invoice trigger and dispute handling]
+  end
+  subgraph R[RETURNS]
+    r1[Return arrives or refusal received] --> r2[Cross dock sort and disposition]
+  end
+  o2 --> p1
+  p2 --> k1
+  k2 --> pk1
+  pk2 --> d1
+  d2 --> t1
+  t2 --> s1
+  s2 --> r1
+</div><p>Emotion and friction line (1 = very poor, 5 = very good; evidence from article-05 account logs plus process telemetry):</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Emotion (1-5)</th>
+<th>Dominant operational symptom</th>
+<th>What the symptom created</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Order</td>
+<td>3</td>
+<td>Cut-off interpretation differs by site and account</td>
+<td>Rework at release; avoidable “booking change” contacts</td>
+</tr>
+<tr>
+<td>Plan</td>
+<td>2</td>
+<td>Wave and dock planning rules opaque</td>
+<td>Silent queue growth before visible failure</td>
+</tr>
+<tr>
+<td>Pick</td>
+<td>3</td>
+<td>Rework hidden in local exception buckets</td>
+<td>Promise looks intact until late in the day</td>
+</tr>
+<tr>
+<td>Pack</td>
+<td>3</td>
+<td>Label and manifest mismatches</td>
+<td>Wrong trailer, relabel loops, scan gaps</td>
+</tr>
+<tr>
+<td>Dispatch</td>
+<td>2</td>
+<td>Queue at dock, no common release control</td>
+<td>Dock-delay WISMO and missed planned departures</td>
+</tr>
+<tr>
+<td>Track</td>
+<td>2</td>
+<td>Milestones emitted late or not at all</td>
+<td>Article-05 black-box experience returns</td>
+</tr>
+<tr>
+<td>Settle</td>
+<td>2</td>
+<td>POD and invoice release lag</td>
+<td>Customer sees “late paperwork,” not “late process”</td>
+</tr>
+<tr>
+<td>Returns</td>
+<td>2</td>
+<td>Returns sit in blind cage queues</td>
+<td>Status chasing, credit-note delay, avoidable write-offs</td>
+</tr>
+</tbody></table>
+<h3 id="a1b-current-state-outbound-service-blueprint">A1b — Current-state outbound service blueprint</h3><div class="mermaid">
+flowchart TB
+  subgraph PE[Physical evidence]
+    pe1[Booking confirmation and cut off sheet] --> pe2[ASN and labels]
+    pe2 --> pe3[Carrier ETA and dock note]
+    pe3 --> pe4[POD email and invoice]
+  end
+  subgraph CA[Customer actions]
+    ca1[Places order and ASN] --> ca2[Waits for shipment confirmation]
+    ca2 --> ca3[Checks if dispatch happened]
+    ca3 --> ca4[Chases status if milestone missing]
+    ca4 --> ca5[Receives POD or raises return]
+  end
+  subgraph FS[Frontstage]
+    fs1[Account team confirms booking] --> fs2[Dispatch answers exceptions]
+    fs2 --> fs3[Account team sends manual update]
+    fs3 --> fs4[Finance resolves POD or invoice query]
+  end
+  subgraph BS[Backstage]
+    bs1[Wave release queue W01 96 min] --> bs2[Pick exception loop F01 5.8 percent]
+    bs2 --> bs3[Pack relabel loop F02 3.4 percent]
+    bs3 --> bs4[Dispatch hold W02 74 min]
+    bs4 --> bs5[POD close W03 1.6 days]
+  end
+  subgraph SP[Support processes]
+    sp1[WMS local rules by site] --> sp2[Dock planner spreadsheet variant_count 3]
+    sp2 --> sp3[TMS milestone feed batched every 30 min]
+    sp3 --> sp4[Finance release waits for POD image]
+  end
+  PE --> CA --> FS --> BS --> SP
+</div><p>Lane-table diagnostic version:</p>
+<table>
+<thead>
+<tr>
+<th>Lane</th>
+<th>Node</th>
+<th>Evidence</th>
+<th>F/W/Q tag</th>
+<th>Time or cost overlay</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Customer</td>
+<td>Waits for shipment confirmation</td>
+<td>LOG-11, AM-06</td>
+<td>W-C1</td>
+<td>42 min median from cut-off to first visible status</td>
+</tr>
+<tr>
+<td>Customer</td>
+<td>Chases status if milestone missing</td>
+<td>CRM-14, LOG-27</td>
+<td>F-C2</td>
+<td>17.1 WISMO-equivalent contacts per 1,000 shipments</td>
+</tr>
+<tr>
+<td>Frontstage</td>
+<td>Account team sends manual update</td>
+<td>AM-04, AM-12</td>
+<td>Q-F1</td>
+<td>2.4 manual touches per severe exception</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Wave release queue</td>
+<td>EVT-09</td>
+<td>W01, Q01</td>
+<td>96 min median; average 138 orders waiting at 11:00</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Pick exception loop</td>
+<td>EVT-14</td>
+<td>F01</td>
+<td>5.8% of orders require re-pick or stock check</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Pack relabel loop</td>
+<td>EVT-18</td>
+<td>F02</td>
+<td>3.4%; adds 21 min median</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Dispatch hold</td>
+<td>EVT-21</td>
+<td>W02, Q02</td>
+<td>74 min median; 14.8% of days &gt; 90 min queue</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>POD close</td>
+<td>FIN-03</td>
+<td>W03</td>
+<td>1.6 days to invoice trigger</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>Site-specific dock planner</td>
+<td>OPS-07, OPS-09</td>
+<td>root of W02</td>
+<td>3 local variants; no network standard</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>Batched milestone feed</td>
+<td>SYS-04</td>
+<td>root of F-C2</td>
+<td>30 min batch plus missing scan risk</td>
+</tr>
+</tbody></table>
+<p><strong>Queue and cycle-time model (pilot sites combined).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Mean daily load</th>
+<th>Effective capacity per day</th>
+<th>Avg WIP</th>
+<th>Median queue wait</th>
+<th>Touch time</th>
+<th>Failure note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Order acceptance</td>
+<td>2,310 orders</td>
+<td>2,480 orders</td>
+<td>28.9 orders</td>
+<td>18 min</td>
+<td>5 min</td>
+<td>Cut-off interpretation mismatch 2.7%</td>
+</tr>
+<tr>
+<td>Wave release</td>
+<td>2,250 orders</td>
+<td>2,170 orders</td>
+<td>150.0 orders</td>
+<td>96 min</td>
+<td>7 min</td>
+<td>Local release rules cause noon bulge</td>
+</tr>
+<tr>
+<td>Pick</td>
+<td>2,240 orders</td>
+<td>2,320 orders</td>
+<td>79.3 orders</td>
+<td>51 min</td>
+<td>39 min</td>
+<td>Re-pick 5.8%</td>
+</tr>
+<tr>
+<td>Pack and manifest</td>
+<td>2,170 orders</td>
+<td>2,140 orders</td>
+<td>64.8 orders</td>
+<td>43 min</td>
+<td>24 min</td>
+<td>Relabel 3.4%</td>
+</tr>
+<tr>
+<td>Dock and dispatch</td>
+<td>2,140 orders</td>
+<td>2,010 orders</td>
+<td>110.0 orders</td>
+<td>74 min</td>
+<td>18 min</td>
+<td>Queue spikes on retail peaks</td>
+</tr>
+<tr>
+<td>POD to invoice trigger</td>
+<td>2,090 orders</td>
+<td>2,500 orders</td>
+<td>3,344.0 orders</td>
+<td>1.6 days</td>
+<td>6 min</td>
+<td>Missing image or late scan</td>
+</tr>
+<tr>
+<td>Returns disposition</td>
+<td>172 returns</td>
+<td>190 returns</td>
+<td>498.8 units</td>
+<td>2.9 days</td>
+<td>11 min</td>
+<td>Blind cage queue, no FIFO discipline</td>
+</tr>
+</tbody></table>
+<p><em>Table note: Avg WIP is normalized on a 24-hour network clock across the combined pilot sites, so $WIP = (\text{mean daily load} / 24) \times \text{median queue wait in hours}$. Multi-day waits are converted to hours before calculation.</em></p>
+<h3 id="a2-future-state-service-blueprint-with-fail-safes">A2 — Future-state service blueprint with fail-safes</h3><div class="mermaid">
+flowchart TB
+  subgraph PE[Physical evidence]
+    pe1[Shared booking rules and cut off clock] --> pe2[Live shipment and return milestones]
+    pe2 --> pe3[Exception case file with owner and ETA]
+    pe3 --> pe4[POD and invoice status visible]
+  end
+  subgraph CA[Customer actions]
+    ca1[Sends order once] --> ca2[Sees accepted cut off and dispatch promise]
+    ca2 --> ca3[Receives proactive update only on real exception]
+    ca3 --> ca4[Gets POD and return status without chasing]
+  end
+  subgraph FS[Frontstage]
+    fs1[Account team sees same event timeline] --> fs2[Only severity 1 or 2 exceptions need manual call]
+    fs2 --> fs3[Finance and account team share POD state]
+  end
+  subgraph BS[Backstage]
+    bs1[PK01 cut off checker blocks late ambiguous orders] --> bs2[PK02 scan to wave release]
+    bs2 --> bs3[PK03 scan to load release]
+    bs3 --> bs4[PK04 auto hold on temperature or manifest mismatch]
+    bs4 --> bs5[PK05 return sort with disposition clock]
+  end
+  subgraph SP[Support processes]
+    sp1[Versioned process catalog in GitHub] --> sp2[Event stream emits every station milestone]
+    sp2 --> sp3[Queue monitor with WIP thresholds]
+    sp3 --> sp4[Standard exception taxonomy and process board]
+  end
+  PE --> CA --> FS --> BS --> SP
+</div><p>Lane-table version with standards:</p>
+<table>
+<thead>
+<tr>
+<th>Lane</th>
+<th>Step</th>
+<th>Standard S</th>
+<th>Poka-yoke or control</th>
+<th>KPI moved</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Customer</td>
+<td>Sees accepted cut-off and dispatch promise</td>
+<td>&lt; 10 min from order acceptance</td>
+<td>PK01 rejects ambiguous cut-off state</td>
+<td>Booking-change contacts down</td>
+</tr>
+<tr>
+<td>Frontstage</td>
+<td>Manual calls only for severe exceptions</td>
+<td>Severity-1 call &lt; 15 min; severity-2 update &lt; 30 min</td>
+<td>Event timeline shared with AMs</td>
+<td>Manual touches 2.4 → 1.5</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Wave released only after scan complete</td>
+<td>100% scanned before release</td>
+<td>PK02 scan gate</td>
+<td>First-pass yield 91.2% → 97.1%</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Load release only after manifest and trailer match</td>
+<td>100% load-release conformance</td>
+<td>PK03 scan-to-load gate</td>
+<td>Dock miss and relabel loops down</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Cold-chain or manifest exception auto-holds move</td>
+<td>Exception owner &lt; 5 min</td>
+<td>PK04 auto-hold</td>
+<td>Zero silent temperature excursions</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Returns sorted within same shift</td>
+<td>&lt; 8h to disposition decision</td>
+<td>PK05 return clock and FIFO lane</td>
+<td>Returns cycle 6.8 → 3.2 days</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>Queue monitor with thresholds</td>
+<td>Alert when WIP age &gt; site standard</td>
+<td>Control chart in GitHub board</td>
+<td>Queue age &gt; 2h down 26% → 8%</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>Process change only by PR</td>
+<td>100% versioned</td>
+<td>Named approvers and CI</td>
+<td>Standard drift visible</td>
+</tr>
+</tbody></table>
+<h3 id="a2b-exception-handling-flow">A2b — Exception-handling flow</h3><div class="mermaid">
+flowchart LR
+  e1[Event emitted from dock sort dispatch or return] --> e2{Matches standard exception rule}
+  e2 -->|no| e3[Auto resolve or log for daily review]
+  e2 -->|yes| e4[Open queue item with owner severity and SLA]
+  e4 --> e5{Severity 1 or 2}
+  e5 -->|yes| e6[Account team notified and customer update prepared]
+  e5 -->|no| e7[Backstage owner resolves inside queue SLA]
+  e6 --> e8[Root cause class assigned]
+  e7 --> e8
+  e8 --> e9{Process standard change needed}
+  e9 -->|yes| e10[Open GitHub issue and PR against process library]
+  e9 -->|no| e11[Close case and keep telemetry]
+  e10 --> e11
+</div><h3 id="a3-stakeholder-map">A3 — Stakeholder map</h3><div class="mermaid">
+quadrantChart
+  title Halcyon process governance stakeholders
+  x-axis Low interest --> High interest
+  y-axis Low influence --> High influence
+  quadrant-1 Manage closely
+  quadrant-2 Keep satisfied
+  quadrant-3 Monitor
+  quadrant-4 Keep informed
+  COO sponsor: [0.92, 0.94]
+  Network operations director: [0.96, 0.88]
+  Order to cash process owner: [0.9, 0.86]
+  Site warehouse managers: [0.82, 0.72]
+  Transport planning lead: [0.78, 0.74]
+  Head of account management: [0.74, 0.7]
+  Finance O2C lead: [0.62, 0.68]
+  QA and cold chain lead: [0.58, 0.8]
+  IT integration owner: [0.64, 0.56]
+  Works council: [0.48, 0.63]
+  Carrier network manager: [0.44, 0.46]
+  Pilot account champions: [0.39, 0.66]
+</div><table>
+<thead>
+<tr>
+<th>Stakeholder</th>
+<th>Current incentive</th>
+<th>Risk if ignored</th>
+<th>Design move</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Network operations director</td>
+<td>Site productivity and service stability</td>
+<td>Local optimization survives</td>
+<td>Co-own process board and standards</td>
+</tr>
+<tr>
+<td>Site warehouse managers</td>
+<td>Labor efficiency, daily shipment completion</td>
+<td>Standards treated as head-office imposition</td>
+<td>Use site evidence and allow controlled local parameters</td>
+</tr>
+<tr>
+<td>Head of account management</td>
+<td>Retention, response speed</td>
+<td>Customer promises outrun operations</td>
+<td>Shared exception timeline and severe-case rules</td>
+</tr>
+<tr>
+<td>Finance O2C lead</td>
+<td>Invoice completeness and cash</td>
+<td>POD backlog stays invisible</td>
+<td>Make POD close part of core process scope</td>
+</tr>
+<tr>
+<td>Works council</td>
+<td>Fair use of telemetry</td>
+<td>Standardization seen as surveillance</td>
+<td>Process-level metrics only; no individual league table</td>
+</tr>
+<tr>
+<td>Pilot account champions</td>
+<td>Reliable promise, fewer surprises</td>
+<td>Improvements optimize inside Halcyon only</td>
+<td>Monthly external review on promised outcomes</td>
+</tr>
+</tbody></table>
+<h3 id="a4-ecosystem-map">A4 — Ecosystem map</h3><div class="mermaid">
+flowchart LR
+  SH[Shippers 4200 accounts] --> HL[Halcyon order to cash service]
+  HL --> WH[12 warehouses]
+  HL --> TP[Transport planning]
+  HL --> AM[Account management]
+  HL --> FIN[Finance and billing]
+  WH --> DS[Dock scheduler]
+  WH --> RET[Returns cross dock]
+  TP --> CAR[Carrier network]
+  CAR --> TEL[Telematics and POD feeds]
+  WH --> WMS[Warehouse management system]
+  TP --> TMS[Transport management system]
+  FIN --> ERP[Finance workflow]
+  SH --> CON[Consignees and receiving docks]
+  CON --> RET
+  QA[QA and cold chain] --> WH
+  QA --> AM
+  HL --> GH[GitHub process library]
+  GH --> AM
+  GH --> WH
+  GH --> TP
+  GH --> FIN
+</div><h3 id="a5-persona-set">A5 — Persona set</h3><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Persona 1 — Marloes Verhoeven</th>
+<th>Persona 2 — Piotr Nowak</th>
+<th>Persona 3 — Sofia Lindholm</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Role</td>
+<td>Retail shipper operations lead</td>
+<td>Halcyon site manager at Łódź</td>
+<td>Halcyon returns and claims analyst</td>
+</tr>
+<tr>
+<td>Context</td>
+<td>30 shipments per week into 6 DCs</td>
+<td>Manages peak outbound waves and local labor mix</td>
+<td>Handles returned stock, refusals, and credit-note cases</td>
+</tr>
+<tr>
+<td>Goal</td>
+<td>Zero surprise calls from DCs; predictable dispatch windows</td>
+<td>Ship full, on time, without evening firefighting</td>
+<td>Close returns fast enough to preserve resale value and cash</td>
+</tr>
+<tr>
+<td>Current pain</td>
+<td>Learns about dock delay from consignee, not Halcyon</td>
+<td>Gets blamed for delays caused by upstream cut-off ambiguity</td>
+<td>Returns arrive in mixed cages with poor reason coding</td>
+</tr>
+<tr>
+<td>Success measure</td>
+<td>98% dock-to-stock within 24h</td>
+<td>Stable queue profile, not heroic end-of-day clearing</td>
+<td>Returns disposition &lt; 48h and fewer credit-note disputes</td>
+</tr>
+<tr>
+<td>Designed-for touchpoints</td>
+<td>Dispatch promise, proactive exception, returns status</td>
+<td>Queue monitor, site standard, process board pack</td>
+<td>Cross-dock disposition flow, standard taxonomy, same-day return clock</td>
+</tr>
+<tr>
+<td>Quote (illustrative)</td>
+<td>“If the truck is late, tell me before my DC does.”</td>
+<td>“I can clear almost any queue once. I cannot run a business on rescue mode.”</td>
+<td>“A return without a reason code is not a unit. It is an argument waiting to happen.”</td>
+</tr>
+</tbody></table>
+<h3 id="a6-templates-and-standards">A6 — Templates and standards</h3><p><strong>T1: Process catalog template (<code>process.x.md</code>).</strong></p>
+<pre><code class="language-text"># Process Standard
+process_id: [e.g. P-OUT-06]
+name: [e.g. outbound dispatch release]
+journey_scope: [order to cash | returns | exception handling]
+version: [semver]
+owner: [named process owner]
+trigger: [event that starts the process]
+inputs: [required events data artifacts]
+outputs: [customer visible and system visible outputs]
+service_standard:
+  cycle_time_target: [value]
+  first_pass_yield_target: [value]
+  queue_threshold: [value]
+  customer_promise_impact: [what this protects]
+steps:
+  - id:
+    actor:
+    action:
+    telemetry_event:
+    fail_safe:
+exceptions:
+  severity_1:
+  severity_2:
+  severity_3:
+controls:
+  - precondition
+  - release_rule
+  - audit_log
+review_gate:
+  data_owner:
+  ops_owner:
+  customer_owner:
+linked_queries:
+  - metrics/query.name.sql</code></pre><p><strong>T2: Filled standard — <code>process.outbound-dispatch-release.md</code> (excerpt).</strong></p>
+<pre><code class="language-yaml">process_id: P-OUT-06
+name: outbound dispatch release
+journey_scope: order to cash
+version: 1.2.0
+owner: order_to_cash_process_owner
+trigger: order_status == packed AND dock_slot_assigned == true
+inputs:
+  - pick_complete_scan
+  - pack_manifest
+  - trailer_id
+  - temperature_status_if_applicable
+outputs:
+  - dispatch_confirm_event
+  - visible_milestone_to_customer
+service_standard:
+  cycle_time_target: dispatch release within 18 min of dock ready
+  first_pass_yield_target: 98 percent
+  queue_threshold: no more than 35 orders waiting &gt; 45 min per site
+  customer_promise_impact: protects planned departure and article 05 proactive alert promise
+steps:
+  - id: gate_1
+    actor: wms
+    action: verify all handling units scanned
+    telemetry_event: release_scan_check
+    fail_safe: block release if any unit missing
+  - id: gate_2
+    actor: dock_lead
+    action: verify trailer and manifest match
+    telemetry_event: manifest_match_check
+    fail_safe: red screen and rework queue if mismatch
+  - id: gate_3
+    actor: qa_bot
+    action: auto hold cold_chain loads if temperature out_of_band_minutes &gt; 5
+    telemetry_event: temp_hold
+    fail_safe: no manual override without qa signoff
+  - id: gate_4
+    actor: tms
+    action: emit dispatch_confirm within 2 min of physical release
+    telemetry_event: dispatch_confirm
+    fail_safe: alert queue if event missing
+exceptions:
+  severity_1: temperature excursion or manifest mismatch on regulated load
+  severity_2: missed planned departure risk &gt; 30 min
+  severity_3: local relabel or documentation correction
+review_gate:
+  data_owner: integration_lead
+  ops_owner: site_manager
+  customer_owner: head_of_account_management
+linked_queries:
+  - metrics/query.outbound_cycle_time.sql
+  - metrics/query.dispatch_hold_age.sql</code></pre><p><strong>T3: Monthly order-to-cash process board agenda.</strong></p>
+<pre><code class="language-text">1. Promise health (10 min): SLA, WISMO per 1000, severe exceptions, article 05 pilot cohort continuity
+2. Queue health (15 min): WIP age by site, top breaches, rework loops
+3. Standards changes (15 min): open PRs to process library, evidence for threshold move
+4. Failure demand review (10 min): which customer contacts map to which missing events
+5. Capability and change (10 min): training, works-council concerns, amber readiness items
+6. Decisions and owners (10 min): merge or reject standards, assign remediation</code></pre><h3 id="a7-mock-dataset">A7 — Mock dataset</h3><p>This excerpt is representative of the event schema used in the pilot and is kept inline because the sample is small enough to inspect in place.</p>
+<pre><code class="language-csv">order_id,station,event,timestamp,dwell_time_min,exception_flag,rework_flag
+HL250001,cut_off_check,accepted,2026-09-22T07:12:00Z,6,false,false
+HL250001,wave_release,released,2026-09-22T08:05:00Z,49,false,false
+HL250001,pick,complete,2026-09-22T09:11:00Z,38,false,false
+HL250001,pack,manifest_ready,2026-09-22T09:42:00Z,17,false,false
+HL250001,dock,loaded,2026-09-22T10:06:00Z,14,false,false
+HL250001,dispatch,confirmed,2026-09-22T10:08:00Z,2,false,false
+HL250014,wave_release,queued,2026-09-22T11:03:00Z,121,true,false
+HL250014,pick,rework_stock_check,2026-09-22T13:27:00Z,43,true,true
+HL250014,dock,hold_manifest_mismatch,2026-09-22T15:02:00Z,58,true,true
+HL250014,dispatch,confirmed,2026-09-22T16:21:00Z,4,false,true
+HL250088,dispatch,temp_hold,2026-09-23T18:14:00Z,7,true,false
+HL250088,dispatch,qa_release,2026-09-23T18:31:00Z,11,false,false
+HL250233,return_receipt,arrived,2026-09-24T09:06:00Z,19,false,false
+HL250233,return_sort,await_reason_code,2026-09-24T13:18:00Z,267,true,false
+HL250233,return_disposition,credit_and_restock,2026-09-25T08:11:00Z,42,false,false</code></pre><h3 id="a8-charts">A8 — Charts</h3><p><strong>Cycle-time distribution before and after</strong> (bars = before, line = after).</p>
+<div class="mermaid">
+xychart-beta
+  title Outbound cycle time distribution before after
+  x-axis ["0 to 4h", "4 to 8h", "8 to 12h", "12 to 18h", "18h plus"]
+  y-axis "Share of orders %" 0 --> 40
+  bar [8, 31, 34, 19, 8]
+  line [12, 34, 37, 12, 5]
+</div><p><strong>Exception mix baseline.</strong></p>
+<div class="mermaid">
+pie title Exception mix baseline
+  "Dock congestion" : 27
+  "Data or manifest mismatch" : 22
+  "Stock and pick exception" : 18
+  "Carrier miss or late linehaul" : 15
+  "Returns reason code missing" : 11
+  "Temperature or QA hold" : 7
+</div><p><strong>Process portfolio by volume and failure demand.</strong></p>
+<div class="mermaid">
+quadrantChart
+  title Halcyon process portfolio
+  x-axis Low volume --> High volume
+  y-axis Low failure demand --> High failure demand
+  quadrant-1 Engineer now
+  quadrant-2 Monitor economics
+  quadrant-3 Keep light
+  quadrant-4 Standardize and automate
+  Outbound dispatch release: [0.89, 0.82]
+  Returns cross dock: [0.52, 0.78]
+  Temperature excursion handling: [0.18, 0.68]
+  POD close and invoice trigger: [0.74, 0.61]
+  Booking cut off validation: [0.83, 0.56]
+  Customs paperwork check: [0.27, 0.34]
+</div><h3 id="a9-journey-to-blueprint-traceability">A9 — Journey-to-blueprint traceability</h3><table>
+<thead>
+<tr>
+<th>Journey or process pain</th>
+<th>Design principle</th>
+<th>Blueprint or standard change</th>
+<th>KPI moved</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Customer promise depends on missing milestones</td>
+<td>Emit the truth once</td>
+<td>Event stream becomes single milestone source and frontstage timeline</td>
+<td>WISMO 17.1 → 10.2 per 1,000</td>
+</tr>
+<tr>
+<td>Wave-release queue hides midday congestion</td>
+<td>Control WIP not heroics</td>
+<td>Queue threshold and site monitor added to process board</td>
+<td>Median cycle 11.6h → 8.4h</td>
+</tr>
+<tr>
+<td>Dock miss discovered too late</td>
+<td>Block bad release not bad apology</td>
+<td>Scan-to-load gate and manifest check</td>
+<td>Dispatch-hold queue &gt; 90 min days 14.8% → 5.6%</td>
+</tr>
+<tr>
+<td>Cold-chain risk handled ad hoc</td>
+<td>Severe regulated exceptions need automatic hold</td>
+<td>Temperature auto-hold standard with QA sign-off</td>
+<td>Excursion notification 22 min sustained; zero silent holds</td>
+</tr>
+<tr>
+<td>Returns sit in blind cages</td>
+<td>Returns are part of order-to-cash</td>
+<td>Return clock, FIFO lane, reason-code requirement</td>
+<td>Returns cycle 6.8 → 3.2 days</td>
+</tr>
+<tr>
+<td>POD close owned by finance alone</td>
+<td>End-to-end promise includes settlement</td>
+<td>POD event and invoice trigger kept inside journey scope</td>
+<td>POD-to-invoice 1.6 days → 0.6 days</td>
+</tr>
+</tbody></table>
+<h3 id="a10-process-control-audit">A10 — Process control audit</h3><table>
+<thead>
+<tr>
+<th>Control dimension</th>
+<th>Before programme</th>
+<th>After pilot</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Named horizontal owner</td>
+<td>No</td>
+<td>Yes</td>
+<td>Order-to-cash process owner charter</td>
+</tr>
+<tr>
+<td>Versioned standards in repo</td>
+<td>0 of 12</td>
+<td>12 of 12</td>
+<td>GitHub process library</td>
+</tr>
+<tr>
+<td>Common exception taxonomy</td>
+<td>9 local labels for same top 4 issues</td>
+<td>1 network taxonomy</td>
+<td>Exception analyzer v1.0</td>
+</tr>
+<tr>
+<td>Queue thresholds defined</td>
+<td>No</td>
+<td>Yes at all 7 critical queues</td>
+<td>Process standards</td>
+</tr>
+<tr>
+<td>Fail-safes at release points</td>
+<td>Partial and local</td>
+<td>5 standard fail-safes</td>
+<td>Future-state blueprint</td>
+</tr>
+<tr>
+<td>Daily telemetry pack</td>
+<td>Site spreadsheets only</td>
+<td>Network pack + site drill-down</td>
+<td>OpenCode pipeline</td>
+</tr>
+<tr>
+<td>Customer-promise linkage</td>
+<td>Manual inference</td>
+<td>Explicit in every standard</td>
+<td>Traceability table</td>
+</tr>
+<tr>
+<td>Change review gate</td>
+<td>PDF SOP updates by email</td>
+<td>PR review with named approvers</td>
+<td>GitHub workflow</td>
+</tr>
+</tbody></table>
+<h2 id="6-use-cases">6. Use cases</h2><h3 id="uc-a-dock-receipt-rework-cascade">UC-A — Dock-receipt rework cascade</h3><p><strong>Scenario.</strong> De Vries Home, the retail account from article 05, still saw Monday surprises even after the account-experience pilot. The alerts were better, but the root cause remained operational: inbound receipt mismatches from weekend stock arrivals corrupted Monday wave planning, which produced re-picks, relabel loops, dispatch holds, and finally late departure alerts.</p>
+<div class="mermaid">
+flowchart LR
+  a1[Weekend receipt mismatch] --> a2[Inventory variance enters Monday wave]
+  a2 --> a3[Picker hits stock exception]
+  a3 --> a4[Rework queue and relabel]
+  a4 --> a5[Dispatch hold at dock]
+  a5 --> a6[Customer visible delay or severe alert]
+</div><p><strong>What was designed.</strong> The fix was upstream, not communicative: a receipt-to-wave integrity check before release, plus a mandatory variance reason code and a same-shift inventory reconciliation window. In process terms, Halcyon stopped letting bad inventory truth enter the outbound promise. The process standard that changed was not “customer update,” but <code>process.order-cutoff.md</code> and <code>process.outbound-dispatch-release.md</code>.</p>
+<p><strong>AI working session summary.</strong> OpenCode traced 214 historical cascades across the pilot sites and showed that 61% began with receipt variance inside 18 hours of release. Claude Code drafted the revised cut-off and release standards plus the reason-code taxonomy. Codex challenged whether the new gate would simply move the queue earlier in the day; the cycle-time review showed the opposite, because blocked waves were resolved in smaller controlled bursts instead of exploding at dock.</p>
+<p><strong>Outcome (illustrative, 8-week pilot).</strong> Re-pick rate on Monday retail waves fell 8.6% → 2.1%; dispatch holds on the same account family fell 19 per week → 7; De Vries kept the article-05 experience gains and saw “surprise delay” incidents fall from 11 to 3 over the pilot.</p>
+<h3 id="uc-b-cold-chain-excursion-process-fix">UC-B — Cold-chain excursion process fix</h3><p><strong>Scenario.</strong> Nordpharm&#39;s week-6 reefer incident in article 05 proved the customer-facing runbook. Phase 2 asked a harder question: can Halcyon make that behavior a standard process rather than a one-off success involving strong individuals?</p>
+<p><strong>What was designed.</strong> The excursion logic moved into the operating core. A temperature excursion over the allowed band for more than 5 minutes became an automatic process hold in the dispatch-release standard, not just an alert rule in the account layer. The QA lead became a named actor in the exception flow, and the process board reviewed every regulated-load hold weekly.</p>
+<p><strong>AI working session summary.</strong> Claude Code converted the article-05 runbook into <code>process.temperature-excursion.md</code>, including the evidence fields, required telemetry events, and customer-communication gate. OpenCode replayed 14 months of cold-chain telemetry to stress-test the 5-minute hold rule against false positives caused by sensor drift during door-open events. Codex&#39;s adversarial review focused on one issue: whether the stricter hold would over-protect and damage capacity efficiency. The answer was no; the volume was low, and the customer-risk cost dwarfed the small extra hold time.</p>
+<p><strong>Outcome (illustrative).</strong> Detection to internal hold decision stayed under 5 minutes median, customer notification stayed at or below the article-05 22-minute benchmark, and zero regulated loads shipped with unresolved temperature anomalies during the pilot. More importantly, the behavior no longer depended on who happened to be on shift.</p>
+<h3 id="uc-c-returns-cross-dock-flow">UC-C — Returns cross-dock flow</h3><p><strong>Scenario.</strong> Returns visibility in article 05 reduced status chasing, but the backstage process was still weak. Returned units often arrived in mixed cages, reason codes were missing, and finance waited for manual disposition before issuing credit notes. The result: three different teams believed the return was “waiting on someone else.”</p>
+<div class="mermaid">
+flowchart LR
+  r1[Return arrives or consignee refusal logged] --> r2[Barcode and reason code check]
+  r2 --> r3{Reason code present}
+  r3 -->|no| r4[Return queue owner resolves inside same shift]
+  r3 -->|yes| r5[Cross dock sort to restock scrap or supplier return]
+  r4 --> r5
+  r5 --> r6[Credit or replacement trigger]
+  r6 --> r7[Customer sees return status and closure]
+</div><p><strong>What was designed.</strong> Halcyon created a standard returns cross-dock process with FIFO lanes, same-shift reason-code completion, and a visible disposition clock. The key design choice was to treat returns as a first-class service process, not a warehouse side activity.</p>
+<p><strong>AI working session summary.</strong> OpenCode mined 8,400 historical return records and showed that 37% of aged returns had no reason code within 24 hours. Claude Code authored the standard, the queue review card, and the customer status wording. Codex challenged the proposed “48-hour credit target” because finance only controlled half the delay; the final standard split the measure properly into <code>return disposition &lt;= 8h</code> and <code>credit trigger &lt;= 24h</code>.</p>
+<p><strong>Outcome (illustrative).</strong> Returns disposition time fell 6.8 days → 3.2 days, missing-reason-code cases fell 37% → 8%, and returns-status contacts dropped another 29% on top of the article-05 visibility improvement.</p>
+<h2 id="7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</h2><p>This engagement encoded four operational SOPs for AI, all using the same pattern: <strong>method → step list → output schema → acceptance criteria → review gate</strong>.</p>
+<ol>
+<li><strong>Process-standard authoring SOP.</strong> Claude Code converted validated blueprint columns into <code>process.x.md</code> files. Each standard had to include trigger, owner, events, queue threshold, fail-safes, and customer-promise impact. No standard could merge without at least one operational metric and one customer-facing consequence.</li>
+<li><strong>Process-telemetry mining SOP.</strong> OpenCode reconstructed event sequences, computed dwell times, and emitted queue-age files. Acceptance criteria: no PII, named station list only, and explicit QA output for missing milestones.</li>
+<li><strong>Cycle-time analysis SOP.</strong> Codex reviewed every proposed threshold move or takt claim for Little&#39;s Law consistency, local-optimization bias, and unsupported causal leaps.</li>
+<li><strong>Exception-queue analysis SOP.</strong> Every exception older than SLA had to carry owner, severity, age, and whether customer communication was required.</li>
+</ol>
+<p><strong>Prompt template — process-standard authoring.</strong></p>
+<pre><code class="language-text">You are the Process Standard Author.
+Input: validated blueprint column set, queue model, failure demand links, owner map.
+Write one process standard in process.x.md format.
+Rules:
+1. Preserve the journey scope and customer promise affected.
+2. Include trigger, owner, input events, output events, queue threshold, fail-safes, and review gate.
+3. Do not standardize a step that has no evidence or no metric.
+4. Call out where local parameterization is allowed and where it is not.
+5. End with linked SQL query names and one paragraph on what bad behavior this standard prevents.
+Acceptance:
+- every control maps to an observed fail point
+- every KPI is measurable from event logs
+- every customer-facing promise is named explicitly</code></pre><p><strong>Prompt template — telemetry mining.</strong></p>
+<pre><code class="language-text">Build one event-sequence table per order_id.
+Stations allowed: cut_off_check wave_release pick pack dock dispatch pod invoice_trigger return_receipt return_sort return_disposition.
+Compute dwell_time_min between station start and station end.
+Flag exception if dwell_time_min exceeds threshold table or if event_name in [temp_hold manifest_mismatch stock_check].
+Flag rework if order visits the same station twice or enters a rework queue.
+Emit three outputs only: clean table, missing event report, queue age summary.</code></pre><p><strong>Prompt template — cycle-time critique.</strong></p>
+<pre><code class="language-text">Review the proposed process change as an adversarial process engineer.
+Check three things only:
+1. Does the change reduce end-to-end cycle time or merely move queue elsewhere?
+2. Does it improve a sub-process while hurting the customer promise from article 05?
+3. Are the queue and capacity claims mathematically plausible from the stated volumes?
+Output: accept, reject, or revise with one evidence-backed reason each.</code></pre><p><strong>Meta-SOP.</strong> Research → instrument → blueprint → standardize → pilot → govern. The gates were human and explicit:</p>
+<ul>
+<li><strong>G1 evidence gate:</strong> telemetry and site evidence accepted by ops lead.</li>
+<li><strong>G2 blueprint gate:</strong> current-state blueprint accepted by practitioner panel.</li>
+<li><strong>G3 standard gate:</strong> process PRs approved by process owner + data owner + affected functional lead.</li>
+<li><strong>G4 rollout gate:</strong> process board accepts pilot evidence and governance plan.</li>
+</ul>
+<p><strong>Guardrails.</strong></p>
+<ul>
+<li>Do not optimize a sub-process at journey expense. If a change improves pick speed but worsens dispatch promise, it fails.</li>
+<li>Do not let an agent standardize a broken process. Evidence from failure demand comes first; only then may the standard be authored.</li>
+<li>No customer-visible claim without a corresponding event source.</li>
+<li>No local process variant without named rationale and expiry date.</li>
+<li>No telemetry used for individual ranking or performance surveillance.</li>
+</ul>
+<p><strong>Failure modes observed and mitigations.</strong></p>
+<ol>
+<li><strong>The documentation trap.</strong> An early agent draft tried to standardize a local pack workaround because it was described clearly in notes. Mitigation: every standard needed failure-demand or event evidence.</li>
+<li><strong>The shifted bottleneck problem.</strong> One proposed change sped pick but overloaded dock. Mitigation: Codex cycle-time critique and queue table review before any threshold moved.</li>
+<li><strong>The over-precision problem.</strong> OpenCode initially produced queue thresholds to the minute, implying certainty the data did not support. Mitigation: thresholds rounded to operationally meaningful bands and reviewed with site leaders.</li>
+<li><strong>The hero-story bias.</strong> Article 05 had a memorable cold-chain save. Mitigation: convert the behavior into a standard process with explicit trigger and owner, so the story becomes a capability.</li>
+</ol>
+<h2 id="8-value-creation-amp-measurement">8. Value creation &amp; measurement</h2><p><strong>Before/after (pilot sites unless noted; all figures illustrative).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Before</th>
+<th>After</th>
+<th>Measurement tier</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Median outbound cycle time</td>
+<td>11.6 h</td>
+<td>8.4 h</td>
+<td>Operational</td>
+</tr>
+<tr>
+<td>p95 outbound cycle time</td>
+<td>26.4 h</td>
+<td>15.2 h</td>
+<td>Operational</td>
+</tr>
+<tr>
+<td>First-pass yield at dispatch release</td>
+<td>91.2%</td>
+<td>97.1%</td>
+<td>Operational</td>
+</tr>
+<tr>
+<td>Queue-age breaches &gt; 2 h</td>
+<td>26% of exception items</td>
+<td>8%</td>
+<td>Operational</td>
+</tr>
+<tr>
+<td>Labor cost per shipped unit</td>
+<td>€4.82</td>
+<td>€4.31</td>
+<td>Operational / financial</td>
+</tr>
+<tr>
+<td>Returns disposition cycle</td>
+<td>6.8 days</td>
+<td>3.2 days</td>
+<td>Operational</td>
+</tr>
+<tr>
+<td>WISMO-equivalent contacts</td>
+<td>17.1 per 1,000 shipments</td>
+<td>10.2 per 1,000</td>
+<td>Journey</td>
+</tr>
+<tr>
+<td>Outbound SLA in pilot warehouses</td>
+<td>88.2%</td>
+<td>92.0%</td>
+<td>Journey / relationship</td>
+</tr>
+<tr>
+<td>Article-05 pilot cohort SLA</td>
+<td>93.1%</td>
+<td>93.1% sustained</td>
+<td>Relationship</td>
+</tr>
+<tr>
+<td>Manual touches per severe exception</td>
+<td>2.4</td>
+<td>1.5</td>
+<td>Operational</td>
+</tr>
+<tr>
+<td>Gross margin leakage from avoidable rework</td>
+<td>€1.14 per unit</td>
+<td>€0.63 per unit</td>
+<td>Financial</td>
+</tr>
+</tbody></table>
+<p><strong>Causal logic.</strong> The measurement story matched the books. Operational metrics moved first: queue age, cycle time, and first-pass yield. Journey metrics followed: fewer missing milestones meant less effort and fewer status chases. Business outcomes lagged but became credible because the chain was explicit. The article-05 promise improvements held because the phase-2 process now emitted cleaner truth with less manual intervention. This is precisely the three-tier measurement architecture from <em>Outside In</em>, joined to Grönroos&#39;s tripartite productivity model: internal efficiency improved, external quality improved, and capacity efficiency improved because repeat work shrank. See: <code>14-outside-in/06-measurement.md</code> and <code>19-service-management-and-marketing/07-designing-and-managing-the-service-process.md</code>.</p>
+<p><strong>Directional business case.</strong> At the pilot-sites run rate, labor savings alone modeled at ~€0.51 per unit across ~843,000 annualized outbound units in scope yielded ~€430k. Rework avoidance and lower expedite use added ~€290k on the same run-rate assumption. Faster returns disposition reduced write-off and delayed-credit exposure by ~€231k. These direct economics excluded the retention and share-of-wallet upside already evidenced in article 05. That separation mattered: the finance case could stand on operational engineering alone, while the experience case remained additive.</p>
+<p><strong>Measurement plan.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Focus</th>
+<th>Core measures</th>
+<th>Cadence</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Relationship</td>
+<td>Account health and loyalty</td>
+<td>SLA attainment, renewal risk, article-05 cohort continuity</td>
+<td>Monthly</td>
+<td>Head of account management</td>
+</tr>
+<tr>
+<td>Journey / episode</td>
+<td>Shipment and return experience</td>
+<td>WISMO per 1,000, severe exception notification time, return closure effort</td>
+<td>Weekly</td>
+<td>Order-to-cash process owner</td>
+</tr>
+<tr>
+<td>Operational</td>
+<td>Flow and control</td>
+<td>cycle time, first-pass yield, queue age, rework rate, labor cost/unit</td>
+<td>Daily</td>
+<td>Site managers + network ops director</td>
+</tr>
+</tbody></table>
+<h2 id="9-ai-tool-playbook">9. AI tool playbook</h2><p><strong>Claude Code.</strong> Role: orchestration, blueprinting, process-standard authoring, and weekly narrative synthesis. It excelled at turning validated evidence into clean mermaid diagrams, lane tables, and reusable standards. It was less reliable when asked to infer which local variation was legitimate versus accidental; the human designer and site leaders made those calls.</p>
+<p><strong>OpenCode.</strong> Role: telemetry engineering and queue analytics. It built the event-sequence pipeline, the queue-age dashboard, the exception analyzer, and the inline mock dataset. It excelled at repeatable joins and honest data outputs. It failed once by producing overly precise queue thresholds; the fix was to demand operationally meaningful bands and explicit uncertainty notes.</p>
+<p><strong>Codex.</strong> Role: adversarial process engineering review. It reviewed cycle-time math, challenged local-optimization proposals, and checked whether standards actually protected the customer promise. The command style was stable: <code>codex exec --skip-git-repo-check &quot;&lt;file or diff&gt; : &lt;specific process critique&gt;&quot;</code>. Its best catches were shifted-bottleneck risks and one threshold proposal that looked elegant on paper but would have damaged linehaul reliability.</p>
+<p><strong>GitHub.</strong> Role: process library, review gate, and governance backbone. Issues captured exception patterns and standard-change proposals; pull requests were the only way to modify the catalog; Actions validated mermaid, markdown, and process-schema rules. The process board used the repository as the audit trail. This turned “SOPs” from static documents into living operational assets.</p>
+<p>Representative gate excerpt:</p>
+<pre><code class="language-yaml"># .github/workflows/process-gate.yml
+on: [pull_request]
+jobs:
+  gate:
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/validate_process_schema.mjs standards/
+      - run: node scripts/check_metric_links.mjs standards/ metrics/
+      - run: node scripts/validate_mermaid.mjs diagrams/
+      - run: node scripts/check_no_pii.mjs .</code></pre><h2 id="10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</h2><ol>
+<li><strong>A process catalog is governance, not documentation.</strong> The value appeared only once standards had owners, metrics, and PR gates.</li>
+<li><strong>Most WISMO was caused by missing truth, not late trucks.</strong> The operational lever was milestone discipline.</li>
+<li><strong>Queue design beat productivity slogans.</strong> The biggest gains came from controlling WIP and release rules, not pushing people faster.</li>
+<li><strong>Horizontal ownership is the hidden design artifact.</strong> Without the order-to-cash owner, the standards would have reverted to local PDFs.</li>
+<li><strong>Returns deserve first-class process design.</strong> Treating returns as overflow work is how both customer friction and cash delay accumulate.</li>
+<li><strong>Adversarial review is especially valuable in operations work.</strong> Process changes that feel efficient are often just shifted pain.</li>
+<li><strong>Digitized controls must be socially designed.</strong> The works-council conversation mattered as much as the SQL.</li>
+<li><strong>Continuity with phase 1 kept the programme honest.</strong> If a process change threatened the article-05 promise, it was rejected.</li>
+</ol>
+<h2 id="11-references">11. References</h2><p>Book chapters used (paths under <code>books/</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Reference</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>19-service-management-and-marketing/07-designing-and-managing-the-service-process.md</code></td>
+<td>Service process design, F/W/S markers, demand-capacity logic, tripartite productivity</td>
+</tr>
+<tr>
+<td><code>09-mapping-experiences/05-service-blueprints.md</code></td>
+<td>Blueprint lanes, three lines, fail-point and wait-point annotation, blueprint workshop practice</td>
+</tr>
+<tr>
+<td><code>06-the-service-innovation-handbook/06-designing-for-scale-and-delivery.md</code></td>
+<td>Blueprint as delivery bridge, operational readiness, service scaling logic</td>
+</tr>
+<tr>
+<td><code>04-service-design-for-business/06-organizational-change.md</code></td>
+<td>Horizontal ownership, silo incentives, journey governance, change chartering</td>
+</tr>
+<tr>
+<td><code>14-outside-in/06-measurement.md</code></td>
+<td>Three-tier measurement architecture, operational-to-financial linkage</td>
+</tr>
+</tbody></table>
+<p>Related series articles:</p>
+<ul>
+<li><code>../05/README.md</code> — the customer-facing phase-1 account-experience redesign at Halcyon.</li>
+<li><code>../11/README.md</code> — blueprinting as operational diagnosis, especially the evidence-gated lane discipline.</li>
+<li><code>../23/README.md</code> — frontline enablement and operational adoption patterns.</li>
+</ul>
+<p>No external benchmark statistics are cited as facts. All numbers in this case study are fictional and illustrative.</p>
+<h2 id="12-appendix-artifact-index">12. Appendix: artifact index</h2><table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Format</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Process overview flow</td>
+<td>3</td>
+<td>Mermaid flowchart</td>
+<td>Four-phase operations design logic</td>
+</tr>
+<tr>
+<td>Programme gantt</td>
+<td>3</td>
+<td>Mermaid gantt</td>
+<td>20-week plan and gates</td>
+</tr>
+<tr>
+<td>Phase-method-tool table</td>
+<td>3</td>
+<td>Table</td>
+<td>Trace phases to methods and AI tools</td>
+</tr>
+<tr>
+<td>A1 high-level process map</td>
+<td>5</td>
+<td>Mermaid + table</td>
+<td>Current-state order-to-cash spine and pain</td>
+</tr>
+<tr>
+<td>A1b current-state blueprint</td>
+<td>5</td>
+<td>Mermaid + lane table</td>
+<td>Diagnostic of outbound flow and support causes</td>
+</tr>
+<tr>
+<td>Queue and cycle-time model</td>
+<td>5</td>
+<td>Table</td>
+<td>WIP, capacity, queue, touch time</td>
+</tr>
+<tr>
+<td>A2 future-state blueprint</td>
+<td>5</td>
+<td>Mermaid + lane table</td>
+<td>Operational specification with fail-safes</td>
+</tr>
+<tr>
+<td>A2b exception flow</td>
+<td>5</td>
+<td>Mermaid</td>
+<td>Ownership and review logic for exceptions</td>
+</tr>
+<tr>
+<td>A3 stakeholder map</td>
+<td>5</td>
+<td>quadrantChart + table</td>
+<td>Governance and engagement design</td>
+</tr>
+<tr>
+<td>A4 ecosystem map</td>
+<td>5</td>
+<td>Mermaid</td>
+<td>Actors, systems, and handoffs</td>
+</tr>
+<tr>
+<td>A5 personas</td>
+<td>5</td>
+<td>Table</td>
+<td>External and internal users of the process</td>
+</tr>
+<tr>
+<td>A6 process catalog template</td>
+<td>5</td>
+<td>Fenced text</td>
+<td>Reusable process-standard format</td>
+</tr>
+<tr>
+<td>A6 filled outbound standard</td>
+<td>5</td>
+<td>YAML</td>
+<td>SOP-as-code example</td>
+</tr>
+<tr>
+<td>A6 process board agenda</td>
+<td>5</td>
+<td>Fenced text</td>
+<td>Governance cadence</td>
+</tr>
+<tr>
+<td>A7 process events sample</td>
+<td>5</td>
+<td>CSV</td>
+<td>Mock telemetry schema and values</td>
+</tr>
+<tr>
+<td>A8 charts</td>
+<td>5</td>
+<td>xychart, pie, quadrantChart</td>
+<td>Distribution, exception mix, process prioritization</td>
+</tr>
+<tr>
+<td>A9 traceability table</td>
+<td>5</td>
+<td>Table</td>
+<td>Pain → principle → blueprint → KPI</td>
+</tr>
+<tr>
+<td>A10 process control audit</td>
+<td>5</td>
+<td>Table</td>
+<td>Before/after governance capability</td>
+</tr>
+<tr>
+<td>Use case flows</td>
+<td>6</td>
+<td>Mermaid + narrative</td>
+<td>Rework cascade, cold chain, returns cross-dock</td>
+</tr>
+<tr>
+<td>SOP prompt templates</td>
+<td>7</td>
+<td>Fenced text</td>
+<td>Agent-executable operating methods</td>
+</tr>
+<tr>
+<td>Before/after measurement table</td>
+<td>8</td>
+<td>Table</td>
+<td>Operational, journey, and financial value proof</td>
+</tr>
+<tr>
+<td>GitHub gate excerpt</td>
+<td>9</td>
+<td>YAML</td>
+<td>Review workflow for process library</td>
+</tr>
+</tbody></table>
+</article><div class="wrap" style="max-width:880px">
+    <div class="cross-links"><a href="../24/index.html"><span class="lbl">← Previous case</span><span class="ttl">24. CX Maturity &amp; Governance: Titan Manufacturing</span></a><a href="../26/index.html"><span class="lbl">Next case →</span><span class="ttl">26. Good Services in the Public Sector: Fernwood Council's Citizen Account and Planning Applications Service</span></a></div>
+    <div class="art-foot">
+      <span>13 figures (13 diagrams) · ~9.3k words · reviewed by an adversarial AI reviewer (Gemini 3.1 Pro High).</span>
+      · <a href="https://github.com/sammozaffari/the-agentic-service-designer/blob/main/articles/25/README.md" target="_blank" rel="noopener">Open source in repo ↗</a>
+    </div>
+  </div></main>
+<footer class="footer"><div class="footer-inner">
+  <span>Agentic Service Designer — 30 service design case studies from an AI-first practice. Fictional, anonymized clients.</span>
+  <span><a href="./index.html">Home</a> · <a href="./concept.html">The concept</a> · <a href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub</a></span>
+</div></footer>
+<script src="./assets/site.js"></script>
+</body></html>

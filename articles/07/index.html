@@ -1,0 +1,1073 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Mixed Methods: Quant + Qual under One Roof at Vesper Pharmacy — Retail pharmacy">
+<title>07. Mixed Methods: Quant + Qual under One Roof at Vesper Pharmacy — Agentic Service Designer</title>
+<link rel="stylesheet" href="./assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234f46e5'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'>A</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+</head><body>
+<nav class="nav"><div class="nav-inner">
+  <a class="brand" href="./index.html"><span class="mark">A</span>Agentic Service Designer</a>
+  <div class="nav-links">
+    <a href="./index.html" class="">Home</a>
+    <a href="./concept.html" class="">The concept</a>
+    <a href="./index.html#series" class="on">Case studies</a>
+    <a class="github-link" href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</div></nav>
+<main class="art">
+  <div class="wrap art-hero">
+    <div class="art-meta">
+      <span class="chip chip-track">Research &amp; Synthesis</span>
+      <span class="sep">·</span><span>Retail pharmacy</span>
+      <span class="sep">·</span><span><b>Vesper Pharmacy</b></span>
+      <span class="sep">·</span><span>24 weeks (14 research &amp; design + 8 live pilot + readout)</span>
+      <span class="chip chip-tool">Claude Code</span><span class="chip chip-tool">OpenCode</span><span class="chip chip-tool">Codex</span><span class="chip chip-tool">GitHub</span>
+    </div>
+    <h1>Mixed Methods: Quant + Qual under One Roof at Vesper Pharmacy</h1>
+    <p class="deck">Fictional composite client. All names, figures, and data are illustrative and anonymized.</p>
+  </div><article class="art-body wrap"><nav class="toc"><b>On this page</b><ol><li><a href="#0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</a></li><li><a href="#1-executive-summary">1. Executive summary</a></li><li><a href="#2-the-brief">2. The brief</a></li><li><a href="#3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</a></li><li><a href="#4-phase-by-phase-narrative">4. Phase-by-phase narrative</a></li><li><a href="#5-artifacts-portfolio">5. Artifacts portfolio</a></li><li><a href="#6-use-cases">6. Use cases</a></li><li><a href="#7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</a></li><li><a href="#8-value-creation-amp-measurement">8. Value creation &amp; measurement</a></li><li><a href="#9-ai-tool-playbook-this-engagement">9. AI tool playbook (this engagement)</a></li><li><a href="#10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</a></li><li><a href="#11-references">11. References</a></li><li><a href="#12-appendix-artifact-index">12. Appendix: artifact index</a></li></ol></nav><h1 id="mixed-methods-quant-qual-under-one-roof-at-vesper-pharmacy">Mixed Methods: Quant + Qual under One Roof at Vesper Pharmacy</h1><h2 id="0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</h2><p>Vesper Pharmacy is a fictional composite client assembled from patterns observed across several European retail pharmacy chains; no real company, shopper, pharmacist, or store is depicted. All names, figures, datasets, and quotes are illustrative and anonymized, and the mock dataset in <code>data/</code> is synthetic. This article shares knowledge and process — research designs, SOPs, prompts, review gates — never client specifics. The engagement ran AI-first: OpenCode built the quantitative pipeline, Claude Code ran qualitative synthesis, a dedicated integration agent reconciled the two streams, and GitHub versioned every artifact, with the human designer owning framing, ethics, and gate decisions.</p>
+<h2 id="1-executive-summary">1. Executive summary</h2><p>Vesper Pharmacy, a fictional chain of 310 stores, had a puzzle its dashboards could not solve. Click-and-collect was supposed to be the convenient option, yet 18% of prepared orders were never collected, click-and-collect shoppers reported <em>higher</em> effort than walk-ins, and the fastest-served cohort — elderly repeat patients — gave the worst satisfaction scores. Separate teams had separate explanations, each backed by its own data, none reconciled. Over 24 weeks, one lead service designer with an AI agent stack ran a mixed-methods program: quantitative evidence (1.8M pickup events a year, a 12,038-response survey, CSAT/effort telemetry, store operations data), qualitative evidence (35 shopper interviews, 20 pharmacist shadow days, 15 mystery shops), and operations logs — fused through a triangulation matrix in which every theme carries quant-support, qual-support, or conflict tags. The redesign that followed — one status truth, a ready-means-ready notification rule, a dedicated pickup point, and a transparent queue — cut no-shows from 18% to 7% in the pilot, halved pickup effort, and freed roughly 2.6 pharmacist-hours per store per week from status-chasing.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Vesper Pharmacy (fictional composite)</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>Retail pharmacy, EU (Netherlands + Flanders)</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>Prescription pickup + click-and-collect, 310 stores, ~1.8M pickups/yr</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>Mixed-methods research program → unified pickup flow → 12-store pilot</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>24 weeks (14 research &amp; design + 8 pilot + readout)</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>1 lead designer + 0.5 research ops + AI agents + 1.8 client FTE</td>
+</tr>
+<tr>
+<td>AI tools</td>
+<td>Claude Code, OpenCode, Codex, GitHub</td>
+</tr>
+<tr>
+<td>Headline results (illustrative)</td>
+<td>No-show 18→7%; CES 4.8→2.6; CSAT 3.4→4.2; elderly CSAT 2.8→4.2; status calls −58%</td>
+</tr>
+</tbody></table>
+<p>What you will learn:</p>
+<ul>
+<li>How to run quant and qual as <strong>one</strong> evidence system instead of two competing reports — the triangulation matrix, the integration agent, and the reconciliation SOP behind &quot;quant says what, qual says why.&quot;</li>
+<li>How to build a reproducible quant pipeline with OpenCode (survey cleaning, cohort analysis, order-to-pickup funnel) that a skeptic can re-run from a GitHub runbook.</li>
+<li>The guardrails that keep agents honest: pre-registered analysis plans against p-hacking, evidence-strength tags against anecdote overweighting, data-zone rules for health-adjacent data.</li>
+</ul>
+<h2 id="2-the-brief">2. The brief</h2><h3 id="client-portrait">Client portrait</h3><p>Vesper Pharmacy Group operates 310 community pharmacies across the Netherlands and Flanders: roughly 1.8M pickups a year, 2,900 staff of whom 640 are pharmacists, and a digital channel launched in 2023 — app and web repeat-prescription ordering, click-and-collect, and a small home-delivery offer. Digital adoption is respectable (38% of pickup volume starts as a digital order) but loyalty is lopsided: digital-native parents order weekly while the 65+ repeat-prescription population — the revenue backbone — barely touches the app and reports the lowest satisfaction.</p>
+<h3 id="the-challenge">The challenge</h3><p>Three anomalies, three competing explanations, zero shared evidence. First, <strong>18% of click-and-collect orders are never collected</strong> — 123,000 abandoned orders a year, each already picked, packed, and later restocked. Digital blamed store execution; store ops blamed &quot;unreliable app users&quot;; marketing blamed reminder timing. Second, <strong>click-and-collect effort (CES 5.0 on a 1–7 scale) exceeds walk-in effort (4.5)</strong> — the convenience channel is less convenient than the queue it was meant to replace. Third: <strong>elderly repeat patients are served fastest (median 4.3 minutes) yet rate the experience 2.8 out of 5</strong>, the worst CSAT of any segment, while wait time barely correlates with their satisfaction (r = 0.06).</p>
+<p>Standard retail prescription abandonment tends to sit around 9-10% in published benchmarks [unverified], which makes Vesper&#39;s 18% click-and-collect abandonment rate a glaring channel failure rather than ordinary pharmacy leakage.</p>
+<p>Meanwhile 41% of app users reported contradictory prescription status messages (SMS saying one thing, the app another), and stores fielded a constant stream of &quot;is my order ready?&quot; calls — failure demand caused by the organization failing to make the service legible the first time (See: 19-service-management-and-marketing/02-perceived-service-quality.md).</p>
+<h3 id="success-criteria-agreed-with-the-client">Success criteria (agreed with the client)</h3><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline (illustrative)</th>
+<th>Pilot target</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Click-and-collect no-show rate</td>
+<td>18%</td>
+<td>≤ 9%</td>
+</tr>
+<tr>
+<td>Customer Effort Score (1–7)</td>
+<td>4.8 overall / 5.0 C&amp;C</td>
+<td>≤ 3.0</td>
+</tr>
+<tr>
+<td>Pickup CSAT (1–5)</td>
+<td>3.4 overall / 2.8 elderly cohort</td>
+<td>≥ 4.0 both</td>
+</tr>
+<tr>
+<td>App users reporting contradictory status</td>
+<td>41%</td>
+<td>≤ 15%</td>
+</tr>
+<tr>
+<td>&quot;Is my order ready?&quot; calls to stores</td>
+<td>index 100</td>
+<td>−40%</td>
+</tr>
+<tr>
+<td>Pharmacist shift time on logistics/status queries</td>
+<td>11%</td>
+<td>≤ 7%</td>
+</tr>
+</tbody></table>
+<h3 id="constraints">Constraints</h3><p>Budget €240,000 for research and design plus a separately costed pilot; 24 weeks to a pilot readout ahead of the annual store-ops planning cycle; a dispensing system that is read-only for anything patient-related; GDPR plus health-adjacent data handling — prescription contents never leave the client&#39;s EU data zone and agents only ever see tokenized event streams; and a works council agreement requiring consultation on any change to counter staffing or scripts.</p>
+<h3 id="why-service-design">Why service design</h3><p>Every internal explanation was single-lens: digital had funnel analytics, ops had queue data, CX had survey verbatims, and nobody could arbitrate because the streams were never joined. That is precisely what methodological triangulation exists for: direct observation (what people do), interviews (how they explain it), and quantitative analytics (how often and for whom) combined into one account (See: 01-this-is-service-design-doing/04-research-methods.md). Grönroos&#39;s perceived-quality model gave the frame — satisfaction is the gap between expected and experienced service, split into technical quality (was the order ready?) and functional quality (how did the wait feel?) — which correctly predicted that &quot;make it faster&quot; was the wrong fix for at least one cohort (See: 19-service-management-and-marketing/02-perceived-service-quality.md). Outside In supplied the operating discipline: a standing customer-understanding capability with closed loops, not a one-off research project (See: 14-outside-in/04-customer-understanding.md).</p>
+<h2 id="3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</h2><p>The engagement ran the Double Diamond with research and synthesis deliberately overweighted — the design itself was comparatively simple once the evidence was reconciled. Three evidence streams ran in parallel, each with a named agent owner, plus one integration agent whose only job was reconciliation.</p>
+<p>We deviated from the template&#39;s default Good Services 15-principles audit in A10 because Grönroos&#39;s six criteria more directly test the technical-vs-functional quality gap at the center of this pickup failure.</p>
+<div class="mermaid">
+flowchart LR
+  subgraph DISC["Discover - TISDD Research - Kumar Sense Intent Know Context Know People"]
+    Q1["Quant stream: 1.8M events + survey n=12038 + telemetry"] --> INT1["Integration agent"]
+    L1["Qual stream: 35 interviews + 20 shadow days + 15 mystery shops"] --> INT1
+    O1["Ops stream: queue logs + status event logs + staffing"] --> INT1
+  end
+  subgraph DEF["Define - TISDD Synthesis - Kumar Frame Insights"]
+    INT1 --> T1["Triangulation matrix: 14 themes tagged"]
+    T1 --> T2["7 insights + 6 design principles"]
+    T2 --> M1["Journey map + future blueprint"]
+  end
+  subgraph DEV["Develop - TISDD Ideation Prototyping - Kumar Explore Concepts Frame Solutions"]
+    M1 --> C1["Unified pickup flow concept"]
+    C1 --> C2["Pilot design + runbooks"]
+  end
+  subgraph DEL["Deliver - TISDD Implementation Measurement - Kumar Realize Offerings"]
+    C2 --> P1["12-store pilot 8 weeks"]
+    P1 --> R1["Triangulated readout + scale case"]
+  end
+  DISC -->|Evidence gate| DEF -->|Concept gate| DEV -->|Pilot gate| DEL
+  DEL -.->|Closed learning loop| DISC
+</div><div class="mermaid">
+gantt
+  title Vesper mixed-methods pickup redesign - 24 weeks
+  dateFormat YYYY-MM-DD
+  axisFormat %W
+  section Discover
+  Assumption map + pre-registered analysis plan :a1, 2026-03-02, 10d
+  Quant pipeline build and baseline funnel      :a2, 2026-03-09, 21d
+  Survey fielding n=12038                       :a3, 2026-03-16, 28d
+  Qual fieldwork interviews shadowing mystery   :a4, 2026-03-16, 35d
+  section Define
+  Integration and triangulation matrix          :b1, 2026-04-27, 12d
+  Gate G1 evidence review                       :milestone, 2026-05-11, 0d
+  Journey map and future-state blueprint        :b2, 2026-05-11, 12d
+  section Develop
+  Concept design and store rehearsal            :c1, 2026-05-25, 14d
+  Gate G2 pilot go                              :milestone, 2026-06-08, 0d
+  Pilot build runbooks staff briefing           :c2, 2026-06-08, 12d
+  section Deliver
+  Live pilot 12 stores                          :d1, 2026-06-22, 56d
+  Readout and scale business case               :d2, 2026-08-17, 10d
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>SD method (citation)</th>
+<th>AI tool(s)</th>
+<th>Artifact produced</th>
+<th>Client involvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Research design</td>
+<td>Assumption mapping, hypothesis vs research-based maps (09/03); research plan canvas (01/04)</td>
+<td>Claude Code (assumption register), Codex (analysis-plan adversarial review)</td>
+<td>Assumption register, pre-registered analysis plan</td>
+<td>9-stakeholder kickoff workshop</td>
+</tr>
+<tr>
+<td>Quantitative build</td>
+<td>Survey design, funnel and cohort analysis (18/02, 14/04)</td>
+<td>OpenCode (pipeline, survey cleaning), GitHub (runbooks, Actions)</td>
+<td>Baseline funnel, cohort cuts, clean survey frame</td>
+<td>Ops analyst validates extracts</td>
+</tr>
+<tr>
+<td>Qualitative fieldwork</td>
+<td>Semi-structured interviews, contextual inquiry/shadowing, mystery shopping (18/02, 01/04)</td>
+<td>Claude Code (transcript-to-evidence agents)</td>
+<td>412-item evidence register</td>
+<td>CX lead joined 8 interviews</td>
+</tr>
+<tr>
+<td>Integration</td>
+<td>Triangulation, synthesis as knowledge modeling (01/04, 18/05)</td>
+<td>Claude Code integration agent, Codex (conflict challenge)</td>
+<td>Triangulation matrix, 7 insights</td>
+<td>Half-day reconciliation wall</td>
+</tr>
+<tr>
+<td>Mapping</td>
+<td>Evidence-tagged journey mapping (09/03), blueprinting (19/02 moments of truth)</td>
+<td>Claude Code (mermaid authoring), GitHub (PR review)</td>
+<td>A1 journey map, A2 blueprint</td>
+<td>Store managers blueprint rehearsal</td>
+</tr>
+<tr>
+<td>Pilot &amp; measure</td>
+<td>Closed-loop VOC inner/outer loop (14/04), three-tier metrics (18/04)</td>
+<td>OpenCode (dashboard), GitHub Actions (KPI CI)</td>
+<td>Pilot scorecard, scale case</td>
+<td>Weekly steering with COO</td>
+</tr>
+</tbody></table>
+<h2 id="4-phase-by-phase-narrative">4. Phase-by-phase narrative</h2><h3 id="41-research-design-and-the-pre-registered-analysis-plan-weeks-12">4.1 Research design and the pre-registered analysis plan (weeks 1–2)</h3><p><strong>Goal.</strong> Decide what evidence would settle the argument <em>before</em> collecting any of it — and force the organization&#39;s three competing explanations into one testable frame.</p>
+<p><strong>Method &amp; SOP.</strong> Assumption-mapping workshop first, per Kalbach: nine stakeholders (digital, ops, CX, two store managers, IT, marketing, DPO, works council) built a hypothesis map of the pickup journey, and every confident claim was extracted into an &quot;Assumptions to Test&quot; register — the deliberate separation of what the organization <em>thinks</em> it knows from what it has verified (See: 09-mapping-experiences/03-understanding-the-user.md). Then a pre-registered quantitative analysis plan: hypotheses, cuts, and significance rules fixed before the survey closed, as the primary p-hacking guardrail (See: 18-universal-methods-of-design/04-evaluative-methods.md).</p>
+<p><strong>AI execution.</strong> Claude Code transcribed the workshop wall from photos and structured 41 assumption cards into <code>research/assumption-register.csv</code>, each tagged with its owner and the stream that could falsify it. Codex then adversarially reviewed the draft analysis plan:</p>
+<pre><code class="language-bash">codex exec --skip-git-repo-check &quot;Read research/analysis-plan.md. Attack it as a
+reviewer: (1) list every place where a null result could be re-cut into a
+publishable positive (post-hoc segmentation, scale re-scoring, window choice);
+(2) check each hypothesis has a falsification condition; (3) flag any metric
+whose operational definition is ambiguous. Output numbered defects only.&quot;</code></pre><p>Codex returned 11 defects — including an undefined &quot;active app user&quot; denominator and a plan to test 23 cohort cuts without multiplicity control. The final plan fixes 8 primary hypotheses, a Benjamini–Hochberg FDR correction across secondary cuts, and a rule that any exploratory finding is labelled <code>exploratory</code> in every downstream artifact.</p>
+<p><strong>Human designer judgment.</strong> Choosing which anomalies were worth a hypothesis at all (the elderly fast-but-unhappy puzzle nearly didn&#39;t make the plan — the ops director considered it settled), and negotiating the data-zone rules with the DPO before any pipeline was built.</p>
+<p><strong>Artifact produced.</strong> Assumption register (41 items; 27 later falsified), pre-registered analysis plan (A6), data-zone protocol.</p>
+<h3 id="42-the-quantitative-build-weeks-26">4.2 The quantitative build (weeks 2–6)</h3><p><strong>Goal.</strong> Turn 1.8M pickup events, the survey, and telemetry into a reproducible baseline: the funnel from order to pickup, per channel, per cohort, per store.</p>
+<p><strong>Method &amp; SOP.</strong> Funnel and cohort analysis over the event stream; survey fielded per the survey design brief (A6) with cleaning rules fixed in advance; store operations data (queue timestamps, staffing rosters, ready-shelf dwell) joined on store-week (See: 18-universal-methods-of-design/02-foundational-research-methods.md on secondary data; 14-outside-in/04-customer-understanding.md on VOC architecture).</p>
+<p><strong>AI execution.</strong> OpenCode owned the pipeline in agent mode, every step a versioned script with a GitHub runbook:</p>
+<pre><code class="language-bash">opencode run --agent build &quot;Read warehouse exports pickups_events.csv (1.8M rows,
+tokenized). Build the funnel order_placed -&gt; ready_notified -&gt; collected_7d per
+channel (app/web/phone) and per cohort (first-time vs repeat, age band, store
+format). Then: join notification_sent_at to shelf_scan_at and flag orders where
+notification precedes shelf scan ('premature ready'). Write results/funnel.md
+with per-step rates, and data/pickup_funnel_sample.csv as a 113-row synthetic
+sample whose cohort means match the computed baseline and pilot to one decimal.&quot;</code></pre><pre><code class="language-bash">opencode run --agent build &quot;Clean survey_raw.csv per sop/survey-cleaning.md:
+drop speeders (&lt;40% median completion time), straight-liners (zero variance on
+grid items), failed attention checks (2 embedded). Report exclusions per rule.
+Never impute. Write results/survey-clean.csv and a cleaning log.&quot;</code></pre><p>The pipeline found the three load-bearing quantitative facts: (1) no-shows concentrate exactly where the &quot;premature ready&quot; flag fires — orders notified before shelfing no-show at 2.3× the rate of properly notified orders — and first-time click-and-collect users no-show at 31% versus 9% for repeat users; (2) wait time explains satisfaction variance in every cohort <em>except</em> 65+ repeat patients (r = 0.06) — the client&#39;s analyst was right, and the conclusion drawn from it was wrong; (3) 38% of store phone calls and 24% of counter conversations are status queries, peaking 11:30–13:00 when 31% of daily pickup volume arrives. A GitHub Action re-runs the funnel nightly so the baseline can never silently drift.</p>
+<p><strong>Human designer judgment.</strong> Defining the cohorts that mattered, and refusing the request to exclude &quot;atypical&quot; stores from the baseline.</p>
+<p><strong>Artifact produced.</strong> Baseline funnel and cohort pack, clean survey frame (12,038 completes from 41,000 invited, 29.4%), <code>data/pickup_funnel_sample.csv</code> (A7), reproducible runbooks.</p>
+<h3 id="43-qualitative-fieldwork-weeks-38">4.3 Qualitative fieldwork (weeks 3–8)</h3><p><strong>Goal.</strong> Explain the numbers: why shoppers abandon ready orders, why the fastest cohort is the least satisfied, and what status messages actually do to behavior.</p>
+<p><strong>Method &amp; SOP.</strong> Three complementary lenses per the foundational-methods taxonomy (See: 18-universal-methods-of-design/02-foundational-research-methods.md): 35 semi-structured shopper interviews (12 elderly repeat patients, 9 digital-native parents, 6 chronic multi-script, 5 caregivers, 3 delivery users) anchored in critical incidents — &quot;walk me through the last pickup that went wrong&quot; (See: 09-mapping-experiences/03-understanding-the-user.md); 20 pharmacist shadow days across 12 stores, master-apprentice protocol; 15 mystery shops on a fixed checklist (A6).</p>
+<p><strong>AI execution.</strong> Fieldwork stayed human. Everything after the recording was agent-amplified: Claude Code ran the transcript-to-evidence SOP — one agent extracting evidence items into <code>research/evidence-register.jsonl</code> (participant code, verbatim quote ≤ 25 words, theme, emotion 1–5), a second verifying every quote verbatim against the transcript store, a third tagging each item with the quantitative cut it speaks to. 412 evidence items resulted. The qual stream answered the regression&#39;s riddle within days: elderly shoppers were not unhappy <em>despite</em> being fast — speed was never their currency. Twelve of 14 elderly interviews and 4 mystery shops independently surfaced the same functional-quality failure: no visible queue position, fear of losing their place, no acknowledgement on entry (&quot;You stand there wondering if anyone has even seen you&quot; — P-19, 74). Technical quality (the wait outcome) was fine; functional quality (how the process felt) was failing (See: 19-service-management-and-marketing/02-perceived-service-quality.md).</p>
+<p><strong>Human designer judgment.</strong> Recruitment quotas (oversampling elderly and caregivers), consent in a health context, every live interview and shadow day, and the decision to run mystery shops unannounced with store-manager sign-off but without staff foreknowledge.</p>
+<p><strong>Artifact produced.</strong> 412-item evidence register, shadowing field notes (20 days), mystery-shop scores (15 visits), interview highlight reel for the G1 gate.</p>
+<h3 id="44-integration-one-evidence-story-weeks-810">4.4 Integration: one evidence story (weeks 8–10)</h3><p><strong>Goal.</strong> Fuse the streams into a single triangulated account where every theme carries its evidence weight and every conflict has a resolution — not two decks that disagree.</p>
+<p><strong>Method &amp; SOP.</strong> Methodological triangulation executed as a matrix, not a meeting (See: 01-this-is-service-design-doing/04-research-methods.md): every candidate theme registers its quant evidence (metric, n, effect), qual evidence (quotes, coverage), and ops evidence (logs), and receives a verdict — <code>triangulated</code>, <code>quant-supported</code>, <code>qual-supported</code>, or <code>conflict</code> — plus an evidence-strength tag. Conflicts are never averaged; each spawns competing hypotheses and a discriminating test.</p>
+<p><strong>AI execution.</strong> A Claude Code <strong>integration agent</strong> ran the reconciliation SOP (Section 7) as a standing loop: pulling funnel cuts, evidence items, and ops summaries, then proposing matrix rows with citations. Representative pairing prompt:</p>
+<pre><code class="language-text">You are the Integration agent. Input: theme claim T, the quant cut Q (metric,
+n, effect size, p or CI), and qual items E1..En (verbatim quotes, coverage).
+1. State whether Q and E agree, disagree, or address different questions.
+2. If conflict: propose the two strongest competing hypotheses and ONE
+   discriminating test (a data slice or 3-5 follow-up interviews).
+3. Assign evidence strength: strong = quant adequate-n AND &gt;=3 independent
+   qual sources AND ops corroboration; moderate = two streams; weak = one.
+4. Never let a vivid quote raise a weak-evidence row. Quotes illustrate;
+   they do not elevate.
+Output: matrix row JSON, cited ids only.</code></pre><p>Three conflicts surfaced and were resolved. <strong>The queue conflict:</strong> qual said &quot;queues feel endless,&quot; quant said median walk-in wait is a modest 8.4 minutes — resolved by slicing: perceived wait inflates under queue opacity and the 11:30–13:00 peak; the fix is transparency and peak smoothing, not staffing. <strong>The notification conflict:</strong> ops insisted ready-notifications were accurate (send logs agreed); the join the quant pipeline built showed 17% of notifications preceded the physical shelf scan — both were right about different clocks. <strong>The anecdote trap:</strong> one viral story (&quot;a customer drove 40 minutes to a locked store&quot;) initially dominated stakeholder memory; the integration agent tagged it weak and it correctly died at G1. Codex&#39;s final challenge pass caught one theme (&quot;shoppers want locker pickup&quot;) resting on a single leading survey question — demoted to exploratory.</p>
+<p><strong>Human designer judgment.</strong> The verdict column is a judgment, and the designer owned it — including the politically delicate call that the &quot;unreliable app users&quot; theory was falsified by the first-time/repeat split: a design failure hitting newcomers, not a character flaw of users.</p>
+<p><strong>Artifact produced.</strong> Triangulation matrix (14 themes; 9 triangulated, 2 quant-supported, 1 qual-supported, 2 resolved conflicts), 7 insights, 6 design principles: <strong>P1</strong> One status truth. <strong>P2</strong> Ready means ready (notify only on shelf scan). <strong>P3</strong> Separate the fast from the complex. <strong>P4</strong> Make the queue visible. <strong>P5</strong> First-timers get a guide, not a shrug. <strong>P6</strong> Every pickup teaches the system (feed outcomes back into predictions).</p>
+<h3 id="45-mapping-and-design-weeks-1014">4.5 Mapping and design (weeks 10–14)</h3><p><strong>Goal.</strong> Convert the triangulated themes into the two alignment artifacts — the current-state journey map with its emotion line, and the future-state blueprint for a unified pickup flow — then rehearse them with the people who will run them.</p>
+<p><strong>Method &amp; SOP.</strong> Journey mapping with evidence tags on every assertion (See: 09-mapping-experiences/03-understanding-the-user.md), then future-state blueprinting with moment-of-truth quality specs per Grönroos: each touchpoint carries a technical standard (order on shelf, code valid) and a functional standard (acknowledged within 30 seconds, position visible) (See: 19-service-management-and-marketing/02-perceived-service-quality.md).</p>
+<p><strong>AI execution.</strong> Claude Code authored both maps as mermaid in version control, regenerating lane content from the triangulation matrix so the maps cannot drift from the evidence; every assertion carries a source tag (<code>[FUN-02]</code>, <code>[INT-19]</code>, <code>[MYS-07]</code>, <code>[OPS-LOG]</code>). During the store-manager blueprint rehearsal, each unanswerable question (&quot;who owns the ready shelf at shift change?&quot;) became a GitHub issue tagged <code>blueprint-gap</code> — 17 issues, each resolved into the pilot runbooks.</p>
+<p><strong>Human designer judgment.</strong> Where the line of visibility sits (backstage prep stays invisible; the shelf scan is deliberately <em>visible</em> as the truth event), and insisting on one blueprint for all channels rather than per-system diagrams.</p>
+<p><strong>Artifacts produced.</strong> A1, A2, A3, A4, A5 below, with the traceability table (A9) linking every blueprint change to the theme that demanded it.</p>
+<h3 id="46-pilot-and-triangulated-measurement-weeks-1624">4.6 Pilot and triangulated measurement (weeks 16–24)</h3><p><strong>Goal.</strong> Prove the unified pickup flow in 12 stores and measure it with the same mixed-methods discipline that produced it — quant, qual, and ops read together.</p>
+<p><strong>AI execution.</strong> OpenCode maintained the pilot dashboard (nightly funnel, effort/CSAT micro-survey, status-call volume from telephony logs, ready-shelf scan compliance); the same GitHub Action that guarded the baseline now guarded the readout — every number is generated from the committed query set. Claude Code ran 12 follow-up interviews and 6 mystery shops mid-pilot (the inner loop of the closed-loop VOC), catching one failure quant alone would have missed: the new position display reassured elderly shoppers but a Dutch wording choice (&quot;in de rij&quot;) read as scolding to some; copy fixed in week 4. The outer loop routed three structural issues (one store&#39;s shelf layout, one wholesaler cutoff, one SMS-template bug) to owners with dates.</p>
+<p><strong>Human designer judgment.</strong> Gate criteria, the works-council conversation about the pickup-point role, and the scale recommendation.</p>
+<h2 id="5-artifacts-portfolio">5. Artifacts portfolio</h2><p>All figures illustrative.</p>
+<h3 id="a1-customer-journey-map-current-state">A1 — Customer journey map (current state)</h3><div class="mermaid">
+flowchart TB
+  subgraph P1["Phase 1: Order (emotion 3/5)"]
+    A1["Chooses channel: app 62% web 27% phone 11%"] --> A2["First-time users get no guidance on what happens next"]
+  end
+  subgraph P2["Phase 2: Wait for ready (emotion 2/5)"]
+    B1["Order prepared in batches; no predicted ready time"] --> B2["No status visible between order and ready"]
+  end
+  subgraph P3["Phase 3: Notification (emotion 2/5)"]
+    C1["SMS fires from dispensing system"] --> C2["App updates from order system; 41% report contradiction"]
+    C2 --> C3["17% of ready notices precede actual shelf scan"]
+  end
+  subgraph P4["Phase 4: Arrive (emotion 3/5)"]
+    D1["No pickup signage; joins main queue by default"] --> D2["88% of click-and-collect users queue with everyone"]
+  end
+  subgraph P5["Phase 5: Queue (emotion 1/5)"]
+    E1["No visible position; no acknowledgement on entry"] --> E2["Elderly stand anxious despite informal fast service"]
+    E2 --> E3["Peak 11:30-13:00 carries 31% of daily volume"]
+  end
+  subgraph P6["Phase 6: Collect and after (emotion 3/5)"]
+    F1["Warm handover once at the counter"] --> F2["No-shows get one reminder on day 6 then restock"]
+    F2 --> F3["No learning loop; the same frictions repeat"]
+  end
+  P1 --> P2 --> P3 --> P4 --> P5 --> P6
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Emotion (1–5)</th>
+<th>Dominant pain</th>
+<th>Evidence tags</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Order</td>
+<td>3</td>
+<td>First-timers don&#39;t know the script</td>
+<td>INT-07, INT-11; FUN-01 (31% first-time no-show)</td>
+</tr>
+<tr>
+<td>Wait for ready</td>
+<td>2</td>
+<td>Silent gap, no predicted time</td>
+<td>INT-23; SUR open-text cluster 2</td>
+</tr>
+<tr>
+<td>Notification</td>
+<td>2</td>
+<td>SMS vs app contradiction; premature ready</td>
+<td>SUR-41%; OPS-LOG (17% premature); INT-31</td>
+</tr>
+<tr>
+<td>Arrive</td>
+<td>3</td>
+<td>No dedicated pickup path</td>
+<td>MYS-04..18 (12 of 15 shops); FUN-03 (88% queue)</td>
+</tr>
+<tr>
+<td>Queue</td>
+<td>1</td>
+<td>Invisible position, no acknowledgement</td>
+<td>INT-12/14 elderly; SHD-07; MYS-09</td>
+</tr>
+<tr>
+<td>Collect &amp; after</td>
+<td>3</td>
+<td>Warm handover, but no loop, harsh restock</td>
+<td>SHD-11; OPS-LOG restock logs</td>
+</tr>
+</tbody></table>
+<h3 id="a2-service-blueprint-future-state-unified-pickup-flow">A2 — Service blueprint (future state: unified pickup flow)</h3><div class="mermaid">
+flowchart TB
+  subgraph L1["Physical evidence"]
+    PE1["Order confirmation with predicted ready window"] --> PE2["Single status page in app and SMS"]
+    PE2 --> PE3["Ready notice fired by shelf scan"]
+    PE3 --> PE4["Pickup point signage and position display"]
+    PE4 --> PE5["Pickup code and optional consult booth"]
+  end
+  subgraph L2["Customer actions"]
+    CA1["Orders repeat or new prescription any channel"] --> CA2["Watches live status; plans visit"]
+    CA2 --> CA3["Arrives; checks in by geo or QR or is greeted"]
+    CA3 --> CA4["Ready orders collect at pickup point; complex at counter"]
+    CA4 --> CA5["Rates pickup in 2-tap micro-survey"]
+  end
+  subgraph L3["Frontstage"]
+    FS1["Greeter acknowledges arrival within 30 seconds"] --> FS2["Pickup assistant hands ready orders with code check"]
+    FS2 --> FS3["Pharmacist consult for new or changed medication"]
+    FS3 --> FS4["Service recovery discretion at point of failure"]
+  end
+  subgraph L4["Backstage"]
+    BK1["Single status service: one event stream for all channels"] --> BK2["Prep prioritization queue with predicted ready time"]
+    BK2 --> BK3["Shelf scan verification before any notification"]
+    BK3 --> BK4["Peak smoothing: staffing matched to 11:30-13:00 curve"]
+  end
+  subgraph L5["Support processes"]
+    SP1["Order management and dispensing read-only event feed"] --> SP2["Notification orchestrator: app primary SMS fallback"]
+    SP2 --> SP3["Wholesaler inventory and cutoff calendar"]
+    SP3 --> SP4["Analytics pipeline: funnel micro-survey telephony join"]
+  end
+  L1 --> L2 --> L3 --> L4 --> L5
+</div><table>
+<thead>
+<tr>
+<th>Lane</th>
+<th>Key content</th>
+<th>Quality standard (technical / functional)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Physical evidence</td>
+<td>Confirmation, one status page, shelf-scan ready notice, position display, pickup code</td>
+<td>Status accurate ≥ 99% / readable at B1 level</td>
+</tr>
+<tr>
+<td>Customer actions</td>
+<td>Order, watch status, check in, collect, rate</td>
+<td>2-tap rating / never asked the same thing twice</td>
+</tr>
+<tr>
+<td>Frontstage</td>
+<td>Greet ≤ 30 s, pickup assistant, pharmacist consult, recovery discretion</td>
+<td>Code check 100% / acknowledgement always</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>One status service, prep queue, shelf scan, peak staffing</td>
+<td>Notify only after shelf scan / predicted window ±15 min</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>Event feed, orchestrator, wholesaler calendar, analytics</td>
+<td>EU data zone only / nightly funnel regeneration</td>
+</tr>
+</tbody></table>
+<h3 id="a3-stakeholder-map-influence-interest">A3 — Stakeholder map (influence × interest)</h3><div class="mermaid">
+quadrantChart
+  title Stakeholder posture at kickoff
+  x-axis Low interest --> High interest
+  y-axis Low influence --> High influence
+  quadrant-1 Manage closely
+  quadrant-2 Keep satisfied
+  quadrant-3 Monitor
+  quadrant-4 Keep informed
+  Group COO sponsor: [0.8, 0.9]
+  Head of pharmacy operations: [0.9, 0.85]
+  Pharmacists council: [0.85, 0.7]
+  Data protection officer: [0.6, 0.75]
+  Works council: [0.65, 0.6]
+  IT and digital lead: [0.75, 0.6]
+  Store managers: [0.8, 0.55]
+  Marketing CRM: [0.5, 0.45]
+  Insurer payer contact: [0.35, 0.65]
+  Delivery partner: [0.55, 0.35]
+  Prescriber GP network: [0.3, 0.4]
+  Shopper advisory panel: [0.9, 0.3]
+</div><p>Posture moves agreed at G1: the works council shifted from monitor to manage-closely once the pickup-point role touched staffing scripts; the shopper advisory panel became the standing inner-loop voice.</p>
+<h3 id="a4-ecosystem-map">A4 — Ecosystem map</h3><div class="mermaid">
+flowchart LR
+  SH["Shopper / patient"] <--> APP["Vesper app and web"]
+  SH <--> SMS["SMS gateway"]
+  SH <--> ST["Store: counter and pickup point"]
+  SH <--> DEL["Home delivery partner"]
+  CG["Caregiver / family proxy"] --> ST
+  APP --> OMS["Order management"]
+  SMS --> ORCH["Notification orchestrator"]
+  OMS <--> DISP["Dispensing system read-only feed"]
+  DISP --> PH["Pharmacist and pharmacy technician"]
+  PH --> ST
+  OMS --> ORCH
+  GP["Prescriber GP"] --> RX["E-prescription network"]
+  RX --> DISP
+  INS["Health insurer"] --> RX
+  WHO["Pharma wholesaler"] --> INV["Store inventory"]
+  INV --> DISP
+  ST --> OPS["Store operations and staffing"]
+  DEL --> OMS
+</div><h3 id="a5-persona-set-evidence-tagged">A5 — Persona set (evidence-tagged)</h3><p><strong>Persona 1 — Sanne Vermeulen, 36, digital-native parent.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Context</td>
+<td>Two children (4, 7); orders repeat prescriptions plus child antibiotics between meetings; collects at lunch</td>
+<td>INT-07, INT-14</td>
+</tr>
+<tr>
+<td>Behavior</td>
+<td>App-first; expects the ready notice to mean ready; 4.2 orders/month</td>
+<td>FUN-01 (app 62% of C&amp;C)</td>
+</tr>
+<tr>
+<td>Pain</td>
+<td>Arrived twice to &quot;not actually ready&quot;; now distrusts notifications and calls the store — the exact failure demand the channel was built to remove</td>
+<td>INT-07 verbatim; OPS-LOG 17% premature</td>
+</tr>
+<tr>
+<td>Quote</td>
+<td>&quot;The app said ready. It was not ready. So now I phone, which defeats the entire point.&quot;</td>
+<td>INT-07</td>
+</tr>
+<tr>
+<td>Design directives</td>
+<td>Ready-means-ready rule; predicted ready window; first-time guide for school-medication orders; 60-second pickup</td>
+<td>P1, P2, P5</td>
+</tr>
+<tr>
+<td>Baseline → pilot</td>
+<td>Effort 5.2 → 2.3; would-recommend 31% → 78%</td>
+<td>SUR cohort cut; pilot micro-survey</td>
+</tr>
+</tbody></table>
+<p><strong>Persona 2 — Jozef Peeters, 74, elderly repeat patient.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Detail</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Context</td>
+<td>Six repeat prescriptions, monthly pickup for 9 years at the same store; app installed by his grandson, unused</td>
+<td>INT-19, INT-26</td>
+</tr>
+<tr>
+<td>Behavior</td>
+<td>Walks in mid-morning; staff know him and serve him fast (median 4.3 min)</td>
+<td>OPS-LOG; SHD-03</td>
+</tr>
+<tr>
+<td>Pain</td>
+<td>Not speed — uncertainty: no visible position, no acknowledgement, watches others served and assumes favoritism; stands despite hip pain rather than risk losing his place</td>
+<td>12 of 14 elderly interviews; MYS-09</td>
+</tr>
+<tr>
+<td>Quote</td>
+<td>&quot;You stand there wondering if anyone has even seen you.&quot;</td>
+<td>INT-19</td>
+</tr>
+<tr>
+<td>Design directives</td>
+<td>Visible queue position; greet-on-entry standard; seated waiting with sightline; caregiver proxy pickup with verified consent</td>
+<td>P4, P6</td>
+</tr>
+<tr>
+<td>Baseline → pilot</td>
+<td>CSAT 2.8 → 4.2 with wait essentially unchanged (4.3 → 3.7 min)</td>
+<td>SUR cohort; pilot micro-survey</td>
+</tr>
+</tbody></table>
+<h3 id="a6-templates-used-on-this-engagement">A6 — Templates used on this engagement</h3><p><strong>(a) Survey design brief.</strong></p>
+<pre><code class="language-markdown"># Survey Design Brief — Vesper Pickup Experience
+1. Decision the survey informs: which pickup frictions move effort and
+   satisfaction enough to design against (G1 gate input)
+2. Population and frame: all pickup customers, 90-day window; strata = age
+   band x channel x store format; quota min n=800 for 65+ cohort
+3. Instrument: 22 items; CES 1-7; CSAT 1-5; status-contradiction item;
+   privacy item; 2 embedded attention checks; open-text &quot;last bad pickup&quot;
+4. Fielding: 41,000 invited via post-pickup email/SMS; 2 reminders; target
+   12,000 completes; incentive = none (regulatory preference)
+5. Cleaning rules (fixed pre-launch): speeders &lt;40% median time;
+   straight-liners zero grid variance; attention-check fails; no imputation
+6. Analysis lock: primary hypotheses H1-H8 pre-registered; FDR correction on
+   secondary cuts; exploratory cuts labelled in every output
+7. Sign-off: CX lead + DPO before fielding</code></pre><p><strong>(b) Quantitative analysis plan (pre-registered excerpt).</strong></p>
+<pre><code class="language-markdown"># Analysis Plan v1.0 (locked 2026-03-13, PR #9)
+H1: No-show rate is higher for orders notified before shelf scan.
+    Test: rate ratio, chi-square, alpha 0.05. Falsifier: ratio CI includes 1.
+H2: First-time C&amp;C users no-show at &gt;=1.5x repeat users.
+H3: In the 65+ repeat cohort, wait time does NOT predict CSAT (r &lt; 0.15),
+    while perceived-position items DO (r &gt;= 0.4).
+H4: Status-contradiction reporters have &gt;=1.0 higher CES.
+Secondary cuts: store format, daypart, channel. FDR (BH) q=0.05 across all
+secondary tests. Exploratory outputs must carry the label EXPLORATORY.
+Denominators frozen: active app user = &gt;=1 order in 90 days.
+Prohibited: post-hoc segmentation presented as confirmatory; scale rescoring;
+window re-selection after results are seen.</code></pre><p><strong>(c) Triangulation matrix template.</strong></p>
+<pre><code class="language-markdown"># Triangulation Matrix — one row per theme
+| Field | Rule |
+| Theme ID + claim | Active sentence, not a noun |
+| Quant evidence | Metric, n, effect size, CI/p; source query id |
+| Qual evidence | Quote ids, coverage (x of n participants), method |
+| Ops evidence | Log/telemetry reference or &quot;none available&quot; |
+| Verdict | triangulated / quant-supported / qual-supported / conflict |
+| Evidence strength | strong / moderate / weak (rules in reconciliation SOP) |
+| Conflict resolution | Competing hypotheses + discriminating test + owner |
+| Design implication | Principle id it feeds, or &quot;none — park it&quot; |</code></pre><p><strong>(d) Mystery-shopping checklist (15-point).</strong></p>
+<pre><code class="language-markdown"># Mystery Shop — Pickup Encounter Scorecard (visit id, store, daypart)
+Arrival:   1 exterior pickup signage visible  2 entrance greeting &lt;=30s
+           3 queue position visible from entry
+Status:    4 app status matches shelf reality (tester placed order 2h prior)
+           5 SMS and app status agree  6 ready notice preceded shelf scan?
+Encounter: 7 acknowledged while waiting  8 name or code check at handover
+           9 pharmacist consult offered for new medication
+Privacy:  10 medication name not audible beyond 2m  11 discreet packaging
+          offered unprompted
+Close:    12 next steps stated  13 micro-survey offered  14 total wait mm:ss
+          15 observer emotion note (1-5 + one line)
+Scoring: pass/fail per item; narrative &lt;=100 words; no staff names recorded.</code></pre><p><strong>(e) Synthesis SOP-as-code (transcript to evidence).</strong></p>
+<pre><code class="language-yaml"># sop/qual-synthesis.yml (executed by Claude Code agents)
+input: research/transcripts/INT-*.txt
+steps:
+  - extract: {agent: evidence-extractor, schema: evidence-item,
+      rules: [&quot;verbatim quote &lt;= 25 words&quot;, &quot;participant code required&quot;,
+              &quot;emotion 1-5&quot;, &quot;theme from taxonomy or NEW-THEME flag&quot;]}
+  - verify: {agent: quote-verifier, rule: &quot;quote must match transcript
+      character-for-character; else drop item and log&quot;}
+  - tag:    {agent: quant-linker, rule: &quot;attach each item to the funnel cut
+      it speaks to, or NONE&quot;}
+acceptance:
+  - &quot;&gt;= 2 independent items per admitted theme&quot;
+  - &quot;every quote verified; zero unverifiable quotes admitted&quot;
+  - &quot;themes entering the matrix carry quant-link or explicit NONE&quot;
+review_gate: human designer reads every NEW-THEME before matrix entry</code></pre><h3 id="a7-mock-dataset">A7 — Mock dataset</h3><p>Full file: <a href="data/pickup_funnel_sample.csv"><code>data/pickup_funnel_sample.csv</code></a> — 113 synthetic rows across baseline and pilot cohorts; illustrative values whose recomputed cohort means match this article&#39;s tables.</p>
+<pre><code class="language-csv">pickup_id,cohort,segment,order_channel,prep_time_min,wait_time_min,pickup_mode,effort_score_1_7,csat_1_5,no_show_flag
+PK-0001,baseline,digital_parent,app,187.4,6.8,click_and_collect,5.1,3.4,0
+PK-0014,baseline,digital_parent,app,244.0,,click_and_collect,,,1
+PK-0017,baseline,elderly_repeat,in_store,7.9,4.0,counter_pickup,4.3,2.8,0
+PK-0029,pilot,digital_parent,app,61.2,1.8,click_and_collect,2.3,4.4,0
+PK-0040,pilot,other,app,66.0,,click_and_collect,,,1
+PK-0041,pilot,elderly_repeat,in_store,7.1,3.6,counter_pickup,2.9,4.2,0</code></pre><p>Cohort means from the full file: baseline C&amp;C no-show 18.0%, C&amp;C wait 6.2 min, walk-in wait 8.4 min, overall CES 4.8, overall CSAT 3.4; pilot C&amp;C no-show 7.0%, C&amp;C wait 2.2 min, walk-in wait 5.7 min, CES 2.6, CSAT 4.2; elderly baseline 4.3 min / CSAT 2.8 → pilot 3.7 min / 4.2.</p>
+<h3 id="a8-charts">A8 — Charts</h3><div class="mermaid">
+xychart-beta
+  title Order to collection rate by channel before and after
+  x-axis ["App", "Web", "Phone", "All channels"]
+  y-axis "Collected per 100 orders" 0 --> 100
+  bar [84, 79, 73, 82]
+  bar [94, 91, 90, 93]
+</div><div class="mermaid">
+pie title Pickup mode mix baseline - 1.8M pickups per year
+  "Walk-in counter pickup" : 62
+  "Click and collect" : 31
+  "Home delivery" : 4
+  "Caregiver or proxy pickup" : 3
+</div><div class="mermaid">
+pie title No-show reasons coded from 1940 explainers
+  "Arrived early once and stopped trusting notices" : 34
+  "Forgot or no timely reminder" : 26
+  "Could not collect within 7 day window" : 18
+  "Store access or parking" : 12
+  "Collected elsewhere or changed mind" : 10
+</div><div class="mermaid">
+xychart-beta
+  title CSAT by wait time band before and after
+  x-axis ["0-2 min", "3-5 min", "6-10 min", "11-15 min", "16 plus"]
+  y-axis "CSAT 1 to 5" 1 --> 5
+  line [4.4, 4.0, 3.4, 2.8, 2.3]
+  line [4.6, 4.4, 4.2, 3.9, 3.4]
+</div><p>(Upper line at right = after redesign: the curve flattens because transparency — not raw speed — does the work; the 65+ cohort sits 1.2 points below the band average at baseline, the anomaly the qual stream explained.)</p>
+<div class="mermaid">
+quadrantChart
+  title Themes by design impact and evidence strength
+  x-axis Weak evidence --> Strong evidence
+  y-axis Low impact --> High impact
+  quadrant-1 Design from these
+  quadrant-2 Verify before design
+  quadrant-3 Park
+  quadrant-4 Opportunistic
+  T1 notification trust: [0.9, 0.9]
+  T3 single status truth: [0.95, 0.8]
+  T2 queue transparency elderly: [0.85, 0.8]
+  T5 pharmacist interruption: [0.8, 0.65]
+  T4 discreet pickup privacy: [0.6, 0.55]
+  T8 first-timer guidance: [0.75, 0.6]
+  T7 parking and access: [0.5, 0.35]
+  T6 locker pickup demand: [0.3, 0.4]
+</div><h3 id="a9-journey-to-blueprint-traceability-table">A9 — Journey-to-blueprint traceability table</h3><table>
+<thead>
+<tr>
+<th>Current-state fail (evidence)</th>
+<th>Opportunity</th>
+<th>Design principle</th>
+<th>Blueprint change</th>
+<th>KPI moved</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Premature ready notices 17% (OPS-LOG)</td>
+<td>Notification trust</td>
+<td>P2 Ready means ready</td>
+<td>Notify only on shelf scan</td>
+<td>No-show 18→7%</td>
+</tr>
+<tr>
+<td>SMS vs app contradiction 41% (SUR)</td>
+<td>One status truth</td>
+<td>P1</td>
+<td>Single status service + orchestrator</td>
+<td>Contradiction reports 41→9%</td>
+</tr>
+<tr>
+<td>88% of C&amp;C users queue (FUN-03)</td>
+<td>Separate fast from complex</td>
+<td>P3</td>
+<td>Pickup point with code check</td>
+<td>C&amp;C wait 6.2→2.2 min</td>
+</tr>
+<tr>
+<td>Invisible queue position (INT-12/14)</td>
+<td>Queue transparency</td>
+<td>P4</td>
+<td>Position display + greet ≤30 s</td>
+<td>Elderly CSAT 2.8→4.2</td>
+</tr>
+<tr>
+<td>First-time no-show 31% (FUN-01)</td>
+<td>First-timer guide</td>
+<td>P5</td>
+<td>Order-confirmation walkthrough</td>
+<td>First-time completion 69→91%</td>
+</tr>
+<tr>
+<td>24% counter talk is status (OPS)</td>
+<td>Kill failure demand</td>
+<td>P1+P2</td>
+<td>Status page + accurate notices</td>
+<td>Status calls −58%</td>
+</tr>
+<tr>
+<td>Peak 31% volume 11:30–13:00 (OPS)</td>
+<td>Peak smoothing</td>
+<td>P3</td>
+<td>Staffing matched to curve</td>
+<td>Walk-in wait 8.4→5.7 min</td>
+</tr>
+<tr>
+<td>No learning loop (all streams)</td>
+<td>Every pickup teaches</td>
+<td>P6</td>
+<td>Micro-survey + nightly funnel</td>
+<td>Continuous outer loop</td>
+</tr>
+</tbody></table>
+<h3 id="a10-perceived-service-quality-audit-grnroos-six-criteria">A10 — Perceived service quality audit (Grönroos six criteria)</h3><table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Before</th>
+<th>After (pilot)</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Professionalism &amp; skills (technical)</td>
+<td>Pass</td>
+<td>Pass</td>
+<td>Dispensing accuracy never the issue — a functional-quality story throughout</td>
+</tr>
+<tr>
+<td>Attitudes &amp; behavior (functional)</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Handover always warm; greeting-on-entry was absent, now a standard</td>
+</tr>
+<tr>
+<td>Accessibility &amp; flexibility</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>No dedicated pickup path; now pickup point + proxy + delivery</td>
+</tr>
+<tr>
+<td>Reliability &amp; trustworthiness</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>17% premature notices; contradiction 41% → 9%</td>
+</tr>
+<tr>
+<td>Service recovery</td>
+<td>Fail</td>
+<td>Partial</td>
+<td>Restock-after-one-reminder replaced by day-2 call; recovery discretion new, unaudited at scale</td>
+</tr>
+<tr>
+<td>Reputation &amp; credibility (image)</td>
+<td>At risk</td>
+<td>Recovering</td>
+<td>&quot;The app lies&quot; folklore in interviews; fading in pilot follow-ups</td>
+</tr>
+</tbody></table>
+<p>See: 19-service-management-and-marketing/02-perceived-service-quality.md.</p>
+<h2 id="6-use-cases">6. Use cases</h2><h3 id="uc1-the-click-and-collect-no-show-quant-found-it-qual-explained-it">UC1 — The click-and-collect no-show: quant found it, qual explained it</h3><p><strong>Scenario.</strong> 123,000 prepared orders a year never collected. Quant isolated the pattern first: no-shows concentrate where the notification preceded the shelf scan (2.3× rate), among first-time users (31%), and after Friday-evening notices. But the funnel could not say <em>why</em> an arrived shopper leaves empty-handed. Qual did: interviewees described arriving to &quot;not ready, come back tomorrow,&quot; learning that &quot;ready&quot; is a lie, and stopping trusting all Vesper notifications, including the true ones. &quot;I ignore the messages now. I just go when I&#39;m passing&quot; (INT-31). Mystery shops confirmed 4 of 15 premature-ready events live.</p>
+<p><strong>What was designed.</strong> The ready-means-ready rule (notification bound to shelf scan, not batch completion), a day-2 human reminder call replacing the day-6 automated nudge, and a first-timer walkthrough in the order confirmation.</p>
+<p><strong>AI working session.</strong> OpenCode built the premature-ready flag and the cohort splits; the integration agent paired the funnel cuts with 9 quote-grounded evidence items and assigned strength <code>strong</code>; Claude Code drafted the reminder-call script at B1 reading level. Sample instruction: <em>&quot;Pair theme T1 against FUN-02 and INT-23/31/04. State agree/disagree, then propose one discriminating test for the residual question: do re-notified shoppers return?&quot;</em> (Answer: they do — 71% collect after one accurate re-notification, which sized the reminder-call benefit.)</p>
+<p><strong>Outcome (illustrative, pilot).</strong> No-show 18% → 7%; first-time completion 69% → 91%; restock labor −5,000 store-hours/yr at scale.</p>
+<h3 id="uc2-the-elderly-paradox-fast-service-worst-scores">UC2 — The elderly paradox: fast service, worst scores</h3><p><strong>Scenario.</strong> The 65+ repeat cohort: median wait 4.3 minutes — fastest in the business — and CSAT 2.8, the lowest. Operations read the regression (r = 0.06) as &quot;satisfied enough, unfixable.&quot; The qual stream read it as a category error: this cohort was never buying speed.</p>
+<p><strong>What was designed.</strong> Queue transparency, not queue speed: a position display visible from entry, a greet-on-entry standard (&quot;We see you, Mr. Peeters — two ahead of you&quot;), a seated waiting zone with sightline to the counter, and verified caregiver proxy pickup. Wait barely moved (4.3 → 3.7 min); uncertainty collapsed.</p>
+<p><strong>AI working session.</strong> The integration agent&#39;s conflict protocol was the star: quant said &quot;no relationship,&quot; qual said &quot;the relationship is with visibility, not minutes.&quot; The discriminating test — three follow-up interviews plus a mystery-shop repeat with a paper position ticket in one store — resolved the conflict in nine days. Codex challenged the resolution (&quot;perceived-position correlation could be halo bias&quot;), forcing the mid-pilot wording fix as confirmation. <strong>Outcome (illustrative, pilot).</strong> Elderly CSAT 2.8 → 4.2; seated-waiting uptake 64% of 65+ visitors; zero wait-time investment.</p>
+<h3 id="uc3-prescription-status-confusion-one-truth-every-channel">UC3 — Prescription-status confusion: one truth, every channel</h3><p><strong>Scenario.</strong> SMS fired from the dispensing system; the app read the order-management system; the two clocks disagreed on 17–22% of active orders, and 41% of app users had seen a contradiction. Shoppers developed folk theories (&quot;trust the SMS, the app lies&quot;), and 38% of store phone calls became &quot;is it ready?&quot; — each interrupting a pharmacist mid-check, a medication-safety-relevant distraction observed 7 times per shadow day.</p>
+<p><strong>What was designed.</strong> A channel-orchestration fix, not a copy fix: one status service emitting a single event stream; the notification orchestrator renders it per channel (app primary, SMS digest fallback); the counter screen shows the same status the shopper sees.</p>
+<p><strong>AI working session.</strong> OpenCode prototyped the event-feed reconciliation against logs and proved both systems were &quot;accurate&quot; about different events (dispensed vs shelved); Claude Code rewrote every status message around the single source with a B1 reading-level pass; a GitHub Action now diffs app status against SMS templates nightly — contradiction is a CI failure, not a customer discovery. <strong>Outcome (illustrative, pilot).</strong> Contradiction reports 41% → 9%; status calls −58%; pharmacist shift time on logistics/status 11% → 6%.</p>
+<h2 id="7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</h2><p><strong>Encoded SOPs on this engagement:</strong></p>
+<ol>
+<li><strong>Quant/qual reconciliation SOP</strong> (the signature artifact). Encoding pattern: theme claim → quant cut + qual items + ops log pulled by id → agree/disagree verdict → conflict protocol (two competing hypotheses + one discriminating test) → evidence-strength tag → human verdict gate. The matrix, not a narrative report, is the deliverable; the narrative regenerates from the matrix.</li>
+<li><strong>Transcript-to-evidence SOP</strong> (A6e) — closed taxonomy, verbatim quotes ≤ 25 words, verifier agent, ≥ 2 independent items per theme, human reads every NEW-THEME.</li>
+<li><strong>Survey analysis SOP</strong> — pre-registered plan locked by PR; FDR correction; <code>EXPLORATORY</code> label propagated into every downstream artifact by CI check.</li>
+<li><strong>Funnel pipeline runbook</strong> — every query a committed script; a nightly Action regenerates the baseline; a number that cannot be regenerated cannot enter a deck.</li>
+<li><strong>Mystery-shop scoring SOP</strong> — fixed 15-point checklist so 15 visits by 4 different shoppers produce comparable rows, not essays.</li>
+</ol>
+<p><strong>Theme–evidence pairing prompt template (workhorse of the integration agent):</strong></p>
+<pre><code class="language-text">Pair THEME with EVIDENCE. Inputs: theme claim T; quant cut Q {metric, n,
+effect, CI}; qual items E[] {participant, verbatim quote, coverage}; ops ref O.
+Rules: (1) verdict = triangulated only if &gt;=2 independent streams agree;
+(2) a vivid quote never raises evidence strength; (3) small qual samples
+generalize to the sample frame only — write prevalence as &quot;x of n interviewed&quot;,
+never as a population claim; (4) conflict -&gt; two hypotheses + one test;
+(5) output JSON with cited ids; no ids, no row.</code></pre><p><strong>Guardrails:</strong></p>
+<ul>
+<li><strong>P-hacking prevention.</strong> Analysis plan locked before survey close; secondary cuts under FDR; exploratory findings labelled in every artifact (CI-enforced string check). Codex&#39;s 11-defect review of the draft plan is why this held.</li>
+<li><strong>No overgeneralizing small qual.</strong> 35 interviews explain mechanisms, never prevalence. The pairing prompt forces &quot;x of n interviewed&quot; phrasing; prevalence claims must come from survey or funnel.</li>
+<li><strong>Data-zone restrictions.</strong> Prescription contents never leave the client&#39;s EU zone; agents see tokenized event streams and pseudonymized transcripts only; PII redaction verified by regex re-scan before any file enters the workspace — verified, not trusted.</li>
+<li><strong>Human sign-off points.</strong> G1 evidence gate (CX lead + ops director read the matrix, not a summary), G2 pilot go (works council + DPO), readout (COO). Every gate is a PR with named approvers.</li>
+</ul>
+<p><strong>Failure modes observed and mitigations:</strong></p>
+<ol>
+<li><em>Agent overweighted vivid anecdotes.</em> Early matrix drafts elevated the &quot;40-minute drive to a locked store&quot; story above funnel evidence. Mitigation: evidence-strength tags with the &quot;quotes illustrate, they do not elevate&quot; rule; the row was correctly demoted and died at G1.</li>
+<li><em>Survey agent over-cleaned.</em> First cleaning run excluded 22% of responses by stacking speeder and straight-liner rules on elderly respondents (slower, more uniform answers). Mitigation: cleaning rules stratified by age band; exclusions reported per cohort so bias is visible.</li>
+<li><em>Integration agent averaged a conflict.</em> Asked to reconcile &quot;queues feel long&quot; with &quot;waits are short,&quot; its first draft wrote &quot;moderate queue issue.&quot; Averaging is prohibited by the SOP; the discriminating-test branch produced the transparency insight that became P4.</li>
+</ol>
+<h2 id="8-value-creation-amp-measurement">8. Value creation &amp; measurement</h2><p><strong>Before/after (pilot cohort, 12 stores, 8 weeks vs chain baseline; all figures illustrative):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline</th>
+<th>Pilot</th>
+<th>Delta</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Click-and-collect no-show rate</td>
+<td>18%</td>
+<td>7%</td>
+<td>−11 pts</td>
+</tr>
+<tr>
+<td>First-time C&amp;C completion</td>
+<td>69%</td>
+<td>91%</td>
+<td>+22 pts</td>
+</tr>
+<tr>
+<td>Median wait, C&amp;C pickup</td>
+<td>6.2 min</td>
+<td>2.2 min</td>
+<td>−65%</td>
+</tr>
+<tr>
+<td>Median wait, walk-in</td>
+<td>8.4 min</td>
+<td>5.7 min</td>
+<td>−32%</td>
+</tr>
+<tr>
+<td>Customer Effort Score (1–7)</td>
+<td>4.8</td>
+<td>2.6</td>
+<td>−2.2</td>
+</tr>
+<tr>
+<td>Pickup CSAT (1–5)</td>
+<td>3.4</td>
+<td>4.2</td>
+<td>+0.8</td>
+</tr>
+<tr>
+<td>Elderly cohort CSAT</td>
+<td>2.8</td>
+<td>4.2</td>
+<td>+1.4</td>
+</tr>
+<tr>
+<td>App users seeing contradictory status</td>
+<td>41%</td>
+<td>9%</td>
+<td>−32 pts</td>
+</tr>
+<tr>
+<td>&quot;Is my order ready?&quot; calls</td>
+<td>index 100</td>
+<td>42</td>
+<td>−58%</td>
+</tr>
+<tr>
+<td>Pharmacist shift time on logistics/status</td>
+<td>11%</td>
+<td>6%</td>
+<td>≈2.6 h/store/wk freed</td>
+</tr>
+<tr>
+<td>Pickup-experience NPS</td>
+<td>+4</td>
+<td>+31</td>
+<td>+27 pts</td>
+</tr>
+</tbody></table>
+<p><strong>Causal logic.</strong> Grönroos&#39;s model supplied the mechanism: expectations (a notification is a promise) vs experienced service (shelf reality), split into technical quality (order ready, code valid) and functional quality (acknowledged, position visible, consulted). The pilot moved functional quality hardest — which is why the elderly cohort improved 1.4 points on a 3.7-minute wait — and the operational chain follows: accurate status → trust and fewer premature visits → no-show 18→7% and recaptured orders ≈ €1.7M revenue/yr at scale (≈ €0.55M contribution margin at 32%); one status truth → status calls −58% and counter status talk 24→10% → ≈ 2.6 pharmacist-hours/store/week redeployed to consultations (capacity value ≈ €2.0M/yr, counted as capacity, not cash); restock labor −5,000 h (≈ €0.16M). Conservative quantified benefit ≈ €2.7M/yr at chain scale against €240k research/design plus €610k implementation — payback inside five months of full rollout. We claim contribution, not attribution: pricing, assortment, and staffing budgets were held flat across pilot and the 24 matched comparison stores that form the counterfactual.</p>
+<h2 id="9-ai-tool-playbook-this-engagement">9. AI tool playbook (this engagement)</h2><p><strong>Claude Code — qual synthesis, integration agent, artifact authoring.</strong> Ran the transcript-to-evidence SOP over 35 interviews and 20 shadow logs (412 verified items), ran the standing integration agent, authored all mermaid maps from the matrix. Excelled at: grounded synthesis at volume and keeping every map assertion evidence-tagged. Failed at: the first matrix draft elevated anecdotes (fixed by strength tags); initial xychart titles used colons, which mermaid rejects — caught by lint. Human took over: taxonomy design, verdicts, facilitation.</p>
+<p><strong>OpenCode — quant pipeline and mock data.</strong> Built the funnel, cohort engine, survey cleaning, the premature-ready join, nightly dashboard, and <code>data/pickup_funnel_sample.csv</code>. Excelled at: reproducible pipelines behind runbooks; the premature-ready flag — the engagement&#39;s pivotal finding — was a two-line join it proposed. Failed at: the first cleaning pass discriminated against elderly respondents (slow, uniform answers read as low-quality); fixed by cohort-stratified rules. Human took over: defining which cohorts and hypotheses mattered.</p>
+<p><strong>Codex — adversarial review of inference.</strong> Attacked the analysis plan pre-registration (11 defects), the triangulation matrix (killed the leading-question &quot;locker demand&quot; theme), and the UC2 resolution (forced the halo-bias check). Excelled at: hostile reading of analytical claims. Failed at: proposed a non-existent EU pharmacy directive; citations now verified against the books library or marked <code>[unverified]</code>. Human took over: deciding which defects were material.</p>
+<p><strong>GitHub — evidence infrastructure.</strong> Issues per assumption and per blueprint gap; PRs as gates with named approvers; Actions running mermaid lint, markdown lint, funnel regeneration, a number-consistency check, and the status-contradiction diff:</p>
+<pre><code class="language-yaml"># .github/workflows/evidence-ci.yml (excerpt)
+on: [pull_request]
+jobs:
+  evidence:
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/run_funnel.mjs --check   # regenerates funnel, diffs vs committed
+      - run: node scripts/check_matrix.mjs          # every theme has verdict + strength + ids
+      - run: npx markdownlint '**/*.md'</code></pre><p>The matrix CI caught two rows missing evidence ids and one stale no-show figure (17% vs corrected 18%) that survived three human reviews. CI gates; people decide.</p>
+<h2 id="10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</h2><ol>
+<li><strong>Reconciliation is a process, not a meeting.</strong> The matrix worked because it was a standing artifact with an agent owner, regenerated as evidence arrived — the one week it went stale, stakeholders re-anchored to their pet explanations and re-convergence cost a full session.</li>
+<li><strong>The most valuable quantitative finding was a join nobody had run.</strong> Notification time vs shelf-scan time existed in two systems for two years. Agents are excellent at proposing joins across silos — but only if someone gives them both tables.</li>
+<li><strong>&quot;No correlation&quot; is a finding, not a dead end.</strong> The r = 0.06 result nearly closed the elderly question. Qual reframed the variable: the currency was certainty, not minutes. Always ask what the metric is a proxy <em>for</em>.</li>
+<li><strong>Cleaning rules are ethical decisions.</strong> The over-cleaning failure would have systematically excluded the exact cohort the project existed to understand. Report exclusions per cohort, always.</li>
+<li><strong>Pre-registration feels bureaucratic until the first inconvenient null.</strong> H3&#39;s null survived three attempts to re-cut it away — because the plan was locked and CI checked the label.</li>
+<li><strong>Averaging a conflict destroys the information in it.</strong> Both sides of the queue conflict were right about different things; the discriminating test found the real variable. Conflicts are the highest-value rows in the matrix.</li>
+<li><strong>Mermaid in CI from day one.</strong> Two xychart title failures and one broken pie label were cheap in PRs; they would have been embarrassing in the COO readout.</li>
+</ol>
+<h2 id="11-references">11. References</h2><p>Book chapters used (knowledge library in <code>books/</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Reference</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>18-universal-methods-of-design/02-foundational-research-methods.md</code></td>
+<td>Interview continuum, contextual inquiry, shadowing, secondary data, mystery-shopping design</td>
+</tr>
+<tr>
+<td><code>18-universal-methods-of-design/04-evaluative-methods.md</code></td>
+<td>Metric discipline, pre-registration logic, survey scale hygiene</td>
+</tr>
+<tr>
+<td><code>18-universal-methods-of-design/05-representational-and-synthesis-methods.md</code></td>
+<td>Synthesis as knowledge modeling, personas from behavioral evidence, matrix structures</td>
+</tr>
+<tr>
+<td><code>19-service-management-and-marketing/02-perceived-service-quality.md</code></td>
+<td>Expected vs experienced service, technical vs functional quality, six-criteria audit (A10)</td>
+</tr>
+<tr>
+<td><code>14-outside-in/04-customer-understanding.md</code></td>
+<td>VOC architecture, inner/outer loop, decision-grade personas</td>
+</tr>
+<tr>
+<td><code>09-mapping-experiences/03-understanding-the-user.md</code></td>
+<td>Assumption vs research-based maps, evidence tagging, triad of actions/thoughts/feelings</td>
+</tr>
+<tr>
+<td><code>01-this-is-service-design-doing/04-research-methods.md</code></td>
+<td>Methodological triangulation, say-vs-do, research wall, ethics</td>
+</tr>
+</tbody></table>
+<p>External standards mentioned: GDPR and EU data-residency practice. All figures are illustrative.</p>
+<h2 id="12-appendix-artifact-index">12. Appendix: artifact index</h2><table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Format</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Process flow + gantt</td>
+<td>3</td>
+<td>Mermaid</td>
+<td>Engagement arc, streams, gates</td>
+</tr>
+<tr>
+<td>Research design (streams → integration)</td>
+<td>3</td>
+<td>Mermaid</td>
+<td>Mixed-methods triangulation architecture</td>
+</tr>
+<tr>
+<td>A1 Current-state journey map</td>
+<td>5</td>
+<td>Mermaid + emotion table</td>
+<td>Six phases, evidence-tagged pains</td>
+</tr>
+<tr>
+<td>A2 Future-state blueprint</td>
+<td>5</td>
+<td>Mermaid + lane table</td>
+<td>Unified pickup flow with quality standards</td>
+</tr>
+<tr>
+<td>A3 Stakeholder map</td>
+<td>5</td>
+<td>quadrantChart</td>
+<td>Influence × interest posture and moves</td>
+</tr>
+<tr>
+<td>A4 Ecosystem map</td>
+<td>5</td>
+<td>Mermaid</td>
+<td>Shopper, pharmacist, ops, prescriber, insurer, delivery</td>
+</tr>
+<tr>
+<td>A5 Personas</td>
+<td>5</td>
+<td>Tables</td>
+<td>Digital-native parent; elderly repeat patient, evidence-tagged</td>
+</tr>
+<tr>
+<td>A6a Survey design brief</td>
+<td>5</td>
+<td>Template</td>
+<td>Frame, cleaning, analysis lock</td>
+</tr>
+<tr>
+<td>A6b Analysis plan</td>
+<td>5</td>
+<td>Template</td>
+<td>Pre-registered hypotheses and falsifiers</td>
+</tr>
+<tr>
+<td>A6c Triangulation matrix</td>
+<td>5</td>
+<td>Template</td>
+<td>Theme × streams × verdict × strength</td>
+</tr>
+<tr>
+<td>A6d Mystery-shop checklist</td>
+<td>5</td>
+<td>Template</td>
+<td>15-point comparable scoring</td>
+</tr>
+<tr>
+<td>A6e Synthesis SOP-as-code</td>
+<td>5</td>
+<td>YAML</td>
+<td>Transcript → verified evidence items</td>
+</tr>
+<tr>
+<td>A7 Mock pickup dataset</td>
+<td>5, data/</td>
+<td>CSV</td>
+<td>113 rows, baseline + pilot cohorts</td>
+</tr>
+<tr>
+<td>A8 Charts</td>
+<td>5</td>
+<td>xychart-beta, pie, quadrantChart</td>
+<td>Channel funnel, mode mix, no-show reasons, CSAT × wait, theme map</td>
+</tr>
+<tr>
+<td>A9 Traceability table</td>
+<td>5</td>
+<td>Table</td>
+<td>Fail → principle → blueprint → KPI</td>
+</tr>
+<tr>
+<td>A10 Quality audit</td>
+<td>5</td>
+<td>Table</td>
+<td>Grönroos six criteria, before/after</td>
+</tr>
+<tr>
+<td>Reconciliation SOP + pairing prompt</td>
+<td>7</td>
+<td>Prose + prompt</td>
+<td>Quant/qual fusion with guardrails</td>
+</tr>
+<tr>
+<td>Pilot scorecard</td>
+<td>8</td>
+<td>Table</td>
+<td>11 metrics, baseline vs pilot</td>
+</tr>
+<tr>
+<td>Evidence CI workflow</td>
+<td>9</td>
+<td>YAML</td>
+<td>Funnel regeneration, matrix lint, number consistency</td>
+</tr>
+</tbody></table>
+</article><div class="wrap" style="max-width:880px">
+    <div class="cross-links"><a href="../06/index.html"><span class="lbl">← Previous case</span><span class="ttl">06. Research Ops at Scale: 200 Interviews, One Agent Team</span></a><a href="../08/index.html"><span class="lbl">Next case →</span><span class="ttl">08. Personas from Messy Data: Evidence-Backed Segmentation at Kestrel Energy</span></a></div>
+    <div class="art-foot">
+      <span>11 figures (11 diagrams) · ~8.6k words · reviewed by an adversarial AI reviewer (Gemini 3.1 Pro High).</span>
+      · <a href="https://github.com/sammozaffari/the-agentic-service-designer/blob/main/articles/07/README.md" target="_blank" rel="noopener">Open source in repo ↗</a>
+    </div>
+  </div></main>
+<footer class="footer"><div class="footer-inner">
+  <span>Agentic Service Designer — 30 service design case studies from an AI-first practice. Fictional, anonymized clients.</span>
+  <span><a href="./index.html">Home</a> · <a href="./concept.html">The concept</a> · <a href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub</a></span>
+</div></footer>
+<script src="./assets/site.js"></script>
+</body></html>
