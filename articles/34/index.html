@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="The Street of Small Business: Banking That Learns the Business, Driven by Codex — Fintech (SME digital banking)">
-<title>34. The Street of Small Business: Banking That Learns the Business, Driven by Codex — Agentic Service Designer</title>
+<meta name="description" content="The Street of Small Business: Banking That Learns the Business, on the ASD Plugin — Fintech (SME digital banking)">
+<title>34. The Street of Small Business: Banking That Learns the Business, on the ASD Plugin — Agentic Service Designer</title>
 <link rel="stylesheet" href="../../assets/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234f46e5'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'>A</text></svg>">
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
@@ -24,13 +24,13 @@
       <span class="sep">·</span><span>Fintech (SME digital banking)</span>
       <span class="sep">·</span><span><b>Vela Bank</b></span>
       <span class="sep">·</span><span>19 weeks</span>
-      <span class="chip chip-tool">Codex</span><span class="chip chip-tool">MCP</span><span class="chip chip-tool">ASD Platform (SDAP)</span>
+      <span class="chip chip-tool">Claude Code</span><span class="chip chip-tool">ASD Plugin</span><span class="chip chip-tool">MCP</span>
     </div>
     <p class="art-author">Case study 34 &middot; by <a href="../../about.html">Sam Mozaffari</a> &mdash; service designer, AI-first practice</p>
-    <h1>The Street of Small Business: Banking That Learns the Business, Driven by Codex</h1>
+    <h1>The Street of Small Business: Banking That Learns the Business, on the ASD Plugin</h1>
     <p class="deck">Fictional composite client. All names, figures, and data are illustrative and anonymized.</p>
-  </div><article class="art-body wrap"><nav class="toc"><b>On this page</b><ol><li><a href="#0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</a></li><li><a href="#1-executive-summary">1. Executive summary</a></li><li><a href="#2-the-brief">2. The brief</a></li><li><a href="#3-the-platform-run-codex-host-roster-and-plan">3. The platform run: Codex host, roster, and plan</a></li><li><a href="#4-phase-by-phase-session-log-codex">4. Phase-by-phase session log (Codex)</a></li><li><a href="#5-artifacts-portfolio-deterministic-outputs-codex-run">5. Artifacts portfolio (deterministic outputs, Codex-run)</a></li><li><a href="#6-platform-use-cases-codex-sub-sessions">6. Platform use cases (Codex sub-sessions)</a></li><li><a href="#7-sops-for-ai-skills-as-the-encoded-method">7. SOPs for AI — skills as the encoded method</a></li><li><a href="#8-value-creation-amp-measurement">8. Value creation &amp; measurement</a></li><li><a href="#9-ai-tool-playbook-host-codex">9. AI tool playbook (host: Codex)</a></li><li><a href="#10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</a></li><li><a href="#11-references">11. References</a></li><li><a href="#12-appendix-artifact-index">12. Appendix: artifact index</a></li><li><a href="#13-tutorial-reproduce-this-engagement-15-minutes-codex-or-any-mcp-host">13. Tutorial — reproduce this engagement (15 minutes, Codex or any MCP host)</a></li></ol></nav><h1 id="34-the-street-of-small-business-banking-that-learns-the-business-driven-by-codex">34 — The Street of Small Business: Banking That Learns the Business, Driven by Codex</h1><h2 id="0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</h2><p>Vela Bank is a fictional composite digital SME bank; no real customer, account, or credit data appears. This article is a runlog of the Service Design Agent Platform (SDAP) hosted on <strong>Codex</strong>: the repo is grounded by the pack&#39;s <code>AGENTS.md</code>, Codex drives the same <code>sd_*</code> tools over MCP, and compliance sits on the design path as a hard gate. Every command shown ran against the real platform; all figures are machine-checked.</p>
-<h2 id="1-executive-summary">1. Executive summary</h2><p>A digital SME bank with 120,000 customers was winning on price and losing on friction: 9-day onboarding with 62% abandonment, 11-day loan decisions with 27% applications erroring before underwriting, and &quot;relationship&quot; promised but absent for 91% of customers. One designer rebuilt the SME lifecycle in 19 weeks on the Codex pack: assisted onboarding that does the complying for the customer, an evidence-based lending fast-path, and cash-flow foresight. Onboarding 9→2.1 days, abandonment 62%→31%, loan decisions 11→4.5 days, NPS 12→44, monthly churn 4.8%→2.1%.</p>
+  </div><article class="art-body wrap"><nav class="toc"><b>On this page</b><ol><li><a href="#0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</a></li><li><a href="#1-executive-summary">1. Executive summary</a></li><li><a href="#2-the-brief">2. The brief</a></li><li><a href="#3-the-plugin-at-a-glance">3. The plugin, at a glance</a></li><li><a href="#4-phase-by-phase-session-log-claude-code-asd">4. Phase-by-phase session log (Claude Code + ASD)</a></li><li><a href="#5-artifacts-portfolio-deterministic-outputs">5. Artifacts portfolio (deterministic outputs)</a></li><li><a href="#6-use-cases-routed-to-the-right-agents">6. Use cases (routed to the right agents)</a></li><li><a href="#7-sops-for-ai-skills-as-the-encoded-method">7. SOPs for AI — skills as the encoded method</a></li><li><a href="#8-value-creation-amp-measurement">8. Value creation &amp; measurement</a></li><li><a href="#9-ai-tool-playbook">9. AI tool playbook</a></li><li><a href="#10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</a></li><li><a href="#11-references">11. References</a></li><li><a href="#12-appendix-artifact-index">12. Appendix: artifact index</a></li><li><a href="#13-tutorial-reproduce-this-engagement-15-minutes">13. Tutorial — reproduce this engagement (15 minutes)</a></li></ol></nav><h1 id="34-the-street-of-small-business-banking-that-learns-the-business-on-the-asd-plugin">34 — The Street of Small Business: Banking That Learns the Business, on the ASD Plugin</h1><h2 id="0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</h2><p>Vela Bank is a fictional composite digital SME bank; no real customer, account, or credit data appears. This article is a runlog of the Agentic Service Designer (ASD) in Claude Code. Plugin surface and behavior are the real platform; compliance co-signing is implemented as gate decisions (kind 37) + critic rows (kind 38) + human sign-off — stated plainly, because each is real.</p>
+<h2 id="1-executive-summary">1. Executive summary</h2><p>A digital SME bank with 120,000 customers was winning on price and losing on friction: 9-day onboarding with 62% abandonment, 11-day loan decisions with 27% applications erroring before underwriting, &quot;relationship&quot; promised but absent for 91% of customers. One designer rebuilt the SME lifecycle in 19 weeks on the ASD plugin. Onboarding 9→2.1 days, abandonment 62%→31%, loan decisions 11→4.5 days, NPS 12→44, monthly churn 4.8%→2.1%.</p>
 <table>
 <thead>
 <tr>
@@ -56,11 +56,11 @@
 </tr>
 <tr>
 <td>Team</td>
-<td>1 designer driving SDAP (Codex pack) + 2 client leads (0.5 FTE)</td>
+<td>1 designer + 10 ASD role agents + 2 client leads (0.5 FTE)</td>
 </tr>
 <tr>
-<td>Platform host</td>
-<td><strong>Codex</strong> (<code>AGENTS.md</code> + <code>.codex/config.toml</code> MCP wiring)</td>
+<td>Platform</td>
+<td>ASD Claude Code plugin + <code>@asd/runtime</code></td>
 </tr>
 <tr>
 <td>Headline results</td>
@@ -69,127 +69,129 @@
 </tbody></table>
 <p><strong>What you will learn</strong></p>
 <ul>
-<li>How Codex consumes the platform: a grounding <code>AGENTS.md</code> plus MCP tool access, no plugin magic.</li>
-<li>Why compliance (KYC, credit, fair lending) becomes a service-design seam instead of a form-forest, per book 19.</li>
-<li>How fair-lending evidence is a design constraint, not paperwork — and the platform enforces it mechanically.</li>
+<li>The plugin surface of article 31 applied to financial services, where the hard gate is compliance expressed as signed gate decisions and critic rows.</li>
+<li>How the twelve skills keep onboarding facts evidence-cited so the risk committee can audit them.</li>
+<li>Why &quot;do the complying for the customer&quot; is a design principle the platform can carry mechanically.</li>
 </ul>
-<h2 id="2-the-brief">2. The brief</h2><p>Vela is a digital-native SME bank with a strong price story and a weak service story. Onboarding: 14 fields, 3 document uploads, 5-day verification queue. Lending: 13 documents for a £15k loan, 11-day decisions. Support: 4.1 contacts per customer/year, 38% progress-chasing. The strategic shift: from &quot;cheap banking&quot; to &quot;the bank that knows my business,&quot; with compliance as the non-negotiable spine.</p>
-<p>Success criteria (illustrative): onboarding ≤ 3 days, abandonment ≤ 35%; loan decision ≤ 5 days, application error ≤ 12%; NPS ≥ +40; churn ≤ 2.5%/mo; cash-flow-foresight adoption ≥ 50%. Constraints: no change to regulatory obligations; read-only legacy core; risk-committee lending appetite; fair-lending rules the design must not route around; data-protection limits on transaction-derived products. Why service design: SME banking is high-context, high-consequence service (books 03, 19), and the economics run through retention and deepening (book 20); the product is commoditized, so the staged experience is the differentiation (book 13).</p>
-<h2 id="3-the-platform-run-codex-host-roster-and-plan">3. The platform run: Codex host, roster, and plan</h2><h3 id="31-ground-the-repo-with-the-codex-pack-real-steps">3.1 Ground the repo with the Codex pack (real steps)</h3><pre><code class="language-sh">cp &lt;repo&gt;/platform/packs/codex/AGENTS.md /path/to/consult-vela/
-# merge the MCP block from packs/codex/.codex/config.toml into your Codex config:
-#   [mcp_servers.asd]
-#   command = &quot;asd-mcp&quot;
-#   args = []
-#   (ASD_WORKSPACE unset -&gt; asd-mcp defaults to ~/.asd/projects)</code></pre><p>What <code>AGENTS.md</code> grounds the model in — verbatim contract: every claim traces to an evidence row; dangling refs are hard errors; method acceptance rules machine-checked on every artifact write; quotes verbatim; artifacts typed by kind; the critic sits on the write path; no fabricated evidence, metrics, or clients — if evidence is missing, say so and ask.</p>
-<h3 id="32-roster-to-phase-plan">3.2 Roster to phase plan</h3><table>
+<h2 id="2-the-brief">2. The brief</h2><p>Vela is a digital-native SME bank with a strong price story and a weak service story. Onboarding: 14 fields, 3 document uploads, 5-day verification queue. Lending: 13 documents for a £15k loan, 11-day decisions. Support: 4.1 contacts/customer/year, 38% progress-chasing. Strategic shift: from &quot;cheap banking&quot; to &quot;the bank that knows my business,&quot; with compliance as the non-negotiable spine.</p>
+<p>Success criteria (illustrative): onboarding ≤ 3d, abandonment ≤ 35%; loan decision ≤ 5d, error ≤ 12%; NPS ≥ +40; churn ≤ 2.5%/mo; cash-flow-foresight adoption ≥ 50%. Constraints: no change to regulatory obligations; read-only legacy core; risk-committee lending appetite; fair-lending rules the design must not route around; data-protection limits on transaction-derived products. Why service design: SME banking is high-context, high-consequence service (books 03, 19); economics run through retention and deepening (book 20); the staged experience is the differentiation (book 13).</p>
+<h2 id="3-the-plugin-at-a-glance">3. The plugin, at a glance</h2><p>Same surface as article 31 §3 — install, ten agents, twelve skills, eleven tools, draft→final, kind-37 gate decisions and kind-38 critic rows, fact-check, and the §3.6 honest boundary. The compliance twist: this engagement&#39;s gate convention adds &quot;a lending-change artifact does not pass its gate without a signed kind-37 decision naming the regulatory obligation and the fair-lending evidence&quot; — a human-and-artifact rule, exactly like the governance convention in article 33.</p>
+<p>Roster (invoke by <code>@name</code>) — the same ten agents as article 31:</p>
+<table>
 <thead>
 <tr>
-<th>Phase</th>
-<th>Role</th>
-<th>Skill</th>
-<th>Engine tools</th>
-<th>Gate</th>
+<th>Agent</th>
+<th>Invoke</th>
+<th>Role (frontmatter description)</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>Discover</td>
-<td>researcher</td>
-<td>contextual-inquiry, transcript-mining</td>
-<td>sd_project_create, sd_evidence_add</td>
-<td>evidence register</td>
+<td>Orchestrator</td>
+<td><code>@orchestrator</code></td>
+<td>Plans the engagement, dispatches roles, advances phase gates, owns human handoffs (kind 37)</td>
 </tr>
 <tr>
-<td>Define</td>
-<td>synthesizer, mapper</td>
-<td>affinity-diagramming, journey-from-transcripts</td>
-<td>sd_evidence_query, sd_artifact_write</td>
-<td>critic</td>
+<td>Researcher</td>
+<td><code>@researcher</code></td>
+<td>Gathers evidence into the project register; verbatim quotes; provenance on every row</td>
 </tr>
 <tr>
-<td>Develop</td>
-<td>ideator, prototyper, mapper</td>
-<td>evidence-gated-blueprint, service-blueprinting</td>
-<td>sd_method_run, sd_artifact_write</td>
-<td>critic + compliance</td>
+<td>Synthesizer</td>
+<td><code>@synthesizer</code></td>
+<td>Pattern-finds across evidence; insight sets and themes; divergence/convergence</td>
 </tr>
 <tr>
-<td>Deliver</td>
-<td>measurer, critic, presenter, librarian</td>
-<td>good-services-audit</td>
-<td>sd_artifact_list, sd_factcheck</td>
-<td>factcheck pass</td>
+<td>Mapper</td>
+<td><code>@mapper</code></td>
+<td>Owns mapping methods: journey, blueprint, ecosystem, stakeholder, mental model. Nodes cite evidence; never hand-draws Mermaid</td>
+</tr>
+<tr>
+<td>Ideator</td>
+<td><code>@ideator</code></td>
+<td>Generates options against the insight set; never resolves framing alone</td>
+</tr>
+<tr>
+<td>Prototyper</td>
+<td><code>@prototyper</code></td>
+<td>Builds and tests prototypes; evidence comes from test runs, not assumptions</td>
+</tr>
+<tr>
+<td>Measurer</td>
+<td><code>@measurer</code></td>
+<td>KPI chains, audits, maturity, evaluation; numbers trace to evidence (number ledger)</td>
+</tr>
+<tr>
+<td>Critic</td>
+<td><code>@critic</code></td>
+<td>Veto agent on the write path; evidence-cited defect/proposal rows; verdicts are artifacts (kind 38)</td>
+</tr>
+<tr>
+<td>Presenter</td>
+<td><code>@presenter</code></td>
+<td>Executive report and deck assembly from final artifacts; adds no new evidence</td>
+</tr>
+<tr>
+<td>Librarian</td>
+<td><code>@librarian</code></td>
+<td>Corpus to manifest/skill drift; provenance; knowledge sync; case-study citations</td>
 </tr>
 </tbody></table>
-<div class="mermaid">
-flowchart LR
-    R[researcher] --> S[synthesizer] --> M[mapper] --> I[ideator] --> P[prototyper] --> ME[measurer]
-    C[critic] -. veto -.-> S
-    C -. veto -.-> M
-    C -. veto -.-> P
-    COMP[compliance] -. hard gate -.-> I
-    COMP -. hard gate -.-> P
-    PR[presenter] --> L[librarian]
-    ME --> PR
-    O[orchestrator] --> R
-</div><div class="mermaid">
-gantt
-    title Vela Bank — 19-week platform run
-    dateFormat  YYYY-MM-DD
-    section Discover
-    SME landscape research  :r1, 2026-01-12, 5w
-    section Define
-    journey synthesis       :s1, 2026-02-16, 3w
-    section Develop
-    onboarding prototype    :d1, 2026-03-09, 4w
-    lending fast-path       :d2, 2026-03-09, 3w
-    cash-flow foresight     :d3, 2026-03-30, 3w
-    section Deliver
-    pilot + rollout         :e1, 2026-04-27, 5w
-    measure + handover      :e2, 2026-06-01, 2w
-    Gates: G1 G2 G3 G4
-</div><h2 id="4-phase-by-phase-session-log-codex">4. Phase-by-phase session log (Codex)</h2><h3 id="41-session-1-discover-weeks-15">4.1 Session 1 — Discover (weeks 1–5)</h3><p><strong>Drive.</strong> In Codex, with AGENTS.md loaded:</p>
-<pre><code class="language-">Plan the discovery with the orchestrator prompt. Then as researcher: run
-sd_project_create for vela-bank; execute contextual-inquiry for the SME week
-(18 diary studies, 34 interviews); normalize the 2.1M interaction records
-(transcript-mining); write every claim as an evidence-add row. Adversarially
-review the journey model before we lock it.</code></pre><p><strong>What the platform did.</strong> The register reached 2,214 rows. The adversarial review of the journey model found the key misread: <strong>onboarding did not end at account open but at first transaction</strong> — a third of customers opened an account, stalled at the 14-field top-up/payee setup, and quietly never became active. That single correction roughly doubled the real scope and reordered the roadmap.</p>
-<p><strong>Gate G1.</strong> Register ≥ 3 rows, held. Critic over plan: no veto.</p>
-<p><strong>Human judgment.</strong> The designer held the diary-study timetable against product pressure, excluded two hyper-successful customers as unrepresentative, and framed the lending problem as an evidence problem, not a risk problem — which is what bought the redesign room inside the risk committee.</p>
+<p>Eleven engine tools (available in Claude Code via <code>asd-mcp</code>, or on the CLI as <code>asd &lt;tool&gt;</code>):
+<code>sd_project_list/create/open</code>, <code>sd_evidence_add/query</code>, <code>sd_artifact_write</code> (and <code>sd_artifact_list/get</code>),
+<code>sd_method_list/run</code>, <code>sd_factcheck</code>. Draft→final status; gates are kind-37 decisions and
+kind-38 critic rows; <code>sd_factcheck</code> re-runs integrity + acceptance over every artifact.</p>
+<h2 id="4-phase-by-phase-session-log-claude-code-asd">4. Phase-by-phase session log (Claude Code + ASD)</h2><h3 id="41-session-1-discover-weeks-15">4.1 Session 1 — Discover (weeks 1–5)</h3><p><strong>Drive.</strong></p>
+<pre><code class="language-">/asd plan-from-brief
+@researcher run contextual-inquiry for vela-bank: 18 diary studies (SMEs
+logging a week of banking), 34 interviews, and the 12-month interaction
+dataset mined via transcript-mining. Register everything.</code></pre><p><strong>What the plugin did.</strong> The register reached 2,214 content-addressed rows; every claim in the project now had to name a row.</p>
+<p><strong>Team analysis (outside the engine, marked).</strong> The key finding — <strong>onboarding did not end at account open but at first transaction</strong>; a third of customers opened and quietly stalled at top-up/payee setup — came from the designer&#39;s analysis of the register and raw funnel data, adversarial-checked. It roughly doubled the real scope.</p>
+<p><strong>Gate G1.</strong> Register in place; critic over plan: no veto.</p>
+<p><strong>Human judgment.</strong> The designer held the diary-study timetable against product pressure, excluded two hyper-successful customers, and framed the lending problem as an evidence problem — which is what bought redesign room inside the risk committee.</p>
 <h3 id="42-session-2-define-weeks-68">4.2 Session 2 — Define (weeks 6–8)</h3><p><strong>Drive.</strong></p>
-<pre><code class="language-">As synthesizer: affinity-diagramming -&gt; insight-set. As mapper:
-journey-from-transcripts + behavioural-personas -&gt; four journeys, four
-personas. Draft the fast-path concepts; hand them to the critic.</code></pre><p><strong>What the platform did.</strong> Eighteen insight statements; four journeys (open, borrow, run, recover) and four personas. The lener... the critic vetoed the fast-path concept on fair-lending grounds before it ever reached the risk committee:</p>
+<pre><code class="language-">@mapper run journey-from-transcripts -&gt; four journeys (open, borrow, run,
+recover) and behavioural-personas -&gt; four personas. @critic review the
+lending fast-path concept before the risk committee sees it.</code></pre><p><strong>What the plugin did.</strong> Journeys and personas wrote through the evidence gates (personas carried ≥3 distinct refs each). The fast-path concept — auto-approval on transaction data alone — was vetoed by the critic on fair-lending grounds before it ever reached the risk committee:</p>
 <pre><code class="language-json">{ &quot;kind&quot;: &quot;review-veto-log&quot;, &quot;role&quot;: &quot;critic&quot;, &quot;target&quot;: &quot;lending-fast-path&quot;,
-  &quot;verdict&quot;: &quot;veto&quot;, &quot;rule&quot;: &quot;fair-lending-evidence&quot;,
-  &quot;message&quot;: &quot;auto-approval on transaction data alone has no human-understandable
-  decision rule. Requires assisted underwriting with an explainability layer.&quot; }</code></pre><p>The design pivoted to assisted underwriting with an explainability layer — a mechanism the risk committee later approved.</p>
-<p><strong>Human judgment.</strong> The designer&#39;s framing did the heavy lifting here: &quot;do the complying for the customer&quot; — the bank assembles the evidence (open banking, accounting integrations) and asks only for what genuinely must come from the customer. The compliance officer co-signed the framing as a design principle before any build.</p>
+  &quot;rows&quot;: [
+    { &quot;type&quot;: &quot;defect&quot;, &quot;rule&quot;: &quot;fair-lending-evidence&quot;,
+      &quot;message&quot;: &quot;auto-approval on transaction data alone has no
+      human-understandable decision rule&quot;,
+      &quot;evidence&quot;: [] },
+    { &quot;type&quot;: &quot;proposal&quot;, &quot;rule&quot;: &quot;fair-lending-evidence&quot;,
+      &quot;message&quot;: &quot;assisted underwriting with an explainability layer&quot;,
+      &quot;evidence&quot;: [] }
+  ], &quot;verdict&quot;: &quot;veto&quot; }</code></pre><p>The design pivoted to assisted underwriting with an explainability layer — a mechanism the risk committee later approved, with the veto in evidence.</p>
+<p><strong>Human judgment.</strong> The designer&#39;s frame — &quot;do the complying for the customer&quot;: the bank assembles the evidence, asks only for what must come from the customer — was co-signed by compliance as a design principle before any build.</p>
 <h3 id="43-session-3-develop-weeks-914">4.3 Session 3 — Develop (weeks 9–14)</h3><p><strong>Drive.</strong></p>
-<pre><code class="language-">As ideator: orchestration-canvas, 8 HMWs, NUF filter. As prototyper:
-storyboard assisted onboarding, the lending fast-path, and cash-flow
-foresight. As mapper: evidence-gated-blueprint for all three. Stress-test
-the fast-path with a synthetic credit corpus before the compliance gate.</code></pre><p><strong>What the platform did.</strong> Thirty-nine concepts → 14 → three storyboarded designs. The <code>evidence-gated-blueprint</code> runs refused backstage steps that silently reverted to the old 5-day manual verification queue. The stress test of the lending fast-path against 100,000 synthetic applications (mixed-income businesses with invoices + cash) showed the error-rate model was optimistic; thresholds were revised before launch. <code>sd_artifact_write</code> gates caught the slips: nodes without evidence refs returned <code>min-evidence-per-node</code>, re-derived clean.</p>
-<p><strong>Human judgment.</strong> The designer chose assisted onboarding over pure automation (warmth at the hard moment, book 13), insisted cash-flow foresight default to &quot;no data leaves Vela,&quot; and chaired the compliance reviews that negotiated the 13-document rule down to four with an evidence log.</p>
+<pre><code class="language-">@mapper run orchestration-canvas (kind 15 — Mapper owns it) and
+service-blueprinting, then evidence-gated-blueprint for assisted onboarding,
+the lending fast-path, and cash-flow foresight.
+@prototyper storyboard all three as storyboard-walkthrough objects (kind 23).
+@critic review each; compliance co-signs the gate.</code></pre><p><strong>What the plugin did.</strong> The evidence-gated-blueprint gate refused backstage steps that silently reverted to the old 5-day manual verification queue — re-derived, then clean. Prototype discipline held: every storyboard named its assumption, fidelity, subjects, and pass/fail criteria.</p>
+<p><strong>Team analysis (outside the engine, marked).</strong> The lending error-rate model and the mixed-income correction (invoices+cash) came from the designer&#39;s quantitative analysis with a synthetic credit corpus — analyst work, marked; the platform did not run it. The thresholds shipped because of it.</p>
+<p><strong>Human judgment.</strong> The designer chose assisted onboarding over pure automation (warmth at the hard moment, book 13), insisted cash-flow foresight default to &quot;no data leaves Vela,&quot; and chaired the compliance reviews that cut the 13-document rule to four with an evidence log.</p>
 <h3 id="44-session-4-deliver-weeks-1519">4.4 Session 4 — Deliver (weeks 15–19)</h3><p><strong>Drive.</strong></p>
-<pre><code class="language-">As measurer: build the KPI tree from the success criteria and wire telemetry.
-As presenter + librarian: render steering packs from artifact ids and assemble
-the handover (incl. the risk-committee pack). Run sd_factcheck at G4 and
-enforce the segment rollout rule.</code></pre><p><strong>What the platform did.</strong> KPI tree (kind <code>kpi-set</code>); fact-check at G4 — 30 artifacts, 0 dangling refs, 0 schema violations, <code>&quot;pass&quot;: true</code> (excerpt §13). The rollout rule caught the micro-SME segment at week 2 (onboarding 3.4 days vs 3.0 target): assisted-chat coverage was understaffed on that segment; corrected before full launch.</p>
-<p><strong>Human judgment.</strong> The designer ran the risk-committee presentation (the fast-path&#39;s evidence logic), made the &quot;no auto-approval&quot; call stick against product pressure, and chose the two pilot segments deliberately (micro + freelance: the least and most complex credit files).</p>
-<h2 id="5-artifacts-portfolio-deterministic-outputs-codex-run">5. Artifacts portfolio (deterministic outputs, Codex-run)</h2><h3 id="51-current-state-journey-open-to-first-transaction">5.1 Current-state journey: open to first transaction</h3><div class="mermaid">
+<pre><code class="language-">@measurer build the kpi-set (kind 26) from the four success criteria.
+@presenter assemble the steering + risk-committee packs from final artifacts.
+@librarian produce the handover pack.
+/asd phase-gate &lt;G4&gt;; asd factcheck --projectId &lt;id&gt;</code></pre><p><strong>What the plugin did.</strong> The kpi-set named driver/baseline/source per row. <strong>Deterministic fact-check</strong> across 30 artifacts (per-artifact integrity + acceptance replay) with two compliance-signed gate decisions: <code>{ &quot;pass&quot;: true, &quot;rows&quot;: […] }</code>.</p>
+<p><strong>Team analysis (outside the engine, marked).</strong> The segment rollout rule (micro-SME launched early, week-2 onboarding 3.4d vs 3.0d target, assisted-chat understaffed) was the designer&#39;s operational governance; corrected before full launch.</p>
+<p><strong>Human judgment.</strong> The designer ran the risk-committee presentation (the fast-path&#39;s evidence logic), made the &quot;no auto-approval&quot; call stick, and chose the two pilot segments deliberately (micro + freelance: the least and most complex credit files).</p>
+<h2 id="5-artifacts-portfolio-deterministic-outputs">5. Artifacts portfolio (deterministic outputs)</h2><h3 id="51-current-state-journey-open-to-first-transaction">5.1 Current-state journey: open to first transaction</h3><div class="mermaid">
 flowchart TB
     subgraph Open
-        P1["SME owner starts\nFriday 10pm"] --> P2[14 fields]
+        P1[SME owner starts Friday 10pm] --> P2[14 fields]
         P2 --> P3[Uploads 3 documents]
-        P3 --> P4["Manual verification\n5 day queue"]
+        P3 --> P4[Manual verification 5 day queue]
     end
     subgraph Stall
         P5[Account opened Monday] --> P6[Top-up fails silently]
         P6 --> P7[Owner pauses]
     end
     subgraph Chase
-        P8[Weeks later] --> P9["Support call\nwhere is my application"]
-        P9 --> P10["Loan form errors\n27pct resubmit"]
+        P8[Weeks later] --> P9[Support call where is my application]
+        P9 --> P10[Loan form errors 27pct resubmit]
     end
     P4 --> P5
     P7 -.-> P8
@@ -225,13 +227,13 @@ flowchart TB
 <h3 id="52-future-state-blueprint-assisted-onboarding-excerpt">5.2 Future-state blueprint: assisted onboarding (excerpt)</h3><div class="mermaid">
 flowchart TB
     subgraph Evidence
-        E1[App status + next step] --> E2["Document checklist\n4 items max"] --> E3[Foresight dashboard]
+        E1[App status and next step] --> E2[Document checklist 4 items max] --> E3[Foresight dashboard]
     end
     subgraph Customer
         C1[Starts in 3 minutes] --> C2[Chat assist at friction] --> C3[First transaction day one]
     end
     subgraph Frontstage
-        F1[Live agent surfaces] --> F2["Evidence assembled\nby integrations"] --> F3[Explainability panel]
+        F1[Live agent surfaces] --> F2[Evidence assembled by integrations] --> F3[Explainability panel]
     end
     subgraph Backstage
         B1[Open-banking assembler] --> B2[KYC verification engine] --> B3[Underwriting assist]
@@ -268,17 +270,16 @@ flowchart TB
 <tr>
 <td>Support</td>
 <td>Compliance gate</td>
-<td>Every flow variant co-signed</td>
+<td>Co-signs the gate decision</td>
 </tr>
 </tbody></table>
-<h3 id="53-stakeholder-map">5.3 Stakeholder map</h3><div class="mermaid">
+<h3 id="5355-maps-and-personas">5.3–5.5 Maps and personas</h3><div class="mermaid">
 flowchart LR
     CEO[Vela CEO] --- PRO[Product] --- ENG[Engineering]
     CEO --- COMP[Compliance] --- RISK[Risk committee]
-    PRO --- OPS[Support ops]
+    PRO --- OPS[Support ops] --- SME[SME customers]
     RISK --- LEGAL[Legal]
-    ENG --- DATA[Data + open banking]
-    OPS --- SME[SME customers]
+    ENG --- DATA[Data and open banking]
 </div><table>
 <thead>
 <tr>
@@ -316,19 +317,19 @@ flowchart LR
 <td>SME customers</td>
 <td>Low</td>
 <td>High</td>
-<td>Evidence register + diaries</td>
+<td>Evidence + diaries</td>
 </tr>
 </tbody></table>
-<h3 id="54-ecosystem-map">5.4 Ecosystem map</h3><div class="mermaid">
+<div class="mermaid">
 flowchart LR
     VB[Vela Bank] --> CORE[Legacy core]
     VB --> OB[Open-banking APIs]
     VB --> ACC[Accounting integrations]
-    VB --> KYC[KYC + fraud vendors]
+    VB --> KYC[KYC and fraud vendors]
     VB --> PS[Payment rails]
     SME[SME customer] --> VB --> SME
-    SME --> PAY[Payroll + taxes]
-</div><h3 id="55-personas">5.5 Personas</h3><table>
+    SME --> PAY[Payroll and taxes]
+</div><table>
 <thead>
 <tr>
 <th>Persona</th>
@@ -368,10 +369,10 @@ flowchart LR
 </tr>
 </tbody></table>
 <h3 id="56-templates">5.6 Templates</h3><pre><code class="language-text">Fast-path spec: &lt;journey&gt; &lt;trigger&gt; &lt;evidence assembled (automated sources)&gt;
-  &lt;customer-asked items (minimum, compliance-logged)&gt; &lt;decision rule (human +
-  explainability)&gt; &lt;fallback&gt; &lt;gate: compliance artifact id&gt;
-Compliance gate: &lt;change&gt; &lt;regulatory obligation&gt; &lt;fair-lending evidence for
-  customers&gt; &lt;risk committee meeting + decision&gt; &lt;vetoes logged&gt;</code></pre><h3 id="57-mock-dataset-onboarding-funnel-1000-cohorts">5.7 Mock dataset (onboarding funnel, 1,000 cohorts)</h3><pre><code class="language-csv">cohort,stage,started,abandoned_at_14_fields,abandoned_at_upload,abandoned_at_verify,opened_to_first_tx_days,accepted
+  &lt;customer-asked items (minimum, compliance-logged)&gt;
+  &lt;decision rule (human + explainability)&gt; &lt;fallback&gt; &lt;gate-decision id&gt;
+Compliance gate: &lt;change&gt; &lt;regulatory obligation&gt; &lt;fair-lending evidence&gt;
+  &lt;risk committee meeting + decision&gt; &lt;veto rows logged&gt;</code></pre><h3 id="57-mock-dataset-onboarding-funnel-1000-cohorts">5.7 Mock dataset (onboarding funnel, 1,000 cohorts)</h3><pre><code class="language-csv">cohort,stage,started,abandoned_at_14_fields,abandoned_at_upload,abandoned_at_verify,opened_to_first_tx_days,accepted
 C-2201,open,1000,310,180,130,7,290
 C-2202,open,1000,290,170,120,6,310
 C-2203,open,1000,320,190,140,8,270
@@ -422,7 +423,7 @@ xychart-beta
 <td>Chasing calls −70%</td>
 </tr>
 </tbody></table>
-<h3 id="510-good-services-audit-excerpt">5.10 Good Services audit (excerpt)</h3><table>
+<h3 id="510-good-services-audit-via-good-services-audit">5.10 Good Services audit (via good-services-audit)</h3><table>
 <thead>
 <tr>
 <th>Principle</th>
@@ -451,11 +452,10 @@ xychart-beta
 <td>57/75</td>
 </tr>
 </tbody></table>
-<h2 id="6-platform-use-cases-codex-sub-sessions">6. Platform use cases (Codex sub-sessions)</h2><p><strong>6.1 The solo founder&#39;s Monday.</strong> Assisted onbarding + the design&#39;s friction-point detection. Cohort abandonment 31%, median 2.1 days, funded Tuesday morning. 
-<strong>6.2 The seasonal trades loan.</strong> Invoice-heavy, seasonal pattern failed the first fast-path threshold; assisted underwriting with explainability approved in 4.5 days with understandable terms. The mixed-income stress test produced the revised threshold.
-<strong>6.3 The cash-flow Tuesday.</strong> P3 opened foresight in week 6; &quot;what changes if we pay VAT early&quot; scenarios; adoption 61% of actives by pilot end.</p>
-<h2 id="7-sops-for-ai-skills-as-the-encoded-method">7. SOPs for AI — skills as the encoded method</h2><p>On Codex, the discipline is enforced by <code>AGENTS.md</code> (grounding) + the skills (encoded) + the MCP gates (mechanical). The four rules that did most of the work, verbatim from the pack: artifact types from <code>platform/templates</code>; acceptance machine-checked on every write; the critic on the write path (review-gated artifacts need a passing verdict); no fabricated evidence — if missing, say so and ask.</p>
-<p><strong>Guardrails.</strong> Compliance gates are hard: a lending artifact without a compliance artifact cannot pass its phase gate. Fair-lending evidence: every fast-path decision rule ships its evidence lineage. Data privacy: transaction-derived insights default to &quot;no data leaves Vela&quot;; consent matrix is a versioned artifact. Failure modes observed: (1) the decision-time model was optimistic for mixed-income businesses — the stress test corrected it before launch; (2) a generated persona lacked variance evidence — referential integrity re-gated it; (3) product pressure for auto-approval was resisted by the fair-lending evidence artifact; the veto log records it.</p>
+<h2 id="6-use-cases-routed-to-the-right-agents">6. Use cases (routed to the right agents)</h2><p><strong>6.1 The solo founder&#39;s Monday.</strong> Assisted onboarding + friction-point detection. Cohort abandonment 31%, median 2.1d, funded Tuesday morning.
+<strong>6.2 The seasonal trades loan.</strong> Invoice-heavy seasonal pattern failed the first fast-path threshold; assisted underwriting with explainability approved in 4.5d. The threshold correction was the team&#39;s quantitative analysis (marked).
+<strong>6.3 The cash-flow Tuesday.</strong> P3 opened foresight in week 6; &quot;what changes if we pay VAT early&quot; scenarios. Adoption 61% of actives by pilot end.</p>
+<h2 id="7-sops-for-ai-skills-as-the-encoded-method">7. SOPs for AI — skills as the encoded method</h2><p>Identical discipline to article 31 §7. For financial services the load-bearing rules: referential integrity is absolute (a lending claim must cite a row); every KPI names its baseline and source; the critic&#39;s veto logs defect/proposal rows with rule names — and the compliance gate is a signed kind-37 decision, not an engine feature. <strong>Failure modes observed:</strong> (1) the decision-time model was optimistic for mixed-income businesses — analyst-corrected before launch; (2) a persona lacked variance evidence — integrity re-gated it; (3) product pressure for auto-approval — held by the fair-lending veto; the row is in evidence.</p>
 <h2 id="8-value-creation-amp-measurement">8. Value creation &amp; measurement</h2><table>
 <thead>
 <tr>
@@ -514,20 +514,17 @@ xychart-beta
 <td>≥50</td>
 </tr>
 </tbody></table>
-<p>Causal logic (book 20): internal quality (assist, assemblers, foresight) → external value (speed, fairness, usefulness) → retention and deepening (churn 2.1%, NPS 44). The KPI tree is the risk committee&#39;s dashboard: every cause measured, every effect traced.</p>
-<h2 id="9-ai-tool-playbook-host-codex">9. AI tool playbook (host: Codex)</h2><p><strong>Codex</strong> — the driver: grounded by <code>AGENTS.md</code>, tools over MCP. Excelled at the evidence-scale journey reconstruction and at long synthetic-corpus stress tests (the mixed-income correction). Failed at: regulatory judgment — the designer and compliance owned every gate.
-<strong><code>asd</code> CLI / <code>asd-mcp</code></strong> — deterministic cross-checks and the fact-check gate; used from the same shell as Codex.
-<strong>GitHub</strong> — PR artifact gates (schema/evidence/mermaid), compliance artifacts required before merge in the lending workspace.
-Other hosts ship the same canon: Claude Code (plugin pack), Grok (prompts + MCP), OMP/Pi (agents+skills tree), AGY (<code>review-session.md</code> — where the fair-lending veto was also adversarially stress-tested).</p>
+<p>Causal logic (book 20): internal quality → external value → retention and deepening. The kpi-set is the risk committee&#39;s dashboard.</p>
+<h2 id="9-ai-tool-playbook">9. AI tool playbook</h2><p><strong>Claude Code + ASD plugin</strong> — the engagement. Excelled at evidence-scale journey reconstruction and artifact authoring under acceptance; failed at regulatory judgment by design. <strong><code>asd</code> CLI / MCP</strong> — deterministic cross-checks and fact-check. <strong>GitHub</strong> — PR artifact gates; compliance sign-off required before merge in the lending workspace. Other hosts ship the same tree (OpenCode, Grok, OMP/Pi, Codex, AGY).</p>
 <h2 id="10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</h2><ol>
-<li>Onboarding ends at first transaction, not account open; a third of customers opened and stalled unseen.</li>
-<li>Compliance staffed as design partners produced the fast path; staffed as reviewers it would have reneged into a 13-document form.</li>
+<li>Onboarding ends at first transaction, not account open — the scope doubled because someone read the register.</li>
+<li>Compliance staffed as design partners produced the fast path; as reviewers it would have reverted to the 13-document form.</li>
 <li>Fair-lending evidence is a design constraint; the explainability layer shipped because of it.</li>
 <li>Assisted chat is a cast, not a fallback (book 13); understaffing it produced the only pilot scare.</li>
-<li>Synthetic stress tests beat optimism; the mixed-income threshold revision is the artifact of record.</li>
-<li>Present the risk committee the evidence model, not the mock — they approved the faster path.</li>
+<li>Quantitative checks beat optimism; the mixed-income correction is the artifact of record.</li>
+<li>Present the risk committee the evidence model, not the mock.</li>
 </ol>
-<h2 id="11-references">11. References</h2><p><code>03-service-design-from-insight-to-implementation/03-understanding-customers.md</code>; <code>04-service-design-for-business/02-understanding-the-business.md</code>; <code>13-the-experience-economy/03-staging-experiences.md</code>; <code>19-service-management-and-marketing/03-customer-perceived-quality.md</code>; <code>20-the-service-profit-chain/03-external-service-value.md</code>; <code>09-mapping-experiences/04-journey-maps.md</code>, <code>/05-service-blueprints.md</code>; <code>17-101-design-methods/</code> NUF + test-report. Platform: <code>platform/packs/codex</code>, <code>suite/packages/runtime</code>. External: UK/EU KYC and fair-lending obligations referenced generically <code>[unverified]</code>.</p>
+<h2 id="11-references">11. References</h2><p><code>03-service-design-from-insight-to-implementation/03-understanding-customers.md</code>; <code>04-service-design-for-business/02-understanding-the-business.md</code>; <code>13-the-experience-economy/03-staging-experiences.md</code>; <code>19-service-management-and-marketing/03-customer-perceived-quality.md</code>; <code>20-the-service-profit-chain/03-external-service-value.md</code>; <code>09-mapping-experiences/04-journey-maps.md</code>, <code>/05-service-blueprints.md</code>; <code>17-101-design-methods/</code>. Platform: <code>platform/packs/claude-code</code>, <code>platform/agents/*</code>, <code>platform/skills/*</code>, <code>platform/templates/catalog.md</code>, <code>suite/packages/runtime</code>. External: KYC/fair-lending obligations referenced generically <code>[unverified]</code>.</p>
 <h2 id="12-appendix-artifact-index">12. Appendix: artifact index</h2><table>
 <thead>
 <tr>
@@ -556,21 +553,15 @@ Other hosts ship the same canon: Claude Code (plugin pack), Grok (prompts + MCP)
 <td>Power/interest</td>
 </tr>
 <tr>
-<td>Ecosystem map</td>
-<td>5.4</td>
-<td>ecosystem-map</td>
-<td>Partner context</td>
-</tr>
-<tr>
 <td>Personas</td>
-<td>5.5</td>
+<td>5.4</td>
 <td>persona-set</td>
 <td>Segments</td>
 </tr>
 <tr>
 <td>Templates</td>
 <td>5.6</td>
-<td>kind-templates</td>
+<td>catalog-modeled</td>
 <td>Replication</td>
 </tr>
 <tr>
@@ -582,23 +573,23 @@ Other hosts ship the same canon: Claude Code (plugin pack), Grok (prompts + MCP)
 <tr>
 <td>Charts</td>
 <td>5.8</td>
-<td>kpi-set rendered</td>
+<td>kpi-set data</td>
 <td>Metrics</td>
 </tr>
 <tr>
 <td>Traceability</td>
 <td>5.9</td>
-<td>blueprint attr</td>
+<td>design account</td>
 <td>Principle linkage</td>
 </tr>
 <tr>
 <td>Standards audit</td>
 <td>5.10</td>
-<td>experience-audit</td>
+<td>insight-set</td>
 <td>Good Services</td>
 </tr>
 </tbody></table>
-<h2 id="13-tutorial-reproduce-this-engagement-15-minutes-codex-or-any-mcp-host">13. Tutorial — reproduce this engagement (15 minutes, Codex or any MCP host)</h2><pre><code class="language-bash">export ASD_WORKSPACE=$HOME/consult-vela-bank
+<h2 id="13-tutorial-reproduce-this-engagement-15-minutes">13. Tutorial — reproduce this engagement (15 minutes)</h2><pre><code class="language-bash">export ASD_WORKSPACE=$HOME/consult-vela-bank
 asd() { platform/packs/cli/asd &quot;$@&quot;; }
 OUT=$(asd project-create --name vela-bank --client &quot;Fictional composite&quot; --sector fintech --service &quot;SME banking&quot;)
 ID=$(echo &quot;$OUT&quot; | grep -oE 'vela-bank-[a-f0-9]{8}' | head -1)
@@ -607,34 +598,12 @@ E2=$(asd evidence-add --projectId &quot;$ID&quot; --source funnel-2203 --kind qu
 NODES=$(printf '[{&quot;id&quot;:&quot;open&quot;,&quot;label&quot;:&quot;Open&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;2&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;},{&quot;evidenceId&quot;:&quot;%s&quot;}]},{&quot;id&quot;:&quot;verify&quot;,&quot;label&quot;:&quot;Verification&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;1&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;}]},{&quot;id&quot;:&quot;first&quot;,&quot;label&quot;:&quot;First use&quot;,&quot;kind&quot;:&quot;pain&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;1&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;},{&quot;evidenceId&quot;:&quot;%s&quot;}]}]' &quot;$E1&quot; &quot;$E2&quot; &quot;$E1&quot; &quot;$E1&quot; &quot;$E2&quot;)
 asd artifact-write --projectId &quot;$ID&quot; --methodId journey-from-transcripts --title &quot;Onboarding&quot; --nodes &quot;$NODES&quot;
 asd method-run --methodId good-services-audit --projectId &quot;$ID&quot;
-asd factcheck --projectId &quot;$ID&quot;</code></pre><p><strong>What you should see.</strong> <code>&quot;accepted&quot;: true</code>; the good-services contract; <code>factcheck</code> → <code>&quot;pass&quot;: true</code>. Gate mechanics, honestly: <code>sd_factcheck</code> takes exactly <code>--projectId</code> — it re-runs integrity and the producing methods&#39; acceptance rules over every artifact. Compliance co-signature is a project-configuration gate tracked as <code>phase-gate-decision</code> + <code>review-veto-log</code> artifacts; there is no CLI flag for it.</p>
-<p><strong>Deterministic fact-check (real output shape, from this tutorial&#39;s own run):</strong></p>
-<pre><code class="language-json">{
-  &quot;pass&quot;: true,
-  &quot;rows&quot;: [
-    {
-      &quot;artifactId&quot;: &quot;e00883e744084022a1230ba9f2241fd7&quot;,
-      &quot;kind&quot;: &quot;journey-map&quot;,
-      &quot;title&quot;: &quot;Onboarding&quot;,
-      &quot;integrity&quot;: {
-        &quot;pass&quot;: true,
-        &quot;dangling&quot;: []
-      },
-      &quot;acceptance&quot;: {
-        &quot;pass&quot;: true
-      },
-      &quot;methodId&quot;: &quot;journey-from-transcripts&quot;
-    }
-  ]
-}</code></pre><p><code>artifactId</code> is the store&#39;s content hash — it varies per workspace. The real
-gate at G4 is exactly this: one row per artifact, integrity (dangling refs)
-and acceptance (method rules replayed against the live registry) both pass,
-top-level <code>pass: true</code>.</p>
-<p><strong>Try-it checklist.</strong> (1) Drop <code>AGENTS.md</code> into a scratch project and merge the MCP block; (2) create the project and add two evidence rows; (3) write a journey artifact and watch the gate reject a zero-evidence node; (4) write a fast-path concept and ask the critic to review it — then read the fair-lending veto; (5) run <code>factcheck</code> at a gate. The Codex loop — grounding file → role prompt → skill → MCP tool → gate → fact-check — is the whole engagement.</p>
+asd factcheck --projectId &quot;$ID&quot;</code></pre><p><strong>What you should see:</strong> <code>{&quot;accepted&quot;: true}</code>; the good-services contract; <code>factcheck</code> → <code>{&quot;pass&quot;: true}</code>. Add the compliance convention before a real gate: a signed kind-37 decision naming the obligation and fair-lending evidence, plus a kind-38 critic verdict on the fast-path.</p>
+<p><strong>Try-it checklist.</strong> (1) Install (§3); (2) <code>@researcher</code> → two evidence rows; (3) write a journey and rebut the gate rejection; (4) <code>@critic</code> → veto an auto-approval concept and remediate against the rows; (5) run <code>asd factcheck</code>.</p>
 </article><div class="wrap" style="max-width:880px">
-    <div class="cross-links"><a href="../33/index.html"><span class="lbl">← Previous case</span><span class="ttl">33. The Virtual Ward at Capacity: Scaling Telehealth with a Filesystem-First Agent Team</span></a><a href="../35/index.html"><span class="lbl">Next case →</span><span class="ttl">35. The Butler's Memory: Staging Luxury with an Adversarial Critic on the Write Path</span></a></div>
+    <div class="cross-links"><a href="../33/index.html"><span class="lbl">← Previous case</span><span class="ttl">33. The Virtual Ward at Capacity: Scaling Telehealth with the ASD Critic on Every Gate</span></a><a href="../35/index.html"><span class="lbl">Next case →</span><span class="ttl">35. The Butler's Memory: Staging Luxury with the ASD Critic on the Write Path</span></a></div>
     <div class="art-foot">
-      <span>8 figures (8 diagrams) · ~3.4k words · reviewed by an adversarial AI reviewer (Gemini 3.1 Pro High).</span>
+      <span>6 figures (6 diagrams) · ~3.1k words · reviewed by an adversarial AI reviewer (Gemini 3.1 Pro High).</span>
       · <a href="https://github.com/sammozaffari/the-agentic-service-designer/blob/main/articles/34/README.md" target="_blank" rel="noopener">Open source in repo ↗</a>
     </div>
   </div></main>
