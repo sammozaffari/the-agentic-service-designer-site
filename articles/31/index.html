@@ -77,10 +77,12 @@
 <h2 id="3-the-plugin-at-a-glance-real-surface-real-steps">3. The plugin, at a glance (real surface, real steps)</h2><h3 id="31-install">3.1 Install</h3><pre><code class="language-sh"># one-time: the engine behind the plugin
 cd &lt;repo&gt;/suite &amp;&amp; pnpm install &amp;&amp; pnpm --filter @asd/runtime build
 ln -sf &quot;$PWD/packages/runtime/lib/mcp.mjs&quot; /usr/local/bin/asd-mcp
+asd-mcp --help &gt;/dev/null &amp;&amp; echo ok
 
 # per project: drop the plugin in
 cd /path/to/consult-lighthouse
-cp -R &lt;repo&gt;/platform/packs/claude-code/.claude ./</code></pre><p>What lands in <code>.claude/</code>:</p>
+cp -R &lt;repo&gt;/platform/packs/claude-code/.claude ./
+mkdir -p .claude/settings.local.json   # optional overrides</code></pre><p>What lands in <code>.claude/</code>:</p>
 <ul>
 <li><code>agents/</code> — ten subagents, each a flat <code>.md</code> with YAML frontmatter (Claude Code scans these automatically).</li>
 <li><code>skills/</code> — twelve method skills, each a <code>SKILL.md</code> with frontmatter, phase, inputs, output kind, acceptance, review gate.</li>
@@ -271,7 +273,7 @@ sd_factcheck(projectId)</code></pre><p>These are available in Claude Code as MCP
 </ul>
 <h3 id="36-the-honest-boundary-read-this-once-it-governs-the-whole-article">3.6 The honest boundary (read this once, it governs the whole article)</h3><p>The platform <strong>mechanically forces</strong>: evidence resolution, machine-checked acceptance, draft/final status, the critic gate, and the fact-check — all deterministic. It does <strong>not</strong> contain a data-normalization engine, a simulation engine, live telemetry, or a governance co-signature config. Role boundaries are enforced by instructions plus the critic gate, not by engine auth (a stated, documented design boundary). Everything analytic in this article beyond the engine&#39;s typed store — transcript statistics, capacity models, the numbers themselves — is <strong>the design team&#39;s analysis</strong>, performed with the designer&#39;s tools and marked as such. The platform&#39;s job is that none of it ships new until it is evidence-backed to its gates.</p>
 <h2 id="4-phase-by-phase-session-log-claude-code-asd-plugin">4. Phase-by-phase session log (Claude Code + ASD plugin)</h2><h3 id="41-session-1-discover-weeks-15">4.1 Session 1 — Discover (weeks 1–5)</h3><p><strong>Drive.</strong> In Claude Code:</p>
-<pre><code class="language-">/asd plan-from-brief</code></pre><p>The <code>/asd</code> command plans from the brief and dispatches the platform order. Then the designer sends the Researcher out:</p>
+<pre><code class="language-">/asd</code></pre><p>The <code>/asd</code> command plans from the brief and dispatches the platform order. Then the designer sends the Researcher out:</p>
 <pre><code class="language-">@researcher run the contextual-inquiry skill for lighthouse-transit: plan
 the research (ride-alongs on 14 routes incl. night shift, 32 commuter
 interviews, 6 drivers), then add every field observation and every verbatim
@@ -389,7 +391,7 @@ row naming its driver, experience link, business link, baseline, and source.
 <tr>
 <td>A9</td>
 <td>Journey-to-blueprint traceability</td>
-<td>design account</td>
+<td>catalog-modeled</td>
 <td>5.9</td>
 </tr>
 <tr>
@@ -637,7 +639,7 @@ xychart-beta
     x-axis ["Before","After"]
     y-axis "NPS" -20 --> 30
     line [-12,24]
-</div><h3 id="59-traceability-design-account">5.9 Traceability (design account)</h3><table>
+</div><h3 id="59-traceability-traceability-not-a-platform-kind">5.9 Traceability (traceability; not a platform kind)</h3><table>
 <thead>
 <tr>
 <th>Opportunity (journey node)</th>
@@ -840,7 +842,7 @@ xychart-beta
 <tr>
 <td>Traceability</td>
 <td>5.9</td>
-<td>design account</td>
+<td>catalog-modeled</td>
 <td>Principle linkage</td>
 </tr>
 <tr>
@@ -861,7 +863,7 @@ NODES=$(printf '[{&quot;id&quot;:&quot;plan&quot;,&quot;label&quot;:&quot;Plan&q
 asd artifact-write --projectId &quot;$ID&quot; --methodId journey-from-transcripts --title &quot;Current-state&quot; --nodes &quot;$NODES&quot;
 asd method-run --methodId good-services-audit --projectId &quot;$ID&quot;
 asd factcheck --projectId &quot;$ID&quot;</code></pre><p><strong>What you should see:</strong> <code>project-create</code> returns the project in phase <code>discover</code>; <code>sd_evidence_add</code> returns sha-256 ids; <code>artifact-write</code> returns <code>&quot;accepted&quot;: true</code> (the journey-from-transcripts gate: ≥3 nodes, refs resolved, emotion/touchpoint present) — and if you drop a node&#39;s evidence you get the exact <code>min-evidence-per-node</code> rejection from §4.2; <code>method-run</code> returns the good-services contract; <code>factcheck</code> returns <code>{ &quot;pass&quot;: true, &quot;rows&quot;: […] }</code>.</p>
-<p><strong>Try-it checklist.</strong> (1) Install per §3.1 into a scratch project; run <code>/asd plan-from-brief</code>; (2) <code>@researcher</code> → add two evidence rows and read the ids; (3) <code>@mapper</code> → write the journey and watch the gate reject a zero-evidence node; (4) <code>@critic</code> → review your own artifact and keep or overrule the veto with a written rationale in the gate decision (kind 37); (5) run <code>asd factcheck</code> at a gate and read the per-artifact rows. The loop — prompt → agent → skill → tool → gate → critic → fact-check — is the engagement, and it lands as files you can audit.</p>
+<p><strong>Try-it checklist.</strong> (1) Install per §3.1 into a scratch project; run <code>/asd</code>; (2) <code>@researcher</code> → add two evidence rows and read the ids; (3) <code>@mapper</code> → write the journey and watch the gate reject a zero-evidence node; (4) <code>@critic</code> → review your own artifact and keep or overrule the veto with a written rationale in the gate decision (kind 37); (5) run <code>asd factcheck</code> at a gate and read the per-artifact rows. The loop — prompt → agent → skill → tool → gate → critic → fact-check — is the engagement, and it lands as files you can audit.</p>
 </article><div class="wrap" style="max-width:880px">
     <div class="cross-links"><a href="../30/index.html"><span class="lbl">← Previous case</span><span class="ttl">30. The Future of Service Design: AI-Native Practice</span></a><a href="../32/index.html"><span class="lbl">Next case →</span><span class="ttl">32. Air in the Cylinders: Servitizing a Capital-Equipment Vendor with the ASD Plugin</span></a></div>
     <div class="art-foot">
