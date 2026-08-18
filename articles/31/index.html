@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Riding the Current: Rebuilding Public Transport around the Commuter — Public transport">
+<title>31. Riding the Current: Rebuilding Public Transport around the Commuter — Agentic Service Designer</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234f46e5'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'>A</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+</head><body>
+<nav class="nav"><div class="nav-inner">
+  <a class="brand" href="../../index.html"><span class="mark">A</span>Agentic Service Designer</a>
+  <div class="nav-links">
+    <a href="../../index.html" class="">Home</a>
+    <a href="../../about.html" class="">About</a>
+    <a href="../../concept.html" class="">The concept</a>
+    <a href="../../index.html#series" class="on">Case studies</a>
+    <a class="github-link" href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</div></nav>
+<main class="art">
+  <div class="wrap art-hero">
+    <div class="art-meta">
+      <span class="chip chip-track">Sectors, Theory &amp; Future</span>
+      <span class="sep">·</span><span>Public transport</span>
+      <span class="sep">·</span><span><b>Lighthouse Transit</b></span>
+      <span class="sep">·</span><span>18 weeks</span>
+      <span class="chip chip-tool">Claude Code</span><span class="chip chip-tool">OpenCode</span><span class="chip chip-tool">Codex</span><span class="chip chip-tool">GitHub</span><span class="chip chip-tool">ASD Platform (SDAP)</span>
+    </div>
+    <p class="art-author">Case study 31 &middot; by <a href="../../about.html">Sam Mozaffari</a> &mdash; service designer, AI-first practice</p>
+    <h1>Riding the Current: Rebuilding Public Transport around the Commuter</h1>
+    <p class="deck">Fictional composite client. All names, figures, and data are illustrative and anonymized.</p>
+  </div><article class="art-body wrap"><nav class="toc"><b>On this page</b><ol><li><a href="#0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</a></li><li><a href="#1-executive-summary">1. Executive summary</a></li><li><a href="#2-the-brief">2. The brief</a></li><li><a href="#3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</a></li><li><a href="#4-phase-by-phase-narrative">4. Phase-by-phase narrative</a></li><li><a href="#5-artifacts-portfolio">5. Artifacts portfolio</a></li><li><a href="#6-use-cases">6. Use cases</a></li><li><a href="#7-sops-for-ai">7. SOPs for AI</a></li><li><a href="#8-value-creation-amp-measurement">8. Value creation &amp; measurement</a></li><li><a href="#9-ai-tool-playbook">9. AI tool playbook</a></li><li><a href="#10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</a></li><li><a href="#11-references">11. References</a></li><li><a href="#12-appendix-artifact-index">12. Appendix: artifact index</a></li><li><a href="#13-platform-execution-map-sdap">13. Platform execution map (SDAP)</a></li></ol></nav><h1 id="31-riding-the-current-rebuilding-public-transport-around-the-commuter">31 — Riding the Current: Rebuilding Public Transport around the Commuter</h1><h2 id="0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</h2><p>Lighthouse Transit is a fictional composite operator assembled from published patterns across European regional transit agencies; no real operator&#39;s internal data appears anywhere. All ridership, cost, and satisfaction figures are illustrative and were generated and checked by the Service Design Agent Platform&#39;s fact-check layer. The engagement was run AI-first: every claim in this study can be traced to an evidence row, and the core artifacts are deterministic outputs of the platform, not prose.</p>
+<h2 id="1-executive-summary">1. Executive summary</h2><p>A regional bus-and-light-rail operator with 600,000 daily boardings was losing riders to cars and ride-hail because the service was planned around vehicle schedules, not journeys. Failure demand—contact-center calls caused by the operator&#39;s own errors and gaps—consumed 38% of contact volume. An 18-week AI-first engagement rebuilt the end-to-end commuter journey around four platform-executed service designs: a joined-up realtime information system, a fare simplification, a recovery playbook, and a front-line enablement program. On-time performance went from 71% to 87%, failure demand dropped to 18% of contact volume, rider Net Promoter Score rose from −12 to +24, and digital ticketing uptake grew from 22% to 68% of boardings.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Lighthouse Transit (fictional composite)</td>
+</tr>
+<tr>
+<td>Sector / service</td>
+<td>Public transport; bus + light rail, urban commuter</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>312 buses, 42 light-rail cars, 142 routes, 600k daily boardings</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>18 weeks, 4 platform-gated phases</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>1 designer + 10 platform agents + 2 client stakeholders (0.5 FTE)</td>
+</tr>
+<tr>
+<td>AI tools</td>
+<td>Claude Code (agents), OpenCode (pipelines), Codex (adversarial review), GitHub (gates), SDAP</td>
+</tr>
+<tr>
+<td>Headline results</td>
+<td>OTP 71%→87%; failure demand 38%→18%; NPS −12→+24; digital ticketing 22%→68%</td>
+</tr>
+</tbody></table>
+<p><strong>What you will learn</strong></p>
+<ul>
+<li>How to run a public-transport service design on a filesystem-first agent platform where every artifact is validated and evidence-gated.</li>
+<li>Why failure-demand analysis (book 19) reframes a schedule problem as a journey problem, and how to evidence it.</li>
+<li>How a deterministic fact-check layer replaces &quot;the AI says so&quot; with machine-checkable acceptance on every deliverable.</li>
+</ul>
+<h2 id="2-the-brief">2. The brief</h2><p>Lighthouse Transit operates in a coastal conurbation of 1.8 million people. Market position: the incumbent and only subsidized operator, but modal share has slipped from 14% to 9% in a decade. Revenue is flat; subsidy per passenger-kilometre is rising. Digital maturity is low: a 20-year-old smartcard system, no realtime passenger information beyond a delayed website, and 78% of boardings still paid with a legacy stored-value card or cash.</p>
+<p>The challenge was not one pain point but a system: <strong>failure demand</strong>. A claimable pattern emerged from six years of contact-center logs—38% of calls were the operator&#39;s own making: missed connections not protected, closures not signposted, fares consumers could not reason about, and a complaints process that required paper. Each failure generated a call, each call a cost, and each unresolved call a lost rider.</p>
+<p>Success criteria, agreed and measurable (all illustrative): on-time performance ≥ 85%; failure demand ≤ 20% of contact volume; rider NPS ≥ +15; digital ticketing share ≥ 60%; cost per journey down ≥ 8%.</p>
+<p>Constraints: no new vehicles; a three-year budget lock; a statutory obligation to maintain every route; union and driver-rostering constraints that forbid ad-hoc service changes; and a regional data-protection regime limiting passenger-level tracking. Why service design: transport is the canonical service-dominant case (book 12)—value is co-created in use, the customer&#39;s journey spans multiple operator silos, and the economics run straight through the Service Profit Chain (book 20): operational quality → rider experience → loyalty → revenue stability.</p>
+<h2 id="3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</h2><p>The arc maps to the Double Diamond: <strong>Discover</strong> (research weeks 1–5), <strong>Define</strong> (synthesis weeks 6–8), <strong>Develop</strong> (ideation + prototyping weeks 9–13), <strong>Deliver</strong> (implementation + measure weeks 14–18). Against the TISDD loop (book 01), the same phases are Research → Ideation → Prototyping → Implementation, with synthesis sitting inside Research. Kumar&#39;s seven modes (book 17) run underneath: Sense Intent → Know Context → Know People → Frame Insights → Explore Concepts → Frame Solutions → Realize Offerings.</p>
+<div class="mermaid">
+flowchart LR
+    D1["Discover\nresearch plan + evidence"] --> D2["Define\ninsights + journey"]
+    D2 --> D3["Develop\nconcepts + prototypes"]
+    D3 --> D4["Deliver\nimplementation + measure"]
+    D1 -.double diamond.-> D4
+    R1[Research] --> I1[Ideation] --> P1[Prototyping] --> I2[Implementation]
+</div><div class="mermaid">
+gantt
+    title Lighthouse Transit — 18-week engagement
+    dateFormat  YYYY-MM-DD
+    section Discover
+    Research plan + field evidence :r1, 2026-01-05, 3w
+    Realtime information audit        :r2, 2026-01-12, 2w
+    section Define
+    Insights + journey synthesis      :s1, 2026-01-26, 2w
+    Personas + service standards      :s2, 2026-02-09, 1w
+    section Develop
+    Fare concept + prototype          :d1, 2026-02-16, 4w
+    Recovery playbook + front-line    :d2, 2026-02-23, 4w
+    section Deliver
+    Pilot + rollout                   :e1, 2026-03-16, 4w
+    Measurement + handover            :e2, 2026-04-13, 1w
+    Gates: G1 Discover, G2 Define, G3 Develop, G4 Deliver
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>SD method (book)</th>
+<th>Platform role(s)</th>
+<th>AI tool(s)</th>
+<th>Artifact</th>
+<th>Client involvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Discover</td>
+<td>Contextual inquiry + transcript mining (01/04, 09/04)</td>
+<td>Researcher</td>
+<td>Claude Code, OpenCode</td>
+<td>Research plan, evidence register</td>
+<td>Ride-alongs, ops data handover</td>
+</tr>
+<tr>
+<td>Define</td>
+<td>Affinity synthesis, journey mapping (09/04, 10/03)</td>
+<td>Synthesizer, Mapper</td>
+<td>Claude Code</td>
+<td>Insight set, journey map, personas</td>
+<td>Insight workshop</td>
+</tr>
+<tr>
+<td>Develop</td>
+<td>Structured ideation, prototyping, blueprinting (17, 09/05)</td>
+<td>Ideator, Prototyper, Mapper</td>
+<td>Claude Code, Codex</td>
+<td>Concept briefs, service blueprint, prototypes</td>
+<td>Concept selection</td>
+</tr>
+<tr>
+<td>Deliver</td>
+<td>Service recovery, KPI tree, standards audit (19/06, 05)</td>
+<td>Measurer, Critic, Presenter, Librarian</td>
+<td>OpenCode, GitHub</td>
+<td>KPI tree, standards audit, handover pack</td>
+<td>Monthly steering</td>
+</tr>
+</tbody></table>
+<h2 id="4-phase-by-phase-narrative">4. Phase-by-phase narrative</h2><h3 id="41-discover-weeks-15">4.1 Discover (weeks 1–5)</h3><p><strong>Goal.</strong> Build an evidence register that explains where the commuter journey breaks, quantitatively and qualitatively.</p>
+<p><strong>Method &amp; SOP.</strong> Contextual inquiry (book 01/04): ride-alongs on 14 routes at peak and off-peak; shadowing of drivers, controllers, and the contact centre; 32 semi-structured interviews with commuters, 6 with drivers, 4 with control-room staff. Complemented by transcript mining of 3 years of de-identified contact-center records. SOP steps: plan → observe → interview → select evidence → tag with source and quote → store as evidence rows.</p>
+<p><strong>AI execution.</strong> Claude Code&#39;s Researcher agent executed the research plan from the platform skill <code>contextual-inquiry</code>: it generated the interview guide, then OpenCode agent-mode processed the contact-center export into a tagged evidence dataset—4,112 rows classified by failure type using the taxonomy from book 19 (failure vs value demand). Codex adversarially reviewed the taxonomy against the raw transcripts and found the &quot;missed connection&quot; bucket was under-counting 9% of cases misclassified as &quot;information&quot;; corrected.</p>
+<pre><code class="language-text"># SOP-as-prompt: classify contact-center reason codes
+Method: transcript-mining (evidence-gated)
+Task: classify each de-identified call record into failure (operator-caused)
+  or value (customer-initiated) demand; tag sub-reason.
+Schema output: { call_id, demand: failure|value, sub_reason, quote }
+Acceptance: every row has a quote; 10% random sample passes human spot-check;
+  taxonomy matches book 19 chapter 6 failure types.
+Review gate: Critic agent before synthesis may start.</code></pre><p><strong>Human designer judgment.</strong> The designer chose the ride-along routes to cover all four geographic clusters, insisted on night-shift observation (the 5:40 am controller shift where most missed-run failures originate), and rejected 3 interview transcripts as boilerplate collected from the agency&#39;s own staff rather than riders.</p>
+<p><strong>Artifact produced.</strong> Research plan (template A6) and an evidence register of 4,112 tagged rows. One finding that later anchored everything: 61% of failure demand clustered in the first and last 45 minutes of the service day—peak shoulders the schedule ignored.</p>
+<h3 id="42-define-weeks-68">4.2 Define (weeks 6–8)</h3><p><strong>Goal.</strong> Turn evidence into a shared truth: the current-state journey, personas, and a service standard.</p>
+<p><strong>Method &amp; SOP.</strong> Affinity synthesis (book 09/04), journey mapping from transcripts (platform skill <code>journey-from-transcripts</code>), and behavioural personas (book 14/04, 17/04).</p>
+<p><strong>AI execution.</strong> The Synthesizer agent ran <code>transcript-mining</code> and <code>affinity-diagramming</code> over the register, producing 23 insight statements with evidence counts. The Mapper agent then ran <code>journey-from-transcripts</code>: it derived the current-state journey from the evidence register—each journey step carries at least one evidenced pain point, and steps with zero evidence were dropped (evidence-gated; no invented moments). Personas were generated by <code>behavioural-personas</code> from the same register: four clusters, each with size, behaviour, and evidence-backed needs. The Critic agent vetoed persona &quot;P2: The Night Nurse&quot; for an uncited frequency claim (&quot;she rides 5 nights a week&quot; had no supporting row); the researcher corrected it to &quot;commutes after 21:00 subject to shift patterns&quot; with two evidence rows.</p>
+<p><strong>Human designer judgment.</strong> The designer selected the four personas from eight candidate clusters, killing two that were demographically distinct but behaviourally identical. The designer framed the headline reframe—from &quot;we run services&quot; to &quot;riders complete journeys&quot;—and pushed the client to accept the failure-demand framing over the comfort of blaming weather.</p>
+<p><strong>Artifact produced.</strong> Insight set (23 statements), current-state journey map (A1), persona set (A5), and the first service standard draft (A10 input).</p>
+<h3 id="43-develop-weeks-913">4.3 Develop (weeks 9–13)</h3><p><strong>Goal.</strong> Prototype four mutually-reinforcing service designs and blueprint the target operation.</p>
+<p><strong>Method &amp; SOP.</strong> Structured ideation (How Might We, NUF test), service blueprinting (book 09/05), and storyboard walkthroughs (book 17). The platform skill <code>evidence-gated-blueprint</code> ensures every blueprint change maps to at least one design principle and that principles trace to insights.</p>
+<p><strong>AI execution.</strong> The Ideator agent ran structured ideation from 12 &quot;How Might We&quot; frames derived from the journey map, producing a 60-concept longlist; NUF (New, Useful, Feasible) scoring filtered to 18. The Prototyper agent drafted three service concepts (fare capping, living-lines realtime, recovery-by-platform) as storyboards. The Mapper agent then ran <code>service-blueprinting</code> to produce the target blueprint; the Critic agent checked the blueprint&#39;s backstage rows against the evidence register—it flagged that driver-roster constraints made the proposed 3-minute connection protection physically impossible on 11 routes, and the blueprint was revised before client review (a defect caught at the artifact gate, not in the pilot).</p>
+<p><strong>Human designer judgment.</strong> The designer chose fare capping over a flat fare (equity), decided the realtime system must be phone-first (rider research showed no secondary data plan for 31% of low-income riders), and ran the concept-selection workshop with the client, overruling the NUF leaderboard on one concept the unions opposed.</p>
+<p><strong>Artifact produced.</strong> Concept briefs, the future-state service blueprint (A2), prototype storyboards, and the traceability table (A9).</p>
+<h3 id="44-deliver-weeks-1418">4.4 Deliver (weeks 14–18)</h3><p><strong>Goal.</strong> Implement with operational integrity and prove value against the success criteria.</p>
+<p><strong>Method &amp; SOP.</strong> Service recovery design (book 19/06), KPI tree (book 20/05), Good Services standards audit (book 05), and pilot-test-report discipline (book 17).</p>
+<p><strong>AI execution.</strong> The Measurer agent built the KPI tree from the four success criteria down to operational metrics, deriving the data sources. The Presenter agent rendered the steering-pack from artifacts (never from chat). Good-services audit scorings were produced by <code>good-services-audit</code> against the new service standard. The Librarian agent assembled the handover pack: blueprint, standards, KPI tree, and runbooks as platform artifacts with provenance. GitHub ran the gates: each sprint&#39;s artifact PR was auto-validated (schema, evidence referential integrity, mermaid lint) before the client saw it.</p>
+<p><strong>Human designer judgment.</strong> The designer held the monthly steering meetings, resolved the union consultation sequencing, and made the call to delay the fare go-live by two weeks when the pilot showed fare-capping edge cases in the legacy card readers—an operational, not design, defect.</p>
+<p><strong>Artifact produced.</strong> KPI tree (A6/template), service standards audit (A10), pilot report, handover pack.</p>
+<h2 id="5-artifacts-portfolio">5. Artifacts portfolio</h2><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Artifact</th>
+<th>Format</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A1</td>
+<td>Current-state journey map</td>
+<td>Mermaid flowchart + emotion table</td>
+<td>5.1</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>Future-state service blueprint</td>
+<td>Mermaid lanes + table</td>
+<td>5.2</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>Stakeholder map</td>
+<td>Mermaid graph</td>
+<td>5.3</td>
+</tr>
+<tr>
+<td>A4</td>
+<td>Ecosystem map</td>
+<td>Mermaid graph</td>
+<td>5.4</td>
+</tr>
+<tr>
+<td>A5</td>
+<td>Persona set</td>
+<td>Tables</td>
+<td>5.5</td>
+</tr>
+<tr>
+<td>A6</td>
+<td>Templates (research plan, KPI tree, interview guide)</td>
+<td>Forms</td>
+<td>5.6</td>
+</tr>
+<tr>
+<td>A7</td>
+<td>Mock dataset (contact-centre sample)</td>
+<td>Fenced CSV</td>
+<td>5.7</td>
+</tr>
+<tr>
+<td>A8</td>
+<td>Charts (failure demand, NPS trend)</td>
+<td>xychart-beta</td>
+<td>5.8</td>
+</tr>
+<tr>
+<td>A9</td>
+<td>Journey-to-blueprint traceability</td>
+<td>Table</td>
+<td>5.9</td>
+</tr>
+<tr>
+<td>A10</td>
+<td>Good Services standards audit</td>
+<td>Table</td>
+<td>5.10</td>
+</tr>
+</tbody></table>
+<h3 id="51-current-state-journey-map-commuter-quotruthquot-representative">5.1 Current-state journey map (commuter, &quot;Ruth&quot;, representative)</h3><p>Emotion trajectory declines from 4 to 1 across the day&#39;s first three touchpoints, recovering only at journey&#39;s end—the classic &quot;transport maths&quot; failure: certainty is the product, and it is missing.</p>
+<div class="mermaid">
+flowchart TB
+    subgraph Before
+        P1[Plan journey] -->|uncertain live info| P2[Leave 18 min early]
+        P2 --> P3[Walk to stop in rain]
+    end
+    subgraph Travel
+        P4["Wait at stop\nno countdown"] --> P5[Board - pay by card]
+        P5 --> P6["Middle-of-nowhere dwell\nconnection missed"]
+        P6 --> P7[Transfer 16 min wait]
+    end
+    subgraph After
+        P8[Arrive 22 min late] --> P9["Submit complaint\npaper form"]
+        P9 -->|no confirmation| P10[Call center - 14 min queue]
+    end
+    P1 -.-> P3
+    P7 -.-> P8
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Emotion (1–5)</th>
+<th>Pain</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Plan</td>
+<td>3</td>
+<td>Website shows scheduled, not actual, departures</td>
+</tr>
+<tr>
+<td>Pre-trip</td>
+<td>2</td>
+<td>Leaves early; no confidence device</td>
+</tr>
+<tr>
+<td>Approach</td>
+<td>2</td>
+<td>Stop signage lacks next-bus times</td>
+</tr>
+<tr>
+<td>Board</td>
+<td>3</td>
+<td>Card reader rejects top-up card mid-peak</td>
+</tr>
+<tr>
+<td>En route</td>
+<td>2</td>
+<td>No disruption information inside vehicle</td>
+</tr>
+<tr>
+<td>Transfer</td>
+<td>1</td>
+<td>Connection not protected; 16-minute gap</td>
+</tr>
+<tr>
+<td>Arrive</td>
+<td>2</td>
+<td>22 minutes late; no proactive explanation</td>
+</tr>
+<tr>
+<td>Post-trip</td>
+<td>1</td>
+<td>Complaints require paper; no ticket reference</td>
+</tr>
+</tbody></table>
+<h3 id="52-future-state-service-blueprint-excerpt-lanes">5.2 Future-state service blueprint (excerpt lanes)</h3><div class="mermaid">
+flowchart TB
+    subgraph Evidence
+        E1[Realtime stop boards] --> E2[Phone app journey plan] --> E3[Vehicle next-stop + disruption feed] --> E4[Recovery SMS with options]
+    end
+    subgraph Customer
+        C1[Plan with live data] --> C2["Tap contactless\nfare capped daily"] --> C3[Ride with live feed] --> C4[Claim recovery automatically]
+    end
+    subgraph Frontstage
+        F1[Countdown at stop] --> F2[Driver handles card issue in-app] --> F3[Control centre pushes disruption] --> F4[Auto-refund issued]
+    end
+    subgraph Backstage
+        B1[GTFS-realtime pipeline] --> B2[Fare engine caps + integrates] --> B3[Prediction model update] --> B4[Recovery rules engine]
+    end
+    subgraph Support
+        S1[Ops data quality team] --> S2[Fare system ops] --> S3[Predictions ops new] --> S4[Finance reconciles auto-refunds]
+    end
+    E1 --> C1 --> F1 --> B1
+    E2 --> C2 --> F2 --> B2
+    E3 --> C3 --> F3 --> B3
+    E4 --> C4 --> F4 --> B4
+</div><table>
+<thead>
+<tr>
+<th>Lane</th>
+<th>Action</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Customer</td>
+<td>Plan with live data</td>
+<td>App + stop boards show actual, not scheduled, times</td>
+</tr>
+<tr>
+<td>Customer</td>
+<td>Tap contactless</td>
+<td>Pay-as-you-go with daily/weekly fare cap; no pre-buy</td>
+</tr>
+<tr>
+<td>Frontstage</td>
+<td>Countdown at stop</td>
+<td>90% of stops realtime; 10% static with QR</td>
+</tr>
+<tr>
+<td>Frontstage</td>
+<td>Control push</td>
+<td>Disruptions broadcast in-vehicle within 60s</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>GTFS-realtime</td>
+<td>Lives on existing AVL; new consumer feed</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>Auto-refund</td>
+<td>Recovery rules issue fare credit without a call</td>
+</tr>
+</tbody></table>
+<h3 id="53-stakeholder-map">5.3 Stakeholder map</h3><div class="mermaid">
+flowchart LR
+    S1["Secretary of State\nTransport"] --- S2["Regional Authority\nfunding + contract"]
+    S2 --- S3["Lighthouse Transit\noperations"]
+    S3 --- S4[Control Centre]
+    S3 --- S5[Drivers + unions]
+    S2 --- S6[Riders + community boards]
+    S3 --- S7[Fare system vendor]
+    S4 --- S8[Police + first responders]
+</div><table>
+<thead>
+<tr>
+<th>Stakeholder</th>
+<th>Influence</th>
+<th>Interest</th>
+<th>Strategy</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Regional Authority</td>
+<td>High</td>
+<td>High</td>
+<td>Co-designer; owns contract KPIs</td>
+</tr>
+<tr>
+<td>Drivers + unions</td>
+<td>High</td>
+<td>High</td>
+<td>Early consultation; roster constraints hard</td>
+</tr>
+<tr>
+<td>Contact centre (internal)</td>
+<td>Medium</td>
+<td>High</td>
+<td>Failure-demand targets; retrained to value work</td>
+</tr>
+<tr>
+<td>Fare vendor</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Contracted integration; SLA penalties</td>
+</tr>
+<tr>
+<td>Riders</td>
+<td>Low</td>
+<td>High</td>
+<td>Represented via evidence register + community board</td>
+</tr>
+<tr>
+<td>First responders</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Disruption protocol aligned</td>
+</tr>
+</tbody></table>
+<h3 id="54-ecosystem-map">5.4 Ecosystem map</h3><div class="mermaid">
+flowchart LR
+    LT[Lighthouse Transit] --> AVL[AVL + GTFS-realtime]
+    LT --> FARE[Fare collection vendor]
+    LT --> CC[Contact centre]
+    LT --> GOV[Regional Authority]
+    LT --> PART[Micro-mobility partners]
+    LT --> HUB[Interchange hubs + rail operators]
+</div><p>Ridership flows cross operator boundaries at two interchanges; the new data-sharing agreement with the rail operator was a design output, not a technical input.</p>
+<h3 id="55-persona-set-from-behavioural-personas-evidence-gated">5.5 Persona set (from behavioural-personas, evidence-gated)</h3><table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Share</th>
+<th>Behavioural signature</th>
+<th>Key need</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P1 The Shift Worker</td>
+<td>27%</td>
+<td>Peak-shoulder, night, cash-heavy</td>
+<td>Certainty and recovery</td>
+<td>41 evidence rows</td>
+</tr>
+<tr>
+<td>P2 The Commuter Ruth</td>
+<td>34%</td>
+<td>Fixed hours, car-owning but parking-frustrated</td>
+<td>Predictability</td>
+<td>38 rows</td>
+</tr>
+<tr>
+<td>P3 The Occasional Rider</td>
+<td>22%</td>
+<td>Weekends, events, price-sensitive</td>
+<td>Simplicity of fare</td>
+<td>29 rows</td>
+</tr>
+<tr>
+<td>P4 The Captive User</td>
+<td>17%</td>
+<td>No car, low income, mobility-constrained</td>
+<td>Dignity, information</td>
+<td>34 rows</td>
+</tr>
+</tbody></table>
+<h3 id="56-templates">5.6 Templates</h3><p><strong>Research plan (excerpt):</strong></p>
+<pre><code class="language-text">Research plan: &lt;title&gt;
+Objective: &lt;one line&gt;
+Questions: &lt;3-6&gt;
+Method: &lt;contextual-inquiry | interviews | diary | survey&gt;
+Sample: &lt;n + rationale&gt;
+Evidence rule: every claim needs { source, quote | figure }
+Output schema: evidence rows -&gt; insight statements
+Gate: Critic review before synthesis</code></pre><p><strong>KPI tree (head):</strong></p>
+<pre><code class="language-text">Outcome: satisfied riders stable subsidy
+  -&gt; Experience: NPS &gt;= +15; complaints -40%
+    -&gt; Operational: OTP &gt;= 85%; disruption comms in 60s
+      -&gt; Inputs: AVL uptime; recovery engine rule coverage
+  -&gt; Efficiency: cost per journey -8%
+    -&gt; Failure demand &lt;= 20% of contact volume</code></pre><p><strong>Interview guide (sample questions):</strong></p>
+<pre><code class="language-text">1. Walk me through your last trip that did not go to plan.
+2. What did you know and when did you know it?
+3. What would have made you trust the service this morning?</code></pre><h3 id="57-mock-dataset-contact-centre-sample-8-of-4112-rows">5.7 Mock dataset (contact-centre sample, 8 of 4,112 rows)</h3><pre><code class="language-csv">call_id,date,demand,sub_reason,quote,resolution_min
+821004,2025-11-03,failure,missed_connection,&quot;Told to wait 15 min for next bus; nobody held the tram.&quot;,9
+821011,2025-11-03,value,fares,&quot;How do I buy a weekly pass with the app?&quot;,4
+821020,2025-11-03,failure,no_info,&quot;Road closed since 6am; no sign, no message.&quot;,12
+821031,2025-11-04,failure,card_reject,&quot;Card worked yesterday; reader said invalid.&quot;,7
+821044,2025-11-04,value,schedule,&quot;When does the last tram run on Sundays?&quot;,3
+821058,2025-11-04,failure,complaints,&quot;Paper form lost; I want my refund.&quot;,16
+821063,2025-11-04,value,lost_property,&quot;Left a coat on route 41.&quot;,2
+821077,2025-11-05,failure,missed_connection,&quot;Bus left 2 min early; connection gone.&quot;,8</code></pre><h3 id="58-charts-values-consistent-with-article-figures">5.8 Charts (values consistent with article figures)</h3><div class="mermaid">
+xychart-beta
+    title "Failure demand share of contact volume"
+    x-axis ["Before","After"]
+    y-axis "Percent" 0 --> 40
+    bar [38,18]
+</div><div class="mermaid">
+xychart-beta
+    title "Rider NPS before and after"
+    x-axis ["Before","After"]
+    y-axis "NPS" -20 --> 30
+    line [-12,24]
+</div><h3 id="59-journey-to-blueprint-traceability">5.9 Journey-to-blueprint traceability</h3><table>
+<thead>
+<tr>
+<th>Opportunity (from journey)</th>
+<th>Design principle</th>
+<th>Blueprint change</th>
+<th>KPI</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. No certainty before/during trip</td>
+<td>Live truth everywhere</td>
+<td>GTFS-realtime stop boards + in-vehicle feed</td>
+<td>OTP 85%; disruption comms 60s</td>
+</tr>
+<tr>
+<td>2. Fare complexity + card failures</td>
+<td>Frictionless pay</td>
+<td>Contactless + fare cap, driver in-app fix</td>
+<td>Digital share 60%; card-reject calls −70%</td>
+</tr>
+<tr>
+<td>3. Missed connections as failure demand</td>
+<td>Protect the journey</td>
+<td>Recovery rules engine + auto-credit</td>
+<td>Recovery 15 min; failure demand ≤20%</td>
+</tr>
+<tr>
+<td>4. Complaint black hole</td>
+<td>No second failure</td>
+<td>Digital claim with reference + SLA</td>
+<td>Complaint handling 5 days; reopen rate −50%</td>
+</tr>
+</tbody></table>
+<h3 id="510-good-services-standards-audit-15-principles-excerpt">5.10 Good Services standards audit (15 principles, excerpt)</h3><table>
+<thead>
+<tr>
+<th>Principle (book 05)</th>
+<th>Before</th>
+<th>After</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>One plan</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>No unnecessary work</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>No confusing language</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Carry out decisions</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Only ask once</td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Design for a changing needs</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Overall before 28/75, after 54/75.</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="6-use-cases">6. Use cases</h2><p><strong>6.1 The shift worker&#39;s night.</strong> P1&#39;s journey was rebuilt by the fare capping + recovery combination. She tapped a prepaid debit card, the engine capped the day&#39;s fare automatically, and a missed night connection triggered an auto-credit plus a taxi-partner voucher at the operator&#39;s cost (10% cheaper than the call). Outcome: her journey abandonment in pilot fell from 1-in-3 to 1-in-12. AI session: Prototyper agent storyboarded the failure path; Codex adversarially checked the voucher economics against the cost baseline.</p>
+<p><strong>6.2 The occasional rider goes digital.</strong> P3 had avoided the app (perceived complexity). The simplification made contactless plain pay-as-you-go; the app became a journey-planning layer, not a wallet. Pilot: app installs up 210%, casual ridership +9% on weekend routes. AI session: OpenCode agent-mode generated the fare-simulation dataset (100k synthetic trips); the Measurer agent derived revenue-neutrality from it.</p>
+<p><strong>6.3 The interchange handoff.</strong> Late buses at the rail interchange triggered 23% of all failure demand. The new data-sharing protocol turned &quot;bus waits&quot; into &quot;recovery applies&quot;; when a bus holds, the rail connection is auto-flagged. Pilot: interchange wait variance −41%. AI session: Mapper agent drafted the protocol blueprint; Critic verified no clause contradicted the evidence register.</p>
+<h2 id="7-sops-for-ai">7. SOPs for AI</h2><p>The engagement ran on the meta-SOP: research → synthesize → map → ideate → prototype → measure → deliver, each step opening only when the previous gate passed.</p>
+<p><strong>Encoding pattern:</strong> method → step list → output schema → acceptance criteria → review gate. Every platform skill encodes this; examples: <code>contextual-inquiry</code>, <code>transcript-mining</code>, <code>journey-from-transcripts</code>, <code>evidence-gated-blueprint</code>, <code>good-services-audit</code>.</p>
+<p><strong>Guardrails.</strong> Hallucination control: every artifact claim must carry an evidence reference or be marked designer-added; the fact-check layer enforces this at the artifact gate. Data privacy: the register held only de-identified rows; the platform never wrote raw caller identifiers to any artifact. Client review: each gate required a named client stakeholder sign-off logged in the steering record. Human sign-off: the Critic can veto, the designer can overrule the Critic only with a written rationale.</p>
+<p><strong>Failure modes observed.</strong> (1) The NPS figure drifted between drafts—fact-check caught −12 vs −10 inconsistency across two artifacts and re-gated them. (2) A generated persona cited a nonexistent evidence row; referential integrity failed and the persona was rejected. (3) Codex once recommended a fan-out messaging architecture that violated the budget constraint; the designer rejected on cost evidence, not on trust.</p>
+<h2 id="8-value-creation-amp-measurement">8. Value creation &amp; measurement</h2><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Before</th>
+<th>After</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>On-time performance</td>
+<td>71%</td>
+<td>87%</td>
+<td>Target ≥85%</td>
+</tr>
+<tr>
+<td>Failure demand share</td>
+<td>38%</td>
+<td>18%</td>
+<td>Target ≤20%</td>
+</tr>
+<tr>
+<td>Rider NPS</td>
+<td>−12</td>
+<td>+24</td>
+<td>Target ≥+15</td>
+</tr>
+<tr>
+<td>Digital ticketing share</td>
+<td>22%</td>
+<td>68%</td>
+<td>Target ≥60%</td>
+</tr>
+<tr>
+<td>Complaints (per 100k boardings)</td>
+<td>41</td>
+<td>24</td>
+<td>Illustrative</td>
+</tr>
+<tr>
+<td>Cost per journey</td>
+<td>100%</td>
+<td>91%</td>
+<td>−9%</td>
+</tr>
+<tr>
+<td>Contact volume (annual)</td>
+<td>1.9M</td>
+<td>1.1M</td>
+<td>−42%</td>
+</tr>
+<tr>
+<td>Missed-connection events</td>
+<td>100%</td>
+<td>61%</td>
+<td>−39%</td>
+</tr>
+</tbody></table>
+<p>Causal logic (Service Profit Chain, book 20): operational quality (GTFS-realtime, recovery engine) → external service value (certainty, dignity) → rider satisfaction and retention (NPS +24, churn down) → revenue stability and subsidy efficiency (cost/journey −9%). The KPI tree in 5.6 makes each hop measurable; the chain is the strategy document the client took into the next contract negotiation.</p>
+<h2 id="9-ai-tool-playbook">9. AI tool playbook</h2><p><strong>Claude Code</strong> — the design team on this engagement. Agents executed skills, drafted every artifact, and ran the gates. Excelled at: long-context synthesis of 4,112 evidence rows, artifact authoring under schema, deterministic fact-check. Failed at: judging political feasibility (union constraints); the designer owned that.
+<strong>OpenCode</strong> — agent-mode data pipelines: contact-center classification, fare simulation, diagram code generation, JSON/csv datasets. Excelled at mechanical volume; needed schema-checked outputs.
+<strong>Codex</strong> — adversarial review: taxonomy holes, blueprint feasibility, concept economics. Excelled at finding the 9% misclassification and the 11 impossible connections; sometimes too clever; costlier than the design value.
+<strong>GitHub</strong> — issues as design tasks, PRs as artifact gates, Actions running schema + evidence + mermaid lint, boards as phase tracking. Excelled at making the reviewer&#39;s veto auditable.
+<strong>SDAP</strong> — the filesystem-first platform binding the four tools: 10 agent roles from <code>platform/agents</code>, skills from <code>platform/skills</code>, artifacts as typed objects validated by <code>suite/packages/runtime</code>.</p>
+<h2 id="10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</h2><ol>
+<li>The 61% peak-shoulder finding changed everything; without evidence-gating, it would have been drowned by the loudest interview.</li>
+<li>NPS drift across drafts is inevitable; make fact-check deterministic and part of the gate, not a QA step.</li>
+<li>Do not let the demo-able prototype outrun the blueprint—two concepts passed NUF but were unbuildable under rostering.</li>
+<li>Union consultation is design work; schedule it as a phase, not a stakeholder note.</li>
+<li>Driver-rostering data was the single most important dataset and the last one shared; negotiate access at the brief.</li>
+<li>Auto-refund economics must include fraud and repeat-failure; Codex&#39;s adversarial pass caught the naive version.</li>
+<li>The presenter agent should render steering packs from artifacts only; slides built from chat drift within a week.</li>
+</ol>
+<h2 id="11-references">11. References</h2><p>Book chapters used: <code>01-this-is-service-design-doing/04-research-methods.md</code>; <code>09-mapping-experiences/04-journey-maps.md</code>; <code>10-the-users-journey/03-touchpoints-and-channels.md</code>; <code>19-service-management-and-marketing/06-service-recovery.md</code>; <code>20-the-service-profit-chain/03-external-service-value.md</code>; <code>12-service-dominant-logic/01-the-service-dominant-mindset.md</code> [illustrative only — series convention]; <code>05-good-services/02-the-principles.md</code>; <code>17-101-design-methods/</code> relevant ideation and NUF entries. External: GTFS-realtime specification (General Transit Feed Specification) — standard, <code>[unverified]</code> for any version-specific detail.</p>
+<h2 id="12-appendix-artifact-index">12. Appendix: artifact index</h2><table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Format</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Journey map (current)</td>
+<td>5.1</td>
+<td>Mermaid + emotion table</td>
+<td>Anchor pains</td>
+</tr>
+<tr>
+<td>Service blueprint (future)</td>
+<td>5.2</td>
+<td>Mermaid lanes + table</td>
+<td>Target operation</td>
+</tr>
+<tr>
+<td>Stakeholder map</td>
+<td>5.3</td>
+<td>Mermaid</td>
+<td>Power/interest</td>
+</tr>
+<tr>
+<td>Ecosystem map</td>
+<td>5.4</td>
+<td>Mermaid</td>
+<td>Partner context</td>
+</tr>
+<tr>
+<td>Personas</td>
+<td>5.5</td>
+<td>Tables</td>
+<td>Segments</td>
+</tr>
+<tr>
+<td>Templates</td>
+<td>5.6</td>
+<td>Forms</td>
+<td>Replication</td>
+</tr>
+<tr>
+<td>Mock dataset</td>
+<td>5.7</td>
+<td>CSV</td>
+<td>Evidence realism</td>
+</tr>
+<tr>
+<td>Charts</td>
+<td>5.8</td>
+<td>xychart</td>
+<td>Metrics</td>
+</tr>
+<tr>
+<td>Traceability</td>
+<td>5.9</td>
+<td>Table</td>
+<td>Principle linkage</td>
+</tr>
+<tr>
+<td>Standards audit</td>
+<td>5.10</td>
+<td>Table</td>
+<td>Good Services</td>
+</tr>
+</tbody></table>
+<h2 id="13-platform-execution-map-sdap">13. Platform execution map (SDAP)</h2><p>This study is reproducible on the Service Design Agent Platform (repo root <code>platform/</code> + <code>suite/</code>). The map below is the machine-readable spine of the engagement: every phase names the agent role, the skill that encoded the SOP, the engine tool calls, and the artifact kinds produced. Artifacts are platform objects with all 38 kinds registered in <code>platform/templates/catalog.md</code>; evidence rows live in the project store created by <code>sd_project_create</code> (project id <code>lighthouse-transit-&lt;ts&gt;</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Agent role</th>
+<th>Skill (platform/skills)</th>
+<th>Engine tools</th>
+<th>Artifact kinds</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Discover</td>
+<td>researcher</td>
+<td><code>contextual-inquiry</code>, <code>transcript-mining</code></td>
+<td><code>sd_project_create</code>, <code>sd_evidence_add</code></td>
+<td>research-plan, interview-guide, evidence-row</td>
+</tr>
+<tr>
+<td>Define</td>
+<td>synthesizer, mapper</td>
+<td><code>affinity-diagramming</code>, <code>journey-from-transcripts</code>, <code>behavioural-personas</code></td>
+<td><code>sd_evidence_query</code>, <code>sd_artifact_write</code></td>
+<td>insight-set, journey-map, persona-set</td>
+</tr>
+<tr>
+<td>Develop</td>
+<td>ideator, prototyper, mapper</td>
+<td><code>orchestration-canvas</code>, <code>service-blueprinting</code>, <code>evidence-gated-blueprint</code></td>
+<td><code>sd_method_run</code>, <code>sd_artifact_write</code></td>
+<td>concept-brief, service-blueprint, prototype-plan, storyboard-walkthrough</td>
+</tr>
+<tr>
+<td>Deliver</td>
+<td>measurer, critic, presenter, librarian</td>
+<td><code>good-services-audit</code></td>
+<td><code>sd_artifact_list</code>, <code>sd_factcheck</code></td>
+<td>kpi-set, experience-audit, phase-gate-decision, review-veto-log</td>
+</tr>
+</tbody></table>
+<div class="mermaid">
+flowchart LR
+    R[researcher] --> S[synthesizer] --> M[mapper] --> I[ideator] --> P[prototyper] --> ME[measurer]
+    C[critic] -. veto every gate -.-> S
+    C -. veto -.-> M
+    C -. veto -.-> P
+    PR[presenter] --> L[librarian]
+    ME --> PR
+    ME --> L
+    O[orchestrator] --> R
+    O --> S
+</div><p><strong>Deterministic fact-check (excerpt, run at gate G4):</strong></p>
+<pre><code class="language-json">{
+  &quot;project&quot;: &quot;lighthouse-transit&quot;,
+  &quot;integrity&quot;: { &quot;artifacts&quot;: 22, &quot;dangling_evidence_refs&quot;: 0, &quot;schema_violations&quot;: 0 },
+  &quot;acceptance_replay&quot;: {
+    &quot;kpi-set&quot;: { &quot;min_evidence&quot;: 1, &quot;violations&quot;: 0 },
+    &quot;experience-audit&quot;: { &quot;min_evidence&quot;: 1, &quot;violations&quot;: 0 },
+    &quot;service-blueprint&quot;: { &quot;min_evidence&quot;: 1, &quot;violations&quot;: 0 }
+  },
+  &quot;pass&quot;: true
+}</code></pre><p><strong>Reproduction commands</strong> (run from the repo, workspace per client):</p>
+<pre><code class="language-bash">export ASD_WORKSPACE=$HOME/consult-lighthouse-transit
+asd() { platform/packs/cli/asd &quot;$@&quot;; }
+OUT=$(asd project-create --name lighthouse-transit --client &quot;Fictional composite&quot; --sector public-transport --service &quot;commuter journeys&quot;)
+ID=$(echo &quot;$OUT&quot; | grep -oE 'lighthouse-transit-[a-f0-9]{8}' | head -1)
+E1=$(asd evidence-add --projectId &quot;$ID&quot; --source call-821004 --kind quote --body &quot;Told to wait 15 min for next bus&quot; | grep -oE '&quot;[a-f0-9]{64}&quot;' | tr -d '&quot;' | head -1)
+E2=$(asd evidence-add --projectId &quot;$ID&quot; --source call-821020 --kind quote --body &quot;Road closed since 6am; no sign, no message&quot; | grep -oE '&quot;[a-f0-9]{64}&quot;' | tr -d '&quot;' | head -1)
+NODES=$(printf '[{&quot;id&quot;:&quot;plan&quot;,&quot;label&quot;:&quot;Plan&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;3&quot;,&quot;touchpoint&quot;:&quot;website&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;},{&quot;evidenceId&quot;:&quot;%s&quot;}]},{&quot;id&quot;:&quot;wait&quot;,&quot;label&quot;:&quot;Wait at stop&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;2&quot;,&quot;touchpoint&quot;:&quot;stop&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;}]},{&quot;id&quot;:&quot;transfer&quot;,&quot;label&quot;:&quot;Missed connection&quot;,&quot;kind&quot;:&quot;pain&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;1&quot;,&quot;touchpoint&quot;:&quot;transfer&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;},{&quot;evidenceId&quot;:&quot;%s&quot;}]}]' &quot;$E1&quot; &quot;$E2&quot; &quot;$E1&quot; &quot;$E1&quot; &quot;$E2&quot;)
+asd artifact-write --projectId &quot;$ID&quot; --methodId journey-from-transcripts --title &quot;Current-state&quot; --nodes &quot;$NODES&quot;
+asd method-run --methodId good-services-audit --projectId &quot;$ID&quot;
+asd factcheck --projectId &quot;$ID&quot;</code></pre><p>The critic&#39;s vetoes (3 this engagement) are logged as <code>review-veto-log</code> artifacts; the presenter&#39;s steering decks reference artifact ids, never uncommitted prose. That is the platform contract: handoffs are artifacts, not chat.</p>
+</article><div class="wrap" style="max-width:880px">
+    <div class="cross-links"><a href="../30/index.html"><span class="lbl">← Previous case</span><span class="ttl">30. The Future of Service Design: AI-Native Practice</span></a><a href="../32/index.html"><span class="lbl">Next case →</span><span class="ttl">32. Air in the Cylinders: Servitizing a Capital-Equipment Vendor</span></a></div>
+    <div class="art-foot">
+      <span>9 figures (9 diagrams) · ~4.7k words · reviewed by an adversarial AI reviewer (Gemini 3.1 Pro High).</span>
+      · <a href="https://github.com/sammozaffari/the-agentic-service-designer/blob/main/articles/31/README.md" target="_blank" rel="noopener">Open source in repo ↗</a>
+    </div>
+  </div></main>
+<footer class="footer"><div class="footer-inner">
+  <span>Agentic Service Designer — 30 service design case studies from an AI-first practice. Fictional, anonymized clients.</span>
+  <span><a href="../../index.html">Home</a> · <a href="../../concept.html">The concept</a> · <a href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub</a></span>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body></html>

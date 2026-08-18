@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The Virtual Ward at Capacity: Scaling Telehealth without Breaking the Promise — Healthcare (telehealth / virtual care)">
+<title>33. The Virtual Ward at Capacity: Scaling Telehealth without Breaking the Promise — Agentic Service Designer</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234f46e5'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'>A</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+</head><body>
+<nav class="nav"><div class="nav-inner">
+  <a class="brand" href="../../index.html"><span class="mark">A</span>Agentic Service Designer</a>
+  <div class="nav-links">
+    <a href="../../index.html" class="">Home</a>
+    <a href="../../about.html" class="">About</a>
+    <a href="../../concept.html" class="">The concept</a>
+    <a href="../../index.html#series" class="on">Case studies</a>
+    <a class="github-link" href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
+</div></nav>
+<main class="art">
+  <div class="wrap art-hero">
+    <div class="art-meta">
+      <span class="chip chip-track">Sectors, Theory &amp; Future</span>
+      <span class="sep">·</span><span>Healthcare (telehealth / virtual care)</span>
+      <span class="sep">·</span><span><b>Halo Care</b></span>
+      <span class="sep">·</span><span>20 weeks</span>
+      <span class="chip chip-tool">Claude Code</span><span class="chip chip-tool">OpenCode</span><span class="chip chip-tool">Codex</span><span class="chip chip-tool">GitHub</span><span class="chip chip-tool">ASD Platform (SDAP)</span>
+    </div>
+    <p class="art-author">Case study 33 &middot; by <a href="../../about.html">Sam Mozaffari</a> &mdash; service designer, AI-first practice</p>
+    <h1>The Virtual Ward at Capacity: Scaling Telehealth without Breaking the Promise</h1>
+    <p class="deck">Fictional composite client. All names, figures, and data are illustrative and anonymized.</p>
+  </div><article class="art-body wrap"><nav class="toc"><b>On this page</b><ol><li><a href="#0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</a></li><li><a href="#1-executive-summary">1. Executive summary</a></li><li><a href="#2-the-brief">2. The brief</a></li><li><a href="#3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</a></li><li><a href="#4-phase-by-phase-narrative">4. Phase-by-phase narrative</a></li><li><a href="#5-artifacts-portfolio">5. Artifacts portfolio</a></li><li><a href="#6-use-cases">6. Use cases</a></li><li><a href="#7-sops-for-ai">7. SOPs for AI</a></li><li><a href="#8-value-creation-amp-measurement">8. Value creation &amp; measurement</a></li><li><a href="#9-ai-tool-playbook">9. AI tool playbook</a></li><li><a href="#10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</a></li><li><a href="#11-references">11. References</a></li><li><a href="#12-appendix-artifact-index">12. Appendix: artifact index</a></li><li><a href="#13-platform-execution-map-sdap">13. Platform execution map (SDAP)</a></li></ol></nav><h1 id="33-the-virtual-ward-at-capacity-scaling-telehealth-without-breaking-the-promise">33 — The Virtual Ward at Capacity: Scaling Telehealth without Breaking the Promise</h1><h2 id="0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</h2><p>Halo Care is a fictional composite telehealth provider; no actual patient, clinician, or clinical-result data appears. All wait times, satisfaction, and outcome figures are illustrative and machine-checked by the platform fact-check layer. The design work was AI-first, with clinical safety as a hard gate: no design decision overrides a clinical-governance decision, and the platform records that boundary.</p>
+<h2 id="1-executive-summary">1. Executive summary</h2><p>A digital-first telehealth provider grew from 400,000 to 1.4 million active patients in two years by winning region after region—and the service began to break at the seams: virtual waits stretched to 22 minutes, did-not-attend rates hit 18%, clinicians reported burnout, and first-visit resolution fell to 61%. A 20-week AI-first engagement re-architected the care journey at scale: an evidence-based triage ladder, same-day carve-outs, a warm-handoff protocol, and a clinician-facing context service that turned &quot;retell the story&quot; into &quot;continue the story.&quot; Results: virtual wait 22→6 minutes, DNA 18%→7%, first-visit resolution 61%→78%, clinician eNPS −10→+25, patient NPS 31→58.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Halo Care (fictional composite)</td>
+</tr>
+<tr>
+<td>Sector / service</td>
+<td>Healthcare; telehealth consultations + virtual ward</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>1.4M active patients, 12 regions, 480 GPs and nurse practitioners</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>20 weeks, 4 platform-gated phases</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>1 designer + 10 platform agents + 2 clinical-operations leads (0.5 FTE)</td>
+</tr>
+<tr>
+<td>AI tools</td>
+<td>Claude Code, OpenCode, Codex, GitHub, SDAP</td>
+</tr>
+<tr>
+<td>Headline results</td>
+<td>Wait 22→6 min; DNA 18%→7%; 1st-visit resolution 61%→78%; clinician eNPS −10→+25</td>
+</tr>
+</tbody></table>
+<p><strong>What you will learn</strong></p>
+<ul>
+<li>How to scale a healthcare experience without scaling its failures—failure-demand thinking (book 19) applied to triage.</li>
+<li>Why clinician experience is a clinical-safety variable, not a soft measure (books 19, 20).</li>
+<li>How a design platform encodes safety gates so that agents cannot silently change scope.</li>
+</ul>
+<h2 id="2-the-brief">2. The brief</h2><p>Halo Care operates across 12 regions, providing same/next-day virtual GP consultations and a virtual ward for chronic patients monitored at home. Market position: category leader on speed across the first three regions; the brand promise is &quot;a clinician when you need one.&quot; That promise was failing under load: peak-hour waits of 22 minutes, 18% of booked slots unused (patients giving up or double-booking elsewhere), and clinicians carrying 11 concurrent cases with no context handover between shifts.</p>
+<p>The challenge was structural: the service had been designed for a boutique model (a fixed clinical cohort, generous staffing, appointment-first). Scaling meant either doubling clinical cost or redesigning demand. The leadership asked for the latter, with safety non-negotiable.</p>
+<p>Success criteria (illustrative): virtual wait ≤ 8 min at peak; DNA ≤ 10%; first-visit resolution ≥ 75%; clinician eNPS ≥ +15; patient NPS ≥ +50; no safety-event trend increase.</p>
+<p>Constraints: regulatory clinical-governance sign-offs on every route change; data protection on all patient data; union-like clinician scheduling protections; a fixed clinical budget cap (staff hours were a hard constraint); and the clinical liability that all redesign must be reversible per-region.</p>
+<p>Why service design: healthcare is a high-stakes service system (book 19), the internal customer—clinicians—determines external quality (book 20), and at scale the difference between a good and a broken service shows up in hours, not years (book 03). Also the rare case where convenience and clinical quality are the same metric: faster appropriate access, less queue-abandonment, less crowding.</p>
+<h2 id="3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</h2><p>Double Diamond: Discover (weeks 1–6), Define (7–9), Develop (10–16), Deliver (17–20). TISDD loop: Research → Ideation → Prototyping → Implementation.</p>
+<div class="mermaid">
+flowchart LR
+    D1["Discover\ndemand + clinician load"] --> D2["Define\ntriage ladder"]
+    D2 --> D3["Develop\ncare journey prototypes"]
+    D3 --> D4["Deliver\nregional rollout + monitor"]
+    R1[Research] --> I1[Ideation] --> P1[Prototype] --> I2[Implement]
+</div><div class="mermaid">
+gantt
+    title Halo Care — 20-week engagement
+    dateFormat  YYYY-MM-DD
+    section Discover
+    Demand + clinician research :r1, 2026-03-02, 5w
+    section Define
+    Triage + demand framing      :s1, 2026-04-06, 3w
+    section Develop
+    Care journey prototypes      :d1, 2026-04-27, 5w
+    Clinical governance reviews  :d2, 2026-05-04, 4w
+    section Deliver
+    Regional rollout (2 regions) :e1, 2026-06-01, 6w
+    Monitor + handover           :e2, 2026-07-13, 1w
+    Gates: G1, G2, G3, G4
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>SD method (book)</th>
+<th>Platform roles</th>
+<th>AI tools</th>
+<th>Artifact</th>
+<th>Client involvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Discover</td>
+<td>Research methods, mixed quant/qual (01/04, 18/04)</td>
+<td>Researcher</td>
+<td>Claude Code, OpenCode</td>
+<td>Research plan, evidence register, demand model</td>
+<td>Ops data handover</td>
+</tr>
+<tr>
+<td>Define</td>
+<td>Affinity synthesis, journey mapping (09/04, 03/02)</td>
+<td>Synthesizer, Mapper</td>
+<td>Claude Code</td>
+<td>Insight set, triage ladder, personas</td>
+<td>Clinical governance</td>
+</tr>
+<tr>
+<td>Develop</td>
+<td>Ideation, blueprinting, prototypes (17, 09/05, 01/06)</td>
+<td>Ideator, Prototyper, Mapper</td>
+<td>Claude Code, Codex</td>
+<td>Care blueprints, concept briefs, storyboards</td>
+<td>Clinical governance</td>
+</tr>
+<tr>
+<td>Deliver</td>
+<td>Service recovery, KPI tree, audit (19/04, 20/05, 05)</td>
+<td>Measurer, Critic, Presenter, Librarian</td>
+<td>GitHub, OpenCode</td>
+<td>KPI tree, rollout report, handover</td>
+<td>Monthly steering</td>
+</tr>
+</tbody></table>
+<h2 id="4-phase-by-phase-narrative">4. Phase-by-phase narrative</h2><h3 id="41-discover-weeks-16">4.1 Discover (weeks 1–6)</h3><p><strong>Goal.</strong> Quantify where demand and capacity collide, and why patients drop out of the queue.</p>
+<p><strong>Method &amp; SOP.</strong> Mixed methods (book 18/04): 18 months of operational data (appointments, wait, DNAs, resolution), 41 patient interviews, 4 clinician shadow days, and a clinician workload diary. SOP steps: plan → gather → tag evidence → store.</p>
+<p><strong>AI execution.</strong> Researcher executed <code>contextual-inquiry</code> and <code>transcript-mining</code>. OpenCode agent-mode normalized 4.2 million appointment-level records into an evidence-ready demand model and produced the first triage simulation. The platform&#39;s evidence register grew to 1,983 tagged rows. Codex adversarially reviewed the demand model and found peak modeling was understated: the median-only view hid a 2.9× spike on Monday mornings and entry-day surges in new regions (the &quot;onboarding cliff&quot;). GitHub tracked the research as issues, each closing with evidence links.</p>
+<p><strong>Human designer judgment.</strong> The designer pushed for clinician shadow days over convenience interviews, set the safety framing with the clinical-governance lead before any design work, and excluded two interview transcripts that praised the service but added no diagnostic information (selection for insight, not volume).</p>
+<p><strong>Artifact produced.</strong> Research plan, evidence register (1,983 rows), demand model with regional variance (A7/A8), and the &quot;queue, wait, and yield&quot; anatomy: three distinct waits (to triage, to clinician, between care steps) that needed different fixes.</p>
+<h3 id="42-define-weeks-79">4.2 Define (weeks 7–9)</h3><p><strong>Goal.</strong> Define the triage ladder and the care journeys it feeds, with clinical governance co-signing each step.</p>
+<p><strong>Method &amp; SOP.</strong> Affinity synthesis (09/04) and journey mapping from the evidence register (platform <code>journey-from-transcripts</code>); the demand framing followed failure-demand logic (book 19: the service&#39;s own complexity generates new demand). SOP steps: cluster → frame → ladder → co-sign.</p>
+<p><strong>AI execution.</strong> Synthesizer produced 17 insight statements; Mapper ran <code>journey-from-transcripts</code> to produce three current-state journeys (urgent, routine, chronic-monitoring). The Ideator drafted the triage ladder—four demand classes with matching access promises—using the section&#39;s evidence. The Critic vetoed a ladder entry (telemedicine for a symptom class the evidence did not support as routine-safe) with a review-veto-log artifact; clinical governance upheld the veto. The resulting ladder was co-signed by the clinical lead and recorded as a phase-gate-decision.</p>
+<p><strong>Human designer judgment.</strong> The designer framed the reframe: &quot;we do not schedule visits; we deliver access matched to acuity.&quot; The clinician-burnout evidence was presented as a safety issue, not an HR issue (book 19/20 argument), which changed the client&#39;s willingness to redesign clinician workflows.</p>
+<p><strong>Artifact produced.</strong> Insight set, triage ladder (A6 template), three current-state journeys, persona set (A5).</p>
+<h3 id="43-develop-weeks-1016">4.3 Develop (weeks 10–16)</h3><p><strong>Goal.</strong> Prototype the four service designs: access ladder, warm handoff, clinician context service, and virtual-ward escalation path.</p>
+<p><strong>Method &amp; SOP.</strong> Structured ideation (book 17), service blueprinting (09/05), storyboard walkthroughs (book 17), and continuous clinical-governance review (a gate, not an audit at the end). SOP steps: ideate → prototype → blueprint → governance-review → iterate.</p>
+<p><strong>AI execution.</strong> Ideator created 44 concepts from 8 HMWs; NUF filtered to 16; Prototyper storyboarded four flagship designs. Mapper ran <code>service-blueprinting</code> and <code>evidence-gated-blueprint</code>; the Critic gated the blueprint at four points. Codex adversarially stress-tested the warm-handoff design with shift-change simulations and found the 30-second handoff would become 90 seconds at scale, breaking the capacity model; the design was revised to a structured 60-second protocol with a decision-tree. OpenCode generated the synthetic scheduling dataset used to validate capacity neutrality (A7).</p>
+<p><strong>Human designer judgment.</strong> The designer made the wait-time promise (8 minutes) stick against marketing&#39;s &quot;as fast as possible,&quot; insisted the clinician context service respect patient consent for data reuse, and chaired the governance reviews where clinical and design languages met.</p>
+<p><strong>Artifact produced.</strong> Care blueprints (A2), triage ladder final, storyboards, context-service spec, traceability table (A9).</p>
+<h3 id="44-deliver-weeks-1720">4.4 Deliver (weeks 17–20)</h3><p><strong>Goal.</strong> Roll out in two pilot regions with continuous monitoring and a safety-first stop rule.</p>
+<p><strong>Method &amp; SOP.</strong> Pilot + test-report discipline (book 17), service quality monitoring (book 19/04), KPI tree (book 20/05). SOP steps: pilot plan → launch → monitor → gate → expand.</p>
+<p><strong>AI execution.</strong> Measurer built the KPI tree from the four success criteria down to operational telemetry; the platform ran the fact-check at every gate. Presenter rendered the steering pack; Librarian assembled the rollout handbook. GitHub Actions validated artifacts (schema, evidence, mermaid) before governance review. The region-by-region rollout decision rule—expand only when a region holds the target for 4 consecutive weeks—was encoded as a measurable, and the platform flagged the second pilot region at week 3 for a DNA spike (9.4%, still under target but anomalous); the designer investigated and found a local event, not a service regression.</p>
+<p><strong>Human designer judgment.</strong> The designer personally ran the incident review (a mis-triage claim that turned out unfounded but consumed two days), set the stop rule with the clinical lead, and decided the rollout order (two contrasting regions, not the two easiest).</p>
+<p><strong>Artifact produced.</strong> KPI tree, rollout report, review-veto-log (2 vetoes), handover pack.</p>
+<h2 id="5-artifacts-portfolio">5. Artifacts portfolio</h2><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Artifact</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A1</td>
+<td>Current-state journey: urgent care request</td>
+<td>5.1</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>Future-state blueprint: access ladder + handoff</td>
+<td>5.2</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>Stakeholder map</td>
+<td>5.3</td>
+</tr>
+<tr>
+<td>A4</td>
+<td>Ecosystem map</td>
+<td>5.4</td>
+</tr>
+<tr>
+<td>A5</td>
+<td>Personas (patient, clinician, care coordinator)</td>
+<td>5.5</td>
+</tr>
+<tr>
+<td>A6</td>
+<td>Templates (triage ladder, warm-handoff script)</td>
+<td>5.6</td>
+</tr>
+<tr>
+<td>A7</td>
+<td>Mock dataset (appointment + wait sample)</td>
+<td>5.7</td>
+</tr>
+<tr>
+<td>A8</td>
+<td>Charts (wait, DNA)</td>
+<td>5.8</td>
+</tr>
+<tr>
+<td>A9</td>
+<td>Traceability table</td>
+<td>5.9</td>
+</tr>
+<tr>
+<td>A10</td>
+<td>Service quality audit (Good Services)</td>
+<td>5.10</td>
+</tr>
+</tbody></table>
+<h3 id="51-current-state-journey-urgent-care-request-peak-monday">5.1 Current-state journey: urgent care request, peak Monday</h3><div class="mermaid">
+flowchart TB
+    subgraph Request
+        P1[Symptom starts] --> P2[Opens app 6:40am]
+        P2 --> P3["Joins triage queue\n4 min queue"]
+    end
+    subgraph Queue
+        P4[Triage answers 6:52am] --> P5[Booked 11:30 slot] --> P6[Waits 4.5 hours]
+    end
+    subgraph Disconnect
+        P7["Misses callback\nrebooks"] --> P8[Retells story to new clinician]
+        P8 --> P9["Care plan sent\nno follow-through"]
+    end
+    P6 -.-> P7
+</div><table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Emotion (1–5)</th>
+<th>Pain</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Request</td>
+<td>3</td>
+<td>Works, but unknown wait</td>
+</tr>
+<tr>
+<td>Triage</td>
+<td>2</td>
+<td>Feels routed, not cared for</td>
+</tr>
+<tr>
+<td>Between care steps</td>
+<td>1</td>
+<td>Retells story; watch-and-wait gap</td>
+</tr>
+<tr>
+<td>Follow-through</td>
+<td>2</td>
+<td>No one owns the plan</td>
+</tr>
+</tbody></table>
+<h3 id="52-future-state-blueprint-excerpt-access-ladder">5.2 Future-state blueprint (excerpt: access ladder)</h3><div class="mermaid">
+flowchart TB
+    subgraph Evidence
+        E1[App + urgent line] --> E2[Slot dashboard] --> E3[Context handoff card]
+    end
+    subgraph Patient
+        C1[Request symptom-led] --> C2[Access matched to acuity] --> C3[Continue story next visit]
+    end
+    subgraph Frontstage
+        F1[Triage 90s intake] --> F2[Route to same-day or scheduled] --> F3[Warm handoff 60s]
+    end
+    subgraph Backstage
+        B1[Acuity rules engine] --> B2[Capacity balancer] --> B3[Context service assembles card]
+    end
+    subgraph Support
+        S1[Clinical governance] --> S2[Operational planning] --> S3[Consent + data]
+    end
+    E1 --> C1 --> F1 --> B1
+    E2 --> C2 --> F2 --> B2
+    E3 --> C3 --> F3 --> B3
+</div><table>
+<thead>
+<tr>
+<th>Lane</th>
+<th>Action</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Patient</td>
+<td>Symptom-led request</td>
+<td>No forms; triage after intake</td>
+</tr>
+<tr>
+<td>Frontstage</td>
+<td>Acuity-matched routing</td>
+<td>Four demand classes, four promises</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Context service</td>
+<td>Consent-based, auto-assembled handoff card</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>Governance</td>
+<td>Real-time sign-off on route changes</td>
+</tr>
+</tbody></table>
+<h3 id="53-stakeholder-map">5.3 Stakeholder map</h3><div class="mermaid">
+flowchart LR
+    CEO[Halo CEO] --- CGO[Clinical governance lead]
+    CGO --- OPS[Ops + scheduling]
+    CEO --- ENG[Product + engineering]
+    OPS --- CLIN[Clinicians + locums]
+    CLIN --- PAT[Patients + families]
+    ENG --- REG[Regulator bodies]
+    CGO --- PAT
+</div><table>
+<thead>
+<tr>
+<th>Stakeholder</th>
+<th>Influence</th>
+<th>Interest</th>
+<th>Strategy</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Clinical governance</td>
+<td>High</td>
+<td>High</td>
+<td>Co-owner of every gate</td>
+</tr>
+<tr>
+<td>Clinicians + locums</td>
+<td>Medium</td>
+<td>High</td>
+<td>Co-designers; burnout evidence</td>
+</tr>
+<tr>
+<td>Ops + scheduling</td>
+<td>Medium</td>
+<td>High</td>
+<td>Demand model co-authors</td>
+</tr>
+<tr>
+<td>Product/engineering</td>
+<td>High</td>
+<td>Medium</td>
+<td>Delivery partner</td>
+</tr>
+<tr>
+<td>Regulator</td>
+<td>High</td>
+<td>Low</td>
+<td>Compliance by design</td>
+</tr>
+<tr>
+<td>Patients</td>
+<td>Low</td>
+<td>High</td>
+<td>Evidence register + personas</td>
+</tr>
+</tbody></table>
+<h3 id="54-ecosystem-map">5.4 Ecosystem map</h3><div class="mermaid">
+flowchart LR
+    HC[Halo Care] --> APP[Patient app]
+    HC --> CM[Care management platform]
+    HC --> EMR[EMR integrations]
+    HC --> PHARM[Pharmacy partners]
+    HC --> OOH[Out-of-hours providers]
+    HC --> NHS[Referral pathways]
+    PAT[Patient] --> APP
+    CLIN[Clinician] --> EMR
+</div><h3 id="55-personas-evidence-gated">5.5 Personas (evidence-gated)</h3><table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Role</th>
+<th>Behavioural signature</th>
+<th>Key need</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P1 The Working Parent</td>
+<td>Patient</td>
+<td>Peak-hours, time-poor, anxiety-driven</td>
+<td>Same-day, one story</td>
+<td>44 rows</td>
+</tr>
+<tr>
+<td>P2 The Long-Tail Chronically Ill</td>
+<td>Patient</td>
+<td>Virtual ward, frequent contact</td>
+<td>Continuity, escalation clarity</td>
+<td>39 rows</td>
+</tr>
+<tr>
+<td>P3 The Locum GP</td>
+<td>Clinician</td>
+<td>Multiple platforms, no local context</td>
+<td>Context without retelling</td>
+<td>57 rows</td>
+</tr>
+<tr>
+<td>P4 The Care Coordinator</td>
+<td>Halo ops</td>
+<td>Juggles queues + escalation</td>
+<td>Routing clarity, tooling</td>
+<td>31 rows</td>
+</tr>
+</tbody></table>
+<h3 id="56-templates">5.6 Templates</h3><p><strong>Triage ladder:</strong></p>
+<pre><code class="language-text">Class: &lt;urgent | urgent-tracked | routine | scheduled&gt;
+Access promise: &lt;time to clinician&gt;
+Triggers: &lt;symptom/risk list, governance-co-signed&gt;
+Escalation: &lt;path + owning function&gt;
+Exclusions / safety stop: &lt;condition list&gt;
+Data source: &lt;intake fields&gt;
+Co-signing: &lt;clinical governance artifact id&gt;</code></pre><p><strong>Warm-handoff script (60s):</strong></p>
+<pre><code class="language-text">1. Patient + context card status (30s): name, condition, plan so far, open items.
+2. Open clinical question (20s): the one thing the next clinician must know.
+3. Handoff confirmation (10s): patient notified; next contact time set.
+Rules: no new assessment in handoff; if any red flag, escalate to urgent class.</code></pre><h3 id="57-mock-dataset-appointment-wait-sample-peak-monday">5.7 Mock dataset (appointment + wait sample, peak Monday)</h3><pre><code class="language-csv">appt_id,day,class,wait_min,dna,first_visit_resolution
+A-88101,Mon-peak,urgent,24,no,no
+A-88102,Mon-peak,urgent-tracked,19,no,yes
+A-88103,Mon-peak,routine,98,no,no
+A-88104,Mon-peak,urgent,24,yes,NA
+A-88105,Mon-peak,urgent-tracked,21,no,yes
+A-88106,Mon-peak,routine,101,no,no
+A-88107,Mon-peak,urgent,25,no,no
+A-88108,Mon-peak,urgent-tracked,18,yes,NA</code></pre><p>Median wait in sample: 24 min (consistent with the 22 min daily average plus the Monday-peak premium); DNA 2/8 = 25% peak (consistent with the 18% overall pre-state profile).</p>
+<h3 id="58-charts-consistent-with-key-facts">5.8 Charts (consistent with key facts)</h3><div class="mermaid">
+xychart-beta
+    title "Virtual wait minutes peak"
+    x-axis ["Before","After"]
+    y-axis "Minutes" 0 --> 25
+    bar [22,6]
+</div><div class="mermaid">
+xychart-beta
+    title "Did not attend percent"
+    x-axis ["Before","After"]
+    y-axis "Percent" 0 --> 20
+    bar [18,7]
+</div><h3 id="59-traceability">5.9 Traceability</h3><table>
+<thead>
+<tr>
+<th>Opportunity</th>
+<th>Design principle</th>
+<th>Blueprint change</th>
+<th>KPI</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Queue-abandonment and DNAs</td>
+<td>Access matched to acuity</td>
+<td>Triage ladder with 4 classes</td>
+<td>DNA ≤10%; wait ≤8 min</td>
+</tr>
+<tr>
+<td>Story-retelling</td>
+<td>Continuity of story</td>
+<td>Warm handoff + context service</td>
+<td>First-visit resolution ≥75%</td>
+</tr>
+<tr>
+<td>Onboarding cliff</td>
+<td>Ramp regions deliberately</td>
+<td>Regional rollout gate</td>
+<td>Wait variance by region ≤2 min</td>
+</tr>
+<tr>
+<td>Clinician burnout</td>
+<td>Internal service quality (book 20)</td>
+<td>Context card, slot carve-outs</td>
+<td>Clinician eNPS ≥+15</td>
+</tr>
+</tbody></table>
+<h3 id="510-service-quality-audit-good-services-excerpt">5.10 Service quality audit (Good Services, excerpt)</h3><table>
+<thead>
+<tr>
+<th>Principle</th>
+<th>Before</th>
+<th>After</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Only ask once</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Do not make me wait</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Carry out decisions</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>One plan</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Overall 24/75 → 56/75.</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="6-use-cases">6. Use cases</h2><p><strong>6.1 The 6:40 am spike.</strong> Monday-peak urgent requests were routed to a generic queue. The ladder routed symptom-defined urgent cases to urgent-tracked slots; capacity rebalanced across regions. Outcome: peak wait 22→8 min in pilot 1, DNA down 8 points. AI session: Measurer&#39;s capacity simulation + Codex&#39;s peak-model correction.</p>
+<p><strong>6.2 The locum&#39;s first call.</strong> P3 opened the context card: diagnosis, plan, open items, last contact. First-visit resolution for locum-led visits rose from 61% to 76%. AI session: Researcher&#39;s workflow diary + Prototyper&#39;s storyboard of the 60-second protocol; the 60s-vs-90s scale correction was Codex&#39;s.</p>
+<p><strong>6.3 The virtual ward escalation.</strong> P2&#39;s escalation path was ambiguous (nobody owned the watch-and-wait gap). The escalation-trigger prototype codified thresholds and owning functions; readmission (30-day) moved from 12% to 9% in cohort terms. AI session: Mapper&#39;s escalation blueprint + Critic&#39;s veto of an over-broadened threshold that would have flooded urgent slots.</p>
+<h2 id="7-sops-for-ai">7. SOPs for AI</h2><p><strong>Encoding pattern.</strong> Same meta-SOP. Skills: <code>contextual-inquiry</code>, <code>transcript-mining</code>, <code>affinity-diagramming</code>, <code>journey-from-transcripts</code>, <code>behavioural-personas</code>, <code>service-blueprinting</code>, <code>evidence-gated-blueprint</code>, <code>good-services-audit</code>, <code>ecosystem-value-mapping</code>.</p>
+<p><strong>Guardrails.</strong> Safety: the clinical-governance sign-off is an artifact, and the platform refuses to ship a phase whose governance artifact is missing (a hard gate, not a convention). Data privacy: patient data never entered prompts; OpenCode handled only de-identified extracts, and the platform enforced this by refusing data files outside the project store with a consent matrix. Acceptance: every KPI claim carries an evidence reference; the fact-check re-gates at each milestone.</p>
+<p><strong>Failure modes.</strong> (1) A generated &quot;Monday spike&quot; claim was premature-published with median-only data; fact-check + Codex corrected the statistics. (2) The warm-handoff storyboard overpromised time; the model caught it, but the designer had to carry the schedule consequence into governance. (3) One critique pass suggested automating a clinical exclusion the governance lead had explicitly reserved for humans; the veto log shows the boundary held.</p>
+<h2 id="8-value-creation-amp-measurement">8. Value creation &amp; measurement</h2><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Before</th>
+<th>After</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Virtual wait (peak)</td>
+<td>22 min</td>
+<td>6 min</td>
+<td>Target ≤8</td>
+</tr>
+<tr>
+<td>DNA rate</td>
+<td>18%</td>
+<td>7%</td>
+<td>Target ≤10</td>
+</tr>
+<tr>
+<td>First-visit resolution</td>
+<td>61%</td>
+<td>78%</td>
+<td>Target ≥75</td>
+</tr>
+<tr>
+<td>Clinician eNPS</td>
+<td>−10</td>
+<td>+25</td>
+<td>Target ≥+15</td>
+</tr>
+<tr>
+<td>Patient NPS</td>
+<td>31</td>
+<td>58</td>
+<td>Target ≥+50</td>
+</tr>
+<tr>
+<td>30-day virtual-ward readmit</td>
+<td>12%</td>
+<td>9%</td>
+<td>Cohort-consistent</td>
+</tr>
+<tr>
+<td>Clinical cost per consult</td>
+<td>100%</td>
+<td>94%</td>
+<td>Illustrative</td>
+</tr>
+<tr>
+<td>Region onboarding variance</td>
+<td>100%</td>
+<td>18%</td>
+<td>Relative</td>
+</tr>
+</tbody></table>
+<p>Causal logic (book 20): internal service quality (context card, slots, handoffs) → external service value (fast appropriate access, continuity) → outcomes (resolution, readmission, NPS, clinician retention). Safety is the first KPI; the others only count if it holds.</p>
+<h2 id="9-ai-tool-playbook">9. AI tool playbook</h2><p><strong>Claude Code</strong> — agent team executing skills, artifact authoring, fact-check. Excelled at: turning a 1,983-row register into a defensible ladder; the context-card spec. Failed at: distinguishing administrative burden from clinical risk in the governance review—the designer chaired.
+<strong>OpenCode</strong> — data engineering: 4.2M-row normalization, demand simulation, scheduling datasets. Excelled at volume; schema-gated.
+<strong>Codex</strong> — adversarial review: peak modeling, handoff timing physics, ladder safety edges. Its &quot;onboarding cliff&quot; finding changed the rollout plan.
+<strong>GitHub</strong> — issues/PRs/Actions gates; made the two governance vetoes auditable and the rollout stop-rule mechanical.
+<strong>SDAP</strong> — the integrity layer: kinds, evidence refs, governance artifacts, deterministic fact-check.</p>
+<h2 id="10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</h2><ol>
+<li>Median reporting hid the Monday spike; always model the demand distribution, not its center.</li>
+<li>Clinician burnout is a clinical-safety metric (books 19/20); presenting it that way unlocked redesign the HR framing never would.</li>
+<li>Governance must sit on the design path, not after it; co-signing artifacts were the mechanism.</li>
+<li>The 60-second handoff failed the scale test in simulation—prototype timing with load, not ideal conditions.</li>
+<li>A stop rule encoded in the platform beats a steering-committee promise: pilot 2&#39;s DNA anomaly was caught by the rule, then explained.</li>
+<li>Consent boundaries are design constraints; the context service is smaller because of them, and better.</li>
+</ol>
+<h2 id="11-references">11. References</h2><p>Book chapters used: <code>03-service-design-from-insight-to-implementation/02-the-design-process.md</code>; <code>18-universal-methods-of-design/04-quantitative-qualitative.md</code>; <code>19-service-management-and-marketing/04-quality-of-service.md</code>; <code>20-the-service-profit-chain/02-internal-service-quality.md</code>; <code>01-this-is-service-design-doing/04-research-methods.md</code>; <code>09-mapping-experiences/04-journey-maps.md</code> and <code>/05-service-blueprints.md</code>; <code>17-101-design-methods/</code> NUF + test-report entries. External: waiting-time and DNA benchmarking norms <code>[unverified]</code>—illustrative values only.</p>
+<h2 id="12-appendix-artifact-index">12. Appendix: artifact index</h2><table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Format</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Urgent journey</td>
+<td>5.1</td>
+<td>Mermaid + emotions</td>
+<td>Anchor the gap</td>
+</tr>
+<tr>
+<td>Care blueprint</td>
+<td>5.2</td>
+<td>Mermaid lanes</td>
+<td>Target operation</td>
+</tr>
+<tr>
+<td>Stakeholder map</td>
+<td>5.3</td>
+<td>Mermaid</td>
+<td>Power/interest</td>
+</tr>
+<tr>
+<td>Ecosystem map</td>
+<td>5.4</td>
+<td>Mermaid</td>
+<td>Partner context</td>
+</tr>
+<tr>
+<td>Personas</td>
+<td>5.5</td>
+<td>Tables</td>
+<td>Segments incl. internal</td>
+</tr>
+<tr>
+<td>Templates</td>
+<td>5.6</td>
+<td>Forms</td>
+<td>Replication</td>
+</tr>
+<tr>
+<td>Mock dataset</td>
+<td>5.7</td>
+<td>CSV</td>
+<td>Evidence realism</td>
+</tr>
+<tr>
+<td>Charts</td>
+<td>5.8</td>
+<td>xychart</td>
+<td>Metrics</td>
+</tr>
+<tr>
+<td>Traceability</td>
+<td>5.9</td>
+<td>Table</td>
+<td>Principle linkage</td>
+</tr>
+<tr>
+<td>Quality audit</td>
+<td>5.10</td>
+<td>Table</td>
+<td>Good Services</td>
+</tr>
+</tbody></table>
+<h2 id="13-platform-execution-map-sdap">13. Platform execution map (SDAP)</h2><p>Project id: <code>halo-care-&lt;ts&gt;</code>. Clinical-governance co-signature is a hard gate in the platform config for this engagement; without it, the phase cannot pass the gate check.</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Agent role</th>
+<th>Skill</th>
+<th>Engine tools</th>
+<th>Artifact kinds</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Discover</td>
+<td>researcher</td>
+<td><code>contextual-inquiry</code>, <code>transcript-mining</code></td>
+<td><code>sd_project_create</code>, <code>sd_evidence_add</code></td>
+<td>research-plan, evidence-row, ecosystem-map</td>
+</tr>
+<tr>
+<td>Define</td>
+<td>synthesizer, mapper</td>
+<td><code>affinity-diagramming</code>, <code>journey-from-transcripts</code></td>
+<td><code>sd_evidence_query</code>, <code>sd_artifact_write</code></td>
+<td>insight-set, journey-map, persona-set, phase-gate-decision</td>
+</tr>
+<tr>
+<td>Develop</td>
+<td>ideator, prototyper, mapper</td>
+<td><code>orchestration-canvas</code>, <code>service-blueprinting</code>, <code>evidence-gated-blueprint</code></td>
+<td><code>sd_method_run</code>, <code>sd_artifact_write</code></td>
+<td>concept-brief, service-blueprint, prototype-plan</td>
+</tr>
+<tr>
+<td>Deliver</td>
+<td>measurer, critic, presenter, librarian</td>
+<td><code>good-services-audit</code></td>
+<td><code>sd_artifact_list</code>, <code>sd_factcheck</code></td>
+<td>kpi-set, pilot-report, review-veto-log</td>
+</tr>
+</tbody></table>
+<div class="mermaid">
+flowchart LR
+    R[researcher] --> S[synthesizer] --> M[mapper] --> I[ideator] --> P[prototyper] --> ME[measurer]
+    C[critic] -. veto -.-> S
+    C -. veto -.-> M
+    C -. veto -.-> P
+    G[governance] -. co-sign gate -.-> M
+    G -. co-sign gate -.-> I
+    PR[presenter] --> L[librarian]
+    ME --> PR
+    O[orchestrator] --> R
+</div><p><strong>Deterministic fact-check (excerpt, gate G4):</strong></p>
+<pre><code class="language-json">{
+  &quot;project&quot;: &quot;halo-care&quot;,
+  &quot;integrity&quot;: { &quot;artifacts&quot;: 26, &quot;dangling_evidence_refs&quot;: 0, &quot;schema_violations&quot;: 0 },
+  &quot;governance&quot;: { &quot;required&quot;: [&quot;triage-ladder&quot;, &quot;warm-handoff&quot;], &quot;signed&quot;: 2, &quot;status&quot;: &quot;complete&quot; },
+  &quot;acceptance_replay&quot;: {
+    &quot;kpi-set&quot;: { &quot;min_evidence&quot;: 1, &quot;violations&quot;: 0 },
+    &quot;triage-ladder&quot;: { &quot;min_evidence&quot;: 1, &quot;violations&quot;: 0 }
+  },
+  &quot;pass&quot;: true
+}</code></pre><p><strong>Reproduction commands:</strong></p>
+<pre><code class="language-bash">export ASD_WORKSPACE=$HOME/consult-halo-care
+asd() { platform/packs/cli/asd &quot;$@&quot;; }
+OUT=$(asd project-create --name halo-care --client &quot;Fictional composite&quot; --sector healthcare --service &quot;telehealth + virtual ward&quot;)
+ID=$(echo &quot;$OUT&quot; | grep -oE 'halo-care-[a-f0-9]{8}' | head -1)
+E1=$(asd evidence-add --projectId &quot;$ID&quot; --source patient-041 --kind quote --body &quot;I rebooked twice before giving up&quot; | grep -oE '&quot;[a-f0-9]{64}&quot;' | tr -d '&quot;' | head -1)
+E2=$(asd evidence-add --projectId &quot;$ID&quot; --source locum-07 --kind quote --body &quot;No context from the last shift&quot; | grep -oE '&quot;[a-f0-9]{64}&quot;' | tr -d '&quot;' | head -1)
+NODES=$(printf '[{&quot;id&quot;:&quot;request&quot;,&quot;label&quot;:&quot;Request&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;3&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;},{&quot;evidenceId&quot;:&quot;%s&quot;}]},{&quot;id&quot;:&quot;queue&quot;,&quot;label&quot;:&quot;Triage queue&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;2&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;}]},{&quot;id&quot;:&quot;handoff&quot;,&quot;label&quot;:&quot;Retell story&quot;,&quot;kind&quot;:&quot;pain&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;1&quot;,&quot;touchpoint&quot;:&quot;call&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;},{&quot;evidenceId&quot;:&quot;%s&quot;}]}]' &quot;$E1&quot; &quot;$E2&quot; &quot;$E1&quot; &quot;$E1&quot; &quot;$E2&quot;)
+asd artifact-write --projectId &quot;$ID&quot; --methodId journey-from-transcripts --title &quot;Current-state&quot; --nodes &quot;$NODES&quot;
+asd method-run --methodId good-services-audit --projectId &quot;$ID&quot;
+asd factcheck --projectId &quot;$ID&quot;</code></pre></article><div class="wrap" style="max-width:880px">
+    <div class="cross-links"><a href="../32/index.html"><span class="lbl">← Previous case</span><span class="ttl">32. Air in the Cylinders: Servitizing a Capital-Equipment Vendor</span></a><a href="../34/index.html"><span class="lbl">Next case →</span><span class="ttl">34. The Street of Small Business: Banking That Learns the Business</span></a></div>
+    <div class="art-foot">
+      <span>9 figures (9 diagrams) · ~3.8k words · reviewed by an adversarial AI reviewer (Gemini 3.1 Pro High).</span>
+      · <a href="https://github.com/sammozaffari/the-agentic-service-designer/blob/main/articles/33/README.md" target="_blank" rel="noopener">Open source in repo ↗</a>
+    </div>
+  </div></main>
+<footer class="footer"><div class="footer-inner">
+  <span>Agentic Service Designer — 30 service design case studies from an AI-first practice. Fictional, anonymized clients.</span>
+  <span><a href="../../index.html">Home</a> · <a href="../../concept.html">The concept</a> · <a href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub</a></span>
+</div></footer>
+<script src="../../assets/site.js"></script>
+</body></html>
