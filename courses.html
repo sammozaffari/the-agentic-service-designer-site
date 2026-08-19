@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="The Agentic Service Designer — Structured online courses for practical, evidence-gated agentic service design. 8 courses, 48 modules, ≈38.5 hours.">
+  <title>Courses | The Agentic Service Designer</title>
+  <link rel="stylesheet" href="./assets/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
+  <style>
+    /* Course Catalog Specific Styles */
+    .courses-hero {
+      padding: 72px var(--pad-d) 48px;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+    }
+    .courses-hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 16px;
+      display: block;
+    }
+    .courses-hero h1 {
+      font-size: clamp(38px, 5vw, 68px);
+      line-height: 0.98;
+      letter-spacing: -0.035em;
+      margin: 0 0 24px;
+      font-weight: 700;
+    }
+    .courses-hero-desc {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      max-width: 760px;
+      margin-bottom: 32px;
+    }
+    .metrics-row {
+      display: flex;
+      gap: 36px;
+      font-family: var(--mono);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+    .metrics-row dt { color: var(--muted); margin-right: 8px; display: inline; }
+    .metrics-row dd { font-weight: 700; color: var(--ink); margin: 0; display: inline; }
+
+    /* Filterbar */
+    .courses-filterbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px var(--pad-d);
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .filter-btn-group {
+      display: flex;
+      gap: 8px;
+    }
+    .f-btn {
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      cursor: pointer;
+      transition: all var(--fast) var(--ease);
+    }
+    .f-btn:hover, .f-btn.active {
+      background: var(--dark);
+      color: var(--dark-ink);
+      border-color: var(--dark);
+    }
+
+    /* Course Level Sections */
+    .course-level-band {
+      padding: 64px var(--pad-d);
+      border-bottom: 1px solid var(--line);
+    }
+    .level-paper { background: var(--paper); }
+    .level-tint { background: var(--paper-tint); }
+    .level-dark { background: #121312; color: #f4f4f0; }
+    .level-dark h2, .level-dark .kicker, .level-dark .course-title a { color: #f4f4f0; }
+    .level-dark .course-desc, .level-dark .level-desc { color: #a6a69f; }
+    .level-dark .course-row { border-top-color: #2b2c2a; }
+    .level-dark .badge { background: #262725; color: #e4e4de; border-color: #3d3e3b; }
+    .level-dark .btn-course-cta { background: #f4f4f0; color: #121312; }
+    .level-dark .btn-course-cta:hover { background: #e0e0d8; }
+    .level-dark .tag-pill { background: #1f201e; border-color: #333430; color: #c4c4bc; }
+    .level-dark .module-drawer summary { color: #d0d0c8; }
+    .level-dark .module-list { background: #1a1b19; border-color: #2d2e2b; }
+
+    .level-header {
+      max-width: 1200px;
+      margin: 0 auto 48px;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 40px;
+      align-items: flex-end;
+    }
+    .level-title-wrap h2 {
+      font-size: clamp(32px, 4vw, 48px);
+      letter-spacing: -0.03em;
+      margin: 8px 0 0;
+    }
+    .level-desc {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+
+    /* Courses List & Rows */
+    .courses-list {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .course-row {
+      display: grid;
+      grid-template-columns: 80px 1fr 280px;
+      gap: 32px;
+      padding: 40px 0;
+      border-top: 1px solid var(--line);
+      transition: background var(--fast) var(--ease);
+    }
+    .course-num {
+      font-family: var(--mono);
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .course-main-col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .badge {
+      display: inline-block;
+      width: fit-content;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 3px 8px;
+      border-radius: 3px;
+      border: 1px solid currentColor;
+    }
+    .badge-foundation { color: #2b6cb0; background: #ebf8ff; }
+    .badge-intermediate { color: #276749; background: #f0fff4; }
+    .badge-advanced { color: #6b46c1; background: #faf5ff; }
+
+    .course-title {
+      font-size: clamp(22px, 2.2vw, 28px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0;
+      line-height: 1.2;
+    }
+    .course-title a:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+    .course-subtitle {
+      font-size: 14.5px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+    .course-desc {
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      margin: 0;
+      max-width: 680px;
+    }
+    .course-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .tag-pill {
+      font-size: 12px;
+      font-family: var(--mono);
+      background: var(--paper-tint);
+      border: 1px solid var(--line);
+      padding: 3px 8px;
+      border-radius: 4px;
+      color: var(--ink-soft);
+    }
+
+    /* Module Drawer */
+    .module-drawer {
+      margin-top: 8px;
+    }
+    .module-drawer summary {
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+      color: var(--ink);
+    }
+    .module-list {
+      list-style: none;
+      padding: 16px;
+      margin: 12px 0 0;
+      background: var(--paper-tint);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .module-list li {
+      margin-bottom: 8px;
+    }
+    .module-list li:last-child { margin-bottom: 0; }
+    .module-list code {
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(0,0,0,0.06);
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+    .mod-dur { color: var(--muted); font-size: 12px; }
+
+    /* Course Aside */
+    .course-aside-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .course-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      font-family: var(--mono);
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 0;
+    }
+    .meta-item dt { color: var(--muted); margin-bottom: 2px; }
+    .meta-item dd { font-weight: 700; margin: 0; color: inherit; }
+    .status-available { color: #22543d; }
+
+    .btn-course-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      background: var(--dark);
+      color: var(--dark-ink);
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 4px;
+      text-align: center;
+      transition: opacity var(--fast) var(--ease);
+      width: fit-content;
+    }
+    .btn-course-cta:hover {
+      opacity: 0.85;
+    }
+
+    @media (max-width: 860px) {
+      .level-header { grid-template-columns: 1fr; gap: 16px; }
+      .course-row { grid-template-columns: 1fr; gap: 20px; }
+      .course-num-col { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-head">
+    <a class="brand" href="./index.html">
+      <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
+      <div class="brand-sub">Sam Mozaffari</div>
+    </a>
+    <nav class="main-nav">
+      <a href="./index.html">Index</a>
+      <a href="./courses.html" class="on">Courses</a>
+      <a href="./harness.html">Harness</a>
+      <a href="./docs/index.html">Docs</a>
+      <a href="./about.html">About</a>
+      <a href="./cv.html">CV</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="courses-hero">
+      <div class="courses-hero-inner">
+        <span class="hero-eyebrow">Courses / 08</span>
+        <h1>Structured courses<br>for practical<br>agentic service design.</h1>
+        <p class="courses-hero-desc">
+          A progressive path from foundational service theory to autonomous enterprise operations.
+          Learn by doing with real multi-agent teams, cryptographic evidence registers, living service blueprints, and the production <code>@asd</code> toolchain.
+        </p>
+        <dl class="metrics-row">
+          <div><dt>Courses</dt><dd>08</dd></div>
+          <div><dt>Modules</dt><dd>48</dd></div>
+          <div><dt>Study time</dt><dd>≈38.5 hours</dd></div>
+          <div><dt>Practice</dt><dd>10-Role Swarms &amp; CLI</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <div class="courses-filterbar">
+      <div class="filter-btn-group">
+        <button class="f-btn active" onclick="filterCourses('all')">All (08)</button>
+        <button class="f-btn" onclick="filterCourses('foundation')">Foundation (03)</button>
+        <button class="f-btn" onclick="filterCourses('intermediate')">Intermediate (03)</button>
+        <button class="f-btn" onclick="filterCourses('advanced')">Advanced (02)</button>
+      </div>
+      <span class="hero-eyebrow" style="margin:0;">Format: Theory + CLI Labs</span>
+    </div>
+
+    
+    <section class="course-level-band level-paper" id="foundation">
+      <div class="level-header">
+        <div class="level-title-wrap">
+          <span class="kicker">Foundation level</span>
+          <h2>Foundation</h2>
+        </div>
+        <p class="level-desc">Built from foundational service theory and platform architecture: vocabulary, the designer-agent loop, 10-role agent topologies, the DeepSeek Harness workbench, and cryptographic evidence registers.</p>
+      </div>
+      <div class="courses-list">
+        
+      <article class="course-row group" data-level="foundation">
+        <div class="course-num-col">
+          <span class="course-num">01</span>
+        </div>
+        <div class="course-main-col">
+          <span class="badge badge-foundation">Foundation</span>
+          <h3 class="course-title"><a href="./courses/01-agentic-service-design-fundamentals.html">Agentic Service Design Fundamentals</a></h3>
+          <p class="course-subtitle">The AI-First Service Design Operating System, 10-Agent Team Topology & Designer-Agent Loop</p>
+          <p class="course-desc">The foundation course for the whole curriculum. Replaces static sticky notes and workshop theater with an executable, AI-driven Service Design Operating System. Connects classical service theory (Vargo & Lusch's Service-Dominant Logic, Service Profit Chain) to modern agentic systems. Teaches the 10-role Eve-style agent team topology, the autonomy spectrum, and the sovereign human decision gate.</p>
+          
+          <details class="module-drawer">
+            <summary><span class="drawer-icon">▶</span> View all 6 modules & syllabus</summary>
+            <ul class="module-list">
+              <li><code>01.1</code> <strong>The Death of Workshop Theater: Moving to an Executable Service OS</strong> <span class='mod-dur'>(45 min)</span> — <em>Why traditional sticky-note workshops produce static artifacts that decay upon project close, and how treating service design as an executable, file-backed operating system changes delivery velocity.</em></li><li><code>01.2</code> <strong>Service-Dominant Logic & Value Co-Creation in the Age of AI</strong> <span class='mod-dur'>(50 min)</span> — <em>Bridging Vargo & Lusch's SDL theory with autonomous agents: understanding agents as active operant resources that dynamically co-create value with human actors.</em></li><li><code>01.3</code> <strong>The 10-Role Eve-Style Agent Topology: Role Contracts & Boundaries</strong> <span class='mod-dur'>(50 min)</span> — <em>Dissecting the 10 specialized agent roles (Researcher, Synthesizer, Mapper, Ideator, Prototyper, Critic, Presenter, Measurer, Librarian, Orchestrator) and why strict role boundaries prevent cognitive drift.</em></li><li><code>01.4</code> <strong>The Autonomy Spectrum & The Sovereign Human Decision Gate</strong> <span class='mod-dur'>(40 min)</span> — <em>Establishing where agents operate with full autonomy (discovery, transcription, cross-referencing) versus where human designers maintain sovereign decision authority (phase gates, ethics, trade-offs).</em></li><li><code>01.5</code> <strong>The Service Profit Chain: Linking Frontline Tooling to Customer Loyalty</strong> <span class='mod-dur'>(45 min)</span> — <em>Operationalizing Heskett's Service Profit Chain in AI systems: how internal agentic capability directly drives frontline satisfaction, service value, and enterprise ROI.</em></li><li><code>01.6</code> <strong>Hands-On Sprint: Running Your First Agentic Service Discovery</strong> <span class='mod-dur'>(55 min)</span> — <em>An end-to-end hands-on tutorial running an agentic service discovery sprint from a raw problem brief to an evidence-backed initial diagnostic.</em></li>
+            </ul>
+          </details>
+          
+          <div class="course-tags">
+            <span class="tag-pill">📚 The Agentic Service Designer (Ch 01, 03)</span>
+            <span class="tag-pill">🛠️ asd CLI</span>
+            <span class="tag-pill">📁 Articles 01, 04, 27.</span>
+          </div>
+        </div>
+        <aside class="course-aside-col">
+          <dl class="course-meta-grid">
+            <div class="meta-item"><dt>Modules</dt><dd>6 modules</dd></div>
+            <div class="meta-item"><dt>Total time</dt><dd>≈4h 45m</dd></div>
+            <div class="meta-item"><dt>Status</dt><dd class="status-available">Available</dd></div>
+            <div class="meta-item"><dt>Format</dt><dd>Theory + Lab</dd></div>
+          </dl>
+          <a class="btn-course-cta" href="./courses/01-agentic-service-design-fundamentals.html">
+            View course ↗
+          </a>
+        </aside>
+      </article>
+            
+      <article class="course-row group" data-level="foundation">
+        <div class="course-num-col">
+          <span class="course-num">02</span>
+        </div>
+        <div class="course-main-col">
+          <span class="badge badge-foundation">Foundation</span>
+          <h3 class="course-title"><a href="./courses/02-asd-platform-toolchain-deepseek-harness.html">The ASD Platform, Toolchain & DeepSeek Harness (dsh)</a></h3>
+          <p class="course-subtitle">DeepSeek Harness Studio, the @asd Runtime Engine, MCP Server, and CLI Ergonomics</p>
+          <p class="course-desc">Deep-dive technical breakdown of the Service Design Agent Platform (SDAP) runtime stack. Explains how DeepSeek Harness (dsh) mounts the ASD Cordis plugin, how @asd/engine exposes 52 native tools, how the asd-mcp server bridges external clients over stdio with 215 knowledge resources, and how the asd CLI operates in terminal sessions. Covers deterministic SVG/HTML rendering.</p>
+          
+          <details class="module-drawer">
+            <summary><span class="drawer-icon">▶</span> View all 6 modules & syllabus</summary>
+            <ul class="module-list">
+              <li><code>02.1</code> <strong>The Unified SDAP Runtime Stack: Engine, Runtime, Render & Report</strong> <span class='mod-dur'>(50 min)</span> — <em>Architecture of the monorepo suite: @asd/core schemas, @asd/engine execution, @asd/render compilation, and @asd/report generators.</em></li><li><code>02.2</code> <strong>DeepSeek Harness (dsh) Studio Workbench & Cordis Plugin Wiring</strong> <span class='mod-dur'>(55 min)</span> — <em>Mounting the ASD Cordis plugin inside DeepSeek Harness to unlock the visual Service Design Studio, live project dashboards, and artifact inspector.</em></li><li><code>02.3</code> <strong>The asd-mcp Server: Exposing 52 Tools & 215 Knowledge Resources</strong> <span class='mod-dur'>(55 min)</span> — <em>Running the stdio Model Context Protocol server, paginating knowledge URIs (asd://corpus/...), and registering tool schemas with LLM clients.</em></li><li><code>02.4</code> <strong>Terminal Ergonomics with the asd CLI & Headless Scripting</strong> <span class='mod-dur'>(45 min)</span> — <em>Executing scripted service design runs with the standalone asd CLI, handling project init, phase transitions, and headless batch operations.</em></li><li><code>02.5</code> <strong>Deterministic Visualization: Compiling Structured JSON to Flawless SVG/HTML</strong> <span class='mod-dur'>(55 min)</span> — <em>Why LLMs should never draw diagrams directly: compiling typed JSON models to zero-hallucination Mermaid, SVG, and responsive HTML artifacts.</em></li><li><code>02.6</code> <strong>Multi-Host Distribution: Claude Code, OpenCode, Codex, AGY & Pi</strong> <span class='mod-dur'>(45 min)</span> — <em>Deploying the ASD plugin across 12 different agent runtime environments with unified role contracts and diagnostic verification.</em></li>
+            </ul>
+          </details>
+          
+          <div class="course-tags">
+            <span class="tag-pill">📚 The Agentic Service Designer (Ch 02)</span>
+            <span class="tag-pill">🛠️ dsh Studio</span>
+            <span class="tag-pill">📁 Articles 02, 31, 36.</span>
+          </div>
+        </div>
+        <aside class="course-aside-col">
+          <dl class="course-meta-grid">
+            <div class="meta-item"><dt>Modules</dt><dd>6 modules</dd></div>
+            <div class="meta-item"><dt>Total time</dt><dd>≈5h 15m</dd></div>
+            <div class="meta-item"><dt>Status</dt><dd class="status-available">Available</dd></div>
+            <div class="meta-item"><dt>Format</dt><dd>Theory + Lab</dd></div>
+          </dl>
+          <a class="btn-course-cta" href="./courses/02-asd-platform-toolchain-deepseek-harness.html">
+            View course ↗
+          </a>
+        </aside>
+      </article>
+            
+      <article class="course-row group" data-level="foundation">
+        <div class="course-num-col">
+          <span class="course-num">03</span>
+        </div>
+        <div class="course-main-col">
+          <span class="badge badge-foundation">Foundation</span>
+          <h3 class="course-title"><a href="./courses/03-evidence-registers-fact-checking-review-gates.html">Evidence Registers, Fact-Checking & Review Gates</a></h3>
+          <p class="course-subtitle">SHA-256 Content-Addressed Evidence, The Critic Agent & Machine-Checkable Rigor</p>
+          <p class="course-desc">The rigor engine that prevents hallucinated AI design work. Master the core rule: 'Handoffs are typed artifacts, never chat'. Learn how content-addressed SHA-256 evidence registers store verbatim quotes, telemetry logs, and enterprise documents. Configure the adversarial Critic agent, manage review-veto-logs, and run deterministic sd_factcheck CI gates.</p>
+          
+          <details class="module-drawer">
+            <summary><span class="drawer-icon">▶</span> View all 5 modules & syllabus</summary>
+            <ul class="module-list">
+              <li><code>03.1</code> <strong>The Law of Artifacts: Why Chat-Based Agent Handoffs Cause Toxic Drift</strong> <span class='mod-dur'>(45 min)</span> — <em>Why passing conversational context across LLM subagents causes loss of fidelity, and how filesystem-first typed artifacts enforce mathematical integrity.</em></li><li><code>03.2</code> <strong>Content-Addressed Evidence Registers: SHA-256 Cryptographic Provenance</strong> <span class='mod-dur'>(50 min)</span> — <em>How every research quote, telemetry row, and document snippet is assigned an immutable SHA-256 hash that downstream artifacts must cite.</em></li><li><code>03.3</code> <strong>The Evidence Taxonomy: Quotes, Telemetry, and Document Registers</strong> <span class='mod-dur'>(45 min)</span> — <em>Deep dive into the three formal evidence kinds: verbatim qualitative quotes, quantitative operational telemetry, and policy/institutional documents.</em></li><li><code>03.4</code> <strong>The Adversarial Critic Agent & The Review-Veto-Log Lifecycle</strong> <span class='mod-dur'>(50 min)</span> — <em>How the Critic agent (kind 38) evaluates artifacts against machine rules, issues binding vetoes with mandatory fixes, and gates phase transitions.</em></li><li><code>03.5</code> <strong>Deterministic Fact-Checking in CI/CD with sd_factcheck & Quality Gates</strong> <span class='mod-dur'>(50 min)</span> — <em>Automating fact-checking in continuous integration: failing builds whenever an artifact references missing, altered, or hallucinated evidence hashes.</em></li>
+            </ul>
+          </details>
+          
+          <div class="course-tags">
+            <span class="tag-pill">📚 The Agentic Service Designer (Ch 04)</span>
+            <span class="tag-pill">🛠️ sd_evidence_add</span>
+            <span class="tag-pill">📁 Articles 31, 34, 35.</span>
+          </div>
+        </div>
+        <aside class="course-aside-col">
+          <dl class="course-meta-grid">
+            <div class="meta-item"><dt>Modules</dt><dd>5 modules</dd></div>
+            <div class="meta-item"><dt>Total time</dt><dd>≈4h 00m</dd></div>
+            <div class="meta-item"><dt>Status</dt><dd class="status-available">Available</dd></div>
+            <div class="meta-item"><dt>Format</dt><dd>Theory + Lab</dd></div>
+          </dl>
+          <a class="btn-course-cta" href="./courses/03-evidence-registers-fact-checking-review-gates.html">
+            View course ↗
+          </a>
+        </aside>
+      </article>
+            
+      </div>
+    </section>
+        
+    
+    <section class="course-level-band level-tint" id="intermediate">
+      <div class="level-header">
+        <div class="level-title-wrap">
+          <span class="kicker">Intermediate level</span>
+          <h2>Intermediate</h2>
+        </div>
+        <p class="level-desc">Workflow-led courses turning published methods into structured, reproducible practices: qualitative transcript mining at scale, behavioral persona generation, living journey maps with derived sentiment, and 5-lane to 6th-lane autonomous blueprinting.</p>
+      </div>
+      <div class="courses-list">
+        
+      <article class="course-row group" data-level="intermediate">
+        <div class="course-num-col">
+          <span class="course-num">04</span>
+        </div>
+        <div class="course-main-col">
+          <span class="badge badge-intermediate">Intermediate</span>
+          <h3 class="course-title"><a href="./courses/04-scaled-research-ops-behavioral-personas.html">Scaled Research Ops, Mining & Behavioral Personas</a></h3>
+          <p class="course-subtitle">Mining 200+ Field Transcripts with Agent Swarms & Fusing Telemetry with Qualitative Need Clusters</p>
+          <p class="course-desc">Scale user research operations without sacrificing qualitative nuance. Ingest and synthesize hundreds of transcripts using parallel extraction swarms while eliminating confirmation bias. Move past flat demographic personas by combining qualitative quotes with production telemetry to calculate true behavioral signatures using sd_persona.</p>
+          
+          <details class="module-drawer">
+            <summary><span class="drawer-icon">▶</span> View all 6 modules & syllabus</summary>
+            <ul class="module-list">
+              <li><code>04.1</code> <strong>Scaled Qualitative Ingestion: Mining 200+ Field Transcripts & Inquiries</strong> <span class='mod-dur'>(50 min)</span> — <em>Ingesting unstructured audio transcripts, field notes, and contextual inquiry logs into structured, token-budgeted research packets.</em></li><li><code>04.2</code> <strong>Automated Coding, Thematic Tagging & Quote Provenance Preservation</strong> <span class='mod-dur'>(45 min)</span> — <em>Deploying the Researcher agent swarm to perform grounded-theory open and axial coding while preserving speaker metadata and exact timestamps.</em></li><li><code>04.3</code> <strong>Eliminating Researcher Bias with Parallel Extraction Swarms</strong> <span class='mod-dur'>(45 min)</span> — <em>Running adversarial blind extraction swarms with randomized prompt framing to prevent confirmation bias and isolate contradictory user signals.</em></li><li><code>04.4</code> <strong>The Fallacy of Demographic Personas: Calculating Behavioral Signatures</strong> <span class='mod-dur'>(50 min)</span> — <em>Why age and job title fail to predict service adoption: constructing multidimensional behavioral vectors based on friction tolerances and goals.</em></li><li><code>04.5</code> <strong>Fusing Telemetry Logs with Qualitative Friction Clusters</strong> <span class='mod-dur'>(50 min)</span> — <em>Triangulating event analytics (drop-off rates, error counts, latency) with qualitative quote registers to validate persona pain points with statistical proof.</em></li><li><code>04.6</code> <strong>Authoring Machine-Checkable Personas with sd_persona</strong> <span class='mod-dur'>(50 min)</span> — <em>Compiling structured persona schemas, validating acceptance rules, and rendering persona cards ready for downstream journey mapping.</em></li>
+            </ul>
+          </details>
+          
+          <div class="course-tags">
+            <span class="tag-pill">📚 The Agentic Service Designer (Ch 05, 06)</span>
+            <span class="tag-pill">🛠️ sd_evidence_add</span>
+            <span class="tag-pill">📁 Articles 05, 06, 31, 33 (Calder Bank & Halo Care).</span>
+          </div>
+        </div>
+        <aside class="course-aside-col">
+          <dl class="course-meta-grid">
+            <div class="meta-item"><dt>Modules</dt><dd>6 modules</dd></div>
+            <div class="meta-item"><dt>Total time</dt><dd>≈4h 50m</dd></div>
+            <div class="meta-item"><dt>Status</dt><dd class="status-available">Available</dd></div>
+            <div class="meta-item"><dt>Format</dt><dd>Theory + Lab</dd></div>
+          </dl>
+          <a class="btn-course-cta" href="./courses/04-scaled-research-ops-behavioral-personas.html">
+            View course ↗
+          </a>
+        </aside>
+      </article>
+            
+      <article class="course-row group" data-level="intermediate">
+        <div class="course-num-col">
+          <span class="course-num">05</span>
+        </div>
+        <div class="course-main-col">
+          <span class="badge badge-intermediate">Intermediate</span>
+          <h3 class="course-title"><a href="./courses/05-living-journey-mapping-mental-models.html">Living Journey Mapping & Mental Model Alignment</a></h3>
+          <p class="course-subtitle">Generating Verbatim-Backed Journey Maps with Derived Emotional Sentiment & Indi Young Cognitive Ladders</p>
+          <p class="course-desc">Construct living customer journey maps and Indi Young mental model alignments anchored in immutable evidence. Calculate dynamic emotional sentiment curves from verbatim interview data. Map multi-channel touchpoints, identify failure demand points, and execute in-place remediation using sd_journey and sd_mental_model.</p>
+          
+          <details class="module-drawer">
+            <summary><span class="drawer-icon">▶</span> View all 6 modules & syllabus</summary>
+            <ul class="module-list">
+              <li><code>05.1</code> <strong>Mental Spaces vs. Feature Inventories: Cognitive Alignment (Indi Young)</strong> <span class='mod-dur'>(45 min)</span> — <em>Decoupling how users conceptualize their problem spaces from the organization's internal feature lists to avoid inside-out product design.</em></li><li><code>05.2</code> <strong>Constructing Task Towers, Cognitive Ladders & Accidental Complexity Detection</strong> <span class='mod-dur'>(50 min)</span> — <em>Building hierarchical mental models: beliefs, guiding principles, and tasks mapped against system capabilities to expose accidental complexity.</em></li><li><code>05.3</code> <strong>Anatomy of an Evidence-Gated Journey Map: Verbatim Anchors & Channels</strong> <span class='mod-dur'>(45 min)</span> — <em>The structural schema of living journeys: phases, user steps, touchpoints, thinking, feeling, and mandatory SHA-256 evidence citations.</em></li><li><code>05.4</code> <strong>Mathematical Derivation of Dynamic Sentiment Curves from Verbatim Evidence</strong> <span class='mod-dur'>(50 min)</span> — <em>Computing emotional valence and intensity mathematically from transcript evidence rather than subjective workshop guesswork.</em></li><li><code>05.5</code> <strong>Pinpointing Failure Demand Points & Touchpoint Transition Hotspots</strong> <span class='mod-dur'>(45 min)</span> — <em>Distinguishing value demand from failure demand (John Seddon) and highlighting root-cause friction across channel handoffs.</em></li><li><code>05.6</code> <strong>In-Place Remediation with sd_journey & High-Density Interactive HTML Rendering</strong> <span class='mod-dur'>(45 min)</span> — <em>Executing targeted patches on journey steps, re-validating Critic acceptance rules, and compiling standalone interactive HTML journey viewers.</em></li>
+            </ul>
+          </details>
+          
+          <div class="course-tags">
+            <span class="tag-pill">📚 The Agentic Service Designer (Ch 07, 08, 09)</span>
+            <span class="tag-pill">🛠️ sd_journey</span>
+            <span class="tag-pill">📁 Articles 07, 08, 09, 31, 32 (Lighthouse Transit & Aurora Vento).</span>
+          </div>
+        </div>
+        <aside class="course-aside-col">
+          <dl class="course-meta-grid">
+            <div class="meta-item"><dt>Modules</dt><dd>6 modules</dd></div>
+            <div class="meta-item"><dt>Total time</dt><dd>≈4h 40m</dd></div>
+            <div class="meta-item"><dt>Status</dt><dd class="status-available">Available</dd></div>
+            <div class="meta-item"><dt>Format</dt><dd>Theory + Lab</dd></div>
+          </dl>
+          <a class="btn-course-cta" href="./courses/05-living-journey-mapping-mental-models.html">
+            View course ↗
+          </a>
+        </aside>
+      </article>
+            
+      <article class="course-row group" data-level="intermediate">
+        <div class="course-num-col">
+          <span class="course-num">06</span>
+        </div>
+        <div class="course-main-col">
+          <span class="badge badge-intermediate">Intermediate</span>
+          <h3 class="course-title"><a href="./courses/06-master-service-blueprinting-5-lane-to-6th-lane.html">Master Service Blueprinting: 5-Lane Architecture to 6th-Lane Swarms</a></h3>
+          <p class="course-subtitle">The Executable Industry Standard for Service Architecture, Autonomous Lanes & Human Escalation Paths</p>
+          <p class="course-desc">The flagship course on the foundational artifact of service delivery. Master the 5 canonical lanes (Customer Actions, Physical Evidence, Frontstage Staff, Backstage Operations, Support Systems) and lines of demarcation (Visibility, Interaction, Penetration). Then pioneer the 6th Lane: modeling autonomous AI agents, tool invocations, confidence thresholds, and human-in-the-loop escalation paths.</p>
+          
+          <details class="module-drawer">
+            <summary><span class="drawer-icon">▶</span> View all 7 modules & syllabus</summary>
+            <ul class="module-list">
+              <li><code>06.1</code> <strong>Why Blueprints Are the Architecture of Service Delivery</strong> <span class='mod-dur'>(45 min)</span> — <em>How service blueprints translate customer experience into operational specifications, organizational contracts, and technological requirements.</em></li><li><code>06.2</code> <strong>The Five Canonical Lanes and Operational Demarcations</strong> <span class='mod-dur'>(50 min)</span> — <em>Defining the rigid schema boundaries of Physical Evidence, Customer Actions, Frontstage Interactions, Backstage Actions, and Support Processes.</em></li><li><code>06.3</code> <strong>Lines of Visibility, Interaction, and System Penetration</strong> <span class='mod-dur'>(45 min)</span> — <em>Mapping the three critical lines that govern what the customer experiences, where human frontline touch occurs, and where deep infrastructure takes over.</em></li><li><code>06.4</code> <strong>The Sixth Lane: Modeling AI Agent Swarms, LLM Decisions & Tool Calls</strong> <span class='mod-dur'>(55 min)</span> — <em>Why traditional 5-lane blueprints collapse in AI-native organizations: introducing Lane 6 to model autonomous agent decisions, tool execution, and state.</em></li><li><code>06.5</code> <strong>Confidence Thresholds, Error Cascades & Human-in-the-Loop Escalation Paths</strong> <span class='mod-dur'>(50 min)</span> — <em>Engineering deterministic fallback loops, automated failovers, and graceful human handoffs when LLM confidence drops below threshold.</em></li><li><code>06.6</code> <strong>Blueprints-as-Code: Authoring & Compiling with sd_blueprint</strong> <span class='mod-dur'>(50 min)</span> — <em>Hands-on authoring of full typed blueprints, running schema verification, generating SVG visual layouts, and validating cross-lane alignments.</em></li><li><code>06.7</code> <strong>Automated Blueprint Diagnostics, Validation & Bottleneck Audits</strong> <span class='mod-dur'>(35 min)</span> — <em>Using the Critic and Measurer agents to perform automated bottleneck detection, orphaned system dependencies, and failure mode analysis on blueprints.</em></li>
+            </ul>
+          </details>
+          
+          <div class="course-tags">
+            <span class="tag-pill">📚 The Agentic Service Designer (Ch 10, 11)</span>
+            <span class="tag-pill">🛠️ sd_blueprint</span>
+            <span class="tag-pill">📁 Articles 10, 11, 31, 33, 34, 36 (Wattle Grove Community Care & Vela Bank).</span>
+          </div>
+        </div>
+        <aside class="course-aside-col">
+          <dl class="course-meta-grid">
+            <div class="meta-item"><dt>Modules</dt><dd>7 modules</dd></div>
+            <div class="meta-item"><dt>Total time</dt><dd>≈5h 30m</dd></div>
+            <div class="meta-item"><dt>Status</dt><dd class="status-available">Available</dd></div>
+            <div class="meta-item"><dt>Format</dt><dd>Theory + Lab</dd></div>
+          </dl>
+          <a class="btn-course-cta" href="./courses/06-master-service-blueprinting-5-lane-to-6th-lane.html">
+            View course ↗
+          </a>
+        </aside>
+      </article>
+            
+      </div>
+    </section>
+        
+    
+    <section class="course-level-band level-dark" id="advanced">
+      <div class="level-header">
+        <div class="level-title-wrap">
+          <span class="kicker">Advanced level</span>
+          <h2>Advanced</h2>
+        </div>
+        <p class="level-desc">For teams operating autonomous service systems: cross-channel orchestration, high-velocity divergence, rapid service prototyping, Lou Downe's 15 Good Services audit, versioned SOPs-as-code, and continuous living blueprints.</p>
+      </div>
+      <div class="courses-list">
+        
+      <article class="course-row group" data-level="advanced">
+        <div class="course-num-col">
+          <span class="course-num">07</span>
+        </div>
+        <div class="course-main-col">
+          <span class="badge badge-advanced">Advanced</span>
+          <h3 class="course-title"><a href="./courses/07-cross-channel-orchestration-prototyping-sops.html">Cross-Channel Orchestration, Prototyping & SOPs-as-Code</a></h3>
+          <p class="course-subtitle">Narrative Arcs, Omnichannel Transitions, Morphological Ideation, Wizard-of-Oz Testing, and Versioned SOPs</p>
+          <p class="course-desc">Connect high-level strategy to frontline operational execution. Orchestrate fragmented channels into seamless narratives using the Orchestration Canvas and Story Mapping. Execute machine-speed ideation using morphological matrices and the NUF filter. Build live Wizard-of-Oz prototypes with agentic backends. Replace stagnant SOP binders with executable SOPs-as-Code.</p>
+          
+          <details class="module-drawer">
+            <summary><span class="drawer-icon">▶</span> View all 6 modules & syllabus</summary>
+            <ul class="module-list">
+              <li><code>07.1</code> <strong>Omnichannel Fragmentation & The Cross-Channel Orchestration Canvas</strong> <span class='mod-dur'>(45 min)</span> — <em>Overcoming channel silos (mobile, branch, web, contact center) by defining unified channel roles, transition protocols, and context carryover.</em></li><li><code>07.2</code> <strong>Service Story Mapping: Narrative Arcs, Climax Points & Experience Staging</strong> <span class='mod-dur'>(45 min)</span> — <em>Borrowing narrative design and Pine & Gilmore's experience staging to structure service moments into compelling emotional arcs.</em></li><li><code>07.3</code> <strong>Machine-Speed Ideation: Insight -> HMW -> Morphological Matrix -> NUF Filter</strong> <span class='mod-dur'>(50 min)</span> — <em>Generating high-velocity divergence without slop: preserving strict lineage from research insights to How-Might-We reframes and NUF scoring.</em></li><li><code>07.4</code> <strong>Rapid Service Prototyping: Tabletop Walkthroughs to Wizard-of-Oz Agentic Backends</strong> <span class='mod-dur'>(50 min)</span> — <em>Testing complex service interactions before engineering: tabletop roleplay, desktop walkthroughs, and live Wizard-of-Oz testing with agent backends.</em></li><li><code>07.5</code> <strong>The Failure of the SOP Binder: Engineering SOPs-as-Code (Author, Test, Version, Audit)</strong> <span class='mod-dur'>(50 min)</span> — <em>Transforming static operations manuals into versioned, schema-validated prompt-and-code architectures that execute reliably across teams.</em></li><li><code>07.6</code> <strong>Co-Designing Frontline Co-Pilots & Context Handover Without Screen Tyranny</strong> <span class='mod-dur'>(45 min)</span> — <em>Designing assistive AI co-pilots that empower frontline service staff with superhuman memory while avoiding cognitive fatigue and screen tyranny.</em></li>
+            </ul>
+          </details>
+          
+          <div class="course-tags">
+            <span class="tag-pill">📚 The Agentic Service Designer (Ch 12, 13, 14, 17, 18)</span>
+            <span class="tag-pill">🛠️ sd_orchestration</span>
+            <span class="tag-pill">📁 Articles 12, 13, 14, 17, 18, 34, 35 (Sable & Slate & Halcyon Logistics).</span>
+          </div>
+        </div>
+        <aside class="course-aside-col">
+          <dl class="course-meta-grid">
+            <div class="meta-item"><dt>Modules</dt><dd>6 modules</dd></div>
+            <div class="meta-item"><dt>Total time</dt><dd>≈4h 45m</dd></div>
+            <div class="meta-item"><dt>Status</dt><dd class="status-available">Available</dd></div>
+            <div class="meta-item"><dt>Format</dt><dd>Theory + Lab</dd></div>
+          </dl>
+          <a class="btn-course-cta" href="./courses/07-cross-channel-orchestration-prototyping-sops.html">
+            View course ↗
+          </a>
+        </aside>
+      </article>
+            
+      <article class="course-row group" data-level="advanced">
+        <div class="course-num-col">
+          <span class="course-num">08</span>
+        </div>
+        <div class="course-main-col">
+          <span class="badge badge-advanced">Advanced</span>
+          <h3 class="course-title"><a href="./courses/08-service-quality-good-services-continuous-ops.html">Service Quality, Good Services Audits & Continuous Operations</a></h3>
+          <p class="course-subtitle">Grönroos Perceived Quality, Lou Downe's 15 Principles Machine Audit, Service Recovery SLAs & Continuous Blueprints</p>
+          <p class="course-desc">The capstone course for enterprise service leaders. Implement Grönroos Perceived Quality, Parasuraman's 5 GAPs, and 3-tier KPI trees linking operational telemetry to financial ROI. Automate Lou Downe's 15 Principles of Good Services with good-services-audit-15. Engineer automated recovery playbooks to capitalize on the Service Recovery Paradox. Transition to Continuous Service Architecture.</p>
+          
+          <details class="module-drawer">
+            <summary><span class="drawer-icon">▶</span> View all 6 modules & syllabus</summary>
+            <ul class="module-list">
+              <li><code>08.1</code> <strong>Service Quality Management: Grönroos Technical/Functional Quality & The 5 GAP Model</strong> <span class='mod-dur'>(50 min)</span> — <em>Mastering the mathematical difference between outcome quality and process quality, and systematically measuring the 5 service delivery gaps.</em></li><li><code>08.2</code> <strong>Building 3-Tier KPI Trees: Operational -> Experiential -> Financial Traceability</strong> <span class='mod-dur'>(45 min)</span> — <em>Constructing end-to-end measurement trees that prove the direct financial ROI of UX friction reduction and service improvements.</em></li><li><code>08.3</code> <strong>Lou Downe's 15 Principles of Good Services: Decoded into Machine-Auditable Heuristics</strong> <span class='mod-dur'>(50 min)</span> — <em>Deconstructing the definitive public service standard (Lou Downe) into structured rules checkable by automated agents.</em></li><li><code>08.4</code> <strong>Automated Standards Auditing (good-services-audit-15) & Public Service Transformation</strong> <span class='mod-dur'>(50 min)</span> — <em>Running automated 15-principle audits on live civic and enterprise portals, generating defect scorecards with exact remediation tickets.</em></li><li><code>08.5</code> <strong>Service Recovery Engineering: The Recovery Paradox & Automated Compensation SLAs</strong> <span class='mod-dur'>(45 min)</span> — <em>Designing proactive recovery workflows that turn critical service breakdowns into moments of customer advocacy with automated compensations.</em></li><li><code>08.6</code> <strong>Continuous Service Architecture: Living Blueprints, Self-Healing Loops & The ASD Manifesto</strong> <span class='mod-dur'>(50 min)</span> — <em>The future of service design: blueprints dynamically synchronized with production telemetry, self-healing service loops, and the Manifesto of the Agentic Service Designer.</em></li>
+            </ul>
+          </details>
+          
+          <div class="course-tags">
+            <span class="tag-pill">📚 The Agentic Service Designer (Ch 15, 16, 19, 20)</span>
+            <span class="tag-pill">🛠️ sd_kpi_tree</span>
+            <span class="tag-pill">📁 Articles 15, 16, 19, 20, 31, 36 (Fernwood Council & Kestrel Energy).</span>
+          </div>
+        </div>
+        <aside class="course-aside-col">
+          <dl class="course-meta-grid">
+            <div class="meta-item"><dt>Modules</dt><dd>6 modules</dd></div>
+            <div class="meta-item"><dt>Total time</dt><dd>≈4h 50m</dd></div>
+            <div class="meta-item"><dt>Status</dt><dd class="status-available">Available</dd></div>
+            <div class="meta-item"><dt>Format</dt><dd>Theory + Lab</dd></div>
+          </dl>
+          <a class="btn-course-cta" href="./courses/08-service-quality-good-services-continuous-ops.html">
+            View course ↗
+          </a>
+        </aside>
+      </article>
+            
+      </div>
+    </section>
+        
+
+    <section class="cap-band" style="border-top:1px solid var(--line);">
+      <div class="band-head">
+        <span class="kicker">Learning Paths</span>
+        <h2>Choose your track</h2>
+        <p>Whether you are a practicing UX/Service designer, an AI engineer, or an enterprise transformation lead, follow a tailored pathway.</p>
+      </div>
+      <div class="cap-grid">
+        <div class="cap">
+          <span class="cap-num">01</span>
+          <h3>Practitioner Fast-Track</h3>
+          <p>Courses 01, 02, 03 &amp; 06. Master the CLI, evidence registers, and 5-lane to 6th-lane blueprinting in 20 hours.</p>
+        </div>
+        <div class="cap">
+          <span class="cap-num">02</span>
+          <h3>Enterprise Service Architect</h3>
+          <p>All 8 courses in sequence. Master end-to-end multi-agent swarms, SOPs-as-code, and continuous service architecture.</p>
+        </div>
+        <div class="cap">
+          <span class="cap-num">03</span>
+          <h3>AI Research Ops Lead</h3>
+          <p>Courses 01, 03, 04 &amp; 05. Modernize qualitative inquiry, transcript mining at scale, and mental model alignment.</p>
+        </div>
+        <div class="cap">
+          <span class="cap-num">04</span>
+          <h3>Public Sector Auditor</h3>
+          <p>Courses 01, 03, 06 &amp; 08. Automate Lou Downe's 15 Principles of Good Services and civic journey transformations.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-foot" style="padding:48px var(--pad-d); border-top:1px solid var(--line); background:var(--paper-tint); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; font-size:13px; color:var(--muted);">
+    <div>
+      <strong>The Agentic Service Designer®</strong> · Founded by Sam Mozaffari.
+      <br>Licensed under CC BY-NC-ND 4.0. Tooling &amp; Schemas under MIT.
+    </div>
+    <div style="display:flex; gap:24px;">
+      <a href="./index.html">Index</a>
+      <a href="./courses.html">Courses</a>
+      <a href="./docs/index.html">Docs</a>
+      <a href="./harness.html">Harness</a>
+      <a href="https://agenticdesign.school" target="_blank" rel="noopener">Agentic Design School ↗</a>
+    </div>
+  </footer>
+
+  <script>
+    function filterCourses(level) {
+      document.querySelectorAll('.f-btn').forEach(function(b) { b.classList.remove('active'); });
+      if (event && event.target) { event.target.classList.add('active'); }
+
+      var sections = {
+        'foundation': document.getElementById('foundation'),
+        'intermediate': document.getElementById('intermediate'),
+        'advanced': document.getElementById('advanced')
+      };
+
+      if (level === 'all') {
+        Object.keys(sections).forEach(function(k) { if (sections[k]) sections[k].style.display = 'block'; });
+      } else {
+        Object.keys(sections).forEach(function(k) {
+          if (sections[k]) {
+            sections[k].style.display = (k === level) ? 'block' : 'none';
+          }
+        });
+      }
+    }
+  </script>
+</body>
+</html>

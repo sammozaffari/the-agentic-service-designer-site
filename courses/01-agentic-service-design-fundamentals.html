@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Agentic Service Design Fundamentals — The AI-First Service Design Operating System, 10-Agent Team Topology & Designer-Agent Loop. Online course from The Agentic Service Designer.">
+  <title>Course 01: Agentic Service Design Fundamentals | The Agentic Service Designer</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
+  <style>
+    .course-page-hero {
+      padding: 64px var(--pad-d) 40px;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+    }
+    .course-page-hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    .back-link:hover { color: var(--ink); text-decoration: underline; }
+    
+    .course-page-title {
+      font-size: clamp(32px, 4vw, 54px);
+      letter-spacing: -0.03em;
+      margin: 8px 0 16px;
+      line-height: 1.05;
+    }
+    .course-page-sub {
+      font-size: 19px;
+      color: var(--ink-soft);
+      max-width: 820px;
+      line-height: 1.5;
+      margin: 0 0 28px;
+    }
+    
+    /* Interactive Slide Deck Player */
+    .deck-section {
+      padding: 48px var(--pad-d);
+      background: #0f100f;
+      color: #f8f8f4;
+      border-bottom: 1px solid var(--line);
+    }
+    .deck-container {
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+    .deck-controls-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: #a4a49c;
+    }
+    .slide-viewport {
+      background: #171817;
+      border: 1px solid #2d2e2b;
+      border-radius: 8px;
+      min-height: 440px;
+      padding: 48px;
+      position: relative;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.35);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .slide-card {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      animation: fadeIn 200ms ease;
+    }
+    .slide-card.active {
+      display: flex;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: #e4be5c;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+    }
+    .slide-title {
+      font-size: clamp(26px, 3vw, 38px);
+      letter-spacing: -0.025em;
+      color: #ffffff;
+      margin: 0 0 24px;
+      font-weight: 700;
+    }
+    .slide-bullets {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      font-size: 16.5px;
+      line-height: 1.6;
+      color: #d6d6ce;
+    }
+    .slide-bullets li {
+      position: relative;
+      padding-left: 24px;
+    }
+    .slide-bullets li::before {
+      content: "▪";
+      position: absolute;
+      left: 0;
+      color: #e4be5c;
+      font-size: 20px;
+      line-height: 1;
+    }
+    .slide-quote {
+      border-left: 3px solid #e4be5c;
+      padding-left: 16px;
+      margin: 20px 0 0;
+      font-style: italic;
+      color: #a8a89f;
+      font-size: 14.5px;
+    }
+    
+    .deck-diagram {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #212220;
+      padding: 16px;
+      border-radius: 6px;
+      margin: 16px 0;
+      font-family: var(--mono);
+      font-size: 13px;
+      overflow-x: auto;
+    }
+    .d-box {
+      background: #2a2b28;
+      border: 1px solid #3d3e3a;
+      padding: 8px 14px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+    .d-good { border-color: #38a169; color: #68d391; }
+    .d-bad { border-color: #e53e3e; color: #fc8181; }
+    .d-arrow { color: #e4be5c; font-weight: 700; }
+
+    /* Deck Navigation Footer */
+    .deck-nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 24px;
+    }
+    .deck-btn {
+      padding: 10px 20px;
+      background: #262724;
+      color: #ffffff;
+      border: 1px solid #3a3b37;
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 120ms ease;
+    }
+    .deck-btn:hover:not(:disabled) {
+      background: #ffffff;
+      color: #111;
+    }
+    .deck-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+    .slide-dots {
+      display: flex;
+      gap: 8px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #3a3b37;
+      cursor: pointer;
+    }
+    .dot.active {
+      background: #e4be5c;
+    }
+
+    /* Modules Grid Section */
+    .modules-section {
+      padding: 64px var(--pad-d);
+      background: var(--paper-tint);
+    }
+    .modules-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .module-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      transition: transform var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
+    }
+    .module-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+    .mod-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .mod-badge {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--paper-tint);
+      border: 1px solid var(--line);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .mod-time {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .mod-card-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      margin: 0;
+      line-height: 1.3;
+    }
+    .mod-card-desc {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+    .mod-card-link {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    
+    /* Lab Box */
+    .lab-box {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 32px;
+      margin-top: 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .lab-btn {
+      padding: 12px 24px;
+      background: var(--dark);
+      color: var(--dark-ink);
+      font-weight: 600;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .lab-btn:hover { opacity: 0.9; }
+  </style>
+</head>
+<body>
+  <header class="site-head">
+    <a class="brand" href="../index.html">
+      <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
+      <div class="brand-sub">Sam Mozaffari</div>
+    </a>
+    <nav class="main-nav">
+      <a href="../index.html">Index</a>
+      <a href="../courses.html" class="on">Courses</a>
+      <a href="../harness.html">Harness</a>
+      <a href="../docs/index.html">Docs</a>
+      <a href="../about.html">About</a>
+      <a href="../cv.html">CV</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="course-page-hero">
+      <div class="course-page-hero-inner">
+        <a class="back-link" href="../courses.html">← All Courses</a>
+        <div><span class="badge badge-foundation">Foundation</span></div>
+        <h1 class="course-page-title">Course 01: Agentic Service Design Fundamentals</h1>
+        <p class="course-page-sub">The AI-First Service Design Operating System, 10-Agent Team Topology & Designer-Agent Loop</p>
+        <p style="max-width:760px; line-height:1.6; color:var(--ink-soft);">The foundation course for the whole curriculum. Replaces static sticky notes and workshop theater with an executable, AI-driven Service Design Operating System. Connects classical service theory (Vargo & Lusch's Service-Dominant Logic, Service Profit Chain) to modern agentic systems. Teaches the 10-role Eve-style agent team topology, the autonomy spectrum, and the sovereign human decision gate.</p>
+        <dl class="metrics-row" style="margin-top:24px;">
+          <div><dt>Modules</dt><dd>6</dd></div>
+          <div><dt>Duration</dt><dd>≈4h 45m</dd></div>
+          <div><dt>Format</dt><dd>Interactive Deck + Labs</dd></div>
+          <div><dt>Status</dt><dd class="status-available">Available</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- Slide Deck Section -->
+    <section class="deck-section">
+      <div class="deck-container">
+        <div class="deck-controls-top">
+          <span>INTERACTIVE SLIDE DECK · COURSE 01</span>
+          <span>Use ◄ / ► arrow keys to navigate</span>
+        </div>
+        
+        <div class="slide-viewport" id="slideViewport">
+          
+        <div class="slide-card active" data-slide-index="0">
+          <div class="slide-header">
+            <span class="slide-kicker">Paradigm Shift</span>
+            <span class="slide-page-num">01 / 06</span>
+          </div>
+          <h2 class="slide-title">The Death of Workshop Theater</h2>
+          <ul class="slide-bullets">
+            <li>Sticky-note workshops produce static artifacts that decay immediately upon project close.</li><li>Handoffs between research, mapping, and engineering suffer catastrophic information loss.</li><li>The Agentic Service Design OS replaces slides with executable, machine-checked filesystem models.</li>
+          </ul>
+          <div class="deck-diagram">
+  <span class="d-box d-bad">Workshop Theater (Static Slides / PDF)</span>
+  <span class="d-arrow">➔</span>
+  <span class="d-box d-good">Agentic Service OS (Executable / Evidence-Gated)</span>
+</div>
+          <blockquote class="slide-quote">"If a design artifact cannot be queried by an agent or audited by a CI gate, it is decorative art, not architecture."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="1">
+          <div class="slide-header">
+            <span class="slide-kicker">Foundational Theory</span>
+            <span class="slide-page-num">02 / 06</span>
+          </div>
+          <h2 class="slide-title">Service-Dominant Logic & Co-Creation</h2>
+          <ul class="slide-bullets">
+            <li>Stephen Vargo & Robert Lusch (2004, 2014): Value is never embedded in outputs; value is co-created in use (*value-in-use*).</li><li>Operand resources (static databases, forms) require action to produce an effect.</li><li>AI agents act as active **operant resources**, initiating value co-creation with human customers and frontline staff.</li>
+          </ul>
+          <div class="deck-diagram">
+  <span class="d-box">Operant Agent Swarm</span>
+  <span class="d-arrow">⟷</span>
+  <span class="d-box">Customer in Context</span>
+  <span class="d-arrow">➔</span>
+  <span class="d-box d-good">Co-Created Value</span>
+</div>
+          <blockquote class="slide-quote">"Value is not what you deliver in a sprint; value is what the beneficiary experiences in context."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="2">
+          <div class="slide-header">
+            <span class="slide-kicker">Agent Architecture</span>
+            <span class="slide-page-num">03 / 06</span>
+          </div>
+          <h2 class="slide-title">The 10-Role Eve-Style Topology</h2>
+          <ul class="slide-bullets">
+            <li>Single general-purpose LLM prompts fail on complex service design due to context pollution.</li><li>10 specialized roles: Researcher, Librarian, Synthesizer, Mapper, Ideator, Prototyper, Measurer, Presenter, Critic, Orchestrator.</li><li>The core invariant: Handoffs are typed filesystem artifacts, never conversational memory.</li>
+          </ul>
+          <div class="deck-diagram">
+  <span class="d-box">Researcher (01)</span>
+  <span class="d-arrow">➔</span>
+  <span class="d-box">Synthesizer (05)</span>
+  <span class="d-arrow">➔</span>
+  <span class="d-box">Mapper (12)</span>
+  <span class="d-arrow">➔</span>
+  <span class="d-box d-bad">Critic Gate (38)</span>
+</div>
+          <blockquote class="slide-quote">"Specialized boundaries preserve investigative depth and enable severe adversarial critique."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="3">
+          <div class="slide-header">
+            <span class="slide-kicker">Human Governance</span>
+            <span class="slide-page-num">04 / 06</span>
+          </div>
+          <h2 class="slide-title">The Autonomy Spectrum & Decision Gates</h2>
+          <ul class="slide-bullets">
+            <li>High Autonomy: Transcript mining, quote normalization, graph traversal, telemetry cross-checks.</li><li>Shared Autonomy: How-Might-We generation, journey clustering, draft blueprint assembly.</li><li>Sovereign Human Authority: Phase gates, ethical risk sign-offs, trade-offs, and go/no-go pilot decisions.</li>
+          </ul>
+          <div class="deck-diagram">
+  <span class="d-box">Autonomous Discovery</span>
+  <span class="d-arrow">➔</span>
+  <span class="d-box d-good">Sovereign Human Gate (Kind 37 Decision)</span>
+  <span class="d-arrow">➔</span>
+  <span class="d-box">Autonomous Execution</span>
+</div>
+          <blockquote class="slide-quote">"Agents propose and verify with receipts; human leaders decide with accountability."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="4">
+          <div class="slide-header">
+            <span class="slide-kicker">Enterprise Economics</span>
+            <span class="slide-page-num">05 / 06</span>
+          </div>
+          <h2 class="slide-title">The Service Profit Chain in AI Systems</h2>
+          <ul class="slide-bullets">
+            <li>Heskett et al. (1994): Internal service quality is the root driver of customer loyalty and enterprise profit.</li><li>Equipping frontline staff with AI co-pilots eliminates cognitive burnout and screen tyranny.</li><li>Frontline empowerment directly drives first-contact resolution, NPS, and lifetime value.</li>
+          </ul>
+          <div class="deck-diagram">
+  <span class="d-box">Internal Agent Tooling</span>
+  <span class="d-arrow">➔</span>
+  <span class="d-box">Frontline Staff Ease</span>
+  <span class="d-arrow">➔</span>
+  <span class="d-box d-good">Customer Loyalty & Profit</span>
+</div>
+          <blockquote class="slide-quote">"Frontline tooling quality is the mathematical prerequisite for customer satisfaction."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="5">
+          <div class="slide-header">
+            <span class="slide-kicker">Enterprise Proof</span>
+            <span class="slide-page-num">06 / 06</span>
+          </div>
+          <h2 class="slide-title">Case Study: Calder Community Bank</h2>
+          <ul class="slide-bullets">
+            <li>Challenge: 6-week manual discovery cycle across 45 branches for SME account opening.</li><li>Agentic Sprint: 6 Researcher agents ingested 180 interview hours and 1,420 friction rows in 4 hours.</li><li>Outcome: Critic caught a 9.4-day KYC batch delay before pilot, enabling same-day onboarding architecture.</li>
+          </ul>
+          <div class="deck-diagram">
+  <span class="d-box">180h Interviews</span>
+  <span class="d-arrow">➔</span>
+  <span class="d-box">1,420 Evidence Hashes</span>
+  <span class="d-arrow">➔</span>
+  <span class="d-box d-good">Verified 5-Lane Blueprint</span>
+</div>
+          <blockquote class="slide-quote">"100% receipt-backed confidence in 1/10th the time of traditional consulting."</blockquote>
+        </div>
+        
+        </div>
+
+        <div class="deck-nav-bar">
+          <button class="deck-btn" id="prevBtn" onclick="changeSlide(-1)">◄ Previous Slide</button>
+          <div class="slide-dots" id="slideDots">
+            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div><div class="dot " onclick="goToSlide(3)"></div><div class="dot " onclick="goToSlide(4)"></div><div class="dot " onclick="goToSlide(5)"></div>
+          </div>
+          <button class="deck-btn" id="nextBtn" onclick="changeSlide(1)">Next Slide ►</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detailed Modules List -->
+    <section class="modules-section">
+      <div class="modules-container">
+        <div class="band-head">
+          <span class="kicker">Syllabus &amp; Lessons</span>
+          <h2>All 6 Modules in this Course</h2>
+          <p>Read the in-depth lesson guides, technical runlogs, TypeScript schemas, and reproducible CLI commands.</p>
+        </div>
+
+        <div class="modules-grid">
+          
+        <div class="module-card">
+          <div class="mod-card-top">
+            <span class="mod-badge">01.1</span>
+            <span class="mod-time">⏱️ 45 min</span>
+          </div>
+          <h3 class="mod-card-title">The Death of Workshop Theater: Moving to an Executable Service OS</h3>
+          <p class="mod-card-desc">Why traditional sticky-note workshops produce static artifacts that decay upon project close, and how treating service design as an executable, file-backed operating system changes delivery velocity.</p>
+          <a class="mod-card-link" href="../../courses/01-agentic-service-design-fundamentals/01-death-of-workshop-theater.md">Read full module & code lab →</a>
+        </div>
+        
+        <div class="module-card">
+          <div class="mod-card-top">
+            <span class="mod-badge">01.2</span>
+            <span class="mod-time">⏱️ 50 min</span>
+          </div>
+          <h3 class="mod-card-title">Service-Dominant Logic & Value Co-Creation in the Age of AI</h3>
+          <p class="mod-card-desc">Bridging Vargo & Lusch's SDL theory with autonomous agents: understanding agents as active operant resources that dynamically co-create value with human actors.</p>
+          <a class="mod-card-link" href="../../courses/01-agentic-service-design-fundamentals/02-service-dominant-logic-value-cocreation.md">Read full module & code lab →</a>
+        </div>
+        
+        <div class="module-card">
+          <div class="mod-card-top">
+            <span class="mod-badge">01.3</span>
+            <span class="mod-time">⏱️ 50 min</span>
+          </div>
+          <h3 class="mod-card-title">The 10-Role Eve-Style Agent Topology: Role Contracts & Boundaries</h3>
+          <p class="mod-card-desc">Dissecting the 10 specialized agent roles (Researcher, Synthesizer, Mapper, Ideator, Prototyper, Critic, Presenter, Measurer, Librarian, Orchestrator) and why strict role boundaries prevent cognitive drift.</p>
+          <a class="mod-card-link" href="../../courses/01-agentic-service-design-fundamentals/03-ten-agent-team-topology.md">Read full module & code lab →</a>
+        </div>
+        
+        <div class="module-card">
+          <div class="mod-card-top">
+            <span class="mod-badge">01.4</span>
+            <span class="mod-time">⏱️ 40 min</span>
+          </div>
+          <h3 class="mod-card-title">The Autonomy Spectrum & The Sovereign Human Decision Gate</h3>
+          <p class="mod-card-desc">Establishing where agents operate with full autonomy (discovery, transcription, cross-referencing) versus where human designers maintain sovereign decision authority (phase gates, ethics, trade-offs).</p>
+          <a class="mod-card-link" href="../../courses/01-agentic-service-design-fundamentals/04-autonomy-spectrum-human-gates.md">Read full module & code lab →</a>
+        </div>
+        
+        <div class="module-card">
+          <div class="mod-card-top">
+            <span class="mod-badge">01.5</span>
+            <span class="mod-time">⏱️ 45 min</span>
+          </div>
+          <h3 class="mod-card-title">The Service Profit Chain: Linking Frontline Tooling to Customer Loyalty</h3>
+          <p class="mod-card-desc">Operationalizing Heskett's Service Profit Chain in AI systems: how internal agentic capability directly drives frontline satisfaction, service value, and enterprise ROI.</p>
+          <a class="mod-card-link" href="../../courses/01-agentic-service-design-fundamentals/05-service-profit-chain-ai.md">Read full module & code lab →</a>
+        </div>
+        
+        <div class="module-card">
+          <div class="mod-card-top">
+            <span class="mod-badge">01.6</span>
+            <span class="mod-time">⏱️ 55 min</span>
+          </div>
+          <h3 class="mod-card-title">Hands-On Sprint: Running Your First Agentic Service Discovery</h3>
+          <p class="mod-card-desc">An end-to-end hands-on tutorial running an agentic service discovery sprint from a raw problem brief to an evidence-backed initial diagnostic.</p>
+          <a class="mod-card-link" href="../../courses/01-agentic-service-design-fundamentals/06-first-agentic-sd-sprint.md">Read full module & code lab →</a>
+        </div>
+        
+        </div>
+
+        <div class="lab-box">
+          <div>
+            <h3 style="margin:0 0 8px;">🧪 Hands-on Lab: Agentic Service Design Fundamentals</h3>
+            <p style="margin:0; color:var(--ink-soft); font-size:14px;">Complete the verified lab exercise on your terminal using the <code>@asd</code> CLI and test scripts.</p>
+          </div>
+          <a class="lab-btn" href="../../courses/labs/lab-01-fundamentals/README.md">Open Lab Guide ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-foot" style="padding:48px var(--pad-d); border-top:1px solid var(--line); background:var(--paper-tint); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; font-size:13px; color:var(--muted);">
+    <div>
+      <strong>The Agentic Service Designer®</strong> · Founded by Sam Mozaffari.
+      <br>Licensed under CC BY-NC-ND 4.0.
+    </div>
+    <div style="display:flex; gap:24px;">
+      <a href="../index.html">Index</a>
+      <a href="../courses.html">Courses</a>
+      <a href="../docs/index.html">Docs</a>
+      <a href="../harness.html">Harness</a>
+      <a href="https://agenticdesign.school" target="_blank" rel="noopener">Agentic Design School ↗</a>
+    </div>
+  </footer>
+
+  <script>
+    var currentSlide = 0;
+    var totalSlides = 6;
+
+    function showSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+      currentSlide = index;
+
+      document.querySelectorAll('.slide-card').forEach(function(card, idx) {
+        card.classList.toggle('active', idx === currentSlide);
+      });
+
+      document.querySelectorAll('.dot').forEach(function(dot, idx) {
+        dot.classList.toggle('active', idx === currentSlide);
+      });
+
+      document.getElementById('prevBtn').disabled = (currentSlide === 0);
+      document.getElementById('nextBtn').disabled = (currentSlide === totalSlides - 1);
+    }
+
+    function changeSlide(direction) {
+      showSlide(currentSlide + direction);
+    }
+
+    function goToSlide(index) {
+      showSlide(index);
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        changeSlide(1);
+      } else if (e.key === 'ArrowLeft') {
+        changeSlide(-1);
+      }
+    });
+
+    // Initialize state
+    showSlide(0);
+  </script>
+</body>
+</html>
+    
