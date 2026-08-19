@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Three scripted walkthroughs, every step executed against the real engine: the full gated-artifact lifecycle in the CLI, an engagement in Claude Code, and the fact-check as a CI gate.">
+<title>Tutorials — The Agentic Service Designer</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
+
+</head><body>
+<header class="site-head">
+  <a class="brand" href="../index.html">
+    <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
+    <div class="brand-sub">Sam Mozaffari</div>
+  </a>
+  <nav class="main-nav">
+    <a href="../index.html" class="">Index</a>
+    <a href="../harness.html" class="">Harness</a>
+    <a href="../docs/index.html" class="on">Docs</a>
+    <a href="../about.html" class="">About</a>
+    <a href="../cv.html" class="">CV</a>
+  </nav>
+</header>
+<main class="art">
+  <div class="art-progress"><div class="art-progress-bar" id="progress"></div></div>
+  <nav class="docs-tabs" aria-label="Docs sections"><a href="./index.html">Start</a><a href="./plugin-claude-code.html">Surfaces</a><a href="./concepts.html" class="on">Concepts</a><a href="./reference-tools.html">Reference</a><a href="./use-cases.html">Use cases</a></nav>
+  <section class="page-hero">
+    <span class="kicker">Docs · Concepts</span>
+    <h1>Tutorials</h1>
+    <p class="lede">Three scripted walkthroughs, every step executed against the real engine: the full gated-artifact lifecycle in the CLI, an engagement in Claude Code, and the fact-check as a CI gate.</p>
+  </section>
+  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Concepts</b><ol><li><a href="./concepts.html">Engine concepts</a></li><li><a href="./tutorials.html" class="on">Tutorials</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#your-first-gated-artifact-in-ten-minutes-cli">Your first gated artifact in ten minutes (CLI)</a></li><li><a href="#an-engagement-in-claude-code">An engagement in Claude Code</a></li><li><a href="#the-gate-in-ci">The gate in CI</a></li><li><a href="#where-next">Where next</a></li></ol></nav></aside><article class="art-body"><h1 id="tutorials">Tutorials</h1><p>Three tutorials, three surfaces, one engine. Every command below was run against the real platform for this page; every output is pasted from that run, trimmed only with <code>[…]</code>. The concepts are in <a href="./concepts.html">Engine concepts</a>; this page is the doing.</p>
+<h2 id="your-first-gated-artifact-in-ten-minutes-cli">Your first gated artifact in ten minutes (CLI)</h2><p>The whole lifecycle in a shell: project → evidence (including a deliberate kind rejection) → a failing write that persists as a draft → in-place remediation → a Critic veto → remediation → a pass → the deterministic fact-check → renders. You need the suite built and the <code>asd</code> shim from <code>platform/packs/cli</code> — see <a href="./cli.html">the CLI page</a>. Work in a scratch workspace so nothing touches real projects:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>export ASD_WORKSPACE=/tmp/asd-docs-w3-t1
+ASD=platform/packs/cli/asd    # from the repo root</code></pre></div><p>Create the engagement:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ASD sd_project_create --name docs-w3-demo --client &quot;Fictional composite&quot; \
+  --sector public-transport --service &quot;commuter journeys&quot; --phase discover</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+  &quot;project&quot;: {
+    &quot;projectId&quot;: &quot;docs-w3-demo-01f2de9f&quot;,
+    &quot;name&quot;: &quot;docs-w3-demo&quot;,
+    &quot;client&quot;: &quot;Fictional composite&quot;,
+    &quot;sector&quot;: &quot;public-transport&quot;,
+    &quot;service&quot;: &quot;commuter journeys&quot;,
+    &quot;phase&quot;: &quot;discover&quot;,
+    […createdAt / updatedAt timestamps…]
+  }
+}</code></pre></div><p>Capture four evidence rows — two quotes, a document, a telemetry figure:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>ID=docs-w3-demo-01f2de9f
+$ASD sd_evidence_add --projectId $ID --source call-821004 --kind quote \
+  --body &quot;Told to wait 15 min for next bus; nobody held the tram.&quot;
+$ASD sd_evidence_add --projectId $ID --source call-821020 --kind quote \
+  --body &quot;Road closed since 6am; no sign, no message.&quot;
+$ASD sd_evidence_add --projectId $ID --source rosters-07 --kind document \
+  --body &quot;Eleven routes cannot hold a 3-minute connection under current roster rules.&quot;
+$ASD sd_evidence_add --projectId $ID --source avl-extract-2025-11 --kind telemetry \
+  --body &quot;Route 41 weekday OTP 71 percent; peak-shoulder misses cluster 16:00-19:00.&quot;</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;evidence&quot;: { &quot;id&quot;: &quot;c0f1736916289286b470528c08711c2b39ec7a7e3e853b00a162590b1197a174&quot;,
+  &quot;projectId&quot;: &quot;docs-w3-demo-01f2de9f&quot;, &quot;source&quot;: &quot;call-821004&quot;, &quot;kind&quot;: &quot;quote&quot;,
+  &quot;body&quot;: &quot;Told to wait 15 min for next bus; nobody held the tram.&quot;,
+  &quot;capturedAt&quot;: &quot;2026-08-19T04:09:39.430Z&quot; } }</code></pre></div><p>The ids are sha-256 content hashes of <code>(source, kind, body)</code> — run this tutorial twice and the ids reproduce byte-identically. Now the deliberate mistake, because it teaches the register&#39;s vocabulary better than any paragraph:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ASD sd_evidence_add --projectId $ID --source int-07 --kind observation --body &quot;…&quot;</code></pre></div><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>asd sd_evidence_add: invalid arguments: &quot;kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]
+running `asd help` shows usage</code></pre></div><p>Exit code 1; nothing was written. Field notes go in as <code>document</code> with the observation in the body. Put the four ids in shell variables and write the journey map — first with the transfer node citing zero evidence, to watch the gate work:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>E1=c0f1736916289286b470528c08711c2b39ec7a7e3e853b00a162590b1197a174   # call-821004 quote
+E2=b38cf37fef5b8460e82bad3592964293233aeb627ee291e9f7a64e5007c4c586   # call-821020 quote
+E3=ebc691cacc31cf5fb2db2f3c8347e5e085690a0971b0d3ca4d104a6e150fdc6a   # rosters-07 document
+E4=553d5015b4910740c2c2bfafc5aa4681b33997a2db3949d7c9004d72951809b2   # avl telemetry
+NODES_BAD='[{&quot;id&quot;:&quot;plan&quot;,&quot;label&quot;:&quot;Plan journey&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;3&quot;,&quot;touchpoint&quot;:&quot;website&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;'$E3'&quot;}]},{&quot;id&quot;:&quot;wait&quot;,&quot;label&quot;:&quot;Wait at stop&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;2&quot;,&quot;touchpoint&quot;:&quot;stop&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;'$E1'&quot;},{&quot;evidenceId&quot;:&quot;'$E4'&quot;}]},{&quot;id&quot;:&quot;transfer&quot;,&quot;label&quot;:&quot;Missed connection&quot;,&quot;kind&quot;:&quot;pain&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;1&quot;,&quot;touchpoint&quot;:&quot;transfer&quot;},&quot;evidence&quot;:[]}]'
+$ASD sd_artifact_write --projectId $ID --methodId journey-from-transcripts \
+  --title &quot;Current-state journey&quot; --nodes &quot;$NODES_BAD&quot;</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;accepted&quot;: false, &quot;status&quot;: &quot;draft&quot;,
+  &quot;artifact&quot;: { &quot;id&quot;: &quot;1a6ee17b92624f76aea97c407140a635&quot;, &quot;kind&quot;: &quot;journey-map&quot;,
+    &quot;methodId&quot;: &quot;journey-from-transcripts&quot;, &quot;status&quot;: &quot;draft&quot;,
+    &quot;check&quot;: { &quot;pass&quot;: false, &quot;failures&quot;: [
+      { &quot;rule&quot;: &quot;min-evidence-per-node&quot;, &quot;nodeId&quot;: &quot;transfer&quot;,
+        &quot;message&quot;: &quot;node \&quot;transfer\&quot; cites 0 evidence refs, needs 1&quot; } ] } },
+  &quot;failures&quot;: [ […the same list, repeated top-level…] ] }</code></pre></div><p>Note what did not happen: the write was not rejected from the store. The artifact exists, as a draft, with its failures attached — <code>sd_artifact_list</code> shows it — and it can never go final or export in this state. Remediate the same artifact by id, the transfer node now citing the two rider quotes:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>ART=1a6ee17b92624f76aea97c407140a635
+$ASD sd_artifact_write --projectId $ID --methodId journey-from-transcripts \
+  --title &quot;Current-state journey&quot; --artifactId $ART --nodes &quot;$NODES_FIXED&quot;
+# → { &quot;accepted&quot;: true, &quot;status&quot;: &quot;draft&quot;, &quot;failures&quot;: [] }  (same artifact id)</code></pre></div><p>Accepted drafts under a critic gate are still drafts. Now the Critic reviews — here with a real veto: one defect (severity high, <code>fix</code> required, evidence-cited) and one proposal:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>ROWS='[{&quot;rowKind&quot;:&quot;defect&quot;,&quot;severity&quot;:&quot;high&quot;,&quot;rule&quot;:&quot;evidence-sufficiency&quot;,&quot;message&quot;:&quot;The missed-connection node needs the roster-constraint document cited alongside the rider quotes; without it the 3-minute connection fix looks feasible and is not&quot;,&quot;fix&quot;:&quot;Cite rosters-07 on the transfer node&quot;,&quot;evidenceId&quot;:&quot;'$E3'&quot;},{&quot;rowKind&quot;:&quot;proposal&quot;,&quot;severity&quot;:&quot;medium&quot;,&quot;rule&quot;:&quot;source-diversity&quot;,&quot;message&quot;:&quot;Quote the closure notice verbatim on the transfer node so the emotion score stays evidence-coded&quot;}]'
+$ASD sd_review --projectId $ID --artifactId $ART --verdict veto --rows &quot;$ROWS&quot;</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;status&quot;: &quot;draft&quot;, &quot;verdict&quot;: &quot;veto&quot;,
+  &quot;logArtifactId&quot;: &quot;b7b97bdfd65f46d7bd96ecbe025255db&quot;, &quot;rowsWritten&quot;: 2 }</code></pre></div><p>The artifact is demoted to draft; the rows live in a new <code>review-veto-log</code> artifact (status final, <code>reviewOf</code> the journey map — <code>sd_review_list</code> shows both). Apply the fix — cite <code>E3</code> on the transfer node — rewrite by id, and re-review:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ASD sd_artifact_write --projectId $ID --methodId journey-from-transcripts \
+  --title &quot;Current-state journey&quot; --artifactId $ART --nodes &quot;$NODES_FINAL&quot;
+$ASD sd_review --projectId $ID --artifactId $ART --verdict pass --rows '[]'</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;status&quot;: &quot;final&quot;, &quot;verdict&quot;: &quot;pass&quot;,
+  &quot;logArtifactId&quot;: &quot;b7b97bdfd65f46d7bd96ecbe025255db&quot;, &quot;rowsWritten&quot;: 0 }</code></pre></div><p>Same log artifact as the veto — the rows remain as the record. Run the fact-check and render the deliverables:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ASD sd_factcheck --projectId $ID</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;pass&quot;: true, &quot;rows&quot;: [
+  { &quot;artifactId&quot;: &quot;1a6ee17b92624f76aea97c407140a635&quot;, &quot;kind&quot;: &quot;journey-map&quot;,
+    &quot;status&quot;: &quot;final&quot;, &quot;integrity&quot;: { &quot;pass&quot;: true, &quot;dangling&quot;: [] },
+    &quot;acceptance&quot;: { &quot;pass&quot;: true },
+    &quot;review&quot;: { &quot;pass&quot;: true, &quot;gate&quot;: &quot;critic&quot;, &quot;verdict&quot;: &quot;pass&quot; },
+    &quot;methodId&quot;: &quot;journey-from-transcripts&quot;, &quot;methodResolution&quot;: &quot;recorded&quot; },
+  { &quot;artifactId&quot;: &quot;b7b97bdfd65f46d7bd96ecbe025255db&quot;, &quot;kind&quot;: &quot;review-veto-log&quot;,
+    &quot;status&quot;: &quot;final&quot;, &quot;integrity&quot;: { &quot;pass&quot;: true, &quot;dangling&quot;: [] },
+    &quot;acceptance&quot;: { &quot;pass&quot;: true },
+    &quot;review&quot;: { &quot;pass&quot;: true, &quot;gate&quot;: null, &quot;verdict&quot;: null },
+    &quot;methodId&quot;: null, &quot;methodResolution&quot;: &quot;inferred&quot; } ] }</code></pre></div><p>Exit code 0. Render the artifact and a report, then look at what landed on disk:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ASD sd_export_artifact --projectId $ID --artifactId $ART
+# → { &quot;path&quot;: &quot;…/renders/journey-map.1a6ee17b.svg&quot;, &quot;kind&quot;: &quot;journey-map&quot;, &quot;bytes&quot;: 3819 }
+$ASD sd_export_report --projectId $ID --kind executive-summary
+# → { &quot;path&quot;: &quot;…/renders/report.executive-summary.html&quot;, &quot;kind&quot;: &quot;executive-summary&quot;, &quot;bytes&quot;: 2765 }</code></pre></div><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>docs-w3-demo-01f2de9f/artifacts/journey-map.current-state-journey.1a6ee17b.json
+docs-w3-demo-01f2de9f/artifacts/review-veto-log.review-current-state-journey.b7b97bdf.json
+docs-w3-demo-01f2de9f/evidence/index.json
+docs-w3-demo-01f2de9f/project.json
+docs-w3-demo-01f2de9f/renders/journey-map.1a6ee17b.svg
+docs-w3-demo-01f2de9f/renders/report.executive-summary.html</code></pre></div><p>Everything is plain files you can audit — the platform&#39;s answer to &quot;trust me&quot; is &quot;open the directory.&quot;</p>
+<h2 id="an-engagement-in-claude-code">An engagement in Claude Code</h2><p>The same loop, driven conversationally. Install the plugin from the pack README, verbatim:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>claude plugin marketplace add &lt;repo&gt;/platform/packs
+claude plugin install asd@asd-platform</code></pre></div><p>The plugin-root <code>.mcp.json</code> wires the vendored <code>asd-mcp</code> server automatically — nothing on PATH, no sibling checkout, no <code>npm install</code>. (A manual-copy variant for projects that do not use the plugin mechanism is on <a href="./plugin-claude-code.html">the plugin page</a>.)</p>
+<p>Open a project and run <code>/asd</code>. The orchestrator command plans from your brief and dispatches role agents in platform order; in practice you also drive the roles directly. The mapping from conversation to engine is one-to-one — every dispatch lands on a subagent that calls the same <code>sd_*</code> tools you typed in the first tutorial, now over MCP:</p>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>@researcher run the contextual-inquiry skill for lighthouse-transit: plan
+the research (ride-alongs on 14 routes incl. night shift, 32 commuter
+interviews, 6 drivers), then add every field note and every verbatim
+quote to the project evidence register via sd_evidence_add.</code></pre></div><p>The Researcher captures rows into the register — the same content-addressed ids, the same three-kind vocabulary, the same refusal if a model improvises a fourth kind.</p>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>@mapper run journey-from-transcripts over the register and write the
+current-state journey-map artifact for lighthouse-transit.
+@critic review the journey-map before it can go final.</code></pre></div><p>The Mapper&#39;s <code>sd_artifact_write</code> faces the identical acceptance gate — a zero-evidence node comes back as a persisted draft with failures, exactly as in the CLI. The Critic&#39;s <code>sd_review</code> writes the same evidence-cited defect/proposal rows (severity, <code>fix</code> on defects) and the same veto-log artifact. And at the phase gate you run the same <code>sd_factcheck</code> — from the CLI shim or any MCP client — before the human decision.</p>
+<p>Later roles close the engagement the same way:</p>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>@measurer build the kpi-tree from the four success criteria with
+kpi-tree-design: each row names its driver, experience link, business
+link, baseline, and source.
+@presenter assemble the executive report from final artifacts only.
+@librarian produce the handover pack with full provenance.</code></pre></div><p>The skills the roles name — <code>contextual-inquiry</code>, <code>journey-from-transcripts</code>, <code>kpi-tree-design</code> — are the SOP layer in between: 74 readable <code>SKILL.md</code> files, one per method manifest, each spelling out who does what, in what order, with which evidence discipline, and which acceptance gate the write will face. The agent reads the skill, the skill names the tools, and the engine enforces the rest. Nothing in the conversational surface bypasses the machine checks you saw in the terminal — the plugin is a different driver for the same gates, not a way around them.</p>
+<p>The full script, with every prompt and every engine response from a real 18-week engagement arc (fictional composite client, real platform run), is article 31, <a href="../articles/31/index.html">Riding the Current</a> — its §13 re-executes the entire tutorial end-to-end against the real CLI with pasted outputs, and its runlog shows the conversational flow above at engagement scale: ten role agents, twelve machine-gated method skills carrying the spine, and the Critic&#39;s verdicts on every gated artifact.</p>
+<h2 id="the-gate-in-ci">The gate in CI</h2><p>The fact-check&#39;s exit code is the integration point: 0 when every artifact in the project passes integrity, acceptance, and review; 1 on any failure. A minimal pipeline step — run it from a checkout with the suite built, against the workspace your pipeline materialized:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>#!/usr/bin/env bash
+set -euo pipefail
+export ASD_WORKSPACE=&quot;$CI_WORKSPACE&quot;        # where the project's files live
+platform/packs/cli/asd sd_factcheck --projectId &quot;$ASD_PROJECT_ID&quot;
+# non-zero exit fails the step; the JSON above the exit code names every failing row</code></pre></div><p>Both outcomes, real. With a failing draft still in the project — the zero-evidence transfer node from the first tutorial, before remediation:</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;pass&quot;: false, &quot;rows&quot;: [
+  { &quot;artifactId&quot;: &quot;1a6ee17b92624f76aea97c407140a635&quot;, &quot;kind&quot;: &quot;journey-map&quot;,
+    &quot;status&quot;: &quot;draft&quot;, &quot;integrity&quot;: { &quot;pass&quot;: true, &quot;dangling&quot;: [] },
+    &quot;acceptance&quot;: { &quot;pass&quot;: false,
+      &quot;failures&quot;: [ &quot;node \&quot;transfer\&quot; cites 0 evidence refs, needs 1&quot; ] },
+    &quot;review&quot;: { &quot;pass&quot;: true, &quot;gate&quot;: &quot;critic&quot;, &quot;verdict&quot;: null },
+    &quot;methodId&quot;: &quot;journey-from-transcripts&quot;, &quot;methodResolution&quot;: &quot;recorded&quot; } ] }</code></pre></div><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>factcheck exit code: 1</code></pre></div><p>After remediation and the pass verdict, the same command prints the all-pass rows from the first tutorial and exits 0. Two properties make this trustworthy as a gate. The replay is deterministic — no model in the loop, so a green run cannot be talked into existence. And the exit code inverts the dangerous case: a report that <em>looks</em> green but exits 1 cannot pass a build, because CI reads the code, not the JSON. Note what the gate checks and what it does not: it proves every artifact is evidence-backed, rule-passing, and properly reviewed as of right now; whether the project <em>should</em> ship is still the human phase-gate decision the <a href="./concepts.html">concepts page</a> describes.</p>
+<p>Two practical notes for wiring it up. The gate is per-project, so a monorepo of engagements loops over project ids — or over the directories in the workspace, since each project is a self-contained directory of plain files and the workspace itself is the only state the check needs; archive it as a build artifact and the failing run is auditable offline, row by row. And because the workspace is files, the check runs anywhere the suite builds — no service to deploy, no database to migrate, no credentials to scope.</p>
+<h2 id="where-next">Where next</h2><ul>
+<li><a href="./concepts.html">Engine concepts</a> — the model behind everything you just ran.</li>
+<li><a href="./cli.html">The CLI</a> and <a href="./mcp.html">the MCP server</a> — the surfaces in full.</li>
+<li><a href="./dsh-workbench.html">The DeepSeek Harness workbench</a> — the same engine with rendered artifacts inline.</li>
+</ul>
+</article></div>
+  <button class="backtop" id="backtop" type="button">Back to top</button>
+</main>
+<footer class="footer">
+  <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
+  <span><a href="../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
+</footer>
+<script src="../assets/site.js"></script>
+</body></html>
