@@ -575,8 +575,8 @@ class AntigravityParticles {
     this.customText = options.customText || "ANTIGRAVITY";
     this.charAtlasTexture = null;
 
-    // Background gradient configuration (Sky Magenta default)
-    this.showBg = options.showBg !== undefined ? options.showBg : true;
+    // Background gradient configuration (disabled by default for transparent hero background)
+    this.showBg = options.showBg !== undefined ? options.showBg : false;
     this.bgSpeed = options.bgSpeed !== undefined ? options.bgSpeed : 0.50;
     this.bgRibbon = options.bgRibbon !== undefined ? options.bgRibbon : 0.40;
     this.bgColor1 = new THREE.Color(options.bgColor1 || "#f472b6");
