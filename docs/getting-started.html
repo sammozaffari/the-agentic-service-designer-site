@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Pick a surface — Claude Code plugin, MCP server, CLI or DSH workbench — and run the same evidence-gated loop to your first final artifact.">
+<title>Getting started — The Agentic Service Designer</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
+
+</head><body>
+<header class="site-head">
+  <a class="brand" href="../index.html">
+    <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
+    <div class="brand-sub">Sam Mozaffari</div>
+  </a>
+  <nav class="main-nav">
+    <a href="../index.html" class="">Index</a>
+    <a href="../harness.html" class="">Harness</a>
+    <a href="../docs/index.html" class="on">Docs</a>
+    <a href="../about.html" class="">About</a>
+    <a href="../cv.html" class="">CV</a>
+  </nav>
+</header>
+<main class="art">
+  <div class="art-progress"><div class="art-progress-bar" id="progress"></div></div>
+  <section class="page-hero">
+    <span class="kicker">Docs · Start</span>
+    <h1>Getting started</h1>
+    <p class="lede">Pick a surface — Claude Code plugin, MCP server, CLI or DSH workbench — and run the same evidence-gated loop to your first final artifact.</p>
+  </section>
+  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Docs</b><span class="docs-nav-sec">Start</span><ol><li><a href="./index.html">The platform manual</a></li><li><a href="./getting-started.html" class="on">Getting started</a></li></ol><span class="docs-nav-sec">Surfaces</span><ol><li><a href="./plugin-claude-code.html">The Claude Code plugin</a></li><li><a href="./plugin-hosts.html">Host packs and the compiler</a></li><li><a href="./mcp.html">The MCP server</a></li><li><a href="./cli.html">The CLI</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#choose-your-surface">Choose your surface</a></li><li><a href="#claude-code-plugin">Claude Code plugin</a></li><li><a href="#cli">CLI</a></li><li><a href="#mcp-server">MCP server</a></li><li><a href="#dsh-workbench">DSH workbench</a></li><li><a href="#the-loop-once">The loop, once</a></li><li><a href="#where-next">Where next</a></li></ol></nav></aside><article class="art-body"><p>Every surface runs the same engine and the same core loop: <strong>capture evidence → gated artifact write → critic review → final → factcheck</strong>. This page gets you to your first gated artifact on whichever surface you already work in, quoting real captured runs — so when the outputs below match what you see, the loop has already worked once for you.</p>
+<h2 id="choose-your-surface">Choose your surface</h2><div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Surface</th><th>You work in</th><th>Install effort</th><th>First move</th></tr></thead><tbody><tr><td>Claude Code plugin</td><td>Claude Code</td><td>two commands</td><td><code>/asd</code></td></tr><tr><td scope="row">MCP server</td><td>any MCP client</td><td>one config entry</td><td><code>sd_project_create</code> tool call</td></tr><tr><td scope="row">CLI</td><td>a terminal / CI</td><td>one shim</td><td><code>asd sd_project_create …</code></td></tr><tr><td scope="row">DSH workbench</td><td>DeepSeek Harness</td><td>profile load</td><td>bind the 10 roles</td></tr></tbody></table></div><h2 id="claude-code-plugin">Claude Code plugin</h2><p>The reference distribution. Ten role agents as native subagents, the 74 method skills, the <code>/asd</code> orchestrator command, and the engine vendored into the pack as an MCP server — no npm install, nothing on PATH. Verbatim from <code>platform/packs/claude-code/README.md</code>:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>claude plugin marketplace add &lt;repo&gt;/platform/packs
+claude plugin install asd@asd-platform</code></pre></div><p>The plugin manifest is the pack&#39;s <code>.claude-plugin/plugin.json</code>; MCP wiring is the plugin-root <code>.mcp.json</code>, which Claude Code loads automatically for installed plugins — <code>${CLAUDE_PLUGIN_ROOT}</code> resolves inside the installed plugin, so the vendored server needs no PATH entry and no sibling checkout. Once installed, <code>/asd</code> dispatches the orchestrator; the role agents and skills run the loop for you, and the engine tools enforce the gates underneath.</p>
+<h2 id="cli">CLI</h2><p>The same engine as a standalone <code>asd</code> binary — the surface used for every capture in these docs. The launcher ships at <code>platform/packs/cli/asd</code> (or build the suite and link <code>suite/packages/runtime/lib/cli.mjs</code>). Projects live in <code>~/.asd/projects</code> by default; point <code>ASD_WORKSPACE</code> elsewhere for scratch work:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>export ASD_WORKSPACE=/tmp/asd-ws   # default: ~/.asd/projects</code></pre></div><p>Create the project (real capture, trimmed with <code>[…]</code>):</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ asd sd_project_create --name capture-meridian --client &quot;Fictional composite&quot; --sector public-transport --service &quot;commuter journeys&quot; --phase discover
+## Project created</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+  &quot;project&quot;: {
+    &quot;projectId&quot;: &quot;capture-meridian-201d0a1d&quot;,
+    &quot;name&quot;: &quot;capture-meridian&quot;,
+    &quot;phase&quot;: &quot;discover&quot;,
+    &quot;createdAt&quot;: &quot;2026-08-19T00:02:10.331Z&quot;,
+    […]
+  }
+}</code></pre></div><p>Capture evidence. Three rows went in during the captured session — two rider quotes and one roster document:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ asd sd_evidence_add --projectId capture-meridian-201d0a1d --source call-821004 --kind quote --body Told to wait 15 min for next bus; nobody held the tram.
+## Evidence captured</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;evidence&quot;: { &quot;id&quot;: &quot;c0f1736916289286b470528c08711c2b39ec7a7e3e853b00a162590b1197a174&quot;, &quot;kind&quot;: &quot;quote&quot;, […] } }</code></pre></div><aside class="callout callout-warn"><p>The evidence vocabulary is closed on purpose: <code>quote</code>, <code>telemetry</code>, <code>document</code>. Anything else is a hard failure at the argument parser — the capture shows <code>--kind observation</code> rejected with <code>&quot;kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]</code>. Field notes land as <code>quote</code> or <code>document</code>; sensor and counter data lands as <code>telemetry</code>.</p>
+</aside>
+<p>Write the first artifact against a method — here <code>journey-from-transcripts</code>. The captured session tried a one-node journey with zero evidence first:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ asd sd_artifact_write --projectId capture-meridian-201d0a1d --methodId journey-from-transcripts --title Current-state journey --nodes […]
+## Artifact write</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+  &quot;accepted&quot;: false,
+  &quot;status&quot;: &quot;draft&quot;,
+  &quot;artifact&quot;: {
+    &quot;id&quot;: &quot;dd58b4cf12e0419e9b455c030e448e43&quot;,
+    &quot;kind&quot;: &quot;journey-map&quot;,
+    &quot;status&quot;: &quot;draft&quot;,
+    &quot;check&quot;: {
+      &quot;pass&quot;: false,
+      &quot;failures&quot;: [
+        { &quot;rule&quot;: &quot;min-nodes&quot;, &quot;message&quot;: &quot;expected at least 3 nodes, found 1&quot; },
+        { &quot;rule&quot;: &quot;min-evidence-per-node&quot;, &quot;nodeId&quot;: &quot;plan&quot;, &quot;message&quot;: &quot;node \&quot;plan\&quot; cites 0 evidence refs, needs 1&quot; }
+      ]
+    },
+    […]
+  }
+}</code></pre></div><aside class="callout callout-note"><p>A rejected write is not lost work: the draft persists with its check report attached, so you fix the nodes and write again — the store never silently drops an artifact.</p>
+</aside>
+<p>The retry — three nodes, four evidence refs — came back <code>accepted: true</code> (still <code>draft</code>; acceptance is necessary, not sufficient). Then the critic gate, from a second captured session of the same loop:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ asd sd_review --projectId capture-meridian-953950ca --artifactId 7bfbea7ad1f34940bd46a6a66c7eaa22 --verdict pass --rows []
+## Review verdict</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;status&quot;: &quot;final&quot;, &quot;verdict&quot;: &quot;pass&quot;, &quot;logArtifactId&quot;: &quot;6e5b2de08e6b42f1b5ad8c89e39240cd&quot;, &quot;rowsWritten&quot;: 0, &quot;artifact&quot;: { […] } }</code></pre></div><p>A <code>veto</code> verdict instead puts the artifact back to <code>draft</code> and writes a <code>review-veto-log</code> artifact holding the critic&#39;s defect and proposal rows — the veto capture shows <code>&quot;rowsWritten&quot;: 2</code> and the log appearing on the review board beside the artifact it reviews. Either way the verdict is an artifact, not a chat message.</p>
+<p>Finally, prove the whole project:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ asd sd_factcheck --projectId capture-meridian-953950ca
+## Factcheck</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;pass&quot;: true, &quot;rows&quot;: [ { &quot;artifactId&quot;: &quot;7bfbea7ad1f34940bd46a6a66c7eaa22&quot;, &quot;status&quot;: &quot;final&quot;, &quot;integrity&quot;: { &quot;pass&quot;: true }, &quot;acceptance&quot;: { &quot;pass&quot;: true }, &quot;review&quot;: { &quot;pass&quot;: true, &quot;gate&quot;: &quot;critic&quot;, &quot;verdict&quot;: &quot;pass&quot; }, […] } ] }</code></pre></div><p><code>sd_factcheck</code> replays referential integrity, acceptance rules and review verdicts for every artifact and exits 1 on any failure — the earlier capture, with a broken draft still in the store, exited 1. That is the loop: evidence in, gated write, critic verdict, final, verifiable.</p>
+<h2 id="mcp-server">MCP server</h2><p>The same 16 tools plus the knowledge corpus, exposed to any MCP client as a self-contained stdio server vendored at <code>platform/packs/mcp/mcp/bin/server.mjs</code>. Client config (from the pack&#39;s <code>asd-mcp.json</code>; absolutize the path after placing the pack, since clients spawn servers from arbitrary working directories):</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;asd&quot;: {
+      &quot;command&quot;: &quot;node&quot;,
+      &quot;args&quot;: [&quot;mcp/bin/server.mjs&quot;]
+    }
+  }
+}</code></pre></div><p>A captured handshake against the vendored bundle:</p>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>initialize: {&quot;protocolVersion&quot;:&quot;2025-06-18&quot;,[…],&quot;serverInfo&quot;:{&quot;name&quot;:&quot;asd-mcp&quot;,&quot;version&quot;:&quot;0.1.0&quot;}}
+tools/list (16): sd_project_list, sd_project_create, sd_project_open, sd_evidence_add, […], sd_factcheck
+resources/list page1: 100 resources, nextCursor=b2Zmc2V0OjEwMA</code></pre></div><p>The 215 <code>asd://</code> resources — books, chapters, articles — cursor-paginate at 100 per page. Tool calls behave exactly like the CLI capture above, because they are the same engine.</p>
+<h2 id="dsh-workbench">DSH workbench</h2><p>The suite <strong>is</strong> the DeepSeek Harness plugin — <code>suite/</code> (<code>@asd/core</code>, <code>@asd/engine</code>, <code>@asd/knowledge</code>, <code>@asd/agents</code>, <code>@asd/runtime</code>) packages the engine, tools, artifact renderers and role validation as the <code>asd</code> bundle. From <code>platform/packs/dsh/README.md</code>:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>cd suite &amp;&amp; pnpm install &amp;&amp; pnpm -r --filter '@asd/*' test
+# then load the plugins in a dsh profile and wire each method step's role to
+# the corresponding platform agent (agents/&lt;role&gt;/instructions.md)</code></pre></div><p>Method steps carry <code>role</code> + <code>gate</code>, and <code>@asd/agents</code> validates every manifest against the 10-role registry at apply time. The <a href="../harness.html">harness page</a> has the workbench context; the loop underneath is the one you just ran.</p>
+<h2 id="the-loop-once">The loop, once</h2><figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1238 172" role="img" aria-hidden="true"><defs><marker id="arr-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 216.39999999999998,114 242.39999999999998,114 268.4,114" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 414.8413793103448,92.5 508.4,41.5 553.4,41.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="514.4" y="36.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">accepted</text><path d="M 482.4,92.88157894736842 508.4,87.75 560.5142857142857,99" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="514.4" y="82.75" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">rejected</text><path d="M 534.4,123.04111842105263 508.4,125.5 482.4,123.25187969924812" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 706.6,35.200657894736835 751.5999999999999,31.5 815.5999999999999,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="757.5999999999999" y="26.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">pass</text><path d="M 684.7518324607329,63 751.5999999999999,89.25 844.4285714285713,132" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="757.5999999999999" y="84.25" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">veto</text><path d="M 777.5999999999999,154.92663476874003 751.5999999999999,157 630,157 508.4,157 441.9,135.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 938.3999999999999,31.5 1002.3999999999999,31.5 1028.3999999999999,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><rect x="10" y="92.5" width="206.39999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="113.19999999999999" y="111.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_evidence_add\nquote ·</text><text x="113.19999999999999" y="124.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">telemetry · document</text><rect x="268.4" y="92.5" width="214" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="375.4" y="111.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_artifact_write\nmethod</text><text x="375.4" y="124.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">acceptance rules</text><rect x="553.4" y="20" width="153.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="630" y="39" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_review\ncritic</text><text x="630" y="52" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">verdict</text><rect x="534.4" y="99" width="191.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="630" y="118" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">draft + check.failures</text><rect x="815.5999999999999" y="16.5" width="122.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="876.9999999999999" y="35.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">status: final</text><rect x="777.5999999999999" y="132" width="198.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="876.9999999999999" y="151" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">draft + review-veto-log</text><rect x="1028.3999999999999" y="10" width="198.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1127.8" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_factcheck\nexit 1 on</text><text x="1127.8" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">any failure</text></svg><figcaption><span class="fignum">Figure 1</span><span class="figcap">The loop, once</span></figcaption></figure>
+<div class="facts-grid"><div class="fact"><span class="fact-k">Writes are gated</span><span class="fact-v">A failing <code>sd_artifact_write</code> persists as <code>status: draft</code> with <code>check.failures</code> — never as final.</span></div><div class="fact"><span class="fact-k">Review is a state change</span><span class="fact-v"><code>sd_review</code> pass flips the artifact to <code>final</code>; veto keeps it <code>draft</code> and writes a <code>review-veto-log</code> artifact.</span></div><div class="fact"><span class="fact-k">Factcheck is replay</span><span class="fact-v"><code>sd_factcheck</code> re-runs integrity, acceptance and review for every artifact and exits 1 on any failure.</span></div><div class="fact"><span class="fact-k">Kind ids are strings</span><span class="fact-v"><code>journey-map</code>, <code>service-blueprint</code> — not numbers. <code>phase-gate-decision</code> and <code>orchestration-plan</code> are not implemented.</span></div><div class="fact"><span class="fact-k">Methods are executable</span><span class="fact-v">All 74 skills&#39; method manifests run via <code>sd_method_run</code> — the SOP is the contract.</span></div></div><h2 id="where-next">Where next</h2><ul>
+<li><a href="./index.html">The platform manual</a> — the engine map and the numbers.</li>
+<li><a href="./use-cases.html">Use cases</a> — engagement-shaped walkthroughs of the same loop.</li>
+<li><a href="./reference-tools.html">Engine tools reference</a> — all 16 <code>sd_*</code> tools, their flags and outputs.</li>
+<li><a href="./reference-artifacts.html">Artifact catalog reference</a> — the 38 kinds and their machine-checked forms.</li>
+</ul>
+</article></div>
+  <button class="backtop" id="backtop" type="button">Back to top</button>
+</main>
+<footer class="footer">
+  <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
+  <span><a href="../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
+</footer>
+<script src="../assets/site.js"></script>
+</body></html>

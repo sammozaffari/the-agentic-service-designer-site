@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="asd-mcp: the platform engine as a self-contained MCP stdio server — 16 tools, 215 corpus resources, 10 role prompts — for any agentic tool that speaks MCP.">
+<title>The MCP server — The Agentic Service Designer</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
+
+</head><body>
+<header class="site-head">
+  <a class="brand" href="../index.html">
+    <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
+    <div class="brand-sub">Sam Mozaffari</div>
+  </a>
+  <nav class="main-nav">
+    <a href="../index.html" class="">Index</a>
+    <a href="../harness.html" class="">Harness</a>
+    <a href="../docs/index.html" class="on">Docs</a>
+    <a href="../about.html" class="">About</a>
+    <a href="../cv.html" class="">CV</a>
+  </nav>
+</header>
+<main class="art">
+  <div class="art-progress"><div class="art-progress-bar" id="progress"></div></div>
+  <section class="page-hero">
+    <span class="kicker">Docs · Surfaces</span>
+    <h1>The MCP server</h1>
+    <p class="lede">asd-mcp: the platform engine as a self-contained MCP stdio server — 16 tools, 215 corpus resources, 10 role prompts — for any agentic tool that speaks MCP.</p>
+  </section>
+  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Docs</b><span class="docs-nav-sec">Start</span><ol><li><a href="./index.html">The platform manual</a></li><li><a href="./getting-started.html">Getting started</a></li></ol><span class="docs-nav-sec">Surfaces</span><ol><li><a href="./plugin-claude-code.html">The Claude Code plugin</a></li><li><a href="./plugin-hosts.html">Host packs and the compiler</a></li><li><a href="./mcp.html" class="on">The MCP server</a></li><li><a href="./cli.html">The CLI</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#invocation">Invocation</a></li><li><a href="#client-configs">Client configs</a></li><li><a href="#tools">Tools</a></li><li><a href="#resources">Resources</a></li><li><a href="#prompts">Prompts</a></li><li><a href="#errors-and-lifecycle">Errors and lifecycle</a></li><li><a href="#corpus-roots-and-empty-corpus-behavior">Corpus roots and empty-corpus behavior</a></li><li><a href="#format-pin">Format pin</a></li></ol></nav></aside><article class="art-body"><h1 id="the-mcp-server">The MCP server</h1><p><code>asd-mcp</code> is the Service Design Agent Platform engine as an MCP stdio server — protocol revision <code>2025-06-18</code>, newline-delimited JSON-RPC 2.0, zero npm dependencies beyond the engine. Any agentic tool that can spawn a stdio MCP server gets the full platform: the sixteen <code>sd_*</code> tools, the knowledge corpus as resources, and the ten role contracts as prompts. The <a href="./plugin-claude-code.html">Claude Code plugin</a> is one consumer; this page is about the server itself, for everyone else.</p>
+<h2 id="invocation">Invocation</h2><p>Every pack that wires MCP ships the server vendored under <code>mcp/</code> — a tsdown bundle with the entire dependency graph inlined, plus the knowledge corpus as data. One canonical invocation, no npm install, no PATH entry, no suite checkout:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>node &lt;pack-root&gt;/mcp/bin/server.mjs</code></pre></div><p>The standalone <code>platform/packs/mcp</code> pack adds a launcher shim (<code>asd-mcp</code>) that resolves the vendored server relative to itself, and a client config template, <code>asd-mcp.json</code>:</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;asd&quot;: {
+      &quot;command&quot;: &quot;node&quot;,
+      &quot;args&quot;: [
+        &quot;mcp/bin/server.mjs&quot;
+      ]
+    }
+  }
+}</code></pre></div><p>Clients spawn servers from arbitrary working directories, so absolutize the path after placing the pack:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>sed -i.bak &quot;s|mcp/bin/server.mjs|$PWD/mcp/bin/server.mjs|&quot; asd-mcp.json</code></pre></div><h2 id="client-configs">Client configs</h2><p>Real snippets from the packs, one per host.</p>
+<p>Claude Code (plugin-root <code>.mcp.json</code>, loaded automatically for installed plugins):</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;asd&quot;: {
+      &quot;command&quot;: &quot;node&quot;,
+      &quot;args&quot;: [
+        &quot;${CLAUDE_PLUGIN_ROOT}/mcp/bin/server.mjs&quot;
+      ]
+    }
+  }
+}</code></pre></div><p>opencode (<code>opencode.json</code>):</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+  &quot;$schema&quot;: &quot;https://opencode.ai/config.json&quot;,
+  &quot;mcp&quot;: {
+    &quot;servers&quot;: {
+      &quot;asd&quot;: {
+        &quot;type&quot;: &quot;stdio&quot;,
+        &quot;command&quot;: &quot;node&quot;,
+        &quot;args&quot;: [
+          &quot;mcp/bin/server.mjs&quot;
+        ]
+      }
+    }
+  }
+}</code></pre></div><p>codex (<code>.codex/config.toml</code>):</p>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code># asd-mcp wiring (merge into your Codex config)
+[mcp_servers.asd]
+command = &quot;node&quot;
+args = [&quot;mcp/bin/server.mjs&quot;]
+# ASD_WORKSPACE left unset — the server defaults to ~/.asd/projects</code></pre></div><p>kimi (<code>.kimi-code/mcp.json</code>; Kimi starts project-level stdio servers from the project root):</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;asd&quot;: {
+      &quot;command&quot;: &quot;node&quot;,
+      &quot;args&quot;: [
+        &quot;.kimi-code/mcp/bin/server.mjs&quot;
+      ]
+    }
+  }
+}</code></pre></div><h2 id="tools">Tools</h2><p>Sixteen tools, one per engine capability. <code>tools/list</code> returns every <code>sd_*</code> tool with its JSON schema as <code>inputSchema</code>; <code>tools/call</code> validates name and arguments, executes, and renders content blocks — tool failures return <code>isError: true</code>, not a protocol error.</p>
+<div class="tbl-wrap"><table><thead><tr><th>Tool</th><th>Contract</th></tr></thead><tbody><tr><td><code>sd_project_list</code></td><td>List the projects in the workspace.</td></tr><tr><td scope="row"><code>sd_project_create</code></td><td>Create a project (<code>name</code>, <code>client</code>, <code>sector</code>, <code>service</code>, <code>phase</code>); returns the generated <code>projectId</code>.</td></tr><tr><td scope="row"><code>sd_project_open</code></td><td>The project record plus its artifacts — the state snapshot.</td></tr><tr><td scope="row"><code>sd_evidence_add</code></td><td>Append a <code>{source, kind, body}</code> row to the evidence register; <code>kind</code> is exactly <code>quote</code>, <code>telemetry</code>, or <code>document</code>. The id is content-addressed (sha-256 of the row), so re-adding the same row returns the same id.</td></tr><tr><td scope="row"><code>sd_evidence_query</code></td><td>Query the register by <code>kind</code> and/or <code>search</code>.</td></tr><tr><td scope="row"><code>sd_artifact_list</code></td><td>List a project&#39;s artifacts, optionally by <code>kind</code>.</td></tr><tr><td scope="row"><code>sd_artifact_get</code></td><td>One artifact by id, including <code>status</code> and any <code>check.failures</code>.</td></tr><tr><td scope="row"><code>sd_method_list</code></td><td>The method manifests, filterable by <code>phase</code> and <code>producesKind</code>.</td></tr><tr><td scope="row"><code>sd_method_run</code></td><td>A method&#39;s executable contract: steps with role assignments and gates, acceptance rules, output kind, available evidence count.</td></tr><tr><td scope="row"><code>sd_artifact_write</code></td><td>Write nodes through structural-integrity and acceptance checks. A failing write still persists — as <code>status: draft</code> with <code>check.failures</code>; passing <code>artifactId</code> rewrites that draft in place.</td></tr><tr><td scope="row"><code>sd_review</code></td><td>The Critic&#39;s verdict. <code>pass</code> flips the artifact to <code>final</code>; <code>veto</code> keeps it <code>draft</code> and writes a final <code>review-veto-log</code> artifact linked via <code>reviewOf</code>, one node per row (<code>rowKind: defect|proposal</code>, <code>severity</code>, <code>rule</code>, <code>message</code>, <code>fix</code> required on defects, optional <code>evidenceId</code>).</td></tr><tr><td scope="row"><code>sd_review_list</code></td><td>The review board: per artifact, its status, review gate, verdict, log artifact, and outstanding failures.</td></tr><tr><td scope="row"><code>sd_export_report</code></td><td>Render a report (e.g. <code>executive-summary</code>) into the project&#39;s <code>renders/</code>.</td></tr><tr><td scope="row"><code>sd_export_artifact</code></td><td>Render one artifact (e.g. SVG) into <code>renders/</code>.</td></tr><tr><td scope="row"><code>sd_knowledge</code></td><td>Search the method and artifact-kind catalog by <code>query</code>, <code>phase</code>, <code>source</code>, or <code>type</code>.</td></tr><tr><td scope="row"><code>sd_factcheck</code></td><td>Replay integrity, acceptance, and review state across the project; reports <code>pass: false</code> on any failure.</td></tr></tbody></table></div><h2 id="resources">Resources</h2><p>The knowledge canon is readable as MCP resources. The URI grammar:</p>
+<ul>
+<li><code>asd://books/&lt;book&gt;</code> — book overview + chapter index</li>
+<li><code>asd://books/&lt;book&gt;/&lt;chapter&gt;</code> — one chapter</li>
+<li><code>asd://articles/&lt;NN&gt;</code> — one case study</li>
+</ul>
+<p>215 resources in total: 20 books, 159 chapters, 36 articles. All are <code>text/markdown</code>; URI segments come straight from directory and file names, so the book segment is the same provenance slug the corpus uses everywhere (e.g. <code>09-mapping-experiences</code>) and the chapter segment is the chapter file stem (e.g. <code>04-customer-journey-maps</code>).</p>
+<p><code>resources/list</code> is cursor-paginated, 100 per page, with an opaque <code>nextCursor</code>. The real page-1 response from a live server (trimmed; full frame is a single line):</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:2,&quot;result&quot;:{&quot;resources&quot;:[
+  {&quot;uri&quot;:&quot;asd://articles/01&quot;,&quot;name&quot;:&quot;article-01&quot;,&quot;title&quot;:&quot;The AI-First Service Design Operating System&quot;,&quot;description&quot;:&quot;Case study — Foundations &amp; Process&quot;,&quot;mimeType&quot;:&quot;text/markdown&quot;},
+  {&quot;uri&quot;:&quot;asd://articles/02&quot;,&quot;name&quot;:&quot;article-02&quot;,&quot;title&quot;:&quot;From Insight to Implementation: Redesigning Telehealth Onboarding at Northgate Health&quot;,&quot;description&quot;:&quot;Case study — Foundations &amp; Process&quot;,&quot;mimeType&quot;:&quot;text/markdown&quot;},
+  {&quot;uri&quot;:&quot;asd://articles/03&quot;,&quot;name&quot;:&quot;article-03&quot;,&quot;title&quot;:&quot;Service Design for Business: Turning Claims into an Experience at Aurelia Insurance&quot;,&quot;description&quot;:&quot;Case study — Foundations &amp; Process&quot;,&quot;mimeType&quot;:&quot;text/markdown&quot;},
+  […97 more resources…]
+],&quot;nextCursor&quot;:&quot;b2Zmc2V0OjEwMA&quot;}}</code></pre></div><p><code>resources/read</code> returns one resource&#39;s Markdown by URI, or <code>-32002</code> when the URI is not in the listing.</p>
+<h2 id="prompts">Prompts</h2><p><code>prompts/list</code> exposes the ten agent roles (orchestrator, researcher, synthesizer, mapper, ideator, prototyper, measurer, critic, presenter, librarian); <code>prompts/get</code> returns one role as a single user message — the shared role contract plus the role&#39;s own instructions. The critic, live:</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:3,&quot;result&quot;:{
+  &quot;description&quot;:&quot;The adversarial conscience of the engagement. Sits on the write path, not after it: any artifact whose method manifest declares `reviewGate: critic` is final-eligible only after a Critic verdict. The Critic's job is to make every claim earn its place — evidence-cited, machine-checked first, judgment second. The Critic does not design; it defends the truth of the work.&quot;,
+  &quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,&quot;content&quot;:{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;# SDAP Role Contract — the collaboration protocol\n\n&gt; Canonical source: `docs/plans/2026-08-17-service-design-agent-platform.md` (§3.2, §3.5).\n&gt; Every role agent […]&quot;}}]
+}}</code></pre></div><p>Loading a role prompt is how a generic host gets the platform&#39;s collaboration protocol without a native subagent mechanism — the <a href="./plugin-hosts.html">grok pack</a> ships exactly this as text files.</p>
+<h2 id="errors-and-lifecycle">Errors and lifecycle</h2><p><code>initialize</code> advertises <code>tools</code>, <code>resources</code>, and <code>prompts</code> (no <code>subscribe</code>/<code>listChanged</code>); the server answers with <code>serverInfo</code> <code>{name: &quot;asd-mcp&quot;, version: &quot;0.1.0&quot;}</code>:</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;result&quot;:{&quot;protocolVersion&quot;:&quot;2025-06-18&quot;,&quot;capabilities&quot;:{&quot;tools&quot;:{},&quot;resources&quot;:{},&quot;prompts&quot;:{}},&quot;serverInfo&quot;:{&quot;name&quot;:&quot;asd-mcp&quot;,&quot;version&quot;:&quot;0.1.0&quot;}}}</code></pre></div><p>Every method except <code>initialize</code>/<code>ping</code> requires initialization first. Notifications (no <code>id</code>) are never answered.</p>
+<div class="tbl-wrap"><table><thead><tr><th>Code</th><th>Meaning</th></tr></thead><tbody><tr><td><code>-32700</code></td><td>Parse error</td></tr><tr><td scope="row"><code>-32601</code></td><td>Unknown method</td></tr><tr><td scope="row"><code>-32602</code></td><td>Invalid params — bad cursor, missing <code>name</code>/<code>uri</code>, unknown tool or prompt, non-object <code>arguments</code></td></tr><tr><td scope="row"><code>-32000</code></td><td>Not initialized</td></tr><tr><td scope="row"><code>-32002</code></td><td>Resource not found</td></tr><tr><td scope="row"><code>-32603</code></td><td>Internal error</td></tr></tbody></table></div><h2 id="corpus-roots-and-empty-corpus-behavior">Corpus roots and empty-corpus behavior</h2><p>Resources and prompts are discovered from the filesystem at request time. Three env vars override the roots individually:</p>
+<div class="facts-grid"><div class="fact"><span class="fact-k"><code>ASD_BOOKS_ROOT</code></span><span class="fact-v">overrides <code>books/</code></span></div><div class="fact"><span class="fact-k"><code>ASD_ARTICLES_ROOT</code></span><span class="fact-v">overrides <code>articles/</code></span></div><div class="fact"><span class="fact-k"><code>ASD_AGENTS_ROOT</code></span><span class="fact-v">overrides <code>platform/agents/</code></span></div><div class="fact"><span class="fact-k">fallback</span><span class="fact-v">the nearest ancestor of the installed module carrying the repo layout (<code>books/README.md</code>, <code>articles/README.md</code>, <code>platform/agents/</code>)</span></div><div class="fact"><span class="fact-k"><code>ASD_WORKSPACE</code></span><span class="fact-v">the engine tools&#39; project-workspace override (default <code>~/.asd/projects</code>) — unrelated to the corpus roots</span></div></div><aside class="callout callout-note"><p>The npm tarball does not ship the corpus. Installed outside the repo with no env vars set, <code>resources/list</code> and <code>prompts/list</code> return empty arrays and reads answer <code>-32002</code> — tools are unaffected. This is deliberate, not a broken install.</p>
+</aside>
+<p>Do not confuse two corpora. The vendored <code>mcp/data/</code> tree inside each pack is the method and artifact-kind catalog — runtime data the server reads relative to its own URL, and the reason <code>sd_knowledge</code> and <code>sd_method_list</code> work anywhere. The <code>asd://</code> books/chapters/articles resources and the role prompts are the repo&#39;s Service Design canon, discovered per the table above: a pack copied out of the repo keeps its tools and its method catalog, and serves empty resource/prompt lists until the env vars point at a corpus.</p>
+<h2 id="format-pin">Format pin</h2><p>MCP spec revision <code>2025-06-18</code>; JSON-RPC 2.0; node ≥ 20; bundle emitted by tsdown 0.22 from suite <code>@asd/runtime</code>. Verified end-to-end (initialize → tools/list → tools/call → error) against the vendored bundle from a scratch directory, 2026-08-18. For the same engine in a terminal instead of a client, see the <a href="./cli.html">CLI page</a>.</p>
+</article></div>
+  <button class="backtop" id="backtop" type="button">Back to top</button>
+</main>
+<footer class="footer">
+  <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
+  <span><a href="../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
+</footer>
+<script src="../assets/site.js"></script>
+</body></html>
