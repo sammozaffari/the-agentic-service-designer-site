@@ -8,7 +8,6 @@
   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: transparent; overflow: hidden; font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace; }
-  body.live { background: #0a0a0a; }
   canvas { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 100%; max-height: 100%; cursor: crosshair; }
 </style>
 </head>
@@ -47,11 +46,26 @@
   } catch (e) {
     return; // keep the page transparent — the fallback photo shows through
   }
-  document.body.classList.add('live');
 
   const G = grid.G;
   const canvas = document.getElementById('c');
   const ctx = canvas.getContext('2d');
+
+  // White-paper toning: the photo is rendered on a light stage, so every cell
+  // colour is pushed toward ink by its luminance — bright cells keep their hue
+  // at mid-tones, dark cells stay near-black. The face's contrast survives on
+  // white, and the portrait blends into the page instead of a black box.
+  const tint = new Array(G.length);
+  const tintGray = new Array(G.length);
+  for (let i = 0; i < G.length; i++) {
+    const cell = G[i];
+    const r = cell[1], g = cell[2], b = cell[3];
+    const l = 0.299 * r + 0.587 * g + 0.114 * b;
+    const f = 0.40 + 0.45 * (1 - l / 255);
+    tint[i] = [Math.round(r * f), Math.round(g * f), Math.round(b * f)];
+    const gr = Math.round(l * f);
+    tintGray[i] = [gr, gr, gr];
+  }
 
   const dpr = Math.min(2, window.devicePixelRatio || 1);
   const W = Math.ceil(COLS * CELL_W);
@@ -209,10 +223,8 @@
     }
 
     for (let i = 0; i < G.length; i++) {
-      const cell = G[i];
-      const level = cell[0];
+      const level = G[i][0];
       if (level === 0) continue;
-      const r = cell[1], g = cell[2], b = cell[3];
       const x = i % COLS;
       const y = (x === 0 ? i / COLS : (i - x) / COLS) | 0;
 
@@ -247,6 +259,7 @@
 
       const useColor = infected[i] === 1 || inHover;
       const alpha = OPACITY[level];
+      const ink = useColor ? tint[i] : tintGray[i];
 
       displaceX[i] = 0; displaceY[i] = 0;
       if (inHover && mouseMoving) {
@@ -258,20 +271,12 @@
       }
       const hasDrift = Math.abs(displaceX[i]) > 0.2 || Math.abs(displaceY[i]) > 0.2;
 
-      if (useColor) {
-        ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
-      } else {
-        ctx.fillStyle = 'rgba(212,212,212,' + alpha + ')';
-      }
+      ctx.fillStyle = 'rgba(' + ink[0] + ',' + ink[1] + ',' + ink[2] + ',' + alpha + ')';
       ctx.fillText(glyph, px, py);
 
       if (hasDrift) {
         const dAlpha = Math.min(alpha, 0.7);
-        if (useColor) {
-          ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + dAlpha + ')';
-        } else {
-          ctx.fillStyle = 'rgba(212,212,212,' + dAlpha + ')';
-        }
+        ctx.fillStyle = 'rgba(' + ink[0] + ',' + ink[1] + ',' + ink[2] + ',' + dAlpha + ')';
         ctx.fillText(glyph, px + displaceX[i], py + displaceY[i]);
       }
     }
