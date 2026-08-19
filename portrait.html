@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sam Mozaffari — ASCII portrait</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: transparent; overflow: hidden; font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace; }
+  body.live { background: #0a0a0a; }
+  canvas { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 100%; max-height: 100%; cursor: crosshair; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+(async () => {
+  const COLS = 166;
+  const ROWS = 82;
+  const CELL_W = 4.8;
+  const CELL_H = 11;
+  const FONT_SIZE = 8;
+
+  const RAMP = [
+    ' ',              // 0  background
+    '.\u00B7',        // 1  faintest
+    ',:;-',           // 2
+    '~=+!?',          // 3
+    '/\\|<>{}[]',     // 4
+    'cvxznrst',       // 5
+    'oaepqdbgu',      // 6
+    'AXYZSRG094',     // 7
+    'OWQB$&#%86',     // 8
+    '@#MW$%&B08',     // 9
+    '@#$%&WMB8N',     // 10 densest
+  ];
+  const OPACITY = [0, 0.30, 0.30, 0.30, 0.65, 0.65, 0.65, 1.0, 1.0, 1.0, 1.0];
+  const HOVER_RADIUS = 70;
+  const SPREAD_RATE = 15;
+
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let grid;
+  try {
+    grid = await (await fetch('./assets/portrait-ascii.json')).json();
+  } catch (e) {
+    return; // keep the page transparent — the fallback photo shows through
+  }
+  document.body.classList.add('live');
+
+  const G = grid.G;
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const W = Math.ceil(COLS * CELL_W);
+  const H = Math.ceil(ROWS * CELL_H);
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  // deterministic seeded RNG so the portrait renders the same for everyone
+  const rng = (() => { let s = 42; return () => { s = (s * 1664525 + 1013904223) & 0xFFFFFFFF; return (s >>> 0) / 0xFFFFFFFF; }; })();
+
+  const baseGlyphs = new Array(G.length);
+  const cellNoise = new Array(G.length);
+  const flickerPhase = new Array(G.length);
+  const flickerInterval = new Array(G.length);
+  const rowNoise = new Array(ROWS);
+  for (let i = 0; i < G.length; i++) {
+    const charset = RAMP[G[i][0]];
+    baseGlyphs[i] = charset[Math.floor(rng() * charset.length)];
+    cellNoise[i] = rng();
+    flickerPhase[i] = Math.floor(rng() * 600);
+    flickerInterval[i] = 300 + Math.floor(rng() * 900);
+  }
+  for (let r = 0; r < ROWS; r++) rowNoise[r] = rng();
+
+  // input coordinates in canvas CSS-pixel space (accounts for CSS fit-scaling)
+  let mouseX = -1000, mouseY = -1000, prevMouseX = -1000, prevMouseY = -1000;
+  function toCanvas(e) {
+    const rect = canvas.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    mouseX = ((e.clientX - rect.left) / rect.width) * W;
+    mouseY = ((e.clientY - rect.top) / rect.height) * H;
+  }
+  canvas.addEventListener('mousemove', (e) => {
+    prevMouseX = mouseX; prevMouseY = mouseY;
+    toCanvas(e);
+  });
+  canvas.addEventListener('mouseleave', () => {
+    mouseX = -1000; mouseY = -1000; prevMouseX = -1000; prevMouseY = -1000;
+  });
+
+  // ---- click: flood-fill toggle between mono and the photo's own colours ----
+  const infected = new Uint8Array(G.length);
+  let isAllColored = false;
+  let spreading = false, spreadDir = 'color', spreadTimer = 0;
+  let frontier = [];
+
+  function startSpread(fromX, fromY, dir) {
+    spreading = true;
+    spreadDir = dir;
+    const cx = Math.floor(fromX / CELL_W);
+    const cy = Math.floor(fromY / CELL_H);
+    frontier = [];
+    for (let dy = -2; dy <= 2; dy++) {
+      for (let dx = -2; dx <= 2; dx++) {
+        const nx = cx + dx, ny = cy + dy;
+        if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS) {
+          const idx = ny * COLS + nx;
+          const target = dir === 'color' ? 1 : 0;
+          if (infected[idx] !== target) { infected[idx] = target; frontier.push(idx); }
+        }
+      }
+    }
+    spreadTimer = 0;
+  }
+
+  function stepSpread() {
+    if (!spreading || frontier.length === 0) { spreading = false; return; }
+    spreadTimer++;
+    if (spreadTimer % 5 >= 3) return; // burst three frames, pause two
+
+    const target = spreadDir === 'color' ? 1 : 0;
+    const newFrontier = [];
+    const batch = Math.min(SPREAD_RATE + Math.floor(Math.random() * 20), frontier.length);
+
+    for (let b = 0; b < batch; b++) {
+      if (frontier.length === 0) break;
+      const pick = Math.floor(Math.random() * frontier.length);
+      const idx = frontier[pick];
+      frontier[pick] = frontier[frontier.length - 1];
+      frontier.pop();
+      const x = idx % COLS, y = (idx - x) / COLS;
+
+      const dirs = [[0, -1], [0, 1], [-1, 0], [1, 0]];
+      if (Math.random() < 0.25) dirs.push([-1, -1], [1, -1], [-1, 1], [1, 1]);
+      if (Math.random() < 0.05) {
+        const jumpDx = Math.floor((Math.random() - 0.5) * 12);
+        const jumpDy = Math.floor((Math.random() - 0.5) * 8);
+        dirs.push([jumpDx, jumpDy]);
+      }
+
+      for (const [ddx, ddy] of dirs) {
+        const nx = x + ddx, ny = y + ddy;
+        if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS) {
+          const ni = ny * COLS + nx;
+          if (infected[ni] !== target) {
+            if (Math.random() > cellNoise[ni] * 0.55) { infected[ni] = target; newFrontier.push(ni); }
+            else newFrontier.push(idx);
+          }
+        }
+      }
+    }
+    frontier = frontier.concat(newFrontier);
+
+    if (frontier.length > 500) {
+      const extra = Math.min(SPREAD_RATE, frontier.length);
+      for (let b = 0; b < extra; b++) {
+        const pick = Math.floor(Math.random() * frontier.length);
+        const idx = frontier[pick];
+        frontier[pick] = frontier[frontier.length - 1];
+        frontier.pop();
+        const x = idx % COLS, y = (idx - x) / COLS;
+        for (const [ddx, ddy] of [[0, -1], [0, 1], [-1, 0], [1, 0]]) {
+          const nx = x + ddx, ny = y + ddy;
+          if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS) {
+            const ni = ny * COLS + nx;
+            if (infected[ni] !== target) { infected[ni] = target; newFrontier.push(ni); }
+          }
+        }
+      }
+      frontier = frontier.concat(newFrontier);
+    }
+    if (frontier.length === 0) spreading = false;
+  }
+
+  const rowShift = new Array(ROWS).fill(0);
+  const displaceX = new Array(G.length);
+  const displaceY = new Array(G.length);
+  let time = 0;
+
+  function render() {
+    time++;
+    ctx.clearRect(0, 0, W, H);
+    ctx.font = '400 ' + FONT_SIZE + 'px "JetBrains Mono", ui-monospace, monospace';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+
+    stepSpread();
+
+    const mouseMoving = Math.abs(mouseX - prevMouseX) + Math.abs(mouseY - prevMouseY) > 0.5;
+
+    for (let row = 0; row < ROWS; row++) {
+      rowShift[row] = 0;
+      if (!mouseMoving || mouseX <= 0) continue;
+      const rowCenterY = (row + 0.5) * CELL_H;
+      const rowDist = Math.abs(rowCenterY - mouseY);
+      const rowRadius = 50;
+      if (rowDist >= rowRadius) continue;
+      const mvx = mouseX - prevMouseX;
+      const rowStrength = (1 - rowDist / rowRadius) * (0.3 + rowNoise[row] * 0.7);
+      const maxH = 8 + rowNoise[row] * 6;
+      rowShift[row] = Math.round(Math.max(-maxH, Math.min(maxH, mvx * rowStrength * 1.8)));
+    }
+
+    for (let i = 0; i < G.length; i++) {
+      const cell = G[i];
+      const level = cell[0];
+      if (level === 0) continue;
+      const r = cell[1], g = cell[2], b = cell[3];
+      const x = i % COLS;
+      const y = (x === 0 ? i / COLS : (i - x) / COLS) | 0;
+
+      const basePx = (x + 0.5) * CELL_W + rowShift[y];
+      const basePy = (y + 0.5) * CELL_H;
+      const dx = basePx - mouseX, dy = basePy - mouseY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const cellThreshold = HOVER_RADIUS * (0.35 + cellNoise[i] * 0.65);
+      const inHover = dist < cellThreshold;
+
+      let cellJitterY = 0;
+      if (inHover && mouseMoving && Math.random() < 0.15) {
+        const dir = Math.random() < 0.5 ? -1 : 1;
+        cellJitterY = dir * (1 + Math.floor(cellNoise[i] * 6));
+      }
+      const px = basePx;
+      const py = basePy + cellJitterY;
+
+      let glyph = baseGlyphs[i];
+      const charset = RAMP[level];
+
+      if (inHover && mouseMoving && Math.random() < 0.03) {
+        const roughCharset = RAMP[Math.max(1, level + Math.floor((Math.random() - 0.5) * 4))];
+        if (roughCharset && roughCharset !== ' ') {
+          glyph = roughCharset[Math.floor(Math.random() * roughCharset.length)];
+          baseGlyphs[i] = glyph;
+        }
+      } else if ((time + flickerPhase[i]) % flickerInterval[i] === 0) {
+        glyph = charset[Math.floor(Math.random() * charset.length)];
+        baseGlyphs[i] = glyph;
+      }
+
+      const useColor = infected[i] === 1 || inHover;
+      const alpha = OPACITY[level];
+
+      displaceX[i] = 0; displaceY[i] = 0;
+      if (inHover && mouseMoving) {
+        const mvx = mouseX - prevMouseX;
+        const mvy = mouseY - prevMouseY;
+        const push = 5 * (1 - dist / cellThreshold);
+        displaceX[i] = Math.round(Math.max(-16, Math.min(16, mvx * push * 0.5)));
+        displaceY[i] = Math.round(Math.max(-16, Math.min(16, mvy * push * 0.5)));
+      }
+      const hasDrift = Math.abs(displaceX[i]) > 0.2 || Math.abs(displaceY[i]) > 0.2;
+
+      if (useColor) {
+        ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+      } else {
+        ctx.fillStyle = 'rgba(212,212,212,' + alpha + ')';
+      }
+      ctx.fillText(glyph, px, py);
+
+      if (hasDrift) {
+        const dAlpha = Math.min(alpha, 0.7);
+        if (useColor) {
+          ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + dAlpha + ')';
+        } else {
+          ctx.fillStyle = 'rgba(212,212,212,' + dAlpha + ')';
+        }
+        ctx.fillText(glyph, px + displaceX[i], py + displaceY[i]);
+      }
+    }
+
+    if (!reduceMotion) requestAnimationFrame(render);
+  }
+
+  canvas.addEventListener('click', (e) => {
+    if (reduceMotion) return;
+    const rect = canvas.getBoundingClientRect();
+    const cx = ((e.clientX - rect.left) / rect.width) * W;
+    const cy = ((e.clientY - rect.top) / rect.height) * H;
+    isAllColored = !isAllColored;
+    startSpread(cx, cy, isAllColored ? 'color' : 'mono');
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
