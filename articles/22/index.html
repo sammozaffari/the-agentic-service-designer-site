@@ -1,253 +1,64 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Service Quality Management at Kestrel Energy — Utilities">
-<title>22. Service Quality Management at Kestrel Energy — Agentic Service Designer</title>
+<meta name="description" content="Service Quality Management at Kestrel Energy — Utilities. By Sam Mozaffari. AI-first service design case study.">
+<title>22. Service Quality Management at Kestrel Energy — The Agentic Service Designer</title>
 <link rel="stylesheet" href="../../assets/style.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234f46e5'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'>A</text></svg>">
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
+
 </head><body>
-<nav class="nav"><div class="nav-inner">
-  <a class="brand" href="../../index.html"><span class="mark">A</span>Agentic Service Designer</a>
-  <div class="nav-links">
-    <a href="../../index.html" class="">Home</a>
+<header class="site-head">
+  <a class="brand" href="../../index.html">
+    <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
+    <div class="brand-sub">Sam Mozaffari</div>
+  </a>
+  <nav class="main-nav">
+    <a href="../../index.html" class="on">Index</a>
+    <a href="../../harness.html" class="">Harness</a>
     <a href="../../about.html" class="">About</a>
-    <a href="../../concept.html" class="">The concept</a>
-    <a href="../../index.html#series" class="on">Case studies</a>
-    <a class="github-link" href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub ↗</a>
-  </div>
-</div></nav>
+    <a href="../../cv.html" class="">CV</a>
+  </nav>
+</header>
 <main class="art">
-  <div class="wrap art-hero">
+  <div class="art-progress"><div class="art-progress-bar" id="progress"></div></div>
+  <div class="art-hero">
     <div class="art-meta">
-      <span class="chip chip-track">Implementation &amp; Operations</span>
-      <span class="sep">·</span><span>Utilities</span>
-      <span class="sep">·</span><span><b>Kestrel Energy</b></span>
-      <span class="sep">·</span><span>16 weeks</span>
-      <span class="chip chip-tool">Claude Code</span><span class="chip chip-tool">OpenCode</span><span class="chip chip-tool">Codex</span><span class="chip chip-tool">GitHub</span>
+      <span class="chip">Implementation &amp; Operations</span>
+      <span class="sep">·</span><span class="chip">Utilities</span>
+      <span class="sep">·</span><span class="chip">16 weeks</span>
+      <span class="sep">·</span><span class="chip">40 min read</span>
     </div>
-    <p class="art-author">Case study 22 &middot; by <a href="../../about.html">Sam Mozaffari</a> &mdash; service designer, AI-first practice</p>
     <h1>Service Quality Management at Kestrel Energy</h1>
     <p class="deck">Fictional composite client. All names, figures, and data are illustrative and anonymized.</p>
-  </div><article class="art-body wrap"><nav class="toc"><b>On this page</b><ol><li><a href="#0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</a></li><li><a href="#1-executive-summary">1. Executive summary</a></li><li><a href="#2-the-brief">2. The brief</a></li><li><a href="#3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</a></li><li><a href="#4-phase-by-phase-narrative">4. Phase-by-phase narrative</a></li><li><a href="#5-artifacts-portfolio">5. Artifacts portfolio</a></li><li><a href="#6-use-cases-case-studies">6. Use cases / case studies</a></li><li><a href="#7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</a></li><li><a href="#8-value-creation-amp-measurement">8. Value creation &amp; measurement</a></li><li><a href="#9-ai-tool-playbook-per-engagement">9. AI tool playbook (per engagement)</a></li><li><a href="#10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</a></li><li><a href="#11-references">11. References</a></li><li><a href="#12-appendix-artifact-index">12. Appendix: artifact index</a></li></ol></nav><h1 id="service-quality-management-at-kestrel-energy">Service Quality Management at Kestrel Energy</h1><h2 id="0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</h2><p>Kestrel Energy is a fictional composite client built from recurring patterns across EU energy retailers managing smart-meter rollout, billing modernization, and SME account operations. All names, figures, datasets, touchpoint IDs, and operating-unit metrics in this article are illustrative and anonymized. This phase-2 case study continues the Kestrel storyline from <a href="../08/index.html">article 08</a>: the personas and rollout improvements are treated as prior work, and the focus here is how that work was institutionalized into a living service quality management system. The engagement was AI-first by design: Claude Code, OpenCode, Codex, and GitHub were the daily operating tools, while the human designer owned framing, governance, ethics, and the political work of getting quality reviewed with operations every month.</p>
-<h2 id="1-executive-summary">1. Executive summary</h2><p>Kestrel Energy had already done the hard phase-1 work of understanding its customers. In <a href="../08/index.html">article 08</a>, the utility rebuilt its personas, improved smart-meter self-booking, reduced failed appointments, and exposed how Ingrid, Markus, and Sabine experienced the service differently. What Kestrel still lacked was a management system for service quality itself. Billing and connection journeys were still being run with a thin layer of CSAT, average speed of answer, and complaint counts. That was not enough. Despite better segmentation and several redesigned touchpoints, 14% of all annual contacts were still avoidable failure demand concentrated in billing and connection services. The phase-2 brief was therefore operational: create a standing Service Quality Management system with touchpoint standards, monthly Moments of Satisfaction scoring, failure-demand attribution, cross-functional review, and a Service Profit Chain dashboard linking internal quality to employee confidence, customer value, loyalty, and cost. Over 16 weeks, Kestrel built standards-as-code in GitHub, instrumented a MOS model based on Gronroos technical and functional quality, and established a monthly quality review rhythm co-run by service design and operations. Six months after rollout, avoidable failure demand fell from 14.0% to 8.6% of contacts, billing-query MOS rose from 61 to 78, frontline eNPS moved from +8 to +23, and the annualized value released or protected was about €1.9M.</p>
-<table>
-<thead>
-<tr>
-<th>Key fact</th>
-<th>Value (illustrative)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Client</td>
-<td>Kestrel Energy</td>
-</tr>
-<tr>
-<td>Sector</td>
-<td>Energy retail and SME utility services in the EU</td>
-</tr>
-<tr>
-<td>Service in scope</td>
-<td>Billing queries, connection and move-in journeys, meter-reading schedule quality, SME onboarding</td>
-</tr>
-<tr>
-<td>Scale</td>
-<td>2.4M households; 180k SMEs; 420-seat contact centre; 900 field technicians</td>
-</tr>
-<tr>
-<td>Duration</td>
-<td>16 weeks</td>
-</tr>
-<tr>
-<td>Team</td>
-<td>1 lead designer + AI agent team + 5 client stakeholders</td>
-</tr>
-<tr>
-<td>AI tools</td>
-<td>Claude Code, OpenCode, Codex, GitHub</td>
-</tr>
-<tr>
-<td>Headline results</td>
-<td>Avoidable failure demand 14.0%→8.6%; billing MOS 61→78; FCR 63%→77%; frontline eNPS +8→+23</td>
-</tr>
-</tbody></table>
-<p>What you will learn:</p>
+    <div class="art-stats"><span><b>12</b> figures</span><span><b>~8.9k</b> words</span><span><b>4</b> tools of record</span><span><b>critic-reviewed</b> every gate</span></div>
+    <div class="author-block">
+      <div class="author-id">
+        <div class="author-avatar">SM</div>
+        <div><b>Sam Mozaffari</b><span>Service designer · AI-first &amp; agentic practice</span></div>
+      </div>
+      <p class="author-note">I built the service-quality management system at Kestrel — the standards, the measurement cadence and the frontline feedback loops that kept it alive.</p>
+    </div>
+  </div><div class="art-layout"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</a></li><li><a href="#sec-1-executive-summary">Executive summary</a></li><li><a href="#sec-2-the-brief">The brief</a></li><li><a href="#sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</a></li><li><a href="#sec-4-phase-by-phase-narrative">Phase-by-phase narrative</a></li><li><a href="#sec-5-artifacts-portfolio">Artifacts portfolio</a></li><li><a href="#sec-6-use-cases-case-studies">Use cases / case studies</a></li><li><a href="#sec-7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">SOPs for AI — how service design SOPs are best used by agents</a></li><li><a href="#sec-8-value-creation-amp-measurement">Value creation &amp; measurement</a></li><li><a href="#sec-9-ai-tool-playbook-per-engagement">AI tool playbook (per engagement)</a></li><li><a href="#sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</a></li><li><a href="#sec-11-references">References</a></li><li><a href="#sec-12-appendix-artifact-index">Appendix: artifact index</a></li></ol></nav></aside><article class="art-body"><h1 id="service-quality-management-at-kestrel-energy">Service Quality Management at Kestrel Energy</h1><section class="art-sec sec-0"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</h2><p>Kestrel Energy is a fictional composite client built from recurring patterns across EU energy retailers managing smart-meter rollout, billing modernization, and SME account operations. All names, figures, datasets, touchpoint IDs, and operating-unit metrics in this article are illustrative and anonymized. This phase-2 case study continues the Kestrel storyline from <a href="../08/index.html">article 08</a>: the personas and rollout improvements are treated as prior work, and the focus here is how that work was institutionalized into a living service quality management system. The engagement was AI-first by design: Claude Code, OpenCode, Codex, and GitHub were the daily operating tools, while the human designer owned framing, governance, ethics, and the political work of getting quality reviewed with operations every month.</p>
+</section><section class="art-sec sec-1"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2><p>Kestrel Energy had already done the hard phase-1 work of understanding its customers. In <a href="../08/index.html">article 08</a>, the utility rebuilt its personas, improved smart-meter self-booking, reduced failed appointments, and exposed how Ingrid, Markus, and Sabine experienced the service differently. What Kestrel still lacked was a management system for service quality itself. Billing and connection journeys were still being run with a thin layer of CSAT, average speed of answer, and complaint counts. That was not enough. Despite better segmentation and several redesigned touchpoints, 14% of all annual contacts were still avoidable failure demand concentrated in billing and connection services. The phase-2 brief was therefore operational: create a standing Service Quality Management system with touchpoint standards, monthly Moments of Satisfaction scoring, failure-demand attribution, cross-functional review, and a Service Profit Chain dashboard linking internal quality to employee confidence, customer value, loyalty, and cost. Over 16 weeks, Kestrel built standards-as-code in GitHub, instrumented a MOS model based on Gronroos technical and functional quality, and established a monthly quality review rhythm co-run by service design and operations. Six months after rollout, avoidable failure demand fell from 14.0% to 8.6% of contacts, billing-query MOS rose from 61 to 78, frontline eNPS moved from +8 to +23, and the annualized value released or protected was about €1.9M.</p>
+<div class="facts-grid"><div class="fact"><span class="fact-k">Client</span><span class="fact-v">Kestrel Energy</span></div><div class="fact"><span class="fact-k">Sector</span><span class="fact-v">Energy retail and SME utility services in the EU</span></div><div class="fact"><span class="fact-k">Service in scope</span><span class="fact-v">Billing queries, connection and move-in journeys, meter-reading schedule quality, SME onboarding</span></div><div class="fact"><span class="fact-k">Scale</span><span class="fact-v">2.4M households; 180k SMEs; 420-seat contact centre; 900 field technicians</span></div><div class="fact"><span class="fact-k">Duration</span><span class="fact-v">16 weeks</span></div><div class="fact"><span class="fact-k">Team</span><span class="fact-v">1 lead designer + AI agent team + 5 client stakeholders</span></div><div class="fact"><span class="fact-k">AI tools</span><span class="fact-v">Claude Code, OpenCode, Codex, GitHub</span></div><div class="fact"><span class="fact-k">Headline results</span><span class="fact-v">Avoidable failure demand 14.0%→8.6%; billing MOS 61→78; FCR 63%→77%; frontline eNPS +8→+23</span></div></div><p>What you will learn:</p>
 <ul>
 <li>How to turn abstract service quality into an operating system built from touchpoint standards, MOS scoring, and monthly root-cause review. See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code>.</li>
 <li>How to connect quality management to the Service Profit Chain so that operations, HR, CX, and finance review one linked dashboard instead of four unrelated scorecards. See: <code>20-the-service-profit-chain/05-measuring-the-chain.md</code>.</li>
 <li>How to encode standards, review cadence, control limits, and failure-demand attribution so AI agents can maintain the machinery without gaming the metrics.</li>
 </ul>
-<h2 id="2-the-brief">2. The brief</h2><h3 id="client-portrait">Client portrait</h3><p>Kestrel Energy returns here as a fictional EU utility serving 2.4 million household accounts and 180,000 SMEs across two member states. By the time this engagement began, the smart-meter program had moved from 1.1 million installed meters in phase 1 to 1.65 million, or roughly 69% of household accounts. The digital estate was the same broad shape described in <a href="../08/index.html">article 08</a>: a legacy web portal, a newer mobile app, a contact centre of about 420 seats, billing operations split across two service cells, a central connections desk, and a network of field technicians and meter partners. Digital self-service had improved, but Kestrel still operated like many utilities do: service quality was managed incident by incident rather than as a whole-service capability.</p>
+</section><section class="art-sec sec-2"><span class="sec-kicker">02 · The brief</span><h2 id="sec-2-the-brief">The brief</h2><h3 id="client-portrait">Client portrait</h3><p>Kestrel Energy returns here as a fictional EU utility serving 2.4 million household accounts and 180,000 SMEs across two member states. By the time this engagement began, the smart-meter program had moved from 1.1 million installed meters in phase 1 to 1.65 million, or roughly 69% of household accounts. The digital estate was the same broad shape described in <a href="../08/index.html">article 08</a>: a legacy web portal, a newer mobile app, a contact centre of about 420 seats, billing operations split across two service cells, a central connections desk, and a network of field technicians and meter partners. Digital self-service had improved, but Kestrel still operated like many utilities do: service quality was managed incident by incident rather than as a whole-service capability.</p>
 <h3 id="the-challenge">The challenge</h3><p>The phase-1 persona program did real work. It improved smart-meter self-booking from 22% to 64%, reduced failed appointments from 14% to 6%, cut S1 SME invoice queries by 41%, and lowered price-vigilant switching risk in Markus-like cohorts from 19% to 13.5%. See: <a href="../08/index.html">article 08</a>. But the board then hit a familiar phase-2 problem: redesign wins existed, while quality still drifted by team, month, and channel.</p>
 <p>Kestrel&#39;s monthly board pack still summarized service quality with only complaint counts, average handling time, and a top-line CSAT average. That view hid the real problem. Of roughly 760,000 annual service contacts, about 318,000 sat in billing and connection journeys. Around 106,400 of those contacts were avoidable failure demand that customers should never have had to generate in the first place: first-bill confusion after smart-meter installs, estimated-vs-actual bill shock, missed connection appointment prerequisites, broken promise windows, and Sabine-style SME invoice friction. That was 14% of all contacts, or about €617k in avoidable contact cost before counting field revisits, churn, and finance-team rework.</p>
 <p>Grönroos is useful precisely here because he separates what the customer got from how the service felt. Kestrel was obsessing over the first and barely managing the second. A bill could be technically correct and still fail on functional quality if no one explained why an estimate caught up after a meter change. A connection could be technically completed and still fail if the promise window, access checklist, and update cadence made the customer feel abandoned. See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code>.</p>
-<h3 id="continuity-from-phase-1-to-phase-2">Continuity from phase 1 to phase 2</h3><table>
-<thead>
-<tr>
-<th>Continuity point</th>
-<th>Article 08 phase-1 outcome</th>
-<th>Article 22 starting condition</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Smart-meter rollout</td>
-<td>Self-booking 22%→64%; failed appointments 14%→6%</td>
-<td>Volume scaled, but first-bill confusion and schedule exceptions still created repeat demand</td>
-</tr>
-<tr>
-<td>Markus persona logic</td>
-<td>Price-vigilant switching 19%→13.5%</td>
-<td>Billing quality now became the next retention lever</td>
-</tr>
-<tr>
-<td>Sabine persona logic</td>
-<td>S1 invoice queries −41%; uptake of consolidated billing 68% in target cohort</td>
-<td>SME onboarding still lacked a stable quality standard across sites and fuels</td>
-</tr>
-<tr>
-<td>Contact centre demand</td>
-<td>Annual contacts 950k→750k at phase-1 scale</td>
-<td>Contacts plateaued at 760k because new rollout and connection friction reintroduced failure demand</td>
-</tr>
-<tr>
-<td>Design maturity</td>
-<td>Personas embedded into journeys and briefs</td>
-<td>Kestrel needed a live quality management system, not more one-off redesigns</td>
-</tr>
-</tbody></table>
-<h3 id="success-criteria">Success criteria</h3><table>
-<thead>
-<tr>
-<th>Metric</th>
-<th>Baseline</th>
-<th>6-month target</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Avoidable failure demand share of all contacts</td>
-<td>14.0%</td>
-<td>≤ 9.0%</td>
-</tr>
-<tr>
-<td>Billing-query MOS</td>
-<td>61 / 100</td>
-<td>≥ 75</td>
-</tr>
-<tr>
-<td>In-scope first-contact resolution</td>
-<td>63%</td>
-<td>≥ 76%</td>
-</tr>
-<tr>
-<td>Mean resolution time for in-scope contacts</td>
-<td>4.8 days</td>
-<td>≤ 3.0 days</td>
-</tr>
-<tr>
-<td>Promise-keeping rate on due-by commitments</td>
-<td>82%</td>
-<td>≥ 95%</td>
-</tr>
-<tr>
-<td>Frontline eNPS in billing and connections units</td>
-<td>+8</td>
-<td>≥ +20</td>
-</tr>
-<tr>
-<td>Standards reviewed in the last 90 days</td>
-<td>28%</td>
-<td>100%</td>
-</tr>
-<tr>
-<td>Markus-like household annual switch risk</td>
-<td>13.5%</td>
-<td>≤ 12.0%</td>
-</tr>
-<tr>
-<td>Sabine-like SME renewal-at-risk</td>
-<td>11%</td>
-<td>≤ 8%</td>
-</tr>
-</tbody></table>
-<h3 id="constraints">Constraints</h3><p>The transformation budget was capped at €280,000 and had to fit inside existing operations. Kestrel could not replace the billing engine or the case-management layer this year. Energy-market regulation constrained billing language, late-payment treatment, and connection communications. The DSO and field-meter partners owned parts of the customer outcome but did not report into Kestrel. The works council required that any quality scoring system be used for process improvement and coaching, not punitive ranking of individual agents. And because phase 1 had already taught the organization to distrust “average customer” thinking, the new quality system had to preserve the persona logic from <a href="../08/index.html">article 08</a> while still being simple enough for monthly operating review.</p>
+<h3 id="continuity-from-phase-1-to-phase-2">Continuity from phase 1 to phase 2</h3><div class="tbl-wrap"><table><thead><tr><th>Continuity point</th><th>Article 08 phase-1 outcome</th><th>Article 22 starting condition</th></tr></thead><tbody><tr><td>Smart-meter rollout</td><td>Self-booking 22%→64%; failed appointments 14%→6%</td><td>Volume scaled, but first-bill confusion and schedule exceptions still created repeat demand</td></tr><tr><td scope="row">Markus persona logic</td><td>Price-vigilant switching 19%→13.5%</td><td>Billing quality now became the next retention lever</td></tr><tr><td scope="row">Sabine persona logic</td><td>S1 invoice queries −41%; uptake of consolidated billing 68% in target cohort</td><td>SME onboarding still lacked a stable quality standard across sites and fuels</td></tr><tr><td scope="row">Contact centre demand</td><td>Annual contacts 950k→750k at phase-1 scale</td><td>Contacts plateaued at 760k because new rollout and connection friction reintroduced failure demand</td></tr><tr><td scope="row">Design maturity</td><td>Personas embedded into journeys and briefs</td><td>Kestrel needed a live quality management system, not more one-off redesigns</td></tr></tbody></table></div><h3 id="success-criteria">Success criteria</h3><div class="tbl-wrap"><table><thead><tr><th>Metric</th><th>Baseline</th><th>6-month target</th></tr></thead><tbody><tr><td>Avoidable failure demand share of all contacts</td><td class="num">14.0%</td><td>≤ 9.0%</td></tr><tr><td scope="row">Billing-query MOS</td><td>61 / 100</td><td>≥ 75</td></tr><tr><td scope="row">In-scope first-contact resolution</td><td class="num">63%</td><td>≥ 76%</td></tr><tr><td scope="row">Mean resolution time for in-scope contacts</td><td>4.8 days</td><td>≤ 3.0 days</td></tr><tr><td scope="row">Promise-keeping rate on due-by commitments</td><td class="num">82%</td><td>≥ 95%</td></tr><tr><td scope="row">Frontline eNPS in billing and connections units</td><td>+8</td><td>≥ +20</td></tr><tr><td scope="row">Standards reviewed in the last 90 days</td><td class="num">28%</td><td class="num">100%</td></tr><tr><td scope="row">Markus-like household annual switch risk</td><td class="num">13.5%</td><td>≤ 12.0%</td></tr><tr><td scope="row">Sabine-like SME renewal-at-risk</td><td class="num">11%</td><td>≤ 8%</td></tr></tbody></table></div><h3 id="constraints">Constraints</h3><p>The transformation budget was capped at €280,000 and had to fit inside existing operations. Kestrel could not replace the billing engine or the case-management layer this year. Energy-market regulation constrained billing language, late-payment treatment, and connection communications. The DSO and field-meter partners owned parts of the customer outcome but did not report into Kestrel. The works council required that any quality scoring system be used for process improvement and coaching, not punitive ranking of individual agents. And because phase 1 had already taught the organization to distrust “average customer” thinking, the new quality system had to preserve the persona logic from <a href="../08/index.html">article 08</a> while still being simple enough for monthly operating review.</p>
 <h3 id="why-service-design">Why service design</h3><p>A classic operations fix would have added agents and stricter scripts. That would have absorbed more failure rather than removing its causes. Kestrel needed whole-service design in Lou Downe&#39;s sense: letters, appointment windows, digital explanations, contact-centre scripts, casework rules, internal SLAs, and review governance all in scope together. See: <code>05-good-services/06-designing-good-services.md</code>. It also needed a measurement architecture that separated relationship, journey, and operational layers rather than collapsing them into one blunt customer score. See: <code>14-outside-in/06-measurement.md</code>. And because the real point was institutionalization, not a one-off fix, the internal service chain and service culture mattered as much as any customer-facing copy. See: <code>19-service-management-and-marketing/05-internal-marketing-and-service-culture.md</code>.</p>
-<h2 id="3-approach-the-ai-first-service-design-process">3. Approach: the AI-first service design process</h2><p>The project followed the TISDD loop of Research → Ideation → Prototyping → Implementation. At Kestrel, research established the quality truth, ideation converted that evidence into standards and measures, prototyping piloted the monthly operating system in live units, and implementation handed over a durable governance mechanism. Claude Code maintained the quality-standard library and drafted MOS analysis; OpenCode built the joined data pipeline and monthly dashboard pack; Codex challenged every causal claim and sector-quality assumption; GitHub made standards reviewable as code.</p>
-<div class="mermaid">
-flowchart LR
-  subgraph RES["Research weeks 1 to 4"]
-    D1["Contact complaint survey and telemetry baseline"] --> D2["Technical and functional touchpoint audit"] --> D3["Failure demand truth set"]
-  end
-  subgraph IDE["Ideation weeks 4 to 7"]
-    E1["Touchpoint quality standards library"] --> E2["MOS rubric and control limits"] --> E3["Monthly review model and owners"]
-  end
-  subgraph PRO["Prototyping weeks 7 to 12"]
-    F1["Pilot billing and connection touchpoints"] --> F2["Quality pack and SPC dashboard"] --> F3["SOP changes and internal marketing rollout"]
-  end
-  subgraph IMP["Implementation weeks 12 to 16"]
-    G1["Monthly quality reviews co run with ops"] --> G2["GitHub governance and issue flow"] --> G3["Handover and scorecard launch"]
-  end
-  RES --> IDE --> PRO --> IMP
-  G3 --> D1
-</div><div class="mermaid">
-gantt
-  title Kestrel quality system program
-  dateFormat YYYY-MM-DD
-  axisFormat %W
-  section Research
-  Baseline and case sampling      :a1, 2026-03-03, 14d
-  Failure demand attribution      :a2, after a1, 10d
-  section Ideation
-  Standard library design         :b1, after a2, 10d
-  MOS model and control limits    :b2, after b1, 7d
-  section Prototyping
-  Billing and connections pilot   :c1, after b2, 21d
-  Internal marketing rollout      :c2, after b2, 21d
-  section Implementation
-  Monthly review dry runs         :d1, after c1, 10d
-  SPC dashboard and handover      :d2, after d1, 10d
-</div><table>
-<thead>
-<tr>
-<th>Phase</th>
-<th>Method and book logic</th>
-<th>AI tool use</th>
-<th>Artifact produced</th>
-<th>Client involvement</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Research</td>
-<td>Expectation-experience gap diagnosis; technical vs functional decomposition. See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code></td>
-<td>OpenCode pipeline, Claude Code audit agents, GitHub issue intake</td>
-<td>Failure-demand baseline, touchpoint audit, quality truth set</td>
-<td>Billing, connections, CX ops, finance</td>
-</tr>
-<tr>
-<td>Ideation</td>
-<td>Moment-of-truth quality mapping; multi-tier measurement architecture. See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code>; <code>14-outside-in/06-measurement.md</code></td>
-<td>Claude Code standard-authoring agents, Codex adversarial review</td>
-<td>Standards library, MOS rubric, review agenda</td>
-<td>Cross-functional standards workshop</td>
-</tr>
-<tr>
-<td>Prototyping</td>
-<td>Internal marketing and internal SLA mapping; whole-service prototyping. See: <code>19-service-management-and-marketing/05-internal-marketing-and-service-culture.md</code>; <code>05-good-services/06-designing-good-services.md</code></td>
-<td>Claude Code training packs, OpenCode dashboard build, GitHub PR workflow</td>
-<td>Pilot standards, quality pack, SOP changes</td>
-<td>Frontline and team-lead rehearsal</td>
-</tr>
-<tr>
-<td>Implementation</td>
-<td>Unit-level linkage measurement and lead-lag governance. See: <code>20-the-service-profit-chain/05-measuring-the-chain.md</code></td>
-<td>OpenCode monthly pack automation, Codex causal check, GitHub Actions</td>
-<td>SPC dashboard, monthly review operating rhythm</td>
-<td>Monthly steering, handover, scorecard launch</td>
-</tr>
-</tbody></table>
-<h2 id="4-phase-by-phase-narrative">4. Phase-by-phase narrative</h2><h3 id="41-research-baseline-the-quality-truth">4.1 Research — baseline the quality truth</h3><p><strong>Goal.</strong> Separate avoidable contact demand from legitimate demand, and expose which touchpoints fail on technical quality, functional quality, or both.</p>
+</section><section class="art-sec sec-3"><span class="sec-kicker">03 · Approach</span><h2 id="sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</h2><p>The project followed the TISDD loop of Research → Ideation → Prototyping → Implementation. At Kestrel, research established the quality truth, ideation converted that evidence into standards and measures, prototyping piloted the monthly operating system in live units, and implementation handed over a durable governance mechanism. Claude Code maintained the quality-standard library and drafted MOS analysis; OpenCode built the joined data pipeline and monthly dashboard pack; Codex challenged every causal claim and sector-quality assumption; GitHub made standards reviewable as code.</p>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 296" role="img" aria-hidden="true"><defs><marker id="arr-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Research weeks 1 to 4</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Ideation weeks 4 to 7</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Prototyping weeks 7 to 12</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Implementation weeks 12 to 16</text><line x1="0" y1="294" x2="296" y2="294" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 1</span><span class="figcap">Approach: the AI-first service design process</span></figcaption></figure>
+<figure class="fig fig-gantt"><div class="gantt"><div class="gantt-head"><span class="gantt-taskcol">Phase</span><span class="gantt-track"><span>Mar 2026</span><span>Mar 2026</span><span>Mar 2026</span><span>Mar 2026</span><span>Mar 2026</span></span></div><div class="gantt-section">Research</div><div class="gantt-row"><span class="gantt-taskcol">Baseline and case sampling</span><span class="gantt-track"><span class="gantt-bar future" style="left:0.00%;width:100.00%"></span></span></div><div class="gantt-section">Ideation</div><div class="gantt-section">Prototyping</div><div class="gantt-section">Implementation</div></div><figcaption><span class="fignum">Figure 2</span><span class="figcap">Kestrel quality system program</span></figcaption></figure>
+<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Phase</th><th>Method and book logic</th><th>AI tool use</th><th>Artifact produced</th><th>Client involvement</th></tr></thead><tbody><tr><td>Research</td><td>Expectation-experience gap diagnosis; technical vs functional decomposition. See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code></td><td>OpenCode pipeline, Claude Code audit agents, GitHub issue intake</td><td>Failure-demand baseline, touchpoint audit, quality truth set</td><td>Billing, connections, CX ops, finance</td></tr><tr><td scope="row">Ideation</td><td>Moment-of-truth quality mapping; multi-tier measurement architecture. See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code>; <code>14-outside-in/06-measurement.md</code></td><td>Claude Code standard-authoring agents, Codex adversarial review</td><td>Standards library, MOS rubric, review agenda</td><td>Cross-functional standards workshop</td></tr><tr><td scope="row">Prototyping</td><td>Internal marketing and internal SLA mapping; whole-service prototyping. See: <code>19-service-management-and-marketing/05-internal-marketing-and-service-culture.md</code>; <code>05-good-services/06-designing-good-services.md</code></td><td>Claude Code training packs, OpenCode dashboard build, GitHub PR workflow</td><td>Pilot standards, quality pack, SOP changes</td><td>Frontline and team-lead rehearsal</td></tr><tr><td scope="row">Implementation</td><td>Unit-level linkage measurement and lead-lag governance. See: <code>20-the-service-profit-chain/05-measuring-the-chain.md</code></td><td>OpenCode monthly pack automation, Codex causal check, GitHub Actions</td><td>SPC dashboard, monthly review operating rhythm</td><td>Monthly steering, handover, scorecard launch</td></tr></tbody></table></div></section><section class="art-sec sec-4"><span class="sec-kicker">04 · The work, phase by phase</span><h2 id="sec-4-phase-by-phase-narrative">Phase-by-phase narrative</h2><h3 id="41-research-baseline-the-quality-truth">4.1 Research — baseline the quality truth</h3><p><strong>Goal.</strong> Separate avoidable contact demand from legitimate demand, and expose which touchpoints fail on technical quality, functional quality, or both.</p>
 <p><strong>Method &amp; SOP.</strong> The baseline combined four streams: contact logs, complaint codes, post-interaction surveys, and operational telemetry from billing, field scheduling, and connection queues. Each touchpoint was audited using Gronroos&#39;s split between technical quality and functional quality. For every sampled moment of truth, the team asked: did the customer get the right outcome, and did the service feel accessible, clear, trustworthy, and recoverable? See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code>.</p>
 <p><strong>AI execution.</strong> OpenCode built the baseline pipeline joining contact, complaint, survey, and ops data into one row per service episode. The prompt was intentionally explicit about attribution because “avoidable” is easy for a model to over-assign:</p>
-<pre><code class="language-bash">opencode run --agent build &quot;Read contact_logs_12m.parquet, complaints.csv,
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>opencode run --agent build &quot;Read contact_logs_12m.parquet, complaints.csv,
 survey_events.csv, billing_ops.csv, scheduling_ops.csv.
 Create one episode table keyed by contact_id_hash.
 For each row output: touchpoint, channel, avoidable_flag,
@@ -255,13 +66,13 @@ mos_technical_score, mos_functional_score, resolution_days,
 survey_score, root_cause_owner, operating_unit.
 Rules: avoidable means the contact would not be needed if Kestrel had met its
 published standard; ambiguous rows must be tagged review_required. Export
-monthly aggregates and a root-cause Pareto for billing and connections.&quot;</code></pre><p>Claude Code then ran case-audit agents over 120 sampled episodes, forcing each agent to name the failed promise, the quality dimension, and the likely owner. GitHub issues were opened automatically for every high-confidence root-cause cluster so the evidence was reviewable before any solutioning started.</p>
+monthly aggregates and a root-cause Pareto for billing and connections.&quot;</code></pre></div><p>Claude Code then ran case-audit agents over 120 sampled episodes, forcing each agent to name the failed promise, the quality dimension, and the likely owner. GitHub issues were opened automatically for every high-confidence root-cause cluster so the evidence was reviewable before any solutioning started.</p>
 <p><strong>Human designer judgment.</strong> The critical decision was to refuse the lazy narrative that “customers contact because energy is confusing.” Some demand was legitimate. The designer insisted on distinguishing necessary clarification from Kestrel-generated rework. That political distinction mattered because it determined whether the monthly quality review would become a blame ritual or a true improvement forum.</p>
 <p><strong>Artifact produced.</strong> Failure-demand baseline, root-cause truth set, operating-unit cut, and the first draft of the touchpoint inventory.</p>
 <h3 id="42-ideation-build-the-quality-standards-library-and-mos-model">4.2 Ideation — build the quality standards library and MOS model</h3><p><strong>Goal.</strong> Turn research and case evidence into enforceable touchpoint standards with clear measures, owners, and control limits.</p>
 <p><strong>Method &amp; SOP.</strong> This phase used Gronroos&#39;s moment-of-truth mapping directly: every touchpoint received a technical requirement and a functional requirement. The measurement design followed Outside In&#39;s three-tier structure: relationship, journey, and operational metrics, so Kestrel would not fall back into the single-metric trap. See: <code>14-outside-in/06-measurement.md</code>. The service team also adopted the internal standard that every touchpoint must have one named owner, one observable measure, and one review cadence.</p>
 <p><strong>AI execution.</strong> Claude Code maintained the standards-as-code library. Each standard lived in a versioned YAML file with fields for touchpoint, promise, measure, source evidence, persona sensitivity, and review owner. A representative authoring prompt:</p>
-<pre><code class="language-text">You are QUALITY-STANDARD-AUTHOR.
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>You are QUALITY-STANDARD-AUTHOR.
 Input: touchpoint audit findings, evidence IDs, current SOPs, and service promises.
 Output: one standard file with these fields only:
 - standard_id
@@ -278,13 +89,13 @@ Rules:
 1. Every requirement must be observable.
 2. Measures must be computable from existing telemetry or survey events.
 3. If evidence does not support a standard, mark gap_for_human rather than inventing.
-4. Include persona overlays for Ingrid, Markus, or Sabine only where the need changes the standard materially.</code></pre><p>Codex then adversarially reviewed the library for two things Kestrel historically got wrong: standards written so vaguely they could not be audited, and standards written so optimistically they would force frontline teams to fake compliance.</p>
-<pre><code class="language-bash">codex exec --skip-git-repo-check &quot;Read standards/ and monthly-pack-spec.md.
+4. Include persona overlays for Ingrid, Markus, or Sabine only where the need changes the standard materially.</code></pre></div><p>Codex then adversarially reviewed the library for two things Kestrel historically got wrong: standards written so vaguely they could not be audited, and standards written so optimistically they would force frontline teams to fake compliance.</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>codex exec --skip-git-repo-check &quot;Read standards/ and monthly-pack-spec.md.
 Challenge every causal claim and every control limit.
 Flag any measure that cannot be calculated from real data,
 any promise that operations cannot currently keep,
 and any standard that confuses technical quality with functional quality.
-Return defects only.&quot;</code></pre><p><strong>Human designer judgment.</strong> The human made two load-bearing calls. First, MOS would not be a generic mood score; it would be a touchpoint-level measure built from separate technical and functional scores, with functional quality weighted slightly higher because that was where Kestrel was actually differentiating. Second, persona overlays would remain overlays. Ingrid, Markus, and Sabine shaped standards, but the standards library itself would stay touchpoint-centric rather than fragmenting into dozens of persona-specific variants.</p>
+Return defects only.&quot;</code></pre></div><p><strong>Human designer judgment.</strong> The human made two load-bearing calls. First, MOS would not be a generic mood score; it would be a touchpoint-level measure built from separate technical and functional scores, with functional quality weighted slightly higher because that was where Kestrel was actually differentiating. Second, persona overlays would remain overlays. Ingrid, Markus, and Sabine shaped standards, but the standards library itself would stay touchpoint-centric rather than fragmenting into dozens of persona-specific variants.</p>
 <p><strong>Artifact produced.</strong> Standards library v1, MOS rubric, review cadences, and standard ownership model.</p>
 <h3 id="43-prototyping-pilot-the-quality-loop-in-billing-and-connections">4.3 Prototyping — pilot the quality loop in billing and connections</h3><p><strong>Goal.</strong> Prove that standards, MOS scoring, and monthly review create real operational change in live service units.</p>
 <p><strong>Method &amp; SOP.</strong> The pilot focused on two high-volume journeys: billing queries and connection booking. Whole-service prototyping was used in Lou Downe&#39;s sense: not just screen changes, but letters, scripts, routing rules, handoff permissions, and internal SLAs. See: <code>05-good-services/06-designing-good-services.md</code>. In parallel, internal marketing was treated as a delivery stream, not a comms afterthought. Frontline staff, scheduling teams, and billing analysts were segmented as different internal audiences with different readiness needs. See: <code>19-service-management-and-marketing/05-internal-marketing-and-service-culture.md</code>.</p>
@@ -294,7 +105,7 @@ Return defects only.&quot;</code></pre><p><strong>Human designer judgment.</stro
 <h3 id="44-implementation-institutionalize-the-monthly-operating-system">4.4 Implementation — institutionalize the monthly operating system</h3><p><strong>Goal.</strong> Launch a durable Service Quality Management system that survives beyond the designer&#39;s involvement.</p>
 <p><strong>Method &amp; SOP.</strong> The handover model followed the Service Profit Chain logic: review leading indicators first, at the operating-unit level, and make the links between internal quality, employee condition, customer value, loyalty, and finance visible. See: <code>20-the-service-profit-chain/05-measuring-the-chain.md</code>. Kestrel created five operating-unit views: billing north, billing south, connections central, meter scheduling, and SME onboarding.</p>
 <p><strong>AI execution.</strong> GitHub Actions built the monthly quality pack automatically. Claude Code refreshed the standards library and drafted the narrative summary. OpenCode rebuilt the dashboard and SPC tables from raw monthly extracts. Codex reviewed the contribution language in the steering paper so the organization did not confuse correlation with causation.</p>
-<pre><code class="language-yaml">name: monthly-quality-pack
+<div class="codeblock"><div class="codebar"><span>CONFIG</span></div><pre><code>name: monthly-quality-pack
 on:
   schedule:
     - cron: &quot;0 5 2 * *&quot;
@@ -308,28 +119,15 @@ jobs:
       - name: Validate mermaid and markdown
         run: node scripts/validate-mermaid.mjs articles/22
       - name: Publish monthly pack
-        run: python pipelines/publish_pack.py</code></pre><p><strong>Human designer judgment.</strong> The designer drew the final boundary between what AI could maintain and what humans had to own. Agents could draft standards, analyze MOS, and detect control-limit breaches. They could not approve a standard that changed customer rights, tune the control limits to hit a narrative target, or decide whether a DSO constraint justified an exception. Those remained human decisions with named approvers.</p>
+        run: python pipelines/publish_pack.py</code></pre></div><p><strong>Human designer judgment.</strong> The designer drew the final boundary between what AI could maintain and what humans had to own. Agents could draft standards, analyze MOS, and detect control-limit breaches. They could not approve a standard that changed customer rights, tune the control limits to hit a narrative target, or decide whether a DSO constraint justified an exception. Those remained human decisions with named approvers.</p>
 <p><strong>Artifact produced.</strong> Monthly quality operating model, SPC dashboard, quality-pack automation, and handover governance.</p>
-<h2 id="5-artifacts-portfolio">5. Artifacts portfolio</h2><p>All figures illustrative.</p>
-<h3 id="service-quality-framework-diagram">Service quality framework diagram</h3><div class="mermaid">
-flowchart LR
-  A["Expected service promise"] --> B["Touchpoint encounter"]
-  B --> T["Technical quality what the customer got"]
-  B --> F["Functional quality how the service felt"]
-  IQ["Internal quality tools standards and data"] --> T
-  IQ --> F
-  EX["Employee readiness and service culture"] --> F
-  T --> M["MOS score by moment of satisfaction"]
-  F --> M
-  M --> S["Touchpoint satisfaction"]
-  S --> V["External value low effort and trust"]
-  V --> L["Loyalty retention and advocacy"]
-  L --> P["Profit and cost to serve"]
-</div><p>Kestrel defined MOS as a 0-100 touchpoint score derived from two separate 1-5 ratings: technical quality and functional quality. The working formula was:</p>
+</section><section class="art-sec sec-5"><span class="sec-kicker">05 · Artifact portfolio</span><h2 id="sec-5-artifacts-portfolio">Artifacts portfolio</h2><p>All figures illustrative.</p>
+<h3 id="service-quality-framework-diagram">Service quality framework diagram</h3><figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1914 225" role="img" aria-hidden="true"><defs><marker id="arr-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 216.39999999999998,41.5 242.39999999999998,41.5 276,41.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 452,27.026315789473678 485.59999999999997,21.5 511.5999999999999,23.63815789473684" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 396.7174887892377,56.5 485.59999999999997,97.25 567.4372623574144,141.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 420.52756756756753,92.5 485.59999999999997,67.75 535.0786206896552,53" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 452.6237288135593,135.5 485.59999999999997,143.5 511.5999999999999,147.66940789473685" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 459.6,193 485.59999999999997,193 520.0533333333333,184.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 702.8,31.5 728.8,31.5 793.8724324324324,56.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 702.8,163 728.8,163 819.7325513196481,99.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 946,77.75 972,77.75 998.0000000000001,77.75" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 1196.8000000000002,77.75 1222.8,77.75 1248.8,77.75" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 1409.6000000000001,77.75 1435.6,77.75 1461.6,77.75" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 1645.1999999999998,77.75 1671.1999999999998,77.75 1697.1999999999998,77.75" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><rect x="10" y="26.5" width="206.39999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="113.19999999999999" y="45.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Expected service promise</text><rect x="276" y="26.5" width="176" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="364" y="45.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Touchpoint encounter</text><rect x="511.5999999999999" y="10" width="191.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="607.1999999999999" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Technical quality what</text><text x="607.1999999999999" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">the customer got</text><rect x="511.5999999999999" y="141.5" width="191.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="607.1999999999999" y="160.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Functional quality how</text><text x="607.1999999999999" y="173.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">the service felt</text><rect x="268.4" y="92.5" width="191.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="364" y="111.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Internal quality tools</text><text x="364" y="124.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">standards and data</text><rect x="268.4" y="171.5" width="191.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="364" y="190.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Employee readiness and</text><text x="364" y="203.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">service culture</text><rect x="754.8" y="56.25" width="191.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="850.4" y="75.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">MOS score by moment of</text><text x="850.4" y="88.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">satisfaction</text><rect x="998.0000000000001" y="62.75" width="198.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1097.4" y="81.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Touchpoint satisfaction</text><rect x="1248.8" y="56.25" width="160.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1329.2" y="75.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">External value low</text><text x="1329.2" y="88.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">effort and trust</text><rect x="1461.6" y="56.25" width="183.6" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1553.3999999999999" y="75.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Loyalty retention and</text><text x="1553.3999999999999" y="88.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">advocacy</text><rect x="1697.1999999999998" y="62.75" width="206.39999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1800.3999999999999" y="81.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Profit and cost to serve</text></svg><figcaption><span class="fignum">Figure 3</span><span class="figcap">Service quality framework diagram</span></figcaption></figure>
+<p>Kestrel defined MOS as a 0-100 touchpoint score derived from two separate 1-5 ratings: technical quality and functional quality. The working formula was:</p>
 <p><code>MOS = round(((technical * 0.45) + (functional * 0.55) - 1) * 25)</code></p>
 <p>The slight weighting toward functional quality reflected what the baseline showed: Kestrel&#39;s biggest loyalty leaks were no longer raw operational defects alone, but opaque explanations, inaccessible channels, and broken promises.</p>
 <h3 id="quality-standard-library-structure">Quality-standard library structure</h3><p>Repository shape in GitHub:</p>
-<pre><code class="language-text">standards/
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>standards/
   billing/
     first-bill-after-smart-meter.yml
     duplicate-charge-query.yml
@@ -340,329 +138,14 @@ flowchart LR
   metering/
     meter-read-schedule.yml
   sme/
-    multi-site-onboarding.yml</code></pre><table>
-<thead>
-<tr>
-<th>Touchpoint</th>
-<th>Standard</th>
-<th>Measure</th>
-<th>Owner</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>First bill after smart-meter install</td>
-<td>Bill and explainer must show estimated vs actual logic in plain language on the first view and in the letter insert</td>
-<td>Billing-query MOS ≥ 75; first-bill repeat contacts &lt; 2.8 per 1,000 bills</td>
-<td>Billing operations lead</td>
-</tr>
-<tr>
-<td>Duplicate or anomalous bill query</td>
-<td>First-contact agent confirms issue, freezes collection risk where relevant, and gives a due-by time in the first interaction</td>
-<td>FCR ≥ 75%; due-by promise kept ≥ 98%</td>
-<td>Billing recovery manager</td>
-</tr>
-<tr>
-<td>Move-in connection booking</td>
-<td>Customer receives a two-hour slot, access checklist, and named reschedule path no later than T-24h</td>
-<td>No-access failures &lt; 4%; connection MOS ≥ 74</td>
-<td>Connections manager</td>
-</tr>
-<tr>
-<td>No-access recovery after failed visit</td>
-<td>Failed appointment triggers same-day explanation, new slot offer, and root-cause tag</td>
-<td>Rebook within 1 day ≥ 90%; avoidable revisit rate &lt; 5%</td>
-<td>Field scheduling lead</td>
-</tr>
-<tr>
-<td>Meter-reading schedule reminder</td>
-<td>Reminder explains why the read matters, acceptable windows, and assisted-digital options</td>
-<td>Schedule-confusion contacts &lt; 0.9 per 1,000 reads</td>
-<td>Meter operations manager</td>
-</tr>
-<tr>
-<td>SME multi-site onboarding</td>
-<td>One owner, one access pack, invoice structure agreed before go-live, renewal dates visible across sites</td>
-<td>Onboarding MOS ≥ 76; first-invoice query rate &lt; 8%</td>
-<td>SME service owner</td>
-</tr>
-</tbody></table>
-<h3 id="failure-demand-funnel">Failure-demand funnel</h3><div class="mermaid">
-flowchart LR
-  A["760k annual contacts"] --> B["318k billing and connections contacts"]
-  B --> C["106k avoidable contacts 14 percent"]
-  C --> D1["29k estimated actual bill shock"]
-  C --> D2["22k first bill mismatch after smart meter"]
-  C --> D3["19k connection appointment failures"]
-  C --> D4["18k SME invoice and login friction"]
-  C --> D5["10k meter reading schedule confusion"]
-  C --> D6["8k promise failure and status chase"]
-  D1 --> E["14 standard updates and 5 SOP changes"]
-  D2 --> E
-  D3 --> E
-  D4 --> E
-  D5 --> E
-  D6 --> E
-</div><h3 id="a1-current-state-journey-map-for-the-billing-query-service">A1 — Current-state journey map for the billing-query service</h3><div class="mermaid">
-flowchart TB
-  subgraph P1["Phase 1 Trigger emotion 2 of 5"]
-    A1["Customer sees first bill or unexpected catch up charge"] --> A2["Not sure whether it is an error or normal smart meter change"]
-  end
-  subgraph P2["Phase 2 Find help emotion 1 of 5"]
-    B1["Portal FAQ uses billing jargon"] --> B2["Customer moves to phone or email for clarity"]
-  end
-  subgraph P3["Phase 3 Explain issue emotion 1 of 5"]
-    C1["Customer repeats account and meter story"] --> C2["Agent lacks one view of bill and install history"]
-  end
-  subgraph P4["Phase 4 Wait emotion 1 of 5"]
-    D1["Case moves between billing and metering teams"] --> D2["No believable due by time or status update"]
-  end
-  subgraph P5["Phase 5 Resolution emotion 2 of 5"]
-    E1["Credit or explanation eventually arrives"] --> E2["Customer still does not know what next bill will show"]
-  end
-  subgraph P6["Phase 6 Aftercare emotion 2 of 5"]
-    F1["Next bill lands without reminder"] --> F2["Repeat contact created if confusion remains"]
-  end
-</div><table>
-<thead>
-<tr>
-<th>Phase</th>
-<th>Emotion score 1-5</th>
-<th>Primary pain</th>
-<th>Quality failure lens</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Trigger</td>
-<td>2</td>
-<td>Unexpected bill format after meter change</td>
-<td>Expectation gap</td>
-</tr>
-<tr>
-<td>Find help</td>
-<td>1</td>
-<td>No plain-language explanation in self-serve</td>
-<td>Functional accessibility</td>
-</tr>
-<tr>
-<td>Explain issue</td>
-<td>1</td>
-<td>Customer repeats story across teams</td>
-<td>Functional reliability</td>
-</tr>
-<tr>
-<td>Wait</td>
-<td>1</td>
-<td>No due-by promise and no status heartbeat</td>
-<td>Functional trust</td>
-</tr>
-<tr>
-<td>Resolution</td>
-<td>2</td>
-<td>Correction arrives without future-state explanation</td>
-<td>Technical partial, functional weak</td>
-</tr>
-<tr>
-<td>Aftercare</td>
-<td>2</td>
-<td>Next bill can recreate the same confusion</td>
-<td>Recovery and completion gap</td>
-</tr>
-</tbody></table>
-<h3 id="a2-future-state-service-blueprint-for-the-billing-query-service">A2 — Future-state service blueprint for the billing-query service</h3><div class="mermaid">
-flowchart TB
-  subgraph L1["Physical evidence"]
-    PE1["Bill plus explainer panel"] --> PE2["Case confirmation with due by time"] --> PE3["Status heartbeat"] --> PE4["Resolution summary"] --> PE5["Next bill reminder"]
-  end
-  subgraph L2["Customer actions"]
-    CA1["Checks bill and explainer"] --> CA2["Starts query once"] --> CA3["Receives updates without chasing"] --> CA4["Reviews correction and rationale"] --> CA5["Confirms next bill is understood"]
-  end
-  subgraph L3["Frontstage"]
-    FS1["Agent or self serve explains estimated versus actual"] --> FS2["Agent confirms issue and due by time"] --> FS3["Agent or system sends status update"] --> FS4["Agent explains correction in customer language"] --> FS5["Follow up message before next bill"]
-  end
-  subgraph L4["Backstage"]
-    BS1["Bill classifier tags query type"] --> BS2["Billing and meter data join in one view"] --> BS3["Root cause owner assigned"] --> BS4["Correction or explanation generated"] --> BS5["Standard and root cause log updated"]
-  end
-  subgraph L5["Support processes"]
-    SP1["Billing engine and meter store"] --> SP2["Knowledge base and standards repo"] --> SP3["Notification service"] --> SP4["MOS survey event"] --> SP5["Monthly quality review"]
-  end
-  L1 --> L2 --> L3 --> L4 --> L5
-</div><table>
-<thead>
-<tr>
-<th>Step</th>
-<th>Physical evidence</th>
-<th>Customer action</th>
-<th>Frontstage</th>
-<th>Backstage</th>
-<th>Support</th>
-<th>Quality intent</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>S1 Understand</td>
-<td>Bill plus explainer</td>
-<td>Reads bill</td>
-<td>Plain-language bill explanation</td>
-<td>Query type inferred</td>
-<td>Billing + meter join</td>
-<td>Reduce avoidable clarification demand</td>
-</tr>
-<tr>
-<td>S2 Open case</td>
-<td>Confirmation page or agent recap</td>
-<td>Starts query once</td>
-<td>Due-by time confirmed</td>
-<td>Owner assigned</td>
-<td>Standards repo referenced</td>
-<td>One contact, one promise</td>
-</tr>
-<tr>
-<td>S3 In progress</td>
-<td>Status heartbeat</td>
-<td>Waits without chasing</td>
-<td>Honest update</td>
-<td>Root cause investigated</td>
-<td>Notification service</td>
-<td>Promise-keeping</td>
-</tr>
-<tr>
-<td>S4 Resolve</td>
-<td>Resolution summary</td>
-<td>Reviews decision</td>
-<td>Correction and rationale explained</td>
-<td>Adjustment posted</td>
-<td>Survey event fired</td>
-<td>Technical + functional closure</td>
-</tr>
-<tr>
-<td>S5 Complete</td>
-<td>Next bill reminder</td>
-<td>Confirms outcome held</td>
-<td>Follow-through message</td>
-<td>Recurrence tagged if recontact</td>
-<td>Monthly review</td>
-<td>No silent repeat failure</td>
-</tr>
-</tbody></table>
-<h3 id="a3-stakeholder-map">A3 — Stakeholder map</h3><div class="mermaid">
-quadrantChart
-  title Kestrel quality system stakeholders
-  x-axis Low interest --> High interest
-  y-axis Low influence --> High influence
-  quadrant-1 Manage closely
-  quadrant-2 Keep satisfied
-  quadrant-3 Monitor
-  quadrant-4 Keep informed
-  COO sponsor: [0.88, 0.93]
-  Head of customer operations: [0.94, 0.91]
-  Billing operations lead: [0.86, 0.89]
-  Connections manager: [0.84, 0.86]
-  Finance controller: [0.62, 0.79]
-  HR and learning lead: [0.71, 0.68]
-  DSO partner lead: [0.54, 0.73]
-  Works council: [0.48, 0.66]
-  Digital product lead: [0.69, 0.72]
-  Field vendor manager: [0.52, 0.58]
-</div><h3 id="a4-ecosystem-map">A4 — Ecosystem map</h3><div class="mermaid">
-flowchart LR
-  HH["Household customer"] --> WEB["Web and app"]
-  SME["SME customer"] --> WEB
-  HH --> CC["Contact centre"]
-  SME --> CC
-  WEB --> BILL["Billing operations"]
-  CC --> BILL
-  WEB --> CONN["Connections desk"]
-  CC --> CONN
-  BILL --> FIN["Finance and collections"]
-  CONN --> FIELD["Field force and meter partner"]
-  FIELD --> DSO["Distribution system operator"]
-  BILL --> METER["Meter data platform"]
-  CONN --> SCHED["Scheduling service"]
-  BILL --> QSYS["Quality standards repo"]
-  CONN --> QSYS
-  CC --> QSYS
-  QSYS --> REV["Monthly quality review"]
-  REV --> BILL
-  REV --> CONN
-  REV --> HR["HR and learning"]
-  REV --> FIN
-</div><h3 id="a5-persona-continuity-set-for-quality-management">A5 — Persona continuity set for quality management</h3><table>
-<thead>
-<tr>
-<th>Persona</th>
-<th>Phase-1 evidence from article 08</th>
-<th>Phase-2 quality risk</th>
-<th>Standard implication</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Ingrid the paper trail keeper</td>
-<td>Fear of billing jargon and missed instructions; phone share 89%; delegation flag 31%. See: <a href="../08/index.html">article 08</a></td>
-<td>Any technically correct change still fails if instructions are unclear or phone help is buried</td>
-<td>Assisted-digital route, plain-language first-bill explainer, named callback windows</td>
-</tr>
-<tr>
-<td>Markus the tariff hawk</td>
-<td>62% of contacts price-related; wants arithmetic, not reassurance. See: <a href="../08/index.html">article 08</a></td>
-<td>Billing quality defects convert directly into switching risk because trust in the numbers is the service</td>
-<td>Explanation quality, visible calculations, no marketing copy inside recovery</td>
-</tr>
-<tr>
-<td>Sabine the facilities multitasker</td>
-<td>Multi-site invoice friction and login duplication drove 44% of S1 contacts. See: <a href="../08/index.html">article 08</a></td>
-<td>SME onboarding fails when internal teams optimize by site instead of by portfolio owner</td>
-<td>One owner, one pack, one due-date structure, accounting-ready exports</td>
-</tr>
-</tbody></table>
-<h3 id="a6-templates-and-operating-assets">A6 — Templates and operating assets</h3><p><strong>Monthly quality review agenda</strong></p>
-<table>
-<thead>
-<tr>
-<th>Agenda block</th>
-<th>Time</th>
-<th>Owner</th>
-<th>Output</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Control-limit exceptions by touchpoint</td>
-<td>15 min</td>
-<td>CX operations</td>
-<td>Red/amber list for the month</td>
-</tr>
-<tr>
-<td>Failure-demand root-cause review</td>
-<td>20 min</td>
-<td>Billing or connections lead</td>
-<td>Top 3 root-cause decisions</td>
-</tr>
-<tr>
-<td>Standards changes and open PRs</td>
-<td>20 min</td>
-<td>Service quality manager</td>
-<td>Approve, reject, or request evidence</td>
-</tr>
-<tr>
-<td>Internal SLA blockers</td>
-<td>15 min</td>
-<td>Ops + HR/L&amp;D</td>
-<td>Named owner and due date</td>
-</tr>
-<tr>
-<td>SPC link review</td>
-<td>10 min</td>
-<td>Finance + CX</td>
-<td>Confirm employee, customer, and cost movement</td>
-</tr>
-<tr>
-<td>Decision log and next experiments</td>
-<td>10 min</td>
-<td>Chair</td>
-<td>Issue updates and pilot actions</td>
-</tr>
-</tbody></table>
-<p><strong>Quality pack template</strong></p>
-<pre><code class="language-markdown"># Kestrel Monthly Quality Pack
+    multi-site-onboarding.yml</code></pre></div><div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Touchpoint</th><th>Standard</th><th>Measure</th><th>Owner</th></tr></thead><tbody><tr><td>First bill after smart-meter install</td><td>Bill and explainer must show estimated vs actual logic in plain language on the first view and in the letter insert</td><td>Billing-query MOS ≥ 75; first-bill repeat contacts &lt; 2.8 per 1,000 bills</td><td>Billing operations lead</td></tr><tr><td scope="row">Duplicate or anomalous bill query</td><td>First-contact agent confirms issue, freezes collection risk where relevant, and gives a due-by time in the first interaction</td><td>FCR ≥ 75%; due-by promise kept ≥ 98%</td><td>Billing recovery manager</td></tr><tr><td scope="row">Move-in connection booking</td><td>Customer receives a two-hour slot, access checklist, and named reschedule path no later than T-24h</td><td>No-access failures &lt; 4%; connection MOS ≥ 74</td><td>Connections manager</td></tr><tr><td scope="row">No-access recovery after failed visit</td><td>Failed appointment triggers same-day explanation, new slot offer, and root-cause tag</td><td>Rebook within 1 day ≥ 90%; avoidable revisit rate &lt; 5%</td><td>Field scheduling lead</td></tr><tr><td scope="row">Meter-reading schedule reminder</td><td>Reminder explains why the read matters, acceptable windows, and assisted-digital options</td><td>Schedule-confusion contacts &lt; 0.9 per 1,000 reads</td><td>Meter operations manager</td></tr><tr><td scope="row">SME multi-site onboarding</td><td>One owner, one access pack, invoice structure agreed before go-live, renewal dates visible across sites</td><td>Onboarding MOS ≥ 76; first-invoice query rate &lt; 8%</td><td>SME service owner</td></tr></tbody></table></div><h3 id="failure-demand-funnel">Failure-demand funnel</h3><figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1177 458" role="img" aria-hidden="true"><defs><marker id="arr-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 186,229 212,229 238,229" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 414,229 440,229 466,229" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 579.0511392405064,207.5 690.8,31.5 728.1999999999999,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 588.1518987341772,207.5 690.8,110.5 716.8,110.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 633.6556962025317,207.5 690.8,189.5 728.1999999999999,189.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 633.6556962025317,250.5 690.8,268.5 731.9999999999999,268.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 588.1518987341772,250.5 690.8,347.5 735.8,347.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 579.0511392405064,250.5 690.8,426.5 720.5999999999999,426.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 904.1999999999999,31.5 941.5999999999999,31.5 1053.3488607594936,207.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 915.5999999999999,110.5 941.5999999999999,110.5 1044.2481012658227,207.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 904.1999999999999,189.5 941.5999999999999,189.5 998.7443037974683,207.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 900.4,268.5 941.5999999999999,268.5 998.7443037974683,250.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 896.5999999999999,347.5 941.5999999999999,347.5 1044.2481012658227,250.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 911.8,426.5 941.5999999999999,426.5 1053.3488607594936,250.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><rect x="10" y="214" width="176" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="98" y="233" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">760k annual contacts</text><rect x="238" y="207.5" width="176" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="326" y="226.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">318k billing and</text><text x="326" y="239.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">connections contacts</text><rect x="466" y="207.5" width="198.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="565.4" y="226.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">106k avoidable contacts</text><text x="565.4" y="239.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">14 percent</text><rect x="728.1999999999999" y="10" width="176" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="816.1999999999999" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">29k estimated actual</text><text x="816.1999999999999" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">bill shock</text><rect x="716.8" y="89" width="198.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="816.1999999999999" y="108" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">22k first bill mismatch</text><text x="816.1999999999999" y="121" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">after smart meter</text><rect x="728.1999999999999" y="168" width="176" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="816.1999999999999" y="187" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">19k connection</text><text x="816.1999999999999" y="200" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">appointment failures</text><rect x="731.9999999999999" y="247" width="168.4" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="816.1999999999999" y="266" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">18k SME invoice and</text><text x="816.1999999999999" y="279" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">login friction</text><rect x="735.8" y="326" width="160.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="816.1999999999999" y="345" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">10k meter reading</text><text x="816.1999999999999" y="358" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">schedule confusion</text><rect x="720.5999999999999" y="405" width="191.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="816.1999999999999" y="424" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">8k promise failure and</text><text x="816.1999999999999" y="437" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">status chase</text><rect x="967.6" y="207.5" width="198.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1067" y="226.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">14 standard updates and</text><text x="1067" y="239.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">5 SOP changes</text></svg><figcaption><span class="fignum">Figure 4</span><span class="figcap">Failure-demand funnel</span></figcaption></figure>
+<h3 id="a1-current-state-journey-map-for-the-billing-query-service">A1 — Current-state journey map for the billing-query service</h3><figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 424" role="img" aria-hidden="true"><defs><marker id="arr-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 1 Trigger emotion 2 of 5</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 2 Find help emotion 1 of 5</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 3 Explain issue emotion 1 of 5</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 4 Wait emotion 1 of 5</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 5 Resolution emotion 2 of 5</text><line x1="0" y1="346" x2="296" y2="346" stroke="currentColor" stroke-width="1"/><rect x="4" y="362" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="377" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 6 Aftercare emotion 2 of 5</text><line x1="0" y1="422" x2="296" y2="422" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 5</span><span class="figcap">A1 — Current-state journey map for the billing-query service</span></figcaption></figure>
+<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Phase</th><th>Emotion score 1-5</th><th>Primary pain</th><th>Quality failure lens</th></tr></thead><tbody><tr><td>Trigger</td><td>2</td><td>Unexpected bill format after meter change</td><td>Expectation gap</td></tr><tr><td scope="row">Find help</td><td>1</td><td>No plain-language explanation in self-serve</td><td>Functional accessibility</td></tr><tr><td scope="row">Explain issue</td><td>1</td><td>Customer repeats story across teams</td><td>Functional reliability</td></tr><tr><td scope="row">Wait</td><td>1</td><td>No due-by promise and no status heartbeat</td><td>Functional trust</td></tr><tr><td scope="row">Resolution</td><td>2</td><td>Correction arrives without future-state explanation</td><td>Technical partial, functional weak</td></tr><tr><td scope="row">Aftercare</td><td>2</td><td>Next bill can recreate the same confusion</td><td>Recovery and completion gap</td></tr></tbody></table></div><h3 id="a2-future-state-service-blueprint-for-the-billing-query-service">A2 — Future-state service blueprint for the billing-query service</h3><figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Physical evidence</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Customer actions</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Frontstage</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Backstage</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Support processes</text><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/><line x1="94" y1="156" x2="296" y2="156" stroke="#171817" stroke-width="1.2"/><text x="98" y="152" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of interaction</text><line x1="94" y1="220" x2="296" y2="220" stroke="#171817" stroke-width="1.2"/><text x="98" y="216" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of visibility</text><line x1="94" y1="284" x2="296" y2="284" stroke="#171817" stroke-width="1.2"/><text x="98" y="280" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of internal interaction</text></svg><figcaption><span class="fignum">Figure 6</span><span class="figcap">A2 — Future-state service blueprint for the billing-query service</span></figcaption></figure>
+<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Step</th><th>Physical evidence</th><th>Customer action</th><th>Frontstage</th><th>Backstage</th><th>Support</th><th>Quality intent</th></tr></thead><tbody><tr><td>S1 Understand</td><td>Bill plus explainer</td><td>Reads bill</td><td>Plain-language bill explanation</td><td>Query type inferred</td><td>Billing + meter join</td><td>Reduce avoidable clarification demand</td></tr><tr><td scope="row">S2 Open case</td><td>Confirmation page or agent recap</td><td>Starts query once</td><td>Due-by time confirmed</td><td>Owner assigned</td><td>Standards repo referenced</td><td>One contact, one promise</td></tr><tr><td scope="row">S3 In progress</td><td>Status heartbeat</td><td>Waits without chasing</td><td>Honest update</td><td>Root cause investigated</td><td>Notification service</td><td>Promise-keeping</td></tr><tr><td scope="row">S4 Resolve</td><td>Resolution summary</td><td>Reviews decision</td><td>Correction and rationale explained</td><td>Adjustment posted</td><td>Survey event fired</td><td>Technical + functional closure</td></tr><tr><td scope="row">S5 Complete</td><td>Next bill reminder</td><td>Confirms outcome held</td><td>Follow-through message</td><td>Recurrence tagged if recontact</td><td>Monthly review</td><td>No silent repeat failure</td></tr></tbody></table></div><h3 id="a3-stakeholder-map">A3 — Stakeholder map</h3><figure class="fig fig-quad"><svg class="fgsvg quad" viewBox="0 0 660 446" role="img" aria-hidden="true"><line x1="330" y1="44" x2="330" y2="376" stroke="#DEDEDA" stroke-width="1"/><line x1="44" y1="210" x2="616" y2="210" stroke="#DEDEDA" stroke-width="1"/><text x="54" y="60" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.8">Keep satisfied</text><text x="606" y="60" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0.8">Manage closely</text><text x="54" y="366" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.8">Keep informed</text><text x="606" y="366" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0.8">Monitor</text><circle cx="547.36" cy="67.23999999999998" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="556.36" y="70.73999999999998" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">COO sponsor</text><circle cx="581.68" cy="73.88" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="590.68" y="77.38" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Head of customer operations</text><circle cx="535.9200000000001" cy="80.52" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="544.9200000000001" y="84.02" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Billing operations lead</text><circle cx="524.48" cy="90.48" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="533.48" y="93.98" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Connections manager</text><circle cx="398.64" cy="113.71999999999998" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="407.64" y="117.21999999999998" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Finance controller</text><circle cx="450.12" cy="150.23999999999998" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="459.12" y="153.73999999999998" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">HR and learning lead</text><circle cx="352.88" cy="133.64" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="361.88" y="137.14" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">DSO partner lead</text><circle cx="318.56" cy="156.88" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="327.56" y="160.38" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Works council</text><circle cx="438.67999999999995" cy="136.96" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="447.67999999999995" y="140.46" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Digital product lead</text><circle cx="341.44" cy="183.44000000000003" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="350.44" y="186.94000000000003" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Field vendor manager</text></svg><figcaption><span class="fignum">Figure 7</span><span class="figcap">Kestrel quality system stakeholders</span></figcaption></figure>
+<h3 id="a4-ecosystem-map">A4 — Ecosystem map</h3><figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1770 292" role="img" aria-hidden="true"><defs><marker id="arr-8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 170.79999999999998,144.9436090225564 196.79999999999998,142.5 234.2,150.7017543859649" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 138.76363636363635,252 196.79999999999998,234 268.86713286713285,177.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 116.35121951219512,167.5 196.79999999999998,214 262.188679245283,252" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 148,272.4135338345865 196.79999999999998,277 222.8,274.14912280701753" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 305.3164556962025,147.5 379.19999999999993,83.5 405.19999999999993,83.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 329.45454545454544,252 379.19999999999993,234 474.99534883720924,98.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 314.5631067961165,177.5 379.19999999999993,214 485.5999999999999,214 591.9999999999999,214 713.5999999999999,214 835.1999999999998,214 956.7999999999998,214 1078.3999999999999,214 1131,209.8054226475279" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 353.2,259.85087719298247 379.19999999999993,257 485.5999999999999,257 591.9999999999999,257 713.5999999999999,257 835.1999999999998,257 956.7999999999998,257 1078.3999999999999,257 1168.3094339622642,219" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 511.551219512195,68.5 591.9999999999999,22 713.5999999999999,22 835.1999999999998,22 956.7999999999998,22 1078.3999999999999,22 1104.3999999999999,22.622009569377994" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 1260.3714285714284,189 1329.1999999999998,170.75 1355.1999999999998,170.75" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 1538.7999999999997,170.75 1564.7999999999997,170.75 1590.7999999999997,170.75" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 565.9999999999999,69.52067669172932 591.9999999999999,65 629.3999999999999,65" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 1251.7235668789808,219 1329.1999999999998,243.25 1366.5999999999997,243.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 565.9999999999999,85.76691729323308 591.9999999999999,86.5 692.0142011834319,156" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 1131,191.518341307815 1078.3999999999999,182.5 956.7999999999998,182.5 835.1999999999998,182.5 809.1999999999999,180.04111842105263" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 353.2,274.14912280701753 379.19999999999993,277 485.5999999999999,277 591.9999999999999,277 696.3924528301886,186" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 798.4372093023254,156 835.1999999999998,149.5 898.8952380952379,133" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 861.1999999999998,110.13815789473685 835.1999999999998,108 713.5999999999999,108 591.9999999999999,108 550.742857142857,98.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 999.2186046511627,103 1078.3999999999999,75 1189.2186046511627,189" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 1052.3999999999999,118 1078.3999999999999,118 1134.8,114.85167464114832" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 1012.0727272727271,133 1078.3999999999999,151 1188.8714285714286,40" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><rect x="10" y="137.5" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="90.39999999999999" y="156.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Household customer</text><rect x="234.2" y="147.5" width="107.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="288" y="166.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Web and app</text><rect x="32.8" y="252" width="115.19999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="90.39999999999999" y="271" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">SME customer</text><rect x="222.8" y="252" width="130.39999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="288" y="271" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Contact centre</text><rect x="405.19999999999993" y="68.5" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="485.5999999999999" y="87.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Billing operations</text><rect x="1131" y="189" width="145.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1203.8" y="208" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Connections desk</text><rect x="1104.3999999999999" y="10" width="198.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1203.8" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Finance and collections</text><rect x="1355.1999999999998" y="149.25" width="183.6" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1446.9999999999998" y="168.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Field force and meter</text><text x="1446.9999999999998" y="181.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">partner</text><rect x="1590.7999999999997" y="149.25" width="168.4" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1674.9999999999998" y="168.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Distribution system</text><text x="1674.9999999999998" y="181.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">operator</text><rect x="629.3999999999999" y="50" width="168.4" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="713.5999999999999" y="69" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Meter data platform</text><rect x="1366.5999999999997" y="228.25" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1446.9999999999998" y="247.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Scheduling service</text><rect x="617.9999999999999" y="156" width="191.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="713.5999999999999" y="175" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Quality standards repo</text><rect x="861.1999999999998" y="103" width="191.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="956.7999999999998" y="122" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Monthly quality review</text><rect x="1134.8" y="96" width="138" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1203.8" y="115" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">HR and learning</text></svg><figcaption><span class="fignum">Figure 8</span><span class="figcap">A4 — Ecosystem map</span></figcaption></figure>
+<h3 id="a5-persona-continuity-set-for-quality-management">A5 — Persona continuity set for quality management</h3><div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Persona</th><th>Phase-1 evidence from article 08</th><th>Phase-2 quality risk</th><th>Standard implication</th></tr></thead><tbody><tr><td>Ingrid the paper trail keeper</td><td>Fear of billing jargon and missed instructions; phone share 89%; delegation flag 31%. See: <a href="../08/index.html">article 08</a></td><td>Any technically correct change still fails if instructions are unclear or phone help is buried</td><td>Assisted-digital route, plain-language first-bill explainer, named callback windows</td></tr><tr><td scope="row">Markus the tariff hawk</td><td>62% of contacts price-related; wants arithmetic, not reassurance. See: <a href="../08/index.html">article 08</a></td><td>Billing quality defects convert directly into switching risk because trust in the numbers is the service</td><td>Explanation quality, visible calculations, no marketing copy inside recovery</td></tr><tr><td scope="row">Sabine the facilities multitasker</td><td>Multi-site invoice friction and login duplication drove 44% of S1 contacts. See: <a href="../08/index.html">article 08</a></td><td>SME onboarding fails when internal teams optimize by site instead of by portfolio owner</td><td>One owner, one pack, one due-date structure, accounting-ready exports</td></tr></tbody></table></div><h3 id="a6-templates-and-operating-assets">A6 — Templates and operating assets</h3><p><strong>Monthly quality review agenda</strong></p>
+<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Agenda block</th><th>Time</th><th>Owner</th><th>Output</th></tr></thead><tbody><tr><td>Control-limit exceptions by touchpoint</td><td>15 min</td><td>CX operations</td><td>Red/amber list for the month</td></tr><tr><td scope="row">Failure-demand root-cause review</td><td>20 min</td><td>Billing or connections lead</td><td>Top 3 root-cause decisions</td></tr><tr><td scope="row">Standards changes and open PRs</td><td>20 min</td><td>Service quality manager</td><td>Approve, reject, or request evidence</td></tr><tr><td scope="row">Internal SLA blockers</td><td>15 min</td><td>Ops + HR/L&amp;D</td><td>Named owner and due date</td></tr><tr><td scope="row">SPC link review</td><td>10 min</td><td>Finance + CX</td><td>Confirm employee, customer, and cost movement</td></tr><tr><td scope="row">Decision log and next experiments</td><td>10 min</td><td>Chair</td><td>Issue updates and pilot actions</td></tr></tbody></table></div><p><strong>Quality pack template</strong></p>
+<div class="codeblock"><div class="codebar"><span>SOP / PROMPT</span></div><pre><code># Kestrel Monthly Quality Pack
 Reporting month: [ ]
 Operating units: billing north, billing south, connections central, meter scheduling, SME onboarding
 
@@ -696,44 +179,10 @@ Operating units: billing north, billing south, connections central, meter schedu
 6. Decisions required
 - Approvals:
 - Escalations:
-- Experiments for next month:</code></pre><p><strong>MOS scoring rubric</strong></p>
-<table>
-<thead>
-<tr>
-<th>Score</th>
-<th>Technical quality descriptor</th>
-<th>Functional quality descriptor</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1</td>
-<td>Outcome wrong, incomplete, or unusable</td>
-<td>Customer had to fight the service; no ownership or clarity</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Outcome partially correct but still needs rework</td>
-<td>Explanation weak, access hard, promise vague or broken</td>
-</tr>
-<tr>
-<td>3</td>
-<td>Outcome acceptable with some friction</td>
-<td>Service basically works but feels effortful or inconsistent</td>
-</tr>
-<tr>
-<td>4</td>
-<td>Outcome right first time</td>
-<td>Clear, accessible, trustworthy, low-effort experience</td>
-</tr>
-<tr>
-<td>5</td>
-<td>Outcome right and complete with no rework</td>
-<td>Service feels confident, proactive, and respectful</td>
-</tr>
-</tbody></table>
-<p>MOS bands: 0-49 defective, 50-69 at risk, 70-84 stable, 85-100 strong.</p>
+- Experiments for next month:</code></pre></div><p><strong>MOS scoring rubric</strong></p>
+<div class="tbl-wrap"><table><thead><tr><th>Score</th><th>Technical quality descriptor</th><th>Functional quality descriptor</th></tr></thead><tbody><tr><td>1</td><td>Outcome wrong, incomplete, or unusable</td><td>Customer had to fight the service; no ownership or clarity</td></tr><tr><td scope="row">2</td><td>Outcome partially correct but still needs rework</td><td>Explanation weak, access hard, promise vague or broken</td></tr><tr><td scope="row">3</td><td>Outcome acceptable with some friction</td><td>Service basically works but feels effortful or inconsistent</td></tr><tr><td scope="row">4</td><td>Outcome right first time</td><td>Clear, accessible, trustworthy, low-effort experience</td></tr><tr><td scope="row">5</td><td>Outcome right and complete with no rework</td><td>Service feels confident, proactive, and respectful</td></tr></tbody></table></div><p>MOS bands: 0-49 defective, 50-69 at risk, 70-84 stable, 85-100 strong.</p>
 <h3 id="a7-mock-dataset-sample">A7 — Mock dataset sample</h3><p>The assignment writes only <code>README.md</code>, so the <code>data/quality_sample.csv</code> artifact is embedded inline here as the working sample rather than as a separate file.</p>
-<pre><code class="language-csv">contact_id_hash,type,avoidable_flag,mos_technical_score,mos_functional_score,resolution_days,survey_score
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>contact_id_hash,type,avoidable_flag,mos_technical_score,mos_functional_score,resolution_days,survey_score
 KESQ-91AF02,billing_query_first_bill,1,2,2,6,2
 KESQ-91AF03,billing_query_duplicate_charge,1,1,2,4,1
 KESQ-91AF04,connection_move_in_booking,1,3,2,5,2
@@ -745,199 +194,19 @@ KESQ-91AF09,billing_query_payment_plan,0,4,5,1,5
 KESQ-91AF10,meter_reading_schedule,0,5,4,1,4
 KESQ-91AF11,sme_multi_site_onboarding,0,4,4,2,4
 KESQ-91AF12,billing_query_first_bill,1,2,3,4,2
-KESQ-91AF13,connection_appointment_failure,1,2,1,7,1</code></pre><h3 id="a8-charts">A8 — Charts</h3><div class="mermaid">
-xychart-beta
-  title Kestrel-MOS-trend-twelve-months
-  x-axis [Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
-  y-axis "MOS score" 50 --> 85
-  line [61, 60, 62, 61, 63, 64, 67, 70, 72, 74, 76, 78]
-  line [58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58, 58]
-</div><p>First line = monthly MOS; second line = lower control line used in the monthly review.</p>
-<div class="mermaid">
-pie title Kestrel failure demand drivers
-  "Estimated actual bill shock" : 29000
-  "First bill mismatch after smart meter" : 22000
-  "Connection appointment failures" : 19000
-  "SME invoice login friction" : 18000
-  "Meter reading schedule confusion" : 10000
-  "Promise failure and status chase" : 8000
-</div><div class="mermaid">
-quadrantChart
-  title Kestrel touchpoints by score and volume
-  x-axis Low contact volume --> High contact volume
-  y-axis Low MOS --> High MOS
-  quadrant-1 Protect and maintain
-  quadrant-2 Premium but niche
-  quadrant-3 Low priority
-  quadrant-4 Simplify at scale
-  First bill after smart meter: [0.88, 0.42]
-  Move in connection booking: [0.74, 0.48]
-  SME multi site onboarding: [0.46, 0.39]
-  Payment plan setup: [0.31, 0.71]
-  Meter reading reminder: [0.52, 0.63]
-  Outage credit follow up: [0.24, 0.67]
-</div><h3 id="a9-journey-to-blueprint-traceability-table">A9 — Journey-to-blueprint traceability table</h3><table>
-<thead>
-<tr>
-<th>Journey pain point</th>
-<th>Design principle</th>
-<th>Standard or blueprint change</th>
-<th>KPI moved</th>
-<th>Source logic</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>First bill looks wrong after smart-meter install</td>
-<td>Explain before the customer asks</td>
-<td>First-bill explainer panel and follow-up reminder</td>
-<td>Billing MOS 61→78</td>
-<td>See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code></td>
-</tr>
-<tr>
-<td>Customer must repeat the story to billing and metering</td>
-<td>One service, not two departments</td>
-<td>Unified episode view and one owner standard</td>
-<td>FCR 63%→77%</td>
-<td>See: <code>05-good-services/06-designing-good-services.md</code></td>
-</tr>
-<tr>
-<td>No believable due-by time on billing corrections</td>
-<td>Promise only what can be kept</td>
-<td>Mandatory due-by field plus promise-keeping metric</td>
-<td>Promise-keeping 82%→96%</td>
-<td>See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code></td>
-</tr>
-<tr>
-<td>Failed connection visit creates a new service failure</td>
-<td>Recovery must complete the whole problem</td>
-<td>Same-day rebook and cause-tag standard</td>
-<td>Avoidable revisit rate down</td>
-<td>See: <code>05-good-services/06-designing-good-services.md</code></td>
-</tr>
-<tr>
-<td>Sabine receives fragmented SME onboarding</td>
-<td>Solve the whole portfolio problem</td>
-<td>One owner and one access pack standard</td>
-<td>SME renewal-at-risk 11%→8%</td>
-<td>See: <a href="../08/index.html">article 08</a></td>
-</tr>
-<tr>
-<td>Quality review sees complaints but not causes</td>
-<td>Measure linked tiers, not single endpoints</td>
-<td>Monthly SPC dashboard and root-cause review</td>
-<td>Failure demand 14.0%→8.6%</td>
-<td>See: <code>20-the-service-profit-chain/05-measuring-the-chain.md</code>; <code>14-outside-in/06-measurement.md</code></td>
-</tr>
-</tbody></table>
-<h3 id="a10-billing-touchpoint-service-standard-audit">A10 — Billing touchpoint service-standard audit</h3><table>
-<thead>
-<tr>
-<th>Audit criterion (Good Services principle)</th>
-<th>Before</th>
-<th>After</th>
-<th>Evidence</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1. Is easy to find</td>
-<td>Partial</td>
-<td>Pass</td>
-<td>Bill plus explainer panel now appears on the portal bill view before the customer has to call</td>
-</tr>
-<tr>
-<td>2. Clearly explains its purpose</td>
-<td>Fail</td>
-<td>Pass</td>
-<td>Estimated versus actual logic is explained on the first view and in the letter insert</td>
-</tr>
-<tr>
-<td>3. Sets a user&#39;s expectations</td>
-<td>Fail</td>
-<td>Pass</td>
-<td>Due-by time is now mandatory in every billing query confirmation</td>
-</tr>
-<tr>
-<td>4. Enables each user to complete the outcome they set out to do</td>
-<td>Partial</td>
-<td>Pass</td>
-<td>Resolution summary and next-bill reminder close the loop instead of ending at case closure</td>
-</tr>
-<tr>
-<td>5. Works in a way that is familiar</td>
-<td>Partial</td>
-<td>Pass</td>
-<td>Bill, portal, phone, and follow-up now use one repeatable recap, update, and resolution pattern</td>
-</tr>
-<tr>
-<td>6. Requires no prior knowledge to use</td>
-<td>Fail</td>
-<td>Pass</td>
-<td>Legacy billing jargon was removed from the explainer and agent script</td>
-</tr>
-<tr>
-<td>7. Is agnostic of organizational structures</td>
-<td>Fail</td>
-<td>Pass</td>
-<td>Billing and meter data are joined in one view and one root-cause owner is assigned</td>
-</tr>
-<tr>
-<td>8. Requires the minimum possible steps to complete</td>
-<td>Fail</td>
-<td>Pass</td>
-<td>Customer starts the query once and receives updates without re-explaining the meter story</td>
-</tr>
-<tr>
-<td>9. Is consistent throughout</td>
-<td>Fail</td>
-<td>Pass</td>
-<td>Bill, portal, phone, and follow-up all use the same explanation, due-by promise, and status heartbeat</td>
-</tr>
-<tr>
-<td>10. Has no dead ends</td>
-<td>Fail</td>
-<td>Pass</td>
-<td>Status heartbeat, resolution summary, and next-bill reminder give a clear next step from every case state</td>
-</tr>
-<tr>
-<td>11. Is usable by everyone, equally</td>
-<td>Partial</td>
-<td>Partial</td>
-<td>Assisted-digital phone and callback support remain available for Ingrid-like needs, but this article does not evidence a full equal-access audit</td>
-</tr>
-<tr>
-<td>12. Responds to change quickly</td>
-<td>Fail</td>
-<td>Pass</td>
-<td>Root-cause issues and pull requests now feed monthly standard changes inside the operating rhythm</td>
-</tr>
-<tr>
-<td>13. Clearly explains why a decision has been made</td>
-<td>Fail</td>
-<td>Pass</td>
-<td>Resolution summary now explains the correction or explanation in customer language</td>
-</tr>
-<tr>
-<td>14. Makes it easy to get human assistance</td>
-<td>Partial</td>
-<td>Pass</td>
-<td>Phone route and named callback windows are retained for customers who need a person</td>
-</tr>
-<tr>
-<td>15. Requires the right knowledge from the user</td>
-<td>Fail</td>
-<td>Pass</td>
-<td>Joined billing and meter history means the customer no longer has to know or repeat backstage details</td>
-</tr>
-</tbody></table>
-<h2 id="6-use-cases-case-studies">6. Use cases / case studies</h2><h3 id="use-case-a-billing-error-quality-loop-after-a-smart-meter-first-bill">Use case A — Billing-error quality loop after a smart-meter first bill</h3><p><strong>Scenario.</strong> A Markus-like household sees a first bill after smart-meter activation that includes a catch-up adjustment and assumes Kestrel has overcharged him. In phase 1, Kestrel improved the smart-meter journey itself; in phase 2, it tackled the quality-management question underneath that moment.</p>
+KESQ-91AF13,connection_appointment_failure,1,2,1,7,1</code></pre></div><h3 id="a8-charts">A8 — Charts</h3><figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">50</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">58.8</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">67.5</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">76.3</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">85</text><line x1="44" y1="304" x2="730" y2="304" stroke="#DEDEDA" stroke-width="1"/><text x="72.58333333333333" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Jan</text><text x="129.75" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Feb</text><text x="186.91666666666666" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Mar</text><text x="244.08333333333334" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Apr</text><text x="301.24999999999994" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">May</text><text x="358.41666666666663" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Jun</text><text x="415.5833333333333" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Jul</text><text x="472.74999999999994" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Aug</text><text x="529.9166666666666" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Sep</text><text x="587.0833333333334" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Oct</text><text x="644.25" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Nov</text><text x="701.4166666666666" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Dec</text><line x1="600" y1="12" x2="616" y2="12" stroke="#4A7FA8" stroke-width="2" stroke-linecap="round"/><text x="622" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">line</text><line x1="470" y1="12" x2="486" y2="12" stroke="#171817" stroke-width="2" stroke-linecap="round"/><text x="492" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">line</text><polyline points="72.58333333333333,222.28571428571428 129.75,229.71428571428572 186.91666666666666,214.85714285714286 244.08333333333334,222.28571428571428 301.24999999999994,207.42857142857144 358.41666666666663,200 415.5833333333333,177.71428571428572 472.74999999999994,155.42857142857144 529.9166666666666,140.57142857142858 587.0833333333334,125.71428571428572 644.25,110.85714285714286 701.4166666666666,96" fill="none" stroke="#171817" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="72.58333333333333" cy="222.28571428571428" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="129.75" cy="229.71428571428572" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="186.91666666666666" cy="214.85714285714286" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="244.08333333333334" cy="222.28571428571428" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="301.24999999999994" cy="207.42857142857144" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="358.41666666666663" cy="200" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="415.5833333333333" cy="177.71428571428572" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="472.74999999999994" cy="155.42857142857144" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="529.9166666666666" cy="140.57142857142858" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="587.0833333333334" cy="125.71428571428572" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="644.25" cy="110.85714285714286" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="701.4166666666666" cy="96" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><text x="710.4166666666666" y="99.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">78</text><polyline points="72.58333333333333,244.57142857142858 129.75,244.57142857142858 186.91666666666666,244.57142857142858 244.08333333333334,244.57142857142858 301.24999999999994,244.57142857142858 358.41666666666663,244.57142857142858 415.5833333333333,244.57142857142858 472.74999999999994,244.57142857142858 529.9166666666666,244.57142857142858 587.0833333333334,244.57142857142858 644.25,244.57142857142858 701.4166666666666,244.57142857142858" fill="none" stroke="#4A7FA8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="72.58333333333333" cy="244.57142857142858" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="129.75" cy="244.57142857142858" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="186.91666666666666" cy="244.57142857142858" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="244.08333333333334" cy="244.57142857142858" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="301.24999999999994" cy="244.57142857142858" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="358.41666666666663" cy="244.57142857142858" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="415.5833333333333" cy="244.57142857142858" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="472.74999999999994" cy="244.57142857142858" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="529.9166666666666" cy="244.57142857142858" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="587.0833333333334" cy="244.57142857142858" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="644.25" cy="244.57142857142858" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="701.4166666666666" cy="244.57142857142858" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><text x="710.4166666666666" y="248.07142857142858" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#4A7FA8" font-weight="600" text-anchor="start" letter-spacing="0">58</text></svg><figcaption><span class="fignum">Figure 9</span><span class="figcap">Kestrel-MOS-trend-twelve-months</span></figcaption></figure>
+<p>First line = monthly MOS; second line = lower control line used in the monthly review.</p>
+<figure class="fig fig-pie"><svg class="fgsvg pie" viewBox="0 0 560 340" role="img" aria-hidden="true"><path d="M 200 112 L 200 65 A 105 105 0 0 1 303.84921966882723 185.50288922026053 L 257.3643308646855 178.5635007121439 A 58 58 0 0 0 200 112 Z" fill="#171817"/><text x="297.65886030155605" y="94.50852369894689" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="start" letter-spacing="0">Estimated actual bill shock · 27%</text><path d="M 257.3643308646855 178.5635007121439 L 303.84921966882723 185.50288922026053 A 105 105 0 0 1 212.41868294674342 274.26301508141927 L 206.85984391343922 227.59290356878398 A 58 58 0 0 0 257.3643308646855 178.5635007121439 Z" fill="#4A7FA8"/><text x="290.28267451662265" y="260.3183781023641" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="start" letter-spacing="0">First bill mismatch after smart meter · 21%</text><path d="M 206.85984391343922 227.59290356878398 L 212.41868294674342 274.26301508141927 A 105 105 0 0 1 111.21241963230827 226.05145468630303 L 150.9554317968941 200.96175592195786 A 58 58 0 0 0 206.85984391343922 227.59290356878398 Z" fill="#5E7F5A"/><text x="141.96211052454106" y="282.738537425855" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">Connection appointment failures · 18%</text><path d="M 150.9554317968941 200.96175592195786 L 111.21241963230827 226.05145468630303 A 105 105 0 0 1 108.04783106945811 119.30681871327184 L 149.20737335265306 141.99805224161682 A 58 58 0 0 0 150.9554317968941 200.96175592195786 Z" fill="#7B61C4"/><text x="73.05313878243588" y="177.0856326665298" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">SME invoice login friction · 17%</text><path d="M 149.20737335265306 141.99805224161682 L 108.04783106945811 119.30681871327184 A 105 105 0 0 1 152.05393007366007 76.58600544555156 L 173.5155042311646 118.39988872230467 A 58 58 0 0 0 149.20737335265306 141.99805224161682 Z" fill="#B08A00"/><text x="109.71732548337731" y="86.68162189763598" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">Meter reading schedule confusion · 9%</text><path d="M 173.5155042311646 118.39988872230467 L 152.05393007366007 76.58600544555156 A 105 105 0 0 1 199.9999999999999 65 L 199.99999999999994 112 A 58 58 0 0 0 173.5155042311646 118.39988872230467 Z" fill="#9B9B96"/><text x="165.57878846050087" y="55.885227396270324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">Promise failure and status chase · 8%</text><text x="200" y="174" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="26" fill="#171817" font-weight="600" text-anchor="middle" letter-spacing="0">106000</text><text x="200" y="190" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="1.5">total</text></svg><figcaption><span class="fignum">Figure 10</span><span class="figcap">Kestrel failure demand drivers</span></figcaption></figure>
+<figure class="fig fig-quad"><svg class="fgsvg quad" viewBox="0 0 660 446" role="img" aria-hidden="true"><line x1="330" y1="44" x2="330" y2="376" stroke="#DEDEDA" stroke-width="1"/><line x1="44" y1="210" x2="616" y2="210" stroke="#DEDEDA" stroke-width="1"/><text x="54" y="60" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.8">Premium but niche</text><text x="606" y="60" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0.8">Protect and maintain</text><text x="54" y="366" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.8">Simplify at scale</text><text x="606" y="366" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0.8">Low priority</text><circle cx="547.36" cy="236.56000000000003" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="556.36" y="240.06000000000003" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">First bill after smart meter</text><circle cx="467.28" cy="216.64000000000001" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="476.28" y="220.14000000000001" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Move in connection booking</text><circle cx="307.12" cy="246.51999999999998" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="316.12" y="250.01999999999998" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">SME multi site onboarding</text><circle cx="221.32" cy="140.28000000000003" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="230.32" y="143.78000000000003" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Payment plan setup</text><circle cx="341.44" cy="166.84" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="350.44" y="170.34" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Meter reading reminder</text><circle cx="181.28" cy="153.56" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="190.28" y="157.06" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Outage credit follow up</text></svg><figcaption><span class="fignum">Figure 11</span><span class="figcap">Kestrel touchpoints by score and volume</span></figcaption></figure>
+<h3 id="a9-journey-to-blueprint-traceability-table">A9 — Journey-to-blueprint traceability table</h3><div class="tbl-wrap"><table><thead><tr><th>Journey pain point</th><th>Design principle</th><th>Standard or blueprint change</th><th>KPI moved</th><th>Source logic</th></tr></thead><tbody><tr><td>First bill looks wrong after smart-meter install</td><td>Explain before the customer asks</td><td>First-bill explainer panel and follow-up reminder</td><td>Billing MOS 61→78</td><td>See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code></td></tr><tr><td scope="row">Customer must repeat the story to billing and metering</td><td>One service, not two departments</td><td>Unified episode view and one owner standard</td><td>FCR 63%→77%</td><td>See: <code>05-good-services/06-designing-good-services.md</code></td></tr><tr><td scope="row">No believable due-by time on billing corrections</td><td>Promise only what can be kept</td><td>Mandatory due-by field plus promise-keeping metric</td><td>Promise-keeping 82%→96%</td><td>See: <code>19-service-management-and-marketing/02-perceived-service-quality.md</code></td></tr><tr><td scope="row">Failed connection visit creates a new service failure</td><td>Recovery must complete the whole problem</td><td>Same-day rebook and cause-tag standard</td><td>Avoidable revisit rate down</td><td>See: <code>05-good-services/06-designing-good-services.md</code></td></tr><tr><td scope="row">Sabine receives fragmented SME onboarding</td><td>Solve the whole portfolio problem</td><td>One owner and one access pack standard</td><td>SME renewal-at-risk 11%→8%</td><td>See: <a href="../08/index.html">article 08</a></td></tr><tr><td scope="row">Quality review sees complaints but not causes</td><td>Measure linked tiers, not single endpoints</td><td>Monthly SPC dashboard and root-cause review</td><td>Failure demand 14.0%→8.6%</td><td>See: <code>20-the-service-profit-chain/05-measuring-the-chain.md</code>; <code>14-outside-in/06-measurement.md</code></td></tr></tbody></table></div><h3 id="a10-billing-touchpoint-service-standard-audit">A10 — Billing touchpoint service-standard audit</h3><div class="ba-table"><div class="ba-row ba-header"><span class="ba-head">1. Is easy to find</span><span class="ba-head">Partial</span><span class="ba-head">Pass</span><span class="ba-head">Bill plus explainer panel now appears on the portal bill view before the customer has to call</span></div><div class="ba-row"><span class="bac bac-k">2. Clearly explains its purpose</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Estimated versus actual logic is explained on the first view and in the letter insert</span></div><div class="ba-row"><span class="bac bac-k">3. Sets a user&#39;s expectations</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Due-by time is now mandatory in every billing query confirmation</span></div><div class="ba-row"><span class="bac bac-k">4. Enables each user to complete the outcome they set out to do</span><span class="bac bac-a">Partial</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Resolution summary and next-bill reminder close the loop instead of ending at case closure</span></div><div class="ba-row"><span class="bac bac-k">5. Works in a way that is familiar</span><span class="bac bac-a">Partial</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Bill, portal, phone, and follow-up now use one repeatable recap, update, and resolution pattern</span></div><div class="ba-row"><span class="bac bac-k">6. Requires no prior knowledge to use</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Legacy billing jargon was removed from the explainer and agent script</span></div><div class="ba-row"><span class="bac bac-k">7. Is agnostic of organizational structures</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Billing and meter data are joined in one view and one root-cause owner is assigned</span></div><div class="ba-row"><span class="bac bac-k">8. Requires the minimum possible steps to complete</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Customer starts the query once and receives updates without re-explaining the meter story</span></div><div class="ba-row"><span class="bac bac-k">9. Is consistent throughout</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Bill, portal, phone, and follow-up all use the same explanation, due-by promise, and status heartbeat</span></div><div class="ba-row"><span class="bac bac-k">10. Has no dead ends</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Status heartbeat, resolution summary, and next-bill reminder give a clear next step from every case state</span></div><div class="ba-row"><span class="bac bac-k">11. Is usable by everyone, equally</span><span class="bac bac-a">Partial</span><span class="bac bac-b">Partial</span><span class="bac bac-b">Assisted-digital phone and callback support remain available for Ingrid-like needs, but this article does not evidence a full equal-access audit</span></div><div class="ba-row"><span class="bac bac-k">12. Responds to change quickly</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Root-cause issues and pull requests now feed monthly standard changes inside the operating rhythm</span></div><div class="ba-row"><span class="bac bac-k">13. Clearly explains why a decision has been made</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Resolution summary now explains the correction or explanation in customer language</span></div><div class="ba-row"><span class="bac bac-k">14. Makes it easy to get human assistance</span><span class="bac bac-a">Partial</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Phone route and named callback windows are retained for customers who need a person</span></div><div class="ba-row"><span class="bac bac-k">15. Requires the right knowledge from the user</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Joined billing and meter history means the customer no longer has to know or repeat backstage details</span></div></div></section><section class="art-sec sec-6"><span class="sec-kicker">06 · Use cases</span><h2 id="sec-6-use-cases-case-studies">Use cases / case studies</h2><h3 id="use-case-a-billing-error-quality-loop-after-a-smart-meter-first-bill">Use case A — Billing-error quality loop after a smart-meter first bill</h3><p><strong>Scenario.</strong> A Markus-like household sees a first bill after smart-meter activation that includes a catch-up adjustment and assumes Kestrel has overcharged him. In phase 1, Kestrel improved the smart-meter journey itself; in phase 2, it tackled the quality-management question underneath that moment.</p>
 <p><strong>What was designed.</strong> Kestrel created a billing-error quality loop rather than a one-off fix. The first contact now triggers three actions at once: explain the bill in plain language, assign a due-by time, and classify the likely cause. When the same cause appears above the monthly threshold, it moves from case handling into standards review. In this use case, the root cause was not a calculation defect. It was a recurring mismatch between how the billing engine phrased estimated-to-actual reconciliation and what the first-bill explainer promised.</p>
 <p><strong>AI working session summary.</strong> Claude Code drafted the revised standard and the customer-language explanation. OpenCode traced 14 weeks of first-bill queries and showed that 62% of “billing error” complaints were actually comprehension failures. Codex challenged the team&#39;s first conclusion and forced a split between genuine overcharge and explainability defects. Representative prompt:</p>
-<pre><code class="language-text">You are MOS-ANALYST.
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>You are MOS-ANALYST.
 Compare 200 first-bill contacts tagged billing_error against bill outputs and survey text.
 Separate technical defects from explanation defects.
 Return only: defect_type, evidence_count, MOS_technical_mean, MOS_functional_mean,
 repeat_contact_rate, recommendation.
-If the technical defect rate is under 20 percent, do not recommend system change first.</code></pre><p><strong>Outcome.</strong> In the pilot units, billing-error FCR rose from 48% to 79%, mean resolution time fell from 6.2 to 2.1 days, and repeat contacts on first-bill queries fell from 34% to 14%. More importantly, the root cause fed a standard change and an explainer rewrite, not just an apology script. This is the exact quality-loop behavior Kestrel previously lacked.</p>
+If the technical defect rate is under 20 percent, do not recommend system change first.</code></pre></div><p><strong>Outcome.</strong> In the pilot units, billing-error FCR rose from 48% to 79%, mean resolution time fell from 6.2 to 2.1 days, and repeat contacts on first-bill queries fell from 34% to 14%. More importantly, the root cause fed a standard change and an explainer rewrite, not just an apology script. This is the exact quality-loop behavior Kestrel previously lacked.</p>
 <h3 id="use-case-b-meter-reading-schedule-quality">Use case B — Meter-reading schedule quality</h3><p><strong>Scenario.</strong> Ingrid-like customers and rural households were still calling after meter-reading schedule changes because reminder messages described the date but not the purpose, access window, or assisted-digital option.</p>
 <p><strong>What was designed.</strong> The quality standard for meter-reading schedule changes was rewritten around one user need: “I need to know what will happen, when, and what I must do so that I do not miss the visit or worry I have done something wrong.” The revised touchpoint added a purpose line, a narrow window, an access checklist, and a phone route. When a no-access event still occurred, the service-recovery standard required same-day explanation and rebooking.</p>
 <p><strong>AI working session summary.</strong> OpenCode joined scheduling, IVR, and missed-visit data to isolate avoidable schedule confusion. Claude Code generated three reminder variants and a recovery script. Codex rejected the first draft because it overpromised exact technician arrival times the operation could not meet.</p>
@@ -946,8 +215,8 @@ If the technical defect rate is under 20 percent, do not recommend system change
 <p><strong>What was designed.</strong> The new SME onboarding standard defined one named owner, one account pack, and one billing structure agreement before go-live. The quality review treated any first-invoice or access problem as evidence of onboarding quality, not as a separate downstream support incident. The standard also preserved the phase-1 persona directive from <a href="../08/index.html">article 08</a>: one supplier, one bill, one login.</p>
 <p><strong>AI working session summary.</strong> Claude Code maintained the onboarding standard and generated the owner handoff checklist. OpenCode joined onboarding cases to first-invoice and first-30-day contact events, revealing that onboarding success had been judged far too early. Codex reviewed the linkage logic and agreed the right measure was not completion of the connection itself, but 30-day quality after the site went live.</p>
 <p><strong>Outcome.</strong> SME onboarding MOS rose from 54 to 74, first-invoice queries in the S1 cohort fell by 46%, and the renewal-at-risk rate for Sabine-like SMEs moved from 11% to 8%. The economic lesson was simple: onboarding quality is renewal design in disguise.</p>
-<h2 id="7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">7. SOPs for AI — how service design SOPs are best used by agents</h2><p>Kestrel encoded three core SOP families and one meta-SOP. Every one used the same contract: <strong>method → numbered steps → output schema → acceptance criteria → review gate</strong>.</p>
-<h3 id="71-quality-standard-authoring-sop">7.1 Quality-standard authoring SOP</h3><pre><code class="language-text">SOP QS-01 QUALITY STANDARD AUTHORING
+</section><section class="art-sec sec-7"><span class="sec-kicker">07 · SOPs for AI</span><h2 id="sec-7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">SOPs for AI — how service design SOPs are best used by agents</h2><p>Kestrel encoded three core SOP families and one meta-SOP. Every one used the same contract: <strong>method → numbered steps → output schema → acceptance criteria → review gate</strong>.</p>
+<h3 id="71-quality-standard-authoring-sop">7.1 Quality-standard authoring SOP</h3><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>SOP QS-01 QUALITY STANDARD AUTHORING
 1. Read touchpoint evidence, complaint themes, and current promise text.
 2. Write one technical requirement and one functional requirement.
 3. Define one observable measure and one control limit.
@@ -957,7 +226,7 @@ If the technical defect rate is under 20 percent, do not recommend system change
 OUTPUT: standard_id, touchpoint, technical_requirement, functional_requirement,
 measure, control_limit, owner, review_cadence, persona_overlay, change_reason.
 ACCEPTANCE: observable, computable, no conflicting promise, one owner only.
-REVIEW GATE: service owner plus operations lead in GitHub PR.</code></pre><h3 id="72-mos-analysis-prompt">7.2 MOS analysis prompt</h3><pre><code class="language-text">You are MOS-ANALYST.
+REVIEW GATE: service owner plus operations lead in GitHub PR.</code></pre></div><h3 id="72-mos-analysis-prompt">7.2 MOS analysis prompt</h3><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>You are MOS-ANALYST.
 Input: monthly episode table by touchpoint and operating unit.
 For each touchpoint calculate:
 - mos_mean
@@ -972,7 +241,7 @@ Rules:
 2. If sample size is under threshold, mark low_confidence.
 3. Report control-limit breaches before averages.
 4. Return one recommendation only when evidence points to a likely root cause.
-5. Do not smooth month-to-month volatility unless a human asked for a trend view separately.</code></pre><h3 id="73-failure-demand-root-cause-sop-as-code">7.3 Failure-demand root-cause SOP as code</h3><pre><code class="language-text">SOP FD-03 FAILURE DEMAND ROOT CAUSE
+5. Do not smooth month-to-month volatility unless a human asked for a trend view separately.</code></pre></div><h3 id="73-failure-demand-root-cause-sop-as-code">7.3 Failure-demand root-cause SOP as code</h3><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>SOP FD-03 FAILURE DEMAND ROOT CAUSE
 1. Select all avoidable contacts for the month by touchpoint.
 2. Group by root_cause_owner and reason family.
 3. Compare current month against prior three-month baseline.
@@ -984,7 +253,7 @@ Rules:
    - standard kept but still failing -&gt; escalate structural defect to ops change
 OUTPUT: root cause table, issue list, standard impact, decision recommendation.
 ACCEPTANCE: every flagged cluster has evidence count and owner.
-REVIEW GATE: monthly quality review chaired by CX ops and service owner.</code></pre><h3 id="74-meta-sop-and-guardrails">7.4 Meta-SOP and guardrails</h3><p>The meta-SOP was stable across the engagement: baseline → standardize → pilot → review → change → measure again. No standard changed without evidence. No MOS story went to the steering group without operational telemetry beside it. No customer-facing promise was changed without the operational owner confirming it could be kept.</p>
+REVIEW GATE: monthly quality review chaired by CX ops and service owner.</code></pre></div><h3 id="74-meta-sop-and-guardrails">7.4 Meta-SOP and guardrails</h3><p>The meta-SOP was stable across the engagement: baseline → standardize → pilot → review → change → measure again. No standard changed without evidence. No MOS story went to the steering group without operational telemetry beside it. No customer-facing promise was changed without the operational owner confirming it could be kept.</p>
 <p>Guardrails:</p>
 <ul>
 <li><strong>No cherry-picking metrics.</strong> Monthly review always begins with control-limit breaches and adverse movement before success cases. This follows the lead-lag governance logic in <code>20-the-service-profit-chain/05-measuring-the-chain.md</code>.</li>
@@ -994,151 +263,9 @@ REVIEW GATE: monthly quality review chaired by CX ops and service owner.</code><
 <li><strong>Human sign-off points.</strong> Standard changes, control-limit resets, persona-overlay rules, and anything touching debt, billing rights, or regulated copy require human approval.</li>
 <li><strong>Evidence discipline.</strong> Any generated narrative in the monthly pack must trace to episode data, survey verbatims, or an approved standard file.</li>
 </ul>
-<h3 id="75-failure-modes-and-mitigations">7.5 Failure modes and mitigations</h3><table>
-<thead>
-<tr>
-<th>Failure mode</th>
-<th>Why it happens</th>
-<th>Mitigation</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Agent games MOS by selecting only resolved cases</td>
-<td>LLM tries to tell a cleaner success story</td>
-<td>Build MOS from all eligible episodes; fixed monthly extraction window</td>
-</tr>
-<tr>
-<td>Agent smooths away warning signals</td>
-<td>Trend-writing bias favors neat lines</td>
-<td>Control-limit chart reviewed before trend commentary</td>
-</tr>
-<tr>
-<td>Standard library becomes vague policy prose</td>
-<td>Models imitate corporate language</td>
-<td>Authoring SOP requires observable measure and owner</td>
-</tr>
-<tr>
-<td>Frontline blamed for backstage defects</td>
-<td>Contact data is the most visible signal</td>
-<td>Root-cause SOP routes issues to owner system, not only channel</td>
-</tr>
-<tr>
-<td>AI recommends impossible promises</td>
-<td>It optimizes for customer appeal, not capacity</td>
-<td>Codex feasibility review and ops-owner sign-off mandatory</td>
-</tr>
-<tr>
-<td>Persona overlays fragment the library</td>
-<td>Teams want exceptions for every segment</td>
-<td>Overlay rule only when need materially changes the standard</td>
-</tr>
-</tbody></table>
-<h2 id="8-value-creation-amp-measurement">8. Value creation &amp; measurement</h2><table>
-<thead>
-<tr>
-<th>Metric</th>
-<th>Baseline</th>
-<th>6 months after rollout</th>
-<th>Delta</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Annual contact volume</td>
-<td>760,000</td>
-<td>718,000</td>
-<td>-42,000</td>
-</tr>
-<tr>
-<td>Avoidable failure demand share</td>
-<td>14.0%</td>
-<td>8.6%</td>
-<td>-5.4 pts</td>
-</tr>
-<tr>
-<td>Billing-query MOS</td>
-<td>61 / 100</td>
-<td>78 / 100</td>
-<td>+17</td>
-</tr>
-<tr>
-<td>In-scope first-contact resolution</td>
-<td>63%</td>
-<td>77%</td>
-<td>+14 pts</td>
-</tr>
-<tr>
-<td>Mean resolution time</td>
-<td>4.8 days</td>
-<td>2.9 days</td>
-<td>-1.9 days</td>
-</tr>
-<tr>
-<td>Promise-keeping rate</td>
-<td>82%</td>
-<td>96%</td>
-<td>+14 pts</td>
-</tr>
-<tr>
-<td>Frontline eNPS</td>
-<td>+8</td>
-<td>+23</td>
-<td>+15</td>
-</tr>
-<tr>
-<td>Top-box post-interaction satisfaction</td>
-<td>34%</td>
-<td>56%</td>
-<td>+22 pts</td>
-</tr>
-<tr>
-<td>Markus-like household switch risk</td>
-<td>13.5%</td>
-<td>12.1%</td>
-<td>-1.4 pts</td>
-</tr>
-<tr>
-<td>Sabine-like SME renewal-at-risk</td>
-<td>11%</td>
-<td>8%</td>
-<td>-3 pts</td>
-</tr>
-</tbody></table>
-<h3 id="kpi-tree-service-profit-chain-view">KPI tree — Service Profit Chain view</h3><div class="mermaid">
-flowchart LR
-  A["Internal quality standards freshness internal SLA tool readiness"] --> B["Employee condition eNPS coaching confidence training readiness"]
-  B --> C["External value MOS FCR resolution time promise keeping"]
-  C --> D["Customer outcomes top box satisfaction repeat contacts switch and renewal risk"]
-  D --> E["Financial outcomes lower cost to serve fewer revisits value protected"]
-</div><p>The point of the dashboard was linkage, not reporting volume. Kestrel reviewed two metrics per link at the operating-unit level, consistent with <code>20-the-service-profit-chain/05-measuring-the-chain.md</code>:</p>
-<table>
-<thead>
-<tr>
-<th>Chain link</th>
-<th>Example measures</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Internal service quality</td>
-<td>Standards reviewed in last 90 days; internal SLA adherence between billing, meter, and connections teams</td>
-</tr>
-<tr>
-<td>Employee satisfaction and capability</td>
-<td>eNPS; quality-coaching confidence; training completion</td>
-</tr>
-<tr>
-<td>External service value</td>
-<td>MOS; FCR; resolution time; promise-keeping</td>
-</tr>
-<tr>
-<td>Customer satisfaction and loyalty</td>
-<td>Top-box satisfaction; repeat-contact rate; switch risk; SME renewal-at-risk</td>
-</tr>
-<tr>
-<td>Profit and growth</td>
-<td>Contact cost; avoided field revisit cost; retained value from reduced churn</td>
-</tr>
-</tbody></table>
-<p><strong>Causal logic.</strong> The useful chain at Kestrel was: better internal standards, clearer internal handoffs, and more credible tools for the frontline (internal quality) raised employee confidence and reduced the sense of being trapped between systems (employee condition). That improved due-by promises, explanation quality, and first-contact resolution (external value). Those changes reduced repeat contacts and protected trust in the billing and onboarding journeys (satisfaction and loyalty). The financial effects came from fewer avoidable contacts, fewer wasted field visits, and lower churn or renewal-risk in the cohorts most sensitive to service quality. See: <code>14-outside-in/06-measurement.md</code>; <code>20-the-service-profit-chain/05-measuring-the-chain.md</code>.</p>
+<h3 id="75-failure-modes-and-mitigations">7.5 Failure modes and mitigations</h3><div class="tbl-wrap"><table><thead><tr><th>Failure mode</th><th>Why it happens</th><th>Mitigation</th></tr></thead><tbody><tr><td>Agent games MOS by selecting only resolved cases</td><td>LLM tries to tell a cleaner success story</td><td>Build MOS from all eligible episodes; fixed monthly extraction window</td></tr><tr><td scope="row">Agent smooths away warning signals</td><td>Trend-writing bias favors neat lines</td><td>Control-limit chart reviewed before trend commentary</td></tr><tr><td scope="row">Standard library becomes vague policy prose</td><td>Models imitate corporate language</td><td>Authoring SOP requires observable measure and owner</td></tr><tr><td scope="row">Frontline blamed for backstage defects</td><td>Contact data is the most visible signal</td><td>Root-cause SOP routes issues to owner system, not only channel</td></tr><tr><td scope="row">AI recommends impossible promises</td><td>It optimizes for customer appeal, not capacity</td><td>Codex feasibility review and ops-owner sign-off mandatory</td></tr><tr><td scope="row">Persona overlays fragment the library</td><td>Teams want exceptions for every segment</td><td>Overlay rule only when need materially changes the standard</td></tr></tbody></table></div></section><section class="art-sec sec-8"><span class="sec-kicker">08 · Value & measurement</span><h2 id="sec-8-value-creation-amp-measurement">Value creation &amp; measurement</h2><div class="ba-table"><div class="ba-row ba-header"><span class="ba-head">Annual contact volume</span><span class="ba-head">760,000</span><span class="ba-head">718,000</span><span class="ba-head">-42,000</span></div><div class="ba-row"><span class="bac bac-k">Avoidable failure demand share</span><span class="bac bac-a">14.0%</span><span class="bac bac-b">8.6%</span><span class="bac bac-b">-5.4 pts</span></div><div class="ba-row"><span class="bac bac-k">Billing-query MOS</span><span class="bac bac-a">61 / 100</span><span class="bac bac-b">78 / 100</span><span class="bac bac-b">+17</span></div><div class="ba-row"><span class="bac bac-k">In-scope first-contact resolution</span><span class="bac bac-a">63%</span><span class="bac bac-b">77%</span><span class="bac bac-b">+14 pts</span></div><div class="ba-row"><span class="bac bac-k">Mean resolution time</span><span class="bac bac-a">4.8 days</span><span class="bac bac-b">2.9 days</span><span class="bac bac-b">-1.9 days</span></div><div class="ba-row"><span class="bac bac-k">Promise-keeping rate</span><span class="bac bac-a">82%</span><span class="bac bac-b">96%</span><span class="bac bac-b">+14 pts</span></div><div class="ba-row"><span class="bac bac-k">Frontline eNPS</span><span class="bac bac-a">+8</span><span class="bac bac-b">+23</span><span class="bac bac-b">+15</span></div><div class="ba-row"><span class="bac bac-k">Top-box post-interaction satisfaction</span><span class="bac bac-a">34%</span><span class="bac bac-b">56%</span><span class="bac bac-b">+22 pts</span></div><div class="ba-row"><span class="bac bac-k">Markus-like household switch risk</span><span class="bac bac-a">13.5%</span><span class="bac bac-b">12.1%</span><span class="bac bac-b">-1.4 pts</span></div><div class="ba-row"><span class="bac bac-k">Sabine-like SME renewal-at-risk</span><span class="bac bac-a">11%</span><span class="bac bac-b">8%</span><span class="bac bac-b">-3 pts</span></div></div><h3 id="kpi-tree-service-profit-chain-view">KPI tree — Service Profit Chain view</h3><figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1200 76" role="img" aria-hidden="true"><defs><marker id="arr-12" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 178.4,38 204.4,38 230.40000000000003,38" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-12)"/><path d="M 429.2,38 455.2,38 481.20000000000005,38" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-12)"/><path d="M 680,38 706,38 732,38" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-12)"/><path d="M 930.8,38 956.8,38 982.8,38" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-12)"/><rect x="10" y="10" width="168.4" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="94.2" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Internal quality</text><text x="94.2" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">standards freshness</text><text x="94.2" y="55" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">internal…</text><rect x="230.40000000000003" y="10" width="198.79999999999998" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="329.8" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Employee condition eNPS</text><text x="329.8" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">coaching confidence</text><text x="329.8" y="55" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">training…</text><rect x="481.20000000000005" y="10" width="198.79999999999998" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="580.6" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">External value MOS FCR</text><text x="580.6" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">resolution time promise</text><text x="580.6" y="55" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">keeping…</text><rect x="732" y="10" width="198.79999999999998" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="831.4" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Customer outcomes top</text><text x="831.4" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">box satisfaction repeat</text><text x="831.4" y="55" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">contacts…</text><rect x="982.8" y="10" width="206.39999999999998" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1086" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Financial outcomes lower</text><text x="1086" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">cost to serve fewer</text><text x="1086" y="55" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">revisits…</text></svg><figcaption><span class="fignum">Figure 12</span><span class="figcap">KPI tree — Service Profit Chain view</span></figcaption></figure>
+<p>The point of the dashboard was linkage, not reporting volume. Kestrel reviewed two metrics per link at the operating-unit level, consistent with <code>20-the-service-profit-chain/05-measuring-the-chain.md</code>:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Chain link</th><th>Example measures</th></tr></thead><tbody><tr><td>Internal service quality</td><td>Standards reviewed in last 90 days; internal SLA adherence between billing, meter, and connections teams</td></tr><tr><td scope="row">Employee satisfaction and capability</td><td>eNPS; quality-coaching confidence; training completion</td></tr><tr><td scope="row">External service value</td><td>MOS; FCR; resolution time; promise-keeping</td></tr><tr><td scope="row">Customer satisfaction and loyalty</td><td>Top-box satisfaction; repeat-contact rate; switch risk; SME renewal-at-risk</td></tr><tr><td scope="row">Profit and growth</td><td>Contact cost; avoided field revisit cost; retained value from reduced churn</td></tr></tbody></table></div><p><strong>Causal logic.</strong> The useful chain at Kestrel was: better internal standards, clearer internal handoffs, and more credible tools for the frontline (internal quality) raised employee confidence and reduced the sense of being trapped between systems (employee condition). That improved due-by promises, explanation quality, and first-contact resolution (external value). Those changes reduced repeat contacts and protected trust in the billing and onboarding journeys (satisfaction and loyalty). The financial effects came from fewer avoidable contacts, fewer wasted field visits, and lower churn or renewal-risk in the cohorts most sensitive to service quality. See: <code>14-outside-in/06-measurement.md</code>; <code>20-the-service-profit-chain/05-measuring-the-chain.md</code>.</p>
 <p>A conservative annualized value view made the case legible:</p>
 <ul>
 <li>Contact-cost reduction: 760,000 × €5.80 → 718,000 × €5.10 = about <strong>€746k annualized cost released</strong>.</li>
@@ -1147,24 +274,24 @@ flowchart LR
 <li>Sabine-like SMEs retained through better onboarding quality: about <strong>360 retained SMEs × €1,900 contribution = €684k</strong>.</li>
 </ul>
 <p>Total conservative annualized value released or protected: <strong>about €1.9M</strong>. As in <a href="../03/index.html">article 03</a>, the language used with steering was contribution, not pure attribution.</p>
-<h2 id="9-ai-tool-playbook-per-engagement">9. AI tool playbook (per engagement)</h2><h3 id="claude-code">Claude Code</h3><p>Role: operating system for the engagement. It maintained the standards library, authored the MOS rubric, drafted monthly narrative summaries, generated review agendas, and turned complaint clusters into standard proposals.</p>
+</section><section class="art-sec sec-9"><span class="sec-kicker">09 · AI tool playbook</span><h2 id="sec-9-ai-tool-playbook-per-engagement">AI tool playbook (per engagement)</h2><h3 id="claude-code">Claude Code</h3><p>Role: operating system for the engagement. It maintained the standards library, authored the MOS rubric, drafted monthly narrative summaries, generated review agendas, and turned complaint clusters into standard proposals.</p>
 <p>Concrete usage examples:</p>
-<pre><code class="language-text">Update standards/billing/first-bill-after-smart-meter.yml from issue Q-184.
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>Update standards/billing/first-bill-after-smart-meter.yml from issue Q-184.
 Keep current control limit unless evidence shows 3 months of stable improvement.
-Draft the PR summary in operations language, not design language.</code></pre><p>Excelled at: structured authoring, consistent artifact maintenance, and turning service-design logic into SOPs and templates.</p>
+Draft the PR summary in operations language, not design language.</code></pre></div><p>Excelled at: structured authoring, consistent artifact maintenance, and turning service-design logic into SOPs and templates.</p>
 <p>Failed at: tendency to make standards sound better than current operational capability. Human takeover point: any promise that affected regulated billing communication or operational capacity commitments.</p>
 <h3 id="opencode">OpenCode</h3><p>Role: quality data pipeline, monthly dashboard build, and failure-demand attribution engine.</p>
 <p>Concrete usage example:</p>
-<pre><code class="language-bash">opencode run --agent build &quot;Rebuild the monthly quality pack from raw extracts.
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>opencode run --agent build &quot;Rebuild the monthly quality pack from raw extracts.
 Output markdown tables for MOS, avoidable demand, root causes, and SPC links.
-If any column is missing or sample size is below threshold, fail the run loudly.&quot; </code></pre><p>Excelled at: reproducible joins across survey, complaint, and operations tables; honest pipeline output; fast rebuild of the monthly pack.</p>
+If any column is missing or sample size is below threshold, fail the run loudly.&quot; </code></pre></div><p>Excelled at: reproducible joins across survey, complaint, and operations tables; honest pipeline output; fast rebuild of the monthly pack.</p>
 <p>Failed at: statistical judgment if thresholds were left vague. Human takeover point: defining what constitutes avoidable demand and when a spike deserves intervention.</p>
 <h3 id="codex">Codex</h3><p>Role: adversarial reviewer for causal claims, sector benchmarking, and standard feasibility.</p>
 <p>Concrete usage example:</p>
-<pre><code class="language-bash">codex exec --skip-git-repo-check &quot;Read monthly-pack.md and spc-linkage.csv.
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>codex exec --skip-git-repo-check &quot;Read monthly-pack.md and spc-linkage.csv.
 Challenge whether any claimed loyalty or financial movement is unsupported.
 Flag benchmark claims that lack evidence.
-Return defects only.&quot; </code></pre><p>Excelled at: hostile reading of causal claims and vague standards. It was particularly useful when Kestrel was tempted to tell a bigger value story than the data supported.</p>
+Return defects only.&quot; </code></pre></div><p>Excelled at: hostile reading of causal claims and vague standards. It was particularly useful when Kestrel was tempted to tell a bigger value story than the data supported.</p>
 <p>Failed at: occasional over-skepticism about utility-operational nuances. Human takeover point: final judgment on what was sector-normal versus genuinely defective for Kestrel&#39;s context.</p>
 <h3 id="github">GitHub</h3><p>Role: standards-as-code repository, review gate, issue system, and automation runner.</p>
 <p>Concrete usage examples:</p>
@@ -1175,7 +302,7 @@ Return defects only.&quot; </code></pre><p>Excelled at: hostile reading of causa
 </ul>
 <p>Excelled at: making quality visible, versioned, reviewable, and auditable.</p>
 <p>Failed at: nothing material, but it only worked once the team agreed that unreviewed standards did not count as real standards.</p>
-<h2 id="10-lessons-learned-amp-pitfalls">10. Lessons learned &amp; pitfalls</h2><ul>
+</section><section class="art-sec sec-10"><span class="sec-kicker">10 · Lessons learned</span><h2 id="sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</h2><ul>
 <li><strong>A complaint count is not a quality system.</strong> Kestrel&#39;s breakthrough came from separating technical and functional quality and assigning named standards to moments of truth.</li>
 <li><strong>Functional quality is where utilities quietly lose trust.</strong> Bills can be numerically correct and still drive churn if the explanation is poor. That was Markus&#39;s lesson from phase 1, operationalized here.</li>
 <li><strong>Monthly review must sit with operations, not beside it.</strong> When quality review was treated as a CX ceremony, nothing changed. Once it became part of ops rhythm, standards started to move behavior.</li>
@@ -1184,176 +311,24 @@ Return defects only.&quot; </code></pre><p>Excelled at: hostile reading of causa
 <li><strong>Persona continuity matters in operations.</strong> Ingrid, Markus, and Sabine were not research artifacts left on the wall. They remained active overlays on standards and review decisions.</li>
 <li><strong>Done differently next time:</strong> instrument image effects explicitly. Gronroos&#39;s model says brand image filters quality perception; Kestrel measured trust indirectly through survey text, but a direct trust item would make the loyalty linkage stronger.</li>
 </ul>
-<h2 id="11-references">11. References</h2><p>Knowledge library used in this article:</p>
-<table>
-<thead>
-<tr>
-<th>Path</th>
-<th>Used for</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>books/19-service-management-and-marketing/02-perceived-service-quality.md</code></td>
-<td>Technical vs functional quality, expectation-experience gap, moment-of-truth mapping</td>
-</tr>
-<tr>
-<td><code>books/19-service-management-and-marketing/05-internal-marketing-and-service-culture.md</code></td>
-<td>Internal marketing, internal service chain, service-culture logic</td>
-</tr>
-<tr>
-<td><code>books/20-the-service-profit-chain/05-measuring-the-chain.md</code></td>
-<td>Unit-level linkage, lead-lag dashboard design, SPC audit logic</td>
-</tr>
-<tr>
-<td><code>books/14-outside-in/06-measurement.md</code></td>
-<td>Relationship / journey / operational measurement architecture</td>
-</tr>
-<tr>
-<td><code>books/05-good-services/06-designing-good-services.md</code></td>
-<td>Whole-service design, staged delivery, operationalized service standards</td>
-</tr>
-</tbody></table>
-<p>Related series articles:</p>
+</section><section class="art-sec sec-11"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2><p>Knowledge library used in this article:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Path</th><th>Used for</th></tr></thead><tbody><tr><td><code>books/19-service-management-and-marketing/02-perceived-service-quality.md</code></td><td>Technical vs functional quality, expectation-experience gap, moment-of-truth mapping</td></tr><tr><td scope="row"><code>books/19-service-management-and-marketing/05-internal-marketing-and-service-culture.md</code></td><td>Internal marketing, internal service chain, service-culture logic</td></tr><tr><td scope="row"><code>books/20-the-service-profit-chain/05-measuring-the-chain.md</code></td><td>Unit-level linkage, lead-lag dashboard design, SPC audit logic</td></tr><tr><td scope="row"><code>books/14-outside-in/06-measurement.md</code></td><td>Relationship / journey / operational measurement architecture</td></tr><tr><td scope="row"><code>books/05-good-services/06-designing-good-services.md</code></td><td>Whole-service design, staged delivery, operationalized service standards</td></tr></tbody></table></div><p>Related series articles:</p>
 <ul>
 <li><a href="../08/index.html">08 — Personas from Messy Data at Kestrel Energy</a></li>
 <li><a href="../03/index.html">03 — Service Design for Business at Aurelia Insurance</a></li>
 <li><a href="../20/index.html">20 — Service Recovery &amp; Complaint Journeys</a></li>
 </ul>
 <p>External references mentioned operationally: national utility regulation and DSO coordination constraints are described generically and are illustrative only; no external legal or standards citation is asserted here.</p>
-<h2 id="12-appendix-artifact-index">12. Appendix: artifact index</h2><table>
-<thead>
-<tr>
-<th>Artifact</th>
-<th>Section</th>
-<th>Format</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Process overview</td>
-<td>3</td>
-<td>Mermaid flowchart</td>
-<td>Discover to deliver operating logic</td>
-</tr>
-<tr>
-<td>16-week program plan</td>
-<td>3</td>
-<td>Mermaid gantt</td>
-<td>Sequencing and gates</td>
-</tr>
-<tr>
-<td>Service quality framework</td>
-<td>5</td>
-<td>Mermaid flowchart</td>
-<td>Gronroos quality to MOS to value chain</td>
-</tr>
-<tr>
-<td>Quality-standard library structure</td>
-<td>5</td>
-<td>tree + table</td>
-<td>Standards-as-code operating model</td>
-</tr>
-<tr>
-<td>Failure-demand funnel</td>
-<td>5</td>
-<td>Mermaid flowchart</td>
-<td>Contact to root-cause reduction logic</td>
-</tr>
-<tr>
-<td>A1 current-state billing journey</td>
-<td>5</td>
-<td>Mermaid + table</td>
-<td>Exposes today’s billing-query quality failures</td>
-</tr>
-<tr>
-<td>A2 future-state blueprint</td>
-<td>5</td>
-<td>Mermaid + lane table</td>
-<td>Future operating model for billing-query service</td>
-</tr>
-<tr>
-<td>A3 stakeholder map</td>
-<td>5</td>
-<td>Mermaid quadrantChart</td>
-<td>Influence and interest view</td>
-</tr>
-<tr>
-<td>A4 ecosystem map</td>
-<td>5</td>
-<td>Mermaid flowchart</td>
-<td>Actor and dependency map</td>
-</tr>
-<tr>
-<td>A5 persona continuity set</td>
-<td>5</td>
-<td>Table</td>
-<td>Reuses Ingrid, Markus, and Sabine as quality overlays</td>
-</tr>
-<tr>
-<td>A6 operating templates</td>
-<td>5</td>
-<td>Tables + fenced markdown</td>
-<td>Review agenda, quality pack, MOS rubric</td>
-</tr>
-<tr>
-<td>A7 mock dataset sample</td>
-<td>5</td>
-<td>CSV</td>
-<td>Synthetic quality episode sample</td>
-</tr>
-<tr>
-<td>A8 charts</td>
-<td>5</td>
-<td>Mermaid xychart, pie, quadrantChart</td>
-<td>Trend, driver mix, touchpoint priority</td>
-</tr>
-<tr>
-<td>A9 traceability table</td>
-<td>5</td>
-<td>Table</td>
-<td>Pain to standard to KPI linkage</td>
-</tr>
-<tr>
-<td>A10 billing audit</td>
-<td>5</td>
-<td>Table</td>
-<td>Touchpoint quality audit after redesign</td>
-</tr>
-<tr>
-<td>Use cases</td>
-<td>6</td>
-<td>Narrative + prompts</td>
-<td>Billing loop, meter schedule, SME onboarding</td>
-</tr>
-<tr>
-<td>SOPs for AI</td>
-<td>7</td>
-<td>Fenced text + table</td>
-<td>Executable service-quality management logic</td>
-</tr>
-<tr>
-<td>KPI tree and value table</td>
-<td>8</td>
-<td>Mermaid + tables</td>
-<td>SPC linkage and business effect</td>
-</tr>
-<tr>
-<td>Tool playbook</td>
-<td>9</td>
-<td>Narrative + commands</td>
-<td>How Claude Code, OpenCode, Codex, and GitHub were used</td>
-</tr>
-</tbody></table>
-</article><div class="wrap" style="max-width:880px">
-    <div class="cross-links"><a href="../21/index.html"><span class="lbl">← Previous case</span><span class="ttl">21. Pilots, Scaling &amp; Organizational Change at Aurelia Insurance</span></a><a href="../23/index.html"><span class="lbl">Next case →</span><span class="ttl">23. Employee Experience &amp; Frontline Enablement at Calder Community Bank</span></a></div>
+</section><section class="art-sec sec-12"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-appendix-artifact-index">Appendix: artifact index</h2><div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Artifact</th><th>Section</th><th>Format</th><th>Purpose</th></tr></thead><tbody><tr><td>Process overview</td><td>3</td><td>Mermaid flowchart</td><td>Discover to deliver operating logic</td></tr><tr><td scope="row">16-week program plan</td><td>3</td><td>Mermaid gantt</td><td>Sequencing and gates</td></tr><tr><td scope="row">Service quality framework</td><td>5</td><td>Mermaid flowchart</td><td>Gronroos quality to MOS to value chain</td></tr><tr><td scope="row">Quality-standard library structure</td><td>5</td><td>tree + table</td><td>Standards-as-code operating model</td></tr><tr><td scope="row">Failure-demand funnel</td><td>5</td><td>Mermaid flowchart</td><td>Contact to root-cause reduction logic</td></tr><tr><td scope="row">A1 current-state billing journey</td><td>5</td><td>Mermaid + table</td><td>Exposes today’s billing-query quality failures</td></tr><tr><td scope="row">A2 future-state blueprint</td><td>5</td><td>Mermaid + lane table</td><td>Future operating model for billing-query service</td></tr><tr><td scope="row">A3 stakeholder map</td><td>5</td><td>Mermaid quadrantChart</td><td>Influence and interest view</td></tr><tr><td scope="row">A4 ecosystem map</td><td>5</td><td>Mermaid flowchart</td><td>Actor and dependency map</td></tr><tr><td scope="row">A5 persona continuity set</td><td>5</td><td>Table</td><td>Reuses Ingrid, Markus, and Sabine as quality overlays</td></tr><tr><td scope="row">A6 operating templates</td><td>5</td><td>Tables + fenced markdown</td><td>Review agenda, quality pack, MOS rubric</td></tr><tr><td scope="row">A7 mock dataset sample</td><td>5</td><td>CSV</td><td>Synthetic quality episode sample</td></tr><tr><td scope="row">A8 charts</td><td>5</td><td>Mermaid xychart, pie, quadrantChart</td><td>Trend, driver mix, touchpoint priority</td></tr><tr><td scope="row">A9 traceability table</td><td>5</td><td>Table</td><td>Pain to standard to KPI linkage</td></tr><tr><td scope="row">A10 billing audit</td><td>5</td><td>Table</td><td>Touchpoint quality audit after redesign</td></tr><tr><td scope="row">Use cases</td><td>6</td><td>Narrative + prompts</td><td>Billing loop, meter schedule, SME onboarding</td></tr><tr><td scope="row">SOPs for AI</td><td>7</td><td>Fenced text + table</td><td>Executable service-quality management logic</td></tr><tr><td scope="row">KPI tree and value table</td><td>8</td><td>Mermaid + tables</td><td>SPC linkage and business effect</td></tr><tr><td scope="row">Tool playbook</td><td>9</td><td>Narrative + commands</td><td>How Claude Code, OpenCode, Codex, and GitHub were used</td></tr></tbody></table></div></section></article></div>
+    <div class="cross-links"><a class="xlink" href="./21/index.html"><span class="lbl">← Previous case</span><span class="ttl">21. Pilots, Scaling &amp; Organizational Change at Aurelia Insurance</span><span class="rt">42 min read</span></a><a class="xlink" href="./23/index.html"><span class="lbl">Next case →</span><span class="ttl">23. Employee Experience &amp; Frontline Enablement at Calder Community Bank</span><span class="rt">43 min read</span></a></div>
     <div class="art-foot">
-      <span>12 figures (12 diagrams) · ~8.9k words · reviewed by an adversarial AI reviewer (Gemini 3.1 Pro High).</span>
-      · <a href="https://github.com/sammozaffari/the-agentic-service-designer/blob/main/articles/22/README.md" target="_blank" rel="noopener">Open source in repo ↗</a>
+      <span>12 figures · ~8.9k words · evidence-cited · reviewed by an adversarial AI critic.</span>
+      · <a href="../index.html">Back to the archive</a>
     </div>
-  </div></main>
-<footer class="footer"><div class="footer-inner">
-  <span>Agentic Service Designer — 30 service design case studies from an AI-first practice. Fictional, anonymized clients.</span>
-  <span><a href="../../index.html">Home</a> · <a href="../../concept.html">The concept</a> · <a href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub</a></span>
-</div></footer>
+    <button class="backtop" id="backtop" type="button">Back to top</button></main>
+<footer class="footer">
+  <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
+  <span><a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
+</footer>
 <script src="../../assets/site.js"></script>
 </body></html>

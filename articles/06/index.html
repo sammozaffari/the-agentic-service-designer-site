@@ -1,122 +1,55 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Research Ops at Scale: 200 Interviews, One Agent Team — Banking">
-<title>06. Research Ops at Scale: 200 Interviews, One Agent Team — Agentic Service Designer</title>
+<meta name="description" content="Research Ops at Scale: 200 Interviews, One Agent Team — Banking. By Sam Mozaffari. AI-first service design case study.">
+<title>06. Research Ops at Scale: 200 Interviews, One Agent Team — The Agentic Service Designer</title>
 <link rel="stylesheet" href="../../assets/style.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%234f46e5'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'>A</text></svg>">
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
+
 </head><body>
-<nav class="nav"><div class="nav-inner">
-  <a class="brand" href="../../index.html"><span class="mark">A</span>Agentic Service Designer</a>
-  <div class="nav-links">
-    <a href="../../index.html" class="">Home</a>
+<header class="site-head">
+  <a class="brand" href="../../index.html">
+    <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
+    <div class="brand-sub">Sam Mozaffari</div>
+  </a>
+  <nav class="main-nav">
+    <a href="../../index.html" class="on">Index</a>
+    <a href="../../harness.html" class="">Harness</a>
     <a href="../../about.html" class="">About</a>
-    <a href="../../concept.html" class="">The concept</a>
-    <a href="../../index.html#series" class="on">Case studies</a>
-    <a class="github-link" href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub ↗</a>
-  </div>
-</div></nav>
+    <a href="../../cv.html" class="">CV</a>
+  </nav>
+</header>
 <main class="art">
-  <div class="wrap art-hero">
+  <div class="art-progress"><div class="art-progress-bar" id="progress"></div></div>
+  <div class="art-hero">
     <div class="art-meta">
-      <span class="chip chip-track">Research &amp; Synthesis</span>
-      <span class="sep">·</span><span>Banking</span>
-      <span class="sep">·</span><span><b>Calder Community Bank</b></span>
-      <span class="sep">·</span><span>10 weeks (research program)</span>
-      <span class="chip chip-tool">Claude Code</span><span class="chip chip-tool">OpenCode</span><span class="chip chip-tool">Codex</span><span class="chip chip-tool">GitHub</span>
+      <span class="chip">Research &amp; Synthesis</span>
+      <span class="sep">·</span><span class="chip">Banking</span>
+      <span class="sep">·</span><span class="chip">10 weeks (research program)</span>
+      <span class="sep">·</span><span class="chip">42 min read</span>
     </div>
-    <p class="art-author">Case study 06 &middot; by <a href="../../about.html">Sam Mozaffari</a> &mdash; service designer, AI-first practice</p>
     <h1>Research Ops at Scale: 200 Interviews, One Agent Team</h1>
     <p class="deck">Fictional composite client. All names, figures, and data are illustrative and anonymized.</p>
-  </div><article class="art-body wrap"><nav class="toc"><b>On this page</b><ol><li><a href="#0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</a></li><li><a href="#1-executive-summary">1. Executive summary</a></li><li><a href="#2-the-brief">2. The brief</a></li><li><a href="#3-approach-the-ai-first-research-operations-architecture">3. Approach: the AI-first research operations architecture</a></li><li><a href="#4-phase-by-phase-narrative">4. Phase-by-phase narrative</a></li><li><a href="#5-artifacts-portfolio">5. Artifacts portfolio</a></li><li><a href="#6-use-cases">6. Use cases</a></li><li><a href="#7-sops-for-ai-how-research-sops-are-best-used-by-agents">7. SOPs for AI — how research SOPs are best used by agents</a></li><li><a href="#8-value-creation-amp-measurement">8. Value creation &amp; measurement</a></li><li><a href="#9-ai-tool-playbook">9. AI tool playbook</a></li><li><a href="#10-lessons-learned-and-pitfalls">10. Lessons learned and pitfalls</a></li><li><a href="#11-references">11. References</a></li><li><a href="#12-appendix-artifact-index">12. Appendix: artifact index</a></li></ol></nav><h1 id="research-ops-at-scale-200-interviews-one-agent-team">Research Ops at Scale: 200 Interviews, One Agent Team</h1><h2 id="0-confidentiality-amp-provenance-note">0. Confidentiality &amp; provenance note</h2><p>Calder Community Bank is a fictional composite client, assembled from patterns observed across several European regional and cooperative banks; no real bank, customer, or employee is depicted. All names, figures, datasets, and quotes are illustrative and anonymized; participant quotes are fictional reconstructions written to the register of real fieldwork, not transcriptions of real people. The article shares knowledge and process — the research operations architecture, SOPs, prompts, and review gates — never client specifics. The engagement ran AI-first, with the human designer retaining consent, rapport, framing, and every participant-facing decision.</p>
-<h2 id="1-executive-summary">1. Executive summary</h2><p>Calder Community Bank, a fictional regional bank with 120 branches and 1.1 million customers, commissioned a service reset and faced the discovery problem from hell: four service domains (SME onboarding, branch service, digital banking, complaints), twelve distinct customer situations, and a board burned twice by research it did not trust. A traditional program at the required depth — 200 semi-structured interviews, 45 frontline shadow days, 800 diary entries — was quoted by an agency at 16 weeks and €285,000, and that quote silently assumed the corpus would be cut to 40 interviews. Instead, one lead service designer with an AI agent team ran the full corpus in 10 weeks for €94,000: an OpenCode ingestion and pseudonymization pipeline, a three-role Claude Code research team (researcher, synthesizer, librarian) producing per-interview summaries and a 4,826-item evidence register, a Codex adversarial synthesis pass, and GitHub as research-ops system of record — one issue per interview, PR gates on evidence quality, and CI blocking any personal data from the evidence store. First insights landed in week 4; human–LLM agreement on a 20-interview double-coding study reached kappa 0.78; every one of the 12 insight statements traces to verbatim quotes with character offsets into pseudonymized transcripts.</p>
-<table>
-<thead>
-<tr>
-<th>Key fact</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Client</td>
-<td>Calder Community Bank (fictional composite)</td>
-</tr>
-<tr>
-<td>Sector</td>
-<td>Retail and SME banking, eurozone</td>
-</tr>
-<tr>
-<td>Service</td>
-<td>Whole-service reset; discovery across SME onboarding, branch service, digital, complaints</td>
-</tr>
-<tr>
-<td>Scope</td>
-<td>Research design → fieldwork ops → processing → synthesis → validated insights</td>
-</tr>
-<tr>
-<td>Duration</td>
-<td>10 weeks (baseline estimate 16 weeks at one-fifth the corpus)</td>
-</tr>
-<tr>
-<td>Corpus</td>
-<td>200 interviews, 45 shadow days, 800 diary entries, 233 hours of audio</td>
-</tr>
-<tr>
-<td>Team</td>
-<td>1 lead designer + agent team + 1.0 client FTE</td>
-</tr>
-<tr>
-<td>AI tools</td>
-<td>Claude Code, OpenCode, Codex, GitHub</td>
-</tr>
-<tr>
-<td>Headline results</td>
-<td>First insights week 4; 4,826 verified evidence items; kappa 0.78; €470 vs €7,125 per analyzed interview</td>
-</tr>
-</tbody></table>
-<p>What you will learn:</p>
+    <div class="art-stats"><span><b>11</b> figures</span><span><b>~9.5k</b> words</span><span><b>4</b> tools of record</span><span><b>critic-reviewed</b> every gate</span></div>
+    <div class="author-block">
+      <div class="author-id">
+        <div class="author-avatar">SM</div>
+        <div><b>Sam Mozaffari</b><span>Service designer · AI-first &amp; agentic practice</span></div>
+      </div>
+      <p class="author-note">I stood up the research operation that ran 200 interviews with an agent team — instruments, coding, evidence register and synthesis — compressing weeks of analysis into days without cutting corpus size.</p>
+    </div>
+  </div><div class="art-layout"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</a></li><li><a href="#sec-1-executive-summary">Executive summary</a></li><li><a href="#sec-2-the-brief">The brief</a></li><li><a href="#sec-3-approach-the-ai-first-research-operations-architecture">Approach: the AI-first research operations architecture</a></li><li><a href="#sec-4-phase-by-phase-narrative">Phase-by-phase narrative</a></li><li><a href="#sec-5-artifacts-portfolio">Artifacts portfolio</a></li><li><a href="#sec-6-use-cases">Use cases</a></li><li><a href="#sec-7-sops-for-ai-how-research-sops-are-best-used-by-agents">SOPs for AI — how research SOPs are best used by agents</a></li><li><a href="#sec-8-value-creation-amp-measurement">Value creation &amp; measurement</a></li><li><a href="#sec-9-ai-tool-playbook">AI tool playbook</a></li><li><a href="#sec-10-lessons-learned-and-pitfalls">Lessons learned and pitfalls</a></li><li><a href="#sec-11-references">References</a></li><li><a href="#sec-12-appendix-artifact-index">Appendix: artifact index</a></li></ol></nav></aside><article class="art-body"><h1 id="research-ops-at-scale-200-interviews-one-agent-team">Research Ops at Scale: 200 Interviews, One Agent Team</h1><section class="art-sec sec-0"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</h2><p>Calder Community Bank is a fictional composite client, assembled from patterns observed across several European regional and cooperative banks; no real bank, customer, or employee is depicted. All names, figures, datasets, and quotes are illustrative and anonymized; participant quotes are fictional reconstructions written to the register of real fieldwork, not transcriptions of real people. The article shares knowledge and process — the research operations architecture, SOPs, prompts, and review gates — never client specifics. The engagement ran AI-first, with the human designer retaining consent, rapport, framing, and every participant-facing decision.</p>
+</section><section class="art-sec sec-1"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2><p>Calder Community Bank, a fictional regional bank with 120 branches and 1.1 million customers, commissioned a service reset and faced the discovery problem from hell: four service domains (SME onboarding, branch service, digital banking, complaints), twelve distinct customer situations, and a board burned twice by research it did not trust. A traditional program at the required depth — 200 semi-structured interviews, 45 frontline shadow days, 800 diary entries — was quoted by an agency at 16 weeks and €285,000, and that quote silently assumed the corpus would be cut to 40 interviews. Instead, one lead service designer with an AI agent team ran the full corpus in 10 weeks for €94,000: an OpenCode ingestion and pseudonymization pipeline, a three-role Claude Code research team (researcher, synthesizer, librarian) producing per-interview summaries and a 4,826-item evidence register, a Codex adversarial synthesis pass, and GitHub as research-ops system of record — one issue per interview, PR gates on evidence quality, and CI blocking any personal data from the evidence store. First insights landed in week 4; human–LLM agreement on a 20-interview double-coding study reached kappa 0.78; every one of the 12 insight statements traces to verbatim quotes with character offsets into pseudonymized transcripts.</p>
+<div class="facts-grid"><div class="fact"><span class="fact-k">Client</span><span class="fact-v">Calder Community Bank (fictional composite)</span></div><div class="fact"><span class="fact-k">Sector</span><span class="fact-v">Retail and SME banking, eurozone</span></div><div class="fact"><span class="fact-k">Service</span><span class="fact-v">Whole-service reset; discovery across SME onboarding, branch service, digital, complaints</span></div><div class="fact"><span class="fact-k">Scope</span><span class="fact-v">Research design → fieldwork ops → processing → synthesis → validated insights</span></div><div class="fact"><span class="fact-k">Duration</span><span class="fact-v">10 weeks (baseline estimate 16 weeks at one-fifth the corpus)</span></div><div class="fact"><span class="fact-k">Corpus</span><span class="fact-v">200 interviews, 45 shadow days, 800 diary entries, 233 hours of audio</span></div><div class="fact"><span class="fact-k">Team</span><span class="fact-v">1 lead designer + agent team + 1.0 client FTE</span></div><div class="fact"><span class="fact-k">AI tools</span><span class="fact-v">Claude Code, OpenCode, Codex, GitHub</span></div><div class="fact"><span class="fact-k">Headline results</span><span class="fact-v">First insights week 4; 4,826 verified evidence items; kappa 0.78; €470 vs €7,125 per analyzed interview</span></div></div><p>What you will learn:</p>
 <ul>
 <li>How to structure research operations so an agent team can process 200 interviews without a single quote being fabricated, leaked, or orphaned from its evidence.</li>
 <li>How to encode the interview-to-insight SOP — extraction with character-offset verification, a versioned codebook, affinity clustering, adversarial synthesis — as executable agent work with human gates.</li>
 <li>How to use GitHub as a research ops platform: issue-per-interview tracking, consent state machines, PR review gates, and CI that treats PII as a build failure.</li>
 </ul>
-<h2 id="2-the-brief">2. The brief</h2><h3 id="client-portrait">Client portrait</h3><p>Calder Community Bank is a fictional regional bank serving a single eurozone region: 120 branches across three sub-regions, 1.1 million customers (880,000 retail, 220,000 micro and small-business), roughly 2,400 employees, and a mutual-adjacent ownership culture that prizes its local reputation. Digital maturity is mid-table: 61% of customers are monthly active on the app or web, but the core banking platform dates from 2009, branch staffing follows a rota written in 2017, and the complaints function reports into operations rather than to anyone who owns a journey. Two conventional research programs in the previous four years had produced decks that branch and digital leadership disputed within a month, because nobody could trace a claim back to a customer.</p>
+</section><section class="art-sec sec-2"><span class="sec-kicker">02 · The brief</span><h2 id="sec-2-the-brief">The brief</h2><h3 id="client-portrait">Client portrait</h3><p>Calder Community Bank is a fictional regional bank serving a single eurozone region: 120 branches across three sub-regions, 1.1 million customers (880,000 retail, 220,000 micro and small-business), roughly 2,400 employees, and a mutual-adjacent ownership culture that prizes its local reputation. Digital maturity is mid-table: 61% of customers are monthly active on the app or web, but the core banking platform dates from 2009, branch staffing follows a rota written in 2017, and the complaints function reports into operations rather than to anyone who owns a journey. Two conventional research programs in the previous four years had produced decks that branch and digital leadership disputed within a month, because nobody could trace a claim back to a customer.</p>
 <h3 id="the-challenge">The challenge</h3><p>The trigger was strategic: a new retail banking director inherited an NPS of +4 flat for three years, complaint volume of 18,400 cases per year rising 9% annually, SME onboarding that dashboards claimed took 8 days but every relationship manager privately called &quot;three weeks on a good day,&quot; and a branch cost review putting 22 rural branches under closure consideration. Her diagnosis was blunt: &quot;We do not have a service problem we can see. We have fifty service problems we argue about anonymously.&quot; She commissioned a discovery research program across four domains — SME onboarding, branch service, digital banking, and complaints — with one hard requirement: every insight must be traceable to evidence the organization can inspect.</p>
 <p>The research problem was scale and trust simultaneously. Adequate segment spread (SME owners and finance managers, branch-loyal seniors, digital-first commuters, recent complainants, frontline advisors, complaints handlers) demanded roughly 200 interviews — five times what the budget line assumed. And Grönroos&#39;s warning applied: perceived quality is a judgment of experienced service against expected service (See: 19-service-management-and-marketing/02-perceived-service-quality.md), so the research had to capture expectation–experience gaps in customers&#39; own words, not satisfaction scores the bank already had.</p>
-<h3 id="success-criteria-agreed-with-the-client">Success criteria (agreed with the client)</h3><table>
-<thead>
-<tr>
-<th>Criterion</th>
-<th>Target (illustrative)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Corpus coverage</td>
-<td>200 interviews + ≥ 40 shadow days + ≥ 700 diary entries across all four domains</td>
-</tr>
-<tr>
-<td>Time to first validated insights</td>
-<td>≤ 5 weeks (agency baseline: 12–16 weeks)</td>
-</tr>
-<tr>
-<td>Traceability</td>
-<td>100% of insight statements cite verbatim evidence with participant code and transcript location</td>
-</tr>
-<tr>
-<td>Reliability</td>
-<td>Human–LLM double-coding agreement on ≥ 10% of corpus, kappa ≥ 0.70</td>
-</tr>
-<tr>
-<td>Privacy</td>
-<td>Zero PII incidents; pseudonymization before any agent processing; withdrawal honored within 24 hours</td>
-</tr>
-<tr>
-<td>Cost</td>
-<td>≤ 40% of the €285,000 agency quote</td>
-</tr>
-</tbody></table>
-<h3 id="constraints">Constraints</h3><ul>
+<h3 id="success-criteria-agreed-with-the-client">Success criteria (agreed with the client)</h3><div class="tbl-wrap"><table><thead><tr><th>Criterion</th><th>Target (illustrative)</th></tr></thead><tbody><tr><td>Corpus coverage</td><td>200 interviews + ≥ 40 shadow days + ≥ 700 diary entries across all four domains</td></tr><tr><td scope="row">Time to first validated insights</td><td>≤ 5 weeks (agency baseline: 12–16 weeks)</td></tr><tr><td scope="row">Traceability</td><td>100% of insight statements cite verbatim evidence with participant code and transcript location</td></tr><tr><td scope="row">Reliability</td><td>Human–LLM double-coding agreement on ≥ 10% of corpus, kappa ≥ 0.70</td></tr><tr><td scope="row">Privacy</td><td>Zero PII incidents; pseudonymization before any agent processing; withdrawal honored within 24 hours</td></tr><tr><td scope="row">Cost</td><td>≤ 40% of the €285,000 agency quote</td></tr></tbody></table></div><h3 id="constraints">Constraints</h3><ul>
 <li><strong>Budget:</strong> €100,000 for the research phase, all-in, including participant incentives.</li>
 <li><strong>Timeline:</strong> insights had to land before the branch network decision in week 14.</li>
 <li><strong>Regulation:</strong> GDPR explicit consent for recording; interviews in Dutch and French; the DPO required that no raw audio or direct identifiers leave the bank-controlled environment; 30-day withdrawal right.</li>
@@ -124,140 +57,33 @@
 <li><strong>Trust history:</strong> two prior research decks had been publicly disputed by division heads; any new program would be audited by skeptics.</li>
 </ul>
 <h3 id="why-service-design">Why service design</h3><p>The bank&#39;s symptoms — customers re-sending documents, complaints dying in handoffs, queues blamed on demand — were cross-silo phenomena no single department&#39;s data could explain. Service design research exists for exactly this: generative, ecology-wide inquiry across customers, frontline, and backstage, because contradictions between those accounts are where insights live (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md). The methods were standard — semi-structured interviews, shadowing, diary studies, affinity synthesis (See: 01-this-is-service-design-doing/04-research-methods.md; 18-universal-methods-of-design/02-foundational-research-methods.md) — the innovation was operational: running them at five times the usual corpus without diluting rigor, by treating research operations itself as a service staffed by an agent team (See: ../01/README.md).</p>
-<h2 id="3-approach-the-ai-first-research-operations-architecture">3. Approach: the AI-first research operations architecture</h2><p>The program ran as a five-stage pipeline under Kumar&#39;s Mode 2 (Know Context) and Mode 3 (Know People), converging in Mode 4 (Frame Insights) (See: 17-101-design-methods/03-mode-2-know-context.md; 04-mode-3-know-people.md; 05-mode-4-frame-insights.md). The operating rule: humans do everything participant-facing; agents do everything transcript-facing; GitHub arbitrates the boundary.</p>
-<div class="mermaid">
-flowchart LR
-  subgraph S1["Design - week 1"]
-    A1["Research plan and ethics"] --> A2["Sampling plan and codebook v1"]
-  end
-  subgraph S2["Fieldwork ops - weeks 1 to 7"]
-    B1["Recruitment and consent pipeline"] --> B2["200 interviews 45 shadow days 800 diary entries"]
-  end
-  subgraph S3["Processing - weeks 2 to 8 rolling"]
-    C1["Ingest transcribe pseudonymize"] --> C2["Per-interview summary and evidence extraction"]
-  end
-  subgraph S4["Synthesis - weeks 4 to 9 rolling"]
-    D1["Evidence register 4826 items"] --> D2["96 clusters to 22 themes to 12 insights"]
-  end
-  subgraph S5["Validation - weeks 8 to 10"]
-    E1["Double-coding study n=20"] --> E2["Codex adversarial pass"] --> E3["Insight register and journey drafts"]
-  end
-  S1 --> S2 --> S3 --> S4 --> S5
-  C2 -. "every item carries quote and offsets" .-> D1
-</div><div class="mermaid">
-gantt
-  title Calder research program - 10 weeks
-  dateFormat YYYY-MM-DD
-  axisFormat %W
-  section Design
-  Research plan ethics and sampling      :a1, 2026-02-02, 5d
-  Codebook v1 and pipeline dry run       :a2, after a1, 4d
-  section Fieldwork
-  Recruitment and consent waves          :b1, after a1, 14d
-  Interview waves 1 to 4                 :b2, after a2, 40d
-  Shadow days                            :b3, 2026-02-16, 35d
-  Diary study                            :b4, 2026-02-16, 28d
-  section Processing
-  Rolling ingestion and QA               :c1, 2026-02-09, 45d
-  section Synthesis
-  Rolling affinity and themes            :d1, 2026-02-23, 35d
-  Inter-rater reliability study          :d2, 2026-03-23, 7d
-  Insights journeys and readout          :d3, 2026-03-30, 10d
-</div><table>
-<thead>
-<tr>
-<th>Stage</th>
-<th>SD method (citation)</th>
-<th>AI tool(s)</th>
-<th>Artifact produced</th>
-<th>Client involvement</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Design</td>
-<td>Research plan canvas, sampling plan, ethics protocol (01/04, 18/02)</td>
-<td>Claude Code (plan drafting), GitHub (DPO review PR)</td>
-<td>Research plan, interview guides, consent pack, codebook v1</td>
-<td>DPO + works council sign-off</td>
-</tr>
-<tr>
-<td>Fieldwork ops</td>
-<td>Semi-structured interviewing, shadowing, diary study (18/02, 01/04)</td>
-<td>GitHub (issue-per-interview board), OpenCode (scheduling data hygiene)</td>
-<td>200 interview records, consent state log</td>
-<td>Coordinator ran branch logistics</td>
-</tr>
-<tr>
-<td>Processing</td>
-<td>Structured observation database (17/04)</td>
-<td>OpenCode (transcription, dedup, pseudonymization), Claude Code researcher agent</td>
-<td>Per-interview structured summaries, verified evidence items</td>
-<td>None — backstage only</td>
-</tr>
-<tr>
-<td>Synthesis</td>
-<td>Affinity diagramming, data-themes-insights ladder (01/04, 03/04, 17/05)</td>
-<td>Claude Code synthesizer + librarian agents, human wall session</td>
-<td>Evidence register, 22 themes, 12 insight cards</td>
-<td>Half-day synthesis wall with 6 stakeholders</td>
-</tr>
-<tr>
-<td>Validation</td>
-<td>Triangulation, inter-rater reliability (03/04, 14/04)</td>
-<td>Codex (independent synthesis + adversarial check), GitHub (PR gates)</td>
-<td>IRR study report, validated insight register, journey drafts</td>
-<td>Sponsor readout and challenge session</td>
-</tr>
-</tbody></table>
-<h2 id="4-phase-by-phase-narrative">4. Phase-by-phase narrative</h2><h3 id="41-research-design-ethics-and-sampling-week-1">4.1 Research design, ethics, and sampling (week 1)</h3><p><strong>Goal.</strong> A research plan the DPO, works council, and four domain owners could all sign — and a sampling plan that made 200 interviews mean something.</p>
+</section><section class="art-sec sec-3"><span class="sec-kicker">03 · Approach</span><h2 id="sec-3-approach-the-ai-first-research-operations-architecture">Approach: the AI-first research operations architecture</h2><p>The program ran as a five-stage pipeline under Kumar&#39;s Mode 2 (Know Context) and Mode 3 (Know People), converging in Mode 4 (Frame Insights) (See: 17-101-design-methods/03-mode-2-know-context.md; 04-mode-3-know-people.md; 05-mode-4-frame-insights.md). The operating rule: humans do everything participant-facing; agents do everything transcript-facing; GitHub arbitrates the boundary.</p>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Design - week 1</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Fieldwork ops - weeks 1 to 7</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Processing - weeks 2 to 8 rolling</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Synthesis - weeks 4 to 9 rolling</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Validation - weeks 8 to 10</text><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 1</span><span class="figcap">Approach: the AI-first research operations architecture</span></figcaption></figure>
+<figure class="fig fig-gantt"><div class="gantt"><div class="gantt-head"><span class="gantt-taskcol">Phase</span><span class="gantt-track"><span>Feb 2026</span><span>Feb 2026</span><span>Mar 2026</span><span>Mar 2026</span><span>Apr 2026</span></span></div><div class="gantt-section">Design</div><div class="gantt-row"><span class="gantt-taskcol">Research plan ethics and sampling</span><span class="gantt-track"><span class="gantt-bar future" style="left:0.00%;width:7.58%"></span></span></div><div class="gantt-section">Fieldwork</div><div class="gantt-row"><span class="gantt-taskcol">Shadow days</span><span class="gantt-track"><span class="gantt-bar future" style="left:21.21%;width:53.03%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Diary study</span><span class="gantt-track"><span class="gantt-bar future" style="left:21.21%;width:42.42%"></span></span></div><div class="gantt-section">Processing</div><div class="gantt-row"><span class="gantt-taskcol">Rolling ingestion and QA</span><span class="gantt-track"><span class="gantt-bar future" style="left:10.61%;width:68.18%"></span></span></div><div class="gantt-section">Synthesis</div><div class="gantt-row"><span class="gantt-taskcol">Rolling affinity and themes</span><span class="gantt-track"><span class="gantt-bar future" style="left:31.82%;width:53.03%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Inter-rater reliability study</span><span class="gantt-track"><span class="gantt-bar future" style="left:74.24%;width:10.61%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Insights journeys and readout</span><span class="gantt-track"><span class="gantt-bar future" style="left:84.85%;width:15.15%"></span></span></div></div><figcaption><span class="fignum">Figure 2</span><span class="figcap">Calder research program - 10 weeks</span></figcaption></figure>
+<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Stage</th><th>SD method (citation)</th><th>AI tool(s)</th><th>Artifact produced</th><th>Client involvement</th></tr></thead><tbody><tr><td>Design</td><td>Research plan canvas, sampling plan, ethics protocol (01/04, 18/02)</td><td>Claude Code (plan drafting), GitHub (DPO review PR)</td><td>Research plan, interview guides, consent pack, codebook v1</td><td>DPO + works council sign-off</td></tr><tr><td scope="row">Fieldwork ops</td><td>Semi-structured interviewing, shadowing, diary study (18/02, 01/04)</td><td>GitHub (issue-per-interview board), OpenCode (scheduling data hygiene)</td><td>200 interview records, consent state log</td><td>Coordinator ran branch logistics</td></tr><tr><td scope="row">Processing</td><td>Structured observation database (17/04)</td><td>OpenCode (transcription, dedup, pseudonymization), Claude Code researcher agent</td><td>Per-interview structured summaries, verified evidence items</td><td>None — backstage only</td></tr><tr><td scope="row">Synthesis</td><td>Affinity diagramming, data-themes-insights ladder (01/04, 03/04, 17/05)</td><td>Claude Code synthesizer + librarian agents, human wall session</td><td>Evidence register, 22 themes, 12 insight cards</td><td>Half-day synthesis wall with 6 stakeholders</td></tr><tr><td scope="row">Validation</td><td>Triangulation, inter-rater reliability (03/04, 14/04)</td><td>Codex (independent synthesis + adversarial check), GitHub (PR gates)</td><td>IRR study report, validated insight register, journey drafts</td><td>Sponsor readout and challenge session</td></tr></tbody></table></div></section><section class="art-sec sec-4"><span class="sec-kicker">04 · The work, phase by phase</span><h2 id="sec-4-phase-by-phase-narrative">Phase-by-phase narrative</h2><h3 id="41-research-design-ethics-and-sampling-week-1">4.1 Research design, ethics, and sampling (week 1)</h3><p><strong>Goal.</strong> A research plan the DPO, works council, and four domain owners could all sign — and a sampling plan that made 200 interviews mean something.</p>
 <p><strong>Method &amp; SOP.</strong> The Research Plan Canvas (See: 01-this-is-service-design-doing/04-research-methods.md) plus a stratified sampling plan built as Kumar&#39;s Mode 3 prescribes: include extreme users, not just the statistical middle (See: 17-101-design-methods/04-mode-3-know-people.md). The 200 interviews stratified across four domains and their extremes: SME onboarding (50: owners, finance managers, relationship managers, including 8 who abandoned onboarding and 6 declined for credit), branch service (60: branch-loyal seniors, rural customers near the 22 at-risk branches, branch advisors), digital (50: digital-first commuters, app abandoners, branch-free customers), complaints (40: recent complainants by outcome, complaints handlers).</p>
 <p><strong>AI execution.</strong> Claude Code drafted the plan, guides, and consent pack as version-controlled documents in a fresh repository (<code>calder-research/</code>), from a prompt that fixed the constraints as acceptance criteria:</p>
-<pre><code class="language-text">Draft the research plan for Project Compass. Hard constraints: 200 interviews
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>Draft the research plan for Project Compass. Hard constraints: 200 interviews
 across four domains (SME 50, branch 60, digital 50, complaints 40); 45 shadow
 days; 40 diarists x 4 weeks; GDPR explicit consent, 30-day withdrawal, Dutch
 and French fieldwork; works-council clause that observation notes are never
 used in performance management; every insight must be evidence-traceable.
 Output: research/PLAN.md following the Research Plan Canvas fields, plus
 research/sampling-plan.md with quotas per stratum and recruitment fallout
-assumptions (40% response, 77% consent, 84% completion).</code></pre><p>The consent pack went through the bank&#39;s DPO as <strong>PR #3</strong> — the first review gate of the engagement — which requested two changes (explicit 18-month retention period; incentive disclosure on the invitation letter) applied before any recruitment. The codebook started at v1 with 41 deductive codes in 9 families (access, effort, emotion, fees, handoffs, trust, staff capability, status visibility, life events), seeded from the complaint taxonomy and the expectation–experience quality framing (See: 19-service-management-and-marketing/02-perceived-service-quality.md), with an explicit rule that inductive codes would be added only at fixed versioning points — v2 at interview 60, v3 at interview 140 — so the scheme could not drift mid-corpus.</p>
+assumptions (40% response, 77% consent, 84% completion).</code></pre></div><p>The consent pack went through the bank&#39;s DPO as <strong>PR #3</strong> — the first review gate of the engagement — which requested two changes (explicit 18-month retention period; incentive disclosure on the invitation letter) applied before any recruitment. The codebook started at v1 with 41 deductive codes in 9 families (access, effort, emotion, fees, handoffs, trust, staff capability, status visibility, life events), seeded from the complaint taxonomy and the expectation–experience quality framing (See: 19-service-management-and-marketing/02-perceived-service-quality.md), with an explicit rule that inductive codes would be added only at fixed versioning points — v2 at interview 60, v3 at interview 140 — so the scheme could not drift mid-corpus.</p>
 <p><strong>Human designer judgment.</strong> The stratum quotas, the decision to oversample abandonment and decline cases (structurally invisible to the bank&#39;s dashboards), and every ethics trade-off. The designer also insisted on episode-based interviewing — &quot;walk me through the last time you opened the business account&quot; — over attitude surveying, on the say-versus-do principle (See: 01-this-is-service-design-doing/04-research-methods.md).</p>
 <p><strong>Artifacts produced.</strong> Research plan and interview guide templates (A6), sampling plan, consent and data-flow pack (below), codebook v1.</p>
 <p><strong>Consent and data flow (the architecture the DPO approved):</strong></p>
-<div class="mermaid">
-flowchart LR
-  subgraph REC["Recruitment"]
-    R1["Customer panel and branch referrals"] --> R2["Invitations sent 640"]
-    R2 --> R3["Screener responses 312"]
-  end
-  subgraph CON["Consent and scheduling"]
-    R3 --> C1["Information letter and consent form"]
-    C1 --> C2["Explicit consent signed 239"]
-    C2 --> C3["Scheduling - one GitHub issue per interview"]
-  end
-  subgraph FLD["Fieldwork"]
-    C3 --> F1["Interview shadow day or diary kit"]
-    F1 --> F2["Audio and field notes"]
-  end
-  subgraph PRC["Processing pipeline"]
-    F2 --> P1["Transcription and diarization"]
-    P1 --> P2["Pseudonymization - names and firms to codes"]
-    P2 --> P3["Structured summary and evidence extraction"]
-  end
-  subgraph STO["Storage and access"]
-    P3 --> S1["Evidence register - pseudonymized repo"]
-    S1 --> S3["Synthesis themes and insights"]
-    S2["Identity mapping vault - client-held restricted access"]
-  end
-  CON -. "withdrawal within 30 days deletes record and derived items" .-> STO
-</div><p>The load-bearing decision: the <strong>identity mapping vault</strong> (participant code to real identity) lived only in the bank&#39;s own restricted storage, held by the client coordinator. The repository and every agent context saw pseudonyms only — <code>INT-041</code>, <code>P-041a</code>, branch codes, segment labels. Agents never processed raw audio and never saw a real name.</p>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Recruitment</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Consent and scheduling</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Fieldwork</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Processing pipeline</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Storage and access</text><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 3</span><span class="figcap">1 Research design, ethics, and sampling (week 1)</span></figcaption></figure>
+<p>The load-bearing decision: the <strong>identity mapping vault</strong> (participant code to real identity) lived only in the bank&#39;s own restricted storage, held by the client coordinator. The repository and every agent context saw pseudonyms only — <code>INT-041</code>, <code>P-041a</code>, branch codes, segment labels. Agents never processed raw audio and never saw a real name.</p>
 <h3 id="42-fieldwork-operations-the-scheduling-and-consent-pipeline-weeks-17">4.2 Fieldwork operations: the scheduling and consent pipeline (weeks 1–7)</h3><p><strong>Goal.</strong> Move 640 invitations to 200 completed interviews without losing a consent state, a reschedule, or a withdrawal request.</p>
 <p><strong>Method &amp; SOP.</strong> Research operations as a state machine. Every interview was a GitHub issue from screener to deletion-eligibility date, with lifecycle <code>screened → invited → consented → scheduled → completed → processed → verified → closed</code> (with <code>withdrawn</code> reachable from any state). The issue template carried the consent checklist, stratum quota tags, language, incentive status, and artifact links; a Projects board gave the client coordinator the same operational picture as the designer — no side spreadsheets.</p>
 <p><strong>AI execution.</strong> The designer ran fieldwork; agents ran the logistics data. Each evening an OpenCode job reconciled the tracker: new screener responses became issues, arriving consent PDFs were checked off, and quota burn-down per stratum was recomputed and posted as a board comment:</p>
-<pre><code class="language-bash">opencode run --agent build &quot;Read research/ops/screener-responses.csv and the
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>opencode run --agent build &quot;Read research/ops/screener-responses.csv and the
 GitHub project board state (gh api). Create one issue per new respondent using
 issue templates/interview.md with stratum labels. Flag strata within 3 seats
 of quota. Post a quota burn-down table as a comment on issue #2. Never store
-email addresses in issue bodies; reference the vault ID only.&quot;</code></pre><p>Waves were planned against quota gaps the board exposed: week 3 showed branch-loyal seniors at 40% of quota while digital-first was full, so wave 3 invitations were re-weighted toward branch referrals and the at-risk rural clusters. 17 no-shows were rebooked within 72 hours because the board surfaced them the same evening. Three participants withdrew after their interviews; each <code>withdrawn</code> label triggered a deletion SOP — transcript, derived evidence items, and summary removed from the register in the same PR — which is how the analyzed corpus settled at exactly 200.</p>
+email addresses in issue bodies; reference the vault ID only.&quot;</code></pre></div><p>Waves were planned against quota gaps the board exposed: week 3 showed branch-loyal seniors at 40% of quota while digital-first was full, so wave 3 invitations were re-weighted toward branch referrals and the at-risk rural clusters. 17 no-shows were rebooked within 72 hours because the board surfaced them the same evening. Three participants withdrew after their interviews; each <code>withdrawn</code> label triggered a deletion SOP — transcript, derived evidence items, and summary removed from the register in the same PR — which is how the analyzed corpus settled at exactly 200.</p>
 <p><strong>Human designer judgment.</strong> All interviewing (the designer conducted 132 interviews; two trained client researchers conducted 68 under the same guide), all shadow days, all rapport, and the call to accept a slightly under-quota stratum (credit-declined SMEs, 6 of 8) rather than pressure reluctant participants.</p>
 <p><strong>Artifacts produced.</strong> 200 interview records, 45 shadow logs, 800 diary entries, a complete consent audit trail, and the quota burn-down history that made coverage defensible at the readout.</p>
 <h3 id="43-per-interview-processing-ingestion-pseudonymization-qa-weeks-28-rolling">4.3 Per-interview processing: ingestion, pseudonymization, QA (weeks 2–8, rolling)</h3><p><strong>Goal.</strong> Every interview converted, within 36 hours of fieldwork, into a structured summary plus a set of verified evidence items — at 200-interview scale without quality collapse.</p>
@@ -269,14 +95,14 @@ email addresses in issue bodies; reference the vault ID only.&quot;</code></pre>
 <li><p><strong>Extraction (Claude Code researcher agent).</strong> One invocation per interview produced the structured summary (context, episodes, emotions, workarounds, POEMS tags) plus candidate evidence items, each carrying <code>quote</code>, <code>transcript_start</code>, <code>transcript_end</code> character offsets, journey phase, human factor, and provisional codes:</p>
 </li>
 </ol>
-<pre><code class="language-text">You are the researcher agent for Project Compass. Read
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>You are the researcher agent for Project Compass. Read
 transcripts/pseudo/INT-041.txt. Produce: (1) a structured summary using the
 schema in sop/interview-summary.md; (2) evidence items as JSONL per
 sop/evidence-schema.json. Rules: every quote MUST be copied character-exact
 from the transcript with start and end offsets; never paraphrase into the
 quote field; tag each item with journey_phase, human_factor, and up to 3
 codebook v3 codes; if a passage is ambiguous, set confidence: low rather than
-interpreting. Output to evidence/candidates/INT-041.jsonl.</code></pre><ol start="3">
+interpreting. Output to evidence/candidates/INT-041.jsonl.</code></pre></div><ol start="3">
 <li><strong>Verification (Claude Code, second pass).</strong> A separate agent re-checked every candidate against the transcript span — a mechanical substring assertion plus a semantic check that the span supports the tag. Across the corpus, 5,214 candidate items were extracted; 388 (7.4%) failed verification — mostly offset drift, 41 outright fabricated or merged quotes — and were re-extracted or dropped. The accepted <strong>4,826 evidence items</strong> (3,962 interviews, 512 diaries, 352 shadow logs) constitute the evidence register, schema in A6.</li>
 </ol>
 <p><strong>Human designer judgment.</strong> The designer spot-read one full interview summary per day against the transcript (a 10% audit of the audit) and reviewed every <code>confidence: low</code> item weekly. The 36-hour SLA was a human decision too: fast enough that the designer still remembered the interview when reading its summary.</p>
@@ -284,280 +110,32 @@ interpreting. Output to evidence/candidates/INT-041.jsonl.</code></pre><ol start
 <h3 id="44-synthesis-at-scale-register-codebook-affinity-weeks-49-rolling">4.4 Synthesis at scale: register, codebook, affinity (weeks 4–9, rolling)</h3><p><strong>Goal.</strong> Climb the ladder from data to themes to insights (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md) without the synthesis decay that killed the bank&#39;s previous research: claims nobody could trace.</p>
 <p><strong>Method &amp; SOP.</strong> Bottom-up affinity clustering with active-sentence theme names (See: 01-this-is-service-design-doing/04-research-methods.md), executed as rolling synthesis: from week 4, each Friday the synthesizer agent re-clustered the growing register, so themes stabilized progressively instead of arriving in one big-bang workshop. The human gate was a half-day synthesis wall session in week 8 with six client stakeholders, where clusters were merged, renamed, and killed by hand.</p>
 <p><strong>AI execution.</strong> Two Claude Code subagents with separated roles. The <strong>synthesizer</strong> proposed clusterings: it read the register in domain batches, grouped items by behavioral similarity (not topic keywords), and wrote cluster cards with draft active-sentence names and member item IDs. The <strong>librarian</strong> enforced register hygiene: near-duplicate detection across batches, theme-membership stability between weekly runs (theme IDs are join keys — see A7), and rebuilding the digital twin of the physical wall after the stakeholder session so human merges propagated to the data. The pipeline as executed:</p>
-<div class="mermaid">
-flowchart TB
-  T["233 hours audio + 800 diary entries + 45 shadow logs"] --> TR["Transcribe and diarize"]
-  TR --> PS["Pseudonymize - identifiers to codes"]
-  PS --> EX["Extract - candidate evidence items with char offsets"]
-  EX --> VF["Verify - quote must match transcript span exactly"]
-  VF -->|accept 4826| ER["Evidence register"]
-  VF -->|reject 388| RB["Re-extract or drop - logged"]
-  ER --> CB["Codebook v3 application - 64 codes"]
-  CB --> CL["Affinity clustering - 96 clusters"]
-  CL --> TH["Theme consolidation - 22 themes"]
-  TH --> HG{"Human gate - synthesis wall review"}
-  HG -->|re-cluster| CL
-  HG --> IN["12 insight statements"]
-  IN --> CX["Codex adversarial check"]
-  CX --> FN["Validated insight register + journey drafts"]
-</div><p>Convergence: 96 clusters → 22 themes → 12 insight statements in the three-part syntax — observed behavior, underlying tension, design implication (See: 17-101-design-methods/05-mode-4-frame-insights.md). The acid test was applied literally: two candidates that changed no design decision (&quot;customers value friendliness&quot;) were demoted to findings.</p>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 478 1216" role="img" aria-hidden="true"><defs><marker id="arr-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 279.09999999999997,66 279.09999999999997,92 279.09999999999997,118" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 279.09999999999997,148 279.09999999999997,174 279.09999999999997,200" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 279.09999999999997,243 279.09999999999997,269 279.09999999999997,295" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 279.09999999999997,351 279.09999999999997,377 279.09999999999997,403" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 227.09259259259255,459 178.79999999999995,485 178.79999999999995,517.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><text x="184.79999999999995" y="480" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">accept 4826</text><path d="M 331.1074074074074,459 379.4,485 379.4,511" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><text x="385.4" y="480" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">reject 388</text><path d="M 178.79999999999995,547.5 178.79999999999995,580 178.79999999999995,606" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 178.79999999999995,649 178.79999999999995,675 178.79999999999995,701" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 149.10736842105263,744 113.19999999999999,770 113.19999999999999,796" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 113.19999999999999,839 113.19999999999999,865 149.10736842105263,891" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 208.49263157894734,891 244.39999999999998,865 244.39999999999998,817.5 244.39999999999998,770 208.49263157894734,744" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><text x="250.39999999999998" y="812.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">re-cluster</text><path d="M 178.79999999999995,934 178.79999999999995,960 178.79999999999995,986" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 178.79999999999995,1016 178.79999999999995,1042 178.79999999999995,1068" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 178.79999999999995,1098 178.79999999999995,1124 178.79999999999995,1150" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><rect x="187.29999999999995" y="10" width="183.6" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="279.09999999999997" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">233 hours audio + 800</text><text x="279.09999999999997" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">diary entries + 45</text><text x="279.09999999999997" y="55" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">shadow…</text><rect x="183.49999999999997" y="118" width="191.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="279.09999999999997" y="137" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Transcribe and diarize</text><rect x="191.09999999999997" y="200" width="176" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="279.09999999999997" y="219" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Pseudonymize -</text><text x="279.09999999999997" y="232" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">identifiers to codes</text><rect x="175.89999999999998" y="295" width="206.39999999999998" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="279.09999999999997" y="314" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Extract - candidate</text><text x="279.09999999999997" y="327" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">evidence items with char</text><text x="279.09999999999997" y="340" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">offsets…</text><rect x="187.29999999999995" y="403" width="183.6" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="279.09999999999997" y="422" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Verify - quote must</text><text x="279.09999999999997" y="435" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">match transcript span</text><text x="279.09999999999997" y="448" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">exactly…</text><rect x="102.19999999999996" y="517.5" width="153.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="178.79999999999995" y="536.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Evidence register</text><rect x="291.4" y="511" width="176" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="379.4" y="530" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Re-extract or drop -</text><text x="379.4" y="543" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">logged</text><rect x="79.39999999999996" y="606" width="198.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="178.79999999999995" y="625" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Codebook v3 application</text><text x="178.79999999999995" y="638" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">- 64 codes</text><rect x="75.59999999999997" y="701" width="206.39999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="178.79999999999995" y="720" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Affinity clustering - 96</text><text x="178.79999999999995" y="733" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">clusters</text><rect x="10" y="796" width="206.39999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="113.19999999999999" y="815" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Theme consolidation - 22</text><text x="113.19999999999999" y="828" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">themes</text><path d="M 178.79999999999995 891 L 274.4 912.5 L 178.79999999999995 934 L 83.19999999999996 912.5 Z" fill="none" stroke="currentColor" stroke-width="1"/><text x="178.79999999999995" y="916.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#171817" font-weight="400" text-anchor="middle" letter-spacing="0">Human gate - synthesis</text><rect x="86.99999999999996" y="986" width="183.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="178.79999999999995" y="1005" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">12 insight statements</text><rect x="79.39999999999996" y="1068" width="198.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="178.79999999999995" y="1087" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Codex adversarial check</text><rect x="98.39999999999996" y="1150" width="160.79999999999998" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="178.79999999999995" y="1169" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Validated insight</text><text x="178.79999999999995" y="1182" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">register + journey</text><text x="178.79999999999995" y="1195" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">drafts…</text></svg><figcaption><span class="fignum">Figure 4</span><span class="figcap">4 Synthesis at scale: register, codebook, affinity (weeks 4–9, rolling)</span></figcaption></figure>
+<p>Convergence: 96 clusters → 22 themes → 12 insight statements in the three-part syntax — observed behavior, underlying tension, design implication (See: 17-101-design-methods/05-mode-4-frame-insights.md). The acid test was applied literally: two candidates that changed no design decision (&quot;customers value friendliness&quot;) were demoted to findings.</p>
 <p><strong>Human designer judgment.</strong> Theme naming is framing, and framing is political: the designer renamed the agent&#39;s &quot;Branch capacity shortfall&quot; to &quot;Branch queues are a rostering failure, not a demand problem&quot; because the evidence pointed at the 2017 rota, and that naming determined which executive owned the fix. The designer chaired the wall session and made every merge/kill call.</p>
 <p><strong>Artifacts produced.</strong> The 22-theme register with prevalence counts, 12 insight cards, and the theme-frequency and prevalence-versus-impact charts (A8).</p>
 <h3 id="45-validation-reliability-adversarial-review-journey-drafting-weeks-810">4.5 Validation: reliability, adversarial review, journey drafting (weeks 8–10)</h3><p><strong>Goal.</strong> Prove the synthesis to the skeptics before asking the board to act on it.</p>
 <p><strong>Method &amp; SOP.</strong> Three independent validation moves. First, an <strong>inter-rater reliability study</strong>: 20 interviews (10% of corpus, stratified) double-coded blind — once by the pipeline, once by a senior human researcher unconnected to the engagement. Second, <strong>triangulation accounting</strong>: every theme cites its method mix, honoring the rule that valid findings combine observation, inquiry, and secondary data (See: 01-this-is-service-design-doing/04-research-methods.md). Third, an <strong>adversarial synthesis pass</strong> by Codex as an independent model family (See: ../01/README.md).</p>
 <p><strong>AI execution.</strong> The IRR comparison was computed by an OpenCode script from the two coding exports; no human eyeballed agreement. Result: code-level agreement 79% (kappa 0.71); theme-level agreement 86% (kappa 0.78) — above the 0.70 gate. Cohen&#39;s kappa was used instead of simple percentage agreement because both coders were drawing from the same bounded codebook, so some overlap would happen by chance; the sponsor needed a reliability statistic that discounted that chance agreement before trusting the pipeline. Disagreements clustered where they should: the human coded <code>fees</code> where the pipeline coded <code>status visibility</code> in 11 cases, and review showed both were defensible readings of ambiguous passages; the codebook gained a disambiguation note rather than a forced winner.</p>
-<pre><code class="language-bash">codex exec --skip-git-repo-check &quot;Read research/evidence-register.jsonl and
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>codex exec --skip-git-repo-check &quot;Read research/evidence-register.jsonl and
 synthesis/themes-v3.md without reading synthesis/insight-cards.md. Independently
 propose themes from the register. Then read the 12 insight cards and attack
 them: for each, (1) verify every cited quote exists at its stated offsets,
 (2) argue the strongest alternative explanation, (3) flag any insight whose
-implication is not entailed by its evidence. Output a verdict per card.&quot;</code></pre><p>Codex&#39;s independent theme list overlapped 19 of the 22 pipeline themes; it killed one insight card (a &quot;digital trust deficit&quot; rested on 4 items from a single stratum) and forced evidence upgrades on two others. All 12 surviving insights cite at least 8 evidence items from at least 2 methods and 2 participant strata. Finally, Claude Code drafted current-state journey maps from the tagged evidence — phases by customer goal, pains separated from opportunities (See: 17-101-design-methods/05-mode-4-frame-insights.md) — with the SME draft (A1) seeding the ideation engagement that followed (See: ../16/README.md).</p>
+implication is not entailed by its evidence. Output a verdict per card.&quot;</code></pre></div><p>Codex&#39;s independent theme list overlapped 19 of the 22 pipeline themes; it killed one insight card (a &quot;digital trust deficit&quot; rested on 4 items from a single stratum) and forced evidence upgrades on two others. All 12 surviving insights cite at least 8 evidence items from at least 2 methods and 2 participant strata. Finally, Claude Code drafted current-state journey maps from the tagged evidence — phases by customer goal, pains separated from opportunities (See: 17-101-design-methods/05-mode-4-frame-insights.md) — with the SME draft (A1) seeding the ideation engagement that followed (See: ../16/README.md).</p>
 <p><strong>Human designer judgment.</strong> The designer accepted the killed card without defending it, presented the kappa results at the readout unprompted (showing the audit before being audited), and held the line that journey phases come from customer goals, not the bank&#39;s process map.</p>
 <p><strong>Artifacts produced.</strong> The IRR study report, the Codex verdict log, 12 validated insight cards, and two current-state journey drafts.</p>
-<h2 id="5-artifacts-portfolio">5. Artifacts portfolio</h2><p>All figures illustrative. All quotes fictional and pseudonymized.</p>
-<h3 id="a1-customer-journey-map-current-state-sme-onboarding-drafted-from-evidence">A1 — Customer journey map (current state): SME onboarding, drafted from evidence</h3><div class="mermaid">
-flowchart TB
-  subgraph P1["Phase 1: Deciding to apply (emotion 3/5)"]
-    A1["Owner hears of Calder via accountant or branch"] --> A2["Cannot find SME onboarding requirements online"]
-    A2 --> A3["Calls branch; told to bring documents in person"]
-  end
-  subgraph P2["Phase 2: First branch visit (emotion 3/5)"]
-    B1["45 minute meeting with relationship manager"] --> B2["Document checklist handed over as a photocopied sheet"]
-    B2 --> B3["Application form re-asks for data the bank already holds"]
-  end
-  subgraph P3["Phase 3: KYC document loop (emotion 1/5)"]
-    C1["Owner emails scans of documents"] --> C2["Compliance re-requests the same documents in a different format"]
-    C2 --> C3["No confirmation of receipt; owner re-sends and phones"]
-    C3 --> C4["Second re-request 6 days later for UBO proof"]
-  end
-  subgraph P4["Phase 4: Credit decision (emotion 2/5)"]
-    D1["Silence for 9 days"] --> D2["Owner phones branch; staff cannot see application status"]
-    D2 --> D3["Approval arrives by letter without explanation of terms"]
-  end
-  subgraph P5["Phase 5: Activation (emotion 3/5)"]
-    E1["Account opened; digital access needs a separate setup visit"] --> E2["First invoice-finance request re-enters the same document loop"]
-  end
-  P1 --> P2 --> P3 --> P4 --> P5
-</div><table>
-<thead>
-<tr>
-<th>Phase</th>
-<th>Emotion (1–5)</th>
-<th>Dominant pain</th>
-<th>Supporting evidence</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Deciding to apply</td>
-<td>3</td>
-<td>Requirements invisible until branch contact</td>
-<td>18 evidence items, theme T02</td>
-</tr>
-<tr>
-<td>First branch visit</td>
-<td>3</td>
-<td>Paper checklist; duplicated data entry</td>
-<td>24 items, T01/T10</td>
-</tr>
-<tr>
-<td>KYC document loop</td>
-<td>1</td>
-<td>Re-requests with no receipt confirmation</td>
-<td>41 items, T01; 68% of SME stratum affected</td>
-</tr>
-<tr>
-<td>Credit decision</td>
-<td>2</td>
-<td>Status blindness; unexplained outcome</td>
-<td>33 items, T10/T02</td>
-</tr>
-<tr>
-<td>Activation</td>
-<td>3</td>
-<td>Document loop repeats for adjacent products</td>
-<td>15 items, T01</td>
-</tr>
-</tbody></table>
-<h3 id="a2-service-blueprint-the-research-operations-service-itself">A2 — Service blueprint: the research operations service itself</h3><p>The blueprint this engagement actually operated — the research ops pipeline as a service, and the artifact other teams can copy:
+</section><section class="art-sec sec-5"><span class="sec-kicker">05 · Artifact portfolio</span><h2 id="sec-5-artifacts-portfolio">Artifacts portfolio</h2><p>All figures illustrative. All quotes fictional and pseudonymized.</p>
+<h3 id="a1-customer-journey-map-current-state-sme-onboarding-drafted-from-evidence">A1 — Customer journey map (current state): SME onboarding, drafted from evidence</h3><figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 1: Deciding to apply emotion 3/5</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 2: First branch visit emotion 3/5</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 3: KYC document loop emotion 1/5</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 4: Credit decision emotion 2/5</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 5: Activation emotion 3/5</text><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 5</span><span class="figcap">A1 — Customer journey map (current state): SME onboarding, drafted from evidence</span></figcaption></figure>
+<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Phase</th><th>Emotion (1–5)</th><th>Dominant pain</th><th>Supporting evidence</th></tr></thead><tbody><tr><td>Deciding to apply</td><td>3</td><td>Requirements invisible until branch contact</td><td>18 evidence items, theme T02</td></tr><tr><td scope="row">First branch visit</td><td>3</td><td>Paper checklist; duplicated data entry</td><td>24 items, T01/T10</td></tr><tr><td scope="row">KYC document loop</td><td>1</td><td>Re-requests with no receipt confirmation</td><td>41 items, T01; 68% of SME stratum affected</td></tr><tr><td scope="row">Credit decision</td><td>2</td><td>Status blindness; unexplained outcome</td><td>33 items, T10/T02</td></tr><tr><td scope="row">Activation</td><td>3</td><td>Document loop repeats for adjacent products</td><td>15 items, T01</td></tr></tbody></table></div><h3 id="a2-service-blueprint-the-research-operations-service-itself">A2 — Service blueprint: the research operations service itself</h3><p>The blueprint this engagement actually operated — the research ops pipeline as a service, and the artifact other teams can copy:
 This article deliberately maps the research-ops delivery service; the client future-state service blueprint is deferred to the follow-on ideation article (See: ../16/README.md).</p>
-<div class="mermaid">
-flowchart TB
-  subgraph L1["Physical evidence"]
-    PE1["Invitation letter and information sheet"] --> PE2["Consent form and incentive"]
-    PE2 --> PE3["Interview room or phone call"]
-    PE3 --> PE4["Thank-you note and plain-language findings summary"]
-  end
-  subgraph L2["Participant actions"]
-    PA1["Receives invite; completes screener"] --> PA2["Signs consent; books slot"]
-    PA2 --> PA3["Takes part in interview or hosts shadow day"]
-    PA3 --> PA4["May withdraw within 30 days"]
-  end
-  subgraph L3["Frontstage - human research ops"]
-    FS1["Designer recruits and screens"] --> FS2["Designer conducts interview or shadow day"]
-    FS2 --> FS3["Weekly fieldwork review with client coordinator"]
-  end
-  subgraph L4["Backstage - agent pipelines"]
-    BK1["OpenCode ingestion dedup pseudonymization"] --> BK2["Claude Code researcher: summary and extraction"]
-    BK2 --> BK3["Verification pass: offsets and tags"]
-    BK3 --> BK4["Synthesizer clusters; librarian dedups and versions"]
-    BK4 --> BK5["Codex adversarial synthesis check"]
-  end
-  subgraph L5["Support systems"]
-    SS1["GitHub issue per interview - consent state machine"] --> SS2["PR gates and PII CI scan"]
-    SS2 --> SS3["Identity mapping vault - client-held restricted"]
-  end
-  L1 --> L2 --> L3 --> L4 --> L5
-</div><table>
-<thead>
-<tr>
-<th>Lane</th>
-<th>Content</th>
-<th>Owner</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Physical evidence</td>
-<td>Letters, consent forms, room, findings summary</td>
-<td>Designer</td>
-</tr>
-<tr>
-<td>Participant actions</td>
-<td>Screener, consent, participation, withdrawal right</td>
-<td>Participant</td>
-</tr>
-<tr>
-<td>Frontstage</td>
-<td>Recruiting, interviewing, weekly review</td>
-<td>Designer + coordinator</td>
-</tr>
-<tr>
-<td>Backstage</td>
-<td>Ingestion, extraction, verification, clustering, adversarial check</td>
-<td>Agent team</td>
-</tr>
-<tr>
-<td>Support</td>
-<td>Issue tracker, PR gates, PII scan, identity vault</td>
-<td>GitHub + client IT</td>
-</tr>
-</tbody></table>
-<h3 id="a3-stakeholder-map">A3 — Stakeholder map</h3><div class="mermaid">
-flowchart TB
-  subgraph MC["Manage closely - high influence, high interest"]
-    S1["Retail banking director - sponsor"]
-    S2["Head of branch network"]
-    S3["Head of digital channels"]
-    S4["Head of SME banking"]
-  end
-  subgraph KS["Keep satisfied - high influence, lower interest"]
-    S5["Chief risk and compliance officer"]
-    S6["Data protection officer"]
-    S7["Works council"]
-  end
-  subgraph KI["Keep informed - lower influence, high interest"]
-    S8["Branch advisors and service staff"]
-    S9["Complaints handlers"]
-    S10["SME relationship managers"]
-  end
-  subgraph MON["Monitor - lower influence, lower interest"]
-    S11["Marketing and brand team"]
-    S12["Regulator liaison office"]
-  end
-  S1 --> S2
-  S1 --> S3
-  S1 --> S4
-</div><p>The two decisive moves: the DPO and works council were engaged in week 1 as design partners, not approvers-at-the-end, so consent and shadowing never stalled; and complaints handlers were treated as research subjects and later co-readers of the complaint synthesis, converting a skeptical audience into evidence witnesses.</p>
-<h3 id="a4-ecosystem-map-where-the-researched-experience-actually-lives">A4 — Ecosystem map: where the researched experience actually lives</h3><div class="mermaid">
-flowchart LR
-  CUST["Customers - 880k retail, 220k SME"] --> BR["120 branches"]
-  CUST --> DIG["Mobile app and web banking - 61 percent monthly active"]
-  CUST --> CC["Contact centre and complaints desk - 18,400 cases per year"]
-  BR --> RM["SME relationship managers"]
-  RM --> CRD["Credit and compliance back office"]
-  CC --> OPS["Back office operations"]
-  DIG --> OPS
-  BR --> OPS
-  OPS --> CORE["Core banking platform 2009"]
-  CRD --> CORE
-  SME["SME support actors - accountants, notaries, chamber of commerce"] --> CUST
-  REG["Regulator and DPA - GDPR, KYC and AML rules"] --> CRD
-  BUR["Credit bureau"] --> CRD
-  FIN["Fintech apps and comparison sites"] -. "shape expectations" .-> CUST
-</div><p>The map mattered to the research design: two fertile interview strata (accountants who shepherd SME clients through onboarding; fintech-shaped expectations) sat outside the bank&#39;s walls, and KYC friction could only be understood by interviewing across the customer–compliance boundary.</p>
-<h3 id="a5-personas-from-the-evidence-2-of-6-built">A5 — Personas from the evidence (2 of 6 built)</h3><table>
-<thead>
-<tr>
-<th>Persona</th>
-<th>Eva, 52 — owner of a 9-person bakery wholesaler (SME Optimizer)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Source</td>
-<td>14 SME-owner interviews in her cluster; codes C-SME-*</td>
-</tr>
-<tr>
-<td>Goals</td>
-<td>Open and use a business account without losing working days; predictable credit decisions</td>
-</tr>
-<tr>
-<td>Behaviors</td>
-<td>Banks where her accountant banks; keeps a paper folder per institution; phones instead of emailing when anxious</td>
-</tr>
-<tr>
-<td>Constraints</td>
-<td>Runs payroll and purchasing herself; no finance staff; UBO and KYC terminology foreign to her</td>
-</tr>
-<tr>
-<td>Pain triggers</td>
-<td>Re-requested documents (&quot;I sent the same extract twice, once as PDF once as a photo, nobody confirmed either&quot; — P-041a, fictional); accountant assumes the bank can pull the Belgian UBO register extract for AMLD5 checks, but Eva is still asked to upload the ownership proof herself; status silence during credit review</td>
-</tr>
-<tr>
-<td>Design directives</td>
-<td>Confirm receipt of every document within 1 hour; show application status without login; never re-ask for a held document without saying why</td>
-</tr>
-<tr>
-<td>Evidence base</td>
-<td>86 evidence items; themes T01, T02, T10</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>Persona</th>
-<th>Henk, 71 — retired teacher, branch-loyal (Anchored Traditionalist)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Source</td>
-<td>17 branch-segment interviews in his cluster; codes C-BR-*</td>
-</tr>
-<tr>
-<td>Goals</td>
-<td>Keep banking human and local; certainty that his branch and his advisor stay</td>
-</tr>
-<tr>
-<td>Behaviors</td>
-<td>Visits branch fortnightly; uses the app only to check balance; brings paper statements to appointments</td>
-</tr>
-<tr>
-<td>Constraints</td>
-<td>Mild hearing loss; distrusts phone-based verification; nearest alternative branch 14 km if his closes</td>
-</tr>
-<tr>
-<td>Pain triggers</td>
-<td>Queue peaks at midday (&quot;Tuesdays I just come back another day, the queue is past the door&quot; — P-112b, fictional); closure rumors from local press, not from the bank</td>
-</tr>
-<tr>
-<td>Design directives</td>
-<td>Communicate branch changes directly before media; protect staffed midday hours; offer assisted digital onboarding in-branch, never by letter</td>
-</tr>
-<tr>
-<td>Evidence base</td>
-<td>74 evidence items; themes T03, T07</td>
-</tr>
-</tbody></table>
-<h3 id="a6-templates-4-of-the-6-used">A6 — Templates (4 of the 6 used)</h3><p><strong>Template 1: Research plan canvas (condensed).</strong></p>
-<pre><code class="language-text">RESEARCH PLAN — [project codename]
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Physical evidence</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Participant actions</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Frontstage - human research ops</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Backstage - agent pipelines</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Support systems</text><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/><line x1="94" y1="220" x2="296" y2="220" stroke="#171817" stroke-width="1.2"/><text x="98" y="216" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of visibility</text><line x1="94" y1="284" x2="296" y2="284" stroke="#171817" stroke-width="1.2"/><text x="98" y="280" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of internal interaction</text></svg><figcaption><span class="fignum">Figure 6</span><span class="figcap">A2 — Service blueprint: the research operations service itself</span></figcaption></figure>
+<div class="tbl-wrap"><table><thead><tr><th>Lane</th><th>Content</th><th>Owner</th></tr></thead><tbody><tr><td>Physical evidence</td><td>Letters, consent forms, room, findings summary</td><td>Designer</td></tr><tr><td scope="row">Participant actions</td><td>Screener, consent, participation, withdrawal right</td><td>Participant</td></tr><tr><td scope="row">Frontstage</td><td>Recruiting, interviewing, weekly review</td><td>Designer + coordinator</td></tr><tr><td scope="row">Backstage</td><td>Ingestion, extraction, verification, clustering, adversarial check</td><td>Agent team</td></tr><tr><td scope="row">Support</td><td>Issue tracker, PR gates, PII scan, identity vault</td><td>GitHub + client IT</td></tr></tbody></table></div><h3 id="a3-stakeholder-map">A3 — Stakeholder map</h3><figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 296" role="img" aria-hidden="true"><defs><marker id="arr-7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Manage closely - high influence, high interest</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Keep satisfied - high influence, lower interest</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Keep informed - lower influence, high interest</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Monitor - lower influence, lower interest</text><line x1="0" y1="294" x2="296" y2="294" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 7</span><span class="figcap">A3 — Stakeholder map</span></figcaption></figure>
+<p>The two decisive moves: the DPO and works council were engaged in week 1 as design partners, not approvers-at-the-end, so consent and shadowing never stalled; and complaints handlers were treated as research subjects and later co-readers of the complaint synthesis, converting a skeptical audience into evidence witnesses.</p>
+<h3 id="a4-ecosystem-map-where-the-researched-experience-actually-lives">A4 — Ecosystem map: where the researched experience actually lives</h3><figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1450 396" role="img" aria-hidden="true"><defs><marker id="arr-8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 388.7941690962099,144.75 485.59999999999997,209 557.1999999999999,209" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 459.59999999999997,128.64164086687305 485.59999999999997,130 526.8,130" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 388.98416422287386,101.75 485.59999999999997,38 511.59999999999997,38" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 672.4,213.45820433436532 744,219 796.6,219" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 942.1999999999999,219 994.8,219 1080.540506329114,276.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 718,38 744,38 848.954347826087,115" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 702.8,130 744,130 773.8,130" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 672.4,195.8482972136223 744,179.5 831.4,145" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 965,130 994.8,130 1112.6,130 1230.3999999999999,130 1316.1405063291138,187.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 1204.3999999999999,298 1230.3999999999999,298 1319.7426966292132,230.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 201.2,80.75 227.2,80.75 291.03999999999996,101.75" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 968.8,298 994.8,298 1020.8,298" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 930.8,370.5 994.8,370.5 1077.6662068965516,319.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-8)"/><path d="M 178.39999999999998,166.25 227.2,166.25 291.79999999999995,144.75" fill="none" stroke="#171817" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr-8)"/><text x="233.2" y="161.25" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">shape expectations</text><rect x="253.2" y="101.75" width="206.39999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="356.4" y="120.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Customers - 880k retail,</text><text x="356.4" y="133.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">220k SME</text><rect x="557.1999999999999" y="194" width="115.19999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="614.8" y="213" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">120 branches</text><rect x="526.8" y="102" width="176" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="614.8" y="121" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Mobile app and web</text><text x="614.8" y="134" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">banking - 61 percent</text><text x="614.8" y="147" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">monthly…</text><rect x="511.59999999999997" y="10" width="206.39999999999998" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="614.8" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Contact centre and</text><text x="614.8" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">complaints desk - 18,400</text><text x="614.8" y="55" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">cases…</text><rect x="796.6" y="197.5" width="145.6" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="869.4" y="216.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">SME relationship</text><text x="869.4" y="229.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">managers</text><rect x="1020.8" y="276.5" width="183.6" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1112.6" y="295.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Credit and compliance</text><text x="1112.6" y="308.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">back office</text><rect x="773.8" y="115" width="191.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="869.4" y="134" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Back office operations</text><rect x="1256.3999999999999" y="187.5" width="183.6" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1348.1999999999998" y="206.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Core banking platform</text><text x="1348.1999999999998" y="219.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">2009</text><rect x="10" y="52.75" width="191.2" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="105.6" y="71.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">SME support actors -</text><text x="105.6" y="84.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">accountants, notaries,</text><text x="105.6" y="97.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">chamber…</text><rect x="770" y="276.5" width="198.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="869.4" y="295.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Regulator and DPA -</text><text x="869.4" y="308.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">GDPR, KYC and AML rules</text><rect x="808" y="355.5" width="122.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="869.4" y="374.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Credit bureau</text><rect x="32.8" y="144.75" width="145.6" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="105.6" y="163.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Fintech apps and</text><text x="105.6" y="176.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">comparison sites</text></svg><figcaption><span class="fignum">Figure 8</span><span class="figcap">A4 — Ecosystem map: where the researched experience actually lives</span></figcaption></figure>
+<p>The map mattered to the research design: two fertile interview strata (accountants who shepherd SME clients through onboarding; fintech-shaped expectations) sat outside the bank&#39;s walls, and KYC friction could only be understood by interviewing across the customer–compliance boundary.</p>
+<h3 id="a5-personas-from-the-evidence-2-of-6-built">A5 — Personas from the evidence (2 of 6 built)</h3><div class="tbl-wrap"><table><thead><tr><th>Persona</th><th>Eva, 52 — owner of a 9-person bakery wholesaler (SME Optimizer)</th></tr></thead><tbody><tr><td>Source</td><td>14 SME-owner interviews in her cluster; codes C-SME-*</td></tr><tr><td scope="row">Goals</td><td>Open and use a business account without losing working days; predictable credit decisions</td></tr><tr><td scope="row">Behaviors</td><td>Banks where her accountant banks; keeps a paper folder per institution; phones instead of emailing when anxious</td></tr><tr><td scope="row">Constraints</td><td>Runs payroll and purchasing herself; no finance staff; UBO and KYC terminology foreign to her</td></tr><tr><td scope="row">Pain triggers</td><td>Re-requested documents (&quot;I sent the same extract twice, once as PDF once as a photo, nobody confirmed either&quot; — P-041a, fictional); accountant assumes the bank can pull the Belgian UBO register extract for AMLD5 checks, but Eva is still asked to upload the ownership proof herself; status silence during credit review</td></tr><tr><td scope="row">Design directives</td><td>Confirm receipt of every document within 1 hour; show application status without login; never re-ask for a held document without saying why</td></tr><tr><td scope="row">Evidence base</td><td>86 evidence items; themes T01, T02, T10</td></tr></tbody></table></div><div class="tbl-wrap"><table><thead><tr><th>Persona</th><th>Henk, 71 — retired teacher, branch-loyal (Anchored Traditionalist)</th></tr></thead><tbody><tr><td>Source</td><td>17 branch-segment interviews in his cluster; codes C-BR-*</td></tr><tr><td scope="row">Goals</td><td>Keep banking human and local; certainty that his branch and his advisor stay</td></tr><tr><td scope="row">Behaviors</td><td>Visits branch fortnightly; uses the app only to check balance; brings paper statements to appointments</td></tr><tr><td scope="row">Constraints</td><td>Mild hearing loss; distrusts phone-based verification; nearest alternative branch 14 km if his closes</td></tr><tr><td scope="row">Pain triggers</td><td>Queue peaks at midday (&quot;Tuesdays I just come back another day, the queue is past the door&quot; — P-112b, fictional); closure rumors from local press, not from the bank</td></tr><tr><td scope="row">Design directives</td><td>Communicate branch changes directly before media; protect staffed midday hours; offer assisted digital onboarding in-branch, never by letter</td></tr><tr><td scope="row">Evidence base</td><td>74 evidence items; themes T03, T07</td></tr></tbody></table></div><h3 id="a6-templates-4-of-the-6-used">A6 — Templates (4 of the 6 used)</h3><p><strong>Template 1: Research plan canvas (condensed).</strong></p>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>RESEARCH PLAN — [project codename]
 1. Core research questions: [max 5, decision-linked]
 2. Objectives &amp; hypotheses: [what we expect to find; what would change our mind]
 3. Participant profiles &amp; sampling: [strata, quotas, extreme users, fallout assumptions]
@@ -569,8 +147,8 @@ flowchart LR
    retention period, vault holder, works-council terms]
 9. Quality gates: [quote verification, IRR sample size and kappa threshold,
    adversarial review, traceability requirement]
-10. Outputs &amp; handoff: [register, themes, insight cards, journey drafts; date]</code></pre><p><strong>Template 2: Semi-structured interview guide (70 min).</strong></p>
-<pre><code class="language-text">INTERVIEW GUIDE — [stratum] / [language]
+10. Outputs &amp; handoff: [register, themes, insight cards, journey drafts; date]</code></pre></div><p><strong>Template 2: Semi-structured interview guide (70 min).</strong></p>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>INTERVIEW GUIDE — [stratum] / [language]
 0:00 Welcome, consent re-confirmation, recording permission (5)
 0:05 Context: role, business/household, banking history (10)
 0:15 Episode walkthrough: &quot;Tell me about the last time you [domain episode].&quot;
@@ -580,8 +158,8 @@ flowchart LR
 0:55 Workaround probe: &quot;Show me how you keep track of it yourself.&quot; (5)
 1:00 Ideal state: &quot;If you ran the bank for a day, what would you change first?&quot; (5)
 1:05 Debrief, incentive, withdrawal rights reminder, thanks (5)
-Rules: concrete past episodes only; no hypotheticals before 0:55; silence is a probe.</code></pre><p><strong>Template 3: Interview QA checklist (per interview, attached to its issue).</strong></p>
-<pre><code class="language-text">INTERVIEW QA — [INT-NNN]
+Rules: concrete past episodes only; no hypotheticals before 0:55; silence is a probe.</code></pre></div><p><strong>Template 3: Interview QA checklist (per interview, attached to its issue).</strong></p>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>INTERVIEW QA — [INT-NNN]
 [ ] Consent recorded before audio started
 [ ] Audio complete and audible end-to-end
 [ ] Transcription diarized; speaker turns plausible
@@ -590,8 +168,8 @@ Rules: concrete past episodes only; no hypotheticals before 0:55; silence is a p
 [ ] Evidence items: count ___, all offsets verified by pipeline
 [ ] confidence:low items reviewed by human: ___
 [ ] Codes from current codebook version only
-[ ] Register row committed; issue moved to verified</code></pre><p><strong>Template 4: Bias and hallucination guardrail checklist (run at gates).</strong></p>
-<pre><code class="language-text">GUARDRAILS — synthesis gate review
+[ ] Register row committed; issue moved to verified</code></pre></div><p><strong>Template 4: Bias and hallucination guardrail checklist (run at gates).</strong></p>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>GUARDRAILS — synthesis gate review
 [ ] Every insight cites &gt;= 8 evidence items, &gt;= 2 methods, &gt;= 2 strata
 [ ] Every quote resolves to a transcript span (offsets) - CI check, not manual
 [ ] No quote merges two speaker turns; no ellipses inside quotes without [..]
@@ -601,8 +179,8 @@ Rules: concrete past episodes only; no hypotheticals before 0:55; silence is a p
 [ ] Withdrawn participants: zero derived items remain (deletion audit)
 [ ] No real names, firms, or small-town identifiers anywhere in repo - PII CI green
 [ ] Translation note: translated quotes flagged; originals retained
-[ ] Designer spot-audit: 1 summary/day against transcript, log current</code></pre><h3 id="a7-mock-dataset-the-interview-register">A7 — Mock dataset: the interview register</h3><p>The register is the join table between operations (issues) and analysis (themes). Full file: <a href="data/interviews_register_sample.csv">data/interviews_register_sample.csv</a> (30 rows). Inline sample:</p>
-<pre><code class="language-csv">interview_id,participant_code,segment,persona,branch_code,region,topic_primary,sentiment,interview_date,duration_min,theme_keys,key_quote,translated,quote_verified,evidence_items
+[ ] Designer spot-audit: 1 summary/day against transcript, log current</code></pre></div><h3 id="a7-mock-dataset-the-interview-register">A7 — Mock dataset: the interview register</h3><p>The register is the join table between operations (issues) and analysis (themes). Full file: <a href="data/interviews_register_sample.csv">data/interviews_register_sample.csv</a> (30 rows). Inline sample:</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>interview_id,participant_code,segment,persona,branch_code,region,topic_primary,sentiment,interview_date,duration_min,theme_keys,key_quote,translated,quote_verified,evidence_items
 INT-041,P-041a,sme_onboarding,Eva SME Optimizer,BR-031,North,kyc_documents,negative,2026-02-18,74,T01;T02;T10,&quot;I sent the same extract twice, once as PDF once as a photo, nobody confirmed either&quot;,yes,yes,27
 INT-112,P-112b,branch_service,Henk Anchored Traditionalist,BR-087,South,queue_wait,negative,2026-03-03,61,T03;T07,&quot;Tuesdays I just come back another day, the queue is past the door&quot;,yes,yes,19
 INT-008,P-008a,digital,Digital-first Commuter,n/a,Central,app_login,negative,2026-02-11,58,T04;T10,&quot;It logged me out three times and then locked my card, all before eight in the morning&quot;,no,yes,22
@@ -610,244 +188,34 @@ INT-167,P-167a,complaints,Recent Complainant - unresolved,BR-014,Central,complai
 INT-023,P-023a,sme_onboarding,SME Finance Manager,BR-005,North,credit_opacity,mixed,2026-02-13,77,T02;T10,&quot;The money arrived eventually but for nine days we did not exist&quot;,yes,yes,25
 INT-130,P-130a,branch_service,Branch Advisor,BR-052,Central,staffing_roster,negative,2026-03-05,66,T03;T09,&quot;The rota was written in 2017, the town has changed since then, the rota has not&quot;,yes,yes,24
 INT-108,P-108a,complaints,Complaints Handler,n/a,Central,complaint_resolution,negative,2026-03-02,67,T06;T09,&quot;I can apologize in three languages but I cannot refund one euro without a form&quot;,yes,yes,22
-INT-063,P-063a,sme_onboarding,SME Owner - credit declined,BR-018,South,credit_opacity,negative,2026-02-20,75,T02;T10,&quot;The letter said no in three lines after five weeks of silence, that is not a decision, that is a door&quot;,yes,yes,30</code></pre><p>The <code>theme_keys</code> column is the join key the librarian maintains; <code>quote_verified</code> is <code>yes</code> only after the offset check passes; <code>translated</code> marks quotes rendered from Dutch or French originals (originals retained).</p>
-<h3 id="a8-charts">A8 — Charts</h3><div class="mermaid">
-pie title Primary topic of 200 interviews
-    "Fees and charges" : 48
-    "Digital friction" : 42
-    "Wait times and access" : 38
-    "Staff service quality" : 36
-    "Complaint handling" : 24
-    "Other" : 12
-</div><div class="mermaid">
-xychart-beta
-  title "Theme frequency across 200 interviews"
-  x-axis ["Branch queues and staffing", "Status blindness", "KYC document loops", "Digital login friction", "Fee opacity", "Complaint handoffs", "Branch closure anxiety", "Credit decision opacity"]
-  y-axis "Interviews mentioning theme" 0 --> 70
-  bar [61, 58, 54, 48, 43, 37, 29, 26]
-</div><div class="mermaid">
-quadrantChart
-  title Themes by prevalence and customer impact
-  x-axis Low prevalence --> High prevalence
-  y-axis Low impact --> High impact
-  quadrant-1 Fix first
-  quadrant-2 Fix carefully
-  quadrant-3 Monitor
-  quadrant-4 Quick wins
-  Branch queues and staffing: [0.84, 0.88]
-  KYC document loops: [0.76, 0.9]
-  Status blindness: [0.8, 0.8]
-  Digital login friction: [0.7, 0.62]
-  Fee opacity: [0.62, 0.66]
-  Complaint handoffs: [0.55, 0.78]
-  Staff empowerment limits: [0.58, 0.55]
-  Branch closure anxiety: [0.4, 0.7]
-  Credit decision opacity: [0.36, 0.82]
-  Bereavement process: [0.18, 0.85]
-</div><p>Sentiment across the corpus: negative 94 interviews (47%), mixed 62 (31%), positive 44 (22%) — reported per stratum at the readout, because corpus-wide sentiment hides that digital ran 34% positive while complaints ran 88% negative.</p>
-<h3 id="a9-traceability-evidence-to-insight-to-downstream-decision">A9 — Traceability: evidence to insight to downstream decision</h3><table>
-<thead>
-<tr>
-<th>Insight</th>
-<th>Evidence base</th>
-<th>Themes</th>
-<th>Journey stage</th>
-<th>Downstream decision</th>
-<th>KPI to watch</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>INS-01: Customers buy certainty with their own time because the bank gives them no status visibility</td>
-<td>71 items, 3 methods</td>
-<td>T10</td>
-<td>Credit decision, complaint handling</td>
-<td>Status heartbeat concept; feeds ideation (article 16)</td>
-<td>&quot;Where is my application&quot; contacts per 100 cases</td>
-</tr>
-<tr>
-<td>INS-02: KYC feels like accusation, not protection, when documents are re-requested without explanation</td>
-<td>63 items, 2 methods</td>
-<td>T01</td>
-<td>KYC loop</td>
-<td>Document-loop redesign brief</td>
-<td>Re-request rate; receipt-confirmation SLA</td>
-</tr>
-<tr>
-<td>INS-03: Branch queues are a rostering failure, not a demand problem</td>
-<td>84 items, 3 methods + queue telemetry</td>
-<td>T03</td>
-<td>Branch visit</td>
-<td>Roster pilot in 6 branches (use case B)</td>
-<td>Median midday wait; abandonment at door</td>
-</tr>
-<tr>
-<td>INS-04: Complaints die in handoffs between people who cannot see each other&#39;s work</td>
-<td>52 items, 2 methods</td>
-<td>T06, T09</td>
-<td>Complaint resolution</td>
-<td>Single-case-ownership redesign</td>
-<td>First-contact resolution; handoffs per case</td>
-</tr>
-<tr>
-<td>INS-06: Fees are forgiven, surprises are not</td>
-<td>44 items, 2 methods</td>
-<td>T05</td>
-<td>Statements, tariffs</td>
-<td>Plain-language fee notification</td>
-<td>Fee-related complaint share</td>
-</tr>
-</tbody></table>
-<p>Every row resolves in the repository: insight card → theme IDs → evidence item IDs → transcript offsets → interview issue. The board asked for two traces live at the readout and got both in under a minute.</p>
+INT-063,P-063a,sme_onboarding,SME Owner - credit declined,BR-018,South,credit_opacity,negative,2026-02-20,75,T02;T10,&quot;The letter said no in three lines after five weeks of silence, that is not a decision, that is a door&quot;,yes,yes,30</code></pre></div><p>The <code>theme_keys</code> column is the join key the librarian maintains; <code>quote_verified</code> is <code>yes</code> only after the offset check passes; <code>translated</code> marks quotes rendered from Dutch or French originals (originals retained).</p>
+<h3 id="a8-charts">A8 — Charts</h3><figure class="fig fig-pie"><svg class="fgsvg pie" viewBox="0 0 560 340" role="img" aria-hidden="true"><path d="M 200 112 L 200 65 A 105 105 0 0 1 304.79280648496854 163.40699544942208 L 257.88555024883976 166.35814986729983 A 58 58 0 0 0 200 112 Z" fill="#171817"/><text x="288.83019981737135" y="85.2947960820092" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="start" letter-spacing="0">Fees and charges · 24%</text><path d="M 257.88555024883976 166.35814986729983 L 304.79280648496854 163.40699544942208 A 105 105 0 0 1 232.4467844093695 269.8609342109911 L 217.92298567374695 225.1612779451189 A 58 58 0 0 0 257.88555024883976 166.35814986729983 Z" fill="#4A7FA8"/><text x="306.076749487222" y="241.51208872010778" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="start" letter-spacing="0">Digital friction · 21%</text><path d="M 217.92298567374695 225.1612779451189 L 232.4467844093695 269.8609342109911 A 105 105 0 0 1 119.09610950854217 236.92951892361248 L 155.31023191900425 206.97059140542405 A 58 58 0 0 0 217.92298567374695 225.1612779451189 Z" fill="#5E7F5A"/><text x="160.2420761692533" y="289.69553596691014" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">Wait times and access · 19%</text><path d="M 155.31023191900425 206.97059140542405 L 119.09610950854217 236.92951892361248 A 105 105 0 0 1 104.99315949106791 125.29317438566746 L 147.52003095697086 145.30480108922583 A 58 58 0 0 0 155.31023191900425 206.97059140542405 Z" fill="#7B61C4"/><text x="73.95412114094819" y="188.6653212612809" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">Staff service quality · 18%</text><path d="M 147.52003095697086 145.30480108922583 L 104.99315949106791 125.29317438566746 A 105 105 0 0 1 161.34692196810875 72.37346898173364 L 178.64877594428864 116.07296381848144 A 58 58 0 0 0 147.52003095697086 145.30480108922583 Z" fill="#B08A00"/><text x="111.16980018262859" y="85.29479608200927" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">Complaint handling · 12%</text><path d="M 178.64877594428864 116.07296381848144 L 161.34692196810875 72.37346898173364 A 105 105 0 0 1 199.9999999999999 65 L 199.99999999999994 112 A 58 58 0 0 0 178.64877594428864 116.07296381848144 Z" fill="#9B9B96"/><text x="183.32686093512723" y="54.643242661828694" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">Other · 6%</text><text x="200" y="174" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="26" fill="#171817" font-weight="600" text-anchor="middle" letter-spacing="0">200</text><text x="200" y="190" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="1.5">total</text></svg><figcaption><span class="fignum">Figure 9</span><span class="figcap">Primary topic of 200 interviews</span></figcaption></figure>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">17.5</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">35</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">52.5</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">70</text><line x1="44" y1="304" x2="730" y2="304" stroke="#DEDEDA" stroke-width="1"/><text x="86.875" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Branch queues and staffing</text><text x="172.625" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Status blindness</text><text x="258.375" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">KYC document loops</text><text x="344.125" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Digital login friction</text><text x="429.875" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Fee opacity</text><text x="515.625" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Complaint handoffs</text><text x="601.375" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Branch closure anxiety</text><text x="687.125" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Credit decision opacity</text><rect x="588" y="7" width="14" height="10" rx="2" fill="#171817"/><text x="610" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">bar</text><rect x="69.875" y="77.42857142857142" width="34" height="226.57142857142858" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="86.875" y="71.42857142857142" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">61</text><rect x="155.625" y="88.57142857142856" width="34" height="215.42857142857144" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="172.625" y="82.57142857142856" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">58</text><rect x="241.375" y="103.42857142857142" width="34" height="200.57142857142858" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="258.375" y="97.42857142857142" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">54</text><rect x="327.125" y="125.71428571428572" width="34" height="178.28571428571428" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="344.125" y="119.71428571428572" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">48</text><rect x="412.875" y="144.28571428571428" width="34" height="159.71428571428572" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="429.875" y="138.28571428571428" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">43</text><rect x="498.625" y="166.57142857142856" width="34" height="137.42857142857144" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="515.625" y="160.57142857142856" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">37</text><rect x="584.375" y="196.28571428571428" width="34" height="107.71428571428572" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="601.375" y="190.28571428571428" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">29</text><rect x="670.125" y="207.42857142857144" width="34" height="96.57142857142856" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="687.125" y="201.42857142857144" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">26</text></svg><figcaption><span class="fignum">Figure 10</span><span class="figcap">Theme frequency across 200 interviews</span></figcaption></figure>
+<figure class="fig fig-quad"><svg class="fgsvg quad" viewBox="0 0 660 446" role="img" aria-hidden="true"><line x1="330" y1="44" x2="330" y2="376" stroke="#DEDEDA" stroke-width="1"/><line x1="44" y1="210" x2="616" y2="210" stroke="#DEDEDA" stroke-width="1"/><text x="54" y="60" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.8">Fix carefully</text><text x="606" y="60" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0.8">Fix first</text><text x="54" y="366" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.8">Quick wins</text><text x="606" y="366" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0.8">Monitor</text><circle cx="524.48" cy="83.84" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="533.48" y="87.34" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Branch queues and staffing</text><circle cx="478.72" cy="77.19999999999999" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="487.72" y="80.69999999999999" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">KYC document loops</text><circle cx="501.6" cy="110.39999999999999" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="510.6" y="113.89999999999999" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Status blindness</text><circle cx="444.4" cy="170.16" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="453.4" y="173.66" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Digital login friction</text><circle cx="398.64" cy="156.88" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="407.64" y="160.38" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Fee opacity</text><circle cx="358.6" cy="117.03999999999999" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="367.6" y="120.53999999999999" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Complaint handoffs</text><circle cx="375.76" cy="193.39999999999998" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="384.76" y="196.89999999999998" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Staff empowerment limits</text><circle cx="272.8" cy="143.60000000000002" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="281.8" y="147.10000000000002" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Branch closure anxiety</text><circle cx="249.92" cy="103.76000000000002" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="258.91999999999996" y="107.26000000000002" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Credit decision opacity</text><circle cx="146.95999999999998" cy="93.80000000000001" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="155.95999999999998" y="97.30000000000001" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Bereavement process</text></svg><figcaption><span class="fignum">Figure 11</span><span class="figcap">Themes by prevalence and customer impact</span></figcaption></figure>
+<p>Sentiment across the corpus: negative 94 interviews (47%), mixed 62 (31%), positive 44 (22%) — reported per stratum at the readout, because corpus-wide sentiment hides that digital ran 34% positive while complaints ran 88% negative.</p>
+<h3 id="a9-traceability-evidence-to-insight-to-downstream-decision">A9 — Traceability: evidence to insight to downstream decision</h3><div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Insight</th><th>Evidence base</th><th>Themes</th><th>Journey stage</th><th>Downstream decision</th><th>KPI to watch</th></tr></thead><tbody><tr><td>INS-01: Customers buy certainty with their own time because the bank gives them no status visibility</td><td>71 items, 3 methods</td><td>T10</td><td>Credit decision, complaint handling</td><td>Status heartbeat concept; feeds ideation (article 16)</td><td>&quot;Where is my application&quot; contacts per 100 cases</td></tr><tr><td scope="row">INS-02: KYC feels like accusation, not protection, when documents are re-requested without explanation</td><td>63 items, 2 methods</td><td>T01</td><td>KYC loop</td><td>Document-loop redesign brief</td><td>Re-request rate; receipt-confirmation SLA</td></tr><tr><td scope="row">INS-03: Branch queues are a rostering failure, not a demand problem</td><td>84 items, 3 methods + queue telemetry</td><td>T03</td><td>Branch visit</td><td>Roster pilot in 6 branches (use case B)</td><td>Median midday wait; abandonment at door</td></tr><tr><td scope="row">INS-04: Complaints die in handoffs between people who cannot see each other&#39;s work</td><td>52 items, 2 methods</td><td>T06, T09</td><td>Complaint resolution</td><td>Single-case-ownership redesign</td><td>First-contact resolution; handoffs per case</td></tr><tr><td scope="row">INS-06: Fees are forgiven, surprises are not</td><td>44 items, 2 methods</td><td>T05</td><td>Statements, tariffs</td><td>Plain-language fee notification</td><td>Fee-related complaint share</td></tr></tbody></table></div><p>Every row resolves in the repository: insight card → theme IDs → evidence item IDs → transcript offsets → interview issue. The board asked for two traces live at the readout and got both in under a minute.</p>
 <h3 id="a10-good-services-quick-audit-sme-onboarding-pre-redesign">A10 — Good Services quick audit: SME onboarding (pre-redesign)</h3><p>Scored against the 15 principles of good services (1 = fails, 5 = meets; illustrative, evidence-tagged):</p>
-<table>
-<thead>
-<tr>
-<th>Principle</th>
-<th>Score</th>
-<th>Evidence note</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Be easy to find</td>
-<td>2</td>
-<td>Requirements invisible until branch contact (T02)</td>
-</tr>
-<tr>
-<td>Clearly explain its purpose</td>
-<td>3</td>
-<td>Purpose clear at branch, not online</td>
-</tr>
-<tr>
-<td>Set expectations a user can rely on</td>
-<td>1</td>
-<td>Internal belief 8 days; median reality 19 (T10)</td>
-</tr>
-<tr>
-<td>Enable each user to complete the outcome</td>
-<td>2</td>
-<td>68% re-request rate interrupts completion</td>
-</tr>
-<tr>
-<td>Work in a way that is familiar</td>
-<td>3</td>
-<td>Paper folder behavior matches bank process, not vice versa</td>
-</tr>
-<tr>
-<td>Require no prior knowledge</td>
-<td>2</td>
-<td>UBO/KYC jargon unexplained (T01)</td>
-</tr>
-<tr>
-<td>Be agnostic of organizational structures</td>
-<td>1</td>
-<td>Customer navigates compliance vs credit vs branch boundaries (T06)</td>
-</tr>
-<tr>
-<td>Require the minimum possible steps</td>
-<td>2</td>
-<td>Duplicated data already held by the bank</td>
-</tr>
-<tr>
-<td>Be consistent throughout</td>
-<td>2</td>
-<td>Document formats vary by requester</td>
-</tr>
-<tr>
-<td>Have no dead ends</td>
-<td>2</td>
-<td>Status silence forces phone calls</td>
-</tr>
-<tr>
-<td>Be usable by everyone, equally</td>
-<td>3</td>
-<td>Branch route helps; digital route excludes</td>
-</tr>
-<tr>
-<td>Encourage the right behaviors</td>
-<td>3</td>
-<td>No perverse incentives found</td>
-</tr>
-<tr>
-<td>Respond to change quickly</td>
-<td>2</td>
-<td>2017 checklist still in circulation</td>
-</tr>
-<tr>
-<td>Clearly explain why a decision has been made</td>
-<td>1</td>
-<td>Approval letter without terms rationale (T02)</td>
-</tr>
-<tr>
-<td>Make it easy to get human assistance</td>
-<td>4</td>
-<td>Relationship managers are the strongest asset</td>
-</tr>
-</tbody></table>
-<p>Mean 2.2/5. The audit traveled with the insight register into the ideation engagement (See: ../16/README.md).</p>
-<h2 id="6-use-cases">6. Use cases</h2><h3 id="61-use-case-a-the-sme-onboarding-sprint-that-fed-the-prototype">6.1 Use case A — The SME onboarding sprint that fed the prototype</h3><p><strong>Scenario.</strong> Weeks 2–4 delivered the first 22 SME interviews, 10 credit-operations shadow days, and 212 diary entries. Rolling synthesis meant the SME cluster reached stability in week 4 — six weeks before the full program closed.</p>
+<div class="tbl-wrap"><table><thead><tr><th>Principle</th><th>Score</th><th>Evidence note</th></tr></thead><tbody><tr><td>Be easy to find</td><td class="num">2</td><td>Requirements invisible until branch contact (T02)</td></tr><tr><td scope="row">Clearly explain its purpose</td><td class="num">3</td><td>Purpose clear at branch, not online</td></tr><tr><td scope="row">Set expectations a user can rely on</td><td class="num">1</td><td>Internal belief 8 days; median reality 19 (T10)</td></tr><tr><td scope="row">Enable each user to complete the outcome</td><td class="num">2</td><td>68% re-request rate interrupts completion</td></tr><tr><td scope="row">Work in a way that is familiar</td><td class="num">3</td><td>Paper folder behavior matches bank process, not vice versa</td></tr><tr><td scope="row">Require no prior knowledge</td><td class="num">2</td><td>UBO/KYC jargon unexplained (T01)</td></tr><tr><td scope="row">Be agnostic of organizational structures</td><td class="num">1</td><td>Customer navigates compliance vs credit vs branch boundaries (T06)</td></tr><tr><td scope="row">Require the minimum possible steps</td><td class="num">2</td><td>Duplicated data already held by the bank</td></tr><tr><td scope="row">Be consistent throughout</td><td class="num">2</td><td>Document formats vary by requester</td></tr><tr><td scope="row">Have no dead ends</td><td class="num">2</td><td>Status silence forces phone calls</td></tr><tr><td scope="row">Be usable by everyone, equally</td><td class="num">3</td><td>Branch route helps; digital route excludes</td></tr><tr><td scope="row">Encourage the right behaviors</td><td class="num">3</td><td>No perverse incentives found</td></tr><tr><td scope="row">Respond to change quickly</td><td class="num">2</td><td>2017 checklist still in circulation</td></tr><tr><td scope="row">Clearly explain why a decision has been made</td><td class="num">1</td><td>Approval letter without terms rationale (T02)</td></tr><tr><td scope="row">Make it easy to get human assistance</td><td class="num">4</td><td>Relationship managers are the strongest asset</td></tr></tbody></table></div><p>Mean 2.2/5. The audit traveled with the insight register into the ideation engagement (See: ../16/README.md).</p>
+</section><section class="art-sec sec-6"><span class="sec-kicker">06 · Use cases</span><h2 id="sec-6-use-cases">Use cases</h2><h3 id="61-use-case-a-the-sme-onboarding-sprint-that-fed-the-prototype">6.1 Use case A — The SME onboarding sprint that fed the prototype</h3><p><strong>Scenario.</strong> Weeks 2–4 delivered the first 22 SME interviews, 10 credit-operations shadow days, and 212 diary entries. Rolling synthesis meant the SME cluster reached stability in week 4 — six weeks before the full program closed.</p>
 <p><strong>What was produced.</strong> The SME journey draft (A1), themes T01/T02/T10, and insights INS-01 and INS-02, with the headline reframing: dashboards said onboarding took 8 days; the evidence showed a median of 19, with 68% of applicants re-requested for documents (median 2.6 re-requests per affected applicant). The gap between believed and experienced service — Grönroos&#39;s expectation–experience gap, measured in the bank&#39;s own house (See: 19-service-management-and-marketing/02-perceived-service-quality.md) — became the ideation brief&#39;s spine.</p>
 <p><strong>The AI working session.</strong> The synthesizer produced the SME cluster set on a Friday; the designer reviewed Monday; the insight cards passed verification Tuesday (every quote re-checked against offsets) and shipped to the ideation team as PR #87 with a machine-readable evidence bundle:</p>
-<pre><code class="language-text">Assemble the SME evidence bundle for handoff. Input: evidence register +
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>Assemble the SME evidence bundle for handoff. Input: evidence register +
 themes T01 T02 T10 + insight cards INS-01 INS-02. Output:
 handoff/sme-bundle/ with (1) insight cards, (2) the 25 strongest quotes with
 offsets and segment tags, (3) journey draft mermaid, (4) open questions the
-evidence does not answer. Every quote must pass the offset check before commit.</code></pre><p><strong>Outcome.</strong> The ideation engagement started from validated evidence rather than a briefing deck; its winning concept — a status-heartbeat onboarding tracker with document receipt confirmation — cites INS-01 and INS-02 directly (See: ../16/README.md). First SME interview to ideation-ready evidence: 17 days.</p>
+evidence does not answer. Every quote must pass the offset check before commit.</code></pre></div><p><strong>Outcome.</strong> The ideation engagement started from validated evidence rather than a briefing deck; its winning concept — a status-heartbeat onboarding tracker with document receipt confirmation — cites INS-01 and INS-02 directly (See: ../16/README.md). First SME interview to ideation-ready evidence: 17 days.</p>
 <h3 id="62-use-case-b-complaint-interviews-catch-a-systemic-rostering-failure">6.2 Use case B — Complaint interviews catch a systemic rostering failure</h3><p><strong>Scenario.</strong> The complaints stratum was designed to study complaint handling. The evidence had a different idea: 29 of the 40 complaint interviews mentioned branch wait times unprompted — queue complaints arriving through the complaints channel because there was nowhere else to put them. Cross-joining with the branch stratum (theme T03, 61 interviews across 31 branches) and 15 complaint-centre shadow days produced INS-03: the queues were not demand; the 2017 rota allocated full staffing to mornings while footfall had shifted to the 11:00–14:00 window.</p>
 <p><strong>The AI working session.</strong> The pattern was found by the librarian, not a human: its cross-theme dedup pass flagged that T03 and T06 items shared participant and branch codes at 4 times the base rate, and opened a synthesis note proposing the join. The designer then commissioned triangulation — an OpenCode job pulled queue telemetry for 14 instrumented branches and tested the roster hypothesis:</p>
-<pre><code class="language-bash">opencode run --agent build &quot;Read branch-telemetry/queue-samples.csv. Compute
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>opencode run --agent build &quot;Read branch-telemetry/queue-samples.csv. Compute
 median wait by 30-minute slot and weekday, split by branch. Compare against
 roster/rota-2017.csv staffing levels. Output: a table and a short memo testing
-the hypothesis that peak waits coincide with roster troughs, 11:00-14:00 Tue-Thu.&quot;</code></pre><p>Telemetry agreed with testimony: median midday waits of 23 minutes against 7 off-peak, concentrated Tuesday to Thursday, precisely where the rota ran two advisors short.</p>
+the hypothesis that peak waits coincide with roster troughs, 11:00-14:00 Tue-Thu.&quot;</code></pre></div><p>Telemetry agreed with testimony: median midday waits of 23 minutes against 7 off-peak, concentrated Tuesday to Thursday, precisely where the rota ran two advisors short.</p>
 <p><strong>Outcome.</strong> The bank ran a roster redesign pilot in 6 branches (projected 38% wait reduction at readout), and — the detail the board repeated — complaints coded as &quot;branch wait&quot; stopped being treated as a complaint-handling problem at all. One evidence join, two departments re-aimed: the ecology-wide dividend of researching across the customer–frontline boundary (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md).</p>
 <h3 id="63-use-case-c-ai-versus-human-synthesis-ab-on-20-interviews">6.3 Use case C — AI versus human synthesis, A/B on 20 interviews</h3><p><strong>Scenario.</strong> The client&#39;s research manager asked the question every client asks: would a human team find the same things? Rather than argue, we ran the comparison as a study. The 20 IRR interviews were synthesized independently by (a) the pipeline and (b) two senior human researchers blind to its output, both working from the same pseudonymized transcripts and codebook v3.</p>
 <p><strong>What was compared.</strong> Theme recall, precision, insight ranking, and effort.</p>
-<table>
-<thead>
-<tr>
-<th>Measure (illustrative)</th>
-<th>Human team</th>
-<th>Agent pipeline</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Themes proposed</td>
-<td>19</td>
-<td>23</td>
-</tr>
-<tr>
-<td>Themes validated on joint review</td>
-<td>19</td>
-<td>19 (2 of the 4 extras adopted; 2 rejected as over-splits)</td>
-</tr>
-<tr>
-<td>Recall against the joint gold set (21 themes)</td>
-<td>19/21 (90%)</td>
-<td>19/21 (90%), rising to 21/21 with adopted extras</td>
-</tr>
-<tr>
-<td>Insight ranking correlation (Spearman)</td>
-<td>—</td>
-<td>0.81 vs human ranking</td>
-</tr>
-<tr>
-<td>Code-level agreement between the two</td>
-<td>kappa 0.71</td>
-<td>—</td>
-</tr>
-<tr>
-<td>Effort</td>
-<td>34 researcher-hours</td>
-<td>6.5 hours including human verification</td>
-</tr>
-<tr>
-<td>Cost at €95/h loaded</td>
-<td>€3,230</td>
-<td>€620</td>
-</tr>
-</tbody></table>
-<p><strong>Outcome.</strong> The two approaches converged on the same core structure, which de-risked the method politically more than any methodology memo could have. The pipeline&#39;s failure mode was over-splitting (two clusters where humans saw one with a modifier); the humans&#39; failure mode was missing two low-prevalence themes the pipeline caught via exhaustive register coverage (bereavement handling; closure anxiety among rural customers). The synthesis rule was updated accordingly: agents exhaust, humans consolidate, Codex attacks, and nobody synthesizes alone.</p>
-<h2 id="7-sops-for-ai-how-research-sops-are-best-used-by-agents">7. SOPs for AI — how research SOPs are best used by agents</h2><h3 id="the-meta-sop">The meta-SOP</h3><p>The interview-to-insight SOP was encoded as: method → step list → output schema → acceptance criteria → review gate. Five stages, each gated so the next cannot bypass a failure:</p>
-<pre><code class="language-yaml">sop: interview-to-insight
+<div class="tbl-wrap"><table><thead><tr><th>Measure (illustrative)</th><th>Human team</th><th>Agent pipeline</th></tr></thead><tbody><tr><td>Themes proposed</td><td class="num">19</td><td class="num">23</td></tr><tr><td scope="row">Themes validated on joint review</td><td class="num">19</td><td>19 (2 of the 4 extras adopted; 2 rejected as over-splits)</td></tr><tr><td scope="row">Recall against the joint gold set (21 themes)</td><td>19/21 (90%)</td><td>19/21 (90%), rising to 21/21 with adopted extras</td></tr><tr><td scope="row">Insight ranking correlation (Spearman)</td><td class="num">—</td><td>0.81 vs human ranking</td></tr><tr><td scope="row">Code-level agreement between the two</td><td>kappa 0.71</td><td class="num">—</td></tr><tr><td scope="row">Effort</td><td>34 researcher-hours</td><td>6.5 hours including human verification</td></tr><tr><td scope="row">Cost at €95/h loaded</td><td class="num">€3,230</td><td class="num">€620</td></tr></tbody></table></div><p><strong>Outcome.</strong> The two approaches converged on the same core structure, which de-risked the method politically more than any methodology memo could have. The pipeline&#39;s failure mode was over-splitting (two clusters where humans saw one with a modifier); the humans&#39; failure mode was missing two low-prevalence themes the pipeline caught via exhaustive register coverage (bereavement handling; closure anxiety among rural customers). The synthesis rule was updated accordingly: agents exhaust, humans consolidate, Codex attacks, and nobody synthesizes alone.</p>
+</section><section class="art-sec sec-7"><span class="sec-kicker">07 · SOPs for AI</span><h2 id="sec-7-sops-for-ai-how-research-sops-are-best-used-by-agents">SOPs for AI — how research SOPs are best used by agents</h2><h3 id="the-meta-sop">The meta-SOP</h3><p>The interview-to-insight SOP was encoded as: method → step list → output schema → acceptance criteria → review gate. Five stages, each gated so the next cannot bypass a failure:</p>
+<div class="codeblock"><div class="codebar"><span>CONFIG</span></div><pre><code>sop: interview-to-insight
 version: 3.1
 stages:
   - id: ingest
@@ -876,7 +244,7 @@ stages:
     owner: codex-adversarial + human-designer
     steps: [independent_themes, quote_audit, alternative_explanations]
     acceptance: [all_quotes_resolve, kills_resolved, min_evidence_per_insight]
-    gate: sponsor_readout</code></pre><h3 id="the-codebook-application-prompt-template">The codebook application prompt template</h3><pre><code class="language-text">Apply codebook v3 (research/codebook-v3.md) to evidence/candidates/INT-NNN.jsonl.
+    gate: sponsor_readout</code></pre></div><h3 id="the-codebook-application-prompt-template">The codebook application prompt template</h3><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>Apply codebook v3 (research/codebook-v3.md) to evidence/candidates/INT-NNN.jsonl.
 Rules:
 - Assign 1-3 codes per item from the 64 defined codes ONLY; never invent codes.
 - If no code fits, use UNCODED and write a one-line candidate-code proposal.
@@ -884,182 +252,22 @@ Rules:
 - If the span is ambiguous between two codes, prefer the one whose definition
   requires fewer inferences, and set confidence: low.
 Output: same JSONL with codes[] and confidence fields; append a code-application
-log line per item. Reproducibility: temperature 0, codebook version pinned.</code></pre><h3 id="guardrails-what-kept-200-interviews-safe">Guardrails (what kept 200 interviews safe)</h3><ol>
+log line per item. Reproducibility: temperature 0, codebook version pinned.</code></pre></div><h3 id="guardrails-what-kept-200-interviews-safe">Guardrails (what kept 200 interviews safe)</h3><ol>
 <li><strong>Verbatim verification kills hallucination structurally.</strong> Agents do fabricate quotes — 41 of 5,214 candidates (0.8%) contained merged or invented quotations. None reached the register, because &quot;the quote field must resolve to a transcript span by character offsets&quot; is a mechanical CI assertion, not a prompt instruction. Prompts request honesty; pipelines enforce it.</li>
 <li><strong>Consent as a state machine.</strong> Withdrawal is a label triggering deletion of transcript, summary, and every derived evidence item in one PR, auditable by the DPO. Three withdrawals executed, zero residue.</li>
 <li><strong>Pseudonymization before agents, vault outside the repo.</strong> No agent context ever contained a direct identifier; the identity map lived in client-held storage. PII lint ran as a blocking Action on every commit.</li>
 <li><strong>No biometrics, no inference.</strong> The extraction schema forbids inferring health, ethnicity, or political/religious content even when volunteered; such passages are summarized topically with the sensitive span excluded.</li>
 <li><strong>Human sign-off points.</strong> Consent pack (DPO PR), codebook versions, theme names (wall session), insight cards (designer + sponsor). Agents propose; named humans dispose.</li>
 </ol>
-<h3 id="failure-modes-observed-and-mitigations">Failure modes observed and mitigations</h3><table>
-<thead>
-<tr>
-<th>Failure mode</th>
-<th>Frequency</th>
-<th>Mitigation</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Fabricated or merged quotes</td>
-<td>41 items (0.8%)</td>
-<td>Offset verification gate; re-extract or drop</td>
-</tr>
-<tr>
-<td>Offset drift (quote real, span wrong)</td>
-<td>347 items (6.7%)</td>
-<td>Same gate; auto-repair by re-locating the span</td>
-</tr>
-<tr>
-<td>Theme over-splitting by agents</td>
-<td>2 of 23 themes in A/B</td>
-<td>Human consolidation gate at the wall</td>
-</tr>
-<tr>
-<td>Code drift across weekly batches</td>
-<td>9 items in week 5</td>
-<td>Codebook version pinning + librarian recompute</td>
-</tr>
-<tr>
-<td>PII surviving in quoted phrases</td>
-<td>2 files</td>
-<td>PII lint quarantine; manual fix; rule added</td>
-</tr>
-<tr>
-<td>Translation flattening emotional register</td>
-<td>6 quotes flagged</td>
-<td>Original-language quote retained; translation marked</td>
-</tr>
-</tbody></table>
-<h2 id="8-value-creation-amp-measurement">8. Value creation &amp; measurement</h2><h3 id="beforeafter-illustrative-figures">Before/after (illustrative figures)</h3><table>
-<thead>
-<tr>
-<th>Metric</th>
-<th>Traditional baseline (agency quote / prior programs)</th>
-<th>AI-first program</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Calendar time to first validated insights</td>
-<td>12–16 weeks</td>
-<td>4 weeks</td>
-</tr>
-<tr>
-<td>Total research program duration</td>
-<td>16 weeks</td>
-<td>10 weeks</td>
-</tr>
-<tr>
-<td>Interviews analyzed</td>
-<td>40 (affordable scope)</td>
-<td>200</td>
-</tr>
-<tr>
-<td>Shadow days / diary entries</td>
-<td>0 / 0 (descoped)</td>
-<td>45 / 800</td>
-</tr>
-<tr>
-<td>Cost (research phase, all-in)</td>
-<td>€285,000</td>
-<td>€94,000</td>
-</tr>
-<tr>
-<td>Cost per analyzed interview</td>
-<td>€7,125</td>
-<td>€470</td>
-</tr>
-<tr>
-<td>Cost per validated insight</td>
-<td>€35,625 (8 insights)</td>
-<td>€7,833 (12 insights)</td>
-</tr>
-<tr>
-<td>Designer/researcher hours on processing</td>
-<td>~1,240</td>
-<td>480</td>
-</tr>
-<tr>
-<td>Time from interview to coded summary</td>
-<td>5–10 days</td>
-<td>36 hours median</td>
-</tr>
-<tr>
-<td>Quote-level traceability</td>
-<td>none (deck-level claims)</td>
-<td>100% (offsets)</td>
-</tr>
-<tr>
-<td>Themes triangulated across ≥ 2 methods</td>
-<td>~40% (prior program)</td>
-<td>91% (20 of 22)</td>
-</tr>
-<tr>
-<td>Reliability evidence</td>
-<td>none</td>
-<td>kappa 0.78 (theme level, n=20)</td>
-</tr>
-</tbody></table>
-<p>The €94,000 decomposes as: incentives and travel €18,600; transcription and compute €11,900; designer and tooling €63,500. The causal logic runs through Grönroos: the bank&#39;s perceived-quality gap lived between expected service (8-day onboarding, staffed branches) and experienced service (19 days, 23-minute waits), and the program made that gap inspectable for the first time — the precondition for closing it (See: 19-service-management-and-marketing/02-perceived-service-quality.md). The €470-versus-€7,125 comparison understates the real value: the baseline&#39;s true cost was decisions made on untraceable evidence, twice, with two burned research programs to show for it.</p>
-<h3 id="research-quality-kpi-tree-measurement-plan-for-the-program-itself">Research-quality KPI tree (measurement plan for the program itself)</h3><table>
-<thead>
-<tr>
-<th>Level</th>
-<th>KPI</th>
-<th>Target</th>
-<th>Actual</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Output</td>
-<td>Interviews processed within 36h SLA</td>
-<td>90%</td>
-<td>93%</td>
-</tr>
-<tr>
-<td>Output</td>
-<td>Evidence items verified</td>
-<td>100%</td>
-<td>100% (gate-enforced)</td>
-</tr>
-<tr>
-<td>Quality</td>
-<td>Quote fabrication escape rate</td>
-<td>0</td>
-<td>0 (41 caught at gate)</td>
-</tr>
-<tr>
-<td>Quality</td>
-<td>IRR theme agreement</td>
-<td>kappa ≥ 0.70</td>
-<td>0.78</td>
-</tr>
-<tr>
-<td>Quality</td>
-<td>Insight traceability audit (live drill)</td>
-<td>≤ 5 min per trace</td>
-<td>&lt; 1 min</td>
-</tr>
-<tr>
-<td>Adoption</td>
-<td>Insights accepted at readout without evidence dispute</td>
-<td>10 of 12</td>
-<td>12 of 12</td>
-</tr>
-<tr>
-<td>Adoption</td>
-<td>Downstream engagements seeded from register</td>
-<td>1</td>
-<td>2 (articles 16, 23)</td>
-</tr>
-</tbody></table>
-<h2 id="9-ai-tool-playbook">9. AI tool playbook</h2><p><strong>Claude Code — the research team.</strong> Three subagents with separated duties: <em>researcher</em> (per-interview summaries and evidence extraction, one invocation per interview, temperature 0, schema-pinned), <em>synthesizer</em> (weekly clustering over the growing register), <em>librarian</em> (dedup, theme-ID stability, join-key hygiene). Excelled at: tireless per-interview structured work at 36-hour SLA; keeping cluster names in active sentences because the prompt demanded it. Failed at: cross-interview pattern-spotting outside its batch (the librarian&#39;s cross-theme join in use case B needed a human-commissioned follow-up to become an insight); emotional register in translation. Human took over: every theme name carrying political weight.</p>
+<h3 id="failure-modes-observed-and-mitigations">Failure modes observed and mitigations</h3><div class="tbl-wrap"><table><thead><tr><th>Failure mode</th><th>Frequency</th><th>Mitigation</th></tr></thead><tbody><tr><td>Fabricated or merged quotes</td><td>41 items (0.8%)</td><td>Offset verification gate; re-extract or drop</td></tr><tr><td scope="row">Offset drift (quote real, span wrong)</td><td>347 items (6.7%)</td><td>Same gate; auto-repair by re-locating the span</td></tr><tr><td scope="row">Theme over-splitting by agents</td><td>2 of 23 themes in A/B</td><td>Human consolidation gate at the wall</td></tr><tr><td scope="row">Code drift across weekly batches</td><td>9 items in week 5</td><td>Codebook version pinning + librarian recompute</td></tr><tr><td scope="row">PII surviving in quoted phrases</td><td>2 files</td><td>PII lint quarantine; manual fix; rule added</td></tr><tr><td scope="row">Translation flattening emotional register</td><td>6 quotes flagged</td><td>Original-language quote retained; translation marked</td></tr></tbody></table></div></section><section class="art-sec sec-8"><span class="sec-kicker">08 · Value & measurement</span><h2 id="sec-8-value-creation-amp-measurement">Value creation &amp; measurement</h2><h3 id="beforeafter-illustrative-figures">Before/after (illustrative figures)</h3><div class="tbl-wrap"><table><thead><tr><th>Metric</th><th>Traditional baseline (agency quote / prior programs)</th><th>AI-first program</th></tr></thead><tbody><tr><td>Calendar time to first validated insights</td><td>12–16 weeks</td><td>4 weeks</td></tr><tr><td scope="row">Total research program duration</td><td>16 weeks</td><td>10 weeks</td></tr><tr><td scope="row">Interviews analyzed</td><td>40 (affordable scope)</td><td class="num">200</td></tr><tr><td scope="row">Shadow days / diary entries</td><td>0 / 0 (descoped)</td><td>45 / 800</td></tr><tr><td scope="row">Cost (research phase, all-in)</td><td class="num">€285,000</td><td class="num">€94,000</td></tr><tr><td scope="row">Cost per analyzed interview</td><td class="num">€7,125</td><td class="num">€470</td></tr><tr><td scope="row">Cost per validated insight</td><td>€35,625 (8 insights)</td><td>€7,833 (12 insights)</td></tr><tr><td scope="row">Designer/researcher hours on processing</td><td class="num">~1,240</td><td class="num">480</td></tr><tr><td scope="row">Time from interview to coded summary</td><td>5–10 days</td><td>36 hours median</td></tr><tr><td scope="row">Quote-level traceability</td><td>none (deck-level claims)</td><td>100% (offsets)</td></tr><tr><td scope="row">Themes triangulated across ≥ 2 methods</td><td>~40% (prior program)</td><td>91% (20 of 22)</td></tr><tr><td scope="row">Reliability evidence</td><td>none</td><td>kappa 0.78 (theme level, n=20)</td></tr></tbody></table></div><p>The €94,000 decomposes as: incentives and travel €18,600; transcription and compute €11,900; designer and tooling €63,500. The causal logic runs through Grönroos: the bank&#39;s perceived-quality gap lived between expected service (8-day onboarding, staffed branches) and experienced service (19 days, 23-minute waits), and the program made that gap inspectable for the first time — the precondition for closing it (See: 19-service-management-and-marketing/02-perceived-service-quality.md). The €470-versus-€7,125 comparison understates the real value: the baseline&#39;s true cost was decisions made on untraceable evidence, twice, with two burned research programs to show for it.</p>
+<h3 id="research-quality-kpi-tree-measurement-plan-for-the-program-itself">Research-quality KPI tree (measurement plan for the program itself)</h3><div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Level</th><th>KPI</th><th>Target</th><th>Actual</th></tr></thead><tbody><tr><td>Output</td><td>Interviews processed within 36h SLA</td><td>90%</td><td>93%</td></tr><tr><td scope="row">Output</td><td>Evidence items verified</td><td>100%</td><td>100% (gate-enforced)</td></tr><tr><td scope="row">Quality</td><td>Quote fabrication escape rate</td><td>0</td><td>0 (41 caught at gate)</td></tr><tr><td scope="row">Quality</td><td>IRR theme agreement</td><td>kappa ≥ 0.70</td><td>0.78</td></tr><tr><td scope="row">Quality</td><td>Insight traceability audit (live drill)</td><td>≤ 5 min per trace</td><td>&lt; 1 min</td></tr><tr><td scope="row">Adoption</td><td>Insights accepted at readout without evidence dispute</td><td>10 of 12</td><td>12 of 12</td></tr><tr><td scope="row">Adoption</td><td>Downstream engagements seeded from register</td><td>1</td><td>2 (articles 16, 23)</td></tr></tbody></table></div></section><section class="art-sec sec-9"><span class="sec-kicker">09 · AI tool playbook</span><h2 id="sec-9-ai-tool-playbook">AI tool playbook</h2><p><strong>Claude Code — the research team.</strong> Three subagents with separated duties: <em>researcher</em> (per-interview summaries and evidence extraction, one invocation per interview, temperature 0, schema-pinned), <em>synthesizer</em> (weekly clustering over the growing register), <em>librarian</em> (dedup, theme-ID stability, join-key hygiene). Excelled at: tireless per-interview structured work at 36-hour SLA; keeping cluster names in active sentences because the prompt demanded it. Failed at: cross-interview pattern-spotting outside its batch (the librarian&#39;s cross-theme join in use case B needed a human-commissioned follow-up to become an insight); emotional register in translation. Human took over: every theme name carrying political weight.</p>
 <p><strong>OpenCode — the pipeline.</strong> Agent-mode nightly jobs: transcription orchestration, dedup, pseudonymization, PII lint, telemetry joins, mock dataset generation:</p>
-<pre><code class="language-bash">opencode run --agent build &quot;Generate data/interviews_register_sample.csv: 30
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>opencode run --agent build &quot;Generate data/interviews_register_sample.csv: 30
 rows matching the register schema, plausible segments/dates/themes consistent
-with synthesis/themes-v3.md prevalence counts, fictional quotes, seed fixed.&quot;</code></pre><p>Excelled at: deterministic file-munging with a fixed seed; the PII quarantine. Failed at: silent mangling of French diacritics in week 2 — caught because the verifier reported offset mismatches on accented spans, fixed by pinning UTF-8 end-to-end and re-processing 14 files.</p>
+with synthesis/themes-v3.md prevalence counts, fictional quotes, seed fixed.&quot;</code></pre></div><p>Excelled at: deterministic file-munging with a fixed seed; the PII quarantine. Failed at: silent mangling of French diacritics in week 2 — caught because the verifier reported offset mismatches on accented spans, fixed by pinning UTF-8 end-to-end and re-processing 14 files.</p>
 <p><strong>Codex — the independent voice.</strong> Two uses: the independent synthesis pass (themes proposed blind, then compared) and the adversarial insight check (Section 4.5). Excelled at: killing the weak insight card the designer was fond of, and finding that one insight&#39;s design implication outran its evidence. Failed at: over-flagging — 3 of its 9 challenges dissolved on inspection because it lacked wall-session context; verdicts need a human adjudicator, not automatic adoption.</p>
 <p><strong>GitHub — research ops system of record.</strong> Issue-per-interview with the consent state machine (200 issues, zero lost states); Projects board as the fieldwork picture; PRs as review gates (DPO on the consent pack, designer on codebook versions, sponsor on insight cards); Actions enforcing the two mechanical rules — PII lint and quote-offset verification — as blocking CI. The discipline that made it work: no artifact exists outside a PR, so every artifact has a reviewer, a diff, and a revert path.</p>
-<h2 id="10-lessons-learned-and-pitfalls">10. Lessons learned and pitfalls</h2><ol>
+</section><section class="art-sec sec-10"><span class="sec-kicker">10 · Lessons learned</span><h2 id="sec-10-lessons-learned-and-pitfalls">Lessons learned and pitfalls</h2><ol>
 <li><strong>The pipeline found trust before it found insights.</strong> The most valuable decision was making quote verification mechanical. Everything else — kappa, adversarial passes — was layered credibility on top.</li>
 <li><strong>Rolling synthesis beats big-bang synthesis at scale.</strong> Weekly re-clustering from week 4 meant the week-8 wall session was a confirmation exercise, not a rescue. The cost — librarian overhead keeping theme IDs stable — was worth it.</li>
 <li><strong>Agents over-split, humans over-merge.</strong> The A/B study showed the failure modes are complementary; the durable design is agents exhaust, humans consolidate, a second model attacks.</li>
@@ -1069,7 +277,7 @@ with synthesis/themes-v3.md prevalence counts, fictional quotes, seed fixed.&quo
 <li><strong>Translated quotes lose emotional texture.</strong> Six quotes read as neutral in English that were raw in Dutch; retaining original-language spans with a translation flag became standard.</li>
 <li><strong>What I would do differently:</strong> instrument branch telemetry before fieldwork, not after (the roster triangulation cost a week waiting on data pulls); and run the A/B comparison in week 2, not week 8 — its political value peaked before the first readout, not after.</li>
 </ol>
-<h2 id="11-references">11. References</h2><p>Book chapters used (knowledge library paths):</p>
+</section><section class="art-sec sec-11"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2><p>Book chapters used (knowledge library paths):</p>
 <ul>
 <li><code>01-this-is-service-design-doing/04-research-methods.md</code> — triangulation, research plan canvas, interview guide, insight cards</li>
 <li><code>03-service-design-from-insight-to-implementation/04-from-research-to-insight.md</code> — data–information–insight ladder, ecology-wide research, acid test</li>
@@ -1084,146 +292,16 @@ with synthesis/themes-v3.md prevalence counts, fictional quotes, seed fixed.&quo
 </ul>
 <p>Related series articles: <code>../01/README.md</code> (the SD operating system), <code>../16/README.md</code> (SME ideation consuming this evidence base), <code>../23/README.md</code> (frontline enablement phase 2 at Calder).</p>
 <p>Cohen&#39;s kappa and Spearman correlation are standard statistics. External sector context mentioned beyond GDPR: AMLD5 and the EU beneficial-ownership register network. All engagement figures are illustrative.</p>
-<h2 id="12-appendix-artifact-index">12. Appendix: artifact index</h2><table>
-<thead>
-<tr>
-<th>Artifact</th>
-<th>Section</th>
-<th>Format</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Consent and data-flow diagram</td>
-<td>4.1</td>
-<td>Mermaid flowchart</td>
-<td>DPO-approved data architecture</td>
-</tr>
-<tr>
-<td>Interview register schema + sample</td>
-<td>A7 / data/</td>
-<td>CSV</td>
-<td>Join table between ops and analysis</td>
-</tr>
-<tr>
-<td>Evidence register schema</td>
-<td>4.3 (in SOP YAML)</td>
-<td>JSONL schema reference</td>
-<td>Atomic verified evidence items</td>
-</tr>
-<tr>
-<td>Research plan template</td>
-<td>A6</td>
-<td>Fenced form</td>
-<td>Repeatable program design</td>
-</tr>
-<tr>
-<td>Interview guide template</td>
-<td>A6</td>
-<td>Fenced form</td>
-<td>Episode-based 70-minute guide</td>
-</tr>
-<tr>
-<td>Interview QA checklist</td>
-<td>A6</td>
-<td>Fenced checklist</td>
-<td>Per-interview quality gate</td>
-</tr>
-<tr>
-<td>Guardrail checklist</td>
-<td>A6</td>
-<td>Fenced checklist</td>
-<td>Bias and hallucination control</td>
-</tr>
-<tr>
-<td>Synthesis SOP-as-code</td>
-<td>7</td>
-<td>Fenced YAML</td>
-<td>Executable interview-to-insight pipeline</td>
-</tr>
-<tr>
-<td>Codebook application prompt</td>
-<td>7</td>
-<td>Fenced prompt</td>
-<td>Deterministic coding</td>
-</tr>
-<tr>
-<td>Synthesis pipeline diagram</td>
-<td>4.4</td>
-<td>Mermaid flowchart</td>
-<td>Transcript-to-insight data flow</td>
-</tr>
-<tr>
-<td>SME journey map (current state)</td>
-<td>A1</td>
-<td>Mermaid + table</td>
-<td>Evidence-tagged journey draft</td>
-</tr>
-<tr>
-<td>Research ops blueprint</td>
-<td>A2</td>
-<td>Mermaid + table</td>
-<td>The research service as a blueprint</td>
-</tr>
-<tr>
-<td>Stakeholder map</td>
-<td>A3</td>
-<td>Mermaid</td>
-<td>Influence-interest management</td>
-</tr>
-<tr>
-<td>Ecosystem map</td>
-<td>A4</td>
-<td>Mermaid</td>
-<td>Actor landscape for research design</td>
-</tr>
-<tr>
-<td>Personas (2 of 6)</td>
-<td>A5</td>
-<td>Tables</td>
-<td>Decision-grade archetypes</td>
-</tr>
-<tr>
-<td>Topic pie, theme bar, theme quadrant</td>
-<td>A8</td>
-<td>Mermaid charts</td>
-<td>Corpus shape and prioritization</td>
-</tr>
-<tr>
-<td>Traceability table</td>
-<td>A9</td>
-<td>Table</td>
-<td>Evidence-to-decision chain</td>
-</tr>
-<tr>
-<td>Good Services quick audit</td>
-<td>A10</td>
-<td>Table</td>
-<td>Pre-redesign SME onboarding scoring</td>
-</tr>
-<tr>
-<td>Before/after + KPI tree</td>
-<td>8</td>
-<td>Tables</td>
-<td>Value creation evidence</td>
-</tr>
-<tr>
-<td>Program gantt</td>
-<td>3</td>
-<td>Mermaid gantt</td>
-<td>10-week plan and gates</td>
-</tr>
-</tbody></table>
-</article><div class="wrap" style="max-width:880px">
-    <div class="cross-links"><a href="../05/index.html"><span class="lbl">← Previous case</span><span class="ttl">05. The Service Profit Chain in Logistics: Halcyon's Account Experience</span></a><a href="../07/index.html"><span class="lbl">Next case →</span><span class="ttl">07. Mixed Methods: Quant + Qual under One Roof at Vesper Pharmacy</span></a></div>
+</section><section class="art-sec sec-12"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-appendix-artifact-index">Appendix: artifact index</h2><div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Artifact</th><th>Section</th><th>Format</th><th>Purpose</th></tr></thead><tbody><tr><td>Consent and data-flow diagram</td><td>4.1</td><td>Mermaid flowchart</td><td>DPO-approved data architecture</td></tr><tr><td scope="row">Interview register schema + sample</td><td>A7 / data/</td><td>CSV</td><td>Join table between ops and analysis</td></tr><tr><td scope="row">Evidence register schema</td><td>4.3 (in SOP YAML)</td><td>JSONL schema reference</td><td>Atomic verified evidence items</td></tr><tr><td scope="row">Research plan template</td><td>A6</td><td>Fenced form</td><td>Repeatable program design</td></tr><tr><td scope="row">Interview guide template</td><td>A6</td><td>Fenced form</td><td>Episode-based 70-minute guide</td></tr><tr><td scope="row">Interview QA checklist</td><td>A6</td><td>Fenced checklist</td><td>Per-interview quality gate</td></tr><tr><td scope="row">Guardrail checklist</td><td>A6</td><td>Fenced checklist</td><td>Bias and hallucination control</td></tr><tr><td scope="row">Synthesis SOP-as-code</td><td>7</td><td>Fenced YAML</td><td>Executable interview-to-insight pipeline</td></tr><tr><td scope="row">Codebook application prompt</td><td>7</td><td>Fenced prompt</td><td>Deterministic coding</td></tr><tr><td scope="row">Synthesis pipeline diagram</td><td>4.4</td><td>Mermaid flowchart</td><td>Transcript-to-insight data flow</td></tr><tr><td scope="row">SME journey map (current state)</td><td>A1</td><td>Mermaid + table</td><td>Evidence-tagged journey draft</td></tr><tr><td scope="row">Research ops blueprint</td><td>A2</td><td>Mermaid + table</td><td>The research service as a blueprint</td></tr><tr><td scope="row">Stakeholder map</td><td>A3</td><td>Mermaid</td><td>Influence-interest management</td></tr><tr><td scope="row">Ecosystem map</td><td>A4</td><td>Mermaid</td><td>Actor landscape for research design</td></tr><tr><td scope="row">Personas (2 of 6)</td><td>A5</td><td>Tables</td><td>Decision-grade archetypes</td></tr><tr><td scope="row">Topic pie, theme bar, theme quadrant</td><td>A8</td><td>Mermaid charts</td><td>Corpus shape and prioritization</td></tr><tr><td scope="row">Traceability table</td><td>A9</td><td>Table</td><td>Evidence-to-decision chain</td></tr><tr><td scope="row">Good Services quick audit</td><td>A10</td><td>Table</td><td>Pre-redesign SME onboarding scoring</td></tr><tr><td scope="row">Before/after + KPI tree</td><td>8</td><td>Tables</td><td>Value creation evidence</td></tr><tr><td scope="row">Program gantt</td><td>3</td><td>Mermaid gantt</td><td>10-week plan and gates</td></tr></tbody></table></div></section></article></div>
+    <div class="cross-links"><a class="xlink" href="./05/index.html"><span class="lbl">← Previous case</span><span class="ttl">05. The Service Profit Chain in Logistics: Halcyon's Account Experience</span><span class="rt">32 min read</span></a><a class="xlink" href="./07/index.html"><span class="lbl">Next case →</span><span class="ttl">07. Mixed Methods: Quant + Qual under One Roof at Vesper Pharmacy</span><span class="rt">38 min read</span></a></div>
     <div class="art-foot">
-      <span>11 figures (11 diagrams) · ~9.5k words · reviewed by an adversarial AI reviewer (Gemini 3.1 Pro High).</span>
-      · <a href="https://github.com/sammozaffari/the-agentic-service-designer/blob/main/articles/06/README.md" target="_blank" rel="noopener">Open source in repo ↗</a>
+      <span>11 figures · ~9.5k words · evidence-cited · reviewed by an adversarial AI critic.</span>
+      · <a href="../index.html">Back to the archive</a>
     </div>
-  </div></main>
-<footer class="footer"><div class="footer-inner">
-  <span>Agentic Service Designer — 30 service design case studies from an AI-first practice. Fictional, anonymized clients.</span>
-  <span><a href="../../index.html">Home</a> · <a href="../../concept.html">The concept</a> · <a href="https://github.com/sammozaffari/the-agentic-service-designer" target="_blank" rel="noopener">GitHub</a></span>
-</div></footer>
+    <button class="backtop" id="backtop" type="button">Back to top</button></main>
+<footer class="footer">
+  <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
+  <span><a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
+</footer>
 <script src="../../assets/site.js"></script>
 </body></html>
