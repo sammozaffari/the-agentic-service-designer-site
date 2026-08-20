@@ -8,6 +8,7 @@
   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: transparent; overflow: hidden; font-family: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace; }
+  body.live { background: #0a0a0a; }
   canvas { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 100%; max-height: 100%; cursor: crosshair; }
 </style>
 </head>
@@ -77,62 +78,6 @@
     flickerInterval[i] = 300 + Math.floor(rng() * 900);
   }
   for (let r = 0; r < ROWS; r++) rowNoise[r] = rng();
-
-  // ---- code-dissolve: the black box melts into the paper through the glyphs ----
-  // Fade radiates from the subject's centroid (weighted by luminance level) as
-  // an ellipse. Cells near the centre keep the reference look — solid black
-  // with light glyphs; heading outward each cell's background lightens to the
-  // paper and its glyph darkens to site ink, jittered per-cell by seeded noise
-  // so the dissolve edge is ragged, not a hard rectangle.
-  const RX = 19, RY = 26;      // fade ellipse, in cells
-  const FADE_IN = 0.9;         // fade starts at this normalised radius
-  const FADE_OUT = 2.3;        // fade completes here
-  const NOISE_BAND = 0.6;      // per-cell jitter, normalised
-  const INK = [23, 24, 23];    // site ink for the paper side
-  const PAPER = [250, 250, 248]; // --paper-tint
-
-  let cx = 0, cy = 0, cw = 0;
-  for (let i = 0; i < G.length; i++) {
-    if (G[i][0] === 0) continue;
-    const w = G[i][0];
-    cx += (i % COLS) * w;
-    cy += ((i - (i % COLS)) / COLS) * w;
-    cw += w;
-  }
-  cx /= cw;
-  cy /= cw;
-
-  const fade = new Float32Array(G.length);
-  const tint = new Array(G.length);   // photo colour toned for the paper side
-  const bgRGB = new Array(G.length);  // per-cell background colour
-  for (let i = 0; i < G.length; i++) {
-    const cell = G[i];
-    const x = i % COLS, y = (i - x) / COLS;
-    const nx = (x - cx) / RX, ny = (y - cy) / RY;
-    const deff = Math.hypot(nx, ny) + (cellNoise[i] - 0.5) * NOISE_BAND;
-    const f = Math.max(0, Math.min(1, (deff - FADE_IN) / (FADE_OUT - FADE_IN)));
-    fade[i] = f;
-    const bg = PAPER[0] + (10 - PAPER[0]) * (1 - f); // mix(black, paper, f)
-    bgRGB[i] = [bg, bg, bg];
-    if (cell[0] === 0) continue;
-    const l = 0.299 * cell[1] + 0.587 * cell[2] + 0.114 * cell[3];
-    const tf = 0.40 + 0.45 * (1 - l / 255);
-    tint[i] = [Math.round(cell[1] * tf), Math.round(cell[2] * tf), Math.round(cell[3] * tf)];
-  }
-
-  // static background layer (black box + dissolve), painted once
-  const bgCanvas = document.createElement('canvas');
-  bgCanvas.width = canvas.width;
-  bgCanvas.height = canvas.height;
-  const bctx = bgCanvas.getContext('2d');
-  bctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  for (let i = 0; i < G.length; i++) {
-    if (fade[i] >= 0.985) continue;
-    const x = i % COLS, y = (i - x) / COLS;
-    const c = bgRGB[i];
-    bctx.fillStyle = 'rgb(' + c[0] + ',' + c[1] + ',' + c[2] + ')';
-    bctx.fillRect(x * CELL_W, y * CELL_H, CELL_W, CELL_H);
-  }
 
   // input coordinates in canvas CSS-pixel space (accounts for CSS fit-scaling)
   let mouseX = -1000, mouseY = -1000, prevMouseX = -1000, prevMouseY = -1000;
@@ -263,8 +208,6 @@
       rowShift[row] = Math.round(Math.max(-maxH, Math.min(maxH, mvx * rowStrength * 1.8)));
     }
 
-    ctx.drawImage(bgCanvas, 0, 0, W, H);
-
     for (let i = 0; i < G.length; i++) {
       const cell = G[i];
       const level = cell[0];
@@ -304,8 +247,6 @@
 
       const useColor = infected[i] === 1 || inHover;
       const alpha = OPACITY[level];
-      const f = fade[i];
-      const t = tint[i];
 
       displaceX[i] = 0; displaceY[i] = 0;
       if (inHover && mouseMoving) {
@@ -318,21 +259,18 @@
       const hasDrift = Math.abs(displaceX[i]) > 0.2 || Math.abs(displaceY[i]) > 0.2;
 
       if (useColor) {
-        // true photo colour at the core, toned for paper at the dissolve edge
-        ctx.fillStyle = 'rgba(' + Math.round(r + (t[0] - r) * f) + ',' + Math.round(g + (t[1] - g) * f) + ',' + Math.round(b + (t[2] - b) * f) + ',' + alpha + ')';
+        ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
       } else {
-        const gv = Math.round(212 + (INK[0] - 212) * f);
-        ctx.fillStyle = 'rgba(' + gv + ',' + gv + ',' + gv + ',' + alpha + ')';
+        ctx.fillStyle = 'rgba(212,212,212,' + alpha + ')';
       }
       ctx.fillText(glyph, px, py);
 
       if (hasDrift) {
         const dAlpha = Math.min(alpha, 0.7);
         if (useColor) {
-          ctx.fillStyle = 'rgba(' + Math.round(r + (t[0] - r) * f) + ',' + Math.round(g + (t[1] - g) * f) + ',' + Math.round(b + (t[2] - b) * f) + ',' + dAlpha + ')';
+          ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + dAlpha + ')';
         } else {
-          const gv = Math.round(212 + (INK[0] - 212) * f);
-          ctx.fillStyle = 'rgba(' + gv + ',' + gv + ',' + gv + ',' + dAlpha + ')';
+          ctx.fillStyle = 'rgba(212,212,212,' + dAlpha + ')';
         }
         ctx.fillText(glyph, px + displaceX[i], py + displaceY[i]);
       }
