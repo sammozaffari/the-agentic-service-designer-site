@@ -995,12 +995,14 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 
 /* capabilities */
 .cap-band { padding: 72px 0 64px; border-top: 1px solid var(--line); }
-.cap-grid { max-width: 1180px; margin: 36px auto 0; padding: 0 var(--pad-d); display: grid; grid-template-columns: repeat(6, 1fr); }
-.cap { border-left: 1px solid var(--line); padding: 4px 18px 0; }
-.cap:first-child { border-left: 0; padding-left: 0; }
+.cap-grid { max-width: 1180px; margin: 36px auto 0; padding: 0 var(--pad-d); display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.cap-grid--phases { grid-template-columns: repeat(3, 1fr); }
+.cap { display: flex; flex-direction: column; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 18px 20px; transition: border-color var(--fast) var(--ease), transform var(--fast) var(--ease); }
+.cap:hover { border-color: var(--line-strong); transform: translateY(-1px); }
 .cap-num { font-family: var(--mono); font-size: 10.5px; color: var(--muted); letter-spacing: 0.1em; }
 .cap h3 { font-family: var(--sans); font-weight: 700; font-size: 21px; margin: 8px 0; }
 .cap p { font-size: 13px; line-height: 1.55; color: var(--ink-soft); margin: 0; }
+.cap .card-cta { margin-top: auto; padding-top: 14px; white-space: nowrap; }
 
 /* platform — dark inversion */
 .plat-band { background: var(--dark); color: var(--dark-ink); padding: 76px 0 84px; }
@@ -1037,16 +1039,12 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid 
 .archive-head { padding: 8px 0 24px; }
 
 @media (max-width: 1024px) {
-  .cap-grid { grid-template-columns: repeat(3, 1fr); gap: 28px 0; }
-  .cap:nth-child(4) { border-left: 0; padding-left: 0; }
+  .cap-grid, .cap-grid--phases { grid-template-columns: repeat(2, 1fr); }
   .plat-grid { grid-template-columns: repeat(2, 1fr); }
   .proof-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
   .hero { padding: 64px var(--pad-d) 40px; }
-  .cap-grid { grid-template-columns: repeat(2, 1fr); }
-  .cap:nth-child(odd) { border-left: 0; padding-left: 0; }
-  .cap:nth-child(4) { border-left: 1px solid var(--line); padding-left: 18px; }
-  .cap:first-child { border-left: 0; padding-left: 0; }
+  .cap-grid, .cap-grid--phases { grid-template-columns: 1fr; }
   .plat-grid { grid-template-columns: 1fr; }
 }
