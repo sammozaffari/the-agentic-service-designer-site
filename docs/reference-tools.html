@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="All sixteen sd_* engine tools — arguments, return payloads, failure modes, and exit-code / JSON-RPC behavior — with real captured output.">
+<meta name="description" content="All 29 sd_* engine tools — arguments, return payloads, failure modes, and exit-code / JSON-RPC behavior — with current release boundaries.">
 <title>Engine tool reference — The Agentic Service Designer</title>
 <link rel="stylesheet" href="../assets/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
@@ -23,24 +23,64 @@
 </header>
 <main class="art">
   <div class="art-progress"><div class="art-progress-bar" id="progress"></div></div>
-  <nav class="docs-tabs" aria-label="Docs sections"><a href="./index.html">Start</a><a href="./plugin-claude-code.html">Surfaces</a><a href="./concepts.html">Concepts</a><a href="./reference-tools.html" class="on">Reference</a><a href="./use-cases.html">Use cases</a></nav>
+  <nav class="docs-tabs" aria-label="Docs sections"><a href="./index.html">Start</a><a href="./plugin-claude-code.html">Surfaces</a><a href="./acp.html">Concepts</a><a href="./reference-tools.html" class="on">Reference</a><a href="./use-cases.html">Use cases</a></nav>
   <section class="page-hero">
     <span class="kicker">Docs · Reference</span>
     <h1>Engine tool reference</h1>
-    <p class="lede">All sixteen sd_* engine tools — arguments, return payloads, failure modes, and exit-code / JSON-RPC behavior — with real captured output.</p>
+    <p class="lede">All 29 sd_* engine tools — arguments, return payloads, failure modes, and exit-code / JSON-RPC behavior — with current release boundaries.</p>
   </section>
-  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Reference</b><ol><li><a href="./reference-tools.html" class="on">Engine tool reference</a></li><li><a href="./reference-agents.html">Agent role reference</a></li><li><a href="./reference-skills.html">Skills reference</a></li><li><a href="./reference-artifacts.html">Artifact kind reference</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#conventions">Conventions</a></li><li><a href="#project-tools">Project tools</a></li><li><a href="#evidence-tools">Evidence tools</a></li><li><a href="#artifact-tools">Artifact tools</a></li><li><a href="#method-tools">Method tools</a></li><li><a href="#review-tools">Review tools</a></li><li><a href="#export-tools">Export tools</a></li><li><a href="#knowledge-tool">Knowledge tool</a></li><li><a href="#fact-check-gate">Fact-check gate</a></li><li><a href="#the-write-path-end-to-end">The write path, end to end</a></li></ol></nav></aside><article class="art-body"><h1 id="engine-tool-reference">Engine tool reference</h1><p>The engine exposes exactly sixteen tools, named <code>sd_*</code>. One definition set serves every surface: the <code>asd</code> CLI parses its flags from the same JSON schemas, the MCP server advertises the same schemas over <code>tools/list</code>, and the DeepSeek Harness suite registers the same builders. The CLI surface cannot drift from the tool definitions because it is generated from them.</p>
-<p>The tools group into eight families: project, evidence, artifact, method, review, export, knowledge, and the fact-check gate. Every JSON excerpt below is real captured output from the CLI, trimmed with <code>[…]</code> where nodes or rows repeat.</p>
-<h2 id="conventions">Conventions</h2><ul>
+  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Reference</b><ol><li><a href="./reference-tools.html" class="on">Engine tool reference</a></li><li><a href="./reference-agents.html">Agent role reference</a></li><li><a href="./reference-skills.html">Skills reference</a></li><li><a href="./reference-artifacts.html">Artifact kind reference</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#conventions">Conventions</a></li><li><a href="#project-tools">Project tools</a></li><li><a href="#evidence-tools">Evidence tools</a></li><li><a href="#artifact-tools">Artifact tools</a></li><li><a href="#method-tools">Method tools</a></li><li><a href="#review-tools">Review tools</a></li><li><a href="#export-tools">Export tools</a></li><li><a href="#metadata-tools">Metadata tools</a></li><li><a href="#canvas-tools">Canvas tools</a></li><li><a href="#orchestration-tools">Orchestration tools</a></li><li><a href="#phase-gate">Phase gate</a></li><li><a href="#knowledge-tool">Knowledge tool</a></li><li><a href="#fact-check-gate">Fact-check gate</a></li><li><a href="#the-write-path-end-to-end">The write path, end to end</a></li></ol></nav></aside><article class="art-body"><h1 id="engine-tool-reference">Engine tool reference</h1>
+<p>The engine exposes exactly <strong>29 tools</strong>, named <code>sd_*</code>. One definition set serves every surface: the <code>asd</code> CLI parses its flags from the same JSON schemas, the MCP server advertises the same schemas over <code>tools/list</code>, and the DeepSeek Harness suite registers the same builders. The CLI surface cannot drift from the tool definitions because it is generated from them.</p>
+<p>The tools group into twelve families: project, evidence, artifact, method, review, export, knowledge, templates/schema, canvas, orchestration, phase, and the fact-check gate. Every JSON excerpt below is real captured output or a schema-derived contract, trimmed with <code>[…]</code> where nodes or rows repeat.</p>
+<h2 id="conventions">Conventions</h2>
+<ul>
 <li><strong>Arguments.</strong> CLI flags map one-to-one onto tool arguments: <code>--flag value</code> or <code>--flag=value</code>. Array and object arguments take a JSON literal (<code>--nodes &#39;[…]&#39;</code>). Short names work too: <code>asd project-create</code> resolves to <code>sd_project_create</code> by stripping the prefix and normalizing <code>-</code> to <code>_</code>.</li>
 <li><strong>Required flags.</strong> A missing required argument fails before the tool runs: <code>asd sd_project_create: missing required flag &quot;--client&quot;</code>, exit 1.</li>
 <li><strong>Errors.</strong> Every failure prints <code>asd &lt;tool&gt;: &lt;message&gt;</code> plus <code>running `asd help` shows usage</code> to stderr and exits 1. Over MCP, the same failure is a <code>tools/call</code> result with <code>isError: true</code> and the same message as text content — not a protocol error.</li>
 <li><strong>Gate failures.</strong> <code>sd_factcheck</code> can complete successfully and still report <code>&quot;pass&quot;: false</code>; the CLI exits 1 on that payload too, so CI can gate on it. This is the one case where exit 1 does not mean the tool errored.</li>
+<li><strong>Review rows.</strong> A pass requires at least one evidence-cited proposal row; an empty <code>rows</code> array is invalid. A veto requires a defect row with a fix. This keeps review transcripts replayable.</li>
 <li><strong>Workspace.</strong> Projects live under <code>$ASD_WORKSPACE</code> when set, else <code>~/.asd/projects</code>. Files are the record of truth; every tool reads and writes that tree.</li>
 </ul>
-<h2 id="project-tools">Project tools</h2><h3 id="sd-project-list">sd_project_list</h3><p>Lists every project in the workspace. No arguments. Returns <code>{ &quot;projects&quot;: [...] }</code> — an empty array on a fresh workspace, exit 0.</p>
-<h3 id="sd-project-create">sd_project_create</h3><p>Creates a project directory holding <code>project.json</code> plus <code>evidence/</code>, <code>artifacts/</code>, <code>renders/</code>, and <code>sops/</code>.</p>
-<div class="tbl-wrap"><table><thead><tr><th>Argument</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>name</code></td><td>string, required</td><td>Project name, e.g. <code>&quot;Housing Repairs Redesign&quot;</code></td></tr><tr><td scope="row"><code>client</code></td><td>string, required</td><td>Client or organisation</td></tr><tr><td scope="row"><code>sector</code></td><td>string, required</td><td>Sector, e.g. <code>government</code>, <code>fintech</code>, <code>healthcare</code></td></tr><tr><td scope="row"><code>service</code></td><td>string, required</td><td>The service under design</td></tr><tr><td scope="row"><code>phase</code></td><td>enum, optional</td><td>Starting double-diamond phase: <code>discover</code>, <code>define</code>, <code>develop</code>, <code>deliver</code>; defaults to the configured value</td></tr></tbody></table></div><p>Returns <code>{ &quot;project&quot;: {…} }</code>. The assigned <code>projectId</code> is the slugified name plus an 8-hex-char suffix:</p>
+<h2 id="project-tools">Project tools</h2>
+<h3 id="sd-project-list">sd_project_list</h3>
+<p>Lists every project in the workspace. No arguments. Returns <code>{ &quot;projects&quot;: [...] }</code> — an empty array on a fresh workspace, exit 0.</p>
+<h3 id="sd-project-create">sd_project_create</h3>
+<p>Creates a project directory holding <code>project.json</code> plus <code>evidence/</code>, <code>artifacts/</code>, <code>renders/</code>, and <code>sops/</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>name</code></td>
+<td>string, required</td>
+<td>Project name, e.g. <code>&quot;Housing Repairs Redesign&quot;</code></td>
+</tr>
+<tr>
+<td><code>client</code></td>
+<td>string, required</td>
+<td>Client or organisation</td>
+</tr>
+<tr>
+<td><code>sector</code></td>
+<td>string, required</td>
+<td>Sector, e.g. <code>government</code>, <code>fintech</code>, <code>healthcare</code></td>
+</tr>
+<tr>
+<td><code>service</code></td>
+<td>string, required</td>
+<td>The service under design</td>
+</tr>
+<tr>
+<td><code>phase</code></td>
+<td>enum, optional</td>
+<td>Starting double-diamond phase: <code>discover</code>, <code>define</code>, <code>develop</code>, <code>deliver</code>; defaults to the configured value</td>
+</tr>
+</tbody></table>
+<p>Returns <code>{ &quot;project&quot;: {…} }</code>. The assigned <code>projectId</code> is the slugified name plus an 8-hex-char suffix:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;project&quot;: {
     &quot;projectId&quot;: &quot;probe-harbour-f0b87904&quot;,
@@ -52,11 +92,61 @@
     &quot;createdAt&quot;: &quot;2026-08-19T03:37:14.784Z&quot;,
     &quot;updatedAt&quot;: &quot;2026-08-19T03:37:14.784Z&quot;
   }
-}</code></pre></div><h3 id="sd-project-open">sd_project_open</h3><p>Opens one project and returns its metadata plus every artifact written so far: <code>{ &quot;project&quot;: {…}, &quot;artifacts&quot;: [...] }</code>.</p>
-<div class="tbl-wrap"><table><thead><tr><th>Argument</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>projectId</code></td><td>string, required</td><td>Project id, from <code>sd_project_list</code></td></tr></tbody></table></div><p>Failure mode: an unknown id errors with <code>project not found: &lt;id&gt;</code>, exit 1.</p>
-<h2 id="evidence-tools">Evidence tools</h2><p>Evidence is the register every artifact cites. There are exactly three kinds — <code>quote</code>, <code>telemetry</code>, <code>document</code> — and no others; <code>--kind observation</code> is rejected at argument validation:</p>
-<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>asd sd_evidence_add: invalid arguments: &quot;kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]</code></pre></div><h3 id="sd-evidence-add">sd_evidence_add</h3><p>Adds one piece of evidence to a project.</p>
-<div class="tbl-wrap"><table><thead><tr><th>Argument</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>projectId</code></td><td>string, required</td><td>Project id</td></tr><tr><td scope="row"><code>source</code></td><td>string, required</td><td>Where it came from, e.g. <code>&quot;interview-04&quot;</code>, <code>&quot;crm-export-2026-08&quot;</code></td></tr><tr><td scope="row"><code>kind</code></td><td>enum, required</td><td><code>quote</code>, <code>telemetry</code>, or <code>document</code></td></tr><tr><td scope="row"><code>body</code></td><td>string, required</td><td>The verbatim quote, figure, or extract</td></tr></tbody></table></div><p>Returns <code>{ &quot;evidence&quot;: {…} }</code>. The record is content-addressed — the <code>id</code> is the SHA-256 hex digest of <code>source</code>, <code>kind</code>, and <code>body</code> — so adding the same body twice from the same source returns the same record rather than a duplicate:</p>
+}
+</code></pre></div>
+<h3 id="sd-project-open">sd_project_open</h3>
+<p>Opens one project and returns its metadata plus every artifact written so far: <code>{ &quot;project&quot;: {…}, &quot;artifacts&quot;: [...] }</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>projectId</code></td>
+<td>string, required</td>
+<td>Project id, from <code>sd_project_list</code></td>
+</tr>
+</tbody></table>
+<p>Failure mode: an unknown id errors with <code>project not found: &lt;id&gt;</code>, exit 1.</p>
+<h2 id="evidence-tools">Evidence tools</h2>
+<p>Evidence is the register every artifact cites. There are exactly three kinds — <code>quote</code>, <code>telemetry</code>, <code>document</code> — and no others; <code>--kind observation</code> is rejected at argument validation:</p>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>asd sd_evidence_add: invalid arguments: &quot;kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]
+</code></pre></div>
+<h3 id="sd-evidence-add">sd_evidence_add</h3>
+<p>Adds one piece of evidence to a project.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>projectId</code></td>
+<td>string, required</td>
+<td>Project id</td>
+</tr>
+<tr>
+<td><code>source</code></td>
+<td>string, required</td>
+<td>Where it came from, e.g. <code>&quot;interview-04&quot;</code>, <code>&quot;crm-export-2026-08&quot;</code></td>
+</tr>
+<tr>
+<td><code>kind</code></td>
+<td>enum, required</td>
+<td><code>quote</code>, <code>telemetry</code>, or <code>document</code></td>
+</tr>
+<tr>
+<td><code>body</code></td>
+<td>string, required</td>
+<td>The verbatim quote, figure, or extract</td>
+</tr>
+</tbody></table>
+<p>Returns <code>{ &quot;evidence&quot;: {…} }</code>. The record is content-addressed — the <code>id</code> is the SHA-256 hex digest of <code>source</code>, <code>kind</code>, and <code>body</code> — so adding the same body twice from the same source returns the same record rather than a duplicate:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;evidence&quot;: {
     &quot;id&quot;: &quot;c0f1736916289286b470528c08711c2b39ec7a7e3e853b00a162590b1197a174&quot;,
@@ -66,16 +156,189 @@
     &quot;body&quot;: &quot;Told to wait 15 min for next bus; nobody held the tram.&quot;,
     &quot;capturedAt&quot;: &quot;2026-08-19T00:02:10.443Z&quot;
   }
-}</code></pre></div><h3 id="sd-evidence-query">sd_evidence_query</h3><p>Searches a project&#39;s evidence store. Returns <code>{ &quot;evidence&quot;: [...] }</code>.</p>
-<div class="tbl-wrap"><table><thead><tr><th>Argument</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>projectId</code></td><td>string, required</td><td>Project id</td></tr><tr><td scope="row"><code>search</code></td><td>string, optional</td><td>Case-insensitive substring matched against the body</td></tr><tr><td scope="row"><code>kind</code></td><td>enum, optional</td><td>Restrict to one of <code>quote</code>, <code>telemetry</code>, <code>document</code></td></tr></tbody></table></div><h2 id="artifact-tools">Artifact tools</h2><p>Artifacts are typed JSON documents: nodes with evidence references, validated against the producing method&#39;s acceptance rules. These two tools read them; writes go through the method family below.</p>
-<h3 id="sd-artifact-list">sd_artifact_list</h3><p>Lists a project&#39;s artifacts. Returns <code>{ &quot;artifacts&quot;: [...] }</code> with each artifact in full — nodes, evidence refs, status, and the attached check report when a write failed acceptance.</p>
-<div class="tbl-wrap"><table><thead><tr><th>Argument</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>projectId</code></td><td>string, required</td><td>Project id</td></tr><tr><td scope="row"><code>kind</code></td><td>string, optional</td><td>Artifact kind filter, e.g. <code>journey-map</code>, <code>service-blueprint</code></td></tr></tbody></table></div><h3 id="sd-artifact-get">sd_artifact_get</h3><p>Fetches one artifact in full: <code>{ &quot;artifact&quot;: {…} }</code>, including every node and its evidence refs, and the <code>review</code> block once a verdict is recorded.</p>
-<div class="tbl-wrap"><table><thead><tr><th>Argument</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>projectId</code></td><td>string, required</td><td>Project id</td></tr><tr><td scope="row"><code>artifactId</code></td><td>string, required</td><td>Artifact id, from <code>sd_artifact_list</code></td></tr></tbody></table></div><p>Failure mode: <code>artifact not found: &lt;id&gt;</code>, exit 1.</p>
-<h2 id="method-tools">Method tools</h2><p>A method is data, not code: a manifest with steps, inputs, acceptance rules, and a review gate. These three tools are the whole model-facing surface for executing one — list what exists, fetch the contract, write the result through a gate that can say no.</p>
-<h3 id="sd-method-list">sd_method_list</h3><p>Lists methods from the registry with the book and article sources each derives from. Returns <code>{ &quot;methods&quot;: [...] }</code> with <code>id</code>, <code>name</code>, <code>phase</code>, <code>produces</code>, and <code>sources</code> per method.</p>
-<div class="tbl-wrap"><table><thead><tr><th>Argument</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>phase</code></td><td>enum, optional</td><td><code>research</code>, <code>synthesis</code>, <code>ideation</code>, <code>prototyping</code>, <code>delivery</code>, <code>measurement</code></td></tr><tr><td scope="row"><code>producesKind</code></td><td>string, optional</td><td>Restrict to methods producing this artifact kind</td></tr></tbody></table></div><p>Failure mode: an out-of-enum phase errors with <code>&quot;&lt;phase&gt;&quot; is not a method phase</code>.</p>
-<h3 id="sd-method-run">sd_method_run</h3><p>Fetches the execution contract for a method — it does not &quot;run&quot; work for you; it returns what the work must satisfy. Call it before starting so the acceptance rules and input minimums are known up front.</p>
-<div class="tbl-wrap"><table><thead><tr><th>Argument</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>methodId</code></td><td>string, required</td><td>Method id, from <code>sd_method_list</code></td></tr><tr><td scope="row"><code>projectId</code></td><td>string, required</td><td>Project id</td></tr></tbody></table></div><p>Returns the manifest, its steps (each with a role, and <code>gate: true</code> on gate steps), the acceptance rules, the output kind, and how much evidence the project currently holds:</p>
+}
+</code></pre></div>
+<h3 id="sd-evidence-import">sd_evidence_import</h3>
+<p>Imports a UTF-8 file, or every supported file below a directory, from inside
+the configured ASD workspace. It never fetches a URL. Files are visited in a
+deterministic relative-path order and every imported record keeps an <code>origin</code>
+object containing its source path, relative path, format, byte size, record
+kind, and ordinal.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>projectId</code></td>
+<td>string, required</td>
+<td>Existing project id</td>
+</tr>
+<tr>
+<td><code>path</code></td>
+<td>string, required</td>
+<td>Workspace-local regular file or directory; URL schemes, paths outside the workspace, and symlink roots/entries are rejected</td>
+</tr>
+<tr>
+<td><code>source</code></td>
+<td>string, required</td>
+<td>Non-empty human provenance label copied to every imported record</td>
+</tr>
+<tr>
+<td><code>encoding</code></td>
+<td>enum, optional</td>
+<td><code>utf8</code> or <code>utf-8</code>; all other encodings fail closed</td>
+</tr>
+<tr>
+<td><code>maxBytes</code></td>
+<td>positive safe integer, optional</td>
+<td>Per-file limit; defaults to 5 MiB</td>
+</tr>
+<tr>
+<td><code>onError</code></td>
+<td>enum, optional</td>
+<td><code>fail</code> (default) stops on the first invalid file; <code>skip</code> retains successful imports and reports each rejected path</td>
+</tr>
+</tbody></table>
+<p>Supported transcript extensions are <code>.txt</code>, <code>.md</code>, <code>.transcript</code>, <code>.vtt</code>, and
+<code>.srt</code>; non-empty lines become <code>quote</code> records. CSV records are retained as
+verbatim rows, including quoted newlines, and become <code>quote</code> records. A JSON
+array contributes one canonical JSON value per item (a non-array contributes
+one value); JSON imports become <code>document</code> records. Unsupported extensions,
+malformed UTF-8/CSV/JSON, oversize files, symlinks, network schemes, and paths
+outside <code>ASD_WORKSPACE</code> are errors.</p>
+<p>The result is:</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+  &quot;imported&quot;: [{ &quot;id&quot;: &quot;…&quot;, &quot;kind&quot;: &quot;quote&quot;, &quot;origin&quot;: { &quot;format&quot;: &quot;csv&quot;, &quot;record&quot;: &quot;row&quot; } }],
+  &quot;skipped&quot;: [{ &quot;path&quot;: &quot;…&quot;, &quot;error&quot;: &quot;unsupported evidence file type&quot; }],
+  &quot;files&quot;: 1,
+  &quot;bytes&quot;: 842
+}
+</code></pre></div>
+<p><code>files</code> and <code>bytes</code> count successfully parsed files only. With <code>onError=skip</code>,
+a missing/invalid root returns an empty import plus a <code>skipped</code> row; it does not
+turn the failure into evidence. Re-import is content-addressed using provenance,
+so the same source file and records remain idempotent.</p>
+<h3 id="sd-evidence-query">sd_evidence_query</h3>
+<p>Searches a project&#39;s evidence store. Returns <code>{ &quot;evidence&quot;: [...] }</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>projectId</code></td>
+<td>string, required</td>
+<td>Project id</td>
+</tr>
+<tr>
+<td><code>search</code></td>
+<td>string, optional</td>
+<td>Case-insensitive substring matched against the body</td>
+</tr>
+<tr>
+<td><code>kind</code></td>
+<td>enum, optional</td>
+<td>Restrict to one of <code>quote</code>, <code>telemetry</code>, <code>document</code></td>
+</tr>
+</tbody></table>
+<h2 id="artifact-tools">Artifact tools</h2>
+<p>Artifacts are typed JSON documents: nodes with evidence references, validated against the producing method&#39;s acceptance rules. These two tools read them; writes go through the method family below.</p>
+<h3 id="sd-artifact-list">sd_artifact_list</h3>
+<p>Lists a project&#39;s artifacts. Returns <code>{ &quot;artifacts&quot;: [...] }</code> with each artifact in full — nodes, evidence refs, status, and the attached check report when a write failed acceptance.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>projectId</code></td>
+<td>string, required</td>
+<td>Project id</td>
+</tr>
+<tr>
+<td><code>kind</code></td>
+<td>string, optional</td>
+<td>Artifact kind filter, e.g. <code>journey-map</code>, <code>service-blueprint</code></td>
+</tr>
+</tbody></table>
+<h3 id="sd-artifact-get">sd_artifact_get</h3>
+<p>Fetches one artifact in full: <code>{ &quot;artifact&quot;: {…} }</code>, including every node and its evidence refs, and the <code>review</code> block once a verdict is recorded.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>projectId</code></td>
+<td>string, required</td>
+<td>Project id</td>
+</tr>
+<tr>
+<td><code>artifactId</code></td>
+<td>string, required</td>
+<td>Artifact id, from <code>sd_artifact_list</code></td>
+</tr>
+</tbody></table>
+<p>Failure mode: <code>artifact not found: &lt;id&gt;</code>, exit 1.</p>
+<h2 id="method-tools">Method tools</h2>
+<p>A method is data, not code: a manifest with steps, inputs, acceptance rules, and a review gate. These three tools are the whole model-facing surface for executing one — list what exists, fetch the contract, write the result through a gate that can say no.</p>
+<h3 id="sd-method-list">sd_method_list</h3>
+<p>Lists methods from the registry with the book and article sources each derives from. Returns <code>{ &quot;methods&quot;: [...] }</code> with <code>id</code>, <code>name</code>, <code>phase</code>, <code>produces</code>, and <code>sources</code> per method.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>phase</code></td>
+<td>enum, optional</td>
+<td><code>research</code>, <code>synthesis</code>, <code>ideation</code>, <code>prototyping</code>, <code>delivery</code>, <code>measurement</code></td>
+</tr>
+<tr>
+<td><code>producesKind</code></td>
+<td>string, optional</td>
+<td>Restrict to methods producing this artifact kind</td>
+</tr>
+</tbody></table>
+<p>Failure mode: an out-of-enum phase errors with <code>&quot;&lt;phase&gt;&quot; is not a method phase</code>.</p>
+<h3 id="sd-method-run">sd_method_run</h3>
+<p>Fetches the execution contract for a method — it does not &quot;run&quot; work for you; it returns what the work must satisfy. Call it before starting so the acceptance rules and input minimums are known up front.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>methodId</code></td>
+<td>string, required</td>
+<td>Method id, from <code>sd_method_list</code></td>
+</tr>
+<tr>
+<td><code>projectId</code></td>
+<td>string, required</td>
+<td>Project id</td>
+</tr>
+</tbody></table>
+<p>Returns the manifest, its steps (each with a role, and <code>gate: true</code> on gate steps), the acceptance rules, the output kind, and how much evidence the project currently holds:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;method&quot;: {
     &quot;id&quot;: &quot;good-services-audit&quot;,
@@ -94,9 +357,46 @@
   ],
   &quot;outputKind&quot;: &quot;insight-set&quot;,
   &quot;availableEvidence&quot;: 3
-}</code></pre></div><p>Failure modes, each exit 1: <code>unknown method: &lt;id&gt;</code>; <code>project not found: &lt;id&gt;</code>; and an input minimum that is not met — <code>method &quot;journey-from-transcripts&quot; requires at least 3 evidence records; project has 0. Capture evidence with sd_evidence_add first.</code></p>
-<h3 id="sd-artifact-write">sd_artifact_write</h3><p>Writes the artifact a method produced. This is the gated write path: the candidate is judged against the method&#39;s acceptance rules before anything is persisted, and the outcome is always persisted honestly.</p>
-<div class="tbl-wrap"><table><thead><tr><th>Argument</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>projectId</code></td><td>string, required</td><td>Project id</td></tr><tr><td scope="row"><code>methodId</code></td><td>string, required</td><td>The method that produced this artifact</td></tr><tr><td scope="row"><code>title</code></td><td>string, required</td><td>Human title, e.g. <code>&quot;Disruption Recovery Journey&quot;</code></td></tr><tr><td scope="row"><code>nodes</code></td><td>array, required</td><td>Each node needs <code>id</code>, <code>label</code>, <code>evidence: [{ &quot;evidenceId&quot;: … }]</code>, and a <code>fields</code> object carrying the kind-specific columns</td></tr><tr><td scope="row"><code>artifactId</code></td><td>string, optional</td><td>Supply to update an existing artifact in place</td></tr></tbody></table></div><p>Returns <code>{ &quot;accepted&quot;, &quot;status&quot;, &quot;artifact&quot;, &quot;failures&quot; }</code>. Three outcomes:</p>
+}
+</code></pre></div>
+<p>Failure modes, each exit 1: <code>unknown method: &lt;id&gt;</code>; <code>project not found: &lt;id&gt;</code>; and an input minimum that is not met — <code>method &quot;journey-from-transcripts&quot; requires at least 3 evidence records; project has 0. Capture evidence with sd_evidence_add first.</code></p>
+<h3 id="sd-artifact-write">sd_artifact_write</h3>
+<p>Writes the artifact a method produced. This is the gated write path: the candidate is judged against the method&#39;s acceptance rules before anything is persisted, and the outcome is always persisted honestly.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>projectId</code></td>
+<td>string, required</td>
+<td>Project id</td>
+</tr>
+<tr>
+<td><code>methodId</code></td>
+<td>string, required</td>
+<td>The method that produced this artifact</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>string, required</td>
+<td>Human title, e.g. <code>&quot;Disruption Recovery Journey&quot;</code></td>
+</tr>
+<tr>
+<td><code>nodes</code></td>
+<td>array, required</td>
+<td>Each node needs <code>id</code>, <code>label</code>, <code>evidence: [{ &quot;evidenceId&quot;: … }]</code>, and a <code>fields</code> object carrying the kind-specific columns</td>
+</tr>
+<tr>
+<td><code>artifactId</code></td>
+<td>string, optional</td>
+<td>Supply to update an existing artifact in place</td>
+</tr>
+</tbody></table>
+<p>Returns <code>{ &quot;accepted&quot;, &quot;status&quot;, &quot;artifact&quot;, &quot;failures&quot; }</code>. Three outcomes:</p>
 <ol>
 <li><strong>Accepted, still draft.</strong> All acceptance rules pass, so <code>accepted: true</code> — but every method manifest declares <code>reviewGate: critic</code>, so a fresh write always lands as <code>&quot;status&quot;: &quot;draft&quot;</code> until <code>sd_review</code> records a pass. <code>failures</code> is empty.</li>
 <li><strong>Failed, persisted as draft.</strong> A rule failure persists the artifact as a draft with the check report attached (<code>artifact.check.failures</code>), so it can be repaired and rewritten. The response is <code>accepted: false</code> with the same failures at top level — it is not an error and exits 0:</li>
@@ -119,12 +419,45 @@
     &quot;[…]&quot;: &quot;nodes, sources, methodId, timestamps trimmed&quot;
   },
   &quot;failures&quot;: [ &quot;[…]&quot; ]
-}</code></pre></div><ol start="3">
+}
+</code></pre></div>
+<ol start="3">
 <li><strong>Never persisted.</strong> A dangling evidence ref — a node citing an <code>evidenceId</code> that does not exist in the project register — throws from the store and nothing is written. Malformed nodes also throw at the boundary: <code>nodes[0]: &quot;id&quot; must be a non-empty string</code>, <code>nodes[0].evidence[0]: &quot;evidenceId&quot; must be a string</code>, and similar.</li>
 </ol>
-<h2 id="review-tools">Review tools</h2><p>The review family is the Critic&#39;s seat on the write path. Verdicts are themselves artifacts, so the review loop replays from the store like any other work product.</p>
-<h3 id="sd-review">sd_review</h3><p>Records the review-gate verdict on an artifact.</p>
-<div class="tbl-wrap"><table><thead><tr><th>Argument</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>projectId</code></td><td>string, required</td><td>Project id</td></tr><tr><td scope="row"><code>artifactId</code></td><td>string, required</td><td>Artifact under review, from <code>sd_artifact_list</code></td></tr><tr><td scope="row"><code>verdict</code></td><td>enum, required</td><td><code>pass</code> makes the artifact final-eligible; <code>veto</code> demotes it to draft</td></tr><tr><td scope="row"><code>rows</code></td><td>array, required</td><td>Defect/proposal rows — see the schema below</td></tr></tbody></table></div><p>Each row is <code>{ &quot;rowKind&quot;, &quot;severity&quot;, &quot;message&quot;, &quot;rule&quot;?, &quot;fix&quot;?, &quot;evidenceId&quot;? }</code> where <code>rowKind</code> is <code>defect</code> or <code>proposal</code> and <code>severity</code> is one of <code>critical</code>, <code>high</code>, <code>medium</code>, <code>low</code>. The enforced rules, each an exit-1 error when violated:</p>
+<h2 id="review-tools">Review tools</h2>
+<p>The review family is the Critic&#39;s seat on the write path. Verdicts are themselves artifacts, so the review loop replays from the store like any other work product.</p>
+<h3 id="sd-review">sd_review</h3>
+<p>Records the review-gate verdict on an artifact.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>projectId</code></td>
+<td>string, required</td>
+<td>Project id</td>
+</tr>
+<tr>
+<td><code>artifactId</code></td>
+<td>string, required</td>
+<td>Artifact under review, from <code>sd_artifact_list</code></td>
+</tr>
+<tr>
+<td><code>verdict</code></td>
+<td>enum, required</td>
+<td><code>pass</code> makes the artifact final-eligible; <code>veto</code> demotes it to draft</td>
+</tr>
+<tr>
+<td><code>rows</code></td>
+<td>array, required</td>
+<td>Defect/proposal rows — see the schema below</td>
+</tr>
+</tbody></table>
+<p>Each row is <code>{ &quot;rowKind&quot;, &quot;severity&quot;, &quot;message&quot;, &quot;rule&quot;?, &quot;fix&quot;?, &quot;evidenceId&quot;? }</code> where <code>rowKind</code> is <code>defect</code> or <code>proposal</code> and <code>severity</code> is one of <code>critical</code>, <code>high</code>, <code>medium</code>, <code>low</code>. The enforced rules, each an exit-1 error when violated:</p>
 <ul>
 <li>A defect row requires a non-empty <code>fix</code> — &quot;a veto without a fix suggestion is incomplete&quot;.</li>
 <li>A <code>veto</code> verdict requires at least one defect row: <code>a veto requires at least one defect row — what is wrong, and what fixes it</code>.</li>
@@ -146,8 +479,30 @@
   },
   &quot;logArtifactId&quot;: &quot;25500d7e4a634befb052cfa956bd4f2f&quot;,
   &quot;rowsWritten&quot;: 2
-}</code></pre></div><h3 id="sd-review-list">sd_review_list</h3><p>The review board: every artifact&#39;s gate state in one call, with acceptance re-run against the live manifest rather than trusted from the write-time check.</p>
-<div class="tbl-wrap"><table><thead><tr><th>Argument</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>projectId</code></td><td>string, required</td><td>Project id</td></tr><tr><td scope="row"><code>status</code></td><td>enum, optional</td><td><code>draft</code> or <code>final</code></td></tr></tbody></table></div><p>Returns <code>{ &quot;artifacts&quot;: [...] }</code> where each row carries <code>artifactId</code>, <code>kind</code>, <code>title</code>, <code>status</code>, <code>methodId</code>, <code>reviewGate</code>, <code>verdict</code>, <code>logArtifactId</code>, <code>failures</code>, and <code>reviewOf</code> when the row is a review log:</p>
+}
+</code></pre></div>
+<h3 id="sd-review-list">sd_review_list</h3>
+<p>The review board: every artifact&#39;s gate state in one call, with acceptance re-run against the live manifest rather than trusted from the write-time check.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>projectId</code></td>
+<td>string, required</td>
+<td>Project id</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>enum, optional</td>
+<td><code>draft</code> or <code>final</code></td>
+</tr>
+</tbody></table>
+<p>Returns <code>{ &quot;artifacts&quot;: [...] }</code> where each row carries <code>artifactId</code>, <code>kind</code>, <code>title</code>, <code>status</code>, <code>methodId</code>, <code>reviewGate</code>, <code>verdict</code>, <code>logArtifactId</code>, <code>failures</code>, and <code>reviewOf</code> when the row is a review log:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;artifacts&quot;: [
     {
@@ -174,19 +529,155 @@
       &quot;reviewOf&quot;: &quot;7f9fefdc44f5469195106e739112f9ae&quot;
     }
   ]
-}</code></pre></div><p>Failure mode: <code>project not found: &lt;id&gt;</code>.</p>
-<h2 id="export-tools">Export tools</h2><p>Exports are derived, client-shareable output written to the project&#39;s <code>renders/</code> directory. Both tools are deterministic: the same project state exports the same bytes, because the cover timestamp is caller-supplied or derived from the stored data, never read from the clock.</p>
-<h3 id="sd-export-report">sd_export_report</h3><p>Exports a project report as a self-contained HTML document.</p>
-<div class="tbl-wrap"><table><thead><tr><th>Argument</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>projectId</code></td><td>string, required</td><td>Project id</td></tr><tr><td scope="row"><code>kind</code></td><td>enum, required</td><td><code>engagement</code>, <code>executive-summary</code>, <code>research-findings</code>, <code>artifact-dossier</code>, <code>traceability-matrix</code>, <code>method-log</code></td></tr><tr><td scope="row"><code>generatedAt</code></td><td>string, optional</td><td>ISO timestamp for the report cover; defaults to the project&#39;s latest recorded update</td></tr></tbody></table></div><p>Returns <code>{ &quot;path&quot;, &quot;kind&quot;, &quot;generatedAt&quot;, &quot;bytes&quot; }</code>:</p>
+}
+</code></pre></div>
+<p>Failure mode: <code>project not found: &lt;id&gt;</code>.</p>
+<h2 id="export-tools">Export tools</h2>
+<p>Exports are derived, client-shareable output written to the project&#39;s <code>renders/</code> directory. Both tools are deterministic: the same project state exports the same bytes, because the cover timestamp is caller-supplied or derived from the stored data, never read from the clock.</p>
+<h3 id="sd-export-report">sd_export_report</h3>
+<p>Exports a project report as a self-contained HTML document.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>projectId</code></td>
+<td>string, required</td>
+<td>Project id</td>
+</tr>
+<tr>
+<td><code>kind</code></td>
+<td>enum, required</td>
+<td><code>engagement</code>, <code>executive-summary</code>, <code>research-findings</code>, <code>artifact-dossier</code>, <code>traceability-matrix</code>, <code>method-log</code></td>
+</tr>
+<tr>
+<td><code>generatedAt</code></td>
+<td>string, optional</td>
+<td>ISO timestamp for the report cover; defaults to the project&#39;s latest recorded update</td>
+</tr>
+</tbody></table>
+<p>Returns <code>{ &quot;path&quot;, &quot;kind&quot;, &quot;generatedAt&quot;, &quot;bytes&quot; }</code>:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;path&quot;: &quot;/var/folders/[…]/ws/capture-meridian-201d0a1d/renders/report.executive-summary.html&quot;,
   &quot;kind&quot;: &quot;executive-summary&quot;,
   &quot;generatedAt&quot;: &quot;2026-08-19T00:02:11.208Z&quot;,
   &quot;bytes&quot;: 2761
-}</code></pre></div><h3 id="sd-export-artifact">sd_export_artifact</h3><p>Renders one artifact to a self-contained SVG diagram. The renderer is deterministic and kind-dispatched; the model never hand-writes diagram markup.</p>
-<div class="tbl-wrap"><table><thead><tr><th>Argument</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>projectId</code></td><td>string, required</td><td>Project id</td></tr><tr><td scope="row"><code>artifactId</code></td><td>string, required</td><td>Artifact id, from <code>sd_artifact_list</code></td></tr><tr><td scope="row"><code>width</code></td><td>number, optional</td><td>Diagram width in pixels; defaults to the renderer&#39;s standard width</td></tr></tbody></table></div><p>Returns <code>{ &quot;path&quot;, &quot;kind&quot;, &quot;title&quot;, &quot;bytes&quot; }</code> with the file written to <code>renders/&lt;kind&gt;.&lt;id-prefix&gt;.svg</code>. Failure mode: <code>artifact not found: &lt;id&gt;</code>.</p>
-<h2 id="knowledge-tool">Knowledge tool</h2><h3 id="sd-knowledge">sd_knowledge</h3><p>Queries the knowledge base — the method catalogue and the artifact-kind registry — in one call. With no filters it returns the full catalogue.</p>
-<div class="tbl-wrap"><table><thead><tr><th>Argument</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>query</code></td><td>string, optional</td><td>Case-insensitive substring matched against ids and names</td></tr><tr><td scope="row"><code>phase</code></td><td>enum, optional</td><td>Restrict methods to one lifecycle phase (artifact kinds are phase-free)</td></tr><tr><td scope="row"><code>source</code></td><td>string, optional</td><td>Provenance filter: a book id (<code>09-mapping-experiences</code>), book/chapter (<code>18/05</code>), or article number (<code>11</code>)</td></tr><tr><td scope="row"><code>type</code></td><td>enum, optional</td><td><code>methods</code> or <code>kinds</code>; default returns both</td></tr></tbody></table></div><p>Returns <code>{ &quot;methods&quot;: [...], &quot;kinds&quot;: [...] }</code> — methods with <code>id</code>, <code>name</code>, <code>phase</code>, <code>produces</code>, <code>reviewGate</code>, <code>sources</code>; kinds with <code>kind</code>, <code>title</code>, <code>nodeLabel</code>, <code>sources</code>:</p>
+}
+</code></pre></div>
+<h3 id="sd-export-artifact">sd_export_artifact</h3>
+<p>Renders one artifact to a self-contained SVG diagram. The renderer is deterministic and kind-dispatched; the model never hand-writes diagram markup.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>projectId</code></td>
+<td>string, required</td>
+<td>Project id</td>
+</tr>
+<tr>
+<td><code>artifactId</code></td>
+<td>string, required</td>
+<td>Artifact id, from <code>sd_artifact_list</code></td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td>number, optional</td>
+<td>Diagram width in pixels; defaults to the renderer&#39;s standard width</td>
+</tr>
+</tbody></table>
+<p>Returns <code>{ &quot;path&quot;, &quot;kind&quot;, &quot;title&quot;, &quot;bytes&quot; }</code> with the file written to <code>renders/&lt;kind&gt;.&lt;id-prefix&gt;.svg</code>. Failure mode: <code>artifact not found: &lt;id&gt;</code>.</p>
+<h2 id="metadata-tools">Metadata tools</h2>
+<h3 id="sd-template-list-and-sd-template-get">sd_template_list and sd_template_get</h3>
+<p>The template registry exposes the six authored human templates and their
+provenance. <code>sd_template_list</code> accepts an optional kind filter. <code>sd_template_get</code>
+accepts a template id and returns the metadata and body. Template presence does
+not imply a runtime typed schema for every catalog row; the current per-kind
+runtime schema boundary remains Phase 2.</p>
+<h3 id="sd-schema-get">sd_schema_get</h3>
+<p>Returns a machine-checked artifact-kind metadata record for a registered kind.
+Use it before composing nodes when a kind is supported. The current registry
+contains 32 registered artifact-kind contracts across 38 catalog vocabulary rows.</p>
+<h3 id="sd-practice-get">sd_practice_get</h3>
+<p>Returns the canonical practice contract: lifecycle phases, roles, methods,
+registry-only kinds, authored templates, and capability/pending status. Pending
+vocabulary rows are non-executable and must not be presented as available
+runtime capabilities.</p>
+<h2 id="canvas-tools">Canvas tools</h2>
+<h3 id="sd-canvas-add">sd_canvas_add</h3>
+<p>Adds a collaboration canvas entry to a project. The record may point at a
+project artifact or a logical external reference; an external link is not
+copied into the artifact store. Use this for an index or review board, not as a
+replacement for <code>sd_artifact_write</code>.</p>
+<h3 id="sd-canvas-list">sd_canvas_list</h3>
+<p>Lists a project&#39;s canvas entries, with their provider, label, target, and
+status. A list entry is a project record and can be replayed after reload.</p>
+<h3 id="sd-canvas-remove">sd_canvas_remove</h3>
+<p>Removes a canvas entry by its link id. It does not delete the referenced
+artifact. Destructive cleanup should be explicitly reviewed by the human owner.</p>
+<h2 id="orchestration-tools">Orchestration tools</h2>
+<h3 id="sd-orchestration-plan">sd_orchestration_plan</h3>
+<p>Persists a host-independent plan with an idempotency key, role-assigned steps,
+instructions, and retry limits. It records intended work; it does not spawn an
+agent.</p>
+<h3 id="sd-orchestration-status">sd_orchestration_status</h3>
+<p>Reads plans, dispatch attempts, retries, and handoffs for a project. It is the
+replay view for a collaboration record.</p>
+<h3 id="sd-orchestration-dispatch">sd_orchestration_dispatch</h3>
+<p>Persists a dispatch attempt. <code>capability</code> is explicit: <code>record-only</code> is the
+generic supported path; <code>host-agent-spawn</code> is unsupported unless the host
+adapter supplies a real dispatcher. Unsupported spawn returns an explicit
+structured error rather than a simulated success.</p>
+<h3 id="sd-orchestration-handoff">sd_orchestration_handoff</h3>
+<p>Persists a role-to-role condition and optional typed artifact pointer. If
+<code>artifactKind</code> is supplied, <code>artifactId</code> is required and must resolve to that
+kind in the same project. A missing or mismatched pointer fails closed.</p>
+<h2 id="phase-gate">Phase gate</h2>
+<h3 id="sd-phase-advance">sd_phase_advance</h3>
+<p>Records a human-authorized phase transition with a receipt and rationale. It
+does not infer approval from a passing artifact or automatically dispatch the
+next role. A host can prepare the gate report; the human owns the decision.</p>
+<h2 id="knowledge-tool">Knowledge tool</h2>
+<h3 id="sd-knowledge">sd_knowledge</h3>
+<p>Queries the knowledge base — the method catalogue and the artifact-kind registry — in one call. With no filters it returns the full catalogue.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>query</code></td>
+<td>string, optional</td>
+<td>Case-insensitive substring matched against ids and names</td>
+</tr>
+<tr>
+<td><code>phase</code></td>
+<td>enum, optional</td>
+<td>Restrict methods to one lifecycle phase (artifact kinds are phase-free)</td>
+</tr>
+<tr>
+<td><code>source</code></td>
+<td>string, optional</td>
+<td>Provenance filter: a book id (<code>09-mapping-experiences</code>), book/chapter (<code>18/05</code>), or article number (<code>11</code>)</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>enum, optional</td>
+<td><code>methods</code> or <code>kinds</code>; default returns both</td>
+</tr>
+</tbody></table>
+<p>Returns <code>{ &quot;methods&quot;: [...], &quot;kinds&quot;: [...] }</code> — methods with <code>id</code>, <code>name</code>, <code>phase</code>, <code>produces</code>, <code>reviewGate</code>, <code>sources</code>; kinds with <code>kind</code>, <code>title</code>, <code>nodeLabel</code>, <code>sources</code>:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;methods&quot;: [
     {
@@ -207,8 +698,26 @@
       &quot;sources&quot;: [ { &quot;book&quot;: &quot;09-mapping-experiences&quot;, &quot;chapter&quot;: &quot;05&quot; }, &quot;[…]&quot; ]
     }
   ]
-}</code></pre></div><h2 id="fact-check-gate">Fact-check gate</h2><h3 id="sd-factcheck">sd_factcheck</h3><p>Re-runs the deterministic fact-check over every artifact in a project. This is the replay path of the gated write path: nothing here trusts the state recorded at write time.</p>
-<div class="tbl-wrap"><table><thead><tr><th>Argument</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>projectId</code></td><td>string, required</td><td>Project id</td></tr></tbody></table></div><p>Three checks per artifact:</p>
+}
+</code></pre></div>
+<h2 id="fact-check-gate">Fact-check gate</h2>
+<h3 id="sd-factcheck">sd_factcheck</h3>
+<p>Re-runs the deterministic fact-check over every artifact in a project. This is the replay path of the gated write path: nothing here trusts the state recorded at write time.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>projectId</code></td>
+<td>string, required</td>
+<td>Project id</td>
+</tr>
+</tbody></table>
+<p>Three checks per artifact:</p>
 <ol>
 <li><strong>Integrity</strong> — every evidence ref each node cites must resolve in the project register (store-enforced on write, re-asserted here; dangling refs are listed as <code>node -&gt; evidenceId</code>).</li>
 <li><strong>Acceptance</strong> — the producing method&#39;s machine-checkable rules, re-run against the live registry, so a tightened manifest re-gates previously written artifacts.</li>
@@ -234,9 +743,15 @@
       &quot;methodResolution&quot;: &quot;recorded&quot;
     }
   ]
-}</code></pre></div><p>Exit code is 1 whenever <code>pass</code> is false — a green-looking report with a zero exit code cannot fail a build. On a clean project the same call prints <code>&quot;pass&quot;: true</code> and exits 0.</p>
-<h2 id="the-write-path-end-to-end">The write path, end to end</h2><p>The sixteen tools compose into one loop: capture evidence, pull the method contract, write through the acceptance gate, face the review gate, replay the fact-check.</p>
-<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1018 129" role="img" aria-hidden="true"><defs><marker id="arr-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 148,37.25 174,37.25 199.99999999999997,37.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 322.79999999999995,37.25 348.8,37.25 374.79999999999995,37.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 481.72512315270933,52.25 554,88 580,80.79778393351799" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="560" y="83" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">accepted, draft</text><path d="M 420.3459459459459,52.25 374.79999999999995,74.25 374.79999999999995,79.75 451.4,85.25 528,79.75 528,74.25 482.45405405405404,52.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="457.4" y="80.25" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">failures, draft</text><path d="M 672.4000000000001,68 698.4,68 724.4,68" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="704.4" y="63" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">pass</text><path d="M 580,54.24238227146815 554,46.5 528,44.15594541910331" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="560" y="41.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">veto + defect rows</text><path d="M 794.4,55.66393442622951 820.4,46.5 869.1999999999999,36.6390977443609" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 520.5685393258427,22.25 554,15 626.2,15 698.4,15 759.4,15 820.4,15 869.1999999999999,19.586466165413533" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 790.4169491525423,83 820.4,97.5 846.4,97.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><rect x="10" y="22.25" width="138" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="79" y="41.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_evidence_add</text><rect x="199.99999999999997" y="22.25" width="122.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="261.4" y="41.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_method_run</text><rect x="374.79999999999995" y="22.25" width="153.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="451.4" y="41.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_artifact_write</text><rect x="580" y="53" width="92.39999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="626.2" y="72" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_review</text><rect x="724.4" y="53" width="70" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="759.4" y="72" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">final</text><rect x="869.1999999999999" y="10" width="115.19999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="926.8" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_factcheck</text><rect x="846.4" y="76" width="160.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="926.8" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_export_report /</text><text x="926.8" y="108" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_export_artifact</text></svg><figcaption><span class="fignum">Figure 1</span><span class="figcap">The write path, end to end</span></figcaption></figure>
+}
+</code></pre></div>
+<p>Exit code is 1 whenever <code>pass</code> is false — a green-looking report with a zero exit code cannot fail a build. On a clean project the same call prints <code>&quot;pass&quot;: true</code> and exits 0.</p>
+<h2 id="the-write-path-end-to-end">The write path, end to end</h2>
+<p>The 29 tools compose into one loop: capture evidence, pull the method contract,
+write through the acceptance gate, place artifacts on a canvas when useful,
+record role handoffs, face the review gate, replay the fact-check, and stop at a
+human phase gate.</p>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1238 242" role="img" aria-hidden="true"><defs><marker id="arr-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 148,101 174,101 199.99999999999997,101" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 301.1272727272727,116 348.8,134 390,134" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 543.2,134 584.4,134 667.3999999999999,151.9876160990712" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="590.4" y="129" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">accepted, draft</text><path d="M 435.54594594594596,149 390,171 390,176.5 466.6,182 543.2,176.5 543.2,171 497.6540540540541,149" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="472.6" y="177" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">failures, draft</text><path d="M 759.8,162 842.8,162 906.5999999999999,162" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="848.8" y="157" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">pass</text><path d="M 667.3999999999999,163.51973684210526 584.4,166.25 521.3906976744186,149" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="590.4" y="161.25" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">veto + defect rows</text><path d="M 951.3021276595744,147 1040.3999999999999,9.25 1089.2,16.473684210526322" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 483.46873508353224,119 584.4,29.25 713.5999999999999,29.25 842.8,29.25 941.5999999999999,29.25 1040.3999999999999,29.25 1089.2,27.300751879699245" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 976.5999999999999,155.6234817813765 1040.3999999999999,144 1066.3999999999999,144" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 968.7926605504587,177 1040.3999999999999,216.5 1085.3999999999999,216.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 301.1272727272727,86 348.8,68 374.8,68" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 558.4,71.31196943972836 584.4,72.25 610.3999999999999,72.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 816.8,72.25 842.8,72.25 868.8,72.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><rect x="10" y="86" width="138" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="79" y="105" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_evidence_add</text><rect x="199.99999999999997" y="86" width="122.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="261.4" y="105" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_method_run</text><rect x="390" y="119" width="153.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="466.6" y="138" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_artifact_write</text><rect x="667.3999999999999" y="147" width="92.39999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="713.5999999999999" y="166" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_review</text><rect x="906.5999999999999" y="147" width="70" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="941.5999999999999" y="166" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">final</text><rect x="1089.2" y="10" width="115.19999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1146.8" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_factcheck</text><rect x="1066.3999999999999" y="122.5" width="160.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1146.8" y="141.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_export_report /</text><text x="1146.8" y="154.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_export_artifact</text><rect x="1085.3999999999999" y="201.5" width="122.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1146.8" y="220.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_canvas_add</text><rect x="374.8" y="53" width="183.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="466.6" y="72" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_orchestration_plan</text><rect x="610.3999999999999" y="57.25" width="206.39999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="713.5999999999999" y="76.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_orchestration_handoff</text><rect x="868.8" y="57.25" width="145.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="941.5999999999999" y="76.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_phase_advance</text></svg><figcaption><span class="fignum">Figure 1</span><span class="figcap">The write path, end to end</span></figcaption></figure>
 <p>For the transports these tools ride on, see the <a href="./cli.html">CLI</a> and <a href="./mcp.html">MCP server</a> pages; for the artifact kinds they produce, see the <a href="./reference-artifacts.html">artifact kind catalog</a>.</p>
 </article></div>
   <button class="backtop" id="backtop" type="button">Back to top</button>
@@ -246,4 +761,5 @@
   <span><a href="../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
 </footer>
 <script src="../assets/site.js"></script>
+
 </body></html>

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="The reference pack: ten role agents, 74 method skills, the /asd command, and the vendored MCP engine, installed as a real Claude Code plugin.">
+<meta name="description" content="The reference coding-agent pack: ten role agents, 74 method skills, the /asd command, and a self-contained MCP engine.">
 <title>The Claude Code plugin — The Agentic Service Designer</title>
 <link rel="stylesheet" href="../assets/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
@@ -23,71 +23,182 @@
 </header>
 <main class="art">
   <div class="art-progress"><div class="art-progress-bar" id="progress"></div></div>
-  <nav class="docs-tabs" aria-label="Docs sections"><a href="./index.html">Start</a><a href="./plugin-claude-code.html" class="on">Surfaces</a><a href="./concepts.html">Concepts</a><a href="./reference-tools.html">Reference</a><a href="./use-cases.html">Use cases</a></nav>
+  <nav class="docs-tabs" aria-label="Docs sections"><a href="./index.html">Start</a><a href="./plugin-claude-code.html" class="on">Surfaces</a><a href="./acp.html">Concepts</a><a href="./reference-tools.html">Reference</a><a href="./use-cases.html">Use cases</a></nav>
   <section class="page-hero">
     <span class="kicker">Docs · Surfaces</span>
     <h1>The Claude Code plugin</h1>
-    <p class="lede">The reference pack: ten role agents, 74 method skills, the /asd command, and the vendored MCP engine, installed as a real Claude Code plugin.</p>
+    <p class="lede">The reference coding-agent pack: ten role agents, 74 method skills, the /asd command, and a self-contained MCP engine.</p>
   </section>
-  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Surfaces</b><ol><li><a href="./plugin-claude-code.html" class="on">The Claude Code plugin</a></li><li><a href="./plugin-hosts.html">Host packs and the compiler</a></li><li><a href="./mcp.html">The MCP server</a></li><li><a href="./cli.html">The CLI</a></li><li><a href="./dsh-workbench.html">The DeepSeek Harness workbench</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#install-plugin">Install (plugin)</a></li><li><a href="#install-manual-copy">Install (manual copy)</a></li><li><a href="#what-ships">What ships</a></li><li><a href="#the-asd-session-flow">The /asd session flow</a></li><li><a href="#skills-and-the-method-canon">Skills and the method canon</a></li><li><a href="#the-enforcement-boundary">The enforcement boundary</a></li><li><a href="#format-pin">Format pin</a></li></ol></nav></aside><article class="art-body"><h1 id="the-claude-code-plugin">The Claude Code plugin</h1><p><code>platform/packs/claude-code</code> is the platform&#39;s reference surface: the ten role agents as native Claude Code subagents, the 74 method skills as Claude skills, the <code>/asd</code> orchestrator command, and the engine MCP server vendored inside the pack — installable as a real Claude Code plugin, with nothing on PATH and no sibling checkout required.</p>
-<h2 id="install-plugin">Install (plugin)</h2><p>From the pack README, verbatim:</p>
+  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Surfaces</b><ol><li><a href="./plugin-claude-code.html" class="on">The Claude Code plugin</a></li><li><a href="./plugin-hosts.html">Host packs and the compiler</a></li><li><a href="./mcp.html">The MCP server</a></li><li><a href="./cli.html">The CLI</a></li><li><a href="./dsh-workbench.html">The DeepSeek Harness workbench</a></li><li><a href="./buzz.html">BUZZ integration</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#install-as-a-native-plugin">Install as a native plugin</a></li><li><a href="#manual-project-copy">Manual project copy</a></li><li><a href="#what-ships">What ships</a></li><li><a href="#how-a-role-session-works">How a role session works</a></li><li><a href="#role-roster">Role roster</a></li><li><a href="#current-boundaries">Current boundaries</a></li><li><a href="#regeneration-and-verification">Regeneration and verification</a></li></ol></nav></aside><article class="art-body"><h1 id="the-claude-code-plugin">The Claude Code plugin</h1>
+<p><code>platform/packs/claude-code</code> is the reference coding-agent surface. It projects
+the canonical ten roles and 74 shipped method skills into Claude Code&#39;s native
+plugin shape, adds <code>/asd</code>, and wires the same self-contained MCP server through
+the plugin root. The pack is generated; edit <code>platform/agents</code>,
+<code>platform/skills</code>, or the emitter rather than an emitted agent file.</p>
+<h2 id="install-as-a-native-plugin">Install as a native plugin</h2>
+<p>From a checkout or a published repository containing <code>platform/packs</code>:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>claude plugin marketplace add &lt;repo&gt;/platform/packs
-claude plugin install asd@asd-platform</code></pre></div><p>The marketplace manifest is <code>platform/packs/.claude-plugin/marketplace.json</code>; the plugin manifest is the pack&#39;s <code>.claude-plugin/plugin.json</code>:</p>
-<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
-  &quot;name&quot;: &quot;asd&quot;,
-  &quot;version&quot;: &quot;0.1.0&quot;,
-  &quot;description&quot;: &quot;Service Design Agent Platform: 10 role agents, the method-skill library, the /asd orchestrator command, and a self-contained vendored asd-mcp engine server.&quot;,
-  &quot;author&quot;: {
-    &quot;name&quot;: &quot;Agentic Service Designer&quot;
-  }
-}</code></pre></div><h2 id="install-manual-copy">Install (manual copy)</h2><p>For a project that does not use the plugin mechanism, the README&#39;s manual variant drops the same tree into place:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>P=packs/claude-code; T=/path/to/project
-mkdir -p &quot;$T/.claude&quot;
-cp -R &quot;$P/agents&quot; &quot;$P/skills&quot; &quot;$P/commands&quot; &quot;$T/.claude/&quot;
-cp -R &quot;$P/mcp&quot; &quot;$P/.mcp.json&quot; &quot;$T/&quot;
-sed -i '' 's|${CLAUDE_PLUGIN_ROOT}|.|' &quot;$T/.mcp.json&quot;</code></pre></div><p>Project-root <code>.mcp.json</code> servers start from the project directory, so <code>.</code> resolves the vendored server copied next to it.</p>
-<h2 id="what-ships">What ships</h2><div class="facts-grid"><div class="fact"><span class="fact-k">Plugin manifest</span><span class="fact-v"><code>.claude-plugin/plugin.json</code> (name/version/description)</span></div><div class="fact"><span class="fact-k">MCP wiring</span><span class="fact-v">Plugin-root <code>.mcp.json</code> → <code>${CLAUDE_PLUGIN_ROOT}/mcp/bin/server.mjs</code></span></div><div class="fact"><span class="fact-k">Engine</span><span class="fact-v"><code>mcp/</code> — the vendored asd-mcp server: self-contained bundle + knowledge corpus + version <code>package.json</code></span></div><div class="fact"><span class="fact-k">Roles</span><span class="fact-v"><code>agents/</code> — 10 role subagents (orchestrator, researcher, synthesizer, mapper, ideator, prototyper, measurer, critic, presenter, librarian)</span></div><div class="fact"><span class="fact-k">Skills</span><span class="fact-v"><code>skills/</code> — 74 method skills, one per suite method manifest (generated), with the hand-authored flagship <code>service-blueprinting</code> replacing its generated twin</span></div><div class="fact"><span class="fact-k">Command</span><span class="fact-v"><code>commands/asd.md</code> — the <code>/asd</code> orchestrator command</span></div></div><p>The MCP wiring is the whole point of the vendored server. The plugin-root <code>.mcp.json</code> is loaded automatically for installed plugins:</p>
+claude plugin install asd@asd-platform
+</code></pre></div>
+<p>The marketplace manifest is <code>platform/packs/.claude-plugin/marketplace.json</code>;
+the plugin manifest is <code>claude-code/.claude-plugin/plugin.json</code>. Claude loads the
+plugin-root <code>.mcp.json</code> automatically:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;mcpServers&quot;: {
     &quot;asd&quot;: {
       &quot;command&quot;: &quot;node&quot;,
-      &quot;args&quot;: [
-        &quot;${CLAUDE_PLUGIN_ROOT}/mcp/bin/server.mjs&quot;
-      ]
+      &quot;args&quot;: [&quot;${CLAUDE_PLUGIN_ROOT}/mcp/bin/server.mjs&quot;]
     }
   }
-}</code></pre></div><p><code>${CLAUDE_PLUGIN_ROOT}</code> resolves inside the installed plugin, so the server needs no PATH entry and no sibling suite checkout — no <code>npm install</code>, no symlink into <code>/usr/local/bin</code>. The bundle inlines its entire dependency graph and reads its knowledge corpus from <code>mcp/data/</code> relative to its own URL. The <a href="./mcp.html">MCP page</a> covers the server&#39;s tools, resources, and prompts; the <a href="./plugin-hosts.html">host-packs page</a> explains why every pack vendors the same copy.</p>
-<h2 id="the-asd-session-flow">The /asd session flow</h2><p><code>/asd</code> runs an engagement. From <code>commands/asd.md</code>: it plans from the current brief, dispatches the role agents in platform order (research → synthesis → ideation → prototyping → delivery → measurement), grounds every artifact in the project evidence register with machine-checked integrity and acceptance rules, and presents the phase-gate report for the human designer.</p>
-<p>In practice the designer drives the loop directly: prompt → agent → skill → tool call → artifact gate → Critic verdict → fact-check. Article 31&#39;s public-transport runlog (<a href="../articles/31/index.html">Riding the Current</a>) executed the full arc on this exact pack, and its invocations are the realistic shape of a session:</p>
-<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>@researcher run the contextual-inquiry skill for lighthouse-transit: plan
-the research (ride-alongs on 14 routes incl. night shift, 32 commuter
-interviews, 6 drivers), then add every field note and every verbatim
-quote to the project evidence register via sd_evidence_add.</code></pre></div><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>@mapper run journey-from-transcripts over the register and write the
-current-state journey-map artifact for lighthouse-transit.
-@critic review the journey-map before it can go final.</code></pre></div><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>@measurer build the kpi-tree from the four success criteria with
-kpi-tree-design: each row names its driver, experience link, business
-link, baseline, and source.
-@presenter assemble the executive report from final artifacts only.
-@librarian produce the handover pack with full provenance.</code></pre></div><p>Each <code>@role</code> dispatch lands on one of the ten subagent files in <code>agents/</code>. The roles in platform order:</p>
-<div class="tbl-wrap"><table><thead><tr><th>Role</th><th>Dispatch</th><th>Owns</th></tr></thead><tbody><tr><td>Orchestrator</td><td><code>@orchestrator</code></td><td>Plans the engagement, dispatches roles, advances phase gates, owns human handoffs</td></tr><tr><td scope="row">Researcher</td><td><code>@researcher</code></td><td>Gathers evidence into the project register; verbatim quotes; provenance on every row</td></tr><tr><td scope="row">Synthesizer</td><td><code>@synthesizer</code></td><td>Pattern-finds across evidence; insight sets and themes; divergence/convergence</td></tr><tr><td scope="row">Mapper</td><td><code>@mapper</code></td><td>Mapping methods: journey, blueprint, ecosystem, stakeholder, mental model. Nodes cite evidence; never hand-draws Mermaid</td></tr><tr><td scope="row">Ideator</td><td><code>@ideator</code></td><td>Generates options against the insight set; never resolves framing alone</td></tr><tr><td scope="row">Prototyper</td><td><code>@prototyper</code></td><td>Builds and tests prototypes; evidence comes from test runs, not assumptions</td></tr><tr><td scope="row">Measurer</td><td><code>@measurer</code></td><td>KPI chains, audits, maturity, evaluation; numbers trace to evidence</td></tr><tr><td scope="row">Critic</td><td><code>@critic</code></td><td>Reviews artifacts with evidence-cited defect/proposal rows; verdicts are artifacts</td></tr><tr><td scope="row">Presenter</td><td><code>@presenter</code></td><td>Executive report and deck assembly from final artifacts; adds no new evidence</td></tr><tr><td scope="row">Librarian</td><td><code>@librarian</code></td><td>Corpus to manifest/skill drift; provenance; knowledge sync; case-study citations</td></tr></tbody></table></div><p>Behind every dispatch the agents call the same sixteen <code>sd_*</code> engine tools over the vendored MCP server — the identical surface the <a href="./cli.html">CLI</a> exposes in a terminal. Skills are the SOP layer in between: 74 readable <code>SKILL.md</code> files, one per method manifest, and every manifest is executable via <code>sd_method_run</code>, which returns the method&#39;s steps, role assignments, acceptance rules, and output kind.</p>
-<h2 id="skills-and-the-method-canon">Skills and the method canon</h2><p>Each skill is a plain-text SOP: who does what, in what order, with which evidence discipline, and the acceptance gate the artifact write will face. Twelve of the 74 carry the article series&#39; engagement spine — affinity-diagramming, behavioural-personas, contextual-inquiry, ecosystem-value-mapping, evidence-gated-blueprint, good-services-audit, journey-from-transcripts, mental-model-alignment, orchestration-canvas, service-blueprinting, stakeholder-mapping, transcript-mining — but every one of the 74 is a real method manifest with the same machine-checked contract, and <code>sd_method_list</code> enumerates them by phase or by the artifact kind they produce. One skill is hand-authored: the flagship <code>service-blueprinting</code>, which replaces its generated twin in the pack. <code>sd_knowledge --query blueprint</code> is the discovery path when you know the artifact you want but not the method — it answers with the methods that produce it and the provenance (books, chapters, articles) each method cites.</p>
-<h2 id="the-enforcement-boundary">The enforcement boundary</h2><p>The pack&#39;s contract splits machine-forced guarantees from human judgment, and the split is worth stating exactly.</p>
-<p>Machine-forced, on every run:</p>
-<ul>
-<li><strong>Evidence resolution.</strong> Every artifact node cites evidence ids from the project register; a dangling ref is a hard error. Evidence rows are content-addressed — the id is the sha-256 of <code>source kind body</code>, so the same quote added twice returns the same id.</li>
-<li><strong>Acceptance rules.</strong> Each method manifest declares machine-checkable rules (minimum nodes, minimum evidence refs per node, non-empty fields with deny-listed values like <code>unknown</code>/<code>tbd</code>/<code>n/a</code>). A failing <code>sd_artifact_write</code> is not refused — it persists the artifact as <code>status: draft</code> with <code>check.failures</code> attached, so the rejection itself is auditable on disk.</li>
-<li><strong>Draft/final status.</strong> Artifacts are born <code>draft</code>. Only a Critic verdict moves a gated artifact to <code>final</code>.</li>
-<li><strong>The review gate.</strong> A method manifest declaring <code>reviewGate: critic</code> makes the artifact final-eligible only after a Critic verdict. <code>sd_review --verdict pass</code> flips status to <code>final</code>; <code>--verdict veto</code> keeps the artifact <code>draft</code> and writes a separate, final <code>review-veto-log</code> artifact linked to the candidate via <code>reviewOf</code>, one node per row: <code>{rowKind: defect|proposal, severity: critical|high|medium|low, rule, message, fix, evidenceId?}</code>, with <code>fix</code> required on defects.</li>
-<li><strong>The fact-check.</strong> <code>sd_factcheck</code> replays integrity, acceptance, and review state across every artifact in the project, reports a top-level <code>pass</code>, and exits 1 on any failure — a green-looking report with a zero exit code cannot fail a build, so the gate inverts exactly that case.</li>
-</ul>
-<p>Human judgment, always:</p>
-<ul>
-<li><strong>Phase gates.</strong> The Orchestrator presents the phase-gate report; the human designer passes, redirects, or kills. No automated veto runs on the write path — the gate is a decision, not a script.</li>
-<li><strong>Pricing, scope, and editorial calls.</strong> Which personas survive clustering, fare capping versus flat fare, whether a finding is politically feasible — the platform holds the evidence and the traceability; the call stays the designer&#39;s.</li>
-</ul>
-<aside class="callout callout-warn"><p>The failure modes are deliberately loud. A rejected write, a vetoed review, and a failing fact-check all leave typed artifacts on disk with the failure rows attached — the platform&#39;s answer to &quot;trust me&quot; is &quot;audit the files.&quot;</p>
-</aside>
-<h2 id="format-pin">Format pin</h2><p>Claude Code plugin layout (<code>.claude-plugin/plugin.json</code>, plugin-root <code>.mcp.json</code>, <code>agents/</code>, <code>skills/</code>, <code>commands/</code>); verified against Claude Code 2.1.235 on 2026-08-18. The same pack is emitted deterministically by the platform compiler — see <a href="./plugin-hosts.html">the host-packs page</a> for the regeneration contract.</p>
+}
+</code></pre></div>
+<p><code>${CLAUDE_PLUGIN_ROOT}</code> resolves inside the installed plugin. The vendored
+server therefore needs no global <code>asd</code>, PATH registration, npm install, or
+sibling suite checkout. A disposable pack boot receipt proves the bundled MCP
+server; a separate host acceptance test is required to claim a native Claude
+session executed it.</p>
+<h2 id="manual-project-copy">Manual project copy</h2>
+<p>Use this only when the plugin marketplace is unavailable. Keep the source
+paths explicit and do not overwrite an existing <code>.mcp.json</code>:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>PACK=/tmp/asd-packs/claude-code
+TARGET=/path/to/project
+mkdir -p &quot;$TARGET/.claude&quot; &quot;$TARGET/mcp&quot;
+cp -R &quot;$PACK/agents&quot; &quot;$TARGET/.claude/agents&quot;
+cp -R &quot;$PACK/skills&quot; &quot;$TARGET/.claude/skills&quot;
+cp -R &quot;$PACK/commands&quot; &quot;$TARGET/.claude/commands&quot;
+cp -R &quot;$PACK/mcp/.&quot; &quot;$TARGET/mcp/&quot;
+cp &quot;$PACK/.mcp.json&quot; &quot;$TARGET/.mcp.json.asd&quot;
+</code></pre></div>
+<p>For a project-root config, replace <code>${CLAUDE_PLUGIN_ROOT}/mcp/bin/server.mjs</code>
+with <code>./mcp/bin/server.mjs</code> in the copied config and merge it with the existing
+MCP servers. The manual copy is a project configuration, not a native plugin
+installation.</p>
+<h2 id="what-ships">What ships</h2>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>.claude-plugin/plugin.json</code></td>
+<td>plugin name, version, description, author</td>
+</tr>
+<tr>
+<td><code>.mcp.json</code></td>
+<td>plugin-root MCP server wiring</td>
+</tr>
+<tr>
+<td><code>agents/&lt;role&gt;.md</code></td>
+<td>ten role subagents with shared contract + role body</td>
+</tr>
+<tr>
+<td><code>skills/&lt;id&gt;/SKILL.md</code></td>
+<td>74 method SOPs after flagship substitution</td>
+</tr>
+<tr>
+<td><code>commands/asd.md</code></td>
+<td><code>/asd</code> orchestrator command</td>
+</tr>
+<tr>
+<td><code>mcp/</code></td>
+<td>self-contained runtime bundle, metadata, and corpus data</td>
+</tr>
+<tr>
+<td><code>capabilities.json</code></td>
+<td>target-scoped supported/unsupported/unverified rows</td>
+</tr>
+</tbody></table>
+<p>The skill-source count is 75 because the authored <code>service-blueprinting</code>
+flagship and its generated twin are both sources; only 74 files ship after the
+flagship wins. The engine registry still has 74 executable method manifests,
+each with phase, role-attributed steps, acceptance rules, provenance, output
+kind, and Critic review gate.</p>
+<h2 id="how-a-role-session-works">How a role session works</h2>
+<p><code>/asd</code> turns a brief into an orchestration plan, asks the role prompts to select
+methods, and routes tool calls through the vendored MCP server. A role is not a
+free-form persona:</p>
+<ol>
+<li>The Orchestrator scopes the project and phase.</li>
+<li>Researcher and Librarian establish evidence and provenance.</li>
+<li>Synthesizer, Mapper, Ideator, and Prototyper create method outputs.</li>
+<li>Measurer traces outcomes and tests.</li>
+<li>Critic validates the artifact and records pass/veto.</li>
+<li>Presenter assembles exports from final artifacts; Librarian checks provenance.</li>
+<li>The human decides the phase gate.</li>
+</ol>
+<p>Every artifact node must cite a resolving evidence id. Acceptance failure stays
+as a draft with <code>check.failures</code>; a dangling pointer fails closed. A pass review
+must include an evidence-cited proposal row; a veto requires a defect and fix.
+<code>sd_factcheck</code> replays all three layers and exits 1 on any failure. The role
+prompt itself cannot bypass those runtime gates.</p>
+<h2 id="role-roster">Role roster</h2>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>orchestrator</code></td>
+<td>plan, method selection, dispatch records, phase/human handoff</td>
+</tr>
+<tr>
+<td><code>researcher</code></td>
+<td>research plans, interviews, observation, evidence register</td>
+</tr>
+<tr>
+<td><code>synthesizer</code></td>
+<td>affinity, insights, personas, empathy and early journey frames</td>
+</tr>
+<tr>
+<td><code>mapper</code></td>
+<td>journeys, blueprints, ecosystems, mental models, orchestration canvases</td>
+</tr>
+<tr>
+<td><code>ideator</code></td>
+<td>HMW, concepts, story/value/business model canvases</td>
+</tr>
+<tr>
+<td><code>prototyper</code></td>
+<td>prototypes, storyboards, walkthroughs, tests, decision matrices</td>
+</tr>
+<tr>
+<td><code>measurer</code></td>
+<td>KPI trees, quality/standards audits, maturity, recovery and outcomes</td>
+</tr>
+<tr>
+<td><code>critic</code></td>
+<td>evidence-cited defect/proposal rows and review-veto logs</td>
+</tr>
+<tr>
+<td><code>presenter</code></td>
+<td>executive reports, rendered artifacts, export bundles</td>
+</tr>
+<tr>
+<td><code>librarian</code></td>
+<td>method/template lookup, provenance, corpus and pack drift</td>
+</tr>
+</tbody></table>
+<h2 id="current-boundaries">Current boundaries</h2>
+<p>The pack&#39;s MCP bundle advertises 29 tools, 225 resources, and 10 prompts when
+its corpus roots are available. Six emitted MCP bundles have fresh disposable
+stdio evidence; this Claude pack is one of them. That receipt does not prove
+native host execution in every Claude environment. ACP is <code>asd-acp/1</code>
+record-only/fail-closed; a generic role dispatch cannot spawn a new process.</p>
+<h2 id="regeneration-and-verification">Regeneration and verification</h2>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>node platform/compiler/compile.mjs
+node platform/compiler/generate-skills.mjs
+node platform/compiler/emit-packs.mjs --output /tmp/asd-packs
+node platform/compiler/emit-packs.release.test.mjs
+</code></pre></div>
+<p>Claude Code plugin layout is pinned to the current <code>.claude-plugin/plugin.json</code>,
+plugin-root <code>.mcp.json</code>, <code>agents/</code>, <code>skills/</code>, <code>commands/</code>, and vendored MCP
+shape. Re-run the host-specific acceptance receipt before asserting a new
+Claude Code version is supported. See <a href="./reference-tools.html">tools</a>,
+<a href="./reference-agents.html">roles</a>, and <a href="./plugin-hosts.html">host packs</a>.</p>
 </article></div>
   <button class="backtop" id="backtop" type="button">Back to top</button>
 </main>
@@ -96,4 +207,5 @@ link, baseline, and source.
   <span><a href="../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
 </footer>
 <script src="../assets/site.js"></script>
+
 </body></html>
