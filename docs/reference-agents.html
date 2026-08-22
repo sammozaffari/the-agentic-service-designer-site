@@ -23,30 +23,163 @@
 </header>
 <main class="art">
   <div class="art-progress"><div class="art-progress-bar" id="progress"></div></div>
-  <nav class="docs-tabs" aria-label="Docs sections"><a href="./index.html">Start</a><a href="./plugin-claude-code.html">Surfaces</a><a href="./concepts.html">Concepts</a><a href="./reference-tools.html" class="on">Reference</a><a href="./use-cases.html">Use cases</a></nav>
+  <nav class="docs-tabs" aria-label="Docs sections"><a href="./index.html">Start</a><a href="./plugin-claude-code.html">Surfaces</a><a href="./acp.html">Concepts</a><a href="./reference-tools.html" class="on">Reference</a><a href="./use-cases.html">Use cases</a></nav>
   <section class="page-hero">
     <span class="kicker">Docs · Reference</span>
     <h1>Agent role reference</h1>
     <p class="lede">The ten role agents — missions, gate ownership, where the prompt text lives, and how the same roles reach every host pack.</p>
   </section>
-  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Reference</b><ol><li><a href="./reference-tools.html">Engine tool reference</a></li><li><a href="./reference-agents.html" class="on">Agent role reference</a></li><li><a href="./reference-skills.html">Skills reference</a></li><li><a href="./reference-artifacts.html">Artifact kind reference</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#the-ten-roles">The ten roles</a></li><li><a href="#gate-ownership">Gate ownership</a></li><li><a href="#where-the-prompt-text-lives">Where the prompt text lives</a></li><li><a href="#served-over-mcp-prompts">Served over MCP prompts</a></li><li><a href="#per-host-packs-re-emit-the-same-roles">Per-host packs re-emit the same roles</a></li></ol></nav></aside><article class="art-body"><h1 id="agent-role-reference">Agent role reference</h1><p>The platform&#39;s team is ten role agents. Each role is a directory in the canonical tree — <code>platform/agents/&lt;role&gt;/instructions.md</code> — and every one opens with the same line: it inherits <code>platform/_shared/role-contract.md</code> in full and adds role specifics. No role may deviate from the contract; deviations are design changes, not local choices.</p>
+  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Reference</b><ol><li><a href="./reference-tools.html">Engine tool reference</a></li><li><a href="./reference-agents.html" class="on">Agent role reference</a></li><li><a href="./reference-skills.html">Skills reference</a></li><li><a href="./reference-artifacts.html">Artifact kind reference</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#the-ten-roles">The ten roles</a></li><li><a href="#gate-ownership">Gate ownership</a></li><li><a href="#collaboration-map">Collaboration map</a></li><li><a href="#where-the-prompt-text-lives">Where the prompt text lives</a></li><li><a href="#served-over-mcp-prompts">Served over MCP prompts</a></li><li><a href="#per-host-packs-re-emit-the-same-roles">Per-host packs re-emit the same roles</a></li></ol></nav></aside><article class="art-body"><h1 id="agent-role-reference">Agent role reference</h1>
+<p>The platform&#39;s team is ten role agents. Each role is a directory in the canonical tree — <code>platform/agents/&lt;role&gt;/instructions.md</code> — and every one opens with the same line: it inherits <code>platform/_shared/role-contract.md</code> in full and adds role specifics. No role may deviate from the contract; deviations are design changes, not local choices. The release emits the same role contract into every supported prompt-bearing pack.</p>
 <p>The contract fixes the collaboration protocol once, for all ten: handoffs are artifacts, not chat; every artifact write is replayable from the store; quotes are verbatim; acceptance rules are machine-checked on every write; the Critic sits on the write path; and phase boundaries end at the human designer, who approves, redirects, or kills.</p>
-<h2 id="the-ten-roles">The ten roles</h2><div class="tbl-wrap"><table><thead><tr><th>Role</th><th>Mission</th><th>Drives</th></tr></thead><tbody><tr><td>Orchestrator</td><td>The engagement&#39;s conductor: owns the project lifecycle, phase gates, role dispatch, method selection, scope, and governance. Does not do the specialists&#39; work; on a small engagement it may execute methods inline, but only via the owning role&#39;s skills.</td><td>design briefs, WWHTBT reframes, phase-gate decisions, <code>project.json</code> lifecycle state</td></tr><tr><td scope="row">Researcher</td><td>The evidence engine: research planning, interviews and transcript mining, stakeholder and context mapping, frontline observation. Produces the evidence register the entire team builds on.</td><td>research plans, interview guides, stakeholder maps, evidence rows via <code>sd_evidence_add</code></td></tr><tr><td scope="row">Synthesizer</td><td>Turns the evidence register into frames the team can design against: affinity clustering, insight statements, personas, empathy maps, journey v1.</td><td>affinity diagrams, persona sets, empathy maps, insight registers</td></tr><tr><td scope="row">Mapper</td><td>The cartographer: journey maps, service blueprints, mental models, ecosystem maps, experience maps, orchestration canvases. Writes typed JSON — renderers draw the diagrams, never hand-written Mermaid.</td><td>journey maps, service blueprints, ecosystem maps, experience maps</td></tr><tr><td scope="row">Ideator</td><td>The concept engine: HMW framing, ideation, story mapping, concept briefs, value propositions, co-design workshops, business models. Every concept carries its lineage back to insights and evidence.</td><td>HMW registers, story maps, concept briefs, value-proposition and business-model canvases</td></tr><tr><td scope="row">Prototyper</td><td>Turns concepts into things you can test: prototype plans, storyboards, walkthroughs, blueprint scenario variants, test reports, decision matrices. Prototypes are experiments with hypotheses and pass/fail criteria, not demos.</td><td>prototype plans, storyboards, walkthrough scripts, test reports, decision matrices</td></tr><tr><td scope="row">Measurer</td><td>The value-and-governance engine: KPI chains, service quality, standards and experience audits, maturity models, evaluation frameworks, opportunity roadmaps. Measurement is causal — every KPI traces to a business outcome.</td><td>KPI trees, standards audits, experience audits, maturity assessments, opportunity matrices, recovery plans</td></tr><tr><td scope="row">Critic</td><td>The adversarial conscience. Sits on the write path, not after it: evidence-cited, machine-checked first, judgment second. Does not design; defends the truth of the work.</td><td><code>review-veto-log</code> verdict artifacts via <code>sd_review</code>; demotions to <code>draft</code></td></tr><tr><td scope="row">Presenter</td><td>The deliverable builder: executive reports, HTML decks, artifact export bundles, and the narrative arc that makes the work legible. Assembles from artifacts; never invents content to fill a slide.</td><td>reports via <code>sd_export_report</code>, renders via <code>sd_export_artifact</code></td></tr><tr><td scope="row">Librarian</td><td>The knowledge steward: method lookups, provenance, template retrieval, and the drift watch between the book/article corpus and the method registry.</td><td><code>sd_knowledge</code> / <code>sd_method_list</code> lookups, manifest-diff reports, catalog index updates</td></tr></tbody></table></div><h2 id="gate-ownership">Gate ownership</h2><p>Gate ownership is data, not convention: every one of the 74 method manifests declares <code>&quot;reviewGate&quot;: &quot;critic&quot;</code> (verified against the registry), and the engine enforces it. An artifact written through <code>sd_artifact_write</code> is persisted as <code>draft</code> no matter how clean its acceptance run is; only a Critic verdict recorded with <code>sd_review</code> makes it final-eligible. A veto demotes to draft with evidence-cited defect rows attached, and the verdict itself persists as a <code>review-veto-log</code> artifact — the Critic&#39;s own outputs are artifacts, so the review loop replays from the store like any other work product.</p>
+<h2 id="the-ten-roles">The ten roles</h2>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Mission</th>
+<th>Drives</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Orchestrator</td>
+<td>The engagement&#39;s conductor: owns the project lifecycle, phase gates, role dispatch, method selection, scope, and governance. Does not do the specialists&#39; work; on a small engagement it may execute methods inline, but only via the owning role&#39;s skills.</td>
+<td>design briefs, WWHTBT reframes, phase-gate decisions, <code>project.json</code> lifecycle state</td>
+</tr>
+<tr>
+<td>Researcher</td>
+<td>The evidence engine: research planning, interviews and transcript mining, stakeholder and context mapping, frontline observation. Produces the evidence register the entire team builds on.</td>
+<td>research plans, interview guides, stakeholder maps, evidence rows via <code>sd_evidence_add</code></td>
+</tr>
+<tr>
+<td>Synthesizer</td>
+<td>Turns the evidence register into frames the team can design against: affinity clustering, insight statements, personas, empathy maps, journey v1.</td>
+<td>affinity diagrams, persona sets, empathy maps, insight registers</td>
+</tr>
+<tr>
+<td>Mapper</td>
+<td>The cartographer: journey maps, service blueprints, mental models, ecosystem maps, experience maps, orchestration canvases. Writes typed JSON — renderers draw the diagrams, never hand-written Mermaid.</td>
+<td>journey maps, service blueprints, ecosystem maps, experience maps</td>
+</tr>
+<tr>
+<td>Ideator</td>
+<td>The concept engine: HMW framing, ideation, story mapping, concept briefs, value propositions, co-design workshops, business models. Every concept carries its lineage back to insights and evidence.</td>
+<td>HMW registers, story maps, concept briefs, value-proposition and business-model canvases</td>
+</tr>
+<tr>
+<td>Prototyper</td>
+<td>Turns concepts into things you can test: prototype plans, storyboards, walkthroughs, blueprint scenario variants, test reports, decision matrices. Prototypes are experiments with hypotheses and pass/fail criteria, not demos.</td>
+<td>prototype plans, storyboards, walkthrough scripts, test reports, decision matrices</td>
+</tr>
+<tr>
+<td>Measurer</td>
+<td>The value-and-governance engine: KPI chains, service quality, standards and experience audits, maturity models, evaluation frameworks, opportunity roadmaps. Measurement is causal — every KPI traces to a business outcome.</td>
+<td>KPI trees, standards audits, experience audits, maturity assessments, opportunity matrices, recovery plans</td>
+</tr>
+<tr>
+<td>Critic</td>
+<td>The adversarial conscience. Sits on the write path, not after it: evidence-cited, machine-checked first, judgment second. Does not design; defends the truth of the work.</td>
+<td><code>review-veto-log</code> verdict artifacts via <code>sd_review</code>; demotions to <code>draft</code></td>
+</tr>
+<tr>
+<td>Presenter</td>
+<td>The deliverable builder: executive reports, HTML decks, artifact export bundles, and the narrative arc that makes the work legible. Assembles from artifacts; never invents content to fill a slide.</td>
+<td>reports via <code>sd_export_report</code>, renders via <code>sd_export_artifact</code></td>
+</tr>
+<tr>
+<td>Librarian</td>
+<td>The knowledge steward: method lookups, provenance, template retrieval, and the drift watch between the book/article corpus and the method registry.</td>
+<td><code>sd_knowledge</code> / <code>sd_method_list</code> lookups, manifest-diff reports, catalog index updates</td>
+</tr>
+</tbody></table>
+<h2 id="gate-ownership">Gate ownership</h2>
+<p>Gate ownership is data, not convention: every one of the 74 method manifests declares <code>&quot;reviewGate&quot;: &quot;critic&quot;</code> (verified against the registry), and the engine enforces it. An artifact written through <code>sd_artifact_write</code> is persisted as <code>draft</code> no matter how clean its acceptance run is; only a Critic verdict recorded with <code>sd_review</code> makes it final-eligible. A veto demotes to draft with evidence-cited defect rows attached, and the verdict itself persists as a <code>review-veto-log</code> artifact — the Critic&#39;s own outputs are artifacts, so the review loop replays from the store like any other work product.</p>
 <p>The Critic&#39;s instructions set the posture: run order is fixed (schema, then referential integrity, then acceptance rules, then judgment); verdicts name the rule violated; deny-listed placeholder values (&quot;unknown&quot;, &quot;tbd&quot;, &quot;n/a&quot;) are automatic defects; most verdicts are medium severity — critical means fabricated evidence, broken gates, or a final artifact that fails fact-check. A veto without a fix suggestion is rejected at the tool boundary.</p>
 <p>Only a human can overrule a veto, with written rationale in the gate decision.</p>
-<h2 id="where-the-prompt-text-lives">Where the prompt text lives</h2><p>The canonical prompt text for each role is <code>platform/agents/&lt;role&gt;/instructions.md</code> — for example <code>platform/agents/critic/instructions.md</code> holds the Critic&#39;s identity, ownership table, outputs, collaboration rules, method discipline, and quality bar. The shared protocol lives once in <code>platform/_shared/role-contract.md</code>.</p>
+<h2 id="collaboration-map">Collaboration map</h2>
+<p>The ten roles share the 29-tool registry; their ownership changes which methods
+they run, not which safety rules apply.</p>
+<table>
+<thead>
+<tr>
+<th>Collaboration step</th>
+<th>Primary role</th>
+<th>Runtime tools/record</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Scope the engagement</td>
+<td>Orchestrator</td>
+<td><code>sd_project_create</code>, <code>sd_project_open</code>, <code>sd_method_list</code>, <code>sd_orchestration_plan</code></td>
+</tr>
+<tr>
+<td>Ground the work</td>
+<td>Researcher + Librarian</td>
+<td><code>sd_evidence_add</code>, <code>sd_evidence_import</code>, <code>sd_evidence_query</code>, <code>sd_knowledge</code></td>
+</tr>
+<tr>
+<td>Frame findings</td>
+<td>Synthesizer</td>
+<td><code>sd_method_run</code>, <code>sd_artifact_write</code>, <code>sd_orchestration_handoff</code></td>
+</tr>
+<tr>
+<td>Map the service</td>
+<td>Mapper</td>
+<td><code>sd_artifact_write</code>, <code>sd_canvas_add</code>, <code>sd_canvas_list</code></td>
+</tr>
+<tr>
+<td>Generate and test options</td>
+<td>Ideator + Prototyper</td>
+<td><code>sd_method_run</code>, <code>sd_artifact_write</code>, <code>sd_export_artifact</code></td>
+</tr>
+<tr>
+<td>Measure and govern</td>
+<td>Measurer</td>
+<td><code>sd_artifact_write</code>, <code>sd_factcheck</code>, <code>sd_export_report</code></td>
+</tr>
+<tr>
+<td>Review</td>
+<td>Critic</td>
+<td><code>sd_review</code>, <code>sd_review_list</code>, <code>sd_artifact_get</code></td>
+</tr>
+<tr>
+<td>Assemble delivery</td>
+<td>Presenter</td>
+<td><code>sd_export_report</code>, <code>sd_export_artifact</code>, <code>sd_artifact_list</code></td>
+</tr>
+<tr>
+<td>Advance the lifecycle</td>
+<td>Orchestrator + human</td>
+<td><code>sd_phase_advance</code>, <code>sd_orchestration_status</code></td>
+</tr>
+</tbody></table>
+<p>This table describes responsibility and tool access, not automatic host
+spawning. Generic CLI/MCP surfaces can record an orchestration dispatch and
+return <code>unsupported</code> for <code>host-agent-spawn</code>; a live agent reply requires a host
+adapter acceptance receipt.</p>
+<h2 id="where-the-prompt-text-lives">Where the prompt text lives</h2>
+<p>The canonical prompt text for each role is <code>platform/agents/&lt;role&gt;/instructions.md</code> — for example <code>platform/agents/critic/instructions.md</code> holds the Critic&#39;s identity, ownership table, outputs, collaboration rules, method discipline, and quality bar. The shared protocol lives once in <code>platform/_shared/role-contract.md</code>.</p>
 <p>The Claude Code pack carries the same text in the host&#39;s native format at <code>platform/packs/claude-code/agents/&lt;role&gt;.md</code>: a frontmatter block (<code>name</code>, <code>description</code>) prepended to the identical body. The pack file is a copy emitted by the compiler, not a fork — edit the canonical tree and regenerate, never the pack.</p>
-<h2 id="served-over-mcp-prompts">Served over MCP prompts</h2><p>The MCP server exposes the ten roles as MCP prompts: <code>prompts/list</code> returns one prompt per role (the role name, the <code>Agent: …</code> heading as title, and the role&#39;s identity line as description), and <code>prompts/get</code> returns the shared role contract followed by the role&#39;s own instructions as a single user message — mirroring the &quot;inherits in full&quot; line, so the served prompt is never half the role. Real frame, trimmed:</p>
+<h2 id="served-over-mcp-prompts">Served over MCP prompts</h2>
+<p>The MCP server exposes the ten roles as MCP prompts: <code>prompts/list</code> returns one prompt per role (the role name, the <code>Agent: …</code> heading as title, and the role&#39;s identity line as description), and <code>prompts/get</code> returns the shared role contract followed by the role&#39;s own instructions as a single user message — mirroring the &quot;inherits in full&quot; line, so the served prompt is never half the role. Real frame, trimmed:</p>
 <div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>prompts/get critic:
   description=&quot;The adversarial conscience of the engagement. Sits on the write path, not after it:
   any artifact whose method manifest declares `reviewGate: critic` is final-eligible only after a
-  Critic verdict. The Critic's job is to make every claim earn its place — evidence-cited,
+  Critic verdict. The Critic&#39;s job is to make every claim earn its place — evidence-cited,
   machine-checked first, judgment second. The Critic does not design; it defends the truth of the work.&quot;
   messages=1
   first 160 chars: &quot;# SDAP Role Contract — the collaboration protocol\n\n&gt; Canonical source:
-  `docs/plans/2026-08-17-service-design-agent-platform.md` (§3.2, §3.5).\n&gt; Every role agent […]&quot;</code></pre></div><p>The corpus roots (<code>books/</code>, <code>articles/</code>, <code>platform/agents/</code>) resolve from the nearest ancestor of the server module, or from the <code>ASD_BOOKS_ROOT</code> / <code>ASD_ARTICLES_ROOT</code> / <code>ASD_AGENTS_ROOT</code> environment variables; a server installed outside the repo serves empty lists rather than stale copies — the corpus is not shipped in the npm tarball.</p>
-<h2 id="per-host-packs-re-emit-the-same-roles">Per-host packs re-emit the same roles</h2><p>Eleven distribution packs — <code>cli</code>, <code>mcp</code>, <code>claude-code</code>, <code>opencode</code>, <code>omp</code>, <code>dsh</code>, <code>grok</code>, <code>codex</code>, <code>agy</code>, <code>pi</code>, <code>kimi</code> — are emitted from the canonical tree by <code>platform/compiler/emit-packs.mjs</code>, driven by <code>platform/packs/manifest.json</code> (10 agents, 75 skill sources, 74 skills shipped). The tree is never forked: <code>agents/*</code>, <code>skills/*</code>, and <code>templates/*</code> are copied into each host&#39;s native layout, and the whole pack set regenerates deterministically — <code>emit-packs.test.mjs</code> asserts byte-identical output.</p>
-<p>What &quot;native layout&quot; means differs per host: Claude Code gets subagent files under <code>agents/</code> plus the <code>/asd</code> command and skills; Kimi, Pi, and OMP get <code>agents/</code> and <code>skills/</code> directories; OpenCode gets an <code>agent/</code> directory and <code>opencode.json</code>; Grok gets <code>prompts/</code>; Codex gets a project-conventions <code>AGENTS.md</code>; the <code>mcp</code> and <code>cli</code> packs ship the vendored server and the <code>asd</code> shim. Same ten roles, same contract, same skills — the host decides the packaging, never the content.</p>
+  `docs/plans/2026-08-17-service-design-agent-platform.md` (§3.2, §3.5).\n&gt; Every role agent […]&quot;
+</code></pre></div>
+<p>The corpus roots (<code>books/</code>, <code>articles/</code>, <code>platform/agents/</code>) resolve from the nearest ancestor of the server module, or from the <code>ASD_BOOKS_ROOT</code> / <code>ASD_ARTICLES_ROOT</code> / <code>ASD_AGENTS_ROOT</code> environment variables; a server installed outside the repo serves empty lists rather than stale copies — the corpus is not shipped in the npm tarball.</p>
+<h2 id="per-host-packs-re-emit-the-same-roles">Per-host packs re-emit the same roles</h2>
+<p>Twelve distribution targets — <code>cli</code>, <code>mcp</code>, <code>claude-code</code>, <code>opencode</code>, <code>omp</code>, <code>dsh</code>, <code>grok</code>, <code>codex</code>, <code>agy</code>, <code>pi</code>, <code>kimi</code>, and <code>buzz</code> — are emitted from the canonical tree by <code>platform/compiler/emit-packs.mjs</code>, driven by <code>platform/packs/manifest.json</code> (10 agents, 75 skill sources, 74 skills shipped). The tree is never forked: <code>agents/*</code>, <code>skills/*</code>, and <code>templates/*</code> are copied into each host&#39;s native layout, and the whole pack set regenerates deterministically — <code>emit-packs.test.mjs</code> asserts byte-identical output.</p>
+<p>What &quot;native layout&quot; means differs per host: Claude Code gets subagent files under <code>agents/</code> plus the <code>/asd</code> command and skills; Kimi, Pi, and OMP get <code>agents/</code> and <code>skills/</code> directories; OpenCode gets an <code>agent/</code> directory and <code>opencode.json</code>; Grok gets <code>prompts/</code>; Codex gets a project-conventions <code>AGENTS.md</code>; the <code>mcp</code> and <code>cli</code> packs ship the vendored server and the <code>asd</code> shim; BUZZ gets a persona projection and MCP bundle. Same ten roles, same contract, same skills — the host decides the packaging, never the content.</p>
+<p>The compiler&#39;s numbers have two meanings worth keeping separate: 75 source
+files include the hand-authored flagship and its generated twin, while 74
+skills ship after the flagship wins. A target&#39;s emitted <code>capabilities.json</code>
+describes supported, unsupported, and unverified rows; it is not a blanket
+claim that the target&#39;s host can load or run every role.</p>
 <p>For the method skills these roles drive, see the <a href="./reference-skills.html">skills reference</a>; for the tools they call, the <a href="./reference-tools.html">tool reference</a>; for the MCP transport, the <a href="./mcp.html">MCP server page</a>.</p>
 </article></div>
   <button class="backtop" id="backtop" type="button">Back to top</button>
@@ -56,4 +189,5 @@
   <span><a href="../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
 </footer>
 <script src="../assets/site.js"></script>
+
 </body></html>

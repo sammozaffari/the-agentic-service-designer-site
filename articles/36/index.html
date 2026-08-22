@@ -31,84 +31,169 @@
       <span class="sep">·</span><span class="chip">24 min read</span>
     </div>
     <h1>Running a Service Design Engagement Inside the Harness: Wattle Grove Community Care</h1>
-    <p class="deck">Fictional composite client. All names, quotes, and figures are illustrative and anonymized. The TOOLING run described here is real and reproducible — see §0.</p>
-    <div class="art-stats"><span><b>7</b> figures</span><span><b>~5.4k</b> words</span><span><b>7</b> tools of record</span><span><b>critic-reviewed</b> every gate</span></div>
+    <p class="deck">Fictional composite client. All names, quotes, and figures are illustrative and anonymized. Current integration evidence and bounded prior workflow evidence are separated in §0.</p>
+    <div class="art-stats"><span><b>7</b> figures</span><span><b>~5.4k</b> words</span><span><b>4</b> tools of record</span><span><b>critic-reviewed</b> every gate</span></div>
     <div class="author-block">
       <div class="author-id">
         <div class="author-avatar">SM</div>
         <div><b>Sam Mozaffari</b><span>Service designer · AI-first &amp; agentic practice</span></div>
       </div>
-      <p class="author-note">I ran a full service design engagement inside the DeepSeek Harness in one working session — Wattle Grove’s care scheduling designed, mapped and critiqued live.</p>
+      <p class="author-note">I use a bounded DeepSeek Harness integration receipt and prior workflow evidence to show how Wattle Grove’s care-scheduling case is represented, with current host capability claims kept precise.</p>
     </div>
-  </div><div class="art-layout"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</a></li><li><a href="#sec-1-executive-summary">Executive summary</a></li><li><a href="#sec-2-the-brief">The brief</a></li><li><a href="#sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</a></li><li><a href="#sec-4-phase-by-phase-narrative">Phase-by-phase narrative</a></li><li><a href="#sec-5-artifacts-portfolio">Artifacts portfolio</a></li><li><a href="#sec-6-use-cases">Use cases</a></li><li><a href="#sec-7-sops-for-ai">SOPs for AI</a></li><li><a href="#sec-8-value-creation-amp-measurement">Value creation &amp; measurement</a></li><li><a href="#sec-9-ai-tool-playbook">AI tool playbook</a></li><li><a href="#sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</a></li><li><a href="#sec-11-references">References</a></li><li><a href="#sec-12-appendix-artifact-index">Appendix: artifact index</a></li><li><a href="#sec-13-deterministic-fact-check">Deterministic fact-check</a></li></ol></nav></aside><article class="art-body"><h1 id="running-a-service-design-engagement-inside-the-harness">Running a Service Design Engagement Inside the Harness</h1><section class="art-sec sec-0"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</h2><p>Wattle Grove Community Care is a fictional composite. The eight evidence records —
+  </div><div class="art-layout"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</a></li><li><a href="#sec-1-executive-summary">Executive summary</a></li><li><a href="#sec-2-the-brief">The brief</a></li><li><a href="#sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</a></li><li><a href="#sec-4-phase-by-phase-narrative">Phase-by-phase narrative</a></li><li><a href="#sec-5-artifacts-portfolio">Artifacts portfolio</a></li><li><a href="#sec-6-use-cases">Use cases</a></li><li><a href="#sec-7-sops-for-ai">SOPs for AI</a></li><li><a href="#sec-8-value-creation-amp-measurement">Value creation &amp; measurement</a></li><li><a href="#sec-9-ai-tool-playbook">AI tool playbook</a></li><li><a href="#sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</a></li><li><a href="#sec-11-references">References</a></li><li><a href="#sec-12-appendix-artifact-index">Appendix: artifact index</a></li><li><a href="#sec-13-deterministic-fact-check">Deterministic fact-check</a></li></ol></nav></aside><article class="art-body"><h1 id="running-a-service-design-engagement-inside-the-harness">Running a Service Design Engagement Inside the Harness</h1>
+<section class="art-sec sec-0"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</h2>
+<p>Wattle Grove Community Care is a fictional composite. The eight evidence records —
 seven interview quotes and one operational telemetry figure — were authored for this
 article; no real client, worker, or family member is represented.</p>
-<p><strong>What is not fictional is the tool run.</strong> Every artifact in this article was produced by
-a language model driving a service-design plugin suite inside DeepSeek Harness, and every
-artifact exists on disk as typed JSON with evidence references that resolve. The
-acceptance-rule verdicts quoted below are the harness&#39;s own output, not narrative. Where
-this article claims something was refused, it was refused by code, and the refusal is
-reproduced verbatim from the engine in §4.5. Every UI screenshot is a real capture from
-the live harness; the three chat shots in §4.1 come from a bounded re-run of the same
-flow and say so in their captions.</p>
-<p>This distinguishes article 36 from the preceding thirty-five: earlier articles describe an
-AI-first method. This one <em>runs</em> it, and shows the receipts.</p>
-</section><section class="art-sec sec-1"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2><p>An in-home aged care provider has a continuity problem: clients see a different support
+<p><strong>Evidence is split into two lanes.</strong> The current DeepSeek Harness integration receipt
+verifies DeepSeek Harness 0.1.0-rc.5, the installed <code>@asd/ui</code> 0.5.0 package, one
+profile composition (<code>@deepseek-ai/dsh-base</code>, <code>@asd/ui</code>,
+<code>@deepseek-ai/dsh-web-app</code>), six host slots, official add/update/remove/reinstall,
+and clean smoke, accessibility, and portability checks. It records a 23-row direct
+capability projection: 22 supported rows and <code>phase.gate.status</code> unsupported. The
+Wattle Grove artifacts, screenshots, and gate behavior are bounded prior workflow
+evidence linked by that receipt; they are not a claim that the current host chat
+dispatched providers or completed this case end to end. Historical screenshots and
+the earlier 15-tool/four-plugin/V4 descriptions are labelled as historical or
+unverified below.</p>
+</section><section class="art-sec sec-1"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2>
+<p>An in-home aged care provider has a continuity problem: clients see a different support
 worker most visits, families are not told when the worker changes, and schedulers trade
 continuity away every time someone calls in sick.</p>
-<p>The engagement was run end to end inside DeepSeek Harness. A service designer described
-the problem and pasted field research into a chat window. The model — with no instruction
-naming any tool — discovered the service-design method registry, chose methods
-appropriate to the phase, and produced three artifacts: a stakeholder map, a current-state
-journey map, and a five-lane evidence-gated service blueprint with eleven fail and wait
-points, each traced to a quoted line.</p>
-<p>The result worth reporting is not the artifacts. It is that <strong>the harness refused to
-produce a bad one.</strong> When asked to add an aspirational stage to the current-state journey
-map, the write was refused by an acceptance rule — persisted only as a draft with its
-check failures attached, never final, never exportable — and the model explained why and
-proposed the correct alternative.</p>
-</section><section class="art-sec sec-2"><span class="sec-kicker">02 · The brief</span><h2 id="sec-2-the-brief">The brief</h2><div class="tbl-wrap"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Client</td><td>Wattle Grove Community Care — not-for-profit in-home aged care</td></tr><tr><td scope="row">Scale</td><td>~1,900 clients, 240 support workers, metro and outer-suburban</td></tr><tr><td scope="row">Service under design</td><td>In-home care visit scheduling and continuity of care</td></tr><tr><td scope="row">Presenting problem</td><td>Clients see a different worker most visits; families are not notified; schedulers are firefighting; &quot;strangers in my home&quot; complaints rising</td></tr><tr><td scope="row">Constraint</td><td>Coverage is contractually mandated; an uncovered visit is a breach</td></tr></tbody></table></div><p>The constraint is the whole design problem. Continuity is a quality the organisation
+<p>The current integration is verified as a clean, installable Harness profile: the DSH
+0.1.0-rc.5 host composes one installed <code>@asd/ui</code> 0.5.0 package with the DSH base and
+web app, exposes six host slots, and passes the recorded smoke, accessibility, and
+portability checks. Its direct capability projection has 23 rows (22 supported and
+<code>phase.gate.status</code> unsupported), while the shared ASD registry remains 29 tools, 225
+resources, and 10 prompts.</p>
+<p>The Wattle Grove case is bounded prior workflow evidence: a designer supplied synthetic
+field research, and prior CLI/MCP workflow receipts show typed artifacts, evidence
+references, review remediation, and a human-gate report. That evidence demonstrates the
+workflow contract, not current host chat/provider dispatch or a completed live case.</p>
+</section><section class="art-sec sec-2"><span class="sec-kicker">02 · The brief</span><h2 id="sec-2-the-brief">The brief</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Wattle Grove Community Care — not-for-profit in-home aged care</td>
+</tr>
+<tr>
+<td>Scale</td>
+<td>~1,900 clients, 240 support workers, metro and outer-suburban</td>
+</tr>
+<tr>
+<td>Service under design</td>
+<td>In-home care visit scheduling and continuity of care</td>
+</tr>
+<tr>
+<td>Presenting problem</td>
+<td>Clients see a different worker most visits; families are not notified; schedulers are firefighting; &quot;strangers in my home&quot; complaints rising</td>
+</tr>
+<tr>
+<td>Constraint</td>
+<td>Coverage is contractually mandated; an uncovered visit is a breach</td>
+</tr>
+</tbody></table>
+<p>The constraint is the whole design problem. Continuity is a quality the organisation
 values and does not measure; coverage is a quality it is contractually obliged to hit and
 measures continuously. When the two collide, the measured one wins — every time, by
 design, at 6am, in a rostering system.</p>
-</section><section class="art-sec sec-3"><span class="sec-kicker">03 · Approach</span><h2 id="sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</h2><p>The harness holds service-design methods as <strong>data, not code</strong>. A method is a manifest
+</section><section class="art-sec sec-3"><span class="sec-kicker">03 · Approach</span><h2 id="sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</h2>
+<p>The harness holds service-design methods as <strong>data, not code</strong>. A method is a manifest
 declaring its phase, its provenance (which book chapter and which article it derives
 from), the inputs it requires, the artifact it produces, its execution steps by role, and
 a set of machine-checkable acceptance rules.</p>
-<p>The model&#39;s interface to all of this, in the harness web profile, is fifteen tools in the
-<code>sd_*</code> family:</p>
-<div class="codeblock"><div class="codebar"><span></span></div><pre><code>sd_project_list / _create / _open
+<p>The following 15-tool list is a <strong>historical web-profile description</strong>, retained only to
+explain the prior workflow evidence; it is not the current DSH direct capability count:</p>
+<pre><code>sd_project_list / _create / _open
 sd_evidence_add / _query
 sd_artifact_list / _get
 sd_method_list / _run
 sd_artifact_write             ← the gate
 sd_review / sd_review_list
 sd_export_report / sd_export_artifact
-sd_knowledge</code></pre></div><p>A sixteenth tool, <code>sd_factcheck</code>, lives in <code>@asd/runtime</code> — the CLI and MCP package —
-which is <strong>not</strong> composed into the web profile. In-harness fact-checking therefore
-happens from the CLI or over MCP, not through the chat tools; §13&#39;s replay was run from
-the <code>asd</code> CLI against the same workspace the chat tools wrote.</p>
-<p>Adding a method to the catalogue is authoring a JSON file. No tool is added, no code
-changes, and the model&#39;s tool surface stays small enough to reason about. 74 method
-manifests ship in <code>@asd/knowledge</code>, and all of them are executable via <code>sd_method_run</code>;
+sd_knowledge
+</code></pre></div>
+<p>The historical workflow also described <code>sd_factcheck</code> as a sixteenth runtime tool. The
+current receipt instead reports a 23-row direct capability projection (22 supported plus
+unsupported <code>phase.gate.status</code>) and does not establish current host chat/provider
+dispatch. Fact-check and persistence claims below are therefore bounded to the prior
+CLI/MCP workflow receipt.</p>
+<p>The shared registry contains 74 method manifests, all executable via <code>sd_method_run</code>;
 the series exercises a 12-method canon: <code>affinity-diagramming</code>, <code>behavioural-personas</code>,
 <code>contextual-inquiry</code>, <code>ecosystem-value-mapping</code>, <code>evidence-gated-blueprint</code>,
 <code>good-services-audit</code>, <code>journey-from-transcripts</code>, <code>mental-model-alignment</code>,
 <code>orchestration-canvas</code>, <code>service-blueprinting</code>, <code>stakeholder-mapping</code>,
 <code>transcript-mining</code>.</p>
-<p><img src="assets/ui/01-full-shell.png" alt="The DeepSeek Harness web UI as the engagement ran in it: the sd-agentic-project workspace in the left sidebar with its sessions (Harbour Ferry, Rivermill, Wattle Grove ×2), the home composer, and the Service Design and Settings entries that @asd/ui adds at bottom-left."></p>
-<p>The reasoning model is DeepSeek V4 Flash via OpenRouter, selected in the composer —
-every tool call quoted in this article ran on it:</p>
-<p><img src="assets/ui/12-model-selector.png" alt="The composer&#39;s model selector open: grouped model list with DeepSeek V4 Flash selected (the ✓ sits on &quot;DeepSeek: DeepSeek V4 Flash&quot;), plus the Effort submenu."></p>
-<h3 id="the-execution-map">The execution map</h3><p>Every method manifest names the platform role that executes each step. Across the run,
-all ten roles fired at least once:</p>
-<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Phase</th><th>Method (canon)</th><th>Roles on the execution path</th><th>Artifact produced</th><th>Gate</th></tr></thead><tbody><tr><td>Scaffold</td><td>project lifecycle (orchestrator contract)</td><td>orchestrator · librarian</td><td>project.json · evidence register (8 records)</td><td>content-addressing over (source, kind, body)</td></tr><tr><td scope="row">Research</td><td>stakeholder-mapping (book 17/03)</td><td>researcher · librarian</td><td>stakeholder-map (6 nodes)</td><td>min evidence per node ≥ 1</td></tr><tr><td scope="row">Synthesis</td><td>journey-from-transcripts (book 09/04)</td><td>synthesizer · mapper</td><td>journey-map (6 nodes)</td><td>≥ 1 quote per stage</td></tr><tr><td scope="row">Delivery</td><td>evidence-gated-blueprint (books 09/05, 19/07)</td><td>mapper · critic · measurer · ideator · prototyper</td><td>service-blueprint (20 nodes)</td><td>refs resolve · critic verdict on write path</td></tr><tr><td scope="row">Readout</td><td>presenter contract</td><td>presenter · measurer</td><td>renders · factcheck report</td><td><code>sd_factcheck</code> replay via CLI/MCP, exit 0 on all-pass</td></tr></tbody></table></div><p>The designer appears exactly once in that table — in the first row, holding the keyboard.
-Everything below the scaffold row ran without a named tool or a named role; the model
-consulted manifests, followed their step-by-role instructions, and routed through the
-gates the manifests declared. What a method consultation looks like in the transcript —
+<p><strong>Screenshot status.</strong> The UI captures in this article are historical, bounded prior-workflow evidence unless explicitly labelled as current receipt evidence. They show observed UI state, not current host chat/provider dispatch.</p>
+<p><img src="assets/ui/01-full-shell.png" alt="Historical DeepSeek Harness web UI capture from the bounded workflow: the sd-agentic-project workspace in the left sidebar with its sessions, home composer, and Service Design and Settings entries."></p>
+<p>The following model-selector capture is historical prior-workflow evidence: DeepSeek V4
+Flash via OpenRouter is visible in the composer, but the current integration receipt does
+not verify current provider selection or chat dispatch:</p>
+<p><img src="assets/ui/12-model-selector.png" alt="Historical model-selector capture: DeepSeek V4 Flash selected in an earlier workflow. It is not current provider-dispatch evidence."></p>
+<h3 id="the-execution-map">The execution map</h3>
+<p>Every method manifest names the platform role that would execute each step. The table
+below describes the bounded prior workflow evidence; it is not evidence that all ten
+roles fired in the current DSH host:</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Method (canon)</th>
+<th>Roles on the execution path</th>
+<th>Artifact produced</th>
+<th>Gate</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Scaffold</td>
+<td>project lifecycle (orchestrator contract)</td>
+<td>orchestrator · librarian</td>
+<td>project.json · evidence register (8 records)</td>
+<td>content-addressing over (source, kind, body)</td>
+</tr>
+<tr>
+<td>Research</td>
+<td>stakeholder-mapping (book 17/03)</td>
+<td>researcher · librarian</td>
+<td>stakeholder-map (6 nodes)</td>
+<td>min evidence per node ≥ 1</td>
+</tr>
+<tr>
+<td>Synthesis</td>
+<td>journey-from-transcripts (book 09/04)</td>
+<td>synthesizer · mapper</td>
+<td>journey-map (6 nodes)</td>
+<td>≥ 1 quote per stage</td>
+</tr>
+<tr>
+<td>Delivery</td>
+<td>evidence-gated-blueprint (books 09/05, 19/07)</td>
+<td>mapper · critic · measurer · ideator · prototyper</td>
+<td>service-blueprint (20 nodes)</td>
+<td>refs resolve · critic verdict on write path</td>
+</tr>
+<tr>
+<td>Readout</td>
+<td>presenter contract</td>
+<td>presenter · measurer</td>
+<td>renders · factcheck report</td>
+<td><code>sd_factcheck</code> replay via CLI/MCP, exit 0 on all-pass</td>
+</tr>
+</tbody></table>
+<p>The designer appears exactly once in that table — in the first row, holding the keyboard.
+The role sequence is a bounded workflow description; it does not claim current host
+provider dispatch or autonomous role execution. What a method consultation looks like in the transcript —
 this is the model pulling the execution contract before writing:</p>
 <p><img src="assets/ui/06-tool-call-details-panel.png" alt="An sd_method_run tool row expanded inline in the Wattle Grove transcript: IN carries methodId ecosystem-value-mapping and the project id; OUT is the method contract JSON — name, phase synthesis, provenance sources — the same contract the model then reasoned over. Clicking a tool row expands it in place."></p>
-</section><section class="art-sec sec-4"><span class="sec-kicker">04 · The work, phase by phase</span><h2 id="sec-4-phase-by-phase-narrative">Phase-by-phase narrative</h2><h3 id="41-scaffold-and-evidence-capture">4.1 Scaffold and evidence capture</h3><p>The designer described the client and pasted eight pieces of field research — two client
+</section><section class="art-sec sec-4"><span class="sec-kicker">04 · The work, phase by phase</span><h2 id="sec-4-phase-by-phase-narrative">Phase-by-phase narrative</h2>
+<h3 id="41-scaffold-and-evidence-capture">4.1 Scaffold and evidence capture</h3>
+<p>The designer described the client and pasted eight pieces of field research — two client
 interviews, two family interviews, two support-worker interviews, one scheduler interview,
 and one operational telemetry figure.</p>
 <p>The model created the project and captured all eight, each tagged with its source label.
@@ -122,22 +207,63 @@ from a <strong>bounded re-run of this same flow</strong> — a Harbour Ferry pun
 (create a project, add two evidence quotes, draft a stakeholder map) — captured live on
 the same harness build for this article. The flow and the tool semantics are identical to
 the Wattle Grove run; only the client changed.</p>
-<p><img src="assets/ui/08-live-run-inflight.png" alt="A live run in flight: the prompt asks for a project, two evidence quotes, and a stakeholder map. The first evidence write fails with a recoverable ToolCallError (binding arguments must be lossless JSON); the model reads the error and self-corrects in the same turn, then sd_project_create and two sd_evidence_add calls succeed. The small icon at the composer&#39;s right edge is a Grammarly browser-extension artifact of the capture machine, not the harness."></p>
+<p><img src="assets/ui/08-live-run-inflight.png" alt="A live run in flight: the prompt asks for a project, two evidence quotes, and a stakeholder map. The first evidence write fails with a recoverable ToolCallError (binding arguments must be lossless JSON); the model reads the error and self-corrects in the same turn, then sd_project_create and two sd_evidence_add calls succeed. The small icon at the composer's right edge is a Grammarly browser-extension artifact of the capture machine, not the harness."></p>
 <p><img src="assets/ui/07-tool-evidence-query.png" alt="An sd_evidence_query tool row expanded: IN is the projectId, OUT is the evidence JSON — a sha256 record id, the projectId, and the source label — the provenance that artifact nodes later cite."></p>
 <p>It then listed the methods available for the research and synthesis phases and recommended
 stakeholder mapping first — reasoning that the quotes came from four groups whose
 interests diverge, and that mapping the power relationships should precede mapping the
 experience.</p>
 <figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1846 129" role="img" aria-hidden="true"><defs><marker id="arr-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 178.4,61.25 204.4,61.25 230.4,61.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 383.6,61.25 409.6,61.25 435.6,61.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 626.8000000000001,61.25 652.8,61.25 678.8,61.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 870,61.25 896,61.25 922,61.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 1051.8,46.25 1116.4,25 1146.2,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="1122.4" y="20" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">power asymmetry</text><path d="M 1314.6000000000001,25 1344.4,25 1370.4,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 1576.8000000000002,25 1602.8000000000002,25 1628.8000000000002,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 1051.8,76.25 1116.4,97.5 1142.4,97.5" fill="none" stroke="#171817" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr-1)"/><text x="1122.4" y="92.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">also available</text><rect x="10" y="39.75" width="168.4" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="94.2" y="58.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Designer briefs the</text><text x="94.2" y="71.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">problem</text><rect x="230.4" y="46.25" width="153.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="307" y="65.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_project_create</text><rect x="435.6" y="39.75" width="191.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="531.2" y="58.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Eight evidence records</text><text x="531.2" y="71.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">captured</text><rect x="678.8" y="39.75" width="191.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="774.4" y="58.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_method_list · phase</text><text x="774.4" y="71.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">filter</text><path d="M 1006.2 46.25 L 1090.4 61.25 L 1006.2 76.25 L 922 61.25 Z" fill="none" stroke="currentColor" stroke-width="1"/><text x="1006.2" y="65.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#171817" font-weight="400" text-anchor="middle" letter-spacing="0">Which method first?</text><rect x="1146.2" y="10" width="168.4" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1230.4" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">stakeholder-mapping</text><rect x="1370.4" y="10" width="206.39999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1473.6000000000001" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">journey-from-transcripts</text><rect x="1628.8000000000002" y="10" width="206.39999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1732.0000000000002" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">evidence-gated-blueprint</text><rect x="1142.4" y="76" width="176" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1230.4" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">transcript-mining ·</text><text x="1230.4" y="108" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">affinity-diagramming</text></svg><figcaption><span class="fignum">Figure 1</span><span class="figcap">1 Scaffold and evidence capture</span></figcaption></figure>
-<p><img src="assets/ui/09-live-run-completed.png" alt="The same re-run, completed: an evidence quote card (id chip 745eb95…, source harbour-master-log-2026-03), then the accepted stakeholder-map artifact rendered as a Stakeholder/Influence table — and the model&#39;s closing note that the artifact is saved as status draft pending a review verdict."></p>
+<p><img src="assets/ui/09-live-run-completed.png" alt="The same re-run, completed: an evidence quote card (id chip 745eb95…, source harbour-master-log-2026-03), then the accepted stakeholder-map artifact rendered as a Stakeholder/Influence table — and the model's closing note that the artifact is saved as status draft pending a review verdict."></p>
 <p>The loop closes outside the chat, too: the studio reads the same store the tools write.</p>
 <p><img src="assets/ui/10-studio-after-live-run.png" alt="The Service Design overlay as it looked at capture time (the sidebar button now opens the full workbench of §9): the brand-new Harbour Ferry punctuality redesign project at the top of the project list — the chat tool calls land in the same store the studio reads."></p>
-<h3 id="42-research-stakeholder-mapping">4.2 Research: stakeholder mapping</h3><p>Six stakeholders, every node citing evidence:</p>
-<div class="tbl-wrap"><table><thead><tr><th>Stakeholder</th><th>Influence</th><th>Evidence</th></tr></thead><tbody><tr><td>Client (care recipient)</td><td>High</td><td>client-int-01, client-int-02</td></tr><tr><td scope="row">Family carer</td><td>Medium-High</td><td>family-int-01, family-int-02</td></tr><tr><td scope="row">Support worker</td><td>Medium</td><td>worker-int-01, worker-int-02</td></tr><tr><td scope="row">Scheduler / rostering officer</td><td>Very High</td><td>scheduler-int-01</td></tr><tr><td scope="row">Service manager</td><td>High</td><td>ops-telemetry-01</td></tr><tr><td scope="row">Funder / regulator</td><td>Very High</td><td>ops-telemetry-01, scheduler-int-01</td></tr></tbody></table></div><figure class="fig fig-quad"><svg class="fgsvg quad" viewBox="0 0 660 446" role="img" aria-hidden="true"><line x1="330" y1="44" x2="330" y2="376" stroke="#DEDEDA" stroke-width="1"/><line x1="44" y1="210" x2="616" y2="210" stroke="#DEDEDA" stroke-width="1"/><text x="54" y="60" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.8">Keep satisfied</text><text x="606" y="60" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0.8">Manage closely</text><text x="54" y="366" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.8">Keep informed</text><text x="606" y="366" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0.8">Monitor</text><circle cx="570.24" cy="193.39999999999998" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="579.24" y="196.89999999999998" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Funder / regulator</text><circle cx="547.36" cy="210" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="556.36" y="213.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Scheduler</text><circle cx="455.84" cy="160.2" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="464.84" y="163.7" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Service manager</text><circle cx="358.6" cy="77.19999999999999" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="367.6" y="80.69999999999999" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Client</text><circle cx="330" cy="103.76000000000002" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="339" y="107.26000000000002" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Family carer</text><circle cx="261.36" cy="176.8" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="270.36" y="180.3" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Support worker</text></svg><figcaption><span class="fignum">Figure 2</span><span class="figcap">Stakeholder influence x interest — Wattle Grove</span></figcaption></figure>
+<h3 id="42-research-stakeholder-mapping">4.2 Research: stakeholder mapping</h3>
+<p>Six stakeholders, every node citing evidence:</p>
+<table>
+<thead>
+<tr>
+<th>Stakeholder</th>
+<th>Influence</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client (care recipient)</td>
+<td>High</td>
+<td>client-int-01, client-int-02</td>
+</tr>
+<tr>
+<td>Family carer</td>
+<td>Medium-High</td>
+<td>family-int-01, family-int-02</td>
+</tr>
+<tr>
+<td>Support worker</td>
+<td>Medium</td>
+<td>worker-int-01, worker-int-02</td>
+</tr>
+<tr>
+<td>Scheduler / rostering officer</td>
+<td>Very High</td>
+<td>scheduler-int-01</td>
+</tr>
+<tr>
+<td>Service manager</td>
+<td>High</td>
+<td>ops-telemetry-01</td>
+</tr>
+<tr>
+<td>Funder / regulator</td>
+<td>Very High</td>
+<td>ops-telemetry-01, scheduler-int-01</td>
+</tr>
+</tbody></table>
+<figure class="fig fig-quad"><svg class="fgsvg quad" viewBox="0 0 660 446" role="img" aria-hidden="true"><line x1="330" y1="44" x2="330" y2="376" stroke="#DEDEDA" stroke-width="1"/><line x1="44" y1="210" x2="616" y2="210" stroke="#DEDEDA" stroke-width="1"/><text x="54" y="60" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.8">Keep satisfied</text><text x="606" y="60" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0.8">Manage closely</text><text x="54" y="366" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.8">Keep informed</text><text x="606" y="366" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0.8">Monitor</text><circle cx="570.24" cy="193.39999999999998" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="579.24" y="196.89999999999998" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Funder / regulator</text><circle cx="547.36" cy="210" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="556.36" y="213.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Scheduler</text><circle cx="455.84" cy="160.2" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="464.84" y="163.7" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Service manager</text><circle cx="358.6" cy="77.19999999999999" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="367.6" y="80.69999999999999" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Client</text><circle cx="330" cy="103.76000000000002" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="339" y="107.26000000000002" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Family carer</text><circle cx="261.36" cy="176.8" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="270.36" y="180.3" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Support worker</text></svg><figcaption><span class="fignum">Figure 2</span><span class="figcap">Stakeholder influence x interest — Wattle Grove</span></figcaption></figure>
 <p>The map surfaces the structural asymmetry immediately: the two actors with the highest
 influence over continuity — the scheduler and the regulator — are the two furthest from
 the client&#39;s front door, and the actor who stands in it has the least.</p>
-<h3 id="43-synthesis-current-state-journey-map">4.3 Synthesis: current-state journey map</h3><p>Six stages, each backed by a distinct quote, emotions drawn from the quotes rather than
+<h3 id="43-synthesis-current-state-journey-map">4.3 Synthesis: current-state journey map</h3>
+<p>Six stages, each backed by a distinct quote, emotions drawn from the quotes rather than
 inferred:</p>
 <ol>
 <li><strong>Expecting a visit</strong> — anxious anticipation. <em>&quot;I get dressed and wait by the door from eight.&quot;</em></li>
@@ -152,22 +278,91 @@ inferred:</p>
 not a complaint about staffing — it is a client withdrawing effort from a relationship she
 has learned is not durable. Continuity failure does not merely inconvenience; it teaches
 the client to disinvest.</p>
-<h3 id="44-delivery-evidence-gated-service-blueprint">4.4 Delivery: evidence-gated service blueprint</h3><p>Twenty nodes across five lanes, with eleven fail (F) and wait (W) points, each traceable
+<h3 id="44-delivery-evidence-gated-service-blueprint">4.4 Delivery: evidence-gated service blueprint</h3>
+<p>Twenty nodes across five lanes, with eleven fail (F) and wait (W) points, each traceable
 to a customer symptom:</p>
-<div class="tbl-wrap"><table><thead><tr><th>Point</th><th>Type</th><th>Traceable symptom</th></tr></thead><tbody><tr><td>Worker arrives with no client context</td><td>F</td><td><em>&quot;no notes about how they like things done&quot;</em></td></tr><tr><td scope="row">Run-sheet generation excludes care-plan data</td><td>F</td><td>systemic root cause of the above</td></tr><tr><td scope="row">Client meets a stranger, again</td><td>F</td><td><em>&quot;eleven different girls&quot;</em></td></tr><tr><td scope="row">Cascading lateness from unplanned care</td><td>F</td><td><em>&quot;every visit after that is late&quot;</em></td></tr><tr><td scope="row">No dynamic resequencing or overrun alert</td><td>F</td><td><em>&quot;nobody comes until eleven and no one rings&quot;</em></td></tr><tr><td scope="row">Client waits with no ETA</td><td>W</td><td><em>&quot;wait by the door from eight&quot;</em></td></tr><tr><td scope="row">Continuity traded at first coverage gap</td><td>F</td><td><em>&quot;the first thing I trade away&quot;</em></td></tr><tr><td scope="row">Family relies on an unreliable published schedule</td><td>W</td><td><em>&quot;the roster said 9am… arrived at 2pm&quot;</em></td></tr><tr><td scope="row">No family notification workflow</td><td>F</td><td><em>&quot;nobody from the office calls me&quot;</em></td></tr><tr><td scope="row">Compliance measures completion, ignores continuity</td><td>F</td><td>38% unfamiliar-worker rate invisible to the KPI</td></tr><tr><td scope="row">Complaint signal never reaches rostering policy</td><td>F</td><td>scheduler and incentives both trade continuity</td></tr></tbody></table></div><figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Evidence</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Customer actions</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Frontstage</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Backstage</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Support processes</text><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/><line x1="94" y1="156" x2="296" y2="156" stroke="#171817" stroke-width="1.2"/><text x="98" y="152" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of interaction</text><line x1="94" y1="220" x2="296" y2="220" stroke="#171817" stroke-width="1.2"/><text x="98" y="216" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of visibility</text><line x1="94" y1="284" x2="296" y2="284" stroke="#171817" stroke-width="1.2"/><text x="98" y="280" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of internal interaction</text></svg><figcaption><span class="fignum">Figure 4</span><span class="figcap">4 Delivery: evidence-gated service blueprint</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Point</th>
+<th>Type</th>
+<th>Traceable symptom</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Worker arrives with no client context</td>
+<td>F</td>
+<td><em>&quot;no notes about how they like things done&quot;</em></td>
+</tr>
+<tr>
+<td>Run-sheet generation excludes care-plan data</td>
+<td>F</td>
+<td>systemic root cause of the above</td>
+</tr>
+<tr>
+<td>Client meets a stranger, again</td>
+<td>F</td>
+<td><em>&quot;eleven different girls&quot;</em></td>
+</tr>
+<tr>
+<td>Cascading lateness from unplanned care</td>
+<td>F</td>
+<td><em>&quot;every visit after that is late&quot;</em></td>
+</tr>
+<tr>
+<td>No dynamic resequencing or overrun alert</td>
+<td>F</td>
+<td><em>&quot;nobody comes until eleven and no one rings&quot;</em></td>
+</tr>
+<tr>
+<td>Client waits with no ETA</td>
+<td>W</td>
+<td><em>&quot;wait by the door from eight&quot;</em></td>
+</tr>
+<tr>
+<td>Continuity traded at first coverage gap</td>
+<td>F</td>
+<td><em>&quot;the first thing I trade away&quot;</em></td>
+</tr>
+<tr>
+<td>Family relies on an unreliable published schedule</td>
+<td>W</td>
+<td><em>&quot;the roster said 9am… arrived at 2pm&quot;</em></td>
+</tr>
+<tr>
+<td>No family notification workflow</td>
+<td>F</td>
+<td><em>&quot;nobody from the office calls me&quot;</em></td>
+</tr>
+<tr>
+<td>Compliance measures completion, ignores continuity</td>
+<td>F</td>
+<td>38% unfamiliar-worker rate invisible to the KPI</td>
+</tr>
+<tr>
+<td>Complaint signal never reaches rostering policy</td>
+<td>F</td>
+<td>scheduler and incentives both trade continuity</td>
+</tr>
+</tbody></table>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Evidence</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Customer actions</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Frontstage</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Backstage</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Support processes</text><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/><line x1="94" y1="156" x2="296" y2="156" stroke="#171817" stroke-width="1.2"/><text x="98" y="152" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of interaction</text><line x1="94" y1="220" x2="296" y2="220" stroke="#171817" stroke-width="1.2"/><text x="98" y="216" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of visibility</text><line x1="94" y1="284" x2="296" y2="284" stroke="#171817" stroke-width="1.2"/><text x="98" y="280" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of internal interaction</text></svg><figcaption><span class="fignum">Figure 4</span><span class="figcap">4 Delivery: evidence-gated service blueprint</span></figcaption></figure>
 <p>The blueprint converts a staffing complaint into an operating-model diagnosis. Every
 frontstage symptom has a backstage cause, and the two support-process failures at the
 bottom explain why the pattern persists: the organisation cannot see continuity in its
 metrics, and the complaints that would tell it are routed away from the system that
 causes them.</p>
-<h3 id="45-the-refusal">4.5 The refusal</h3><p>The most useful moment in the engagement was a rejection.</p>
+<h3 id="45-the-refusal-bounded-prior-workflow-evidence">4.5 The refusal (bounded prior workflow evidence)</h3>
+<p>The most useful moment in the engagement was a rejection.</p>
 <p>Asked to add <em>&quot;Client receives a proactive SMS the evening before with the worker&#39;s name
 and photo, and feels reassured&quot;</em> to the <strong>current-state</strong> journey map — explicitly flagged
-as having no evidence — the model attempted the write. The harness refused it. The
-current engine semantics, reproduced verbatim from a bounded CLI probe (a zero-evidence
-node written through <code>journey-from-transcripts</code>):</p>
-<div class="codeblock"><div class="codebar"><span></span></div><pre><code>$ asd sd_artifact_write --projectId $ID --methodId journey-from-transcripts \
-    --title &quot;Probe refusal&quot; --nodes '[{&quot;id&quot;:&quot;stage-proactive-sms&quot;, …, &quot;evidence&quot;:[]}]'</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+as having no evidence — the prior workflow evidence shows the model attempted the write. The harness refused it in that bounded run. The
+the prior workflow&#39;s engine semantics, reproduced from a bounded CLI probe (a
+zero-evidence node written through <code>journey-from-transcripts</code>); this is not a current
+host-chat dispatch claim:</p>
+<pre><code>$ asd sd_artifact_write --projectId $ID --methodId journey-from-transcripts \
+    --title &quot;Probe refusal&quot; --nodes &#39;[{&quot;id&quot;:&quot;stage-proactive-sms&quot;, …, &quot;evidence&quot;:[]}]&#39;
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;accepted&quot;: false,
   &quot;status&quot;: &quot;draft&quot;,
   &quot;artifact&quot;: {
@@ -186,7 +381,9 @@ node written through <code>journey-from-transcripts</code>):</p>
     }
   },
   &quot;failures&quot;: [ […] the same three failures, repeated at top level […] ]
-}</code></pre></div><p>Two things are true at once, and the pair is stronger than a delete:</p>
+}
+</code></pre></div>
+<p>Two things are true at once, and the pair is stronger than a delete:</p>
 <ul>
 <li><strong>The write is refused.</strong> <code>accepted: false</code>. The artifact can never become final and
 can never be exported while its check failures stand — a review verdict will not pass
@@ -205,7 +402,7 @@ verdict does the opposite — demotes an artifact (back) to draft and writes a
 human decisions, taken on the review board and the fact-check output; there is no
 phase-gate artifact kind and no orchestration-plan kind — the platform records artifacts,
 evidence, and verdicts, and the human decides.</p>
-<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 903 155" role="img" aria-hidden="true"><defs><marker id="arr-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 178.4,80.75 204.4,80.75 230.39999999999998,80.75" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 337.8666666666667,65.75 402,38 435.6,38" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><text x="408" y="33" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">min-evidence-per-node 1 · FAILED</text><path d="M 337.8666666666667,95.75 402,123.5 428.00000000000006,123.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><text x="408" y="118.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">all rules pass</text><path d="M 626.8000000000001,38 660.4,38 697.8,38" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 634.4000000000001,123.5 660.4,123.5 686.3999999999999,123.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><rect x="10" y="59.25" width="168.4" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="94.2" y="78.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Write attempt ·</text><text x="94.2" y="91.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">stage-proactive-sms</text><path d="M 303.2 65.75 L 376 80.75 L 303.2 95.75 L 230.39999999999998 80.75 Z" fill="none" stroke="currentColor" stroke-width="1"/><text x="303.2" y="84.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#171817" font-weight="400" text-anchor="middle" letter-spacing="0">Acceptance rules</text><rect x="435.6" y="10" width="191.2" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="531.2" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Refused · persisted as</text><text x="531.2" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">draft with check</text><text x="531.2" y="55" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">failures…</text><rect x="428.00000000000006" y="102" width="206.39999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="531.2" y="121" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Accepted draft · verdict</text><text x="531.2" y="134" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">recorded</text><rect x="697.8" y="10" width="183.6" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="789.5999999999999" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Model explains ·</text><text x="789.5999999999999" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">proposes future-state</text><text x="789.5999999999999" y="55" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">map…</text><rect x="686.3999999999999" y="102" width="206.39999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="789.5999999999999" y="121" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_review pass → final ·</text><text x="789.5999999999999" y="134" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">exportable</text></svg><figcaption><span class="fignum">Figure 5</span><span class="figcap">5 The refusal</span></figcaption></figure>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 903 155" role="img" aria-hidden="true"><defs><marker id="arr-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 178.4,80.75 204.4,80.75 230.39999999999998,80.75" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 337.8666666666667,65.75 402,38 435.6,38" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><text x="408" y="33" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">min-evidence-per-node 1 · FAILED</text><path d="M 337.8666666666667,95.75 402,123.5 428.00000000000006,123.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><text x="408" y="118.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">all rules pass</text><path d="M 626.8000000000001,38 660.4,38 697.8,38" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 634.4000000000001,123.5 660.4,123.5 686.3999999999999,123.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><rect x="10" y="59.25" width="168.4" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="94.2" y="78.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Write attempt ·</text><text x="94.2" y="91.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">stage-proactive-sms</text><path d="M 303.2 65.75 L 376 80.75 L 303.2 95.75 L 230.39999999999998 80.75 Z" fill="none" stroke="currentColor" stroke-width="1"/><text x="303.2" y="84.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#171817" font-weight="400" text-anchor="middle" letter-spacing="0">Acceptance rules</text><rect x="435.6" y="10" width="191.2" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="531.2" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Refused · persisted as</text><text x="531.2" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">draft with check</text><text x="531.2" y="55" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">failures…</text><rect x="428.00000000000006" y="102" width="206.39999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="531.2" y="121" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Accepted draft · verdict</text><text x="531.2" y="134" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">recorded</text><rect x="697.8" y="10" width="183.6" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="789.5999999999999" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Model explains ·</text><text x="789.5999999999999" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">proposes future-state</text><text x="789.5999999999999" y="55" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">map…</text><rect x="686.3999999999999" y="102" width="206.39999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="789.5999999999999" y="121" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_review pass → final ·</text><text x="789.5999999999999" y="134" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">exportable</text></svg><figcaption><span class="fignum">Figure 5</span><span class="figcap">5 The refusal (bounded prior workflow evidence)</span></figcaption></figure>
 <p>The model&#39;s own explanation is worth quoting, because it is the method contract talking
 back: <em>&quot;The journey-from-transcripts method is explicitly a current-state synthesis tool…
 Adding a speculative stage breaks that core contract.&quot;</em> It then proposed the correct
@@ -217,14 +414,62 @@ when every node cites the register:</p>
 <p>This is the difference between a tool that helps you work and a tool that holds a
 standard. A designer under executive pressure can be talked into an unevidenced stage. An
 acceptance rule cannot.</p>
-</section><section class="art-sec sec-5"><span class="sec-kicker">05 · Artifact portfolio</span><h2 id="sec-5-artifacts-portfolio">Artifacts portfolio</h2><p>All artifacts are typed JSON on disk, one file per artifact, with provenance headers.</p>
-<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>#</th><th>Artifact</th><th>Kind</th><th>Nodes</th><th>Provenance</th></tr></thead><tbody><tr><td>A1</td><td>Wattle Grove — Stakeholder Map</td><td><code>stakeholder-map</code></td><td>6</td><td>article 07; <em>Service Design for Business</em> ch.06</td></tr><tr><td scope="row">A2</td><td>Client &amp; Family Journey — Scheduled Visit</td><td><code>journey-map</code></td><td>6</td><td>article 09; <em>Mapping Experiences</em> ch.04</td></tr><tr><td scope="row">A3</td><td>Evidence-Gated Service Blueprint</td><td><code>service-blueprint</code></td><td>20</td><td>articles 11, 25; <em>Mapping Experiences</em> ch.05; <em>Service Management and Marketing</em> ch.07</td></tr><tr><td scope="row">A4</td><td>Evidence register</td><td>8 records</td><td>—</td><td>field research, content-addressed</td></tr><tr><td scope="row">A5</td><td>Wattle Grove — Ecosystem Value Map</td><td><code>ecosystem-map</code></td><td>6</td><td>article 12; <em>Orchestrating Experiences</em> ch.03 — follow-up session</td></tr></tbody></table></div><p>A5 joined the project in a short follow-up session after the main run — the transcript
+</section><section class="art-sec sec-5"><span class="sec-kicker">05 · Artifact portfolio</span><h2 id="sec-5-artifacts-portfolio">Artifacts portfolio</h2>
+<p>All artifacts are typed JSON on disk, one file per artifact, with provenance headers.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Artifact</th>
+<th>Kind</th>
+<th>Nodes</th>
+<th>Provenance</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A1</td>
+<td>Wattle Grove — Stakeholder Map</td>
+<td><code>stakeholder-map</code></td>
+<td>6</td>
+<td>article 07; <em>Service Design for Business</em> ch.06</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>Client &amp; Family Journey — Scheduled Visit</td>
+<td><code>journey-map</code></td>
+<td>6</td>
+<td>article 09; <em>Mapping Experiences</em> ch.04</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>Evidence-Gated Service Blueprint</td>
+<td><code>service-blueprint</code></td>
+<td>20</td>
+<td>articles 11, 25; <em>Mapping Experiences</em> ch.05; <em>Service Management and Marketing</em> ch.07</td>
+</tr>
+<tr>
+<td>A4</td>
+<td>Evidence register</td>
+<td>8 records</td>
+<td>—</td>
+<td>field research, content-addressed</td>
+</tr>
+<tr>
+<td>A5</td>
+<td>Wattle Grove — Ecosystem Value Map</td>
+<td><code>ecosystem-map</code></td>
+<td>6</td>
+<td>article 12; <em>Orchestrating Experiences</em> ch.03 — follow-up session</td>
+</tr>
+</tbody></table>
+<p>A5 joined the project in a short follow-up session after the main run — the transcript
 screenshots in §3 and §4.5 come from it. The model ran <code>ecosystem-value-mapping</code> over the
 same register and closed with the map rendered as an exchange table:</p>
-<p><img src="assets/ui/04-session-ecosystem-map-table.png" alt="The follow-up session&#39;s closing message: the ecosystem value map rendered as an Actor/Gives/Receives table — Client, Family Carer, Support Worker, Scheduler, Service Manager, Funder/Regulator — followed by the systemic-insight paragraph and the session stats bar (turns, steps, LLM time, tok/s, cache hit)."></p>
+<p><img src="assets/ui/04-session-ecosystem-map-table.png" alt="The follow-up session's closing message: the ecosystem value map rendered as an Actor/Gives/Receives table — Client, Family Carer, Support Worker, Scheduler, Service Manager, Funder/Regulator — followed by the systemic-insight paragraph and the session stats bar (turns, steps, LLM time, tok/s, cache hit)."></p>
 <p>Every evidence reference in A1–A3 and A5 resolves to a record in A4. This is checked by
 the store on write; a dangling reference is not persistable.</p>
-</section><section class="art-sec sec-6"><span class="sec-kicker">06 · Use cases</span><h2 id="sec-6-use-cases">Use cases</h2><p><strong>Use case 1 — Continuity as a measured quality.</strong> The blueprint&#39;s <code>sp-compliance-reporting</code>
+</section><section class="art-sec sec-6"><span class="sec-kicker">06 · Use cases</span><h2 id="sec-6-use-cases">Use cases</h2>
+<p><strong>Use case 1 — Continuity as a measured quality.</strong> The blueprint&#39;s <code>sp-compliance-reporting</code>
 fail point is the leverage. The organisation measures visit completion and cannot see that
 38% of visits were delivered by an unfamiliar worker. A continuity KPI, reported beside
 coverage, changes what the scheduler is optimising at 6am.</p>
@@ -235,7 +480,8 @@ disproportionate effect on two of six journey stages.</p>
 <p><strong>Use case 3 — Care knowledge at the door.</strong> <code>fs-worker-inbound</code> and
 <code>bs-run-sheet-generation</code> are the same failure seen from two lanes. The care plan already
 holds how the client likes things done; the run sheet simply does not carry it.</p>
-</section><section class="art-sec sec-7"><span class="sec-kicker">07 · SOPs for AI</span><h2 id="sec-7-sops-for-ai">SOPs for AI</h2><p>The method manifest <em>is</em> the SOP, in the sense article 29 argues for: context, inputs,
+</section><section class="art-sec sec-7"><span class="sec-kicker">07 · SOPs for AI</span><h2 id="sec-7-sops-for-ai">SOPs for AI</h2>
+<p>The method manifest <em>is</em> the SOP, in the sense article 29 argues for: context, inputs,
 steps by role, output schema, acceptance criteria, evidence rules, review gate, ownership.
 What article 29 specified in prose, this harness executes.</p>
 <p>Two properties matter in practice:</p>
@@ -246,18 +492,85 @@ not enter the registry.</li>
 <li><strong>Provenance is mandatory.</strong> Every method cites the book chapter and article it derives
 from, and the model surfaces those citations unprompted when it reports.</li>
 </ul>
-</section><section class="art-sec sec-8"><span class="sec-kicker">08 · Value & measurement</span><h2 id="sec-8-value-creation-amp-measurement">Value creation &amp; measurement</h2><p>This article deliberately reports no business outcome. The client is fictional; any
+</section><section class="art-sec sec-8"><span class="sec-kicker">08 · Value & measurement</span><h2 id="sec-8-value-creation-amp-measurement">Value creation &amp; measurement</h2>
+<p>This article deliberately reports no business outcome. The client is fictional; any
 &quot;first-time-fix rose to 71%&quot; figure would be fiction dressed as evidence — the precise
 failure the harness exists to prevent.</p>
 <p>What can be measured is the process:</p>
-<div class="tbl-wrap"><table><thead><tr><th>Measure</th><th>Observed</th></tr></thead><tbody><tr><td>Methods available to the model</td><td>74 manifests, all executable via <code>sd_method_run</code>; the run used the 12-method canon</td></tr><tr><td scope="row">Evidence records captured</td><td>8 (7 quote, 1 telemetry)</td></tr><tr><td scope="row">Artifacts produced</td><td>3 in the engagement, totalling 32 evidence-cited nodes; a 4th (ecosystem map, 6 nodes) in the follow-up session</td></tr><tr><td scope="row">Unevidenced nodes in final artifacts</td><td class="num">0</td></tr><tr><td scope="row">Writes refused by acceptance rules</td><td>1 of 4 attempted — persisted as draft with check failures attached</td></tr><tr><td scope="row">Tools the designer had to name</td><td class="num">0</td></tr></tbody></table></div><p>The last row is the one to watch. The designer described a problem in ordinary language;
+<table>
+<thead>
+<tr>
+<th>Measure</th>
+<th>Observed</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Methods available to the registry</td>
+<td>74 manifests, all executable via <code>sd_method_run</code>; the prior workflow used the 12-method canon</td>
+</tr>
+<tr>
+<td>Evidence records captured</td>
+<td>8 (7 quote, 1 telemetry)</td>
+</tr>
+<tr>
+<td>Artifacts produced</td>
+<td>3 in the engagement, totalling 32 evidence-cited nodes; a 4th (ecosystem map, 6 nodes) in the follow-up session</td>
+</tr>
+<tr>
+<td>Unevidenced nodes in final artifacts</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Writes refused by acceptance rules</td>
+<td>1 of 4 attempted — persisted as draft with check failures attached</td>
+</tr>
+<tr>
+<td>Tools the designer had to name in the prior workflow</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<p>The last row is the one to watch. The designer described a problem in ordinary language;
 the model located the method registry, filtered it by phase and output kind, retrieved
 execution contracts, and wrote artifacts through a gate.</p>
 <figure class="fig fig-pie"><svg class="fgsvg pie" viewBox="0 0 560 340" role="img" aria-hidden="true"><path d="M 200 112 L 200 65 A 105 105 0 0 1 305 170 L 258 170 A 58 58 0 0 0 200 112 Z" fill="#171817"/><text x="291.55992052357226" y="87.94007947642775" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="start" letter-spacing="0">Client interviews · 25%</text><path d="M 258 170 L 305 170 A 105 105 0 0 1 200 275 L 200 228 A 58 58 0 0 0 258 170 Z" fill="#4A7FA8"/><text x="291.55992052357226" y="259.05992052357226" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="start" letter-spacing="0">Family interviews · 25%</text><path d="M 200 228 L 200 275 A 105 105 0 0 1 95 170 L 142 170 A 58 58 0 0 0 200 228 Z" fill="#5E7F5A"/><text x="108.44007947642775" y="259.05992052357226" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">Support-worker interviews · 25%</text><path d="M 142 170 L 95 170 A 105 105 0 0 1 125.7537879754125 95.75378797541252 L 158.98780669118023 128.98780669118025 A 58 58 0 0 0 142 170 Z" fill="#7B61C4"/><text x="82.21057656613429" y="127.19530468382416" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">Scheduler interview · 13%</text><path d="M 158.98780669118023 128.98780669118025 L 125.7537879754125 95.75378797541252 A 105 105 0 0 1 199.99999999999997 65 L 200 112 A 58 58 0 0 0 158.98780669118023 128.98780669118025 Z" fill="#B08A00"/><text x="147.69530468382408" y="61.710576566134336" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">Operational telemetry · 13%</text><text x="200" y="174" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="26" fill="#171817" font-weight="600" text-anchor="middle" letter-spacing="0">8</text><text x="200" y="190" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="1.5">total</text></svg><figcaption><span class="fignum">Figure 6</span><span class="figcap">Evidence sources — eight records</span></figcaption></figure>
-</section><section class="art-sec sec-9"><span class="sec-kicker">09 · AI tool playbook</span><h2 id="sec-9-ai-tool-playbook">AI tool playbook</h2><div class="tbl-wrap"><table><thead><tr><th>Component</th><th>Role</th></tr></thead><tbody><tr><td>DeepSeek Harness</td><td>The agent runtime; everything below is a plugin</td></tr><tr><td scope="row"><code>@asd/core</code></td><td>Method registry, artifact-kind registry, acceptance engine, files-are-truth project/evidence/artifact stores</td></tr><tr><td scope="row"><code>@asd/knowledge</code></td><td>74 method manifests and 32 artifact kinds as JSON data, all citations resolving to real chapters</td></tr><tr><td scope="row"><code>@asd/engine</code></td><td>The 15 model-facing <code>sd_*</code> tools in the web profile</td></tr><tr><td scope="row"><code>@asd/ui</code></td><td>The Studio workbench (center-column tab + sidebar overlay), chat tool cards with Open in Studio deep links, and the read-only RPC the workbench reads through</td></tr><tr><td scope="row"><code>@asd/runtime</code></td><td>CLI + MCP surface; adds <code>sd_factcheck</code> as the 16th tool; not composed into the web profile</td></tr><tr><td scope="row">DeepSeek V4 Flash</td><td>The reasoning model, via OpenRouter</td></tr></tbody></table></div><p>The suite composes into the harness profile as four plugins, with no edits to the host —
-Settings → Plugins shows all four Enabled, alongside the 166 plugins mounted in this
-deployment:</p>
-<p><img src="assets/ui/13-settings-plugins-asd.png" alt="Settings → Plugins → Plugin list filtered to &quot;asd&quot;: the suite is four composed plugins — core, engine, knowledge, ui — all Enabled (green). The unfiltered list shows 166 plugins mounted."></p>
+</section><section class="art-sec sec-9"><span class="sec-kicker">09 · AI tool playbook</span><h2 id="sec-9-ai-tool-playbook">AI tool playbook</h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DeepSeek Harness</td>
+<td>The agent runtime; everything below is a plugin</td>
+</tr>
+<tr>
+<td><code>@asd/ui</code> 0.5.0</td>
+<td>The installed Service Design Studio package in the verified DSH profile</td>
+</tr>
+<tr>
+<td>DSH profile</td>
+<td><code>@deepseek-ai/dsh-base</code> + <code>@asd/ui</code> + <code>@deepseek-ai/dsh-web-app</code>; six host slots</td>
+</tr>
+<tr>
+<td>Shared ASD registry</td>
+<td>29 tools, 225 resources, 10 prompts; current release counts, separate from direct projection</td>
+</tr>
+<tr>
+<td>Direct capability projection</td>
+<td>23 rows: 22 supported, <code>phase.gate.status</code> unsupported</td>
+</tr>
+<tr>
+<td>DeepSeek Harness 0.1.0-rc.5</td>
+<td>Current host integration receipt; provider/chat dispatch is not claimed</td>
+</tr>
+</tbody></table>
+<p>The current receipt verifies one installed UI package in the DSH profile, official
+add/update/remove/reinstall, six host slots, and clean smoke, accessibility, and
+portability checks. Historical screenshots below show the earlier four-plugin/V4
+configuration and must not be read as the current architecture:</p>
+<p><img src="assets/ui/13-settings-plugins-asd.png" alt="Historical Settings → Plugins capture: an earlier four-plugin ASD composition. This screenshot is historical and does not represent the current single-package DSH profile."></p>
 <p>Outside the chat, projects and artifacts live in the <strong>Service Design Studio</strong> — a
 workbench mounted in two surfaces over one shared store: a <strong>Studio tab</strong> in the center
 column beside Chat and Trajectory, and the sidebar <strong>Service Design</strong> button opening the
@@ -271,10 +584,11 @@ badges. Project detail has five tabs: <strong>Artifacts</strong> (status badges,
 node↔evidence cross-references), <strong>Evidence</strong> (the register with a kind filter and
 search), <strong>Review</strong> (the board: acceptance re-run, gate, verdict, veto-log links),
 <strong>Methods</strong> (the method and kind browser), and <strong>Reports</strong>.</p>
-<p><img src="assets/ui/14-studio-tab-dashboard.png" alt="The Studio tab&#39;s projects dashboard: one card per project with client · sector, phase badge, artifact and evidence counts, and a draft badge on each unreviewed artifact count — the Harbour Ferry card is the project the §4.1 re-run created from chat."></p>
+<p><img src="assets/ui/14-studio-tab-dashboard.png" alt="The Studio tab's projects dashboard: one card per project with client · sector, phase badge, artifact and evidence counts, and a draft badge on each unreviewed artifact count — the Harbour Ferry card is the project the §4.1 re-run created from chat."></p>
 <p><img src="assets/ui/15-studio-evidence-register.png" alt="Project detail → Evidence tab for Harbour Ferry punctuality redesign: the register with a kind filter and search box — the two quote records the §4.1 run captured, with source labels and captured dates intact."></p>
-<p><img src="assets/ui/16-studio-review-board.png" alt="Project detail → Review tab: the board row for Harbour Ferry Punctuality — Stakeholder Map — status draft, gate critic, no verdict yet, acceptance re-run passing. This is the board §4.5&#39;s refused write would sit on."></p>
-</section><section class="art-sec sec-10"><span class="sec-kicker">10 · Lessons learned</span><h2 id="sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</h2><p><strong>A resolvable citation is not a correct citation.</strong> An automated check confirmed all 42
+<p><img src="assets/ui/16-studio-review-board.png" alt="Project detail → Review tab: the board row for Harbour Ferry Punctuality — Stakeholder Map — status draft, gate critic, no verdict yet, acceptance re-run passing. This is the board §4.5's refused write would sit on."></p>
+</section><section class="art-sec sec-10"><span class="sec-kicker">10 · Lessons learned</span><h2 id="sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</h2>
+<p><strong>A resolvable citation is not a correct citation.</strong> An automated check confirmed all 42
 method citations pointed at real files, and passed. It could not detect that one method
 cited article 18 (<em>value propositions</em>) where it meant article 12 (<em>ecosystem mapping</em>) —
 the word &quot;value&quot; in the method name had pulled it to the wrong place. Only a test that
@@ -294,38 +608,43 @@ the point of keeping them.</p>
 <p><strong>Fictional clients are fine; fictional evidence is not.</strong> The quotes here are authored,
 and the article says so. What the harness guarantees is narrower and more useful: that
 every claim in every artifact traces to a record someone can open.</p>
-</section><section class="art-sec sec-11"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2><ul>
+</section><section class="art-sec sec-11"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2>
+<ul>
 <li>Kalbach, <em>Mapping Experiences</em> — ch.04 (alignment diagrams, journey maps), ch.05 (service blueprints)</li>
 <li>Reason, Løvlie &amp; Flu, <em>Service Design for Business</em> — ch.06 (stakeholder mapping, journey governance)</li>
 <li>Grönroos, <em>Service Management and Marketing</em> — ch.07 (servuction, blueprinting, productivity)</li>
 <li>This series: article 07 (mixed methods), 09 (journey mapping from transcripts), 11 (blueprints as diagnostics), 25 (operations design), 29 (SOPs as code)</li>
 </ul>
-</section><section class="art-sec sec-12"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-appendix-artifact-index">Appendix: artifact index</h2><p>The workspace root resolves to <code>$ASD_WORKSPACE</code>, defaulting to <code>~/.asd/projects</code>
+</section><section class="art-sec sec-12"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-appendix-artifact-index">Appendix: artifact index</h2>
+<p>The workspace root resolves to <code>$ASD_WORKSPACE</code>, defaulting to <code>~/.asd/projects</code>
 (<code>suite/packages/runtime/src/config.ts</code>); this deployment sets
 <code>ASD_WORKSPACE=~/.asd/workspace</code>. The real project directory, verbatim:</p>
-<div class="codeblock"><div class="codebar"><span></span></div><pre><code>~/.asd/workspace/in-home-care-visit-scheduling-continuity-cdf18cee/
+<pre><code>~/.asd/workspace/in-home-care-visit-scheduling-continuity-cdf18cee/
   project.json
   evidence/index.json                                                       8 records (7 quote · 1 telemetry)
   artifacts/stakeholder-map.wattle-grove-community-care-stakeholder-.5499c295.json    6 nodes
   artifacts/journey-map.client-family-journey-scheduled-in-home-.87050427.json        6 nodes
   artifacts/service-blueprint.evidence-gated-service-blueprint-schedul.9b26473e.json  20 nodes
   artifacts/ecosystem-map.wattle-grove-ecosystem-value-map-in-home.c0dded6c.json      6 nodes
-  renders/   sops/</code></pre></div><p>Screenshots (all under <code>assets/ui/</code>, captured from the live harness): <code>01</code> full shell
+  renders/   sops/
+</code></pre></div>
+<p>Screenshots (all under <code>assets/ui/</code>, captured from the live harness): <code>01</code> full shell
 (§3) · <code>04</code> ecosystem-map session (§5) · <code>05</code> artifact-accepted card (§4.5) · <code>06</code>
 method-contract tool row (§3) · <code>07</code> evidence-query tool row (§4.1) · <code>08</code> live run in
 flight (§4.1) · <code>09</code> live run completed (§4.1) · <code>10</code> studio overlay at capture time
 (§4.1) · <code>12</code> model selector (§3) · <code>13</code> Settings → Plugins (§9) · <code>14</code> Studio tab
 dashboard (§9) · <code>15</code> evidence register (§9) · <code>16</code> review board (§9).</p>
-</section><section class="art-sec"><h2 id="sec-13-deterministic-fact-check">Deterministic fact-check</h2><p>The platform&#39;s fact-check pipeline (documented in <code>platform/README.md</code>) is the same
+</section><section class="art-sec"><h2 id="sec-13-deterministic-fact-check">Deterministic fact-check</h2>
+<p>The platform&#39;s fact-check pipeline (documented in <code>platform/README.md</code>) is the same
 machine, applied to the harness run itself. Evidence is content-addressed; artifact
 writes are schema-checked and reference-checked; acceptance rules are evaluated by code;
 the critic&#39;s verdict is a stored record; and <code>sd_factcheck</code> — the <code>sd_*</code> tool that ships
 in <code>@asd/runtime</code> rather than the web profile — replays the whole chain on demand, per
 artifact, without the model involved.</p>
 <figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1314 88" role="img" aria-hidden="true"><defs><marker id="arr-7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 178.4,56.25 204.4,56.25 230.40000000000003,56.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-7)"/><path d="M 429.2,36.631578947368425 455.2,31.5 481.20000000000005,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-7)"/><path d="M 642,31.5 668,31.5 703.9272727272728,41.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-7)"/><path d="M 824.4000000000001,56.25 850.4,56.25 876.4,56.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-7)"/><text x="856.4" y="51.25" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">pass</text><path d="M 703.9272727272728,71.25 668,81 561.6,81 455.2,81 429.2,75.86842105263158" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-7)"/><text x="567.6" y="76" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">reject</text><path d="M 1060,56.25 1086,56.25 1112,56.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-7)"/><rect x="10" y="34.75" width="168.4" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="94.2" y="53.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Evidence register ·</text><text x="94.2" y="66.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">content-addressed</text><rect x="230.40000000000003" y="34.75" width="198.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="329.8" y="53.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Artifact write · schema</text><text x="329.8" y="66.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">+ ref integrity</text><rect x="481.20000000000005" y="10" width="160.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="561.6" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Acceptance rules ·</text><text x="561.6" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">machine-checked</text><path d="M 759.2 41.25 L 824.4000000000001 56.25 L 759.2 71.25 L 694 56.25 Z" fill="none" stroke="currentColor" stroke-width="1"/><text x="759.2" y="60.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#171817" font-weight="400" text-anchor="middle" letter-spacing="0">Critic verdict</text><rect x="876.4" y="41.25" width="183.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="968.1999999999999" y="60.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Persist draft / final</text><rect x="1112" y="34.75" width="191.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1207.6" y="53.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sd_factcheck ·</text><text x="1207.6" y="66.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">per-artifact pass/fail</text></svg><figcaption><span class="fignum">Figure 7</span><span class="figcap">Deterministic fact-check</span></figcaption></figure>
-<p>Run from the CLI against the real Wattle Grove workspace while writing this edition, the
-report is <strong>not</strong> the clean sweep the first edition of this article claimed — it is
-better than that, because it is real (trimmed for print; <code>[…]</code> marks the cut):</p>
+<p>The bounded prior Wattle Grove workspace replay recorded while writing this edition is
+<strong>not</strong> the clean sweep the first edition claimed — it is a prior-workflow receipt
+(trimmed for print; <code>[…]</code> marks the cut), not current DSH host evidence:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;pass&quot;: false,
   &quot;rows&quot;: [
@@ -341,14 +660,16 @@ better than that, because it is real (trimmed for print; <code>[…]</code> mark
     […] the stakeholder, blueprint, and ecosystem rows: integrity pass,
         acceptance pass, status draft, review gate null […]
   ]
-}</code></pre></div><p>Exit code 1. Read the row carefully, because it is the deterministic layer earning its
+}
+</code></pre></div>
+<p>Exit code 1. Read the row carefully, because it is the deterministic layer earning its
 keep:</p>
 <ul>
 <li><strong>What passed.</strong> Every artifact passes integrity — no dangling evidence references —
 and all but the journey map pass acceptance. The evidence chain this article describes
 is machine-verified, not narrated.</li>
 <li><strong>What failed.</strong> The journey map&#39;s nodes record their stage under the field name the
-run used at write time; the acceptance rule the current engine replays requires a
+run used at write time; the acceptance rule replayed by the workflow engine requires a
 non-empty &quot;phase&quot; field, and the replay flags all six nodes. The four artifacts predate
 the status-stamping write path — they carry no status, check, or review fields, so the
 replay reads them as drafts and infers their methods (<code>methodResolution: &quot;inferred&quot;</code>).
@@ -370,7 +691,9 @@ remediating the write in place and recording a pass verdict:</p>
       &quot;status&quot;: &quot;final&quot;,
       […] &quot;methodId&quot;: null, &quot;methodResolution&quot;: &quot;inferred&quot; }
   ]
-}</code></pre></div><p>Exit code 0. The review record itself is a final artifact on the board — the audit trail
+}
+</code></pre></div>
+<p>Exit code 0. The review record itself is a final artifact on the board — the audit trail
 is part of the deliverable.</p>
 <p>Two properties make this check meaningful rather than theatrical:</p>
 <ul>
@@ -391,10 +714,10 @@ carries <code>reviewGate: critic</code> in its manifest — visible in the probe
 <code>gate: critic</code> once the method is recorded on the artifact. The deterministic layer
 guarantees the evidence, and the critic layer defends the meaning.</p>
 </section></article></div>
-    <div class="cross-links"><a class="xlink" href="./35/index.html"><span class="lbl">← Previous case</span><span class="ttl">35. The Butler's Memory: Staging Luxury with the ASD Critic on the Write Path</span><span class="rt">26 min read</span></a><a class="xlink empty" href="#"><span class="lbl">—</span></a></div>
+    <div class="cross-links"><a class="xlink" href="../35/index.html"><span class="lbl">← Previous case</span><span class="ttl">35. The Butler's Memory: Staging Luxury with the ASD Critic on the Write Path</span><span class="rt">26 min read</span></a><a class="xlink" href="../37/index.html"><span class="lbl">Next case →</span><span class="ttl">37. OneRecovery: A Service Design Project Orchestrated in BUZZ</span><span class="rt">38 min read</span></a></div>
     <div class="art-foot">
-      <span>7 figures · ~5.4k words · evidence-cited · reviewed by an adversarial AI critic.</span>
-      · <a href="../index.html">Back to the archive</a>
+    <span>7 figures · ~5.4k words · evidence-cited · reviewed by an adversarial AI critic.</span>
+    · <a href="../../index.html">Back to the archive</a>
     </div>
     <button class="backtop" id="backtop" type="button">Back to top</button></main>
 <footer class="footer">
@@ -402,4 +725,5 @@ guarantees the evidence, and the critic layer defends the meaning.</p>
   <span><a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
 </footer>
 <script src="../../assets/site.js"></script>
+
 </body></html>

@@ -32,40 +32,148 @@
     </div>
     <h1>The Virtual Ward at Capacity: Scaling Telehealth with the ASD Critic on Every Gate</h1>
     <p class="deck">Fictional composite client. All names, figures, and data are illustrative and anonymized.</p>
-    <div class="art-stats"><span><b>7</b> figures</span><span><b>~5.7k</b> words</span><span><b>3</b> tools of record</span><span><b>critic-reviewed</b> every gate</span></div>
+    <div class="art-stats"><span><b>7</b> figures</span><span><b>~5.7k</b> words</span><span><b>7</b> tools of record</span><span><b>critic-reviewed</b> every gate</span></div>
     <div class="author-block">
       <div class="author-id">
         <div class="author-avatar">SM</div>
         <div><b>Sam Mozaffari</b><span>Service designer · AI-first &amp; agentic practice</span></div>
       </div>
-      <p class="author-note">I ran the virtual-ward scaling engagement with the ASD critic on every gate — evidence-checked telehealth design under clinical constraints.</p>
+      <p class="author-note">I use a virtual-ward scenario to show how the ASD Critic can sit on every gate, with live-host claims kept separate from the illustrative case.</p>
     </div>
-  </div><div class="art-layout"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</a></li><li><a href="#sec-1-executive-summary">Executive summary</a></li><li><a href="#sec-2-the-brief">The brief</a></li><li><a href="#sec-3-the-plugin-at-a-glance">The plugin, at a glance</a></li><li><a href="#sec-4-phase-by-phase-session-log-claude-code-asd">Phase-by-phase session log (Claude Code + ASD)</a></li><li><a href="#sec-5-artifacts-portfolio-deterministic-outputs">Artifacts portfolio (deterministic outputs)</a></li><li><a href="#sec-6-use-cases-routed-to-the-right-agents">Use cases (routed to the right agents)</a></li><li><a href="#sec-7-sops-for-ai-skills-as-the-encoded-method">SOPs for AI — skills as the encoded method</a></li><li><a href="#sec-8-value-creation-amp-measurement">Value creation &amp; measurement</a></li><li><a href="#sec-9-ai-tool-playbook">AI tool playbook</a></li><li><a href="#sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</a></li><li><a href="#sec-11-references">References</a></li><li><a href="#sec-12-appendix-artifact-index">Appendix: artifact index</a></li><li><a href="#sec-13-tutorial-reproduce-this-engagement-20-minutes">Tutorial — reproduce this engagement (20 minutes)</a></li></ol></nav></aside><article class="art-body"><h1 id="33-the-virtual-ward-at-capacity-scaling-telehealth-with-the-asd-critic-on-every-gate">33 — The Virtual Ward at Capacity: Scaling Telehealth with the ASD Critic on Every Gate</h1><section class="art-sec sec-0"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</h2><p>Halo Care is a fictional composite telehealth provider; no real patient, clinician, or outcome data appears. This article is a runlog of the Agentic Service Designer (ASD) in Claude Code. Plugin surface and behavior are the real platform; clinical-safety governance is implemented as <strong>critic verdicts persisted as review-veto-log artifacts, plus gate minutes the human clinical lead signs</strong> — not as an engine feature, because there is no engine feature — and the article says so plainly.</p>
-</section><section class="art-sec sec-1"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2><p>A telehealth provider scaled from 400k to 1.4M patients and broke at the seams: 22-minute waits, 18% did-not-attend, 11 concurrent cases per clinician with no context handover, first-visit resolution 61%. One designer rebuilt the care journey in 20 weeks on the ASD plugin, with the Critic gating every review-gated artifact and clinical governance co-signing gate decisions. Virtual wait 22→6 min, DNA 18%→7%, first-visit resolution 61%→78%, clinician eNPS −10→+25.</p>
-<div class="facts-grid"><div class="fact"><span class="fact-k">Client</span><span class="fact-v">Halo Care (fictional composite)</span></div><div class="fact"><span class="fact-k">Sector / service</span><span class="fact-v">Healthcare; telehealth + virtual ward</span></div><div class="fact"><span class="fact-k">Scope</span><span class="fact-v">1.4M active patients, 12 regions, 480 clinicians</span></div><div class="fact"><span class="fact-k">Duration</span><span class="fact-v">20 weeks, 4 platform-gated phases</span></div><div class="fact"><span class="fact-k">Team</span><span class="fact-v">1 designer + 10 ASD role agents + 2 clinical-ops leads (0.5 FTE)</span></div><div class="fact"><span class="fact-k">Platform</span><span class="fact-v">ASD Claude Code plugin (<code>platform/packs/claude-code</code>), vendored MCP server, <code>asd</code> CLI</span></div><div class="fact"><span class="fact-k">Headline results</span><span class="fact-v">Wait 22→6 min; DNA 18%→7%; resolution 61%→78%; eNPS −10→+25</span></div></div><p><strong>What you will learn</strong></p>
+  </div><div class="art-layout"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</a></li><li><a href="#sec-1-executive-summary">Executive summary</a></li><li><a href="#sec-2-the-brief">The brief</a></li><li><a href="#sec-3-the-plugin-at-a-glance">The plugin, at a glance</a></li><li><a href="#sec-4-phase-by-phase-session-log-claude-code-asd">Phase-by-phase session log (Claude Code + ASD)</a></li><li><a href="#sec-5-artifacts-portfolio-deterministic-outputs">Artifacts portfolio (deterministic outputs)</a></li><li><a href="#sec-6-use-cases-routed-to-the-right-agents">Use cases (routed to the right agents)</a></li><li><a href="#sec-7-sops-for-ai-skills-as-the-encoded-method">SOPs for AI — skills as the encoded method</a></li><li><a href="#sec-8-value-creation-amp-measurement">Value creation &amp; measurement</a></li><li><a href="#sec-9-ai-tool-playbook">AI tool playbook</a></li><li><a href="#sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</a></li><li><a href="#sec-11-references">References</a></li><li><a href="#sec-12-appendix-artifact-index">Appendix: artifact index</a></li><li><a href="#sec-13-tutorial-reproduce-this-engagement-20-minutes">Tutorial — reproduce this engagement (20 minutes)</a></li></ol></nav></aside><article class="art-body"><h1 id="33-the-virtual-ward-at-capacity-scaling-telehealth-with-the-asd-critic-on-every-gate">33 — The Virtual Ward at Capacity: Scaling Telehealth with the ASD Critic on Every Gate</h1>
+<section class="art-sec sec-0"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</h2>
+<p>Halo Care is a fictional composite telehealth provider; no real patient, clinician, or outcome data appears. This article is an illustrative walkthrough of the Agentic Service Designer (ASD) sources and current disposable evidence. Host/plugin execution is unverified; ACP is record-only/fail-closed, and BUZZ/DeepSeek Harness live integration is not claimed. Clinical-safety governance is represented as <strong>Critic verdicts persisted as review-veto-log artifacts, plus gate minutes the human clinical lead signs</strong> — not as an engine feature. Tool calls, IDs, outputs, and outcomes below are synthetic.</p>
+<p><strong>Evidence status (2026-08-21).</strong> Halo Care and its clinical outcomes are illustrative. The cited modernization receipt is historical: disposable proof recorded 29 tools, 224 resources, and 10 prompts across six MCP bundles. The current shared-pack release records 29 tools, 225 resources, and 10 prompts; no live telehealth plugin or Claude Code host session is asserted. Receipt: <code>../../docs/reports/article-modernization-evidence.json</code>.</p>
+</section><section class="art-sec sec-1"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2>
+<p>A telehealth provider scaled from 400k to 1.4M patients and broke at the seams: 22-minute waits, 18% did-not-attend, 11 concurrent cases per clinician with no context handover, first-visit resolution 61%. One designer rebuilt the care journey in 20 weeks on the ASD plugin, with the Critic gating every review-gated artifact and clinical governance co-signing gate decisions. Virtual wait 22→6 min, DNA 18%→7%, first-visit resolution 61%→78%, clinician eNPS −10→+25.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Halo Care (fictional composite)</td>
+</tr>
+<tr>
+<td>Sector / service</td>
+<td>Healthcare; telehealth + virtual ward</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>1.4M active patients, 12 regions, 480 clinicians</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>20 weeks, 4 platform-gated phases</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>1 designer + 10 ASD role agents + 2 clinical-ops leads (0.5 FTE)</td>
+</tr>
+<tr>
+<td>Platform</td>
+<td>ASD Claude Code plugin (<code>platform/packs/claude-code</code>), vendored MCP server, <code>asd</code> CLI</td>
+</tr>
+<tr>
+<td>Headline results</td>
+<td>Wait 22→6 min; DNA 18%→7%; resolution 61%→78%; eNPS −10→+25</td>
+</tr>
+</tbody></table>
+<p><strong>What you will learn</strong></p>
 <ul>
 <li>How safety-critical gating runs on a platform whose engine has no &quot;governance config&quot;: the critic&#39;s veto is a persisted artifact with severity-graded rows and mandatory fixes, and the clinical co-sign is a human minute filed next to it — that honesty is the contract.</li>
 <li>The same method-skill surface as the other platform studies, applied to demand/capacity framing rather than field service.</li>
 <li>Where clinician experience (books 19/20) becomes KPI rows with baselines.</li>
 </ul>
-</section><section class="art-sec sec-2"><span class="sec-kicker">02 · The brief</span><h2 id="sec-2-the-brief">The brief</h2><p>Halo Care won region after region on speed, then hit structural failure: the service was designed for a boutique model, and scaling meant either doubling clinical cost or redesigning demand. Leadership chose redesign with safety non-negotiable.</p>
+</section><section class="art-sec sec-2"><span class="sec-kicker">02 · The brief</span><h2 id="sec-2-the-brief">The brief</h2>
+<p>Halo Care won region after region on speed, then hit structural failure: the service was designed for a boutique model, and scaling meant either doubling clinical cost or redesigning demand. Leadership chose redesign with safety non-negotiable.</p>
 <p>Success criteria (illustrative): virtual wait ≤ 8 min at peak; DNA ≤ 10%; first-visit resolution ≥ 75%; clinician eNPS ≥ +15; patient NPS ≥ +50; no safety-event trend increase. Constraints: clinical-governance sign-off on every route change; data protection; clinician scheduling protections; a hard budget cap on clinical hours; every redesign reversible per-region. Why service design: healthcare is a high-stakes service system (book 19); clinicians determine external quality (book 20); at scale the good/broken difference shows in hours (book 03).</p>
-</section><section class="art-sec sec-3"><span class="sec-kicker">03 · Approach</span><h2 id="sec-3-the-plugin-at-a-glance">The plugin, at a glance</h2><p>Install is the Claude Code plugin marketplace flow, quoted from <code>platform/packs/claude-code/README.md</code>:</p>
+</section><section class="art-sec sec-3"><span class="sec-kicker">03 · Approach</span><h2 id="sec-3-the-plugin-at-a-glance">The plugin, at a glance</h2>
+<p>Install is the Claude Code plugin marketplace flow, quoted from <code>platform/packs/claude-code/README.md</code>:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>claude plugin marketplace add &lt;repo&gt;/platform/packs
-claude plugin install asd@asd-platform</code></pre></div><p>The pack is self-contained: <code>.claude-plugin/plugin.json</code>; a plugin-root <code>.mcp.json</code> wiring the vendored MCP server at <code>mcp/bin/server.mjs</code> (corpus bundled — no npm install, nothing on PATH); the ten role agents in <code>agents/</code>; seventy-four method skills in <code>skills/</code>; the <code>/asd</code> orchestrator command in <code>commands/asd.md</code>. For a host without the plugin flow, the README&#39;s manual copy:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>P=packs/claude-code; T=/path/to/project
+claude plugin install asd@asd-platform
+</code></pre></div>
+<p>The pack is self-contained: <code>.claude-plugin/plugin.json</code>; a plugin-root <code>.mcp.json</code> wiring the vendored MCP server at <code>mcp/bin/server.mjs</code> (corpus bundled — no npm install, nothing on PATH); the ten role agents in <code>agents/</code>; 74 executable skills in <code>skills/</code>; the <code>/asd</code> orchestrator command in <code>commands/asd.md</code>. For a host without the plugin flow, use a disposable target and refuse to overwrite an existing project-root MCP file:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>P=packs/claude-code; T=/path/to/empty-project
+test ! -e &quot;$T/.mcp.json&quot; || { echo &quot;refusing to overwrite existing $T/.mcp.json&quot; &gt;&amp;2; exit 1; }
 mkdir -p &quot;$T/.claude&quot;
 cp -R &quot;$P/agents&quot; &quot;$P/skills&quot; &quot;$P/commands&quot; &quot;$T/.claude/&quot;
-cp -R &quot;$P/mcp&quot; &quot;$P/.mcp.json&quot; &quot;$T/&quot;
-sed -i '' 's|${CLAUDE_PLUGIN_ROOT}|.|' &quot;$T/.mcp.json&quot;</code></pre></div><p>Project-root <code>.mcp.json</code> servers start from the project directory, so <code>.</code> resolves the vendored server copied next to it.</p>
-<p>What Claude Code sees once installed — the real initialize frame:</p>
-<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{&quot;protocolVersion&quot;:&quot;2025-06-18&quot;,&quot;capabilities&quot;:{&quot;tools&quot;:{},&quot;resources&quot;:{},&quot;prompts&quot;:{}},&quot;serverInfo&quot;:{&quot;name&quot;:&quot;asd-mcp&quot;,&quot;version&quot;:&quot;0.1.0&quot;}}</code></pre></div><ul>
-<li><strong>Tools (16):</strong> <code>sd_project_list/create/open</code>, <code>sd_evidence_add/query</code>, <code>sd_artifact_list/get</code>, <code>sd_method_list/run</code>, <code>sd_artifact_write</code>, <code>sd_review</code>, <code>sd_review_list</code>, <code>sd_export_report/artifact</code>, <code>sd_knowledge</code>, <code>sd_factcheck</code>.</li>
-<li><strong>Resources:</strong> 215 <code>asd://</code> URIs — the 20 books, 159 chapters, and 36 articles of the corpus — cursor-paginated at 100 per page.</li>
+cp -R &quot;$P/mcp&quot; &quot;$T/&quot;
+sed &#39;s|${CLAUDE_PLUGIN_ROOT}|.|&#39; &quot;$P/.mcp.json&quot; &gt; &quot;$T/.mcp.json&quot;
+</code></pre></div>
+<p>Project-root <code>.mcp.json</code> servers start from the project directory, so <code>.</code> resolves the vendored server copied next to it.</p>
+<p>The source-defined MCP initialize frame below is verified-disposable; no Claude Code installation is asserted:</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{&quot;protocolVersion&quot;:&quot;2025-06-18&quot;,&quot;capabilities&quot;:{&quot;tools&quot;:{},&quot;resources&quot;:{},&quot;prompts&quot;:{}},&quot;serverInfo&quot;:{&quot;name&quot;:&quot;asd-mcp&quot;,&quot;version&quot;:&quot;0.1.0&quot;}}
+</code></pre></div>
+<ul>
+<li><strong>Tools (29):</strong> the current <code>sd_*</code> capability set exposed by the pack-local CLI and disposable MCP bundles; exact names are discoverable from <code>asd help</code> and <code>tools/list</code>.</li>
+<li><strong>Resources:</strong> the historical modernization receipt recorded 224 cursor-paginated <code>asd://</code> URIs; the current shared-pack release records 225 across the six verified disposable bundles.</li>
 <li><strong>Prompts:</strong> the ten role contracts.</li>
 </ul>
 <p>Roster (invoke by <code>@name</code>):</p>
-<div class="tbl-wrap"><table><thead><tr><th>Agent</th><th>Invoke</th><th>Role (frontmatter description)</th></tr></thead><tbody><tr><td>Orchestrator</td><td><code>@orchestrator</code></td><td>Plans the engagement, dispatches roles, advances phase gates, owns human handoffs</td></tr><tr><td scope="row">Researcher</td><td><code>@researcher</code></td><td>Gathers evidence into the project register; verbatim quotes; provenance on every row</td></tr><tr><td scope="row">Synthesizer</td><td><code>@synthesizer</code></td><td>Pattern-finds across evidence; insight sets and themes; divergence/convergence</td></tr><tr><td scope="row">Mapper</td><td><code>@mapper</code></td><td>Owns mapping methods: journey, blueprint, ecosystem, stakeholder, mental model. Nodes cite evidence; never hand-draws Mermaid</td></tr><tr><td scope="row">Ideator</td><td><code>@ideator</code></td><td>Generates options against the insight set; never resolves framing alone</td></tr><tr><td scope="row">Prototyper</td><td><code>@prototyper</code></td><td>Builds and tests prototypes; evidence comes from test runs, not assumptions</td></tr><tr><td scope="row">Measurer</td><td><code>@measurer</code></td><td>KPI chains, audits, maturity, evaluation; numbers trace to evidence</td></tr><tr><td scope="row">Critic</td><td><code>@critic</code></td><td>Veto agent on the write path; evidence-cited defect/proposal rows; verdicts persist as review-veto-log artifacts</td></tr><tr><td scope="row">Presenter</td><td><code>@presenter</code></td><td>Executive report and deck assembly from final artifacts; adds no new evidence</td></tr><tr><td scope="row">Librarian</td><td><code>@librarian</code></td><td>Corpus to manifest/skill drift; provenance; knowledge sync; case-study citations</td></tr></tbody></table></div><p>The same engine runs bare in the terminal via <code>platform/packs/cli/asd</code>. Usage is <code>asd &lt;tool&gt; [--flag value ...]</code>; dashed aliases (<code>asd project-create</code>) and full tool names (<code>asd sd_project_create</code>) both work. <code>asd help</code> lists the flags per tool:</p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Invoke</th>
+<th>Role (frontmatter description)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Orchestrator</td>
+<td><code>@orchestrator</code></td>
+<td>Plans the engagement, dispatches roles, advances phase gates, owns human handoffs</td>
+</tr>
+<tr>
+<td>Researcher</td>
+<td><code>@researcher</code></td>
+<td>Gathers evidence into the project register; verbatim quotes; provenance on every row</td>
+</tr>
+<tr>
+<td>Synthesizer</td>
+<td><code>@synthesizer</code></td>
+<td>Pattern-finds across evidence; insight sets and themes; divergence/convergence</td>
+</tr>
+<tr>
+<td>Mapper</td>
+<td><code>@mapper</code></td>
+<td>Owns mapping methods: journey, blueprint, ecosystem, stakeholder, mental model. Nodes cite evidence; never hand-draws Mermaid</td>
+</tr>
+<tr>
+<td>Ideator</td>
+<td><code>@ideator</code></td>
+<td>Generates options against the insight set; never resolves framing alone</td>
+</tr>
+<tr>
+<td>Prototyper</td>
+<td><code>@prototyper</code></td>
+<td>Builds and tests prototypes; evidence comes from test runs, not assumptions</td>
+</tr>
+<tr>
+<td>Measurer</td>
+<td><code>@measurer</code></td>
+<td>KPI chains, audits, maturity, evaluation; numbers trace to evidence</td>
+</tr>
+<tr>
+<td>Critic</td>
+<td><code>@critic</code></td>
+<td>Veto agent on the write path; evidence-cited defect/proposal rows; verdicts persist as review-veto-log artifacts</td>
+</tr>
+<tr>
+<td>Presenter</td>
+<td><code>@presenter</code></td>
+<td>Executive report and deck assembly from final artifacts; adds no new evidence</td>
+</tr>
+<tr>
+<td>Librarian</td>
+<td><code>@librarian</code></td>
+<td>Corpus to manifest/skill drift; provenance; knowledge sync; case-study citations</td>
+</tr>
+</tbody></table>
+<p>The same engine runs bare in the terminal via <code>platform/packs/cli/asd</code>. Usage is <code>asd &lt;tool&gt; [--flag value ...]</code>; dashed aliases (<code>asd project-create</code>) and full tool names (<code>asd sd_project_create</code>) both work. <code>asd help</code> lists the flags per tool:</p>
 <div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>usage: asd &lt;tool&gt; [--flag value ...]
 tools:
   sd_project_create      name, client, sector, service, phase
@@ -73,7 +181,9 @@ tools:
   sd_artifact_write      projectId, methodId, title, nodes, artifactId
   sd_review              projectId, artifactId, verdict, rows
   sd_factcheck           projectId
-  …16 tools in total</code></pre></div><p>What the engine enforces (each line verified against the built CLI; §13 reproduces every one):</p>
+  …29 tools in total
+</code></pre></div>
+<p>What the engine enforces (each line verified against the built CLI; §13 reproduces every one):</p>
 <ul>
 <li><strong>Evidence is content-addressed and closed-kind.</strong> Rows get sha256 ids — same body, same id, in any workspace. Kind is exactly one of <code>quote</code>, <code>telemetry</code>, <code>document</code>; anything else is rejected at the boundary.</li>
 <li><strong>Writes are checked and always persisted.</strong> <code>sd_artifact_write</code> runs structural integrity plus the producing method&#39;s acceptance rules. A failure is not refused — it persists as <code>status: draft</code> with the check report attached, repairable in place via <code>--artifactId</code>. The one hard error is a dangling evidence ref: never persisted.</li>
@@ -81,17 +191,21 @@ tools:
 <li><strong>The fact-check is deterministic.</strong> <code>sd_factcheck</code> replays integrity, acceptance, and review over every artifact in the project and exits 1 on any failure — a gate CI can consume.</li>
 </ul>
 <p>Two things stayed human by convention, and the engagement recorded them as such: <strong>(1)</strong> clinical governance — a gate decision is a minute signed by the clinical lead, filed next to the critic&#39;s log id; the platform&#39;s part is the persisted veto log, and it never pretends to be a clinical authority; <strong>(2)</strong> the honest boundary — demand models, wait-time statistics, and capacity analysis are the <strong>team&#39;s analysis</strong> of the register and the raw data, marked as such, never attributed to the engine.</p>
-</section><section class="art-sec sec-4"><span class="sec-kicker">04 · The work, phase by phase</span><h2 id="sec-4-phase-by-phase-session-log-claude-code-asd">Phase-by-phase session log (Claude Code + ASD)</h2><p>The twenty-week arc, gates as milestones:</p>
+</section><section class="art-sec sec-4"><span class="sec-kicker">04 · The work, phase by phase</span><h2 id="sec-4-phase-by-phase-session-log-claude-code-asd">Phase-by-phase session log (Claude Code + ASD)</h2>
+<p>The twenty-week arc, gates as milestones:</p>
 <figure class="fig fig-gantt"><div class="gantt"><div class="gantt-head"><span class="gantt-taskcol">Phase</span><span class="gantt-track"><span>Jan 2026</span><span>Jan 2026</span><span>Jan 2026</span><span>Feb 2026</span><span>Feb 2026</span></span></div><div class="gantt-section">Discover</div><div class="gantt-row"><span class="gantt-taskcol">Register and demand model</span><span class="gantt-track"><span class="gantt-bar future" style="left:0.00%;width:100.00%"></span></span></div><div class="gantt-section">Define</div><div class="gantt-section">Develop</div><div class="gantt-section">Deliver</div></div><figcaption><span class="fignum">Figure 1</span><span class="figcap">Halo Care twenty week engagement</span></figcaption></figure>
-<p>The excerpts below are the platform&#39;s real returns (trimmed for length, structure intact) from the tutorial-scale slice of the engagement; §13 reproduces the whole loop end-to-end.</p>
-<h3 id="41-session-1-discover-weeks-16">4.1 Session 1 — Discover (weeks 1–6)</h3><p><strong>Drive.</strong></p>
+<p>The excerpts below are illustrative engagement frames built to the verified-disposable CLI/MCP response shapes. Section 13 shows the complete pack-local command sequence; its case IDs and payloads remain synthetic.</p>
+<h3 id="41-session-1-discover-weeks-16">4.1 Session 1 — Discover (weeks 1–6)</h3>
+<p><strong>Drive.</strong></p>
 <div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>/asd run the Halo Care engagement from the brief: telehealth at capacity,
 clinical safety non-negotiable.
 
 @researcher load contextual-inquiry and transcript-mining. Register the 41
 patient interviews, the 4 clinician shadow days, the clinician workload
 diary, and the 18-month appointment extract. Verbatim quotes, provenance on
-every row.</code></pre></div><p><strong>What the plugin did.</strong> The register grew row by content-addressed row (1,983 by week 6). One real add from the slice:</p>
+every row.
+</code></pre></div>
+<p><strong>Illustrative engine behavior.</strong> The register grows row by content-addressed row (1,983 in this synthetic scenario). One representative add from the transcript:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;evidence&quot;: {
     &quot;id&quot;: &quot;94353cdd813f7c078580fa6b5789a1bf9ae7e07305d8e2865b3c60ee2bc6fee9&quot;,
@@ -101,15 +215,22 @@ every row.</code></pre></div><p><strong>What the plugin did.</strong> The regist
     &quot;body&quot;: &quot;I rebooked twice before giving up — nobody could tell me how long the wait was.&quot;,
     &quot;capturedAt&quot;: &quot;2026-08-19T00:21:04.261Z&quot;
   }
-}</code></pre></div><p>The closed kind list bit once, early: the researcher tried to register shadow-day field notes under a fourth kind and the tool refused verbatim —</p>
-<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>asd sd_evidence_add: invalid arguments: &quot;kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]</code></pre></div><p>— so field notes went in as document rows (the notes themselves) and quote rows (what was said). The platform gave the team a single store to argue from.</p>
+}
+</code></pre></div>
+<p>The closed kind list bit once, early: the researcher tried to register shadow-day field notes under a fourth kind and the tool refused verbatim —</p>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>asd sd_evidence_add: invalid arguments: &quot;kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]
+</code></pre></div>
+<p>— so field notes went in as document rows (the notes themselves) and quote rows (what was said). The platform gave the team a single store to argue from.</p>
 <p><strong>Team analysis (outside the engine, marked).</strong> The demand model — including the correction that the <strong>median hid a 2.9x Monday-morning spike and the region &quot;onboarding cliff&quot;</strong> — was the designer&#39;s analysis of the register and raw data, adversarially checked. It changed the delivery plan from &quot;volume&quot; to &quot;capacity.&quot;</p>
 <p><strong>Gate G1.</strong> Register in place; critic over the research plan: no veto; one medium-severity proposal (night-shift sample) adopted. The clinical lead&#39;s minute sits next to the gate in the engagement repo.</p>
 <p><strong>Human judgment.</strong> The designer pushed clinician shadow days over convenience interviews, framed burnout as a safety metric (books 19/20) in front of the clinical lead, and rejected two praise-only transcripts (selection for insight).</p>
-<h3 id="42-session-2-define-weeks-79">4.2 Session 2 — Define (weeks 7–9)</h3><p><strong>Drive.</strong></p>
+<h3 id="42-session-2-define-weeks-79">4.2 Session 2 — Define (weeks 7–9)</h3>
+<p><strong>Drive.</strong></p>
 <div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>@mapper run journey-from-transcripts over the register: three journeys
 (urgent, routine, chronic), every node evidence-cited. Draft the triage
-ladder as a concept brief; hand it to @critic before the governance gate.</code></pre></div><p><strong>What the plugin did.</strong> Three <code>journey-map</code> artifacts went through the acceptance gate. The first urgent attempt — drafted from memory rather than transcripts — came back failed <strong>and persisted</strong>, a draft with the report attached:</p>
+ladder as a concept brief; hand it to @critic before the governance gate.
+</code></pre></div>
+<p><strong>Illustrative journey-gate sequence.</strong> The scenario represents three <code>journey-map</code> artifacts at the acceptance gate. The first urgent attempt is deliberately under-evidenced and is shown persisting as a failed draft, matching verified pack-local engine behavior:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;accepted&quot;: false,
   &quot;status&quot;: &quot;draft&quot;,
@@ -118,14 +239,18 @@ ladder as a concept brief; hand it to @critic before the governance gate.</code>
     { &quot;rule&quot;: &quot;min-evidence-per-node&quot;, &quot;nodeId&quot;: &quot;request&quot;,
       &quot;message&quot;: &quot;node \&quot;request\&quot; cites 0 evidence refs, needs 1&quot; }
   ]
-}</code></pre></div><p>A failed write is not erased, and it cannot sneak through: it sits on the review board with its failures, and the fact-check stays red until it is repaired. The mapper re-derived the nodes from the transcripts and rewrote the artifact in place.</p>
-<p>The triage ladder — four demand classes with four access promises — was drafted into the urgent journey&#39;s queue routing, and that is where the critic met it. The veto, trimmed from the real return:</p>
+}
+</code></pre></div>
+<p>A failed write is not erased and cannot be promoted. The source-defined behavior keeps it as a draft with its failures and leaves fact-check red until repair. In the represented scenario, the Mapper re-derives the nodes from transcripts and rewrites the artifact in place.</p>
+<p>The synthetic triage ladder places four demand classes into the urgent journey&#39;s routing. The next veto frame follows the verified <code>sd_review</code> response shape; its clinical content and IDs are illustrative:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;status&quot;: &quot;draft&quot;,
   &quot;verdict&quot;: &quot;veto&quot;,
   &quot;logArtifactId&quot;: &quot;2de447148c3b4f36b294524d813fef40&quot;,
   &quot;rowsWritten&quot;: 2
-}</code></pre></div><p>and the persisted log&#39;s first row, verbatim from the review-veto-log artifact on disk:</p>
+}
+</code></pre></div>
+<p>and an illustrative first row from the represented <code>review-veto-log</code> artifact:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;id&quot;: &quot;r1&quot;,
   &quot;fields&quot;: {
@@ -135,25 +260,36 @@ ladder as a concept brief; hand it to @critic before the governance gate.</code>
     &quot;message&quot;: &quot;The queue node shows a single routine path while the telemetry row reports p90 41 min at peak; routing symptom class 3 as routine contradicts the register&quot;,
     &quot;fix&quot;: &quot;Split the queue node into urgent-tracked and routine paths and cite the rota-rules-02 document row on the routine path&quot;
   }
-}</code></pre></div><p>The row also carries the telemetry row&#39;s id as its evidence ref. A defect without a fix never reaches the log — the tool rejects it at the boundary (<code>asd sd_review: rows[0]: a defect row requires a &quot;fix&quot;</code>), because the rows are how the owning role remediates. Governance upheld the veto; the ladder was re-derived, re-gated, and the gate minute recorded the critic&#39;s log id next to the clinical lead&#39;s signature.</p>
+}
+</code></pre></div>
+<p>The row also carries the telemetry row&#39;s id as its evidence ref. A defect without a fix never reaches the log — the tool rejects it at the boundary (<code>asd sd_review: rows[0]: a defect row requires a &quot;fix&quot;</code>), because the rows are how the owning role remediates. Governance upheld the veto; the ladder was re-derived, re-gated, and the gate minute recorded the critic&#39;s log id next to the clinical lead&#39;s signature.</p>
 <p><strong>Human judgment.</strong> The designer&#39;s frame — &quot;we do not schedule visits; we deliver access matched to acuity&quot; — became the reference every later artifact cited.</p>
-<h3 id="43-session-3-develop-weeks-1016">4.3 Session 3 — Develop (weeks 10–16)</h3><p><strong>Drive.</strong></p>
+<h3 id="43-session-3-develop-weeks-1016">4.3 Session 3 — Develop (weeks 10–16)</h3>
+<p><strong>Drive.</strong></p>
 <div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>@mapper run orchestration-canvas and service-blueprinting, then
 evidence-gated-blueprint over the care journeys.
 @prototyper walk the warm handoff, the clinician context service, and the
 escalation path as storyboard-walkthrough artifacts: assumption, fidelity,
 subjects, pass/fail criteria.
-@critic review each before governance co-signs the gate.</code></pre></div><p><strong>What the plugin did.</strong> The blueprint&#39;s five lanes and the evidence-gated acceptance rules — at least 5 nodes, every node citing the register, no lane left <code>unknown</code>/<code>tbd</code>/<code>n/a</code> — held the operational design honest: a route that silently reverted to the old 5-day queue was vetoed at review and corrected before the gate. The warm-handoff prototype went through the storyboard discipline: assumption, fidelity, subjects, pass/fail criteria.</p>
+@critic review each before governance co-signs the gate.
+</code></pre></div>
+<p><strong>Illustrative blueprint-and-prototype sequence.</strong> The represented five-lane blueprint applies the source-defined rules: at least five nodes, evidence on every node, and no <code>unknown</code>/<code>tbd</code>/<code>n/a</code> lane. In the synthetic scenario, review catches a route that returns to the old five-day queue, while the warm-handoff storyboard records assumption, fidelity, subjects, and pass/fail criteria.</p>
 <p><strong>Team analysis (outside the engine, marked).</strong> The handoff timing check — the 30-second protocol that would run 90 seconds at scale — came from the designer&#39;s scheduling analysis (with the clinicians), and the 60-second decision-tree protocol was the team&#39;s fix. The platform did not simulate.</p>
 <p><strong>Human judgment.</strong> The designer made the 8-minute wait promise stick against marketing&#39;s &quot;as fast as possible,&quot; insisted the context service respect consent, and chaired the governance reviews where clinical and design language met.</p>
-<h3 id="44-session-4-deliver-weeks-1720">4.4 Session 4 — Deliver (weeks 17–20)</h3><p><strong>Drive.</strong></p>
+<h3 id="44-session-4-deliver-weeks-1720">4.4 Session 4 — Deliver (weeks 17–20)</h3>
+<p><strong>Drive.</strong></p>
 <div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>@measurer build the kpi-set: wait, DNA, resolution, eNPS, NPS — each with
 driver, baseline, source.
 @presenter assemble the steering pack from final artifacts; export the
 executive report.
-@librarian produce the rollout handbook with case-study citations.</code></pre></div><p><strong>What the plugin did.</strong> The kpi-set wired each success criterion to its driver and source. The export wrote real files to the project&#39;s renders directory:</p>
+@librarian produce the rollout handbook with case-study citations.
+</code></pre></div>
+<p><strong>Illustrative engine behavior.</strong> The kpi-set wired each success criterion to its driver and source. The export writes files to the project&#39;s renders directory in the represented flow:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;path&quot;: &quot;…/halo-care-8fbf1a5a/renders/report.executive-summary.html&quot;,
-  &quot;kind&quot;: &quot;executive-summary&quot;, &quot;bytes&quot;: 2789 }</code></pre></div><h4 id="deterministic-fact-check-gate-g4">Deterministic fact-check (gate G4)</h4><p><code>sd_factcheck</code> re-ran integrity, acceptance, and review over the engagement&#39;s artifacts; nothing shipped while any row was red. The tutorial-slice return (§13 runs it live):</p>
+  &quot;kind&quot;: &quot;executive-summary&quot;, &quot;bytes&quot;: 2789 }
+</code></pre></div>
+<h4 id="deterministic-fact-check-gate-g4">Deterministic fact-check (gate G4)</h4>
+<p><code>sd_factcheck</code> is represented replaying integrity, acceptance, and review over the synthetic artifacts. The frame below follows the verified-disposable response shape; §13 demonstrates the pack-local command sequence without claiming a host run:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;pass&quot;: true,
   &quot;rows&quot;: [
@@ -178,18 +314,171 @@ executive report.
       &quot;methodResolution&quot;: &quot;inferred&quot;
     }
   ]
-}</code></pre></div><p>(trimmed to two rows; exit code 0).</p>
+}
+</code></pre></div>
+<p>(trimmed to two rows; exit code 0).</p>
 <p><strong>Team analysis (outside the engine, marked).</strong> The rollout rule — expand a region only when it holds its target four consecutive weeks — was the designer&#39;s governance convention, executed by the humans; when pilot region 2 showed a week-3 DNA anomaly (9.4%, under target), the designer investigated and found a local event, not a regression.</p>
 <p><strong>Human judgment.</strong> The designer ran the incident review (a mis-triage claim that proved unfounded), set the stop rule with the clinical lead, and chose two contrasting pilot regions.</p>
-</section><section class="art-sec sec-5"><span class="sec-kicker">05 · Artifact portfolio</span><h2 id="sec-5-artifacts-portfolio-deterministic-outputs">Artifacts portfolio (deterministic outputs)</h2><h3 id="51-current-state-journey-urgent-care-request-peak-monday">5.1 Current-state journey: urgent care request, peak Monday</h3><figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 232" role="img" aria-hidden="true"><defs><marker id="arr-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Request</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Queue</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Disconnect</text><line x1="0" y1="230" x2="296" y2="230" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 2</span><span class="figcap">1 Current-state journey: urgent care request, peak Monday</span></figcaption></figure>
-<div class="tbl-wrap"><table><thead><tr><th>Phase</th><th>Emotion</th><th>Pain</th></tr></thead><tbody><tr><td>Request</td><td class="num">3</td><td>Works, but unknown wait</td></tr><tr><td scope="row">Triage</td><td class="num">2</td><td>Feels routed, not cared for</td></tr><tr><td scope="row">Between care steps</td><td class="num">1</td><td>Retells story; watch-and-wait gap</td></tr><tr><td scope="row">Follow-through</td><td class="num">2</td><td>No one owns the plan</td></tr></tbody></table></div><h3 id="52-future-state-blueprint-access-ladder-excerpt">5.2 Future-state blueprint (access ladder excerpt)</h3><figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Evidence</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Patient</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Frontstage</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Backstage</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Support</text><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/><line x1="94" y1="220" x2="296" y2="220" stroke="#171817" stroke-width="1.2"/><text x="98" y="216" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of visibility</text><line x1="94" y1="284" x2="296" y2="284" stroke="#171817" stroke-width="1.2"/><text x="98" y="280" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of internal interaction</text></svg><figcaption><span class="fignum">Figure 3</span><span class="figcap">2 Future-state blueprint (access ladder excerpt)</span></figcaption></figure>
-<div class="tbl-wrap"><table><thead><tr><th>Lane</th><th>Action</th><th>Detail</th></tr></thead><tbody><tr><td>Patient</td><td>Symptom-led request</td><td>No forms; triage after intake</td></tr><tr><td scope="row">Frontstage</td><td>Acuity-matched routing</td><td>Four classes, four promises</td></tr><tr><td scope="row">Backstage</td><td>Context service</td><td>Consent-based auto-assembled handoff</td></tr><tr><td scope="row">Support</td><td>Governance</td><td>Co-signs the gate minute</td></tr></tbody></table></div><h3 id="5355-maps-and-personas">5.3–5.5 Maps and personas</h3><figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 979 148" role="img" aria-hidden="true"><defs><marker id="arr-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 83.49090909090908,64.5 120.8,46.5 177.2,46.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 315.2,34.66985645933015 371.6,25 397.6,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 76.26046511627906,94.5 120.8,122.5 146.8,122.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 497.6,25 523.6,25 549.6,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 733.1999999999999,25 759.2,25 794.8139534883721,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 345.59999999999997,122.5 371.6,122.5 401.40000000000003,122.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 315.2,58.33014354066985 371.6,68 447.6,68 523.6,68 641.4,68 759.2,68 794.8139534883721,61.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><rect x="10" y="64.5" width="84.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="52.4" y="83.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Halo CEO</text><rect x="177.2" y="31.5" width="138" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="246.2" y="50.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Governance lead</text><rect x="397.6" y="10" width="100" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="447.6" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Scheduling</text><rect x="146.8" y="107.5" width="198.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="246.2" y="126.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Product and engineering</text><rect x="549.6" y="10" width="183.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="641.4" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Clinicians and locums</text><rect x="785.2" y="31.5" width="183.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="877" y="50.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Patients and families</text><rect x="401.40000000000003" y="107.5" width="92.39999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="447.6" y="126.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Regulator</text></svg><figcaption><span class="fignum">Figure 4</span><span class="figcap">3–5.5 Maps and personas</span></figcaption></figure>
-<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Stakeholder</th><th>Influence</th><th>Interest</th><th>Strategy</th></tr></thead><tbody><tr><td>Governance</td><td>High</td><td>High</td><td>Co-owner of gates</td></tr><tr><td scope="row">Clinicians + locums</td><td>Medium</td><td>High</td><td>Co-designers; burnout evidence</td></tr><tr><td scope="row">Ops/scheduling</td><td>Medium</td><td>High</td><td>Demand model co-authors</td></tr><tr><td scope="row">Product/engineering</td><td>High</td><td>Medium</td><td>Delivery partner</td></tr><tr><td scope="row">Regulator</td><td>High</td><td>Low</td><td>Compliance by design</td></tr><tr><td scope="row">Patients</td><td>Low</td><td>High</td><td>Evidence + personas</td></tr></tbody></table></div><figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 554 380" role="img" aria-hidden="true"><defs><marker id="arr-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 64.40454545454546,142 128.39999999999998,25 196.2,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 303.79999999999995,25 371.59999999999997,25 431.79999999999995,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 72.6090909090909,142 128.39999999999998,91 188.59999999999997,91" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 311.4,91 371.59999999999997,91 459.17272727272723,208" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 102.39999999999999,157 128.39999999999998,157 173.39999999999998,157" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 72.6090909090909,172 128.39999999999998,223 154.39999999999998,223" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 64.40454545454546,172 128.39999999999998,289 173.39999999999998,289" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 296.2,355 371.59999999999997,355 459.17272727272723,238" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><rect x="10" y="142" width="92.39999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="56.199999999999996" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Halo Care</text><rect x="196.2" y="10" width="107.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="249.99999999999997" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Patient app</text><rect x="431.79999999999995" y="10" width="77.19999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="470.4" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Patient</text><rect x="188.59999999999997" y="76" width="122.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="249.99999999999997" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Care platform</text><rect x="397.59999999999997" y="208" width="145.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="470.4" y="227" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">EMR integrations</text><rect x="173.39999999999998" y="142" width="153.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="249.99999999999997" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Pharmacy partners</text><rect x="154.39999999999998" y="208" width="191.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="249.99999999999997" y="227" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Out-of-hours providers</text><rect x="173.39999999999998" y="274" width="153.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="249.99999999999997" y="293" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Referral pathways</text><rect x="203.79999999999998" y="340" width="92.39999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="249.99999999999997" y="359" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Clinician</text></svg><figcaption><span class="fignum">Figure 5</span><span class="figcap">3–5.5 Maps and personas</span></figcaption></figure>
-<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Persona</th><th>Role</th><th>Signature</th><th>Key need</th><th>Evidence</th></tr></thead><tbody><tr><td>P1 The Working Parent</td><td>Patient</td><td>Peak-hours, anxiety-driven</td><td>Same-day, one story</td><td>44</td></tr><tr><td scope="row">P2 The Long-Tail Chronic</td><td>Patient</td><td>Virtual ward, frequent</td><td>Continuity, escalation clarity</td><td>39</td></tr><tr><td scope="row">P3 The Locum GP</td><td>Clinician</td><td>Multi-platform, no context</td><td>Context without retelling</td><td>57</td></tr><tr><td scope="row">P4 The Care Coordinator</td><td>Ops</td><td>Queue juggler</td><td>Routing clarity</td><td>31</td></tr></tbody></table></div><h3 id="56-templates">5.6 Templates</h3><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>Triage ladder: &lt;class&gt; &lt;access promise&gt; &lt;triggers, governance-cited&gt;
+</section><section class="art-sec sec-5"><span class="sec-kicker">05 · Artifact portfolio</span><h2 id="sec-5-artifacts-portfolio-deterministic-outputs">Artifacts portfolio (deterministic outputs)</h2>
+<h3 id="51-current-state-journey-urgent-care-request-peak-monday">5.1 Current-state journey: urgent care request, peak Monday</h3>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 232" role="img" aria-hidden="true"><defs><marker id="arr-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Request</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Queue</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Disconnect</text><line x1="0" y1="230" x2="296" y2="230" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 2</span><span class="figcap">1 Current-state journey: urgent care request, peak Monday</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Emotion</th>
+<th>Pain</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Request</td>
+<td>3</td>
+<td>Works, but unknown wait</td>
+</tr>
+<tr>
+<td>Triage</td>
+<td>2</td>
+<td>Feels routed, not cared for</td>
+</tr>
+<tr>
+<td>Between care steps</td>
+<td>1</td>
+<td>Retells story; watch-and-wait gap</td>
+</tr>
+<tr>
+<td>Follow-through</td>
+<td>2</td>
+<td>No one owns the plan</td>
+</tr>
+</tbody></table>
+<h3 id="52-future-state-blueprint-access-ladder-excerpt">5.2 Future-state blueprint (access ladder excerpt)</h3>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Evidence</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Patient</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Frontstage</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Backstage</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Support</text><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/><line x1="94" y1="220" x2="296" y2="220" stroke="#171817" stroke-width="1.2"/><text x="98" y="216" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of visibility</text><line x1="94" y1="284" x2="296" y2="284" stroke="#171817" stroke-width="1.2"/><text x="98" y="280" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of internal interaction</text></svg><figcaption><span class="fignum">Figure 3</span><span class="figcap">2 Future-state blueprint (access ladder excerpt)</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Lane</th>
+<th>Action</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Patient</td>
+<td>Symptom-led request</td>
+<td>No forms; triage after intake</td>
+</tr>
+<tr>
+<td>Frontstage</td>
+<td>Acuity-matched routing</td>
+<td>Four classes, four promises</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Context service</td>
+<td>Consent-based auto-assembled handoff</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>Governance</td>
+<td>Co-signs the gate minute</td>
+</tr>
+</tbody></table>
+<h3 id="5355-maps-and-personas">5.3–5.5 Maps and personas</h3>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 979 148" role="img" aria-hidden="true"><defs><marker id="arr-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 83.49090909090908,64.5 120.8,46.5 177.2,46.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 315.2,34.66985645933015 371.6,25 397.6,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 76.26046511627906,94.5 120.8,122.5 146.8,122.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 497.6,25 523.6,25 549.6,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 733.1999999999999,25 759.2,25 794.8139534883721,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 345.59999999999997,122.5 371.6,122.5 401.40000000000003,122.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><path d="M 315.2,58.33014354066985 371.6,68 447.6,68 523.6,68 641.4,68 759.2,68 794.8139534883721,61.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-4)"/><rect x="10" y="64.5" width="84.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="52.4" y="83.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Halo CEO</text><rect x="177.2" y="31.5" width="138" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="246.2" y="50.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Governance lead</text><rect x="397.6" y="10" width="100" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="447.6" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Scheduling</text><rect x="146.8" y="107.5" width="198.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="246.2" y="126.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Product and engineering</text><rect x="549.6" y="10" width="183.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="641.4" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Clinicians and locums</text><rect x="785.2" y="31.5" width="183.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="877" y="50.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Patients and families</text><rect x="401.40000000000003" y="107.5" width="92.39999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="447.6" y="126.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Regulator</text></svg><figcaption><span class="fignum">Figure 4</span><span class="figcap">3–5.5 Maps and personas</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Stakeholder</th>
+<th>Influence</th>
+<th>Interest</th>
+<th>Strategy</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Governance</td>
+<td>High</td>
+<td>High</td>
+<td>Co-owner of gates</td>
+</tr>
+<tr>
+<td>Clinicians + locums</td>
+<td>Medium</td>
+<td>High</td>
+<td>Co-designers; burnout evidence</td>
+</tr>
+<tr>
+<td>Ops/scheduling</td>
+<td>Medium</td>
+<td>High</td>
+<td>Demand model co-authors</td>
+</tr>
+<tr>
+<td>Product/engineering</td>
+<td>High</td>
+<td>Medium</td>
+<td>Delivery partner</td>
+</tr>
+<tr>
+<td>Regulator</td>
+<td>High</td>
+<td>Low</td>
+<td>Compliance by design</td>
+</tr>
+<tr>
+<td>Patients</td>
+<td>Low</td>
+<td>High</td>
+<td>Evidence + personas</td>
+</tr>
+</tbody></table>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 554 380" role="img" aria-hidden="true"><defs><marker id="arr-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 64.40454545454546,142 128.39999999999998,25 196.2,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 303.79999999999995,25 371.59999999999997,25 431.79999999999995,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 72.6090909090909,142 128.39999999999998,91 188.59999999999997,91" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 311.4,91 371.59999999999997,91 459.17272727272723,208" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 102.39999999999999,157 128.39999999999998,157 173.39999999999998,157" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 72.6090909090909,172 128.39999999999998,223 154.39999999999998,223" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 64.40454545454546,172 128.39999999999998,289 173.39999999999998,289" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 296.2,355 371.59999999999997,355 459.17272727272723,238" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><rect x="10" y="142" width="92.39999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="56.199999999999996" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Halo Care</text><rect x="196.2" y="10" width="107.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="249.99999999999997" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Patient app</text><rect x="431.79999999999995" y="10" width="77.19999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="470.4" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Patient</text><rect x="188.59999999999997" y="76" width="122.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="249.99999999999997" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Care platform</text><rect x="397.59999999999997" y="208" width="145.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="470.4" y="227" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">EMR integrations</text><rect x="173.39999999999998" y="142" width="153.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="249.99999999999997" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Pharmacy partners</text><rect x="154.39999999999998" y="208" width="191.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="249.99999999999997" y="227" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Out-of-hours providers</text><rect x="173.39999999999998" y="274" width="153.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="249.99999999999997" y="293" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Referral pathways</text><rect x="203.79999999999998" y="340" width="92.39999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="249.99999999999997" y="359" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Clinician</text></svg><figcaption><span class="fignum">Figure 5</span><span class="figcap">3–5.5 Maps and personas</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Role</th>
+<th>Signature</th>
+<th>Key need</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P1 The Working Parent</td>
+<td>Patient</td>
+<td>Peak-hours, anxiety-driven</td>
+<td>Same-day, one story</td>
+<td>44</td>
+</tr>
+<tr>
+<td>P2 The Long-Tail Chronic</td>
+<td>Patient</td>
+<td>Virtual ward, frequent</td>
+<td>Continuity, escalation clarity</td>
+<td>39</td>
+</tr>
+<tr>
+<td>P3 The Locum GP</td>
+<td>Clinician</td>
+<td>Multi-platform, no context</td>
+<td>Context without retelling</td>
+<td>57</td>
+</tr>
+<tr>
+<td>P4 The Care Coordinator</td>
+<td>Ops</td>
+<td>Queue juggler</td>
+<td>Routing clarity</td>
+<td>31</td>
+</tr>
+</tbody></table>
+<h3 id="56-templates">5.6 Templates</h3>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>Triage ladder: &lt;class&gt; &lt;access promise&gt; &lt;triggers, governance-cited&gt;
   &lt;escalation path&gt; &lt;safety stop list&gt; &lt;data source&gt; &lt;critic log id + gate minute ref&gt;
 Warm-handoff (60s): 1) patient + context card 30s | 2) open clinical
   question 20s | 3) confirmation + next contact 10s.
-  Rule: no new assessment in handoff; red flag -&gt; urgent class.</code></pre></div><h3 id="57-mock-dataset-appointment-wait-sample-peak-monday">5.7 Mock dataset (appointment + wait sample, peak Monday)</h3><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>appt_id,day,class,wait_min,dna,first_visit_resolution
+  Rule: no new assessment in handoff; red flag -&gt; urgent class.
+</code></pre></div>
+<h3 id="57-mock-dataset-appointment-wait-sample-peak-monday">5.7 Mock dataset (appointment + wait sample, peak Monday)</h3>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>appt_id,day,class,wait_min,dna,first_visit_resolution
 A-88101,Mon-peak,urgent,24,no,no
 A-88102,Mon-peak,urgent-tracked,19,no,yes
 A-88103,Mon-peak,routine,98,no,no
@@ -197,13 +486,83 @@ A-88104,Mon-peak,urgent,24,yes,NA
 A-88105,Mon-peak,urgent-tracked,21,no,yes
 A-88106,Mon-peak,routine,101,no,no
 A-88107,Mon-peak,urgent,25,no,no
-A-88108,Mon-peak,urgent-tracked,18,yes,NA</code></pre></div><p>Median wait 24 min (22 min daily avg + Monday-peak premium); DNA 2/8 = 25% peak (18% overall pre-state).</p>
-<h3 id="58-charts">5.8 Charts</h3><figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">6.3</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">12.5</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">18.8</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">25</text><line x1="44" y1="304" x2="730" y2="304" stroke="#DEDEDA" stroke-width="1"/><text x="215.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Before</text><text x="558.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">After</text><rect x="588" y="7" width="14" height="10" rx="2" fill="#171817"/><text x="610" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">bar</text><rect x="198.5" y="75.19999999999999" width="34" height="228.8" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="215.5" y="69.19999999999999" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">22</text><rect x="541.5" y="241.6" width="34" height="62.400000000000006" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="558.5" y="235.6" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">6</text></svg><figcaption><span class="fignum">Figure 6</span><span class="figcap">Virtual wait minutes peak</span></figcaption></figure>
+A-88108,Mon-peak,urgent-tracked,18,yes,NA
+</code></pre></div>
+<p>Median wait 24 min (22 min daily avg + Monday-peak premium); DNA 2/8 = 25% peak (18% overall pre-state).</p>
+<h3 id="58-charts">5.8 Charts</h3>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">6.3</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">12.5</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">18.8</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">25</text><line x1="44" y1="304" x2="730" y2="304" stroke="#DEDEDA" stroke-width="1"/><text x="215.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Before</text><text x="558.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">After</text><rect x="588" y="7" width="14" height="10" rx="2" fill="#171817"/><text x="610" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">bar</text><rect x="198.5" y="75.19999999999999" width="34" height="228.8" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="215.5" y="69.19999999999999" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">22</text><rect x="541.5" y="241.6" width="34" height="62.400000000000006" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="558.5" y="235.6" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">6</text></svg><figcaption><span class="fignum">Figure 6</span><span class="figcap">Virtual wait minutes peak</span></figcaption></figure>
 <figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">5</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">10</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">15</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">20</text><line x1="44" y1="304" x2="730" y2="304" stroke="#DEDEDA" stroke-width="1"/><text x="215.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Before</text><text x="558.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">After</text><rect x="588" y="7" width="14" height="10" rx="2" fill="#171817"/><text x="610" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">bar</text><rect x="198.5" y="70" width="34" height="234" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="215.5" y="64" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">18</text><rect x="541.5" y="213" width="34" height="91" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="558.5" y="207" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">7</text></svg><figcaption><span class="fignum">Figure 7</span><span class="figcap">Did not attend percent</span></figcaption></figure>
-<h3 id="59-traceability">5.9 Traceability</h3><div class="tbl-wrap tbl-trace"><table><thead><tr><th>Opportunity</th><th>Principle</th><th>Blueprint change</th><th>KPI</th></tr></thead><tbody><tr><td>Queue-abandonment + DNA</td><td>Access matched to acuity</td><td>Triage ladder, 4 classes</td><td>DNA 7%; wait 6 min</td></tr><tr><td scope="row">Story-retelling</td><td>Continuity of story</td><td>Warm handoff + context</td><td>Resolution 78%</td></tr><tr><td scope="row">Onboarding cliff</td><td>Ramp deliberately</td><td>Regional rollout gate</td><td>Wait variance ≤2 min</td></tr><tr><td scope="row">Clinician burnout</td><td>Internal quality (book 20)</td><td>Context card, carve-outs</td><td>eNPS +25</td></tr></tbody></table></div><h3 id="510-service-quality-audit-via-good-services-audit">5.10 Service quality audit (via good-services-audit)</h3><div class="ba-table"><div class="ba-row ba-header"><span class="ba-head">Only ask once</span><span class="ba-head">1</span><span class="ba-head">4</span></div><div class="ba-row"><span class="bac bac-k">Do not make me wait</span><span class="bac bac-a">1</span><span class="bac bac-b">4</span></div><div class="ba-row"><span class="bac bac-k">Carry out decisions</span><span class="bac bac-a">2</span><span class="bac bac-b">4</span></div><div class="ba-row"><span class="bac bac-k">Overall</span><span class="bac bac-a">24/75</span><span class="bac bac-b">56/75</span></div></div></section><section class="art-sec sec-6"><span class="sec-kicker">06 · Use cases</span><h2 id="sec-6-use-cases-routed-to-the-right-agents">Use cases (routed to the right agents)</h2><p><strong>6.1 The 6:40 am spike.</strong> Mapper session: triage ladder + capacity blueprint from the register; Measurer session: kpi rows for wait/DNA. Peak wait 22→8, DNA −8pts.
+<h3 id="59-traceability">5.9 Traceability</h3>
+<table>
+<thead>
+<tr>
+<th>Opportunity</th>
+<th>Principle</th>
+<th>Blueprint change</th>
+<th>KPI</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Queue-abandonment + DNA</td>
+<td>Access matched to acuity</td>
+<td>Triage ladder, 4 classes</td>
+<td>DNA 7%; wait 6 min</td>
+</tr>
+<tr>
+<td>Story-retelling</td>
+<td>Continuity of story</td>
+<td>Warm handoff + context</td>
+<td>Resolution 78%</td>
+</tr>
+<tr>
+<td>Onboarding cliff</td>
+<td>Ramp deliberately</td>
+<td>Regional rollout gate</td>
+<td>Wait variance ≤2 min</td>
+</tr>
+<tr>
+<td>Clinician burnout</td>
+<td>Internal quality (book 20)</td>
+<td>Context card, carve-outs</td>
+<td>eNPS +25</td>
+</tr>
+</tbody></table>
+<h3 id="510-service-quality-audit-via-good-services-audit">5.10 Service quality audit (via good-services-audit)</h3>
+<table>
+<thead>
+<tr>
+<th>Principle</th>
+<th>Before</th>
+<th>After</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Only ask once</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Do not make me wait</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Carry out decisions</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Overall</td>
+<td>24/75</td>
+<td>56/75</td>
+</tr>
+</tbody></table>
+</section><section class="art-sec sec-6"><span class="sec-kicker">06 · Use cases</span><h2 id="sec-6-use-cases-routed-to-the-right-agents">Use cases (routed to the right agents)</h2>
+<p><strong>6.1 The 6:40 am spike.</strong> Mapper session: triage ladder + capacity blueprint from the register; Measurer session: kpi rows for wait/DNA. Peak wait 22→8, DNA −8pts.
 <strong>6.2 The locum&#39;s first call.</strong> Researcher&#39;s workload-diary evidence → the context-card spec (Prototyper storyboard); the 60s-vs-90s correction was the team&#39;s scheduling analysis (marked). Locum-led resolution 61→76%.
 <strong>6.3 The escalation path.</strong> Mapper&#39;s <code>evidence-gated-blueprint</code> runs; the critic vetoed the over-broadened escalation threshold that would have flooded urgent slots, with a fix row attached. 30-day virtual-ward readmission 12→9%.</p>
-</section><section class="art-sec sec-7"><span class="sec-kicker">07 · SOPs for AI</span><h2 id="sec-7-sops-for-ai-skills-as-the-encoded-method">SOPs for AI — skills as the encoded method</h2><p>The encoding is inspectable, not vibes: each method is a manifest — steps with role + instruction, machine-checkable acceptance rules, an output kind, and the critic review gate — plus a generated SKILL.md the agents load. Before writing anything, <code>sd_method_run</code> returns the contract the result will be judged against. The audit skill&#39;s, trimmed from the real return:</p>
+</section><section class="art-sec sec-7"><span class="sec-kicker">07 · SOPs for AI</span><h2 id="sec-7-sops-for-ai-skills-as-the-encoded-method">SOPs for AI — skills as the encoded method</h2>
+<p>The encoding is inspectable: each method is a manifest — steps with role + instruction, machine-checkable acceptance rules, an output kind, and the critic review gate — plus a generated SKILL.md. Before writing, <code>sd_method_run</code> returns the contract used for acceptance. The following audit fragment is a source-aligned illustrative response:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;method&quot;: { &quot;id&quot;: &quot;good-services-audit&quot;, &quot;phase&quot;: &quot;measurement&quot; },
   &quot;steps&quot;: [
@@ -219,11 +578,74 @@ A-88108,Mon-peak,urgent-tracked,18,yes,NA</code></pre></div><p>Median wait 24 mi
   ],
   &quot;outputKind&quot;: &quot;insight-set&quot;,
   &quot;availableEvidence&quot;: 4
-}</code></pre></div><p>For safety-critical work the load-bearing parts: <strong>referential integrity is absolute</strong> (a cited row that does not resolve is a hard error at write, never persisted — a clinical route hinges on it); <strong>status is draft→final</strong> through the critic&#39;s verdict, never by writing harder; <strong>a veto demotes with rows</strong> — severity, rule, optional evidence, and a mandatory fix — persisted as a review-veto-log that outlives the conversation. Governance is a human gate minuted next to the critic&#39;s log; the platform never pretends to be a clinical authority.</p>
+}
+</code></pre></div>
+<p>For safety-critical work the load-bearing parts: <strong>referential integrity is absolute</strong> (a cited row that does not resolve is a hard error at write, never persisted — a clinical route hinges on it); <strong>status is draft→final</strong> through the critic&#39;s verdict, never by writing harder; <strong>a veto demotes with rows</strong> — severity, rule, optional evidence, and a mandatory fix — persisted as a review-veto-log that outlives the conversation. Governance is a human gate minuted next to the critic&#39;s log; the platform never pretends to be a clinical authority.</p>
 <p><strong>Failure modes observed:</strong> (1) the median-only demand reading was wrong — analyst-corrected, and the register itself stayed because the rows were never wrong, the reading was; (2) a persona cited a nonexistent row — integrity hard error at write, never persisted; (3) an over-broad escalation threshold — critic veto with a fix row; (4) a below-target good-services score with no cited evidence — the method&#39;s own critic step vetoed it.</p>
-</section><section class="art-sec sec-8"><span class="sec-kicker">08 · Value & measurement</span><h2 id="sec-8-value-creation-amp-measurement">Value creation &amp; measurement</h2><div class="ba-table"><div class="ba-row ba-header"><span class="ba-head">Virtual wait (peak)</span><span class="ba-head">22 min</span><span class="ba-head">6 min</span><span class="ba-head">≤8</span></div><div class="ba-row"><span class="bac bac-k">DNA rate</span><span class="bac bac-a">18%</span><span class="bac bac-b">7%</span><span class="bac bac-b">≤10</span></div><div class="ba-row"><span class="bac bac-k">First-visit resolution</span><span class="bac bac-a">61%</span><span class="bac bac-b">78%</span><span class="bac bac-b">≥75</span></div><div class="ba-row"><span class="bac bac-k">Clinician eNPS</span><span class="bac bac-a">−10</span><span class="bac bac-b">+25</span><span class="bac bac-b">≥+15</span></div><div class="ba-row"><span class="bac bac-k">Patient NPS</span><span class="bac bac-a">31</span><span class="bac bac-b">58</span><span class="bac bac-b">≥+50</span></div><div class="ba-row"><span class="bac bac-k">30-day readmission</span><span class="bac bac-a">12%</span><span class="bac bac-b">9%</span><span class="bac bac-b">cohort</span></div><div class="ba-row"><span class="bac bac-k">Cost per consult</span><span class="bac bac-a">100%</span><span class="bac bac-b">94%</span><span class="bac bac-b">illustrative</span></div><div class="ba-row"><span class="bac bac-k">Region variance</span><span class="bac bac-a">100%</span><span class="bac bac-b">18%</span><span class="bac bac-b">relative</span></div></div><p>Causal logic (book 20): internal quality → external value → outcomes. Safety is the first KPI; the rest only count if it holds.</p>
-</section><section class="art-sec sec-9"><span class="sec-kicker">09 · AI tool playbook</span><h2 id="sec-9-ai-tool-playbook">AI tool playbook</h2><p><strong>Claude Code + ASD plugin</strong> — the engagement itself: <code>/asd</code> to plan and dispatch, role agents for the work, skills as the encoded methods, the vendored MCP server underneath. The critic gate was the starring mechanic. Failed at: safety judgment — relational risk stays with the clinical lead. <strong><code>asd</code> CLI</strong> — the same engine bare in the terminal: deterministic cross-checks, the veto/repair/pass loop, exports, and the exit-coded fact-check that ran in CI. <strong>MCP server</strong> — what Claude Code actually calls: the 16 tools, the corpus resources, the role prompts; a self-contained vendored bundle (server + knowledge corpus) that other MCP hosts wire to directly — the manual install does exactly that through a project-root <code>.mcp.json</code>. <strong>GitHub</strong> — issues as work items, PRs as artifact gates, the fact-check&#39;s exit 1 blocking merge.</p>
-</section><section class="art-sec sec-10"><span class="sec-kicker">10 · Lessons learned</span><h2 id="sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</h2><ol>
+</section><section class="art-sec sec-8"><span class="sec-kicker">08 · Value & measurement</span><h2 id="sec-8-value-creation-amp-measurement">Value creation &amp; measurement</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Before</th>
+<th>After</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Virtual wait (peak)</td>
+<td>22 min</td>
+<td>6 min</td>
+<td>≤8</td>
+</tr>
+<tr>
+<td>DNA rate</td>
+<td>18%</td>
+<td>7%</td>
+<td>≤10</td>
+</tr>
+<tr>
+<td>First-visit resolution</td>
+<td>61%</td>
+<td>78%</td>
+<td>≥75</td>
+</tr>
+<tr>
+<td>Clinician eNPS</td>
+<td>−10</td>
+<td>+25</td>
+<td>≥+15</td>
+</tr>
+<tr>
+<td>Patient NPS</td>
+<td>31</td>
+<td>58</td>
+<td>≥+50</td>
+</tr>
+<tr>
+<td>30-day readmission</td>
+<td>12%</td>
+<td>9%</td>
+<td>cohort</td>
+</tr>
+<tr>
+<td>Cost per consult</td>
+<td>100%</td>
+<td>94%</td>
+<td>illustrative</td>
+</tr>
+<tr>
+<td>Region variance</td>
+<td>100%</td>
+<td>18%</td>
+<td>relative</td>
+</tr>
+</tbody></table>
+<p>Causal logic (book 20): internal quality → external value → outcomes. Safety is the first KPI; the rest only count if it holds.</p>
+</section><section class="art-sec sec-9"><span class="sec-kicker">09 · AI tool playbook</span><h2 id="sec-9-ai-tool-playbook">AI tool playbook</h2>
+<p><strong>ASD pack surfaces</strong> — source-verified structure: <code>/asd</code>, ten role agents, 74 executable skills, and the vendored MCP/CLI engine. The Critic gate is the starring mechanic. Host/plugin execution remains unverified; the historical modernization probe recorded 29 tools, 224 resources, and 10 prompts, while the current shared-pack release records 29/225/10 and the representative workflow remains disposable. <strong>GitHub</strong> is a possible governance surface, but no live CI workflow is claimed.</p>
+</section><section class="art-sec sec-10"><span class="sec-kicker">10 · Lessons learned</span><h2 id="sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</h2>
+<ol>
 <li>Median reporting hid the spike; model the distribution, not its center.</li>
 <li>Clinician burnout is a clinical-safety metric (books 19/20); that framing unlocked redesign.</li>
 <li>Governance on the path beats governance after it; the mechanism was the critic&#39;s persisted veto log filed next to a signed human minute.</li>
@@ -231,17 +653,96 @@ A-88108,Mon-peak,urgent-tracked,18,yes,NA</code></pre></div><p>Median wait 24 mi
 <li>A rollout rule the humans run beats a steering-committee promise; it caught and then explained the anomaly.</li>
 <li>Consent boundaries are design constraints; the context service is smaller because of them, and better.</li>
 </ol>
-</section><section class="art-sec sec-11"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2><p><code>03-service-design-from-insight-to-implementation/02-the-design-process.md</code>; <code>18-universal-methods-of-design/04-quantitative-qualitative.md</code>; <code>19-service-management-and-marketing/04-quality-of-service.md</code>; <code>20-the-service-profit-chain/02-internal-service-quality.md</code>; <code>01-this-is-service-design-doing/04-research-methods.md</code>; <code>09-mapping-experiences/04-journey-maps.md</code>, <code>/05-service-blueprints.md</code>; <code>17-101-design-methods/</code>. Platform: <code>platform/packs/claude-code</code> (plugin pack; install in its README), <code>platform/packs/cli/asd</code> (CLI shim), <code>platform/agents</code> + <code>platform/skills</code> (role and method sources), <code>platform/templates/catalog.md</code> (the 38-kind artifact catalog), <code>suite/packages/engine</code> + <code>suite/packages/runtime</code> (tool builders, CLI, fact-check). External: waiting-time norms <code>[unverified]</code>.</p>
-</section><section class="art-sec sec-12"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-appendix-artifact-index">Appendix: artifact index</h2><div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Artifact</th><th>Section</th><th>Kind</th><th>Purpose</th></tr></thead><tbody><tr><td>Urgent journey</td><td>5.1</td><td>journey-map</td><td>Anchor the gap</td></tr><tr><td scope="row">Care blueprint</td><td>5.2</td><td>service-blueprint</td><td>Target operation</td></tr><tr><td scope="row">Stakeholder map</td><td>5.3</td><td>stakeholder-map</td><td>Power/interest</td></tr><tr><td scope="row">Personas</td><td>5.4</td><td>persona-set</td><td>Segments incl. internal</td></tr><tr><td scope="row">Templates</td><td>5.6</td><td>catalog-modeled</td><td>Replication</td></tr><tr><td scope="row">Mock dataset</td><td>5.7</td><td>evidence rows</td><td>Evidence realism</td></tr><tr><td scope="row">Charts</td><td>5.8</td><td>kpi-set data</td><td>Metrics</td></tr><tr><td scope="row">Traceability</td><td>5.9</td><td>catalog-modeled</td><td>Principle linkage</td></tr><tr><td scope="row">Quality audit</td><td>5.10</td><td>insight-set</td><td>Good Services</td></tr><tr><td scope="row">Critic veto log</td><td>4.2</td><td>review-veto-log</td><td>The veto, persisted</td></tr></tbody></table></div></section><section class="art-sec"><h2 id="sec-13-tutorial-reproduce-this-engagement-20-minutes">Tutorial — reproduce this engagement (20 minutes)</h2><p>Same lifecycle as the sessions above, at tutorial scale. Every step was run against the built CLI in a scratch workspace; outputs below are the real returns, trimmed for length and never altered in structure. Evidence ids are stable across machines because they are content-addressed sha256; your project and artifact ids will differ.</p>
+</section><section class="art-sec sec-11"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2>
+<p><code>03-service-design-from-insight-to-implementation/02-the-design-process.md</code>; <code>18-universal-methods-of-design/04-quantitative-qualitative.md</code>; <code>19-service-management-and-marketing/04-quality-of-service.md</code>; <code>20-the-service-profit-chain/02-internal-service-quality.md</code>; <code>01-this-is-service-design-doing/04-research-methods.md</code>; <code>09-mapping-experiences/04-journey-maps.md</code>, <code>/05-service-blueprints.md</code>; <code>17-101-design-methods/</code>. Platform: <code>platform/packs/claude-code</code> (plugin pack; install in its README), <code>platform/packs/cli/asd</code> (CLI shim), <code>platform/agents</code> + <code>platform/skills</code> (role and method sources), <code>platform/templates/catalog.md</code> (38-row vocabulary; six authored templates, with per-kind runtime typed schemas deferred), <code>suite/packages/engine</code> + <code>suite/packages/runtime</code> (tool builders, CLI, fact-check). External: waiting-time norms <code>[unverified]</code>.</p>
+</section><section class="art-sec sec-12"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-appendix-artifact-index">Appendix: artifact index</h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Kind</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Urgent journey</td>
+<td>5.1</td>
+<td>journey-map</td>
+<td>Anchor the gap</td>
+</tr>
+<tr>
+<td>Care blueprint</td>
+<td>5.2</td>
+<td>service-blueprint</td>
+<td>Target operation</td>
+</tr>
+<tr>
+<td>Stakeholder map</td>
+<td>5.3</td>
+<td>stakeholder-map</td>
+<td>Power/interest</td>
+</tr>
+<tr>
+<td>Personas</td>
+<td>5.4</td>
+<td>persona-set</td>
+<td>Segments incl. internal</td>
+</tr>
+<tr>
+<td>Templates</td>
+<td>5.6</td>
+<td>catalog-modeled</td>
+<td>Replication</td>
+</tr>
+<tr>
+<td>Mock dataset</td>
+<td>5.7</td>
+<td>evidence rows</td>
+<td>Evidence realism</td>
+</tr>
+<tr>
+<td>Charts</td>
+<td>5.8</td>
+<td>kpi-set data</td>
+<td>Metrics</td>
+</tr>
+<tr>
+<td>Traceability</td>
+<td>5.9</td>
+<td>catalog-modeled</td>
+<td>Principle linkage</td>
+</tr>
+<tr>
+<td>Quality audit</td>
+<td>5.10</td>
+<td>insight-set</td>
+<td>Good Services</td>
+</tr>
+<tr>
+<td>Critic veto log</td>
+<td>4.2</td>
+<td>review-veto-log</td>
+<td>The veto, persisted</td>
+</tr>
+</tbody></table>
+</section><section class="art-sec"><h2 id="sec-13-tutorial-reproduce-this-engagement-20-minutes">Tutorial — reproduce this engagement (20 minutes)</h2>
+<p>This tutorial uses the same lifecycle at small scale. Its command syntax and response structure are aligned to the verified-disposable pack-local CLI/MCP workflow, but the case-specific IDs, outputs, and clinical content below are illustrative rather than a retained execution transcript. Evidence IDs are content-addressed when the commands are actually run; project and artifact IDs are minted per workspace.</p>
 <p>Setup — a scratch workspace, and the CLI shim from the repo checkout:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>cd &lt;repo&gt;                                    # the agentic-service-designer checkout
 export ASD_WORKSPACE=$HOME/consult-halo-care # fresh scratch workspace
-asd() { platform/packs/cli/asd &quot;$@&quot;; }       # the CLI shim</code></pre></div><p><strong>1. Create the project</strong> (dashed alias; <code>asd sd_project_create</code> works identically):</p>
+asd() { platform/packs/cli/asd &quot;$@&quot;; }       # the CLI shim
+</code></pre></div>
+<p><strong>1. Create the project</strong> (dashed alias; <code>asd sd_project_create</code> works identically):</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd project-create --name halo-care --client &quot;Fictional composite&quot; \
   --sector healthcare --service &quot;telehealth and virtual ward&quot; --phase discover
-PID=$(asd project-list | grep -oE 'halo-care-[a-f0-9]{8}' | head -1)</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;project&quot;: { &quot;projectId&quot;: &quot;halo-care-8fbf1a5a&quot;, &quot;name&quot;: &quot;halo-care&quot;,
+PID=$(asd project-list | grep -oE &#39;halo-care-[a-f0-9]{8}&#39; | head -1)
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;project&quot;: { &quot;projectId&quot;: &quot;halo-care-8fbf1a5a&quot;, &quot;name&quot;: &quot;halo-care&quot;,
   &quot;client&quot;: &quot;Fictional composite&quot;, &quot;sector&quot;: &quot;healthcare&quot;,
-  &quot;service&quot;: &quot;telehealth and virtual ward&quot;, &quot;phase&quot;: &quot;discover&quot; } }</code></pre></div><p><strong>2. Register evidence</strong> — the three real kinds (<code>quote</code>, <code>telemetry</code>, <code>document</code>):</p>
+  &quot;service&quot;: &quot;telehealth and virtual ward&quot;, &quot;phase&quot;: &quot;discover&quot; } }
+</code></pre></div>
+<p><strong>2. Register evidence</strong> — the three supported kinds (<code>quote</code>, <code>telemetry</code>, <code>document</code>):</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd evidence-add --projectId &quot;$PID&quot; --source patient-041 --kind quote \
   --body &quot;I rebooked twice before giving up — nobody could tell me how long the wait was.&quot;
 asd evidence-add --projectId &quot;$PID&quot; --source locum-07 --kind quote \
@@ -249,7 +750,9 @@ asd evidence-add --projectId &quot;$PID&quot; --source locum-07 --kind quote \
 asd evidence-add --projectId &quot;$PID&quot; --source wait-stats-aug --kind telemetry \
   --body &quot;Peak Monday virtual wait p50 24 min p90 41 min; did-not-attend 18 percent; first-visit resolution 61 percent.&quot;
 asd evidence-add --projectId &quot;$PID&quot; --source rota-rules-02 --kind document \
-  --body &quot;Under current rota rules no region can hold a 10-minute triage promise at Monday peak.&quot;</code></pre></div><p>One real return:</p>
+  --body &quot;Under current rota rules no region can hold a 10-minute triage promise at Monday peak.&quot;
+</code></pre></div>
+<p>Illustrative response shape:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;evidence&quot;: {
     &quot;id&quot;: &quot;94353cdd813f7c078580fa6b5789a1bf9ae7e07305d8e2865b3c60ee2bc6fee9&quot;,
@@ -259,21 +762,31 @@ asd evidence-add --projectId &quot;$PID&quot; --source rota-rules-02 --kind docu
     &quot;body&quot;: &quot;I rebooked twice before giving up — nobody could tell me how long the wait was.&quot;,
     &quot;capturedAt&quot;: &quot;2026-08-19T00:21:04.261Z&quot;
   }
-}</code></pre></div><p>Capture the four ids from the query (search matches the body, case-insensitive):</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>E1=$(asd evidence-query --projectId &quot;$PID&quot; --search rebooked | grep -oE '[a-f0-9]{64}' | head -1)
-E2=$(asd evidence-query --projectId &quot;$PID&quot; --search context  | grep -oE '[a-f0-9]{64}' | head -1)
-E3=$(asd evidence-query --projectId &quot;$PID&quot; --search p50      | grep -oE '[a-f0-9]{64}' | head -1)
-E4=$(asd evidence-query --projectId &quot;$PID&quot; --search rota     | grep -oE '[a-f0-9]{64}' | head -1)</code></pre></div><p>Try a fourth kind and watch the boundary hold (exit code 1, nothing persisted):</p>
+}
+</code></pre></div>
+<p>Capture the four ids from the query (search matches the body, case-insensitive):</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>E1=$(asd evidence-query --projectId &quot;$PID&quot; --search rebooked | grep -oE &#39;[a-f0-9]{64}&#39; | head -1)
+E2=$(asd evidence-query --projectId &quot;$PID&quot; --search context  | grep -oE &#39;[a-f0-9]{64}&#39; | head -1)
+E3=$(asd evidence-query --projectId &quot;$PID&quot; --search p50      | grep -oE &#39;[a-f0-9]{64}&#39; | head -1)
+E4=$(asd evidence-query --projectId &quot;$PID&quot; --search rota     | grep -oE &#39;[a-f0-9]{64}&#39; | head -1)
+</code></pre></div>
+<p>Try a fourth kind and watch the boundary hold (exit code 1, nothing persisted):</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd evidence-add --projectId &quot;$PID&quot; --source shadow-day-3 --kind observation \
-  --body &quot;Clinicians keep a paper crib sheet.&quot;</code></pre></div><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>asd sd_evidence_add: invalid arguments: &quot;kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]
-running `asd help` shows usage</code></pre></div><p><strong>3. Write the journey.</strong> <code>journey-from-transcripts</code> turns register rows into a journey-map artifact; every node must cite evidence:</p>
+  --body &quot;Clinicians keep a paper crib sheet.&quot;
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>asd sd_evidence_add: invalid arguments: &quot;kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]
+running `asd help` shows usage
+</code></pre></div>
+<p><strong>3. Write the journey.</strong> <code>journey-from-transcripts</code> turns register rows into a journey-map artifact; every node must cite evidence:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>NODES=$(cat &lt;&lt;JSON
 [{&quot;id&quot;:&quot;request&quot;,&quot;label&quot;:&quot;Symptom-led request at 6:40am&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;3&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;$E1&quot;},{&quot;evidenceId&quot;:&quot;$E3&quot;}]},{&quot;id&quot;:&quot;queue&quot;,&quot;label&quot;:&quot;Triage queue with unknown wait&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;2&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;$E1&quot;},{&quot;evidenceId&quot;:&quot;$E3&quot;}]},{&quot;id&quot;:&quot;retell&quot;,&quot;label&quot;:&quot;Retells story at handoff&quot;,&quot;kind&quot;:&quot;pain&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;1&quot;,&quot;touchpoint&quot;:&quot;video-call&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;$E2&quot;}]},{&quot;id&quot;:&quot;plan&quot;,&quot;label&quot;:&quot;Care plan without follow-through&quot;,&quot;kind&quot;:&quot;pain&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;2&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;$E2&quot;}]}]
 JSON
 )
 asd artifact-write --projectId &quot;$PID&quot; --methodId journey-from-transcripts \
   --title &quot;Urgent care request at Monday peak&quot; --nodes &quot;$NODES&quot;
-AID=$(asd artifact-list --projectId &quot;$PID&quot; | grep -oE '&quot;id&quot;: &quot;[a-f0-9]{32}&quot;' | head -1 | grep -oE '[a-f0-9]{32}')</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+AID=$(asd artifact-list --projectId &quot;$PID&quot; | grep -oE &#39;&quot;id&quot;: &quot;[a-f0-9]{32}&quot;&#39; | head -1 | grep -oE &#39;[a-f0-9]{32}&#39;)
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;accepted&quot;: true,
   &quot;status&quot;: &quot;draft&quot;,
   &quot;artifact&quot;: {
@@ -285,9 +798,13 @@ AID=$(asd artifact-list --projectId &quot;$PID&quot; | grep -oE '&quot;id&quot;:
     &quot;status&quot;: &quot;draft&quot;
   },
   &quot;failures&quot;: []
-}</code></pre></div><p>Accepted, and still <code>draft</code>: every method manifest declares the critic review gate, so acceptance alone never finalizes an artifact.</p>
+}
+</code></pre></div>
+<p>Accepted, and still <code>draft</code>: every method manifest declares the critic review gate, so acceptance alone never finalizes an artifact.</p>
 <p><strong>4. Peek at a method contract.</strong> <code>sd_method_run</code> returns what the method will demand before you write — steps, gates, acceptance rules:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd method-run --methodId good-services-audit --projectId &quot;$PID&quot;</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd method-run --methodId good-services-audit --projectId &quot;$PID&quot;
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;method&quot;: { &quot;id&quot;: &quot;good-services-audit&quot;, &quot;phase&quot;: &quot;measurement&quot; },
   &quot;steps&quot;: [
     { &quot;role&quot;: &quot;researcher&quot;, &quot;instruction&quot;: &quot;Score the live service against each heuristic …&quot; },
@@ -298,19 +815,25 @@ AID=$(asd artifact-list --projectId &quot;$PID&quot; | grep -oE '&quot;id&quot;:
     { &quot;rule&quot;: &quot;field-non-empty&quot;, &quot;field&quot;: &quot;theme&quot; } ],
   &quot;outputKind&quot;: &quot;insight-set&quot;,
   &quot;availableEvidence&quot;: 4
-}</code></pre></div><p><strong>5. Put the critic on the write path.</strong> The journey&#39;s single routine queue contradicts the telemetry; veto with a defect (which must carry a <code>fix</code>) plus a proposal:</p>
+}
+</code></pre></div>
+<p><strong>5. Put the critic on the write path.</strong> The journey&#39;s single routine queue contradicts the telemetry; veto with a defect (which must carry a <code>fix</code>) plus a proposal:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>ROWS=$(cat &lt;&lt;JSON
 [{&quot;rowKind&quot;:&quot;defect&quot;,&quot;severity&quot;:&quot;high&quot;,&quot;rule&quot;:&quot;evidence-sufficiency&quot;,&quot;message&quot;:&quot;The queue node shows a single routine path while the telemetry row reports p90 41 min at peak; routing symptom class 3 as routine contradicts the register&quot;,&quot;fix&quot;:&quot;Split the queue node into urgent-tracked and routine paths and cite the rota-rules-02 document row on the routine path&quot;,&quot;evidenceId&quot;:&quot;$E3&quot;},{&quot;rowKind&quot;:&quot;proposal&quot;,&quot;severity&quot;:&quot;medium&quot;,&quot;rule&quot;:&quot;evidence-sufficiency&quot;,&quot;message&quot;:&quot;The follow-through node rests on one locum quote; add a patient-side row before the next gate&quot;}]
 JSON
 )
-asd review --projectId &quot;$PID&quot; --artifactId &quot;$AID&quot; --verdict veto --rows &quot;$ROWS&quot;</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+asd review --projectId &quot;$PID&quot; --artifactId &quot;$AID&quot; --verdict veto --rows &quot;$ROWS&quot;
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;status&quot;: &quot;draft&quot;,
   &quot;verdict&quot;: &quot;veto&quot;,
   &quot;artifact&quot;: { &quot;id&quot;: &quot;68897cff12ba43a581451187b4918bf2&quot;, &quot;status&quot;: &quot;draft&quot;,
     &quot;review&quot;: { &quot;verdict&quot;: &quot;veto&quot;, &quot;logArtifactId&quot;: &quot;2de447148c3b4f36b294524d813fef40&quot; } },
   &quot;logArtifactId&quot;: &quot;2de447148c3b4f36b294524d813fef40&quot;,
   &quot;rowsWritten&quot;: 2
-}</code></pre></div><p>The artifact is demoted to <code>draft</code>, and the rows persist as a <code>review-veto-log</code> artifact — itself <code>final</code>, linked by <code>reviewOf</code>. On disk: <code>artifacts/review-veto-log.review-urgent-care-request-at-monday-pea.2de44714.json</code>.</p>
+}
+</code></pre></div>
+<p>The verified engine contract demotes the artifact to <code>draft</code> and persists the rows as a final <code>review-veto-log</code> linked by <code>reviewOf</code>. The shown path, <code>artifacts/review-veto-log.review-urgent-care-request-at-monday-pea.2de44714.json</code>, belongs to the illustrative transcript.</p>
 <p><strong>6. Repair in place.</strong> Rewriting with <code>--artifactId</code> updates the same artifact — the queue node splits, the rota document gets cited:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>NODES=$(cat &lt;&lt;JSON
 [{&quot;id&quot;:&quot;request&quot;,&quot;label&quot;:&quot;Symptom-led request at 6:40am&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;3&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;$E1&quot;},{&quot;evidenceId&quot;:&quot;$E3&quot;}]},{&quot;id&quot;:&quot;queue-urgent&quot;,&quot;label&quot;:&quot;Urgent-tracked path at peak&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;2&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;$E3&quot;}]},{&quot;id&quot;:&quot;queue-routine&quot;,&quot;label&quot;:&quot;Routine path constrained by rota rules&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;2&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;$E3&quot;},{&quot;evidenceId&quot;:&quot;$E4&quot;}]},{&quot;id&quot;:&quot;retell&quot;,&quot;label&quot;:&quot;Retells story at handoff&quot;,&quot;kind&quot;:&quot;pain&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;1&quot;,&quot;touchpoint&quot;:&quot;video-call&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;$E2&quot;}]},{&quot;id&quot;:&quot;plan&quot;,&quot;label&quot;:&quot;Care plan without follow-through&quot;,&quot;kind&quot;:&quot;pain&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;2&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;$E1&quot;},{&quot;evidenceId&quot;:&quot;$E2&quot;}]}]
@@ -318,24 +841,36 @@ JSON
 )
 asd artifact-write --projectId &quot;$PID&quot; --artifactId &quot;$AID&quot; \
   --methodId journey-from-transcripts \
-  --title &quot;Urgent care request at Monday peak&quot; --nodes &quot;$NODES&quot;</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;accepted&quot;: true, &quot;status&quot;: &quot;draft&quot;,
-  &quot;artifact&quot;: { &quot;id&quot;: &quot;68897cff12ba43a581451187b4918bf2&quot; }, &quot;failures&quot;: [] }</code></pre></div><p><strong>7. Pass the gate.</strong> A pass verdict carries no defect rows:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd review --projectId &quot;$PID&quot; --artifactId &quot;$AID&quot; --verdict pass --rows '[]'</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+  --title &quot;Urgent care request at Monday peak&quot; --nodes &quot;$NODES&quot;
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;accepted&quot;: true, &quot;status&quot;: &quot;draft&quot;,
+  &quot;artifact&quot;: { &quot;id&quot;: &quot;68897cff12ba43a581451187b4918bf2&quot; }, &quot;failures&quot;: [] }
+</code></pre></div>
+<p><strong>7. Pass the gate.</strong> A pass verdict carries no defect rows and must include at least one evidence-cited review row:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd review --projectId &quot;$PID&quot; --artifactId &quot;$AID&quot; --verdict pass --rows &#39;[{&quot;rowKind&quot;:&quot;proposal&quot;,&quot;severity&quot;:&quot;low&quot;,&quot;rule&quot;:&quot;traceability&quot;,&quot;message&quot;:&quot;Retain the peak-demand evidence when this journey is revised&quot;,&quot;evidenceId&quot;:&quot;&#39;$E1&#39;&quot;}]&#39;
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;status&quot;: &quot;final&quot;,
   &quot;verdict&quot;: &quot;pass&quot;,
   &quot;artifact&quot;: { &quot;id&quot;: &quot;68897cff12ba43a581451187b4918bf2&quot;, &quot;status&quot;: &quot;final&quot;,
     &quot;review&quot;: { &quot;verdict&quot;: &quot;pass&quot;, &quot;logArtifactId&quot;: &quot;2de447148c3b4f36b294524d813fef40&quot; } },
   &quot;logArtifactId&quot;: &quot;2de447148c3b4f36b294524d813fef40&quot;,
-  &quot;rowsWritten&quot;: 0
-}</code></pre></div><p>Same log id as the veto: one log per artifact, rows continuing across verdicts; the pass adds none. <code>sd_review_list</code> is the review board — both artifacts, their gate state, and the link:</p>
+  &quot;rowsWritten&quot;: 1
+}
+</code></pre></div>
+<p>Same log id as the veto: one log per artifact, rows continuing across verdicts; the pass adds none. <code>sd_review_list</code> is the review board — both artifacts, their gate state, and the link:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;artifacts&quot;: [
   { &quot;artifactId&quot;: &quot;68897cff12ba43a581451187b4918bf2&quot;, &quot;kind&quot;: &quot;journey-map&quot;,
     &quot;status&quot;: &quot;final&quot;, &quot;reviewGate&quot;: &quot;critic&quot;, &quot;verdict&quot;: &quot;pass&quot;,
     &quot;logArtifactId&quot;: &quot;2de447148c3b4f36b294524d813fef40&quot;, &quot;failures&quot;: [] },
   { &quot;artifactId&quot;: &quot;2de447148c3b4f36b294524d813fef40&quot;, &quot;kind&quot;: &quot;review-veto-log&quot;,
     &quot;status&quot;: &quot;final&quot;, &quot;reviewGate&quot;: null, &quot;verdict&quot;: null,
-    &quot;reviewOf&quot;: &quot;68897cff12ba43a581451187b4918bf2&quot; } ] }</code></pre></div><p><strong>8. Deterministic fact-check.</strong> <code>sd_factcheck</code> replays integrity, acceptance, and review over every artifact — the gate before calling a phase complete:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd factcheck --projectId &quot;$PID&quot;; echo &quot;exit: $?&quot;</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+    &quot;reviewOf&quot;: &quot;68897cff12ba43a581451187b4918bf2&quot; } ] }
+</code></pre></div>
+<p><strong>8. Deterministic fact-check.</strong> <code>sd_factcheck</code> replays integrity, acceptance, and review over every artifact — the gate before calling a phase complete:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd factcheck --projectId &quot;$PID&quot;; echo &quot;exit: $?&quot;
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;pass&quot;: true,
   &quot;rows&quot;: [
     { &quot;artifactId&quot;: &quot;68897cff12ba43a581451187b4918bf2&quot;, &quot;kind&quot;: &quot;journey-map&quot;,
@@ -349,15 +884,25 @@ asd artifact-write --projectId &quot;$PID&quot; --artifactId &quot;$AID&quot; \
       &quot;review&quot;: { &quot;pass&quot;: true, &quot;gate&quot;: null, &quot;verdict&quot;: null },
       &quot;methodId&quot;: null, &quot;methodResolution&quot;: &quot;inferred&quot; }
   ]
-}</code></pre></div><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>exit: 0</code></pre></div><p><strong>9. Export.</strong> The presenter surface writes real files:</p>
+}
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>exit: 0
+</code></pre></div>
+<p><strong>9. Export.</strong> The presenter surface writes files when run; these example paths are illustrative:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd export-report --projectId &quot;$PID&quot; --kind executive-summary
-asd export-artifact --projectId &quot;$PID&quot; --artifactId &quot;$AID&quot;</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;path&quot;: &quot;…/halo-care-8fbf1a5a/renders/report.executive-summary.html&quot;,
+asd export-artifact --projectId &quot;$PID&quot; --artifactId &quot;$AID&quot;
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;path&quot;: &quot;…/halo-care-8fbf1a5a/renders/report.executive-summary.html&quot;,
   &quot;kind&quot;: &quot;executive-summary&quot;, &quot;bytes&quot;: 2789 }
 { &quot;path&quot;: &quot;…/halo-care-8fbf1a5a/renders/journey-map.68897cff.svg&quot;,
-  &quot;kind&quot;: &quot;journey-map&quot;, &quot;title&quot;: &quot;Urgent care request at Monday peak&quot;, &quot;bytes&quot;: 5837 }</code></pre></div><p><strong>10. Watch the gate bite.</strong> Write from memory — zero evidence — and see what &quot;always persisted&quot; means:</p>
+  &quot;kind&quot;: &quot;journey-map&quot;, &quot;title&quot;: &quot;Urgent care request at Monday peak&quot;, &quot;bytes&quot;: 5837 }
+</code></pre></div>
+<p><strong>10. Watch the gate bite.</strong> Write from memory — zero evidence — and see what &quot;always persisted&quot; means:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd artifact-write --projectId &quot;$PID&quot; --methodId journey-from-transcripts \
   --title &quot;Urgent journey from memory&quot; \
-  --nodes '[{&quot;id&quot;:&quot;request&quot;,&quot;label&quot;:&quot;Symptom-led request&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;3&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[]}]'</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+  --nodes &#39;[{&quot;id&quot;:&quot;request&quot;,&quot;label&quot;:&quot;Symptom-led request&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;3&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[]}]&#39;
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;accepted&quot;: false,
   &quot;status&quot;: &quot;draft&quot;,
   &quot;failures&quot;: [
@@ -365,14 +910,16 @@ asd export-artifact --projectId &quot;$PID&quot; --artifactId &quot;$AID&quot;</
     { &quot;rule&quot;: &quot;min-evidence-per-node&quot;, &quot;nodeId&quot;: &quot;request&quot;,
       &quot;message&quot;: &quot;node \&quot;request\&quot; cites 0 evidence refs, needs 1&quot; }
   ]
-}</code></pre></div><p>The failed write is on the board now — there is no delete tool. Re-run step 8 and the fact-check exits 1, that row&#39;s acceptance red, until you repair it in place with <code>--artifactId</code> and cited nodes. That is the contract: nothing unevidenced ships, and nothing unevidenced disappears either.</p>
-<p><strong>What you should see:</strong> <code>accepted: true</code> then <code>status: draft</code>; the veto demoting with <code>rowsWritten: 2</code>; the pass promoting to <code>final</code>; <code>&quot;pass&quot;: true</code> with exit 0; two files under <code>renders/</code>. In your real engagement, add the governance convention on top: before calling a gate, file the clinical lead&#39;s signed minute next to the critic&#39;s log id — the safety gate is human-run, and the platform&#39;s veto log is its evidence trail.</p>
+}
+</code></pre></div>
+<p>The failed write is on the board now — there is no delete tool. Re-run step 8 and the fact-check exits 1, that row&#39;s acceptance red, until you repair it in place with <code>--artifactId</code> and cited nodes. That is the contract: nothing unevidenced ships, and nothing unevidenced disappears either.</p>
+<p><strong>Expected pack-local behavior:</strong> <code>accepted: true</code> then <code>status: draft</code>; the veto demotes with <code>rowsWritten: 2</code>; the pass promotes to <code>final</code>; fact-check reports <code>&quot;pass&quot;: true</code> with exit 0; export writes under <code>renders/</code>. In an actual engagement, add the governance convention: file the clinical lead&#39;s signed minute next to the Critic log ID before the human-run safety gate.</p>
 <p><strong>Try-it checklist.</strong> (1) Install the plugin (§3) and open a session with <code>/asd</code>; (2) <code>@researcher</code> → two evidence rows, then a third with an invented kind to see the boundary; (3) <code>@mapper</code> → write the journey and make the gate fail a zero-evidence node; (4) propose a triage rule that contradicts your own evidence and watch <code>@critic</code> veto it — note the mandatory fix on the defect row; (5) run <code>sd_factcheck</code> at the gate and read the per-artifact rows, then repair until exit 0.</p>
 </section></article></div>
-    <div class="cross-links"><a class="xlink" href="./32/index.html"><span class="lbl">← Previous case</span><span class="ttl">32. Air in the Cylinders: Servitizing a Capital-Equipment Vendor with the ASD Plugin</span><span class="rt">22 min read</span></a><a class="xlink" href="./34/index.html"><span class="lbl">Next case →</span><span class="ttl">34. The Street of Small Business: Banking That Learns the Business, on the ASD Plugin</span><span class="rt">23 min read</span></a></div>
+    <div class="cross-links"><a class="xlink" href="../32/index.html"><span class="lbl">← Previous case</span><span class="ttl">32. Air in the Cylinders: Servitizing a Capital-Equipment Vendor with the ASD Plugin</span><span class="rt">22 min read</span></a><a class="xlink" href="../34/index.html"><span class="lbl">Next case →</span><span class="ttl">34. The Street of Small Business: Banking That Learns the Business, on the ASD Plugin</span><span class="rt">23 min read</span></a></div>
     <div class="art-foot">
-      <span>7 figures · ~5.7k words · evidence-cited · reviewed by an adversarial AI critic.</span>
-      · <a href="../index.html">Back to the archive</a>
+    <span>7 figures · ~5.7k words · evidence-cited · reviewed by an adversarial AI critic.</span>
+    · <a href="../../index.html">Back to the archive</a>
     </div>
     <button class="backtop" id="backtop" type="button">Back to top</button></main>
 <footer class="footer">
@@ -380,4 +927,5 @@ asd export-artifact --projectId &quot;$PID&quot; --artifactId &quot;$AID&quot;</
   <span><a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
 </footer>
 <script src="../../assets/site.js"></script>
+
 </body></html>

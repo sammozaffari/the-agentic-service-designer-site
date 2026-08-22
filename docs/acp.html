@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The asd-acp/1 host-independent collaboration envelope, its record-only capability, and the fail-closed boundary around live agent transport.">
+<title>ACP and collaboration records — The Agentic Service Designer</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
+
+</head><body>
+<header class="site-head">
+  <a class="brand" href="../index.html">
+    <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
+    <div class="brand-sub">Sam Mozaffari</div>
+  </a>
+  <nav class="main-nav">
+    <a href="../index.html" class="">Index</a>
+    <a href="../courses.html" class="">Courses</a>
+    <a href="../harness.html" class="">Harness</a>
+    <a href="../docs/index.html" class="on">Docs</a>
+    <a href="../about.html" class="">About</a>
+    <a href="../cv.html" class="">CV</a>
+  </nav>
+</header>
+<main class="art">
+  <div class="art-progress"><div class="art-progress-bar" id="progress"></div></div>
+  <nav class="docs-tabs" aria-label="Docs sections"><a href="./index.html">Start</a><a href="./plugin-claude-code.html">Surfaces</a><a href="./acp.html" class="on">Concepts</a><a href="./reference-tools.html">Reference</a><a href="./use-cases.html">Use cases</a></nav>
+  <section class="page-hero">
+    <span class="kicker">Docs · Concepts</span>
+    <h1>ACP and collaboration records</h1>
+    <p class="lede">The asd-acp/1 host-independent collaboration envelope, its record-only capability, and the fail-closed boundary around live agent transport.</p>
+  </section>
+  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Concepts</b><ol><li><a href="./acp.html" class="on">ACP and collaboration records</a></li><li><a href="./concepts.html">Engine concepts</a></li><li><a href="./tutorials.html">Tutorials</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#what-the-protocol-records">What the protocol records</a></li><li><a href="#the-current-capability-contract">The current capability contract</a></li><li><a href="#typed-handoffs">Typed handoffs</a></li><li><a href="#host-integration-pattern">Host integration pattern</a></li><li><a href="#validation-and-examples">Validation and examples</a></li><li><a href="#what-acp-does-not-provide">What ACP does not provide</a></li></ol></nav></aside><article class="art-body"><h1 id="acp-and-collaboration-records">ACP and collaboration records</h1>
+<p>ASD&#39;s Agent Collaboration Protocol (ACP) is a typed JSON event envelope for
+recording collaboration across humans, roles, services, and host adapters. It
+gives an engagement a replayable history without pretending that every host can
+spawn or transport an agent. The current protocol identifier is <code>asd-acp/1</code>.</p>
+<h2 id="what-the-protocol-records">What the protocol records</h2>
+<p>An ACP event contains <code>version</code>, <code>protocolVersion</code>, <code>eventId</code>, monotonically
+increasing <code>sequence</code>, <code>type</code>, <code>actorId</code>, and a JSON-only <code>payload</code>. Event types
+include:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>identity</code></td>
+<td>identify a human, agent, or service and its host</td>
+</tr>
+<tr>
+<td><code>capability-negotiation</code></td>
+<td>record provided/required capabilities and missing capabilities</td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td>record a JSON-safe message between identities</td>
+</tr>
+<tr>
+<td><code>handoff</code></td>
+<td>record a role-to-role condition and optional artifact pointer</td>
+</tr>
+<tr>
+<td><code>orchestration</code></td>
+<td>record a plan step state</td>
+</tr>
+<tr>
+<td><code>dispatch</code></td>
+<td>record a dispatch attempt and capability outcome</td>
+</tr>
+<tr>
+<td><code>retry</code></td>
+<td>link a retry to its previous attempt</td>
+</tr>
+<tr>
+<td><code>critic-veto</code></td>
+<td>record the artifact review log and reason</td>
+</tr>
+<tr>
+<td><code>human-gate</code></td>
+<td>record who approved or rejected a phase transition</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>record a structured, retryable or terminal failure</td>
+</tr>
+</tbody></table>
+<p>Tool-call records use the same JSON-only boundary and can name the ASD tool,
+arguments, result, status, and error. Non-JSON values are rejected before an
+event is recorded.</p>
+<h2 id="the-current-capability-contract">The current capability contract</h2>
+<p>The generic CLI/MCP adapter supports exactly:</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{&quot;protocolVersion&quot;:&quot;asd-acp/1&quot;,&quot;capabilities&quot;:[&quot;record-only&quot;]}
+</code></pre></div>
+<p><code>record-only</code> means the adapter can validate and persist a collaboration
+record. It can represent a queued or unsupported dispatch, an evidence-cited
+handoff, or a human gate. It cannot make a host process appear, invent a reply,
+or claim that an external relay delivered a message.</p>
+<p><code>host-agent-spawn</code> is intentionally unsupported on the generic surface. A
+request that requires it fails closed with a structured unsupported-capability
+error. A host may provide a real dispatch function, but that must be supplied
+by the host adapter and proved by a separate live acceptance test. The presence
+of <code>sd_orchestration_dispatch</code>, a role prompt, or an ACP row is not proof of
+spawn or transport.</p>
+<h2 id="typed-handoffs">Typed handoffs</h2>
+<p>When a handoff carries an artifact pointer, the pointer is resolvable in the
+same project and its optional <code>artifactKind</code> must match the stored artifact.
+Supplying an <code>artifactKind</code> without an <code>artifactId</code>, or pointing at a missing or
+mismatched artifact, fails before the handoff is recorded. A handoff without a
+pointer is still a record of a condition, not evidence that an artifact exists.</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+  &quot;projectId&quot;: &quot;metrovale-access-…&quot;,
+  &quot;planId&quot;: &quot;plan-…&quot;,
+  &quot;from&quot;: &quot;researcher&quot;,
+  &quot;to&quot;: &quot;synthesizer&quot;,
+  &quot;condition&quot;: &quot;Evidence register has been reviewed&quot;,
+  &quot;artifactId&quot;: &quot;artifact-…&quot;,
+  &quot;artifactKind&quot;: &quot;insight-set&quot;
+}
+</code></pre></div>
+<p>The runtime&#39;s orchestration tools make this same check for CLI, MCP, and DSH
+tool calls. The human designer still owns phase decisions.</p>
+<h2 id="host-integration-pattern">Host integration pattern</h2>
+<p>An integration should follow this order:</p>
+<ol>
+<li>Exchange identities and capabilities.</li>
+<li>Reject missing capabilities before promising a workflow.</li>
+<li>Persist an explicit orchestration plan with role and method steps.</li>
+<li>Dispatch only with a host capability that is actually present; otherwise
+record <code>unsupported</code> and stop the branch.</li>
+<li>Attach artifact IDs to handoffs once the artifacts resolve.</li>
+<li>Record Critic veto/pass and the human phase-gate decision.</li>
+<li>Reopen the project and replay the record after reload.</li>
+</ol>
+<p>This allows BUZZ to show a visible channel collaboration and DSH to project
+capabilities into a Studio canvas while preserving the common record contract.
+It does not make a generic coding-agent client a BUZZ relay or a DSH host.</p>
+<h2 id="validation-and-examples">Validation and examples</h2>
+<p>The protocol implementation and tests live in <code>suite/packages/core/src/acp.ts</code>
+and the core/runtime test suites. The generated pack capability manifests and
+release receipts are the evidence boundary. When documenting an ACP workflow,
+label each row as recorded, executed, unsupported, or observed-live. Never
+write a fabricated agent reply into a transcript to make a record look complete.</p>
+<h2 id="what-acp-does-not-provide">What ACP does not provide</h2>
+<ul>
+<li>It is not a replacement for MCP JSON-RPC transport.</li>
+<li>It does not authenticate a user, relay credentials, or discover a BUZZ
+channel.</li>
+<li>It does not spawn Claude Code, OpenCode, Codex, Kimi, or another host.</li>
+<li>It does not turn a role prompt into a durable project artifact.</li>
+<li>It does not bypass Critic review or the human phase gate.</li>
+</ul>
+<p>For actual tool execution use the <a href="./mcp.html">MCP server</a> or <a href="./cli.html">CLI</a>.
+For the role content carried into a host, see <a href="./reference-agents.html">roles</a>
+and <a href="./reference-skills.html">skills</a>. For BUZZ and DSH evidence boundaries,
+follow their dedicated case-study and workbench receipts.</p>
+</article></div>
+  <button class="backtop" id="backtop" type="button">Back to top</button>
+</main>
+<footer class="footer">
+  <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
+  <span><a href="../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
+</footer>
+<script src="../assets/site.js"></script>
+
+</body></html>

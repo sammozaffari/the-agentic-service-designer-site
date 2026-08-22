@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="The ASD suite running inside DeepSeek Harness: four plugins composed into the web profile with zero host edits, a Studio workbench tab with five project browsers, deep-linked tool cards in chat, and a read-only loopback RPC.">
+<meta name="description" content="The verified Agentic Service Designer Studio integration for DeepSeek Harness rc.5: a profile-composed plugin, loopback UI, canonical tool registry, and explicit capability boundaries.">
 <title>The DeepSeek Harness workbench — The Agentic Service Designer</title>
 <link rel="stylesheet" href="../assets/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
@@ -23,58 +23,260 @@
 </header>
 <main class="art">
   <div class="art-progress"><div class="art-progress-bar" id="progress"></div></div>
-  <nav class="docs-tabs" aria-label="Docs sections"><a href="./index.html">Start</a><a href="./plugin-claude-code.html" class="on">Surfaces</a><a href="./concepts.html">Concepts</a><a href="./reference-tools.html">Reference</a><a href="./use-cases.html">Use cases</a></nav>
+  <nav class="docs-tabs" aria-label="Docs sections"><a href="./index.html">Start</a><a href="./plugin-claude-code.html" class="on">Surfaces</a><a href="./acp.html">Concepts</a><a href="./reference-tools.html">Reference</a><a href="./use-cases.html">Use cases</a></nav>
   <section class="page-hero">
     <span class="kicker">Docs · Surfaces</span>
     <h1>The DeepSeek Harness workbench</h1>
-    <p class="lede">The ASD suite running inside DeepSeek Harness: four plugins composed into the web profile with zero host edits, a Studio workbench tab with five project browsers, deep-linked tool cards in chat, and a read-only loopback RPC.</p>
+    <p class="lede">The verified Agentic Service Designer Studio integration for DeepSeek Harness rc.5: a profile-composed plugin, loopback UI, canonical tool registry, and explicit capability boundaries.</p>
   </section>
-  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Surfaces</b><ol><li><a href="./plugin-claude-code.html">The Claude Code plugin</a></li><li><a href="./plugin-hosts.html">Host packs and the compiler</a></li><li><a href="./mcp.html">The MCP server</a></li><li><a href="./cli.html">The CLI</a></li><li><a href="./dsh-workbench.html" class="on">The DeepSeek Harness workbench</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#the-four-suite-packages">The four suite packages</a></li><li><a href="#composition-zero-edits-to-the-host">Composition: zero edits to the host</a></li><li><a href="#the-studio-tab-and-its-entry-points">The Studio tab and its entry points</a></li><li><a href="#the-projects-dashboard">The projects dashboard</a></li><li><a href="#one-project-five-tabs">One project, five tabs</a></li><li><a href="#tool-cards-in-the-conversation">Tool cards in the conversation</a></li><li><a href="#the-host-rpc">The host RPC</a></li><li><a href="#why-fifteen-tools-in-chat-sixteen-in-the-cli">Why fifteen tools in chat, sixteen in the CLI</a></li><li><a href="#using-the-workbench">Using the workbench</a></li><li><a href="#where-next">Where next</a></li></ol></nav></aside><article class="art-body"><h1 id="the-deepseek-harness-workbench">The DeepSeek Harness workbench</h1><p>The Agentic Service Designer suite runs inside <a href="../harness.html">DeepSeek Harness</a> — the plugin-based agent runtime where everything is a plugin — as four composed packages. The result is a workbench: a chat surface where the model drives the fifteen <code>sd_*</code> engine tools, a Studio tab that browses the same project store the tools write, and conversation rendering that turns tool calls into deep-linked cards. This page documents the surface as it ships today, verified against <code>suite/packages/ui/src/</code> and captured from the live harness.</p>
-<h2 id="the-four-suite-packages">The four suite packages</h2><div class="tbl-wrap"><table><thead><tr><th>Package</th><th>Role</th></tr></thead><tbody><tr><td><code>@asd/core</code></td><td>Project, evidence, and artifact stores plus the acceptance engine — plain files under the workspace, <code>~/.asd/projects</code> by default</td></tr><tr><td scope="row"><code>@asd/engine</code></td><td>The 15 model-facing <code>sd_*</code> tools mounted in the web profile</td></tr><tr><td scope="row"><code>@asd/knowledge</code></td><td>The 74 method manifests and 32 machine-checked artifact-kind schemas, shipped as JSON data</td></tr><tr><td scope="row"><code>@asd/ui</code></td><td>Host RPC plus the browser client: the Studio workbench, the sidebar entry, and the inline tool cards</td></tr></tbody></table></div><p>A fifth package, <code>@asd/runtime</code>, is the same engine behind the <a href="./cli.html">CLI</a> and the <a href="./mcp.html">MCP server</a>. It is not composed into the web profile — the reason is its one extra tool, covered below.</p>
-<h2 id="composition-zero-edits-to-the-host">Composition: zero edits to the host</h2><p>The suite mounts through the harness&#39;s profile mechanism. The web profile is a directory, <code>~/.dsh/profiles/web</code>, whose <code>package.json</code> declares link dependencies on the four suite packages and lists them in its bundle manifest — quoted verbatim:</p>
-<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>&quot;dsh&quot;: {
-  &quot;profile&quot;: {
-    &quot;bundles&quot;: [
-      &quot;@deepseek-ai/dsh-base&quot;,
-      &quot;@deepseek-ai/dsh-web-app&quot;,
-      &quot;dsh-vision-router&quot;,
-      &quot;@asd/core&quot;,
-      &quot;@asd/engine&quot;,
-      &quot;@asd/knowledge&quot;,
-      &quot;@asd/ui&quot;,
-      &quot;@deepseek-ai/dsh-book-writer&quot;
-    ]
-  }
-}</code></pre></div><p>The four <code>@asd/*</code> entries sit alongside the harness&#39;s own base and web-app bundles, the vision router, and the book-writer bundle. Nothing in the harness checkout is modified: the suite is a profile citizen, installed and removed by editing this one list. From a DeepSeek Harness checkout, boot the surface with:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>pnpm dsh web --port 4173</code></pre></div><p>The proof that composition worked is in Settings → Plugins: the four suite plugins register individually, all Enabled, among the 166 plugins mounted in this deployment.</p>
-<p><img src="images/13-settings-plugins-asd.png" alt="Settings → Plugins, plugin list filtered to &quot;asd&quot;: the four suite plugins — core, engine, knowledge, ui — each on its own card, all Enabled (green). The unfiltered list shows 166 plugins mounted."></p>
-<h2 id="the-studio-tab-and-its-entry-points">The Studio tab and its entry points</h2><p>The workbench has two entry points onto one body. The center column&#39;s tab bar gains a <strong>Studio</strong> tab beside Chat and Trajectory — registered into the harness&#39;s <code>conversation.view</code> slot — and the sidebar&#39;s &quot;Service Design&quot; button opens the same workbench as an overlay floating over the current conversation. Both mount the identical <code>StudioBody</code>; a shared store (<code>workbench-store.ts</code>) holds <code>{open, target: {projectId?, artifactId?}}</code> so the two surfaces and every tool card in chat stay in sync. Two precise behaviors: the sidebar button toggles the overlay, not the tab — switching <code>conversation.view</code> programmatically would require a view-switch API the harness does not expose cross-package — and for the same reason every &quot;Open in Studio&quot; click-through deep-links into the overlay, landing on the project (and artifact) it came from rather than the dashboard.</p>
-<p><img src="images/01-studio-tab-dashboard.png" alt="The Studio tab active beside Chat and Trajectory in the center column: the projects dashboard with one card per project — phase badge, draft/veto count badges, project name, client · sector · phase metadata, and artifact/evidence counts (Harbour Ferry punctuality redesign, Rivermill Enrolment and Onboarding Redesign, Albatross Airways IROPS Recovery)."></p>
-<h2 id="the-projects-dashboard">The projects dashboard</h2><p>The dashboard is one RPC call: <code>getProjectsSummary</code> fans out host-side, returning every project with its counts — <code>{project, artifactCount, evidenceCount, draftCount, vetoCount}</code> — so the browser renders the whole grid without per-project round trips. Each card shows the phase badge, <code>N draft</code> / <code>N veto</code> badges when those counts are nonzero, the project name, its <code>client · sector · phase</code> line, and the artifact and evidence totals. The badges are the governance state at a glance: a project carrying vetoed artifacts shows it before you open anything.</p>
-<h2 id="one-project-five-tabs">One project, five tabs</h2><p>Clicking a card opens the project detail: name, metadata, and five tabs over the same store the tools write.</p>
-<p><strong>Artifacts</strong> is a gallery grid — one card per artifact with its status badge (draft, final, or veto), kind, title, and node count. A card opens the full render view: the artifact drawn as sanitized inline SVG, and beneath it the node↔evidence cross-reference — every node listed with its evidence refs resolved against the register (fetched once via <code>listEvidence</code>), each ref shown as <code>kind · source — body</code>. An unresolved ref renders as <code>unresolved: &lt;id&gt;</code> rather than being silently dropped; with the engine&#39;s integrity checks that should never appear, which is exactly why it is shown when it does.</p>
-<p><img src="images/03-artifact-detail-xref.png" alt="The artifact detail view for &quot;Harbour Ferry Punctuality — Stakeholder Map&quot; (draft, stakeholder-map · 5 nodes): the rendered influence/interest grid SVG on top, and below it the cross-reference — the commuters node resolved to its evidence row, &quot;quote · passenger-interview-04 — I&#39;ve missed the 8:15 AM ferry three times this month…&quot;."></p>
-<p><strong>Evidence</strong> is the register as a table — kind, source, body, capture date — with a kind filter (all, quote, telemetry, document) and a substring search, both evaluated host-side by the same <code>listEvidence</code> query path <code>sd_evidence_query</code> uses.</p>
-<p><strong>Review</strong> is the review board: one row per artifact with its status, the review gate its method declares, the latest verdict, the acceptance state, and a log link. The rows come from <code>listReviewRows</code>, which ports the <code>sd_review_list</code> derivation into the host — including re-running acceptance against the <strong>live</strong> method manifest rather than trusting the check persisted at write time, because a manifest may have tightened since. A <code>status</code> filter is available on the RPC. The Log cell deep-links: clicking &quot;veto log&quot; opens the <code>review-veto-log</code> artifact itself in the Artifacts browser, so the Critic&#39;s rows are one click from the verdict they produced.</p>
-<p><img src="images/05-review-board.png" alt="The Review tab for Harbour Ferry punctuality redesign: the board&#39;s columns — Artifact, Status, Gate, Verdict, Acceptance, Log — with the stakeholder map row reading draft · critic · no verdict yet · acceptance passing · no log."></p>
-<p><strong>Methods</strong> is the knowledge layer browsable: the 74 method manifests with a phase filter, each row showing phase, output kind, and gate, expanding to the full machine contract — role-assigned steps with gated steps marked, the acceptance rules as JSON, and the provenance (book/article sources, owner, evidence-traceability rule). Below the manifests, an artifact-kinds table lists every registered kind — id, title, node label, sources — from <code>listArtifactKinds</code>.</p>
-<p><img src="images/06-methods-kinds.png" alt="The Methods tab with &quot;AEIOU Coding&quot; expanded: its three steps (two synthesizer, one critic marked as the gate), acceptance rules as JSON (min-nodes 3, min-evidence-per-node 2, field-non-empty aeiouCategory), and provenance line; below, the other manifests with phase · outputs · gate metadata."></p>
-<p><strong>Reports</strong> is the pre-existing generator, unchanged: the six report kinds — engagement, executive-summary, research-findings, artifact-dossier, traceability-matrix, method-log — rendered as a complete HTML document inside an <code>&lt;iframe srcDoc&gt;</code> with an empty <code>sandbox</code> attribute, so isolation is enforced by the browser (opaque origin, no script execution) rather than by trusting the generator.</p>
-<h2 id="tool-cards-in-the-conversation">Tool cards in the conversation</h2><p>The client registers keyed <code>tool.call.toolview</code> cards for six wire names — <code>sd_artifact_write</code>, <code>sd_artifact_get</code>, <code>sd_artifact_list</code>, <code>sd_review</code>, <code>sd_project_create</code>, <code>sd_evidence_add</code> — so the transcript shows the engagement, not raw JSON. Accepted writes and gets render the artifact inline as sanitized SVG; lists render one deep-linked row per artifact; review cards show the verdict, resulting status, and rows logged; project-create and evidence-add cards confirm with the new ids. Every card carries an <strong>Open in Studio</strong> button that deep-links the overlay to the project or artifact it came from. The refusal path of <code>sd_artifact_write</code> lists each acceptance failure with its rule and node, and states the engine&#39;s real semantics: &quot;Persisted as a draft — blocked from final status and export until remediated.&quot;</p>
-<p><img src="images/07-inline-tool-card.png" alt="The chat view mid-engagement: an &quot;Evidence captured&quot; card (quote · harbour-master-log-2026-03 · evidence id) with its Open in Studio button, the model&#39;s reasoning trail with sd_method_list, sd_knowledge and sd_method_run tool calls, and the accepted artifact card rendering the stakeholder map SVG inline — also with Open in Studio."></p>
-<p>A <code>conversation.chat.turnTail</code> chain entry closes each turn that produced artifacts with an &quot;Artifacts:&quot; chip strip — one chip per artifact the turn&#39;s writes persisted, each deep-linking into Studio. The strip is deliberately conservative: it reads the turn&#39;s own <code>sd_artifact_write</code> results, so it fires for root write calls only. In Code Mode sessions, where the <code>sd_*</code> tools run nested inside <code>run_code</code> rather than as root tool calls, it correctly declines and shows nothing.</p>
-<p><img src="images/08-overlay-deep-link.png" alt="The overlay opened by an &quot;Open in Studio&quot; click-through: the Service Design Studio panel floating over the conversation, deep-linked straight into the stakeholder map&#39;s detail view — the rendered SVG and the full node↔evidence cross-reference below it, one click from the transcript that produced it."></p>
-<h2 id="the-host-rpc">The host RPC</h2><p><code>@asd/ui</code> mounts two routes on the harness web server: the Studio&#39;s static assets at <code>/asd/app</code>, and a bounded JSON-RPC channel at <code>POST /asd/rpc</code>. The channel is a closed allowlist of ten read-only methods — no eval, no passthrough, and nothing in it can write:</p>
-<div class="tbl-wrap"><table><thead><tr><th>Method</th><th>Params</th><th>Returns</th></tr></thead><tbody><tr><td><code>listProjects</code></td><td class="num">—</td><td><code>{ projects }</code></td></tr><tr><td scope="row"><code>getProjectsSummary</code></td><td class="num">—</td><td><code>{ projects: [{ project, artifactCount, evidenceCount, draftCount, vetoCount }] }</code></td></tr><tr><td scope="row"><code>getProject</code></td><td><code>projectId</code></td><td><code>{ project, artifacts }</code></td></tr><tr><td scope="row"><code>listArtifacts</code></td><td><code>projectId</code>, <code>kind?</code></td><td><code>{ artifacts }</code></td></tr><tr><td scope="row"><code>getArtifact</code></td><td><code>projectId</code>, <code>artifactId</code></td><td><code>{ artifact }</code></td></tr><tr><td scope="row"><code>listEvidence</code></td><td><code>projectId</code>, <code>search?</code>, <code>kind?</code></td><td><code>{ evidence }</code></td></tr><tr><td scope="row"><code>listMethods</code></td><td><code>phase?</code>, <code>artifactKind?</code></td><td><code>{ methods }</code></td></tr><tr><td scope="row"><code>listArtifactKinds</code></td><td class="num">—</td><td><code>{ kinds }</code></td></tr><tr><td scope="row"><code>listReviewRows</code></td><td><code>projectId</code>, <code>status?</code></td><td><code>{ rows }</code></td></tr><tr><td scope="row"><code>generateReport</code></td><td><code>projectId</code>, <code>kind</code></td><td><code>{ html }</code></td></tr></tbody></table></div><p>Every method validates its own params; a validation failure resolves to <code>{ ok: false, error }</code> at HTTP 400, never a 500. The request body is capped at 64 KB. Both routes refuse to register at all when the web server&#39;s host is not <code>127.0.0.1</code> — the plugin throws at startup rather than expose project data to the LAN. The workbench is simply this channel&#39;s first client; anything else on loopback can read the same store the same way.</p>
-<h2 id="why-fifteen-tools-in-chat-sixteen-in-the-cli">Why fifteen tools in chat, sixteen in the CLI</h2><p>The harness web profile mounts fifteen <code>sd_*</code> tools; the <a href="./cli.html">CLI</a> and <a href="./mcp.html">MCP server</a> expose sixteen. The difference is <code>sd_factcheck</code>, which ships in <code>@asd/runtime</code> and is deliberately not composed into the web profile — in-harness fact-checking therefore happens from the CLI or over MCP, against the same workspace the chat tools wrote, not through the chat tools. Article 36&#39;s engagement makes the split concrete: the model produced and reviewed artifacts in chat, and the deterministic replay ran from the <code>asd</code> CLI at the readout, exit code 0 on all-pass.</p>
-<h2 id="using-the-workbench">Using the workbench</h2><p>Two engagements show the surface end to end; both are documented with real captures.</p>
-<p><strong>Wattle Grove Community Care</strong> (<a href="../articles/36/index.html">article 36</a>) is the full arc. A designer described an in-home aged-care provider&#39;s continuity problem and pasted field research into the chat. The model — with no instruction naming any tool — discovered the method registry, chose phase-appropriate methods, and produced a stakeholder map, a current-state journey map, and a five-lane evidence-gated service blueprint, every node traced to a quoted line. When asked to add an aspirational stage to the current-state journey, the write was refused by the acceptance gate and persisted only as a draft with its check failures attached; the model explained the refusal and proposed the correct alternative.</p>
-<p><strong>Harbour Ferry</strong> is the live-run shape, and the project the screenshots on this page show: one prompt — &quot;create a project called &#39;Harbour Ferry punctuality redesign&#39;…&quot; — and the model created the project via <code>sd_project_create</code>, logged evidence from the harbour master&#39;s log via <code>sd_evidence_add</code>, and drafted a five-node stakeholder map with every node evidence-backed, saved as <code>status: draft</code> pending a review verdict. The dashboard shows the new project with its <code>1 draft</code> badge; the Review tab shows the row waiting on a Critic verdict. The loop — prompt → tool call → acceptance gate → review verdict → fact-check — is unchanged from the other surfaces; the workbench contributes what the terminal cannot: rendered artifacts at the moment they are accepted, and the whole store browsable one click from any card in the transcript.</p>
-<h2 id="where-next">Where next</h2><ul>
-<li><a href="./concepts.html">Engine concepts</a> — the evidence register, the draft/final lifecycle, acceptance rules, the review gate, and the fact-check, with real JSON.</li>
-<li><a href="./tutorials.html">Tutorials</a> — three scripted walkthroughs: the gated-artifact arc in the CLI, an engagement in Claude Code, and the gate in CI.</li>
-<li><a href="./getting-started.html">Getting started</a> to install a surface; <a href="./cli.html">the CLI</a> and <a href="./mcp.html">the MCP server</a> for the other two.</li>
+  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Surfaces</b><ol><li><a href="./plugin-claude-code.html">The Claude Code plugin</a></li><li><a href="./plugin-hosts.html">Host packs and the compiler</a></li><li><a href="./mcp.html">The MCP server</a></li><li><a href="./cli.html">The CLI</a></li><li><a href="./dsh-workbench.html" class="on">The DeepSeek Harness workbench</a></li><li><a href="./buzz.html">BUZZ integration</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#what-is-installed">What is installed</a></li><li><a href="#package-composition">Package composition</a></li><li><a href="#how-the-dsh-integration-works">How the DSH integration works</a></li><li><a href="#direct-studio-capability-projection">Direct Studio capability projection</a></li><li><a href="#install-and-verify-a-profile">Install and verify a profile</a></li><li><a href="#a-verified-studio-workflow-shape">A verified Studio workflow shape</a></li><li><a href="#current-boundaries">Current boundaries</a></li><li><a href="#evidence">Evidence</a></li></ol></nav></aside><article class="art-body"><h1 id="the-deepseek-harness-workbench">The DeepSeek Harness workbench</h1>
+<p>DeepSeek Harness (DSH) is a plugin-based agent host. Agentic Service Designer
+(ASD) integrates with it as a profile-composed plugin surface rather than as a
+fork of the Harness application. The shipped DSH pointer is
+<code>platform/packs/dsh/</code>; the UI implementation is <code>@asd/ui</code> and the shared runtime
+remains in the ASD suite.</p>
+<p>This page deliberately separates three kinds of evidence:</p>
+<table>
+<thead>
+<tr>
+<th>Evidence class</th>
+<th>What it means here</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Source/manifest</td>
+<td>The committed package, compatibility and capability contract.</td>
+</tr>
+<tr>
+<td>Disposable verification</td>
+<td>A clean profile or bundle test with isolated files and no ambient host state.</td>
+</tr>
+<tr>
+<td>Pinned DSH receipt (historical run record)</td>
+<td>The pinned <code>docs/reports/dsh-live-integration.receipt.json</code>, which records the rc.5 profile lifecycle, bundle safety, UI smoke and accessibility checks for that run.</td>
+</tr>
+</tbody></table>
+<p>This historical receipt proves the Studio plugin lifecycle and a live UI smoke. It does not
+constitute a blanket claim that every model provider, chat trajectory, external
+MCP client or host-specific agent dispatch path is live-proven.</p>
+<h2 id="what-is-installed">What is installed</h2>
+<p>The pinned historical receipt is bound to:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Verified value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Harness</td>
+<td><code>deepseek-harness</code> <code>0.1.0-rc.5</code></td>
+</tr>
+<tr>
+<td>ASD UI package</td>
+<td><code>@asd/ui</code> <code>0.5.0</code></td>
+</tr>
+<tr>
+<td>Compatibility revision</td>
+<td><code>3f88a0f63f9788959b4e889b78653798bb7d6aae+asd-phase5-e94f006f2283</code></td>
+</tr>
+<tr>
+<td>Studio profile</td>
+<td><code>asd-live-review2</code></td>
+</tr>
+<tr>
+<td>UI slots</td>
+<td>six: <code>sidebar.activity.action</code>, <code>sidebar.activity.panel</code>, <code>conversation.view</code>, <code>conversation.showView</code>, <code>settings.plugin.item</code>, <code>layout.openActivity</code></td>
+</tr>
+<tr>
+<td>UI tests in receipt</td>
+<td>120</td>
+</tr>
+<tr>
+<td>Suite tests in receipt</td>
+<td>701</td>
+</tr>
+<tr>
+<td>Accessibility result</td>
+<td>zero ASD-owned serious/critical violations in the live smoke</td>
+</tr>
+</tbody></table>
+<p>The profile lifecycle was exercised through the host&#39;s official add/update/remove
+and reinstall path. The result is a portable, deterministic <code>@asd/ui</code> bundle:
+502 entries, no absolute source paths, no source-tree imports, no symlinks, and a
+stable SHA-256 recorded in the receipt. The <code>platform/packs/dsh/manifest.json</code>
+file is a compatibility pointer and inventory; it is not a replacement for the
+official DSH profile installer.</p>
+<h2 id="package-composition">Package composition</h2>
+<p>The DSH surface is assembled from the shared suite packages. Their boundaries
+are intentionally explicit:</p>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Responsibility in DSH</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>@asd/core</code></td>
+<td>Workspace-backed projects, evidence, artifacts, canvases, acceptance, review, fact-check, phase gates, ACP envelopes and capability contracts.</td>
+</tr>
+<tr>
+<td><code>@asd/engine</code></td>
+<td>The canonical 29 <code>sd_*</code> tool definitions and execution handlers.</td>
+</tr>
+<tr>
+<td><code>@asd/knowledge</code></td>
+<td>74 method manifests, 32 registered artifact-kind contracts, six authored templates and provenance data. Per-kind runtime typed JSON schemas remain a Phase 2 boundary.</td>
+</tr>
+<tr>
+<td><code>@asd/agents</code></td>
+<td>The ten role registry and bounded role-dispatch instructions used by the host.</td>
+</tr>
+<tr>
+<td><code>@asd/runtime</code></td>
+<td>Shared runtime used by the CLI and MCP bundles; it is not a second DSH UI.</td>
+</tr>
+<tr>
+<td><code>@asd/ui</code></td>
+<td>The DSH host adapter, loopback RPC, Studio browser, skill registration, role prompt registration, settings item and conversation/side-panel slots.</td>
+</tr>
+</tbody></table>
+<p>The current canonical inventory is 29 tools, 74 methods, 32 registered kinds, 38
+catalog rows, six authored templates, 10 roles, 74 shipped skills from 75
+sources, 225 corpus resources and 10 role prompts. These numbers describe the
+shared ASD payload; they do not mean that every DSH UI route is a separate
+tool.</p>
+<h2 id="how-the-dsh-integration-works">How the DSH integration works</h2>
+<p>At host startup, <code>@asd/ui</code> validates the rc.5 compatibility seam, registers the
+canonical tools and skills, adds the shared role contract to the system prompt,
+registers the ASD settings namespace, and exposes the Studio assets and RPC on
+loopback. The browser client contributes the Studio view and the sidebar
+activity. The UI calls the canonical tool runtime; it does not maintain a
+second project database.</p>
+<p>The resulting topology is:</p>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1086 251" role="img" aria-hidden="true"><defs><marker id="arr-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 155.6,140.25 181.6,140.25 207.60000000000002,140.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 319.18620689655177,125.25 409.6,67.75 435.6,67.75" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 383.6,140.25 409.6,140.25 462.2,140.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 586.8896551724138,52.75 660.4,31.5 686.4,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 586.8896551724138,82.75 660.4,104 694,104" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 317.2455696202532,155.25 409.6,219.25 447,219.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 854.8000000000001,31.5 880.8,31.5 906.8,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><rect x="10" y="125.25" width="145.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="82.8" y="144.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">DSH rc.5 profile</text><rect x="207.60000000000002" y="125.25" width="176" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="295.6" y="144.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">@asd/ui host adapter</text><rect x="435.6" y="52.75" width="198.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="535" y="71.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">29 canonical sd_* tools</text><rect x="462.2" y="118.75" width="145.6" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="535" y="137.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Studio browser +</text><text x="535" y="150.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">loopback RPC</text><rect x="686.4" y="16.5" width="168.4" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="770.6" y="35.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">@asd/core workspace</text><rect x="694" y="82.5" width="153.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="770.6" y="101.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">@asd/knowledge</text><text x="770.6" y="114.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">methods/templates</text><rect x="447" y="197.75" width="176" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="535" y="216.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">@asd/agents ten-role</text><text x="535" y="229.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">registry</text><rect x="906.8" y="10" width="168.4" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="991" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">review, fact-check,</text><text x="991" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">phase gate</text></svg><figcaption><span class="fignum">Figure 1</span><span class="figcap">How the DSH integration works</span></figcaption></figure>
+<h3 id="browser-surfaces">Browser surfaces</h3>
+<p>The current UI has three supported entry points:</p>
+<ol>
+<li><strong>Service Design activity</strong> in the sidebar, which opens the Studio panel.</li>
+<li><strong>Studio conversation view</strong>, registered through <code>conversation.view</code> and
+available beside the host&#39;s conversation surfaces.</li>
+<li><strong>Settings → Plugins</strong>, where the ASD settings item is registered through
+<code>settings.plugin.item</code> and reads/writes the ASD workspace/default-phase
+configuration through the host settings seam.</li>
+</ol>
+<p>The host routes are deliberately loopback-only. <code>/asd/app</code> serves the static
+Studio assets and <code>/asd/rpc</code> exposes a closed JSON-RPC allowlist. The adapter
+refuses to register these routes when the server host is not <code>127.0.0.1</code>.
+RPC requests are size-capped, validate their own parameters and return a
+structured unsupported-capability error instead of silently executing a
+different operation.</p>
+<p>The Studio browser reads the same project store as the canonical tools. It can
+show projects, artifacts, evidence, methods, artifact kinds, review rows and
+reports. The browser is an inspection and coordination surface; acceptance,
+review and phase-gate decisions remain engine operations and human decisions.</p>
+<h2 id="direct-studio-capability-projection">Direct Studio capability projection</h2>
+<p>The DSH-specific projection contains <strong>23 rows: 22 supported and one explicit
+unsupported row</strong>. It is not a claim that the UI owns all 29 tools as bespoke
+buttons. Supported rows execute through the canonical tool runtime and include
+project, evidence, artifact, canvas, method, template, schema, review,
+fact-check, orchestration and phase-advance operations.</p>
+<p>The explicit unsupported row is:</p>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Status</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>phase.gate.status</code></td>
+<td>unsupported</td>
+<td>The canonical engine exposes phase-gate advance, not an independent read-only status operation.</td>
+</tr>
+</tbody></table>
+<p><code>method.run</code> and <code>evidence.query</code> are canonical tool concepts, but they are not
+separate direct Studio capability-projection rows. A client must use the
+canonical tool path or the supported Studio query surface; it must not invent a
+new direct RPC method. Unsupported or unknown capability IDs fail closed with
+<code>CAPABILITY_UNSUPPORTED</code>.</p>
+<p>The host advertises a bounded subagent provider for the role registry. This is a
+host capability boundary, not proof that every model/provider combination can
+dispatch every role in every session. The receipt&#39;s live evidence is the
+installed profile, UI smoke, workspace isolation and accessibility result.</p>
+<h2 id="install-and-verify-a-profile">Install and verify a profile</h2>
+<p>Use the official DSH CLI for the installed rc.5 checkout. The exact package or
+local bundle path is deployment-specific; keep it outside the project workspace
+and do not edit the Harness source tree. The profile lifecycle shape is:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code># Run from the DeepSeek Harness checkout.
+dsh plugin --profile &lt;profile&gt; add &lt;asd-ui-package-or-bundle&gt;
+dsh plugin --profile &lt;profile&gt; update &lt;asd-ui-package-or-bundle&gt;
+dsh plugin --profile &lt;profile&gt; remove &lt;asd-ui-package-or-bundle&gt;
+
+# Start the host with the same profile after installation.
+dsh web --profile &lt;profile&gt; --port &lt;loopback-port&gt;
+</code></pre></div>
+<p>The placeholders are intentional: this repository does not publish a universal
+registry URL or a credential-bearing profile. Verify the resolved package and
+compatibility revision in the profile before opening the UI. The authoritative
+release check must include:</p>
+<ul>
+<li>official add/update/remove/reinstall succeeds;</li>
+<li><code>@asd/ui</code> version and six required slots match the manifest;</li>
+<li>the bundle has no source-tree imports, absolute paths or symlinks;</li>
+<li>Studio loads from the loopback URL;</li>
+<li>the project count and workspace root are the expected disposable values;</li>
+<li>the ASD-owned accessibility scan has no serious/critical findings; and</li>
+<li>stopping the server removes only the disposable workspace.</li>
 </ul>
+<p>The pinned receipt reports these checks as pass for <code>asd-live-review2</code>. A local
+profile with another Harness revision is not covered by that receipt until the
+compatibility and lifecycle checks are rerun.</p>
+<h2 id="a-verified-studio-workflow-shape">A verified Studio workflow shape</h2>
+<p>The shared engine&#39;s governed workflow remains:</p>
+<ol>
+<li>Create/open a project.</li>
+<li>Add or import evidence with one of the three accepted kinds: <code>quote</code>,
+<code>telemetry</code>, or <code>document</code>.</li>
+<li>Run a method and write an artifact whose nodes resolve to evidence rows.</li>
+<li>Let the acceptance engine retain an invalid candidate as a draft with
+failures rather than silently treating it as final.</li>
+<li>Run the Critic review. A veto keeps the target in <code>draft</code> and records a
+linked <code>review-veto-log</code>; a pass requires evidence-cited review rows and can
+promote the artifact to <code>final</code>.</li>
+<li>Run fact-check/export from a surface that exposes those operations.</li>
+<li>Stop at the human phase gate. The engine records the decision; it does not
+authorize a phase advance on behalf of the designer.</li>
+</ol>
+<p>The DSH receipt links a prior evidence → artifact → review/veto → remediation →
+evidence-cited pass → human-gate → report workflow and records reload/session
+isolation plus fail-closed capability-adapter behavior. The receipt is the
+source of truth for that claim; a screenshot or a prose transcript alone is not.</p>
+<h2 id="current-boundaries">Current boundaries</h2>
+<p>Do not infer these capabilities from the presence of the pack:</p>
+<ul>
+<li>DSH installation into one profile does not prove installation into every DSH
+profile or every future rc version.</li>
+<li>A Studio card is not proof of a model-produced chat turn, provider health or
+external MCP-client interoperability.</li>
+<li>A registered role is not proof of live role execution unless the host receipt
+records the dispatch and resulting output.</li>
+<li>The DSH pack does not make ACP a transport. <code>asd-acp/1</code> is record-only and
+fail-closed; live spawn/transport needs a host capability and a receipt.</li>
+<li>BUZZ is a separate collaboration surface. Its Canvas and messages are not
+automatically the ASD project/evidence/artifact store.</li>
+</ul>
+<p>For the BUZZ boundary and the observed Metrovale channel slice, read
+<a href="./buzz.html">BUZZ integration</a> and the <a href="../articles/37/index.html">Article 37 case study</a>.
+For command-line and stdio MCP workflows, use <a href="./getting-started.html">Getting started</a>,
+<a href="./cli.html">CLI</a> and <a href="./mcp.html">MCP</a>.</p>
+<h2 id="evidence">Evidence</h2>
+<p>The pinned historical receipt is
+<a href="./reports/dsh-live-integration.receipt.json"><code>docs/reports/dsh-live-integration.receipt.json</code></a>.
+It is the required citation for the version, slot, bundle, lifecycle, UI,
+accessibility and isolation claims on this page.</p>
 </article></div>
   <button class="backtop" id="backtop" type="button">Back to top</button>
 </main>
@@ -83,4 +285,5 @@
   <span><a href="../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
 </footer>
 <script src="../assets/site.js"></script>
+
 </body></html>

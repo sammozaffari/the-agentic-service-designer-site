@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="The asd terminal surface: one command per engine tool, dashed aliases, JSON-typed flags, a content-addressed workspace on disk, and gate exit codes built for CI.">
+<meta name="description" content="The self-contained asd terminal surface: 29 engine tools, JSON-typed flags, an isolated workspace, and fact-check exit codes for CI.">
 <title>The CLI — The Agentic Service Designer</title>
 <link rel="stylesheet" href="../assets/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
@@ -23,95 +23,165 @@
 </header>
 <main class="art">
   <div class="art-progress"><div class="art-progress-bar" id="progress"></div></div>
-  <nav class="docs-tabs" aria-label="Docs sections"><a href="./index.html">Start</a><a href="./plugin-claude-code.html" class="on">Surfaces</a><a href="./concepts.html">Concepts</a><a href="./reference-tools.html">Reference</a><a href="./use-cases.html">Use cases</a></nav>
+  <nav class="docs-tabs" aria-label="Docs sections"><a href="./index.html">Start</a><a href="./plugin-claude-code.html" class="on">Surfaces</a><a href="./acp.html">Concepts</a><a href="./reference-tools.html">Reference</a><a href="./use-cases.html">Use cases</a></nav>
   <section class="page-hero">
     <span class="kicker">Docs · Surfaces</span>
     <h1>The CLI</h1>
-    <p class="lede">The asd terminal surface: one command per engine tool, dashed aliases, JSON-typed flags, a content-addressed workspace on disk, and gate exit codes built for CI.</p>
+    <p class="lede">The self-contained asd terminal surface: 29 engine tools, JSON-typed flags, an isolated workspace, and fact-check exit codes for CI.</p>
   </section>
-  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Surfaces</b><ol><li><a href="./plugin-claude-code.html">The Claude Code plugin</a></li><li><a href="./plugin-hosts.html">Host packs and the compiler</a></li><li><a href="./mcp.html">The MCP server</a></li><li><a href="./cli.html" class="on">The CLI</a></li><li><a href="./dsh-workbench.html">The DeepSeek Harness workbench</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#install-and-the-shim">Install and the shim</a></li><li><a href="#usage">Usage</a></li><li><a href="#the-workspace">The workspace</a></li><li><a href="#scripting-patterns">Scripting patterns</a></li><li><a href="#exit-codes-built-for-ci">Exit codes, built for CI</a></li><li><a href="#format-pin">Format pin</a></li></ol></nav></aside><article class="art-body"><h1 id="the-cli">The CLI</h1><p><code>asd</code> is the same engine the <a href="./mcp.html">MCP server</a> exposes, in a terminal. One command per engine tool, parsed generically from each tool&#39;s JSON-schema parameters — the CLI surface cannot drift from the suite&#39;s tool definitions, because it is generated from the same builders, names, descriptions, and validation.</p>
-<h2 id="install-and-the-shim">Install and the shim</h2><p>The pack at <code>platform/packs/cli</code> ships one file, the <code>asd</code> launcher. It prefers a standalone <code>@asd/runtime</code> bin when one is installed and otherwise resolves the built suite relative to the pack — the whole shim, verbatim:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>#!/usr/bin/env bash
-# asd launcher (pack convenience). Prefers the standalone @asd/runtime bin
-# when installed; otherwise resolves the suite checkout relative to this pack.
-if command -v asd &gt;/dev/null 2&gt;&amp;1 &amp;&amp; [ &quot;$(command -v asd)&quot; != &quot;$0&quot; ]; then exec asd &quot;$@&quot;; fi
-ROOT=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)/..&quot; &amp;&amp; pwd)&quot;
-CLI=&quot;$ROOT/../../suite/packages/runtime/lib/cli.mjs&quot;
-if [ ! -f &quot;$CLI&quot; ]; then
-  echo &quot;asd: runtime not found — run \`cd suite &amp;&amp; pnpm install &amp;&amp; pnpm --filter @asd/runtime build\` in the repo, or \`npm i -g @asd/runtime\` for a standalone install&quot; &gt;&amp;2
-  exit 1
-fi
-exec node &quot;$CLI&quot; &quot;$@&quot;</code></pre></div><p>From a repo checkout, build the runtime and go:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>cd suite &amp;&amp; pnpm install &amp;&amp; pnpm --filter @asd/runtime build</code></pre></div><h2 id="usage">Usage</h2><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>asd &lt;tool-name&gt; [--flag value] [--flag=value] [--json '{&quot;...&quot;: ...}']
-asd help</code></pre></div><p>The sixteen tools are exactly the MCP server&#39;s: <code>sd_project_list</code>, <code>sd_project_create</code>, <code>sd_project_open</code>, <code>sd_evidence_add</code>, <code>sd_evidence_query</code>, <code>sd_artifact_list</code>, <code>sd_artifact_get</code>, <code>sd_method_list</code>, <code>sd_method_run</code>, <code>sd_artifact_write</code>, <code>sd_review</code>, <code>sd_review_list</code>, <code>sd_export_report</code>, <code>sd_export_artifact</code>, <code>sd_knowledge</code>, <code>sd_factcheck</code>. <code>asd help</code> lists each with its parameter names, straight from the schemas (trimmed):</p>
-<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>usage: asd &lt;tool&gt; [--flag value ...]
-
-tools:
-  sd_project_list
-  sd_project_create      name, client, sector, service, phase
-  sd_project_open        projectId
-  sd_evidence_add        projectId, source, kind, body
-  […]
-  sd_review              projectId, artifactId, verdict, rows
-  sd_review_list         projectId, status
-  […]
-  sd_factcheck           projectId</code></pre></div><p>Dashed aliases are equivalent to the <code>sd_*</code> names — strip the prefix, normalize <code>-</code> to <code>_</code>: <code>asd project-create</code> is <code>asd sd_project_create</code>, <code>asd evidence-add</code> is <code>asd sd_evidence_add</code>, and so on. Both spellings appear throughout the platform&#39;s own runlogs.</p>
-<p>Flags follow three forms: <code>--flag value</code>, <code>--flag=value</code>, and bare booleans — a flag whose schema type is <code>boolean</code> passed with no value means <code>true</code> and never consumes the next token. Parameters whose schema type is object or array are JSON-typed: pass them inline and the CLI parses them as JSON, failing loudly on invalid input:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd artifact-write --projectId &lt;id&gt; --methodId journey-from-transcripts \
-  --title &quot;Current-state journey&quot; \
-  --nodes '[{&quot;id&quot;:&quot;plan&quot;,&quot;label&quot;:&quot;Plan&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;3&quot;,&quot;touchpoint&quot;:&quot;website&quot;},&quot;evidence&quot;:[]}]'</code></pre></div><p>Unknown flags, missing required flags, and positional arguments are usage errors — the message names what went wrong and points at <code>asd help</code>:</p>
-<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>asd sd_evidence_add: invalid arguments: &quot;kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]
-running `asd help` shows usage</code></pre></div><h2 id="the-workspace">The workspace</h2><p>Every project lives on disk under the workspace root. <code>ASD_WORKSPACE</code> overrides it; the default, resolved in <code>suite/packages/runtime/src/config.ts</code>, is <code>~/.asd/projects</code>:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>export ASD_WORKSPACE=/tmp/asd-ws   # default: ~/.asd/projects</code></pre></div><aside class="callout callout-note"><p>Older pack text named <code>~/sd-projects</code> as the default. That is stale — the engine resolves <code>~/.asd/projects</code>. Check <code>config.ts</code>, not memory.</p>
-</aside>
-<p>A project directory after a real session (evidence added, one artifact written and reviewed to final, one SVG exported):</p>
-<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>~/.asd/projects/capture-meridian-953950ca/artifacts/journey-map.current-state.7bfbea7a.json
-~/.asd/projects/capture-meridian-953950ca/artifacts/review-veto-log.review-current-state.6e5b2de0.json
-~/.asd/projects/capture-meridian-953950ca/renders/journey-map.7bfbea7a.svg
-~/.asd/projects/capture-meridian-953950ca/evidence/index.json
-~/.asd/projects/capture-meridian-953950ca/project.json
-~/.asd/projects/capture-meridian-953950ca/sops/</code></pre></div><p>The layout is flat and auditable: <code>project.json</code> is the project record; <code>evidence/index.json</code> is the whole register; artifacts are one JSON file each, named <code>&lt;kind&gt;.&lt;title-slug&gt;.&lt;id-prefix&gt;.json</code>; <code>renders/</code> holds exported reports and SVGs; <code>sops/</code> is scaffolded empty (only a <code>.gitkeep</code> in the captured tree). Nothing is hidden in a database — the create tool&#39;s own description says it plainly: &quot;a directory holding project.json plus evidence/, artifacts/, renders/ and sops/. Files are the record of truth.&quot;</p>
-<h2 id="scripting-patterns">Scripting patterns</h2><p>The output is Markdown with a JSON fence, so scripts parse the fence, not the prose.</p>
-<p>Capturing ids. Evidence ids are content-addressed — the sha-256 of <code>source kind body</code> — so an id is stable across projects and re-adding the same row returns the same id. Capture them as you add rows:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>EVID=$(asd evidence-add --projectId &quot;$PID&quot; --source call-821004 --kind quote \
-  --body &quot;Told to wait 15 min for next bus; nobody held the tram.&quot; \
-  | sed -n '/```json/,/```/p' | sed '1d;$d' | jq -r '.evidence.id')</code></pre></div><p>In-place rewrites. A write that fails acceptance persists as a draft with <code>check.failures</code>; pass the same id back with <code>--artifactId</code> to remediate that draft instead of creating a sibling:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>ART=$(asd artifact-write --projectId &quot;$PID&quot; --methodId journey-from-transcripts \
-  --title &quot;Current-state&quot; --nodes &quot;$NODES&quot; \
-  | sed -n '/```json/,/```/p' | sed '1d;$d' | jq -r '.artifact.id')
-# fix the nodes, cite the missing evidence, then:
+  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Surfaces</b><ol><li><a href="./plugin-claude-code.html">The Claude Code plugin</a></li><li><a href="./plugin-hosts.html">Host packs and the compiler</a></li><li><a href="./mcp.html">The MCP server</a></li><li><a href="./cli.html" class="on">The CLI</a></li><li><a href="./dsh-workbench.html">The DeepSeek Harness workbench</a></li><li><a href="./buzz.html">BUZZ integration</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#install-the-local-only-pack">Install the local-only pack</a></li><li><a href="#command-names-and-flags">Command names and flags</a></li><li><a href="#workspace-and-isolation">Workspace and isolation</a></li><li><a href="#the-29-tools">The 29 tools</a></li><li><a href="#evidence-and-artifact-loop">Evidence and artifact loop</a></li><li><a href="#json-and-scripting">JSON and scripting</a></li><li><a href="#source-and-release-checks">Source and release checks</a></li><li><a href="#format-pin">Format pin</a></li></ol></nav></aside><article class="art-body"><h1 id="the-cli">The CLI</h1>
+<p><code>asd</code> is the canonical runtime in a terminal. It uses the same 29 tool
+definitions as MCP and DSH, including the orchestration, canvas, template, and
+schema metadata tools. The parser is generated from each tool&#39;s JSON schema, so
+flag validation and the runtime cannot silently diverge.</p>
+<h2 id="install-the-local-only-pack">Install the local-only pack</h2>
+<p>The emitted CLI pack contains a launcher and a bundled runtime. The launcher
+resolves only its own <code>cli/bin/cli.mjs</code>; it never falls back to a global <code>asd</code>,
+ambient executable, or sibling suite checkout.</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>node platform/compiler/emit-packs.mjs --output /tmp/asd-packs
+PACK=/tmp/asd-packs/cli
+mkdir -p &quot;$HOME/.local/bin&quot;
+ln -sf &quot;$PACK/asd&quot; &quot;$HOME/.local/bin/asd&quot;
+export PATH=&quot;$HOME/.local/bin:$PATH&quot;
+asd --version
+asd help
+</code></pre></div>
+<p>For a distribution checkout, the emitter requires Node 20+ and the suite&#39;s
+dependencies. A fresh release check runs the resulting launcher with isolated
+<code>HOME</code>, <code>PATH</code>, and <code>ASD_WORKSPACE</code>; a fake ambient executable must remain
+uninvoked. This is the supported bootstrap path.</p>
+<h2 id="command-names-and-flags">Command names and flags</h2>
+<p>The canonical names are the 29 names listed below. Short names strip <code>sd_</code> and
+replace underscores with hyphens: <code>asd project-create</code> is an alias for
+<code>asd sd_project_create</code>.</p>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>asd &lt;tool-name&gt; [--flag value] [--flag=value] [--json &#39;{&quot;...&quot;: ...}&#39;]
+asd help
+asd --version
+</code></pre></div>
+<p>Values are coerced from the tool schema. Strings are passed as strings; numbers,
+booleans, arrays, and objects are validated before execution. Use JSON for an
+array or object. A boolean may be a bare flag or an explicit <code>true</code>/<code>false</code>.
+Unknown flags, missing required flags, positional arguments, and invalid enum
+values exit 1 with an actionable error.</p>
+<h2 id="workspace-and-isolation">Workspace and isolation</h2>
+<p>Projects are files on disk. The default root is <code>~/.asd/projects</code>; set
+<code>ASD_WORKSPACE</code> for a project, test, or CI job. Never let a test use a designer&#39;s
+ambient workspace:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>export ASD_WORKSPACE=&quot;$(mktemp -d)/projects&quot;
+mkdir -p &quot;$ASD_WORKSPACE&quot;
+asd project-create --name &quot;Metrovale Access&quot; --client &quot;Fictional composite&quot; \
+  --sector public-transport --service &quot;step-free journeys&quot; --phase discover
+</code></pre></div>
+<p>The project contains <code>project.json</code>, <code>evidence/index.json</code>, artifact JSON files,
+rendered exports, and the <code>sops/</code> directory. Those files are the record of
+truth; there is no hidden project database.</p>
+<h2 id="the-29-tools">The 29 tools</h2>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th>Tools</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Project</td>
+<td><code>sd_project_list</code>, <code>sd_project_create</code>, <code>sd_project_open</code></td>
+</tr>
+<tr>
+<td>Evidence</td>
+<td><code>sd_evidence_add</code>, <code>sd_evidence_import</code>, <code>sd_evidence_query</code></td>
+</tr>
+<tr>
+<td>Artifacts</td>
+<td><code>sd_artifact_list</code>, <code>sd_artifact_get</code>, <code>sd_artifact_write</code></td>
+</tr>
+<tr>
+<td>Methods</td>
+<td><code>sd_method_list</code>, <code>sd_method_run</code></td>
+</tr>
+<tr>
+<td>Review</td>
+<td><code>sd_review</code>, <code>sd_review_list</code></td>
+</tr>
+<tr>
+<td>Export</td>
+<td><code>sd_export_report</code>, <code>sd_export_artifact</code></td>
+</tr>
+<tr>
+<td>Knowledge</td>
+<td><code>sd_knowledge</code></td>
+</tr>
+<tr>
+<td>Factcheck</td>
+<td><code>sd_factcheck</code></td>
+</tr>
+<tr>
+<td>Templates/schema</td>
+<td><code>sd_template_list</code>, <code>sd_template_get</code>, <code>sd_schema_get</code>, <code>sd_practice_get</code></td>
+</tr>
+<tr>
+<td>Canvas</td>
+<td><code>sd_canvas_add</code>, <code>sd_canvas_list</code>, <code>sd_canvas_remove</code></td>
+</tr>
+<tr>
+<td>Orchestration</td>
+<td><code>sd_orchestration_plan</code>, <code>sd_orchestration_status</code>, <code>sd_orchestration_dispatch</code>, <code>sd_orchestration_handoff</code></td>
+</tr>
+<tr>
+<td>Phase</td>
+<td><code>sd_phase_advance</code></td>
+</tr>
+</tbody></table>
+<p><code>asd help</code> prints the schema-derived parameter names for every row. The same
+list appears in MCP <code>tools/list</code> and the DSH capability projection.</p>
+<h2 id="evidence-and-artifact-loop">Evidence and artifact loop</h2>
+<p>Evidence kinds are closed: <code>quote</code>, <code>telemetry</code>, and <code>document</code>. For example:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>EVIDENCE=$(asd evidence-add --projectId &quot;$PID&quot; --source interview-01 \
+  --kind quote --body &quot;I cannot tell whether the lift is working.&quot; )
+</code></pre></div>
+<p>Evidence ids are content-addressed. <code>sd_method_run</code> returns a method&#39;s phase,
+role-attributed steps, output kind, input minimums, acceptance rules, and review
+gate. <code>sd_artifact_write</code> accepts a node array with evidence pointers. A failed
+acceptance check persists a draft and its failure rows; a dangling evidence id
+fails closed before writing.</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd method-run --projectId &quot;$PID&quot; --methodId journey-from-transcripts
 asd artifact-write --projectId &quot;$PID&quot; --methodId journey-from-transcripts \
-  --title &quot;Current-state&quot; --nodes &quot;$NODES_FIXED&quot; --artifactId &quot;$ART&quot;</code></pre></div><p>The review loop. <code>sd_review --verdict pass</code> flips a gated artifact to <code>final</code>; <code>--verdict veto</code> keeps it <code>draft</code> and writes a final <code>review-veto-log</code> artifact (rows: <code>rowKind</code> <code>defect</code>/<code>proposal</code>, <code>severity</code> <code>critical</code>/<code>high</code>/<code>medium</code>/<code>low</code>, <code>rule</code>, <code>message</code>, <code>fix</code> required on defects, optional <code>evidenceId</code>). <code>sd_review_list</code> is the board you poll to see what is still gated:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd review --projectId &quot;$PID&quot; --artifactId &quot;$ART&quot; --verdict veto \
-  --rows '[{&quot;rowKind&quot;:&quot;defect&quot;,&quot;severity&quot;:&quot;high&quot;,&quot;rule&quot;:&quot;min-evidence-per-node&quot;,&quot;message&quot;:&quot;node cites 0 evidence refs&quot;,&quot;fix&quot;:&quot;Re-derive the node from the register with verbatim quotes attached&quot;}]'</code></pre></div><h2 id="exit-codes-built-for-ci">Exit codes, built for CI</h2><p>The contract from <code>src/cli.ts</code>: exit code is 1 when the tool errors — and also when a gate tool completes with a failing verdict. <code>sd_factcheck</code> reporting <code>&quot;pass&quot;: false</code> exits 1 even though the call succeeded, because a green-looking report with a zero exit code cannot fail a build. That makes the fact-check a one-line CI gate:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>#!/usr/bin/env bash
-set -euo pipefail
-export ASD_WORKSPACE=&quot;$CI_WORKSPACE&quot;
-asd factcheck --projectId &quot;$PID&quot;   # exit 1 if any artifact fails integrity, acceptance, or review</code></pre></div><p>A failing run prints the per-artifact rows and exits 1:</p>
-<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
-  &quot;pass&quot;: false,
-  &quot;rows&quot;: [
-    […one passing draft row…]
-    {
-      &quot;artifactId&quot;: &quot;dd58b4cf12e0419e9b455c030e448e43&quot;,
-      &quot;kind&quot;: &quot;journey-map&quot;,
-      &quot;title&quot;: &quot;Current-state journey&quot;,
-      &quot;status&quot;: &quot;draft&quot;,
-      &quot;integrity&quot;: { &quot;pass&quot;: true, &quot;dangling&quot;: [] },
-      &quot;acceptance&quot;: {
-        &quot;pass&quot;: false,
-        &quot;failures&quot;: [
-          &quot;expected at least 3 nodes, found 1&quot;,
-          &quot;node \&quot;plan\&quot; cites 0 evidence refs, needs 1&quot;
-        ]
-      },
-      &quot;review&quot;: { &quot;pass&quot;: true, &quot;gate&quot;: &quot;critic&quot;, &quot;verdict&quot;: null },
-      &quot;methodId&quot;: &quot;journey-from-transcripts&quot;,
-      &quot;methodResolution&quot;: &quot;recorded&quot;
-    }
-  ]
-}</code></pre></div><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>factcheck exit code: 1</code></pre></div><p>Each row replays three independent checks — referential integrity (no dangling evidence refs), the method&#39;s acceptance rules, and the review gate — so a pipeline can fail on exactly the layer that broke.</p>
-<h2 id="format-pin">Format pin</h2><p>Node ≥ 20; <code>lib/</code> emitted by tsdown 0.22; package 0.1.0. The same sixteen tools over stdio instead of a terminal: the <a href="./mcp.html">MCP server</a>. The same engine behind role agents and skills: the <a href="./plugin-claude-code.html">Claude Code plugin</a> and the other <a href="./plugin-hosts.html">host packs</a>.</p>
+  --title &quot;Current-state journey&quot; --nodes &quot;$NODES&quot;
+</code></pre></div>
+<p>All 74 methods currently declare a Critic review gate. Pass a review only with
+resolving evidence-cited proposal rows:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd review --projectId &quot;$PID&quot; --artifactId &quot;$ARTIFACT&quot; --verdict pass \
+  --rows &#39;[{&quot;rowKind&quot;:&quot;proposal&quot;,&quot;severity&quot;:&quot;low&quot;,&quot;rule&quot;:&quot;traceability&quot;,&quot;message&quot;:&quot;Retain the source quote in the final artifact.&quot;,&quot;evidenceId&quot;:&quot;&#39;&quot;$EVIDENCE_ID&quot;&#39;&quot;}]&#39;
+asd factcheck --projectId &quot;$PID&quot;
+</code></pre></div>
+<p>An empty <code>--rows &#39;[]&#39;</code> pass is not valid. A veto requires at least one defect
+with a fix and leaves the candidate draft while writing a <code>review-veto-log</code>.
+<code>sd_factcheck</code> replays integrity, acceptance, and review for every artifact and
+exits 1 when its top-level <code>pass</code> is false, making it a CI gate.</p>
+<h2 id="json-and-scripting">JSON and scripting</h2>
+<p>For scripts, prefer the canonical <code>sd_*</code> names and capture ids from JSON output.
+Use <code>--json</code> when an entire object is easier to generate than individual flags:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd sd_project_create --json &#39;{&quot;name&quot;:&quot;Metrovale Access&quot;,&quot;client&quot;:&quot;Fictional composite&quot;,&quot;sector&quot;:&quot;public-transport&quot;,&quot;service&quot;:&quot;step-free journeys&quot;,&quot;phase&quot;:&quot;discover&quot;}&#39;
+</code></pre></div>
+<p>The CLI prints either a human heading plus JSON or a JSON error. On failure it
+prints <code>running \</code>asd help` shows usage<code>to stderr. Exit 1 means a usage/runtime error or a completed gate with a failing verdict; a successful</code>sd_artifact_write<code>may still return</code>accepted: false` with a persisted draft, so inspect the
+payload rather than treating every exit-0 call as final.</p>
+<h2 id="source-and-release-checks">Source and release checks</h2>
+<p>The canonical implementation is <code>suite/packages/runtime/src/cli.ts</code>; the pack
+launcher is emitted by <code>platform/compiler/emit-packs.mjs</code>. The release checks
+compile the suite, emit to a disposable root, boot the pack-local launcher from
+outside the checkout, and assert no ambient executable was invoked. Run:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>npm run test:scripts
+npm run typecheck
+node platform/compiler/emit-packs.release.test.mjs
+</code></pre></div>
+<p>The CLI is a runtime surface, not an agent host. It records orchestration plans
+and handoffs, but ACP remains record-only and it cannot spawn a role process by
+itself.</p>
+<h2 id="format-pin">Format pin</h2>
+<p>Node 20 or newer; package version <code>0.1.0</code>; emitted bundle built by the suite&#39;s
+compiler. See <a href="./mcp.html">MCP</a> for the same engine over stdio and <a href="./plugin-hosts.html">host packs</a>
+for coding-agent installation.</p>
 </article></div>
   <button class="backtop" id="backtop" type="button">Back to top</button>
 </main>
@@ -120,4 +190,5 @@ asd factcheck --projectId &quot;$PID&quot;   # exit 1 if any artifact fails inte
   <span><a href="../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
 </footer>
 <script src="../assets/site.js"></script>
+
 </body></html>

@@ -32,35 +32,138 @@
     </div>
     <h1>The Street of Small Business: Banking That Learns the Business, on the ASD Plugin</h1>
     <p class="deck">Fictional composite client. All names, figures, and data are illustrative and anonymized.</p>
-    <div class="art-stats"><span><b>8</b> figures</span><span><b>~5.1k</b> words</span><span><b>3</b> tools of record</span><span><b>critic-reviewed</b> every gate</span></div>
+    <div class="art-stats"><span><b>8</b> figures</span><span><b>~5.1k</b> words</span><span><b>7</b> tools of record</span><span><b>critic-reviewed</b> every gate</span></div>
     <div class="author-block">
       <div class="author-id">
         <div class="author-avatar">SM</div>
         <div><b>Sam Mozaffari</b><span>Service designer · AI-first &amp; agentic practice</span></div>
       </div>
-      <p class="author-note">I designed banking that learns the business at SME scale — onboarding, lending and cash-flow tools built with the ASD plugin and measured in the pilot.</p>
+      <p class="author-note">I use an SME-banking scenario to show how the ASD pack could support learning services, with live-host claims kept separate from the illustrative case.</p>
     </div>
-  </div><div class="art-layout"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</a></li><li><a href="#sec-1-executive-summary">Executive summary</a></li><li><a href="#sec-2-the-brief">The brief</a></li><li><a href="#sec-3-the-plugin-at-a-glance">The plugin, at a glance</a></li><li><a href="#sec-4-phase-by-phase-session-log-claude-code-asd">Phase-by-phase session log (Claude Code + ASD)</a></li><li><a href="#sec-5-artifacts-portfolio-deterministic-outputs">Artifacts portfolio (deterministic outputs)</a></li><li><a href="#sec-6-use-cases-routed-to-the-right-agents">Use cases (routed to the right agents)</a></li><li><a href="#sec-7-sops-for-ai-skills-as-the-encoded-method">SOPs for AI — skills as the encoded method</a></li><li><a href="#sec-8-value-creation-amp-measurement">Value creation &amp; measurement</a></li><li><a href="#sec-9-ai-tool-playbook">AI tool playbook</a></li><li><a href="#sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</a></li><li><a href="#sec-11-references">References</a></li><li><a href="#sec-12-appendix-artifact-index">Appendix: artifact index</a></li><li><a href="#sec-13-tutorial-reproduce-this-engagement-15-minutes">Tutorial — reproduce this engagement (15 minutes)</a></li></ol></nav></aside><article class="art-body"><h1 id="34-the-street-of-small-business-banking-that-learns-the-business-on-the-asd-plugin">34 — The Street of Small Business: Banking That Learns the Business, on the ASD Plugin</h1><section class="art-sec sec-0"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</h2><p>Vela Bank is a fictional composite digital SME bank; no real customer, account, or credit data appears. This article is a runlog of the Agentic Service Designer (ASD) in Claude Code — the plugin pack at <code>platform/packs/claude-code</code>, its vendored MCP server, and the <code>asd</code> CLI shim. Every platform mechanic shown (tool names, flags, JSON fields, statuses, exit codes) was executed against the real CLI for this article; client payload values (quotes, KPIs, project names) are the engagement&#39;s illustrative data. Compliance co-signing is carried as critic <code>sd_review</code> verdicts persisted as review-veto-log artifacts, plus risk-committee minutes registered as document-kind evidence, plus human sign-off at each gate — stated plainly, because each mechanism is real.</p>
-</section><section class="art-sec sec-1"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2><p>A digital SME bank with 120,000 customers was winning on price and losing on friction: 9-day onboarding with 62% abandonment, 11-day loan decisions with 27% applications erroring before underwriting, &quot;relationship&quot; promised but absent for 91% of customers. One designer rebuilt the SME lifecycle in 19 weeks on the ASD plugin. Onboarding 9→2.1 days, abandonment 62%→31%, loan decisions 11→4.5 days, NPS 12→44, monthly churn 4.8%→2.1%.</p>
-<div class="facts-grid"><div class="fact"><span class="fact-k">Client</span><span class="fact-v">Vela Bank (fictional composite)</span></div><div class="fact"><span class="fact-k">Sector / service</span><span class="fact-v">Fintech; SME digital banking + lending</span></div><div class="fact"><span class="fact-k">Scope</span><span class="fact-v">120k SME customers, onboarding + lending + cash-flow</span></div><div class="fact"><span class="fact-k">Duration</span><span class="fact-v">19 weeks, 4 platform-gated phases</span></div><div class="fact"><span class="fact-k">Team</span><span class="fact-v">1 designer + 10 ASD role agents + 2 client leads (0.5 FTE)</span></div><div class="fact"><span class="fact-k">Platform</span><span class="fact-v">ASD Claude Code plugin (<code>platform/packs/claude-code</code>) + vendored MCP server + <code>asd</code> CLI</span></div><div class="fact"><span class="fact-k">Headline results</span><span class="fact-v">Onboarding 9→2.1d; abandonment 62%→31%; loan decision 11→4.5d; NPS 12→44</span></div></div><p><strong>What you will learn</strong></p>
+  </div><div class="art-layout"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</a></li><li><a href="#sec-1-executive-summary">Executive summary</a></li><li><a href="#sec-2-the-brief">The brief</a></li><li><a href="#sec-3-the-plugin-at-a-glance">The plugin, at a glance</a></li><li><a href="#sec-4-phase-by-phase-session-log-claude-code-asd">Phase-by-phase session log (Claude Code + ASD)</a></li><li><a href="#sec-5-artifacts-portfolio-deterministic-outputs">Artifacts portfolio (deterministic outputs)</a></li><li><a href="#sec-6-use-cases-routed-to-the-right-agents">Use cases (routed to the right agents)</a></li><li><a href="#sec-7-sops-for-ai-skills-as-the-encoded-method">SOPs for AI — skills as the encoded method</a></li><li><a href="#sec-8-value-creation-amp-measurement">Value creation &amp; measurement</a></li><li><a href="#sec-9-ai-tool-playbook">AI tool playbook</a></li><li><a href="#sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</a></li><li><a href="#sec-11-references">References</a></li><li><a href="#sec-12-appendix-artifact-index">Appendix: artifact index</a></li><li><a href="#sec-13-tutorial-reproduce-this-engagement-15-minutes">Tutorial — reproduce this engagement (15 minutes)</a></li></ol></nav></aside><article class="art-body"><h1 id="34-the-street-of-small-business-banking-that-learns-the-business-on-the-asd-plugin">34 — The Street of Small Business: Banking That Learns the Business, on the ASD Plugin</h1>
+<section class="art-sec sec-0"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</h2>
+<p>Vela Bank is a fictional composite digital SME bank; no real customer, account, or credit data appears. This article is an illustrative walkthrough of the Agentic Service Designer (ASD) sources at <code>platform/packs/claude-code</code>, the pack-local CLI, and the current disposable MCP evidence. Host/plugin execution is unverified; ACP is record-only/fail-closed, and BUZZ/DeepSeek Harness live integration is not claimed. Tool names, flags, JSON fields, statuses, IDs, outputs, and client payloads below are illustrative examples checked against the current contract. Compliance co-signing is represented as Critic <code>sd_review</code> verdicts plus human sign-off; it is not an engine feature.</p>
+<p><strong>Evidence status (2026-08-21).</strong> Vela Bank&#39;s records and results are synthetic. The cited modernization receipt is historical: disposable evidence recorded 29 tools, 224 resources, and 10 prompts across six MCP bundles. The current shared-pack release records 29 tools, 225 resources, and 10 prompts; no banking host or Claude Code plugin run is asserted. Receipt: <code>../../docs/reports/article-modernization-evidence.json</code>.</p>
+</section><section class="art-sec sec-1"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2>
+<p>A digital SME bank with 120,000 customers was winning on price and losing on friction: 9-day onboarding with 62% abandonment, 11-day loan decisions with 27% applications erroring before underwriting, &quot;relationship&quot; promised but absent for 91% of customers. One designer rebuilt the SME lifecycle in 19 weeks on the ASD plugin. Onboarding 9→2.1 days, abandonment 62%→31%, loan decisions 11→4.5 days, NPS 12→44, monthly churn 4.8%→2.1%.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Vela Bank (fictional composite)</td>
+</tr>
+<tr>
+<td>Sector / service</td>
+<td>Fintech; SME digital banking + lending</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>120k SME customers, onboarding + lending + cash-flow</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>19 weeks, 4 platform-gated phases</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>1 designer + 10 ASD role agents + 2 client leads (0.5 FTE)</td>
+</tr>
+<tr>
+<td>Platform</td>
+<td>ASD Claude Code plugin (<code>platform/packs/claude-code</code>) + vendored MCP server + <code>asd</code> CLI</td>
+</tr>
+<tr>
+<td>Headline results</td>
+<td>Onboarding 9→2.1d; abandonment 62%→31%; loan decision 11→4.5d; NPS 12→44</td>
+</tr>
+</tbody></table>
+<p><strong>What you will learn</strong></p>
 <ul>
 <li>The plugin surface of article 31 applied to financial services, where the hard gate is compliance expressed as critic verdict artifacts plus evidence-minuted human sign-off.</li>
-<li>How the 12 machine-gated method skills (of the 74 that ship in the pack) keep onboarding facts evidence-cited so the risk committee can audit them.</li>
+<li>How this article&#39;s 12-method canon (from the 74 executable skills that ship in the pack) keeps onboarding facts evidence-cited so the risk committee can audit them.</li>
 <li>Why &quot;do the complying for the customer&quot; is a design principle the platform can carry mechanically.</li>
 </ul>
-</section><section class="art-sec sec-2"><span class="sec-kicker">02 · The brief</span><h2 id="sec-2-the-brief">The brief</h2><p>Vela is a digital-native SME bank with a strong price story and a weak service story. Onboarding: 14 fields, 3 document uploads, 5-day verification queue. Lending: 13 documents for a £15k loan, 11-day decisions. Support: 4.1 contacts/customer/year, 38% progress-chasing. Strategic shift: from &quot;cheap banking&quot; to &quot;the bank that knows my business,&quot; with compliance as the non-negotiable spine.</p>
+</section><section class="art-sec sec-2"><span class="sec-kicker">02 · The brief</span><h2 id="sec-2-the-brief">The brief</h2>
+<p>Vela is a digital-native SME bank with a strong price story and a weak service story. Onboarding: 14 fields, 3 document uploads, 5-day verification queue. Lending: 13 documents for a £15k loan, 11-day decisions. Support: 4.1 contacts/customer/year, 38% progress-chasing. Strategic shift: from &quot;cheap banking&quot; to &quot;the bank that knows my business,&quot; with compliance as the non-negotiable spine.</p>
 <p>Success criteria (illustrative): onboarding ≤ 3d, abandonment ≤ 35%; loan decision ≤ 5d, error ≤ 12%; NPS ≥ +40; churn ≤ 2.5%/mo; cash-flow-foresight adoption ≥ 50%. Constraints: no change to regulatory obligations; read-only legacy core; risk-committee lending appetite; fair-lending rules the design must not route around; data-protection limits on transaction-derived products. Why service design: SME banking is high-context, high-consequence service (books 03, 19); economics run through retention and deepening (book 20); the staged experience is the differentiation (book 13).</p>
-</section><section class="art-sec sec-3"><span class="sec-kicker">03 · Approach</span><h2 id="sec-3-the-plugin-at-a-glance">The plugin, at a glance</h2><p>Same engagement surface as article 31 §3 (See: ../31/README.md), restated here as verified against the current pack. Install is the Claude Code plugin flow, quoted verbatim from <code>platform/packs/claude-code/README.md</code>:</p>
+</section><section class="art-sec sec-3"><span class="sec-kicker">03 · Approach</span><h2 id="sec-3-the-plugin-at-a-glance">The plugin, at a glance</h2>
+<p>For this banking walkthrough, the relevant source surface is the emitted Claude Code pack. The following install commands are quoted from <code>platform/packs/claude-code/README.md</code>; their presence documents the pack, not a completed installation:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>claude plugin marketplace add &lt;repo&gt;/platform/packs
-claude plugin install asd@asd-platform</code></pre></div><p>The marketplace manifest is <code>platform/packs/.claude-plugin/marketplace.json</code>; the plugin manifest is the pack&#39;s <code>.claude-plugin/plugin.json</code>. MCP wiring is the plugin-root <code>.mcp.json</code>, which Claude Code loads for installed plugins automatically — the vendored server (<code>mcp/bin/server.mjs</code>) needs no PATH entry and no sibling checkout. A manual-copy install (<code>cp -R</code> of <code>agents</code>, <code>skills</code>, <code>commands</code>, <code>mcp</code>, <code>.mcp.json</code> into the target project) is documented in the same README for hosts without the plugin flow.</p>
+claude plugin install asd@asd-platform
+</code></pre></div>
+<p>The marketplace manifest is <code>platform/packs/.claude-plugin/marketplace.json</code>; the plugin manifest is the pack&#39;s <code>.claude-plugin/plugin.json</code>. MCP wiring is the plugin-root <code>.mcp.json</code>, which Claude Code loads for installed plugins automatically — the vendored server (<code>mcp/bin/server.mjs</code>) needs no PATH entry and no sibling checkout. A manual-copy install (<code>cp -R</code> of <code>agents</code>, <code>skills</code>, <code>commands</code>, <code>mcp</code>, <code>.mcp.json</code> into the target project) is documented in the same README for hosts without the plugin flow.</p>
 <p>What ships in <code>platform/packs/claude-code</code>: 10 role agents in <code>agents/</code>, 74 SKILL.md files in <code>skills/</code>, the <code>/asd</code> orchestrator command in <code>commands/asd.md</code>, and the vendored MCP server under <code>mcp/</code>. Three surfaces, one engine:</p>
 <ol>
 <li><strong>Claude Code plugin</strong> — <code>/asd</code> plans the engagement from the brief and dispatches the role agents in platform order; each role is a native subagent (<code>@researcher</code>, <code>@mapper</code>, <code>@critic</code>, …); each method skill loads as a Claude skill when its role runs it.</li>
-<li><strong>MCP server</strong> (<code>asd-mcp</code>) — 16 tools (<code>sd_project_list/create/open</code>, <code>sd_evidence_add/query</code>, <code>sd_artifact_list/get</code>, <code>sd_method_list/run</code>, <code>sd_artifact_write</code>, <code>sd_review</code>, <code>sd_review_list</code>, <code>sd_export_report</code>, <code>sd_export_artifact</code>, <code>sd_knowledge</code>, <code>sd_factcheck</code>); resources: 215 <code>asd://</code> URIs (20 books + 159 chapters + 36 articles), cursor-paginated at 100 per page; prompts: the 10 role contracts.</li>
+<li><strong>MCP server</strong> (<code>asd-mcp</code>) — 29 tools, 225 cursor-paginated <code>asd://</code> resources, and the 10 role-contract prompts in the current shared-pack release. The historical modernization probe recorded 224 resources; host use is unverified.</li>
 <li><strong>CLI shim</strong> — <code>platform/packs/cli/asd</code>; usage <code>asd &lt;tool&gt; [--flag value]</code>. Dashed aliases (<code>asd project-create</code>) and full tool names (<code>asd sd_project_create</code>) both work; the pack README describes it as the same engine as a standalone fallback.</li>
 </ol>
 <p>Roster (invoke by <code>@name</code>):</p>
-<div class="tbl-wrap"><table><thead><tr><th>Agent</th><th>Invoke</th><th>Role on this engagement</th></tr></thead><tbody><tr><td>Orchestrator</td><td><code>@orchestrator</code></td><td>Plans the engagement, dispatches roles, owns human handoffs at the phase gates</td></tr><tr><td scope="row">Researcher</td><td><code>@researcher</code></td><td>Gathers evidence into the project register; verbatim quotes; provenance on every row</td></tr><tr><td scope="row">Synthesizer</td><td><code>@synthesizer</code></td><td>Pattern-finds across evidence; insight sets and themes; divergence/convergence</td></tr><tr><td scope="row">Mapper</td><td><code>@mapper</code></td><td>Owns mapping methods: journey, blueprint, ecosystem, stakeholder, mental model. Nodes cite evidence; never hand-draws Mermaid</td></tr><tr><td scope="row">Ideator</td><td><code>@ideator</code></td><td>Generates options against the insight set; never resolves framing alone</td></tr><tr><td scope="row">Prototyper</td><td><code>@prototyper</code></td><td>Builds and tests prototypes; evidence comes from test runs, not assumptions</td></tr><tr><td scope="row">Measurer</td><td><code>@measurer</code></td><td>KPI chains, audits, maturity, evaluation; numbers trace to evidence</td></tr><tr><td scope="row">Critic</td><td><code>@critic</code></td><td>Veto agent: <code>sd_review</code> verdicts with evidence-cited defect/proposal rows; every verdict persists as a review-veto-log artifact</td></tr><tr><td scope="row">Presenter</td><td><code>@presenter</code></td><td>Executive report and deck assembly via <code>sd_export_report</code>; adds no new evidence</td></tr><tr><td scope="row">Librarian</td><td><code>@librarian</code></td><td>Corpus to manifest/skill drift; provenance; knowledge sync; case-study citations</td></tr></tbody></table></div><p>Twelve of the 74 skills are the machine-gated method skills whose acceptance rules run on every <code>sd_artifact_write</code>: affinity-diagramming, behavioural-personas, contextual-inquiry, ecosystem-value-mapping, evidence-gated-blueprint, good-services-audit, journey-from-transcripts, mental-model-alignment, orchestration-canvas, service-blueprinting, stakeholder-mapping, transcript-mining.</p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Invoke</th>
+<th>Role on this engagement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Orchestrator</td>
+<td><code>@orchestrator</code></td>
+<td>Plans the engagement, dispatches roles, owns human handoffs at the phase gates</td>
+</tr>
+<tr>
+<td>Researcher</td>
+<td><code>@researcher</code></td>
+<td>Gathers evidence into the project register; verbatim quotes; provenance on every row</td>
+</tr>
+<tr>
+<td>Synthesizer</td>
+<td><code>@synthesizer</code></td>
+<td>Pattern-finds across evidence; insight sets and themes; divergence/convergence</td>
+</tr>
+<tr>
+<td>Mapper</td>
+<td><code>@mapper</code></td>
+<td>Owns mapping methods: journey, blueprint, ecosystem, stakeholder, mental model. Nodes cite evidence; never hand-draws Mermaid</td>
+</tr>
+<tr>
+<td>Ideator</td>
+<td><code>@ideator</code></td>
+<td>Generates options against the insight set; never resolves framing alone</td>
+</tr>
+<tr>
+<td>Prototyper</td>
+<td><code>@prototyper</code></td>
+<td>Builds and tests prototypes; evidence comes from test runs, not assumptions</td>
+</tr>
+<tr>
+<td>Measurer</td>
+<td><code>@measurer</code></td>
+<td>KPI chains, audits, maturity, evaluation; numbers trace to evidence</td>
+</tr>
+<tr>
+<td>Critic</td>
+<td><code>@critic</code></td>
+<td>Veto agent: <code>sd_review</code> verdicts with evidence-cited defect/proposal rows; every verdict persists as a review-veto-log artifact</td>
+</tr>
+<tr>
+<td>Presenter</td>
+<td><code>@presenter</code></td>
+<td>Executive report and deck assembly via <code>sd_export_report</code>; adds no new evidence</td>
+</tr>
+<tr>
+<td>Librarian</td>
+<td><code>@librarian</code></td>
+<td>Corpus to manifest/skill drift; provenance; knowledge sync; case-study citations</td>
+</tr>
+</tbody></table>
+<p>This article&#39;s 12-method canon is drawn from the 74 executable skills whose acceptance rules run on <code>sd_artifact_write</code>: affinity-diagramming, behavioural-personas, contextual-inquiry, ecosystem-value-mapping, evidence-gated-blueprint, good-services-audit, journey-from-transcripts, mental-model-alignment, orchestration-canvas, service-blueprinting, stakeholder-mapping, transcript-mining.</p>
 <p>The write path, as executed for this article (§13 has the full run):</p>
 <ul>
 <li>Evidence rows are content-addressed (sha256 ids) and typed <code>quote</code>, <code>telemetry</code>, or <code>document</code> — <code>observation</code> is rejected at argument validation, exit 1.</li>
@@ -72,12 +175,55 @@ claude plugin install asd@asd-platform</code></pre></div><p>The marketplace mani
 <p>Process and plan (Double Diamond arc; TISDD&#39;s Research → Ideation → Prototyping → Implementation maps onto Develop/Deliver):</p>
 <figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 812 50" role="img" aria-hidden="true"><defs><marker id="arr-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 170.79999999999998,25 196.79999999999998,25 222.79999999999995,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 368.4,25 394.4,25 420.4,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 581.1999999999999,25 607.1999999999999,25 633.1999999999999,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 368.4,25 394.4,25 420.4,25" fill="none" stroke="#171817" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arr-1)"/><text x="400.4" y="20" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">critic veto on fast-path</text><rect x="10" y="10" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="90.39999999999999" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Discover weeks 1-5</text><rect x="222.79999999999995" y="10" width="145.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="295.59999999999997" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Define weeks 6-8</text><rect x="420.4" y="10" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="500.79999999999995" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Develop weeks 9-14</text><rect x="633.1999999999999" y="10" width="168.4" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="717.4" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Deliver weeks 15-19</text></svg><figcaption><span class="fignum">Figure 1</span><span class="figcap">The plugin, at a glance</span></figcaption></figure>
 <figure class="fig fig-gantt"><div class="fig-empty">No timeline data</div><figcaption><span class="fignum">Figure 2</span><span class="figcap">Vela Bank 19-week engagement</span></figcaption></figure>
-<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Phase</th><th>SD method (canon skill)</th><th>Agents / surface</th><th>Artifact</th><th>Client involvement</th></tr></thead><tbody><tr><td>Discover</td><td>contextual-inquiry, transcript-mining (book 01/04)</td><td><code>@researcher</code>, <code>/asd</code></td><td>evidence register</td><td>diary recruits, data access</td></tr><tr><td scope="row">Define</td><td>journey-from-transcripts, behavioural-personas (book 09/04)</td><td><code>@mapper</code>, <code>@critic</code></td><td>journey-map, persona-set</td><td>framing workshops</td></tr><tr><td scope="row">Develop</td><td>evidence-gated-blueprint, orchestration-canvas (book 09/05)</td><td><code>@mapper</code>, <code>@prototyper</code></td><td>service-blueprint, storyboard</td><td>compliance co-design</td></tr><tr><td scope="row">Deliver</td><td>good-services-audit (book 01/04)</td><td><code>@measurer</code>, <code>@presenter</code>, <code>@librarian</code></td><td>insight-set, kpi-tree, report</td><td>pilot governance, sign-off</td></tr></tbody></table></div></section><section class="art-sec sec-4"><span class="sec-kicker">04 · The work, phase by phase</span><h2 id="sec-4-phase-by-phase-session-log-claude-code-asd">Phase-by-phase session log (Claude Code + ASD)</h2><h3 id="41-session-1-discover-weeks-15">4.1 Session 1 — Discover (weeks 1–5)</h3><p><strong>Drive.</strong></p>
-<div class="codeblock"><div class="codebar"><span></span></div><pre><code>/asd
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>SD method (canon skill)</th>
+<th>Agents / surface</th>
+<th>Artifact</th>
+<th>Client involvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Discover</td>
+<td>contextual-inquiry, transcript-mining (book 01/04)</td>
+<td><code>@researcher</code>, <code>/asd</code></td>
+<td>evidence register</td>
+<td>diary recruits, data access</td>
+</tr>
+<tr>
+<td>Define</td>
+<td>journey-from-transcripts, behavioural-personas (book 09/04)</td>
+<td><code>@mapper</code>, <code>@critic</code></td>
+<td>journey-map, persona-set</td>
+<td>framing workshops</td>
+</tr>
+<tr>
+<td>Develop</td>
+<td>evidence-gated-blueprint, orchestration-canvas (book 09/05)</td>
+<td><code>@mapper</code>, <code>@prototyper</code></td>
+<td>service-blueprint, storyboard</td>
+<td>compliance co-design</td>
+</tr>
+<tr>
+<td>Deliver</td>
+<td>good-services-audit (book 01/04)</td>
+<td><code>@measurer</code>, <code>@presenter</code>, <code>@librarian</code></td>
+<td>insight-set, kpi-tree, report</td>
+<td>pilot governance, sign-off</td>
+</tr>
+</tbody></table>
+</section><section class="art-sec sec-4"><span class="sec-kicker">04 · The work, phase by phase</span><h2 id="sec-4-phase-by-phase-session-log-claude-code-asd">Phase-by-phase session log (Claude Code + ASD)</h2>
+<h3 id="41-session-1-discover-weeks-15">4.1 Session 1 — Discover (weeks 1–5)</h3>
+<p><strong>Drive.</strong></p>
+<pre><code>/asd
 @researcher run contextual-inquiry for vela-bank: 18 diary studies (SMEs
 logging a week of banking), 34 interviews, and the 12-month interaction
 dataset mined via transcript-mining. Register everything — quotes verbatim,
-funnel extracts as telemetry, policy papers as documents.</code></pre></div><p><strong>What the plugin did.</strong> Every row landed content-addressed in the project register — from the reproduction run (§13), the diary quote above is real output:</p>
+funnel extracts as telemetry, policy papers as documents.
+</code></pre></div>
+<p><strong>Illustrative engine behavior.</strong> Each row lands content-addressed in the project register — the diary quote below is synthetic transcript material:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;evidence&quot;: {
     &quot;id&quot;: &quot;c5990bcffdcd760cd594d455afa8c70085a028cddaf8285b028876906df3d699&quot;,
@@ -87,15 +233,45 @@ funnel extracts as telemetry, policy papers as documents.</code></pre></div><p><
     &quot;body&quot;: &quot;I have 4 hours a week for banking; the account opened Monday and I made my first payment Friday.&quot;,
     &quot;capturedAt&quot;: &quot;2026-08-19T00:20:16.245Z&quot;
   }
-}</code></pre></div><p>One early habit died fast: the researcher agent&#39;s fieldnotes came back as <code>observation</code> rows, and the tool rejected them at argument validation — <code>invalid arguments: &quot;kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]</code>, exit 1. Fieldnotes went in as <code>quote</code> (verbatim) or <code>document</code> (researcher memo) instead. At engagement scale the register reached 2,214 content-addressed rows; every claim in the project now had to name a row.</p>
-<p><strong>Team analysis (outside the engine, marked).</strong> The key finding — <strong>onboarding did not end at account open but at first transaction</strong>; a third of customers opened and quietly stalled at top-up/payee setup — came from the designer&#39;s analysis of the register and raw funnel data, adversarial-checked. It roughly doubled the real scope.</p>
+}
+</code></pre></div>
+<p>The represented workflow deliberately tries <code>observation</code> and shows the source-defined argument rejection — <code>invalid arguments: &quot;kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]</code>, exit 1. It then stores fieldnotes as <code>quote</code> (verbatim) or <code>document</code> (researcher memo). The 2,214-row register belongs to the synthetic engagement, where every claim is represented naming a row.</p>
+<p><strong>Team analysis (outside the engine, marked).</strong> In the synthetic case, the designer reframes onboarding to end at first transaction because a third of represented customers stall at top-up/payee setup. That decision roughly doubles the illustrative scope; it is not an engine-generated finding.</p>
 <p><strong>Gate G1.</strong> Register in place; critic over plan: no veto.</p>
 <p><strong>Human judgment.</strong> The designer held the diary-study timetable against product pressure, excluded two hyper-successful customers, and framed the lending problem as an evidence problem — which is what bought redesign room inside the risk committee.</p>
-<h3 id="42-session-2-define-weeks-68">4.2 Session 2 — Define (weeks 6–8)</h3><p><strong>Drive.</strong></p>
-<div class="codeblock"><div class="codebar"><span></span></div><pre><code>@mapper run journey-from-transcripts -&gt; four journeys (open, borrow, run,
+<h3 id="42-session-2-define-weeks-68">4.2 Session 2 — Define (weeks 6–8)</h3>
+<p><strong>Drive.</strong></p>
+<pre><code>@mapper run journey-from-transcripts -&gt; four journeys (open, borrow, run,
 recover) and behavioural-personas -&gt; four personas. @critic review the
-lending fast-path concept before the risk committee sees it.</code></pre></div><p><strong>What the plugin did.</strong> Journeys and personas wrote through the acceptance gates (personas carried ≥3 distinct refs each). The fast-path concept — auto-approval on transaction data alone — was vetoed by the critic on fair-lending grounds before it ever reached the risk committee. The engagement&#39;s veto rows (abridged from the review-veto-log):</p>
-<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>rowKind</th><th>severity</th><th>rule</th><th>message</th><th>fix</th></tr></thead><tbody><tr><td>defect</td><td>critical</td><td>fair-lending-evidence</td><td>auto-approval on transaction data alone has no human-understandable decision rule</td><td>route to assisted underwriting with an explainability layer</td></tr><tr><td scope="row">proposal</td><td>medium</td><td>fair-lending-evidence</td><td>assisted underwriting keeps a named human accountable per decision</td><td>—</td></tr></tbody></table></div><p>The mechanics of that veto are real and reproducible; from the reproduction run, the same <code>sd_review</code> call against the onboarding journey:</p>
+lending fast-path concept before the risk committee sees it.
+</code></pre></div>
+<p><strong>Illustrative review-gate sequence.</strong> The scenario represents journeys and personas meeting their acceptance rules, then a fast-path concept receiving a Critic veto on fair-lending grounds. These rows are synthetic case content using the source-verified <code>review-veto-log</code> schema:</p>
+<table>
+<thead>
+<tr>
+<th>rowKind</th>
+<th>severity</th>
+<th>rule</th>
+<th>message</th>
+<th>fix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>defect</td>
+<td>critical</td>
+<td>fair-lending-evidence</td>
+<td>auto-approval on transaction data alone has no human-understandable decision rule</td>
+<td>route to assisted underwriting with an explainability layer</td>
+</tr>
+<tr>
+<td>proposal</td>
+<td>medium</td>
+<td>fair-lending-evidence</td>
+<td>assisted underwriting keeps a named human accountable per decision</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<p>The veto mechanics are verified by disposable CLI/MCP behavior; the following banking-specific response and IDs are illustrative:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;status&quot;: &quot;draft&quot;,
   &quot;verdict&quot;: &quot;veto&quot;,
@@ -103,14 +279,19 @@ lending fast-path concept before the risk committee sees it.</code></pre></div><
     &quot;review&quot;: { &quot;verdict&quot;: &quot;veto&quot;, &quot;logArtifactId&quot;: &quot;c60c9c331f0a45f080cbd811ee18f74b&quot; } },
   &quot;logArtifactId&quot;: &quot;c60c9c331f0a45f080cbd811ee18f74b&quot;,
   &quot;rowsWritten&quot;: 2
-}</code></pre></div><p>(trimmed; field order and values verbatim). A veto keeps the artifact at draft — or demotes it back to draft — and persists the rows as a final review-veto-log artifact; <code>sd_review_list</code> shows both, linked by <code>reviewOf</code>. The design pivoted to assisted underwriting with an explainability layer — the mechanism the risk committee later approved, with the veto in evidence.</p>
+}
+</code></pre></div>
+<p>The source contract keeps a vetoed artifact at draft (or demotes it) and persists the rows as a final <code>review-veto-log</code> linked by <code>reviewOf</code>; <code>sd_review_list</code> exposes both. In the fictional case, the design then pivots to assisted underwriting with an explainability layer.</p>
 <p><strong>Human judgment.</strong> The designer&#39;s frame — &quot;do the complying for the customer&quot;: the bank assembles the evidence, asks only for what must come from the customer — was co-signed by compliance as a design principle before any build.</p>
-<h3 id="43-session-3-develop-weeks-914">4.3 Session 3 — Develop (weeks 9–14)</h3><p><strong>Drive.</strong></p>
-<div class="codeblock"><div class="codebar"><span></span></div><pre><code>@mapper run orchestration-canvas and service-blueprinting, then
+<h3 id="43-session-3-develop-weeks-914">4.3 Session 3 — Develop (weeks 9–14)</h3>
+<p><strong>Drive.</strong></p>
+<pre><code>@mapper run orchestration-canvas and service-blueprinting, then
 evidence-gated-blueprint for assisted onboarding, the lending fast-path,
 and cash-flow foresight.
 @prototyper storyboard all three as storyboard artifacts.
-@critic review each; compliance co-signs the gate.</code></pre></div><p><strong>What the plugin did.</strong> The write gate held the discipline the engagement ran on. An early draft of the current-state journey — one node, no citations — came back (real output, §13 run):</p>
+@critic review each; compliance co-signs the gate.
+</code></pre></div>
+<p><strong>Illustrative engine behavior.</strong> The write gate holds the discipline represented in this scenario. An early draft of the current-state journey — one node, no citations — comes back in the illustrative transcript:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;accepted&quot;: false,
   &quot;status&quot;: &quot;draft&quot;,
@@ -125,16 +306,24 @@ and cash-flow foresight.
     { &quot;rule&quot;: &quot;min-nodes&quot;, &quot;message&quot;: &quot;expected at least 3 nodes, found 1&quot; },
     { &quot;rule&quot;: &quot;min-evidence-per-node&quot;, &quot;nodeId&quot;: &quot;open&quot;, &quot;message&quot;: &quot;node \&quot;open\&quot; cites 0 evidence refs, needs 1&quot; }
   ]
-}</code></pre></div><p>(trimmed). Two facts worth internalizing: a rejected write is <strong>not refused</strong> — it persists as a draft carrying its failure list — and the fix loop is mechanical: attach the cited rows, re-write, watch <code>accepted: true</code>. The same acceptance discipline held on the blueprint writes: backstage steps that silently reverted to the old 5-day manual verification queue could not write clean until they cited the risk minute that retired it. Prototype discipline held: every storyboard named its assumption, fidelity, subjects, and pass/fail criteria.</p>
+}
+</code></pre></div>
+<p>(trimmed). Two facts worth internalizing: a rejected write is <strong>not refused</strong> — it persists as a draft carrying its failure list — and the fix loop is mechanical: attach the cited rows, re-write, watch <code>accepted: true</code>. The same acceptance discipline held on the blueprint writes: backstage steps that silently reverted to the old 5-day manual verification queue could not write clean until they cited the risk minute that retired it. Prototype discipline held: every storyboard named its assumption, fidelity, subjects, and pass/fail criteria.</p>
 <p><strong>Team analysis (outside the engine, marked).</strong> The lending error-rate model and the mixed-income correction (invoices+cash) came from the designer&#39;s quantitative analysis with a synthetic credit corpus — analyst work, marked; the platform did not run it. The thresholds shipped because of it.</p>
 <p><strong>Human judgment.</strong> The designer chose assisted onboarding over pure automation (warmth at the hard moment, book 13), insisted cash-flow foresight default to &quot;no data leaves Vela,&quot; and chaired the compliance reviews that cut the 13-document rule to four with an evidence log.</p>
-<h3 id="44-session-4-deliver-weeks-1519">4.4 Session 4 — Deliver (weeks 15–19)</h3><p><strong>Drive.</strong></p>
-<div class="codeblock"><div class="codebar"><span></span></div><pre><code>@measurer build the kpi-tree from the four success criteria.
+<h3 id="44-session-4-deliver-weeks-1519">4.4 Session 4 — Deliver (weeks 15–19)</h3>
+<p><strong>Drive.</strong></p>
+<pre><code>@measurer build the kpi-tree from the four success criteria.
 @presenter assemble the steering + risk-committee packs from final artifacts.
-@librarian produce the handover pack.</code></pre></div><p>Then on the CLI, against the project: <code>asd sd_export_report --kind executive-summary</code>, <code>asd sd_export_artifact</code> per final artifact, and the gate — <code>asd sd_factcheck</code>.</p>
-<p><strong>What the plugin did.</strong> The kpi-tree named driver/baseline/source per row. Exports are files in the project workspace (real output, §13 run):</p>
+@librarian produce the handover pack.
+</code></pre></div>
+<p>Then on the CLI, against the project: <code>asd sd_export_report --kind executive-summary</code>, <code>asd sd_export_artifact</code> per final artifact, and the gate — <code>asd sd_factcheck</code>.</p>
+<p><strong>Illustrative engine behavior.</strong> The kpi-tree names driver/baseline/source per row. Exports are files in the project workspace in the represented flow:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;path&quot;: &quot;…/vela-bank-c4343cf0/renders/report.executive-summary.html&quot;, &quot;kind&quot;: &quot;executive-summary&quot;, &quot;generatedAt&quot;: &quot;2026-08-19T00:20:17.162Z&quot;, &quot;bytes&quot;: 2751 }
-{ &quot;path&quot;: &quot;…/vela-bank-c4343cf0/renders/journey-map.0e103272.svg&quot;, &quot;kind&quot;: &quot;journey-map&quot;, &quot;title&quot;: &quot;Onboarding current-state&quot;, &quot;bytes&quot;: 3834 }</code></pre></div><h4 id="deterministic-fact-check">Deterministic fact-check</h4><p><strong>Deterministic fact-check</strong> across the project — per-artifact integrity, acceptance replay, and review state, with the two compliance-signed conventions carried as a critic pass plus document-kind minutes. From the reproduction run (full rows, whitespace collapsed only):</p>
+{ &quot;path&quot;: &quot;…/vela-bank-c4343cf0/renders/journey-map.0e103272.svg&quot;, &quot;kind&quot;: &quot;journey-map&quot;, &quot;title&quot;: &quot;Onboarding current-state&quot;, &quot;bytes&quot;: 3834 }
+</code></pre></div>
+<h4 id="deterministic-fact-check">Deterministic fact-check</h4>
+<p><strong>Deterministic fact-check</strong> replays per-artifact integrity, acceptance, and review state. The following banking frame is illustrative; verified-disposable evidence establishes the fact-check shape, while the compliance minutes and IDs belong to the synthetic case:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;pass&quot;: true,
   &quot;rows&quot;: [
@@ -161,32 +350,310 @@ and cash-flow foresight.
       &quot;methodResolution&quot;: &quot;inferred&quot;
     }
   ]
-}</code></pre></div><p>Exit code 0. A failing row anywhere flips the top level to <code>&quot;pass&quot;: false</code> and the exit code to 1 — the steering pack does not ship on a red fact-check. At engagement scale this ran over 30 artifacts.</p>
+}
+</code></pre></div>
+<p>Exit code 0. A failing row anywhere flips the top level to <code>&quot;pass&quot;: false</code> and the exit code to 1 — the steering pack does not ship on a red fact-check. At engagement scale this ran over 30 artifacts.</p>
 <p><strong>Team analysis (outside the engine, marked).</strong> The segment rollout rule (micro-SME launched early, week-2 onboarding 3.4d vs 3.0d target, assisted-chat understaffed) was the designer&#39;s operational governance; corrected before full launch.</p>
 <p><strong>Human judgment.</strong> The designer ran the risk-committee presentation (the fast-path&#39;s evidence logic), made the &quot;no auto-approval&quot; call stick, and chose the two pilot segments deliberately (micro + freelance: the least and most complex credit files).</p>
-</section><section class="art-sec sec-5"><span class="sec-kicker">05 · Artifact portfolio</span><h2 id="sec-5-artifacts-portfolio-deterministic-outputs">Artifacts portfolio (deterministic outputs)</h2><h3 id="51-current-state-journey-open-to-first-transaction">5.1 Current-state journey: open to first transaction</h3><figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 232" role="img" aria-hidden="true"><defs><marker id="arr-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Open</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Stall</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Chase</text><line x1="0" y1="230" x2="296" y2="230" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 3</span><span class="figcap">1 Current-state journey: open to first transaction</span></figcaption></figure>
-<div class="tbl-wrap"><table><thead><tr><th>Phase</th><th>Emotion</th><th>Pain</th></tr></thead><tbody><tr><td>Open</td><td class="num">2</td><td>Fields ask what the bank should know</td></tr><tr><td scope="row">Verify</td><td class="num">1</td><td>Five-day silence; no ticket</td></tr><tr><td scope="row">First use</td><td class="num">2</td><td>Silent failure on payee setup</td></tr><tr><td scope="row">Lend</td><td class="num">1</td><td>11 days; 13 documents; errors</td></tr></tbody></table></div><h3 id="52-future-state-blueprint-assisted-onboarding-excerpt">5.2 Future-state blueprint: assisted onboarding (excerpt)</h3><figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Evidence</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Customer</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Frontstage</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Backstage</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Support</text><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/><line x1="94" y1="156" x2="296" y2="156" stroke="#171817" stroke-width="1.2"/><text x="98" y="152" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of interaction</text><line x1="94" y1="220" x2="296" y2="220" stroke="#171817" stroke-width="1.2"/><text x="98" y="216" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of visibility</text><line x1="94" y1="284" x2="296" y2="284" stroke="#171817" stroke-width="1.2"/><text x="98" y="280" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of internal interaction</text></svg><figcaption><span class="fignum">Figure 4</span><span class="figcap">2 Future-state blueprint: assisted onboarding (excerpt)</span></figcaption></figure>
-<div class="tbl-wrap"><table><thead><tr><th>Lane</th><th>Action</th><th>Detail</th></tr></thead><tbody><tr><td>Customer</td><td>Start fast</td><td>3-min intake; bank assembles the rest</td></tr><tr><td scope="row">Frontstage</td><td>Live assist</td><td>Agent at the friction point (book 13)</td></tr><tr><td scope="row">Backstage</td><td>KYC engine</td><td>Automated verification, human review queue</td></tr><tr><td scope="row">Support</td><td>Compliance gate</td><td>Co-signs via critic verdict + minuted evidence</td></tr></tbody></table></div><h3 id="5355-maps-and-personas">5.3–5.5 Maps and personas</h3><figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 675 182" role="img" aria-hidden="true"><defs><marker id="arr-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 83.49090909090908,76 120.8,58 158.20000000000002,58" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 231.34545454545457,43 272.8,25 310.2,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 67.94545454545454,106 120.8,157 146.8,157" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 246.8,157 272.8,157 298.8,157" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 231.34545454545457,73 272.8,91 310.2,91" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 417.8,91 455.2,91 511.6,91" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 429.2,157 455.2,157 538,157" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 417.8,25 455.2,25 481.2,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><rect x="10" y="76" width="84.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="52.4" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Vela CEO</text><rect x="158.20000000000002" y="43" width="77.19999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="196.8" y="62" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Product</text><rect x="310.2" y="10" width="107.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="364" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Engineering</text><rect x="146.8" y="142" width="100" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="196.8" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Compliance</text><rect x="298.8" y="142" width="130.39999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="364" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Risk committee</text><rect x="310.2" y="76" width="107.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="364" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Support ops</text><rect x="511.6" y="76" width="122.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="573" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">SME customers</text><rect x="538" y="142" width="70" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="573" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Legal</text><rect x="481.2" y="10" width="183.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="573" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Data and open banking</text></svg><figcaption><span class="fignum">Figure 5</span><span class="figcap">3–5.5 Maps and personas</span></figcaption></figure>
-<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Stakeholder</th><th>Influence</th><th>Interest</th><th>Strategy</th></tr></thead><tbody><tr><td>Compliance</td><td>High</td><td>High</td><td>Co-designer; hard gates</td></tr><tr><td scope="row">Risk committee</td><td>High</td><td>Medium</td><td>Evidence-led attendance</td></tr><tr><td scope="row">Product</td><td>Medium</td><td>High</td><td>Delivery; pace-keeper</td></tr><tr><td scope="row">Support ops</td><td>Medium</td><td>High</td><td>Co-design assisted chat</td></tr><tr><td scope="row">SME customers</td><td>Low</td><td>High</td><td>Evidence + diaries</td></tr></tbody></table></div><figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 569 380" role="img" aria-hidden="true"><defs><marker id="arr-6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 61.669696969696965,208 128.39999999999998,25 199.99999999999994,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 64.40454545454546,208 128.39999999999998,91 177.19999999999996,91" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 72.6090909090909,208 128.39999999999998,157 154.39999999999998,157" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 102.39999999999999,223 128.39999999999998,223 161.99999999999994,223" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 72.6090909090909,238 128.39999999999998,289 192.39999999999995,289" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 196.19999999999996,359.5933014354067 128.39999999999998,365 63.826760563380276,238" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 66.13577981651376,238 128.39999999999998,332 196.19999999999996,344.4354066985646" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 311.4,355 379.19999999999993,355 405.19999999999993,355" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><rect x="10" y="208" width="92.39999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="56.199999999999996" y="227" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Vela Bank</text><rect x="199.99999999999994" y="10" width="107.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="253.79999999999995" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Legacy core</text><rect x="177.19999999999996" y="76" width="153.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="253.79999999999995" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Open-banking APIs</text><rect x="154.39999999999998" y="142" width="198.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="253.79999999999995" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Accounting integrations</text><rect x="161.99999999999994" y="208" width="183.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="253.79999999999995" y="227" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">KYC and fraud vendors</text><rect x="192.39999999999995" y="274" width="122.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="253.79999999999995" y="293" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Payment rails</text><rect x="196.19999999999996" y="340" width="115.19999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="253.79999999999995" y="359" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">SME customer</text><rect x="405.19999999999993" y="340" width="153.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="481.79999999999995" y="359" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Payroll and taxes</text></svg><figcaption><span class="fignum">Figure 6</span><span class="figcap">3–5.5 Maps and personas</span></figcaption></figure>
-<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Persona</th><th>Profile</th><th>Signature</th><th>Key need</th><th>Evidence</th></tr></thead><tbody><tr><td>P1 The Solo Founder</td><td>Micro, 0–4</td><td>Week nights, phone-first</td><td>Speed, no forms</td><td>47</td></tr><tr><td scope="row">P2 The Working Builder</td><td>Small 5–20</td><td>Monthly cycles, cash-tight</td><td>Foresight over features</td><td>38</td></tr><tr><td scope="row">P3 The Back-Office Angel</td><td>Mid-SME admin</td><td>Process-driven, 4h/wk</td><td>Certainty, human fallback</td><td>41</td></tr><tr><td scope="row">P4 The Seasonal Trades</td><td>Volatile flow</td><td>Invoice-heavy, lumpy</td><td>Flexible credit</td><td>33</td></tr></tbody></table></div><h3 id="56-templates">5.6 Templates</h3><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>Fast-path spec: &lt;journey&gt; &lt;trigger&gt; &lt;evidence assembled (automated sources)&gt;
+</section><section class="art-sec sec-5"><span class="sec-kicker">05 · Artifact portfolio</span><h2 id="sec-5-artifacts-portfolio-deterministic-outputs">Artifacts portfolio (deterministic outputs)</h2>
+<h3 id="51-current-state-journey-open-to-first-transaction">5.1 Current-state journey: open to first transaction</h3>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 232" role="img" aria-hidden="true"><defs><marker id="arr-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Open</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Stall</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Chase</text><line x1="0" y1="230" x2="296" y2="230" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 3</span><span class="figcap">1 Current-state journey: open to first transaction</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Emotion</th>
+<th>Pain</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Open</td>
+<td>2</td>
+<td>Fields ask what the bank should know</td>
+</tr>
+<tr>
+<td>Verify</td>
+<td>1</td>
+<td>Five-day silence; no ticket</td>
+</tr>
+<tr>
+<td>First use</td>
+<td>2</td>
+<td>Silent failure on payee setup</td>
+</tr>
+<tr>
+<td>Lend</td>
+<td>1</td>
+<td>11 days; 13 documents; errors</td>
+</tr>
+</tbody></table>
+<h3 id="52-future-state-blueprint-assisted-onboarding-excerpt">5.2 Future-state blueprint: assisted onboarding (excerpt)</h3>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Evidence</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Customer</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Frontstage</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Backstage</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Support</text><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/><line x1="94" y1="156" x2="296" y2="156" stroke="#171817" stroke-width="1.2"/><text x="98" y="152" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of interaction</text><line x1="94" y1="220" x2="296" y2="220" stroke="#171817" stroke-width="1.2"/><text x="98" y="216" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of visibility</text><line x1="94" y1="284" x2="296" y2="284" stroke="#171817" stroke-width="1.2"/><text x="98" y="280" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of internal interaction</text></svg><figcaption><span class="fignum">Figure 4</span><span class="figcap">2 Future-state blueprint: assisted onboarding (excerpt)</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Lane</th>
+<th>Action</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Customer</td>
+<td>Start fast</td>
+<td>3-min intake; bank assembles the rest</td>
+</tr>
+<tr>
+<td>Frontstage</td>
+<td>Live assist</td>
+<td>Agent at the friction point (book 13)</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>KYC engine</td>
+<td>Automated verification, human review queue</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>Compliance gate</td>
+<td>Co-signs via critic verdict + minuted evidence</td>
+</tr>
+</tbody></table>
+<h3 id="5355-maps-and-personas">5.3–5.5 Maps and personas</h3>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 675 182" role="img" aria-hidden="true"><defs><marker id="arr-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 83.49090909090908,76 120.8,58 158.20000000000002,58" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 231.34545454545457,43 272.8,25 310.2,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 67.94545454545454,106 120.8,157 146.8,157" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 246.8,157 272.8,157 298.8,157" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 231.34545454545457,73 272.8,91 310.2,91" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 417.8,91 455.2,91 511.6,91" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 429.2,157 455.2,157 538,157" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 417.8,25 455.2,25 481.2,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><rect x="10" y="76" width="84.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="52.4" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Vela CEO</text><rect x="158.20000000000002" y="43" width="77.19999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="196.8" y="62" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Product</text><rect x="310.2" y="10" width="107.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="364" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Engineering</text><rect x="146.8" y="142" width="100" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="196.8" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Compliance</text><rect x="298.8" y="142" width="130.39999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="364" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Risk committee</text><rect x="310.2" y="76" width="107.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="364" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Support ops</text><rect x="511.6" y="76" width="122.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="573" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">SME customers</text><rect x="538" y="142" width="70" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="573" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Legal</text><rect x="481.2" y="10" width="183.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="573" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Data and open banking</text></svg><figcaption><span class="fignum">Figure 5</span><span class="figcap">3–5.5 Maps and personas</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Stakeholder</th>
+<th>Influence</th>
+<th>Interest</th>
+<th>Strategy</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Compliance</td>
+<td>High</td>
+<td>High</td>
+<td>Co-designer; hard gates</td>
+</tr>
+<tr>
+<td>Risk committee</td>
+<td>High</td>
+<td>Medium</td>
+<td>Evidence-led attendance</td>
+</tr>
+<tr>
+<td>Product</td>
+<td>Medium</td>
+<td>High</td>
+<td>Delivery; pace-keeper</td>
+</tr>
+<tr>
+<td>Support ops</td>
+<td>Medium</td>
+<td>High</td>
+<td>Co-design assisted chat</td>
+</tr>
+<tr>
+<td>SME customers</td>
+<td>Low</td>
+<td>High</td>
+<td>Evidence + diaries</td>
+</tr>
+</tbody></table>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 569 380" role="img" aria-hidden="true"><defs><marker id="arr-6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 61.669696969696965,208 128.39999999999998,25 199.99999999999994,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 64.40454545454546,208 128.39999999999998,91 177.19999999999996,91" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 72.6090909090909,208 128.39999999999998,157 154.39999999999998,157" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 102.39999999999999,223 128.39999999999998,223 161.99999999999994,223" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 72.6090909090909,238 128.39999999999998,289 192.39999999999995,289" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 196.19999999999996,359.5933014354067 128.39999999999998,365 63.826760563380276,238" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 66.13577981651376,238 128.39999999999998,332 196.19999999999996,344.4354066985646" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 311.4,355 379.19999999999993,355 405.19999999999993,355" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><rect x="10" y="208" width="92.39999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="56.199999999999996" y="227" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Vela Bank</text><rect x="199.99999999999994" y="10" width="107.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="253.79999999999995" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Legacy core</text><rect x="177.19999999999996" y="76" width="153.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="253.79999999999995" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Open-banking APIs</text><rect x="154.39999999999998" y="142" width="198.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="253.79999999999995" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Accounting integrations</text><rect x="161.99999999999994" y="208" width="183.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="253.79999999999995" y="227" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">KYC and fraud vendors</text><rect x="192.39999999999995" y="274" width="122.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="253.79999999999995" y="293" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Payment rails</text><rect x="196.19999999999996" y="340" width="115.19999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="253.79999999999995" y="359" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">SME customer</text><rect x="405.19999999999993" y="340" width="153.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="481.79999999999995" y="359" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Payroll and taxes</text></svg><figcaption><span class="fignum">Figure 6</span><span class="figcap">3–5.5 Maps and personas</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Profile</th>
+<th>Signature</th>
+<th>Key need</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P1 The Solo Founder</td>
+<td>Micro, 0–4</td>
+<td>Week nights, phone-first</td>
+<td>Speed, no forms</td>
+<td>47</td>
+</tr>
+<tr>
+<td>P2 The Working Builder</td>
+<td>Small 5–20</td>
+<td>Monthly cycles, cash-tight</td>
+<td>Foresight over features</td>
+<td>38</td>
+</tr>
+<tr>
+<td>P3 The Back-Office Angel</td>
+<td>Mid-SME admin</td>
+<td>Process-driven, 4h/wk</td>
+<td>Certainty, human fallback</td>
+<td>41</td>
+</tr>
+<tr>
+<td>P4 The Seasonal Trades</td>
+<td>Volatile flow</td>
+<td>Invoice-heavy, lumpy</td>
+<td>Flexible credit</td>
+<td>33</td>
+</tr>
+</tbody></table>
+<h3 id="56-templates">5.6 Templates</h3>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>Fast-path spec: &lt;journey&gt; &lt;trigger&gt; &lt;evidence assembled (automated sources)&gt;
   &lt;customer-asked items (minimum, compliance-logged)&gt;
   &lt;decision rule (human + explainability)&gt; &lt;fallback&gt; &lt;review-veto-log id&gt;
 Compliance gate: &lt;change&gt; &lt;regulatory obligation&gt; &lt;fair-lending evidence&gt;
-  &lt;risk committee meeting + minute evidence id&gt; &lt;critic verdict + log id&gt;</code></pre></div><h3 id="57-mock-dataset-onboarding-funnel-1000-cohorts">5.7 Mock dataset (onboarding funnel, 1,000 cohorts)</h3><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>cohort,stage,started,abandoned_at_14_fields,abandoned_at_upload,abandoned_at_verify,opened_to_first_tx_days,accepted
+  &lt;risk committee meeting + minute evidence id&gt; &lt;critic verdict + log id&gt;
+</code></pre></div>
+<h3 id="57-mock-dataset-onboarding-funnel-1000-cohorts">5.7 Mock dataset (onboarding funnel, 1,000 cohorts)</h3>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>cohort,stage,started,abandoned_at_14_fields,abandoned_at_upload,abandoned_at_verify,opened_to_first_tx_days,accepted
 C-2201,open,1000,310,180,130,7,290
 C-2202,open,1000,290,170,120,6,310
 C-2203,open,1000,320,190,140,8,270
-C-2204,open,1000,300,170,160,5,300</code></pre></div><p>Aggregate abandonment 62% (2,480/4,000); median open-to-first 6.5d (≈9d to fully active pre-redesign).</p>
-<h3 id="58-charts">5.8 Charts</h3><figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">17.5</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">35</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">52.5</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">70</text><line x1="44" y1="304" x2="730" y2="304" stroke="#DEDEDA" stroke-width="1"/><text x="215.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Before</text><text x="558.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">After</text><rect x="588" y="7" width="14" height="10" rx="2" fill="#171817"/><text x="610" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">bar</text><rect x="198.5" y="73.71428571428572" width="34" height="230.28571428571428" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="215.5" y="67.71428571428572" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">62</text><rect x="541.5" y="188.85714285714286" width="34" height="115.14285714285714" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="558.5" y="182.85714285714286" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">31</text></svg><figcaption><span class="fignum">Figure 7</span><span class="figcap">Onboarding abandonment percent</span></figcaption></figure>
+C-2204,open,1000,300,170,160,5,300
+</code></pre></div>
+<p>Aggregate abandonment 62% (2,480/4,000); median open-to-first 6.5d (≈9d to fully active pre-redesign).</p>
+<h3 id="58-charts">5.8 Charts</h3>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">17.5</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">35</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">52.5</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">70</text><line x1="44" y1="304" x2="730" y2="304" stroke="#DEDEDA" stroke-width="1"/><text x="215.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Before</text><text x="558.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">After</text><rect x="588" y="7" width="14" height="10" rx="2" fill="#171817"/><text x="610" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">bar</text><rect x="198.5" y="73.71428571428572" width="34" height="230.28571428571428" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="215.5" y="67.71428571428572" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">62</text><rect x="541.5" y="188.85714285714286" width="34" height="115.14285714285714" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="558.5" y="182.85714285714286" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">31</text></svg><figcaption><span class="fignum">Figure 7</span><span class="figcap">Onboarding abandonment percent</span></figcaption></figure>
 <figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">12.5</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">25</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">37.5</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">50</text><line x1="44" y1="304" x2="730" y2="304" stroke="#DEDEDA" stroke-width="1"/><text x="215.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Before</text><text x="558.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">After</text><rect x="588" y="7" width="14" height="10" rx="2" fill="#171817"/><text x="610" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">bar</text><rect x="198.5" y="241.6" width="34" height="62.400000000000006" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="215.5" y="235.6" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">12</text><rect x="541.5" y="75.19999999999999" width="34" height="228.8" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="558.5" y="69.19999999999999" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">44</text></svg><figcaption><span class="fignum">Figure 8</span><span class="figcap">SME NPS</span></figcaption></figure>
-<h3 id="59-traceability">5.9 Traceability</h3><div class="tbl-wrap tbl-trace"><table><thead><tr><th>Opportunity</th><th>Principle</th><th>Blueprint change</th><th>KPI</th></tr></thead><tbody><tr><td>14 fields + silence</td><td>Do the complying for the customer</td><td>Assembled evidence + assist</td><td>Onboarding 2.1d; aband 31%</td></tr><tr><td scope="row">Loan errors + 11d</td><td>Evidence over paperwork</td><td>Fast-path + explainability</td><td>Decision 4.5d; error 9%</td></tr><tr><td scope="row">No relationship</td><td>Useful between transactions</td><td>Cash-flow foresight</td><td>Adoption 61%</td></tr><tr><td scope="row">Progress-chasing</td><td>No second request</td><td>Status everywhere</td><td>Chasing calls −70%</td></tr></tbody></table></div><h3 id="510-good-services-audit-via-good-services-audit">5.10 Good Services audit (via good-services-audit)</h3><p><code>sd_method_run good-services-audit</code> returns the method contract the roles execute — steps (researcher scores, critic rejects any below-target score with no cited evidence, <code>gate: true</code>), acceptance rules (min-nodes 3, min-evidence-per-node 1, field-non-empty theme), <code>outputKind: insight-set</code> (full contract in §13).</p>
-<div class="ba-table"><div class="ba-row ba-header"><span class="ba-head">Only ask once</span><span class="ba-head">1</span><span class="ba-head">4</span></div><div class="ba-row"><span class="bac bac-k">Do not make me wait</span><span class="bac bac-a">1</span><span class="bac bac-b">4</span></div><div class="ba-row"><span class="bac bac-k">Use plain language</span><span class="bac bac-a">2</span><span class="bac bac-b">4</span></div><div class="ba-row"><span class="bac bac-k">Overall</span><span class="bac bac-a">23/75</span><span class="bac bac-b">57/75</span></div></div></section><section class="art-sec sec-6"><span class="sec-kicker">06 · Use cases</span><h2 id="sec-6-use-cases-routed-to-the-right-agents">Use cases (routed to the right agents)</h2><p><strong>6.1 The solo founder&#39;s Monday.</strong> Assisted onboarding + friction-point detection. Cohort abandonment 31%, median 2.1d, funded Tuesday morning.
+<h3 id="59-traceability">5.9 Traceability</h3>
+<table>
+<thead>
+<tr>
+<th>Opportunity</th>
+<th>Principle</th>
+<th>Blueprint change</th>
+<th>KPI</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>14 fields + silence</td>
+<td>Do the complying for the customer</td>
+<td>Assembled evidence + assist</td>
+<td>Onboarding 2.1d; aband 31%</td>
+</tr>
+<tr>
+<td>Loan errors + 11d</td>
+<td>Evidence over paperwork</td>
+<td>Fast-path + explainability</td>
+<td>Decision 4.5d; error 9%</td>
+</tr>
+<tr>
+<td>No relationship</td>
+<td>Useful between transactions</td>
+<td>Cash-flow foresight</td>
+<td>Adoption 61%</td>
+</tr>
+<tr>
+<td>Progress-chasing</td>
+<td>No second request</td>
+<td>Status everywhere</td>
+<td>Chasing calls −70%</td>
+</tr>
+</tbody></table>
+<h3 id="510-good-services-audit-via-good-services-audit">5.10 Good Services audit (via good-services-audit)</h3>
+<p><code>sd_method_run good-services-audit</code> returns the method contract the roles execute — steps (researcher scores, critic rejects any below-target score with no cited evidence, <code>gate: true</code>), acceptance rules (min-nodes 3, min-evidence-per-node 1, field-non-empty theme), <code>outputKind: insight-set</code> (full contract in §13).</p>
+<table>
+<thead>
+<tr>
+<th>Principle</th>
+<th>Before</th>
+<th>After</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Only ask once</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Do not make me wait</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Use plain language</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Overall</td>
+<td>23/75</td>
+<td>57/75</td>
+</tr>
+</tbody></table>
+</section><section class="art-sec sec-6"><span class="sec-kicker">06 · Use cases</span><h2 id="sec-6-use-cases-routed-to-the-right-agents">Use cases (routed to the right agents)</h2>
+<p><strong>6.1 The solo founder&#39;s Monday.</strong> Assisted onboarding + friction-point detection. Cohort abandonment 31%, median 2.1d, funded Tuesday morning.
 <strong>6.2 The seasonal trades loan.</strong> Invoice-heavy seasonal pattern failed the first fast-path threshold; assisted underwriting with explainability approved in 4.5d. The threshold correction was the team&#39;s quantitative analysis (marked).
 <strong>6.3 The cash-flow Tuesday.</strong> P3 opened foresight in week 6; &quot;what changes if we pay VAT early&quot; scenarios. Adoption 61% of actives by pilot end.</p>
-</section><section class="art-sec sec-7"><span class="sec-kicker">07 · SOPs for AI</span><h2 id="sec-7-sops-for-ai-skills-as-the-encoded-method">SOPs for AI — skills as the encoded method</h2><p>Identical discipline to article 31 §7. Each method is a manifest — steps with role assignments, acceptance rules, output kind — that <code>sd_method_run</code> prints as a contract and <code>sd_artifact_write</code> enforces mechanically. For financial services the load-bearing rules: referential integrity is absolute (a lending claim must cite a sha256 register row; dangling refs are hard errors); every KPI names its baseline and source; the critic&#39;s <code>sd_review</code> rows carry rowKind/severity/rule/message — with a fix required on every defect row — and persist as a review-veto-log artifact; and the compliance gate is a human decision carried as a critic verdict plus a document-kind minute, not an engine feature. <strong>Failure modes observed:</strong> (1) the decision-time model was optimistic for mixed-income businesses — analyst-corrected before launch; (2) a persona lacked variance evidence — acceptance re-gated the write; (3) product pressure for auto-approval — held by the fair-lending veto; the rows are in the log.</p>
-</section><section class="art-sec sec-8"><span class="sec-kicker">08 · Value & measurement</span><h2 id="sec-8-value-creation-amp-measurement">Value creation &amp; measurement</h2><div class="ba-table"><div class="ba-row ba-header"><span class="ba-head">Onboarding (open→active)</span><span class="ba-head">9d</span><span class="ba-head">2.1d</span><span class="ba-head">≤3</span></div><div class="ba-row"><span class="bac bac-k">Onboarding abandonment</span><span class="bac bac-a">62%</span><span class="bac bac-b">31%</span><span class="bac bac-b">≤35</span></div><div class="ba-row"><span class="bac bac-k">Loan decision time</span><span class="bac bac-a">11d</span><span class="bac bac-b">4.5d</span><span class="bac bac-b">≤5</span></div><div class="ba-row"><span class="bac bac-k">Application error rate</span><span class="bac bac-a">27%</span><span class="bac bac-b">9%</span><span class="bac bac-b">≤12</span></div><div class="ba-row"><span class="bac bac-k">SME NPS</span><span class="bac bac-a">12</span><span class="bac bac-b">44</span><span class="bac bac-b">≥40</span></div><div class="ba-row"><span class="bac bac-k">Monthly SME churn</span><span class="bac bac-a">4.8%</span><span class="bac bac-b">2.1%</span><span class="bac bac-b">≤2.5</span></div><div class="ba-row"><span class="bac bac-k">Progress-chasing share</span><span class="bac bac-a">38%</span><span class="bac bac-b">11%</span><span class="bac bac-b">illustrative</span></div><div class="ba-row"><span class="bac bac-k">Foresight adoption</span><span class="bac bac-a">18%</span><span class="bac bac-b">61%</span><span class="bac bac-b">≥50</span></div></div><p>Causal logic (book 20): internal quality → external value → retention and deepening. The kpi-tree is the risk committee&#39;s dashboard; the <strong>Deterministic fact-check</strong> (§4.4) is run before every steering meeting, and a red run — exit 1, <code>&quot;pass&quot;: false</code> — pulls the pack.</p>
-</section><section class="art-sec sec-9"><span class="sec-kicker">09 · AI tool playbook</span><h2 id="sec-9-ai-tool-playbook">AI tool playbook</h2><p><strong>Claude Code + ASD plugin</strong> — the engagement. Installed via the plugin marketplace flow (§3); <code>/asd</code> ran the orchestration, <code>@researcher</code>/<code>@mapper</code>/<code>@critic</code> carried the phases. Excelled at evidence-scale journey reconstruction and artifact authoring under acceptance; failed at regulatory judgment by design. <strong>MCP server</strong> — the same 16 tools to any MCP host; the initialize handshake reports <code>{&quot;capabilities&quot;:{&quot;tools&quot;:{},&quot;resources&quot;:{},&quot;prompts&quot;:{}},&quot;serverInfo&quot;:{&quot;name&quot;:&quot;asd-mcp&quot;,&quot;version&quot;:&quot;0.1.0&quot;}}</code>, resources cursor-paginate (<code>resources/list</code> page 1 returns 100 <code>asd://</code> URIs with <code>nextCursor</code>), and <code>prompts/get critic</code> returns the role contract (&quot;The adversarial conscience of the engagement. Sits on the write path, not after it…&quot;). <strong><code>asd</code> CLI</strong> — deterministic cross-checks, exports, and the fact-check; what §13 runs. <strong>GitHub</strong> — PR artifact gates; compliance sign-off required before merge in the lending workspace.</p>
-</section><section class="art-sec sec-10"><span class="sec-kicker">10 · Lessons learned</span><h2 id="sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</h2><ol>
+</section><section class="art-sec sec-7"><span class="sec-kicker">07 · SOPs for AI</span><h2 id="sec-7-sops-for-ai-skills-as-the-encoded-method">SOPs for AI — skills as the encoded method</h2>
+<p>Identical discipline to article 31 §7. Each method is a manifest — steps with role assignments, acceptance rules, output kind — that <code>sd_method_run</code> prints as a contract and <code>sd_artifact_write</code> enforces mechanically. For financial services the load-bearing rules: referential integrity is absolute (a lending claim must cite a sha256 register row; dangling refs are hard errors); every KPI names its baseline and source; the critic&#39;s <code>sd_review</code> rows carry rowKind/severity/rule/message — with a fix required on every defect row — and persist as a review-veto-log artifact; and the compliance gate is a human decision carried as a critic verdict plus a document-kind minute, not an engine feature. <strong>Failure modes observed:</strong> (1) the decision-time model was optimistic for mixed-income businesses — analyst-corrected before launch; (2) a persona lacked variance evidence — acceptance re-gated the write; (3) product pressure for auto-approval — held by the fair-lending veto; the rows are in the log.</p>
+</section><section class="art-sec sec-8"><span class="sec-kicker">08 · Value & measurement</span><h2 id="sec-8-value-creation-amp-measurement">Value creation &amp; measurement</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Before</th>
+<th>After</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Onboarding (open→active)</td>
+<td>9d</td>
+<td>2.1d</td>
+<td>≤3</td>
+</tr>
+<tr>
+<td>Onboarding abandonment</td>
+<td>62%</td>
+<td>31%</td>
+<td>≤35</td>
+</tr>
+<tr>
+<td>Loan decision time</td>
+<td>11d</td>
+<td>4.5d</td>
+<td>≤5</td>
+</tr>
+<tr>
+<td>Application error rate</td>
+<td>27%</td>
+<td>9%</td>
+<td>≤12</td>
+</tr>
+<tr>
+<td>SME NPS</td>
+<td>12</td>
+<td>44</td>
+<td>≥40</td>
+</tr>
+<tr>
+<td>Monthly SME churn</td>
+<td>4.8%</td>
+<td>2.1%</td>
+<td>≤2.5</td>
+</tr>
+<tr>
+<td>Progress-chasing share</td>
+<td>38%</td>
+<td>11%</td>
+<td>illustrative</td>
+</tr>
+<tr>
+<td>Foresight adoption</td>
+<td>18%</td>
+<td>61%</td>
+<td>≥50</td>
+</tr>
+</tbody></table>
+<p>Causal logic (book 20): internal quality → external value → retention and deepening. The kpi-tree is the risk committee&#39;s dashboard; the <strong>Deterministic fact-check</strong> (§4.4) is run before every steering meeting, and a red run — exit 1, <code>&quot;pass&quot;: false</code> — pulls the pack.</p>
+</section><section class="art-sec sec-9"><span class="sec-kicker">09 · AI tool playbook</span><h2 id="sec-9-ai-tool-playbook">AI tool playbook</h2>
+<p><strong>ASD pack surfaces</strong> — source-verified structure: <code>/asd</code>, ten role agents, 74 executable skills, and the vendored MCP/CLI engine. The historical modernization probe recorded 29 tools, 224 resources, and 10 prompts; the current shared-pack release records 29/225/10 and the representative workflow remains disposable. Host/plugin execution remains unverified. <strong>GitHub</strong> is a possible governance surface; compliance sign-off remains a human requirement in this illustrative scenario.</p>
+</section><section class="art-sec sec-10"><span class="sec-kicker">10 · Lessons learned</span><h2 id="sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</h2>
+<ol>
 <li>Onboarding ends at first transaction, not account open — the scope doubled because someone read the register.</li>
 <li>Compliance staffed as design partners produced the fast path; as reviewers it would have reverted to the 13-document form.</li>
 <li>Fair-lending evidence is a design constraint; the explainability layer shipped because of it.</li>
@@ -194,8 +661,87 @@ C-2204,open,1000,300,170,160,5,300</code></pre></div><p>Aggregate abandonment 62
 <li>Quantitative checks beat optimism; the mixed-income correction is the artifact of record.</li>
 <li>Present the risk committee the evidence model, not the mock — the review-veto-log travels with the artifact it cleared.</li>
 </ol>
-</section><section class="art-sec sec-11"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2><p><code>03-service-design-from-insight-to-implementation/03-understanding-customers.md</code>; <code>04-service-design-for-business/02-understanding-the-business.md</code>; <code>13-the-experience-economy/03-staging-experiences.md</code>; <code>19-service-management-and-marketing/03-customer-perceived-quality.md</code>; <code>20-the-service-profit-chain/03-external-service-value.md</code>; <code>09-mapping-experiences/04-journey-maps.md</code>, <code>/05-service-blueprints.md</code>; <code>17-101-design-methods/</code>. Platform: <code>platform/packs/claude-code</code> (plugin manifest, <code>agents/</code>, <code>skills/</code>, <code>commands/asd.md</code>, <code>mcp/</code>), <code>platform/packs/cli/asd</code>, <code>platform/templates/catalog.md</code>, <code>suite/packages/engine</code>. External: KYC/fair-lending obligations referenced generically <code>[unverified]</code>.</p>
-</section><section class="art-sec sec-12"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-appendix-artifact-index">Appendix: artifact index</h2><div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Artifact</th><th>Section</th><th>Kind</th><th>Purpose</th></tr></thead><tbody><tr><td>Open-to-first journey</td><td>5.1</td><td>journey-map</td><td>Anchor the gap</td></tr><tr><td scope="row">Assisted blueprint</td><td>5.2</td><td>service-blueprint</td><td>Target operation</td></tr><tr><td scope="row">Stakeholder map</td><td>5.3</td><td>stakeholder-map</td><td>Power/interest</td></tr><tr><td scope="row">Ecosystem map</td><td>5.4</td><td>ecosystem-map</td><td>Dependencies</td></tr><tr><td scope="row">Personas</td><td>5.5</td><td>persona-set</td><td>Segments</td></tr><tr><td scope="row">Templates</td><td>5.6</td><td>catalog-modeled</td><td>Replication</td></tr><tr><td scope="row">Mock dataset</td><td>5.7</td><td>evidence rows</td><td>Evidence realism</td></tr><tr><td scope="row">Charts</td><td>5.8</td><td>kpi-tree data</td><td>Metrics</td></tr><tr><td scope="row">Traceability</td><td>5.9</td><td>catalog-modeled</td><td>Principle linkage</td></tr><tr><td scope="row">Standards audit</td><td>5.10</td><td>insight-set</td><td>Good Services</td></tr><tr><td scope="row">Veto record</td><td>4.2</td><td>review-veto-log</td><td>Fair-lending gate</td></tr></tbody></table></div></section><section class="art-sec"><h2 id="sec-13-tutorial-reproduce-this-engagement-15-minutes">Tutorial — reproduce this engagement (15 minutes)</h2><p>Everything below was executed against <code>platform/packs/cli/asd</code> in a scratch workspace for this article. Outputs are trimmed where marked; field order and values are verbatim. The workspace is plain files under <code>ASD_WORKSPACE</code> — inspect it as you go.</p>
+</section><section class="art-sec sec-11"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2>
+<p><code>03-service-design-from-insight-to-implementation/03-understanding-customers.md</code>; <code>04-service-design-for-business/02-understanding-the-business.md</code>; <code>13-the-experience-economy/03-staging-experiences.md</code>; <code>19-service-management-and-marketing/03-customer-perceived-quality.md</code>; <code>20-the-service-profit-chain/03-external-service-value.md</code>; <code>09-mapping-experiences/04-journey-maps.md</code>, <code>/05-service-blueprints.md</code>; <code>17-101-design-methods/</code>. Platform: <code>platform/packs/claude-code</code> (plugin manifest, <code>agents/</code>, <code>skills/</code>, <code>commands/asd.md</code>, <code>mcp/</code>), <code>platform/packs/cli/asd</code>, <code>platform/templates/catalog.md</code>, <code>suite/packages/engine</code>. External: KYC/fair-lending obligations referenced generically <code>[unverified]</code>.</p>
+</section><section class="art-sec sec-12"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-appendix-artifact-index">Appendix: artifact index</h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Kind</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Open-to-first journey</td>
+<td>5.1</td>
+<td>journey-map</td>
+<td>Anchor the gap</td>
+</tr>
+<tr>
+<td>Assisted blueprint</td>
+<td>5.2</td>
+<td>service-blueprint</td>
+<td>Target operation</td>
+</tr>
+<tr>
+<td>Stakeholder map</td>
+<td>5.3</td>
+<td>stakeholder-map</td>
+<td>Power/interest</td>
+</tr>
+<tr>
+<td>Ecosystem map</td>
+<td>5.4</td>
+<td>ecosystem-map</td>
+<td>Dependencies</td>
+</tr>
+<tr>
+<td>Personas</td>
+<td>5.5</td>
+<td>persona-set</td>
+<td>Segments</td>
+</tr>
+<tr>
+<td>Templates</td>
+<td>5.6</td>
+<td>catalog-modeled</td>
+<td>Replication</td>
+</tr>
+<tr>
+<td>Mock dataset</td>
+<td>5.7</td>
+<td>evidence rows</td>
+<td>Evidence realism</td>
+</tr>
+<tr>
+<td>Charts</td>
+<td>5.8</td>
+<td>kpi-tree data</td>
+<td>Metrics</td>
+</tr>
+<tr>
+<td>Traceability</td>
+<td>5.9</td>
+<td>catalog-modeled</td>
+<td>Principle linkage</td>
+</tr>
+<tr>
+<td>Standards audit</td>
+<td>5.10</td>
+<td>insight-set</td>
+<td>Good Services</td>
+</tr>
+<tr>
+<td>Veto record</td>
+<td>4.2</td>
+<td>review-veto-log</td>
+<td>Fair-lending gate</td>
+</tr>
+</tbody></table>
+</section><section class="art-sec"><h2 id="sec-13-tutorial-reproduce-this-engagement-15-minutes">Tutorial — reproduce this engagement (15 minutes)</h2>
+<p>Everything below is an illustrative transcript using the current <code>platform/packs/cli/asd</code> syntax. IDs, output values, and workspace data are synthetic; this is not a live host acceptance receipt. The workspace shape is plain files under <code>ASD_WORKSPACE</code>.</p>
 <p><strong>Setup and project.</strong></p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>export ASD_WORKSPACE=$HOME/consult-vela-bank      # any empty directory
 ASD=/path/to/repo/platform/packs/cli/asd          # the CLI shim in the repo
@@ -203,7 +749,9 @@ ASD=/path/to/repo/platform/packs/cli/asd          # the CLI shim in the repo
 OUT=$($ASD project-create --name vela-bank --client &quot;Fictional composite&quot; \
   --sector fintech --service &quot;SME banking&quot; --phase discover)
 echo &quot;$OUT&quot;
-ID=$(echo &quot;$OUT&quot; | grep -oE 'vela-bank-[a-f0-9]{8}' | head -1)</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+ID=$(echo &quot;$OUT&quot; | grep -oE &#39;vela-bank-[a-f0-9]{8}&#39; | head -1)
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;project&quot;: {
     &quot;projectId&quot;: &quot;vela-bank-c4343cf0&quot;,
     &quot;name&quot;: &quot;vela-bank&quot;,
@@ -214,56 +762,76 @@ ID=$(echo &quot;$OUT&quot; | grep -oE 'vela-bank-[a-f0-9]{8}' | head -1)</code><
     &quot;createdAt&quot;: &quot;2026-08-19T00:20:16.144Z&quot;,
     &quot;updatedAt&quot;: &quot;2026-08-19T00:20:16.144Z&quot;
   }
-}</code></pre></div><p><strong>Evidence — three kinds, one deliberate rejection.</strong> Register a diary quote, a funnel extract, and the risk-committee minute; then try <code>observation</code> and watch argument validation refuse it (exit 1):</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ASD evidence-add --projectId &quot;$ID&quot; --source diary-007 --kind quote \
-  --body &quot;I have 4 hours a week for banking; the account opened Monday and I made my first payment Friday.&quot;
-$ASD evidence-add --projectId &quot;$ID&quot; --source funnel-2203 --kind telemetry \
-  --body &quot;320 of 1000 SME applicants abandon at the 14-field step; median open-to-first-transaction 6.5 days.&quot;
-$ASD evidence-add --projectId &quot;$ID&quot; --source risk-minutes-041 --kind document \
-  --body &quot;Risk committee: no credit decision without a human-understandable rule; thirteen-document checklist confirmed as policy, not law.&quot;
-$ASD evidence-add --projectId &quot;$ID&quot; --source fieldnotes-02 --kind observation --body &quot;Owners leave the app open on the payee screen.&quot;</code></pre></div><p>The quote row returns <code>{&quot;evidence&quot;: {&quot;id&quot;: &quot;c5990bcffdcd760cd594d455afa8c70085a028cddaf8285b028876906df3d699&quot;, &quot;kind&quot;: &quot;quote&quot;, …}}</code> (full frame in §4.1); ids are sha256 of content, so the same body always lands the same id. The rejection is two lines:</p>
+}
+</code></pre></div>
+<p><strong>Evidence — three kinds, one deliberate rejection.</strong> Register a diary quote, a funnel extract, and the risk-committee minute; then try <code>observation</code> and watch argument validation refuse it (exit 1):</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>E1=$($ASD evidence-add --projectId &quot;$ID&quot; --source diary-007 --kind quote \
+  --body &quot;I have 4 hours a week for banking; the account opened Monday and I made my first payment Friday.&quot; | grep -oE &#39;[a-f0-9]{64}&#39; | head -1)
+E2=$($ASD evidence-add --projectId &quot;$ID&quot; --source funnel-2203 --kind telemetry \
+  --body &quot;320 of 1000 SME applicants abandon at the 14-field step; median open-to-first-transaction 6.5 days.&quot; | grep -oE &#39;[a-f0-9]{64}&#39; | head -1)
+E3=$($ASD evidence-add --projectId &quot;$ID&quot; --source risk-minutes-041 --kind document \
+  --body &quot;Risk committee: no credit decision without a human-understandable rule; thirteen-document checklist confirmed as policy, not law.&quot; | grep -oE &#39;[a-f0-9]{64}&#39; | head -1)
+$ASD evidence-add --projectId &quot;$ID&quot; --source fieldnotes-02 --kind observation --body &quot;Owners leave the app open on the payee screen.&quot;
+</code></pre></div>
+<p>The quote row returns <code>{&quot;evidence&quot;: {&quot;id&quot;: &quot;c5990bcffdcd760cd594d455afa8c70085a028cddaf8285b028876906df3d699&quot;, &quot;kind&quot;: &quot;quote&quot;, …}}</code> (full frame in §4.1); ids are sha256 of content, so the same body always lands the same id. The rejection is two lines:</p>
 <div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>asd evidence-add: invalid arguments: &quot;kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]
-running `asd help` shows usage</code></pre></div><p><strong>Write a journey — the acceptance gate answers.</strong> First a deliberately citation-free draft, then the cited write. Capture the evidence ids from the add outputs (<code>&quot;id&quot;: &quot;&lt;64 hex&gt;&quot;</code>) into <code>E1</code>/<code>E2</code>/<code>E3</code>:</p>
+running `asd help` shows usage
+</code></pre></div>
+<p><strong>Write a journey — the acceptance gate answers.</strong> First a deliberately citation-free draft, then the cited write. Capture the evidence ids from the add outputs (<code>&quot;id&quot;: &quot;&lt;64 hex&gt;&quot;</code>) into <code>E1</code>/<code>E2</code>/<code>E3</code>:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ASD artifact-write --projectId &quot;$ID&quot; --methodId journey-from-transcripts \
   --title &quot;Onboarding (bad)&quot; \
-  --nodes '[{&quot;id&quot;:&quot;open&quot;,&quot;label&quot;:&quot;Open account&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;2&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[]}]'</code></pre></div><p>Returns <code>{&quot;accepted&quot;: false, &quot;status&quot;: &quot;draft&quot;, …}</code> with the two failure rows quoted in §4.3 (<code>min-nodes</code>, <code>min-evidence-per-node</code>) — persisted as a draft you can inspect, not refused. Now the cited write:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>NODES=$(printf '[{&quot;id&quot;:&quot;open&quot;,&quot;label&quot;:&quot;Open account&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;2&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;},{&quot;evidenceId&quot;:&quot;%s&quot;}]},{&quot;id&quot;:&quot;verify&quot;,&quot;label&quot;:&quot;Five-day verification queue&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;1&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;}]},{&quot;id&quot;:&quot;first&quot;,&quot;label&quot;:&quot;First transaction stalls&quot;,&quot;kind&quot;:&quot;pain&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;1&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;},{&quot;evidenceId&quot;:&quot;%s&quot;}]}]' &quot;$E1&quot; &quot;$E2&quot; &quot;$E2&quot; &quot;$E1&quot; &quot;$E3&quot;)
+  --nodes &#39;[{&quot;id&quot;:&quot;open&quot;,&quot;label&quot;:&quot;Open account&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;2&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[]}]&#39;
+</code></pre></div>
+<p>Returns <code>{&quot;accepted&quot;: false, &quot;status&quot;: &quot;draft&quot;, …}</code> with the two failure rows quoted in §4.3 (<code>min-nodes</code>, <code>min-evidence-per-node</code>) — persisted as a draft you can inspect, not refused. Now the cited write:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>NODES=$(printf &#39;[{&quot;id&quot;:&quot;open&quot;,&quot;label&quot;:&quot;Open account&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;2&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;},{&quot;evidenceId&quot;:&quot;%s&quot;}]},{&quot;id&quot;:&quot;verify&quot;,&quot;label&quot;:&quot;Five-day verification queue&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;1&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;}]},{&quot;id&quot;:&quot;first&quot;,&quot;label&quot;:&quot;First transaction stalls&quot;,&quot;kind&quot;:&quot;pain&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;1&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;},{&quot;evidenceId&quot;:&quot;%s&quot;}]}]&#39; &quot;$E1&quot; &quot;$E2&quot; &quot;$E2&quot; &quot;$E1&quot; &quot;$E3&quot;)
 AOUT=$($ASD artifact-write --projectId &quot;$ID&quot; --methodId journey-from-transcripts --title &quot;Onboarding current-state&quot; --nodes &quot;$NODES&quot;)
-AID=$(echo &quot;$AOUT&quot; | grep -oE '&quot;id&quot;: &quot;[a-f0-9]{32}&quot;' | grep -oE '[a-f0-9]{32}' | head -1)</code></pre></div><p><code>{&quot;accepted&quot;: true, &quot;status&quot;: &quot;draft&quot;, &quot;artifact&quot;: {&quot;id&quot;: &quot;0e1032728f264357bd38a6abe47c156e&quot;, &quot;kind&quot;: &quot;journey-map&quot;, …}, &quot;failures&quot;: []}</code>.</p>
+AID=$(echo &quot;$AOUT&quot; | grep -oE &#39;&quot;id&quot;: &quot;[a-f0-9]{32}&quot;&#39; | grep -oE &#39;[a-f0-9]{32}&#39; | head -1)
+</code></pre></div>
+<p><code>{&quot;accepted&quot;: true, &quot;status&quot;: &quot;draft&quot;, &quot;artifact&quot;: {&quot;id&quot;: &quot;0e1032728f264357bd38a6abe47c156e&quot;, &quot;kind&quot;: &quot;journey-map&quot;, …}, &quot;failures&quot;: []}</code>.</p>
 <p><strong>The critic veto.</strong> <code>sd_review</code> rows are <code>{rowKind: defect|proposal, severity: critical|high|medium|low, rule, message, fix (required on defects)}</code>:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ASD review --projectId &quot;$ID&quot; --artifactId &quot;$AID&quot; --verdict veto --rows '[
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ASD review --projectId &quot;$ID&quot; --artifactId &quot;$AID&quot; --verdict veto --rows &#39;[
   {&quot;rowKind&quot;:&quot;defect&quot;,&quot;severity&quot;:&quot;high&quot;,&quot;rule&quot;:&quot;min-evidence-per-node&quot;,
    &quot;message&quot;:&quot;The verify node cites funnel telemetry only; the five-day queue needs the risk-committee minute cited alongside it&quot;,
    &quot;fix&quot;:&quot;Attach the risk-minutes-041 document row to the verify node and re-run the write&quot;},
   {&quot;rowKind&quot;:&quot;proposal&quot;,&quot;severity&quot;:&quot;medium&quot;,&quot;rule&quot;:&quot;evidence-sufficiency&quot;,
-   &quot;message&quot;:&quot;End the journey at first transaction, not account open; the stall is where a third of customers quietly leave&quot;}]'</code></pre></div><p><code>{&quot;status&quot;: &quot;draft&quot;, &quot;verdict&quot;: &quot;veto&quot;, …, &quot;logArtifactId&quot;: &quot;c60c9c331f0a45f080cbd811ee18f74b&quot;, &quot;rowsWritten&quot;: 2}</code> (full frame in §4.2). <code>asd review-list --projectId &quot;$ID&quot;</code> now shows the journey at draft with <code>verdict: &quot;veto&quot;</code>, plus a final review-veto-log artifact linked by <code>reviewOf</code>. Fix in place by re-writing with <code>--artifactId &quot;$AID&quot;</code> and the risk minute attached to the verify node, then pass:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>NODES2=$(printf '[{&quot;id&quot;:&quot;open&quot;,&quot;label&quot;:&quot;Open account&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;2&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;},{&quot;evidenceId&quot;:&quot;%s&quot;}]},{&quot;id&quot;:&quot;verify&quot;,&quot;label&quot;:&quot;Five-day verification queue&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;1&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;},{&quot;evidenceId&quot;:&quot;%s&quot;}]},{&quot;id&quot;:&quot;first&quot;,&quot;label&quot;:&quot;First transaction stalls&quot;,&quot;kind&quot;:&quot;pain&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;1&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;},{&quot;evidenceId&quot;:&quot;%s&quot;}]}]' &quot;$E1&quot; &quot;$E2&quot; &quot;$E2&quot; &quot;$E3&quot; &quot;$E1&quot; &quot;$E3&quot;)
+   &quot;message&quot;:&quot;End the journey at first transaction, not account open; the stall is where a third of customers quietly leave&quot;}]&#39;
+</code></pre></div>
+<p><code>{&quot;status&quot;: &quot;draft&quot;, &quot;verdict&quot;: &quot;veto&quot;, …, &quot;logArtifactId&quot;: &quot;c60c9c331f0a45f080cbd811ee18f74b&quot;, &quot;rowsWritten&quot;: 2}</code> (full frame in §4.2). <code>asd review-list --projectId &quot;$ID&quot;</code> now shows the journey at draft with <code>verdict: &quot;veto&quot;</code>, plus a final review-veto-log artifact linked by <code>reviewOf</code>. Fix in place by re-writing with <code>--artifactId &quot;$AID&quot;</code> and the risk minute attached to the verify node, then pass:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>NODES2=$(printf &#39;[{&quot;id&quot;:&quot;open&quot;,&quot;label&quot;:&quot;Open account&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;2&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;},{&quot;evidenceId&quot;:&quot;%s&quot;}]},{&quot;id&quot;:&quot;verify&quot;,&quot;label&quot;:&quot;Five-day verification queue&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;1&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;},{&quot;evidenceId&quot;:&quot;%s&quot;}]},{&quot;id&quot;:&quot;first&quot;,&quot;label&quot;:&quot;First transaction stalls&quot;,&quot;kind&quot;:&quot;pain&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;1&quot;,&quot;touchpoint&quot;:&quot;app&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;%s&quot;},{&quot;evidenceId&quot;:&quot;%s&quot;}]}]&#39; &quot;$E1&quot; &quot;$E2&quot; &quot;$E2&quot; &quot;$E3&quot; &quot;$E1&quot; &quot;$E3&quot;)
 $ASD artifact-write --projectId &quot;$ID&quot; --artifactId &quot;$AID&quot; --methodId journey-from-transcripts \
   --title &quot;Onboarding current-state&quot; --nodes &quot;$NODES2&quot;   # same artifact id; verify now cites E2+E3
-$ASD review --projectId &quot;$ID&quot; --artifactId &quot;$AID&quot; --verdict pass --rows '[]'</code></pre></div><p><code>{&quot;status&quot;: &quot;final&quot;, &quot;verdict&quot;: &quot;pass&quot;, …, &quot;review&quot;: {&quot;verdict&quot;: &quot;pass&quot;, &quot;logArtifactId&quot;: &quot;c60c9c331f0a45f080cbd811ee18f74b&quot;}, &quot;rowsWritten&quot;: 0}</code>.</p>
+$ASD review --projectId &quot;$ID&quot; --artifactId &quot;$AID&quot; --verdict pass --rows &#39;[{&quot;rowKind&quot;:&quot;proposal&quot;,&quot;severity&quot;:&quot;low&quot;,&quot;rule&quot;:&quot;traceability&quot;,&quot;message&quot;:&quot;Retain the risk-minute citation when the verification journey changes&quot;,&quot;evidenceId&quot;:&quot;&#39;$E3&#39;&quot;}]&#39;
+</code></pre></div>
+<p><code>{&quot;status&quot;: &quot;final&quot;, &quot;verdict&quot;: &quot;pass&quot;, …, &quot;review&quot;: {&quot;verdict&quot;: &quot;pass&quot;, &quot;logArtifactId&quot;: &quot;c60c9c331f0a45f080cbd811ee18f74b&quot;}, &quot;rowsWritten&quot;: 1}</code>.</p>
 <p><strong>Method contract, exports, fact-check.</strong> The deliberately-bad demo draft would fail the project-wide fact-check, so remove it — workspaces are plain files — then run the gate:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>rm &quot;$ASD_WORKSPACE/$ID/artifacts/journey-map.onboarding-bad.&quot;*.json
 $ASD method-run --methodId good-services-audit --projectId &quot;$ID&quot;
 $ASD export-report --projectId &quot;$ID&quot; --kind executive-summary
 $ASD export-artifact --projectId &quot;$ID&quot; --artifactId &quot;$AID&quot;
-$ASD factcheck --projectId &quot;$ID&quot;; echo &quot;exit=$?&quot;</code></pre></div><p>The <code>sd_method_run</code> contract (trimmed) — the researcher scores, the critic gates, acceptance is machine-checked:</p>
+$ASD factcheck --projectId &quot;$ID&quot;; echo &quot;exit=$?&quot;
+</code></pre></div>
+<p>The <code>sd_method_run</code> contract (trimmed) — the researcher scores, the critic gates, acceptance is machine-checked:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;method&quot;: { &quot;id&quot;: &quot;good-services-audit&quot;, &quot;phase&quot;: &quot;measurement&quot;, &quot;sources&quot;: [ {&quot;article&quot;: &quot;27&quot;}, {&quot;book&quot;: &quot;01-this-is-service-design-doing&quot;, &quot;chapter&quot;: &quot;04&quot;} ] },
   &quot;steps&quot;: [
     { &quot;role&quot;: &quot;researcher&quot;, &quot;instruction&quot;: &quot;Score the live service against each heuristic in the good-services checklist, citing evidence for every score below target.&quot; },
     { &quot;role&quot;: &quot;critic&quot;, &quot;instruction&quot;: &quot;Reject any below-target score with no cited evidence.&quot;, &quot;gate&quot;: true } ],
   &quot;acceptance&quot;: [ {&quot;rule&quot;: &quot;min-nodes&quot;, &quot;min&quot;: 3}, {&quot;rule&quot;: &quot;min-evidence-per-node&quot;, &quot;min&quot;: 1}, {&quot;rule&quot;: &quot;field-non-empty&quot;, &quot;field&quot;: &quot;theme&quot;} ],
-  &quot;outputKind&quot;: &quot;insight-set&quot;, &quot;availableEvidence&quot;: 3 }</code></pre></div><p>Exports land under <code>renders/</code> (<code>report.executive-summary.html</code>, 2751 bytes; <code>journey-map.0e103272.svg</code>, 3834 bytes — full frames in §4.4). The fact-check returns <code>&quot;pass&quot;: true</code> with one row per artifact — the final journey (<code>review.verdict: &quot;pass&quot;</code>) and the final review-veto-log — and exits 0 (full output in §4.4). Final tree:</p>
+  &quot;outputKind&quot;: &quot;insight-set&quot;, &quot;availableEvidence&quot;: 3 }
+</code></pre></div>
+<p>Exports land under <code>renders/</code> (<code>report.executive-summary.html</code>, 2751 bytes; <code>journey-map.0e103272.svg</code>, 3834 bytes — full frames in §4.4). The fact-check returns <code>&quot;pass&quot;: true</code> with one row per artifact — the final journey (<code>review.verdict: &quot;pass&quot;</code>) and the final review-veto-log — and exits 0 (full output in §4.4). Final tree:</p>
 <div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>vela-bank-c4343cf0/artifacts/journey-map.onboarding-current-state.0e103272.json
 vela-bank-c4343cf0/artifacts/review-veto-log.review-onboarding-current-state.c60c9c33.json
 vela-bank-c4343cf0/evidence/index.json
 vela-bank-c4343cf0/project.json
 vela-bank-c4343cf0/renders/journey-map.0e103272.svg
-vela-bank-c4343cf0/renders/report.executive-summary.html</code></pre></div><p><strong>Try-it checklist.</strong> (1) Install the plugin (§3) and start a session with <code>/asd</code>; (2) <code>@researcher</code> → register two evidence rows via <code>sd_evidence_add</code>, one <code>quote</code>, one <code>telemetry</code>; (3) write a journey through <code>journey-from-transcripts</code> and rebut the <code>sd_artifact_write</code> rejection by attaching the cited rows; (4) <code>@critic</code> → veto an auto-approval concept with <code>sd_review</code>, then remediate against the rows; (5) run <code>sd_method_run</code> on <code>good-services-audit</code> and score the live service; (6) close with <code>sd_factcheck</code> and do not ship the pack on a red run.</p>
+vela-bank-c4343cf0/renders/report.executive-summary.html
+</code></pre></div>
+<p><strong>Try-it checklist.</strong> (1) Install the plugin (§3) and start a session with <code>/asd</code>; (2) <code>@researcher</code> → register two evidence rows via <code>sd_evidence_add</code>, one <code>quote</code>, one <code>telemetry</code>; (3) write a journey through <code>journey-from-transcripts</code> and rebut the <code>sd_artifact_write</code> rejection by attaching the cited rows; (4) <code>@critic</code> → veto an auto-approval concept with <code>sd_review</code>, then remediate against the rows; (5) run <code>sd_method_run</code> on <code>good-services-audit</code> and score the live service; (6) close with <code>sd_factcheck</code> and do not ship the pack on a red run.</p>
 </section></article></div>
-    <div class="cross-links"><a class="xlink" href="./33/index.html"><span class="lbl">← Previous case</span><span class="ttl">33. The Virtual Ward at Capacity: Scaling Telehealth with the ASD Critic on Every Gate</span><span class="rt">25 min read</span></a><a class="xlink" href="./35/index.html"><span class="lbl">Next case →</span><span class="ttl">35. The Butler's Memory: Staging Luxury with the ASD Critic on the Write Path</span><span class="rt">26 min read</span></a></div>
+    <div class="cross-links"><a class="xlink" href="../33/index.html"><span class="lbl">← Previous case</span><span class="ttl">33. The Virtual Ward at Capacity: Scaling Telehealth with the ASD Critic on Every Gate</span><span class="rt">25 min read</span></a><a class="xlink" href="../35/index.html"><span class="lbl">Next case →</span><span class="ttl">35. The Butler's Memory: Staging Luxury with the ASD Critic on the Write Path</span><span class="rt">26 min read</span></a></div>
     <div class="art-foot">
-      <span>8 figures · ~5.1k words · evidence-cited · reviewed by an adversarial AI critic.</span>
-      · <a href="../index.html">Back to the archive</a>
+    <span>8 figures · ~5.1k words · evidence-cited · reviewed by an adversarial AI critic.</span>
+    · <a href="../../index.html">Back to the archive</a>
     </div>
     <button class="backtop" id="backtop" type="button">Back to top</button></main>
 <footer class="footer">
@@ -271,4 +839,5 @@ vela-bank-c4343cf0/renders/report.executive-summary.html</code></pre></div><p><s
   <span><a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
 </footer>
 <script src="../../assets/site.js"></script>
+
 </body></html>

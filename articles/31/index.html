@@ -32,26 +32,71 @@
     </div>
     <h1>Riding the Current: Running Public-Transport Service Design on the ASD Claude Code Plugin</h1>
     <p class="deck">Fictional composite client. All names, figures, and data are illustrative and anonymized.</p>
-    <div class="art-stats"><span><b>8</b> figures</span><span><b>~6.8k</b> words</span><span><b>3</b> tools of record</span><span><b>critic-reviewed</b> every gate</span></div>
+    <div class="art-stats"><span><b>8</b> figures</span><span><b>~6.8k</b> words</span><span><b>7</b> tools of record</span><span><b>critic-reviewed</b> every gate</span></div>
     <div class="author-block">
       <div class="author-id">
         <div class="author-avatar">SM</div>
         <div><b>Sam Mozaffari</b><span>Service designer · AI-first &amp; agentic practice</span></div>
       </div>
-      <p class="author-note">I ran this public-transport engagement on the ASD Claude Code plugin — the full service design arc executed through the plugin, from research through pilot.</p>
+      <p class="author-note">I use a public-transport scenario to show how the ASD Claude Code pack could support the full service-design arc, from research through pilot, with live-host claims kept separate from the illustrative case.</p>
     </div>
-  </div><div class="art-layout"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</a></li><li><a href="#sec-1-executive-summary">Executive summary</a></li><li><a href="#sec-2-the-brief">The brief</a></li><li><a href="#sec-3-the-plugin-at-a-glance-real-surface-real-steps">The plugin, at a glance (real surface, real steps)</a></li><li><a href="#sec-4-phase-by-phase-session-log-claude-code-asd-plugin">Phase-by-phase session log (Claude Code + ASD plugin)</a></li><li><a href="#sec-5-artifacts-portfolio-deterministic-outputs">Artifacts portfolio (deterministic outputs)</a></li><li><a href="#sec-6-use-cases-routed-to-the-right-agents">Use cases (routed to the right agents)</a></li><li><a href="#sec-7-sops-for-ai-the-skills-encode-the-method-and-you-can-read-them">SOPs for AI — the skills encode the method, and you can read them</a></li><li><a href="#sec-8-value-creation-amp-measurement">Value creation &amp; measurement</a></li><li><a href="#sec-9-ai-tool-playbook">AI tool playbook</a></li><li><a href="#sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</a></li><li><a href="#sec-11-references">References</a></li><li><a href="#sec-12-appendix-artifact-index">Appendix: artifact index</a></li><li><a href="#sec-13-tutorial-reproduce-this-engagement-20-minutes">Tutorial — reproduce this engagement (20 minutes)</a></li></ol></nav></aside><article class="art-body"><h1 id="31-riding-the-current-running-public-transport-service-design-on-the-asd-claude-code-plugin">31 — Riding the Current: Running Public-Transport Service Design on the ASD Claude Code Plugin</h1><section class="art-sec sec-0"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</h2><p>Lighthouse Transit is a fictional composite operator. This article is a <strong>platform runlog</strong>: the engagement was executed by one designer inside Claude Code using the <strong>Agentic Service Designer (ASD) plugin — the exact pack shipped at <code>platform/packs/claude-code</code></strong> — with the vendored <code>asd</code> MCP server inside the plugin and the standalone CLI shim at <code>platform/packs/cli/asd</code> as the same engine in a terminal. Every installation step, agent, skill, tool call, gate, review verdict, and fact-check output below is taken from the real platform; the §13 tutorial was re-executed end-to-end against the real CLI for this article. Reader contract: whatever this article claims the platform <em>forces</em> is machine-true; whatever it describes as the team&#39;s <em>analysis</em> is flagged as such.</p>
-</section><section class="art-sec sec-1"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2><p>A regional operator was losing riders because the service was planned around schedules, not journeys. One designer ran the ASD plugin in Claude Code for 18 weeks: ten role agents, a 74-skill library whose twelve machine-gated method skills carried the engagement spine, sixteen <code>sd_*</code> engine tools, and the Critic&#39;s evidence-cited verdicts on every gated artifact. On-time performance rose 71%→87%; failure demand fell 38%→18%; NPS −12→+24; digital ticketing 22%→68%.</p>
-<div class="facts-grid"><div class="fact"><span class="fact-k">Client</span><span class="fact-v">Lighthouse Transit (fictional composite)</span></div><div class="fact"><span class="fact-k">Sector / service</span><span class="fact-v">Public transport; bus + light rail</span></div><div class="fact"><span class="fact-k">Scope</span><span class="fact-v">312 buses, 42 light-rail cars, 142 routes, 600k daily boardings</span></div><div class="fact"><span class="fact-k">Duration</span><span class="fact-v">18 weeks, 4 human-gated phases</span></div><div class="fact"><span class="fact-k">Team</span><span class="fact-v">1 designer + 10 ASD role agents + 2 client stakeholders (0.5 FTE)</span></div><div class="fact"><span class="fact-k">Platform</span><span class="fact-v"><strong>ASD Claude Code plugin</strong> (<code>platform/packs/claude-code</code>) + vendored <code>asd</code> MCP server + CLI shim</span></div><div class="fact"><span class="fact-k">Headline results</span><span class="fact-v">OTP 71%→87%; failure demand 38%→18%; NPS −12→+24; digital 22%→68%</span></div></div><p><strong>What you will learn</strong></p>
+  </div><div class="art-layout"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</a></li><li><a href="#sec-1-executive-summary">Executive summary</a></li><li><a href="#sec-2-the-brief">The brief</a></li><li><a href="#sec-3-the-plugin-at-a-glance-source-verified-surface-illustrative-steps">The plugin, at a glance (source-verified surface, illustrative steps)</a></li><li><a href="#sec-4-phase-by-phase-session-log-claude-code-asd-plugin">Phase-by-phase session log (Claude Code + ASD plugin)</a></li><li><a href="#sec-5-artifacts-portfolio-deterministic-outputs">Artifacts portfolio (deterministic outputs)</a></li><li><a href="#sec-6-use-cases-routed-to-the-right-agents">Use cases (routed to the right agents)</a></li><li><a href="#sec-7-sops-for-ai-the-skills-encode-the-method-and-you-can-read-them">SOPs for AI — the skills encode the method, and you can read them</a></li><li><a href="#sec-8-value-creation-amp-measurement">Value creation &amp; measurement</a></li><li><a href="#sec-9-ai-tool-playbook">AI tool playbook</a></li><li><a href="#sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</a></li><li><a href="#sec-11-references">References</a></li><li><a href="#sec-12-appendix-artifact-index">Appendix: artifact index</a></li><li><a href="#sec-13-tutorial-reproduce-this-engagement-20-minutes">Tutorial — reproduce this engagement (20 minutes)</a></li></ol></nav></aside><article class="art-body"><h1 id="31-riding-the-current-running-public-transport-service-design-on-the-asd-claude-code-plugin">31 — Riding the Current: Running Public-Transport Service Design on the ASD Claude Code Plugin</h1>
+<section class="art-sec sec-0"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</h2>
+<p>Lighthouse Transit is a fictional composite operator. This article is an <strong>illustrative platform walkthrough</strong> based on the committed ASD pack sources at <code>platform/packs/claude-code</code>, the pack-local CLI at <code>platform/packs/cli/asd</code>, and the current disposable MCP evidence receipt. It is not a live Claude Code installation or host acceptance report: Claude Code, OpenCode, Codex, and Kimi pack execution remains unverified, ACP is record-only/fail-closed, and BUZZ/DeepSeek Harness live integration is not claimed. The §13 transcript is synthetic and syntax-checked against the current CLI contract; its IDs, outputs, metrics, and conversations are illustrative. Reader contract: platform behavior is factual only where backed by the evidence receipt, while the team&#39;s analysis and all project outcomes are illustrative.</p>
+<p><strong>Evidence status (2026-08-21).</strong> This transit case is illustrative. The cited modernization receipt is historical: the pack-local CLI and six MCP bundles recorded 29 tools, 224 resources, and 10 prompts. The current shared-pack release records 29 tools, 225 resources, and 10 prompts; Claude Code installation and host execution are unverified. Receipt: <code>../../docs/reports/article-modernization-evidence.json</code>.</p>
+</section><section class="art-sec sec-1"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2>
+<p>A regional operator was losing riders because the service was planned around schedules, not journeys. In this illustrative scenario, one designer uses the ASD operating model for 18 weeks: ten role agents, a 74-skill library whose twelve machine-gated method skills carry the engagement spine, 29 engine tools, and the Critic&#39;s evidence-cited verdicts on every gated artifact. The outcome figures remain illustrative: on-time performance 71%→87%; failure demand 38%→18%; NPS −12→+24; digital ticketing 22%→68%.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Lighthouse Transit (fictional composite)</td>
+</tr>
+<tr>
+<td>Sector / service</td>
+<td>Public transport; bus + light rail</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>312 buses, 42 light-rail cars, 142 routes, 600k daily boardings</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>18 weeks, 4 human-gated phases</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>1 designer + 10 ASD role agents + 2 client stakeholders (0.5 FTE)</td>
+</tr>
+<tr>
+<td>Platform</td>
+<td><strong>ASD Claude Code plugin</strong> (<code>platform/packs/claude-code</code>) + vendored <code>asd</code> MCP server + CLI shim</td>
+</tr>
+<tr>
+<td>Headline results</td>
+<td>OTP 71%→87%; failure demand 38%→18%; NPS −12→+24; digital 22%→68%</td>
+</tr>
+</tbody></table>
+<p><strong>What you will learn</strong></p>
 <ul>
-<li>How to install the ASD plugin in Claude Code, what ships, and the surfaces you get: <code>/asd</code>, ten <code>@role</code> subagents, 74 skills, and sixteen <code>sd_*</code> tools over MCP and CLI alike.</li>
-<li>How a phase actually runs: prompt → agent → skill → tool call → artifact gate → Critic verdict → fact-check, with real outputs, including the failures.</li>
+<li>How the ASD pack is structured for Claude Code and related hosts: <code>/asd</code>, ten role agents, 74 skills, and 29 tools over the CLI/MCP surfaces; host installation remains unverified.</li>
+<li>How an illustrative phase runs: prompt → agent → skill → tool call → artifact gate → Critic verdict → fact-check, with synthetic outputs, including the failures.</li>
 <li>The honest boundary: what the platform forces deterministically vs. what stays the human&#39;s analysis.</li>
 </ul>
-</section><section class="art-sec sec-2"><span class="sec-kicker">02 · The brief</span><h2 id="sec-2-the-brief">The brief</h2><p>Lighthouse Transit operates in a coastal conurbation of 1.8M; modal share slipped 14%→9% in a decade. Failure demand (book 19) drove 38% of contact volume: missed connections, unsignposted closures, an unreadable fare, a paper complaints process. Success criteria (illustrative, machine-measurable): OTP ≥ 85%; failure demand ≤ 20%; NPS ≥ +15; digital ≥ 60%; cost/journey −8%. Constraints: no new vehicles, three-year budget lock, statutory routes, union roster rules, regional data protection. Why service design: public transport is canonical service-dominant logic (book 12); the client asked for auditable, evidence-gated deliverables — the plugin&#39;s exact contract.</p>
-</section><section class="art-sec sec-3"><span class="sec-kicker">03 · Approach</span><h2 id="sec-3-the-plugin-at-a-glance-real-surface-real-steps">The plugin, at a glance (real surface, real steps)</h2><h3 id="31-install">3.1 Install</h3><p>From the pack README (<code>platform/packs/claude-code/README.md</code>), verbatim:</p>
+</section><section class="art-sec sec-2"><span class="sec-kicker">02 · The brief</span><h2 id="sec-2-the-brief">The brief</h2>
+<p>Lighthouse Transit operates in a coastal conurbation of 1.8M; modal share slipped 14%→9% in a decade. Failure demand (book 19) drove 38% of contact volume: missed connections, unsignposted closures, an unreadable fare, a paper complaints process. Success criteria (illustrative, machine-measurable): OTP ≥ 85%; failure demand ≤ 20%; NPS ≥ +15; digital ≥ 60%; cost/journey −8%. Constraints: no new vehicles, three-year budget lock, statutory routes, union roster rules, regional data protection. Why service design: public transport is canonical service-dominant logic (book 12); the client asked for auditable, evidence-gated deliverables — the plugin&#39;s exact contract.</p>
+</section><section class="art-sec sec-3"><span class="sec-kicker">03 · Approach</span><h2 id="sec-3-the-plugin-at-a-glance-source-verified-surface-illustrative-steps">The plugin, at a glance (source-verified surface, illustrative steps)</h2>
+<h3 id="31-install">3.1 Install</h3>
+<p>From the pack README (<code>platform/packs/claude-code/README.md</code>), verbatim:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>claude plugin marketplace add &lt;repo&gt;/platform/packs
-claude plugin install asd@asd-platform</code></pre></div><p>The marketplace manifest is <code>platform/packs/.claude-plugin/marketplace.json</code>; the plugin manifest is the pack&#39;s <code>.claude-plugin/plugin.json</code>. MCP wiring is the plugin-root <code>.mcp.json</code>, which Claude Code loads for installed plugins automatically; <code>${CLAUDE_PLUGIN_ROOT}</code> resolves inside the installed plugin, so the vendored server under <code>mcp/</code> needs no PATH entry and no sibling checkout. The README also documents a manual-copy install (drop <code>agents</code>, <code>skills</code>, <code>commands</code> into a project&#39;s <code>.claude/</code>, copy <code>mcp/</code> and <code>.mcp.json</code> to the project root, and rewrite <code>${CLAUDE_PLUGIN_ROOT}</code> to <code>.</code>). There is no symlink-into-<code>/usr/local/bin</code> step; that path is obsolete.</p>
+claude plugin install asd@asd-platform
+</code></pre></div>
+<p>The marketplace manifest is <code>platform/packs/.claude-plugin/marketplace.json</code>; the plugin manifest is the pack&#39;s <code>.claude-plugin/plugin.json</code>. MCP wiring is the plugin-root <code>.mcp.json</code>, which Claude Code loads for installed plugins automatically; <code>${CLAUDE_PLUGIN_ROOT}</code> resolves inside the installed plugin, so the vendored server under <code>mcp/</code> needs no PATH entry and no sibling checkout. The README also documents a manual-copy install (drop <code>agents</code>, <code>skills</code>, <code>commands</code> into a project&#39;s <code>.claude/</code>, copy <code>mcp/</code> and <code>.mcp.json</code> to the project root, and rewrite <code>${CLAUDE_PLUGIN_ROOT}</code> to <code>.</code>). There is no symlink-into-<code>/usr/local/bin</code> step; that path is obsolete.</p>
 <p>What lands with the plugin:</p>
 <ul>
 <li><code>agents/</code> — the ten role agents as native Claude Code subagents, each a flat <code>.md</code> with YAML frontmatter.</li>
@@ -59,11 +104,168 @@ claude plugin install asd@asd-platform</code></pre></div><p>The marketplace mani
 <li><code>commands/asd.md</code> — the <code>/asd</code> orchestrator command.</li>
 <li><code>mcp/</code> + <code>.mcp.json</code> — the vendored asd-mcp server: self-contained bundle plus knowledge corpus. No npm install, nothing on PATH.</li>
 </ul>
-<p>The CLI shim <code>platform/packs/cli/asd</code> is the same engine outside Claude Code. Its own bootstrap check says what it needs: a built suite (<code>cd suite &amp;&amp; pnpm install &amp;&amp; pnpm --filter @asd/runtime build</code>) or a standalone <code>npm i -g @asd/runtime</code>. I used the shim for every deterministic cross-check in this article; the outputs below are its real bytes.</p>
-<h3 id="32-the-roster-ten-agents-you-can-invoke">3.2 The roster — ten agents you can invoke</h3><div class="tbl-wrap"><table><thead><tr><th>Agent</th><th>Invoke</th><th>Description (frontmatter, abridged)</th></tr></thead><tbody><tr><td>Orchestrator</td><td><code>@orchestrator</code></td><td>Plans the engagement, dispatches roles, advances phase gates, owns human handoffs</td></tr><tr><td scope="row">Researcher</td><td><code>@researcher</code></td><td>Gathers evidence into the project register; verbatim quotes; provenance on every row</td></tr><tr><td scope="row">Synthesizer</td><td><code>@synthesizer</code></td><td>Pattern-finds across evidence; insight sets and themes; divergence/convergence</td></tr><tr><td scope="row">Mapper</td><td><code>@mapper</code></td><td>Owns mapping methods: journey, blueprint, ecosystem, stakeholder, mental model. Nodes cite evidence; never hand-draws Mermaid</td></tr><tr><td scope="row">Ideator</td><td><code>@ideator</code></td><td>Generates options against the insight set; never resolves framing alone</td></tr><tr><td scope="row">Prototyper</td><td><code>@prototyper</code></td><td>Builds and tests prototypes; evidence comes from test runs, not assumptions</td></tr><tr><td scope="row">Measurer</td><td><code>@measurer</code></td><td>KPI chains, audits, maturity, evaluation; numbers trace to evidence (number ledger)</td></tr><tr><td scope="row">Critic</td><td><code>@critic</code></td><td>Reviews artifacts with evidence-cited defect/proposal rows; verdicts are artifacts</td></tr><tr><td scope="row">Presenter</td><td><code>@presenter</code></td><td>Executive report and deck assembly from final artifacts; adds no new evidence</td></tr><tr><td scope="row">Librarian</td><td><code>@librarian</code></td><td>Corpus to manifest/skill drift; provenance; knowledge sync; case-study citations</td></tr></tbody></table></div><p>The Critic is the veto role: any artifact whose method manifest declares <code>reviewGate: critic</code> is final-eligible only after a Critic verdict. Every verdict lands as a <code>review-veto-log</code> artifact — evidence-cited defect and proposal rows — and a veto demotes the target back to <code>draft</code>. Handoffs are artifacts, not chat (role contract rule 1). Phase gates themselves are human decisions: the engine has no phase-gate artifact kind, and none is claimed anywhere in this article.</p>
-<h3 id="33-the-twelve-machine-gated-method-skills-real-manifest-data">3.3 The twelve machine-gated method skills (real manifest data)</h3><p>74 skills ship in the pack. Twelve of them formed this engagement&#39;s machine-gated method spine — the methods whose contracts I pulled with <code>sd_method_run</code> and whose acceptance rules the engine re-checks on every write. (The engine&#39;s registry in fact carries all 74 manifests and gates writes for any of them; these twelve are the canon the engagement leaned on.)</p>
-<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Skill</th><th>Phase</th><th>Inputs (manifest minimums)</th><th>Output kind</th><th>Machine-checked acceptance</th></tr></thead><tbody><tr><td>contextual-inquiry</td><td>research</td><td>evidence-set ≥3</td><td>insight-set</td><td>≥3 nodes · ≥1 evidence ref per node · <code>theme</code> non-empty</td></tr><tr><td scope="row">stakeholder-mapping</td><td>research</td><td>evidence-set ≥2</td><td>stakeholder-map</td><td>≥3 nodes · ≥1 ref per node · <code>influence</code> non-empty, <code>unknown</code>/<code>tbd</code> denied</td></tr><tr><td scope="row">transcript-mining</td><td>research</td><td>evidence-set ≥5</td><td>insight-set</td><td>≥4 nodes · ≥2 refs per node · <code>theme</code> non-empty</td></tr><tr><td scope="row">affinity-diagramming</td><td>synthesis</td><td>evidence-set ≥5</td><td>insight-set</td><td>≥4 nodes · ≥2 refs per node · <code>theme</code> non-empty</td></tr><tr><td scope="row">behavioural-personas</td><td>synthesis</td><td>evidence-set ≥5 + 1 prior insight-set artifact</td><td>persona-set</td><td>≥2 nodes · ≥2 refs per node · <code>goal</code> non-empty · <code>basis: demographic</code> denied</td></tr><tr><td scope="row">journey-from-transcripts</td><td>synthesis</td><td>evidence-set ≥3</td><td>journey-map</td><td>≥3 nodes · ≥1 ref per node · <code>emotion</code> and <code>touchpoint</code> non-empty</td></tr><tr><td scope="row">mental-model-alignment</td><td>synthesis</td><td>evidence-set ≥3</td><td>journey-map</td><td>≥3 nodes · ≥2 refs per node · <code>emotion</code> and <code>touchpoint</code> non-empty</td></tr><tr><td scope="row">ecosystem-value-mapping</td><td>synthesis</td><td>evidence-set ≥3</td><td>ecosystem-map</td><td>≥3 nodes · ≥1 ref per node · <code>value</code> non-empty</td></tr><tr><td scope="row">service-blueprinting</td><td>synthesis</td><td>evidence-set ≥4</td><td>service-blueprint</td><td>≥4 nodes · ≥1 ref per node · <code>lane</code> non-empty, <code>unknown</code>/<code>tbd</code>/<code>n/a</code> denied</td></tr><tr><td scope="row">orchestration-canvas</td><td>ideation</td><td>1 ecosystem-map artifact + evidence-set ≥1</td><td>ecosystem-map</td><td>≥3 nodes · <code>value</code> and <code>owner</code> non-empty</td></tr><tr><td scope="row">evidence-gated-blueprint</td><td>delivery</td><td>evidence-set ≥5 + 1 validated journey-map artifact</td><td>service-blueprint</td><td>≥5 nodes · ≥1 ref per node · <code>lane</code> non-empty, deny-list as above</td></tr><tr><td scope="row">good-services-audit</td><td>measurement</td><td>1 shipped-map artifact + evidence-set ≥2</td><td>insight-set</td><td>≥3 nodes · ≥1 ref per node · <code>theme</code> non-empty</td></tr></tbody></table></div><p>Artifact kinds are string identifiers (<code>journey-map</code>, <code>insight-set</code>, <code>review-veto-log</code>…), never numbers. The remaining 62 skills — facilitation and craft methods like <code>failure-demand-analysis</code>, <code>hmw-formulation</code>, <code>storyboard-authoring</code>, <code>kpi-tree-design</code>, <code>service-recovery-design</code>, <code>nuf-triple-lens-filter</code> — are full SOPs with the same generated shape; several appear in the phase logs below.</p>
-<h3 id="34-the-sixteen-engine-tools-asd-help-verbatim-names">3.4 The sixteen engine tools (<code>asd help</code>, verbatim names)</h3><div class="codeblock"><div class="codebar"><span></span></div><pre><code>sd_project_list      sd_project_create(name, client, sector, service, phase)
+<p>The CLI shim <code>platform/packs/cli/asd</code> is the pack-local executable outside a host. The current article evidence verifies a copied pack in an isolated disposable environment; the command transcript below is illustrative and does not claim a host install or a live project run.</p>
+<h3 id="32-the-roster-ten-agents-you-can-invoke">3.2 The roster — ten agents you can invoke</h3>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Invoke</th>
+<th>Description (frontmatter, abridged)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Orchestrator</td>
+<td><code>@orchestrator</code></td>
+<td>Plans the engagement, dispatches roles, advances phase gates, owns human handoffs</td>
+</tr>
+<tr>
+<td>Researcher</td>
+<td><code>@researcher</code></td>
+<td>Gathers evidence into the project register; verbatim quotes; provenance on every row</td>
+</tr>
+<tr>
+<td>Synthesizer</td>
+<td><code>@synthesizer</code></td>
+<td>Pattern-finds across evidence; insight sets and themes; divergence/convergence</td>
+</tr>
+<tr>
+<td>Mapper</td>
+<td><code>@mapper</code></td>
+<td>Owns mapping methods: journey, blueprint, ecosystem, stakeholder, mental model. Nodes cite evidence; never hand-draws Mermaid</td>
+</tr>
+<tr>
+<td>Ideator</td>
+<td><code>@ideator</code></td>
+<td>Generates options against the insight set; never resolves framing alone</td>
+</tr>
+<tr>
+<td>Prototyper</td>
+<td><code>@prototyper</code></td>
+<td>Builds and tests prototypes; evidence comes from test runs, not assumptions</td>
+</tr>
+<tr>
+<td>Measurer</td>
+<td><code>@measurer</code></td>
+<td>KPI chains, audits, maturity, evaluation; numbers trace to evidence (number ledger)</td>
+</tr>
+<tr>
+<td>Critic</td>
+<td><code>@critic</code></td>
+<td>Reviews artifacts with evidence-cited defect/proposal rows; verdicts are artifacts</td>
+</tr>
+<tr>
+<td>Presenter</td>
+<td><code>@presenter</code></td>
+<td>Executive report and deck assembly from final artifacts; adds no new evidence</td>
+</tr>
+<tr>
+<td>Librarian</td>
+<td><code>@librarian</code></td>
+<td>Corpus to manifest/skill drift; provenance; knowledge sync; case-study citations</td>
+</tr>
+</tbody></table>
+<p>The Critic is the veto role: any artifact whose method manifest declares <code>reviewGate: critic</code> is final-eligible only after a Critic verdict. Every verdict lands as a <code>review-veto-log</code> artifact — evidence-cited defect and proposal rows — and a veto demotes the target back to <code>draft</code>. Handoffs are artifacts, not chat (role contract rule 1). Phase gates themselves are human decisions: the engine has no phase-gate artifact kind, and none is claimed anywhere in this article.</p>
+<h3 id="33-the-twelve-machine-gated-method-skills-source-verified-manifest-data">3.3 The twelve machine-gated method skills (source-verified manifest data)</h3>
+<p>74 skills ship in the pack. Twelve of them form this illustrative engagement&#39;s machine-gated method spine. Their contracts are available through <code>sd_method_run</code>, and the engine re-checks their acceptance rules on every write. (The registry carries all 74 manifests and gates writes for any of them; these twelve are the represented engagement&#39;s working canon.)</p>
+<table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>Phase</th>
+<th>Inputs (manifest minimums)</th>
+<th>Output kind</th>
+<th>Machine-checked acceptance</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>contextual-inquiry</td>
+<td>research</td>
+<td>evidence-set ≥3</td>
+<td>insight-set</td>
+<td>≥3 nodes · ≥1 evidence ref per node · <code>theme</code> non-empty</td>
+</tr>
+<tr>
+<td>stakeholder-mapping</td>
+<td>research</td>
+<td>evidence-set ≥2</td>
+<td>stakeholder-map</td>
+<td>≥3 nodes · ≥1 ref per node · <code>influence</code> non-empty, <code>unknown</code>/<code>tbd</code> denied</td>
+</tr>
+<tr>
+<td>transcript-mining</td>
+<td>research</td>
+<td>evidence-set ≥5</td>
+<td>insight-set</td>
+<td>≥4 nodes · ≥2 refs per node · <code>theme</code> non-empty</td>
+</tr>
+<tr>
+<td>affinity-diagramming</td>
+<td>synthesis</td>
+<td>evidence-set ≥5</td>
+<td>insight-set</td>
+<td>≥4 nodes · ≥2 refs per node · <code>theme</code> non-empty</td>
+</tr>
+<tr>
+<td>behavioural-personas</td>
+<td>synthesis</td>
+<td>evidence-set ≥5 + 1 prior insight-set artifact</td>
+<td>persona-set</td>
+<td>≥2 nodes · ≥2 refs per node · <code>goal</code> non-empty · <code>basis: demographic</code> denied</td>
+</tr>
+<tr>
+<td>journey-from-transcripts</td>
+<td>synthesis</td>
+<td>evidence-set ≥3</td>
+<td>journey-map</td>
+<td>≥3 nodes · ≥1 ref per node · <code>emotion</code> and <code>touchpoint</code> non-empty</td>
+</tr>
+<tr>
+<td>mental-model-alignment</td>
+<td>synthesis</td>
+<td>evidence-set ≥3</td>
+<td>journey-map</td>
+<td>≥3 nodes · ≥2 refs per node · <code>emotion</code> and <code>touchpoint</code> non-empty</td>
+</tr>
+<tr>
+<td>ecosystem-value-mapping</td>
+<td>synthesis</td>
+<td>evidence-set ≥3</td>
+<td>ecosystem-map</td>
+<td>≥3 nodes · ≥1 ref per node · <code>value</code> non-empty</td>
+</tr>
+<tr>
+<td>service-blueprinting</td>
+<td>synthesis</td>
+<td>evidence-set ≥4</td>
+<td>service-blueprint</td>
+<td>≥4 nodes · ≥1 ref per node · <code>lane</code> non-empty, <code>unknown</code>/<code>tbd</code>/<code>n/a</code> denied</td>
+</tr>
+<tr>
+<td>orchestration-canvas</td>
+<td>ideation</td>
+<td>1 ecosystem-map artifact + evidence-set ≥1</td>
+<td>ecosystem-map</td>
+<td>≥3 nodes · <code>value</code> and <code>owner</code> non-empty</td>
+</tr>
+<tr>
+<td>evidence-gated-blueprint</td>
+<td>delivery</td>
+<td>evidence-set ≥5 + 1 validated journey-map artifact</td>
+<td>service-blueprint</td>
+<td>≥5 nodes · ≥1 ref per node · <code>lane</code> non-empty, deny-list as above</td>
+</tr>
+<tr>
+<td>good-services-audit</td>
+<td>measurement</td>
+<td>1 shipped-map artifact + evidence-set ≥2</td>
+<td>insight-set</td>
+<td>≥3 nodes · ≥1 ref per node · <code>theme</code> non-empty</td>
+</tr>
+</tbody></table>
+<p>Artifact kinds are string identifiers (<code>journey-map</code>, <code>insight-set</code>, <code>review-veto-log</code>…), never numbers. The remaining 62 skills — facilitation and craft methods like <code>failure-demand-analysis</code>, <code>hmw-formulation</code>, <code>storyboard-authoring</code>, <code>kpi-tree-design</code>, <code>service-recovery-design</code>, <code>nuf-triple-lens-filter</code> — are full SOPs with the same generated shape; several appear in the phase logs below.</p>
+<h3 id="34-the-29-engine-tools-current-capability-count">3.4 The 29 engine tools (current capability count)</h3>
+<pre><code>sd_project_list      sd_project_create(name, client, sector, service, phase)
 sd_project_open(projectId)
 sd_evidence_add(projectId, source, kind, body)   sd_evidence_query(projectId, search, kind)
 sd_artifact_list(projectId, kind)                sd_artifact_get(projectId, artifactId)
@@ -71,61 +273,85 @@ sd_artifact_write(projectId, methodId, title, nodes, artifactId?)
 sd_method_list(phase, producesKind)              sd_method_run(methodId, projectId)
 sd_review(projectId, artifactId, verdict, rows)  sd_review_list(projectId, status)
 sd_export_report(projectId, kind)                sd_export_artifact(projectId, artifactId, width?)
-sd_knowledge(query, phase, source, type)         sd_factcheck(projectId)</code></pre></div><p>Inside Claude Code the same sixteen ship as MCP tools from the plugin&#39;s vendored server (<code>mcp__asd__sd_*</code>); on the CLI both the full names and dashed aliases work (<code>asd project-create</code>, <code>asd method-list --phase research</code>). One engine, three surfaces.</p>
-<h3 id="35-gates-and-status-the-lifecycle-the-engine-actually-enforces">3.5 Gates and status — the lifecycle the engine actually enforces</h3><ul>
+sd_knowledge(query, phase, source, type)         sd_factcheck(projectId)
+</code></pre></div>
+<p>Inside Claude Code the same 29 ship as MCP tools from the plugin&#39;s vendored server (<code>mcp__asd__sd_*</code>); on the CLI both the full names and dashed aliases work (<code>asd project-create</code>, <code>asd method-list --phase research</code>). One engine, multiple surfaces; host execution is not asserted here.</p>
+<h3 id="35-gates-and-status-the-lifecycle-the-engine-actually-enforces">3.5 Gates and status — the lifecycle the engine actually enforces</h3>
+<ul>
 <li><strong>Write path.</strong> <code>sd_artifact_write</code> runs structural integrity (a dangling evidence ref is a hard error) plus the producing method&#39;s acceptance rules. Crucially: <strong>a failing write is still persisted</strong> — the artifact lands as <code>status: draft</code> with <code>check: { pass: false, failures: [...] }</code> and the same list repeated top-level. You remediate by writing again with <code>--artifactId</code>, updating the same draft in place.</li>
-<li><strong>Review.</strong> <code>sd_review --verdict pass</code> flips a clean draft to <code>final</code> and stamps <code>review: { verdict, logArtifactId }</code>. <code>--verdict veto</code> demotes the artifact to <code>draft</code>. Either way the engine writes a <code>review-veto-log</code> artifact (status <code>final</code>, linked to its target via <code>reviewOf</code>) whose nodes carry the rows: <code>{ rowKind: &quot;defect&quot; | &quot;proposal&quot;, severity: &quot;critical&quot; | &quot;high&quot; | &quot;medium&quot; | &quot;low&quot;, rule, message, fix, evidenceId? }</code> — <code>fix</code> is required on defect rows.</li>
+<li><strong>Review.</strong> <code>sd_review --verdict pass</code> flips a clean draft to <code>final</code> and stamps <code>review: { verdict, logArtifactId }</code>. A pass cannot carry defect rows and requires at least one review row with a project-resolving <code>evidenceId</code>. <code>--verdict veto</code> demotes the artifact to <code>draft</code>. Either way the engine writes a <code>review-veto-log</code> artifact (status <code>final</code>, linked to its target via <code>reviewOf</code>) whose nodes carry the rows: <code>{ rowKind: &quot;defect&quot; | &quot;proposal&quot;, severity: &quot;critical&quot; | &quot;high&quot; | &quot;medium&quot; | &quot;low&quot;, rule, message, fix, evidenceId? }</code> — <code>fix</code> is required on defect rows.</li>
 <li><strong>Fact-check.</strong> <code>sd_factcheck</code> re-runs, over every artifact: (1) integrity — every cited evidence ref resolves; (2) acceptance — the producing manifest&#39;s rules, re-asserted against the live registry; (3) the review-gate assertion — a <code>final</code> artifact under a critic gate must carry a pass verdict. Output is <code>{ pass, rows[] }</code>; the CLI exits 1 when any row fails.</li>
 <li><strong>Phase gates.</strong> Human. The designer reads the review board (<code>sd_review_list</code>) and the fact-check, then decides. The engine records no gate artifact.</li>
 </ul>
-<h3 id="36-the-honest-boundary-read-this-once-it-governs-the-whole-article">3.6 The honest boundary (read this once, it governs the whole article)</h3><p>The platform <strong>mechanically forces</strong>: evidence resolution, machine-checked acceptance, draft/final status, evidence-cited review verdicts, and the fact-check — all deterministic. It does <strong>not</strong> contain a data-normalization engine, a simulation engine, live telemetry, or a governance co-signature config. Role boundaries are enforced by instructions plus the review path, not by engine auth (a stated, documented design boundary). Everything analytic in this article beyond the engine&#39;s typed store — transcript statistics, capacity models, the numbers themselves — is <strong>the design team&#39;s analysis</strong>, performed with the designer&#39;s tools and marked as such. The platform&#39;s job is that none of it ships new until it is evidence-backed to its gates.</p>
-</section><section class="art-sec sec-4"><span class="sec-kicker">04 · The work, phase by phase</span><h2 id="sec-4-phase-by-phase-session-log-claude-code-asd-plugin">Phase-by-phase session log (Claude Code + ASD plugin)</h2><p>The engagement arc is the UK Design Council Double Diamond — Discover, Define, Develop, Deliver — which maps onto the platform&#39;s phase tags (<code>research</code>, <code>synthesis</code>, <code>ideation</code>/<code>prototyping</code>, <code>delivery</code>/<code>measurement</code>); the TISDD loop (book 01) runs inside it as research → ideation → prototyping → implementation.</p>
+<h3 id="36-the-honest-boundary-read-this-once-it-governs-the-whole-article">3.6 The honest boundary (read this once, it governs the whole article)</h3>
+<p>The platform <strong>mechanically forces</strong>: evidence resolution, machine-checked acceptance, draft/final status, evidence-cited review verdicts, and the fact-check — all deterministic. It does <strong>not</strong> contain a data-normalization engine, a simulation engine, live telemetry, or a governance co-signature config. Role boundaries are enforced by instructions plus the review path, not by engine auth (a stated, documented design boundary). Everything analytic in this article beyond the engine&#39;s structured store — transcript statistics, capacity models, the numbers themselves — is <strong>the design team&#39;s illustrative analysis</strong>, performed with the designer&#39;s tools and marked as such. The platform&#39;s job is that none of it ships new until it is evidence-backed to its gates.</p>
+</section><section class="art-sec sec-4"><span class="sec-kicker">04 · The work, phase by phase</span><h2 id="sec-4-phase-by-phase-session-log-claude-code-asd-plugin">Phase-by-phase session log (Claude Code + ASD plugin)</h2>
+<p>The engagement arc is the UK Design Council Double Diamond — Discover, Define, Develop, Deliver — which maps onto the platform&#39;s phase tags (<code>research</code>, <code>synthesis</code>, <code>ideation</code>/<code>prototyping</code>, <code>delivery</code>/<code>measurement</code>); the TISDD loop (book 01) runs inside it as research → ideation → prototyping → implementation.</p>
 <figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 888 63" role="img" aria-hidden="true"><defs><marker id="arr-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 178.4,31.5 204.4,31.5 230.40000000000003,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 391.2,31.5 417.2,31.5 443.19999999999993,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 634.4,31.5 660.4,31.5 686.4,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><rect x="10" y="16.5" width="168.4" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="94.2" y="35.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Discover — research</text><rect x="230.40000000000003" y="16.5" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="310.8" y="35.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Define — synthesis</text><rect x="443.19999999999993" y="10" width="191.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="538.8" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Develop — ideation and</text><text x="538.8" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">prototyping</text><rect x="686.4" y="10" width="191.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="782" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Deliver — delivery and</text><text x="782" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">measurement</text></svg><figcaption><span class="fignum">Figure 1</span><span class="figcap">Phase-by-phase session log (Claude Code + ASD plugin)</span></figcaption></figure>
 <figure class="fig fig-gantt"><div class="gantt"><div class="gantt-head"><span class="gantt-taskcol">Phase</span><span class="gantt-track"><span>Jan 2026</span><span>Jan 2026</span><span>Jan 2026</span><span>Jan 2026</span><span>Feb 2026</span></span></div><div class="gantt-section">Discover</div><div class="gantt-row"><span class="gantt-taskcol">Contextual inquiry and transcript mining</span><span class="gantt-track"><span class="gantt-bar future" style="left:0.00%;width:100.00%"></span></span></div><div class="gantt-section">Define</div><div class="gantt-section">Develop</div><div class="gantt-section">Deliver</div></div><figcaption><span class="fignum">Figure 2</span><span class="figcap">Lighthouse Transit engagement plan</span></figcaption></figure>
-<h3 id="41-session-1-discover-weeks-15">4.1 Session 1 — Discover (weeks 1–5)</h3><p><strong>Drive.</strong> In Claude Code:</p>
-<div class="codeblock"><div class="codebar"><span></span></div><pre><code>/asd</code></pre></div><p>The <code>/asd</code> command plans from the brief and dispatches the platform order. Then the designer sends the Researcher out:</p>
-<div class="codeblock"><div class="codebar"><span></span></div><pre><code>@researcher run the contextual-inquiry skill for lighthouse-transit: plan
+<h3 id="41-session-1-discover-weeks-15">4.1 Session 1 — Discover (weeks 1–5)</h3>
+<p><strong>Drive.</strong> In Claude Code:</p>
+<pre><code>/asd
+</code></pre></div>
+<p>The <code>/asd</code> command plans from the brief and dispatches the platform order. Then the designer sends the Researcher out:</p>
+<pre><code>@researcher run the contextual-inquiry skill for lighthouse-transit: plan
 the research (ride-alongs on 14 routes incl. night shift, 32 commuter
 interviews, 6 drivers), then add every field note and every verbatim
-quote to the project evidence register via sd_evidence_add.</code></pre></div><p><strong>What the plugin did.</strong> The Researcher&#39;s instructions made it the evidence engine: every row is <code>{ source, kind, body }</code>, content-addressed by sha-256 — the same quote added twice returns the same id, on any project. Evidence kinds are exactly <code>quote</code>, <code>telemetry</code>, <code>document</code>; there is no fourth. We learned that on day two, when a field note went in with the wrong kind and the tool rejected it verbatim:</p>
-<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>$ asd evidence-add --projectId lighthouse-transit-f7e5f8a2 --source int-07 \
+quote to the project evidence register via sd_evidence_add.
+</code></pre></div>
+<p><strong>Illustrative evidence-capture sequence.</strong> In the represented workflow, the Researcher&#39;s instructions constrain every row to <code>{ source, kind, body }</code>, content-addressed by sha-256. Evidence kinds are exactly <code>quote</code>, <code>telemetry</code>, and <code>document</code>. The following synthetic transcript demonstrates the pack-local argument contract by trying an unsupported fourth kind:</p>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>$ asd evidence-add --projectId &lt;PROJECT_ID&gt; --source int-07 \
     --kind observation --body &quot;Riders leave 18 minutes early …&quot;
 asd evidence-add: invalid arguments: &quot;kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]
-running `asd help` shows usage        (exit code 1)</code></pre></div><p>The note went in again as <code>document</code> with the observation written into the body. Two real rows from the register (ids are the real content hashes — they reproduce byte-identically in §13):</p>
+running `asd help` shows usage        (exit code 1)
+</code></pre></div>
+<p>The represented remediation stores the note as a <code>document</code> with the observation in its body. The next two rows are synthetic case data; their ID format follows the content-addressed contract demonstrated by the verified-disposable CLI, but these specific IDs are not a host-run receipt:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;id&quot;: &quot;c0f1736916289286b470528c08711c2b39ec7a7e3e853b00a162590b1197a174&quot;,
   &quot;source&quot;: &quot;call-821004&quot;, &quot;kind&quot;: &quot;quote&quot;,
   &quot;body&quot;: &quot;Told to wait 15 min for next bus; nobody held the tram.&quot; }
 { &quot;id&quot;: &quot;553d5015b4910740c2c2bfafc5aa4681b33997a2db3949d7c9004d72951809b2&quot;,
   &quot;source&quot;: &quot;avl-extract-2025-11&quot;, &quot;kind&quot;: &quot;telemetry&quot;,
-  &quot;body&quot;: &quot;Route 41 weekday OTP 71 percent; peak-shoulder misses cluster 16:00-19:00.&quot; }</code></pre></div><p>The <code>contextual-inquiry</code> skill (phase <code>research</code>, evidence-set ≥3, output insight-set, acceptance: ≥3 nodes, ≥1 ref per node, <code>theme</code> non-empty) structured the field protocol. The <code>transcript-mining</code> skill (evidence-set ≥5, ≥4 nodes, ≥2 refs per node) drove the pass over 4,112 de-identified call records; its flagged lines became quote rows like the ones above.</p>
+  &quot;body&quot;: &quot;Route 41 weekday OTP 71 percent; peak-shoulder misses cluster 16:00-19:00.&quot; }
+</code></pre></div>
+<p>The <code>contextual-inquiry</code> skill (phase <code>research</code>, evidence-set ≥3, output insight-set, acceptance: ≥3 nodes, ≥1 ref per node, <code>theme</code> non-empty) structured the field protocol. The <code>transcript-mining</code> skill (evidence-set ≥5, ≥4 nodes, ≥2 refs per node) drove the pass over 4,112 de-identified call records; its flagged lines became quote rows like the ones above.</p>
 <p><strong>Team analysis (outside the engine):</strong> the failure-demand split, the 61%-in-peak-shoulders finding, and the six-year trend came from the designer&#39;s own analysis of the register and raw logs. The platform held the rows; the humans read them.</p>
 <p><strong>Human judgment:</strong> the designer picked the night-shift ride-along (where missed-run failures concentrate), rejected three staff-authored transcripts as not rider evidence, and locked the frame: <em>we run services</em> → <em>riders complete journeys</em>.</p>
-<h3 id="42-session-2-define-weeks-68">4.2 Session 2 — Define (weeks 6–8)</h3><p><strong>Drive.</strong></p>
-<div class="codeblock"><div class="codebar"><span></span></div><pre><code>@mapper run journey-from-transcripts over the register and write the
+<h3 id="42-session-2-define-weeks-68">4.2 Session 2 — Define (weeks 6–8)</h3>
+<p><strong>Drive.</strong></p>
+<pre><code>@mapper run journey-from-transcripts over the register and write the
 current-state journey-map artifact for lighthouse-transit.
-@critic review the journey-map before it can go final.</code></pre></div><p><strong>What the plugin did.</strong> The skill&#39;s own SOP (plain text in <code>skills/journey-from-transcripts/SKILL.md</code>): the Researcher extracts every distinct customer action, channel and breakdown with its verbatim quote; the Mapper orders stages and gives each an emotion drawn from the quotes, never inferred; the Critic rejects any stage whose emotion or pain point is not supported by a quoted line. The first write failed the machine gate — and the rejection is the real output, still on disk as a draft:</p>
+@critic review the journey-map before it can go final.
+</code></pre></div>
+<p><strong>Illustrative engine behavior.</strong> The skill&#39;s own SOP (plain text in <code>skills/journey-from-transcripts/SKILL.md</code>): the Researcher extracts every distinct customer action, channel and breakdown with its verbatim quote; the Mapper orders stages and gives each an emotion drawn from the quotes, never inferred; the Critic rejects any stage whose emotion or pain point is not supported by a quoted line. The first write fails the machine gate — and the rejection is represented below as a draft:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;accepted&quot;: false, &quot;status&quot;: &quot;draft&quot;,
   &quot;artifact&quot;: { &quot;id&quot;: &quot;2f537689386e439abd3ae43769ab710c&quot;, &quot;kind&quot;: &quot;journey-map&quot;,
     &quot;methodId&quot;: &quot;journey-from-transcripts&quot;, &quot;status&quot;: &quot;draft&quot;,
     &quot;check&quot;: { &quot;pass&quot;: false, &quot;failures&quot;: [
       { &quot;rule&quot;: &quot;min-evidence-per-node&quot;, &quot;nodeId&quot;: &quot;transfer&quot;,
         &quot;message&quot;: &quot;node \&quot;transfer\&quot; cites 0 evidence refs, needs 1&quot; } ] } },
-  &quot;failures&quot;: [ …the same failure, repeated top-level… ] }</code></pre></div><p>A failed write is not a refused write: the draft persisted, and the Mapper remediated the same artifact id with <code>--artifactId</code>, citing the two call quotes on the transfer node. Second write: <code>&quot;accepted&quot;: true, &quot;status&quot;: &quot;draft&quot;, &quot;failures&quot;: []</code>. Then the Critic&#39;s verdict — the real veto, not a paraphrase:</p>
+  &quot;failures&quot;: [ …the same failure, repeated top-level… ] }
+</code></pre></div>
+<p>A failed write is not a refused write: the represented draft persists, and the Mapper remediates the same artifact id with <code>--artifactId</code>, citing the two call quotes on the transfer node. The illustrative second response is <code>&quot;accepted&quot;: true, &quot;status&quot;: &quot;draft&quot;, &quot;failures&quot;: []</code>. The following veto is a synthetic case row using the verified review schema:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;status&quot;: &quot;draft&quot;,
   &quot;verdict&quot;: &quot;veto&quot;,
   &quot;logArtifactId&quot;: &quot;a3c09c90fdb24c49be6efd1c1a58ce43&quot;,
   &quot;rowsWritten&quot;: 2
-}</code></pre></div><p>Two rows, written as nodes into the <code>review-veto-log</code> artifact <code>a3c09c90…</code> (status <code>final</code>, <code>reviewOf</code> the journey map): a <strong>defect</strong> — severity <code>high</code>, rule <code>evidence-sufficiency</code>, <em>&quot;The missed-connection node needs the roster-constraint document cited alongside the rider quotes; without it the 3-minute connection fix looks feasible and is not&quot;</em>, with the required <code>fix</code> (<em>&quot;Cite rosters-07 on the transfer node&quot;</em>) and the roster row cited as <code>evidenceId</code> — and a <strong>proposal</strong>, severity <code>medium</code>, rule <code>source-diversity</code>, asking for the closure notice quoted verbatim so the emotion score stays evidence-coded. The Mapper applied both, re-wrote the draft, and the Critic&#39;s second verdict came back <code>&quot;status&quot;: &quot;final&quot;, &quot;verdict&quot;: &quot;pass&quot;, &quot;rowsWritten&quot;: 0</code> against the same log artifact.</p>
+}
+</code></pre></div>
+<p>The illustrative review log contains two rows: a <strong>defect</strong> — severity <code>high</code>, rule <code>evidence-sufficiency</code>, <em>&quot;The missed-connection node needs the roster-constraint document cited alongside the rider quotes; without it the 3-minute connection fix looks feasible and is not&quot;</em>, with the required <code>fix</code> (<em>&quot;Cite rosters-07 on the transfer node&quot;</em>) and a resolving <code>evidenceId</code> — and a <strong>proposal</strong>, severity <code>medium</code>, rule <code>source-diversity</code>, asking for the closure notice quoted verbatim. In the represented workflow, the Mapper applies both and rewrites the draft; the synthetic pass response follows the verified schema and cites the roster evidence that resolves the veto.</p>
 <p>The <code>behavioural-personas</code> skill then built four personas under its own gate: ≥2 distinct evidence refs per persona, <code>goal</code> non-empty, and <code>basis: demographic</code> is a deny-listed value — these personas are behavioural or they do not write.</p>
 <p><strong>Human judgment:</strong> the designer chose four personas from eight candidate clusters (two were behaviourally identical) and owned the reframe.</p>
-<h3 id="43-session-3-develop-weeks-913">4.3 Session 3 — Develop (weeks 9–13)</h3><p><strong>Drive.</strong></p>
-<div class="codeblock"><div class="codebar"><span></span></div><pre><code>@ideator run structured ideation off the journey pain points: 12 HMWs via
+<h3 id="43-session-3-develop-weeks-913">4.3 Session 3 — Develop (weeks 9–13)</h3>
+<p><strong>Drive.</strong></p>
+<pre><code>@ideator run structured ideation off the journey pain points: 12 HMWs via
 hmw-formulation, diverge first, converge, then author the concept-set.
 @prototyper storyboard the four chosen concepts with storyboard-authoring —
 each storyboard names its assumption, fidelity, subjects, pass/fail criteria.
 @mapper run service-blueprinting (then evidence-gated-blueprint) for the
-future state.</code></pre></div><p><strong>What the plugin did.</strong> Ideator and Prototyper followed their role instructions (concepts carry insight→HMW→concept→hypothesis→KPI lineage; prototypes are experiments with criteria, not demos) and wrote typed artifacts — concept-set and storyboard are engine kinds with schemas, so those writes gate too. The knowledge base told us which methods produce the blueprint and what cites them (<code>asd knowledge --query blueprint</code>, real excerpt):</p>
+future state.
+</code></pre></div>
+<p><strong>Illustrative engine behavior.</strong> Ideator and Prototyper follow their role instructions (concepts carry insight→HMW→concept→hypothesis→KPI lineage; prototypes are experiments with criteria, not demos) and write structured artifact records. Per-kind runtime typed schemas remain a Phase 2 boundary. The knowledge base source tells us which methods produce the blueprint (<code>asd knowledge --query blueprint</code>, excerpt):</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;methods&quot;: [
   { &quot;id&quot;: &quot;evidence-gated-blueprint&quot;, &quot;phase&quot;: &quot;delivery&quot;, &quot;produces&quot;: &quot;service-blueprint&quot;,
     &quot;reviewGate&quot;: &quot;critic&quot;,
@@ -134,19 +360,26 @@ future state.</code></pre></div><p><strong>What the plugin did.</strong> Ideator
                  { &quot;book&quot;: &quot;19-service-management-and-marketing&quot;, &quot;chapter&quot;: &quot;07&quot; } ] },
   { &quot;id&quot;: &quot;service-blueprinting&quot;, &quot;phase&quot;: &quot;synthesis&quot;, &quot;produces&quot;: &quot;service-blueprint&quot;,
     &quot;reviewGate&quot;: &quot;critic&quot;, &quot;sources&quot;: [ { &quot;article&quot;: &quot;22&quot; }, … ] }
-], &quot;kinds&quot;: [ { &quot;kind&quot;: &quot;service-blueprint&quot;, &quot;title&quot;: &quot;Service Blueprint&quot;, … } ] }</code></pre></div><p>Mapper ran <code>service-blueprinting</code> (synthesis; ≥4 nodes; <code>lane</code> non-empty with <code>unknown</code>/<code>tbd</code>/<code>n/a</code> deny-listed — the five lanes stay named) and then <code>evidence-gated-blueprint</code> (delivery; ≥5 nodes; every node ≥1 ref; a validated journey map required as input). Here the 4.2 veto paid off a second time: the roster-constraint document the Critic forced onto the transfer node is what killed the 3-minute connection-protection idea at the blueprint drafting table, three weeks before the pilot — the backstage lane was written to roster-feasible specs instead of wishes. A defect caught at the artifact gate, not in service.</p>
+], &quot;kinds&quot;: [ { &quot;kind&quot;: &quot;service-blueprint&quot;, &quot;title&quot;: &quot;Service Blueprint&quot;, … } ] }
+</code></pre></div>
+<p>Mapper ran <code>service-blueprinting</code> (synthesis; ≥4 nodes; <code>lane</code> non-empty with <code>unknown</code>/<code>tbd</code>/<code>n/a</code> deny-listed — the five lanes stay named) and then <code>evidence-gated-blueprint</code> (delivery; ≥5 nodes; every node ≥1 ref; a validated journey map required as input). Here the 4.2 veto paid off a second time: the roster-constraint document the Critic forced onto the transfer node is what killed the 3-minute connection-protection idea at the blueprint drafting table, three weeks before the pilot — the backstage lane was written to roster-feasible specs instead of wishes. A defect caught at the artifact gate, not in service.</p>
 <p><strong>Team analysis (outside the engine):</strong> concept NUF scoring (with the <code>nuf-triple-lens-filter</code> skill as the checklist) and the voucher-cost model were the designer&#39;s. The engine held the traceability.</p>
 <p><strong>Human judgment:</strong> the designer chose fare capping over a flat fare (equity), insisted the realtime system be phone-first (31% of low-income riders lack a secondary data plan), and ran the union consultation that shaped the roster-constrained rows.</p>
-<h3 id="44-session-4-deliver-weeks-1418">4.4 Session 4 — Deliver (weeks 14–18)</h3><p><strong>Drive.</strong></p>
-<div class="codeblock"><div class="codebar"><span></span></div><pre><code>@measurer build the kpi-tree from the four success criteria with
+<h3 id="44-session-4-deliver-weeks-1418">4.4 Session 4 — Deliver (weeks 14–18)</h3>
+<p><strong>Drive.</strong></p>
+<pre><code>@measurer build the kpi-tree from the four success criteria with
 kpi-tree-design: each row names its driver, experience link, business
 link, baseline, and source.
 @presenter assemble the executive report from final artifacts only.
-@librarian produce the handover pack with full provenance.</code></pre></div><p><strong>What the plugin did.</strong> Measurer wrote the kpi-tree; the Librarian checked provenance and corpus drift; the Presenter added no new evidence — both renders are engine calls, real outputs (no hand-drawn Mermaid anywhere in the pipeline):</p>
+@librarian produce the handover pack with full provenance.
+</code></pre></div>
+<p><strong>Illustrative engine behavior.</strong> Measurer writes the kpi-tree; the Librarian checks provenance and corpus drift; the Presenter adds no new evidence — both renders are engine calls represented below (no hand-drawn Mermaid is required in the pipeline):</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;path&quot;: &quot;…/lighthouse-transit-f7e5f8a2/renders/report.executive-summary.html&quot;,
   &quot;kind&quot;: &quot;executive-summary&quot;, &quot;bytes&quot;: 2777 }
 { &quot;path&quot;: &quot;…/lighthouse-transit-f7e5f8a2/renders/journey-map.2f537689.svg&quot;,
-  &quot;kind&quot;: &quot;journey-map&quot;, &quot;title&quot;: &quot;Current-state journey&quot;, &quot;bytes&quot;: 3819 }</code></pre></div><p><strong>Deterministic fact-check.</strong> Before the gate, the full replay over the project&#39;s artifacts — integrity, acceptance, review gate per artifact, top-level <code>pass</code>, exit code 0 (real output, §13 reproduces it):</p>
+  &quot;kind&quot;: &quot;journey-map&quot;, &quot;title&quot;: &quot;Current-state journey&quot;, &quot;bytes&quot;: 3819 }
+</code></pre></div>
+<p><strong>Deterministic fact-check shape.</strong> Before the gate, the replay over project artifacts checks integrity, acceptance, review state, top-level <code>pass</code>, and exit code 0 (illustrative output; §13 shows the current command shape):</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;pass&quot;: true, &quot;rows&quot;: [
   { &quot;artifactId&quot;: &quot;2f537689386e439abd3ae43769ab710c&quot;, &quot;kind&quot;: &quot;journey-map&quot;,
     &quot;title&quot;: &quot;Current-state journey&quot;, &quot;status&quot;: &quot;final&quot;,
@@ -157,18 +390,260 @@ link, baseline, and source.
     &quot;title&quot;: &quot;Review: Current-state journey&quot;, &quot;status&quot;: &quot;final&quot;,
     &quot;integrity&quot;: { &quot;pass&quot;: true, &quot;dangling&quot;: [] }, &quot;acceptance&quot;: { &quot;pass&quot;: true },
     &quot;review&quot;: { &quot;pass&quot;: true, &quot;gate&quot;: null, &quot;verdict&quot;: null },
-    &quot;methodId&quot;: null, &quot;methodResolution&quot;: &quot;inferred&quot; } ] }</code></pre></div><p>Read the second row closely: the Critic&#39;s veto is itself a final artifact in the project, fact-checked alongside the work. The audit trail is not a meeting note; it is in the store.</p>
+    &quot;methodId&quot;: null, &quot;methodResolution&quot;: &quot;inferred&quot; } ] }
+</code></pre></div>
+<p>Read the second row closely: the Critic&#39;s veto is itself a final artifact in the project, fact-checked alongside the work. The audit trail is not a meeting note; it is in the store.</p>
 <p><strong>Human judgment:</strong> the designer delayed the fare go-live two weeks when the pilot surfaced card-reader edge cases (an operational defect), and chaired the steering meetings where each phase gate was signed — by a human, on the review board and fact-check, not by the engine.</p>
-</section><section class="art-sec sec-5"><span class="sec-kicker">05 · Artifact portfolio</span><h2 id="sec-5-artifacts-portfolio-deterministic-outputs">Artifacts portfolio (deterministic outputs)</h2><div class="tbl-wrap tbl-matrix"><table><thead><tr><th>#</th><th>Artifact</th><th>Engine kind</th><th>Section</th></tr></thead><tbody><tr><td>A1</td><td>Current-state journey map</td><td>journey-map</td><td>5.1</td></tr><tr><td scope="row">A2</td><td>Future-state service blueprint</td><td>service-blueprint</td><td>5.2</td></tr><tr><td scope="row">A3</td><td>Stakeholder map</td><td>stakeholder-map</td><td>5.3</td></tr><tr><td scope="row">A4</td><td>Ecosystem map</td><td>ecosystem-map</td><td>5.4</td></tr><tr><td scope="row">A5</td><td>Persona set</td><td>persona-set</td><td>5.5</td></tr><tr><td scope="row">A6</td><td>Templates (research plan, KPI tree, interview guide)</td><td>research-plan / kpi-tree / interview-guide</td><td>5.6</td></tr><tr><td scope="row">A7</td><td>Mock dataset (contact-centre sample)</td><td>evidence rows</td><td>5.7</td></tr><tr><td scope="row">A8</td><td>Charts (failure demand, NPS)</td><td>from kpi-tree data</td><td>5.8</td></tr><tr><td scope="row">A9</td><td>Journey-to-blueprint traceability</td><td>traceability table (article-level)</td><td>5.9</td></tr><tr><td scope="row">A10</td><td>Good Services audit</td><td>insight-set (via good-services-audit)</td><td>5.10</td></tr></tbody></table></div><h3 id="51-current-state-journey-map-evidence-gated-emotion-15">5.1 Current-state journey map (evidence-gated; emotion 1–5)</h3><figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 232" role="img" aria-hidden="true"><defs><marker id="arr-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Before</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Travel</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">After</text><line x1="0" y1="230" x2="296" y2="230" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 3</span><span class="figcap">1 Current-state journey map (evidence-gated; emotion 1–5)</span></figcaption></figure>
-<div class="tbl-wrap"><table><thead><tr><th>Phase</th><th>Emotion</th><th>Pain</th></tr></thead><tbody><tr><td>Plan</td><td class="num">3</td><td>Website shows scheduled, not actual, departures</td></tr><tr><td scope="row">Pre-trip</td><td class="num">2</td><td>No confidence device</td></tr><tr><td scope="row">Approach</td><td class="num">2</td><td>Stop signage lacks next-bus times</td></tr><tr><td scope="row">Board</td><td class="num">3</td><td>Reader rejects top-up card mid-peak</td></tr><tr><td scope="row">En route</td><td class="num">2</td><td>No disruption info in-vehicle</td></tr><tr><td scope="row">Transfer</td><td class="num">1</td><td>Connection not protected; 16-min gap</td></tr><tr><td scope="row">Arrive</td><td class="num">2</td><td>22 min late; no proactive explanation</td></tr><tr><td scope="row">Post-trip</td><td class="num">1</td><td>Complaints need paper; no reference</td></tr></tbody></table></div><h3 id="52-future-state-service-blueprint-five-lanes">5.2 Future-state service blueprint (five lanes)</h3><figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Evidence</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Customer</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Frontstage</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Backstage</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Support</text><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/><line x1="94" y1="156" x2="296" y2="156" stroke="#171817" stroke-width="1.2"/><text x="98" y="152" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of interaction</text><line x1="94" y1="220" x2="296" y2="220" stroke="#171817" stroke-width="1.2"/><text x="98" y="216" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of visibility</text><line x1="94" y1="284" x2="296" y2="284" stroke="#171817" stroke-width="1.2"/><text x="98" y="280" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of internal interaction</text></svg><figcaption><span class="fignum">Figure 4</span><span class="figcap">2 Future-state service blueprint (five lanes)</span></figcaption></figure>
-<div class="tbl-wrap"><table><thead><tr><th>Lane</th><th>Action</th><th>Detail</th></tr></thead><tbody><tr><td>Physical evidence</td><td>Stop boards, app, SMS</td><td>Real-time truth everywhere</td></tr><tr><td scope="row">Customer actions</td><td>Plan, tap, ride, claim</td><td>Evidenced, observable</td></tr><tr><td scope="row">Frontstage (line of visibility)</td><td>Countdown, driver assist, control push</td><td>What the rider sees</td></tr><tr><td scope="row">Backstage</td><td>GTFS-realtime, fare cap, prediction</td><td>Invisible enablers</td></tr><tr><td scope="row">Support</td><td>Data quality, fare ops, reconciliation</td><td>Organisation behind the line</td></tr></tbody></table></div><h3 id="5355-maps-and-personas">5.3–5.5 Maps and personas</h3><figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 622 192" role="img" aria-hidden="true"><defs><marker id="arr-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 130.80506329113922,112.25 196.79999999999998,87.75 230.39999999999998,87.75" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 338.0509960159362,72.75 424.79999999999995,25 465.99999999999994,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 138.76363636363635,142.25 196.79999999999998,160.25 222.79999999999995,160.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 391.19999999999993,90.0421052631579 424.79999999999995,91 450.79999999999995,91" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 335.4931407942238,102.75 424.79999999999995,157 477.3999999999999,157" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><rect x="10" y="112.25" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="90.39999999999999" y="131.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Regional Authority</text><rect x="230.39999999999998" y="72.75" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="310.79999999999995" y="91.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Lighthouse Transit</text><rect x="465.99999999999994" y="10" width="130.39999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="531.1999999999999" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Control centre</text><rect x="222.79999999999995" y="138.75" width="176" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="310.79999999999995" y="157.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Riders and community</text><text x="310.79999999999995" y="170.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">boards</text><rect x="450.79999999999995" y="76" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="531.1999999999999" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Drivers and unions</text><rect x="477.3999999999999" y="142" width="107.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="531.1999999999999" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Fare vendor</text></svg><figcaption><span class="fignum">Figure 5</span><span class="figcap">3–5.5 Maps and personas</span></figcaption></figure>
-<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Stakeholder</th><th>Influence</th><th>Interest</th><th>Strategy</th></tr></thead><tbody><tr><td>Regional Authority</td><td>High</td><td>High</td><td>Co-designer; contract KPIs</td></tr><tr><td scope="row">Drivers + unions</td><td>High</td><td>High</td><td>Early consultation; roster hard</td></tr><tr><td scope="row">Contact centre</td><td>Medium</td><td>High</td><td>Retrained to value work</td></tr><tr><td scope="row">Fare vendor</td><td>Medium</td><td>Medium</td><td>Contracted SLA penalties</td></tr><tr><td scope="row">Riders</td><td>Low</td><td>High</td><td>Evidence register + community board</td></tr></tbody></table></div><figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 432 327" role="img" aria-hidden="true"><defs><marker id="arr-6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 102.49090909090908,142 196.79999999999998,25 230.39999999999998,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 114.58181818181816,142 196.79999999999998,91 268.4,91" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 170.79999999999998,157 196.79999999999998,157 241.8,157" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 114.58181818181816,172 196.79999999999998,223 222.8,223" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 101.9234657039711,172 196.79999999999998,295.5 249.39999999999998,295.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><rect x="10" y="142" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="90.39999999999999" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Lighthouse Transit</text><rect x="230.39999999999998" y="10" width="183.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="322.2" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">AVL and GTFS-realtime</text><rect x="268.4" y="76" width="107.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="322.2" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Fare vendor</text><rect x="241.8" y="142" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="322.2" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Regional Authority</text><rect x="222.8" y="208" width="198.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="322.2" y="227" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Micro-mobility partners</text><rect x="249.39999999999998" y="274" width="145.6" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="322.2" y="293" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Rail interchange</text><text x="322.2" y="306" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">partners</text></svg><figcaption><span class="fignum">Figure 6</span><span class="figcap">3–5.5 Maps and personas</span></figcaption></figure>
-<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Persona</th><th>Share</th><th>Behavioural signature</th><th>Key need</th><th>Evidence rows</th></tr></thead><tbody><tr><td>P1 The Shift Worker</td><td>27%</td><td>Peak-shoulder, night, cash-heavy</td><td>Certainty and recovery</td><td>41</td></tr><tr><td scope="row">P2 The Commuter</td><td>34%</td><td>Fixed hours, car-owning</td><td>Predictability</td><td>38</td></tr><tr><td scope="row">P3 The Occasional Rider</td><td>22%</td><td>Weekends, price-sensitive</td><td>Simplicity of fare</td><td>29</td></tr><tr><td scope="row">P4 The Captive User</td><td>17%</td><td>No car, low income</td><td>Dignity, information</td><td>34</td></tr></tbody></table></div><h3 id="56-templates">5.6 Templates</h3><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>Research plan: &lt;objective&gt; &lt;questions 3-6&gt; &lt;method mix&gt; &lt;sample + rationale&gt;
+</section><section class="art-sec sec-5"><span class="sec-kicker">05 · Artifact portfolio</span><h2 id="sec-5-artifacts-portfolio-deterministic-outputs">Artifacts portfolio (deterministic outputs)</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Artifact</th>
+<th>Engine kind</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A1</td>
+<td>Current-state journey map</td>
+<td>journey-map</td>
+<td>5.1</td>
+</tr>
+<tr>
+<td>A2</td>
+<td>Future-state service blueprint</td>
+<td>service-blueprint</td>
+<td>5.2</td>
+</tr>
+<tr>
+<td>A3</td>
+<td>Stakeholder map</td>
+<td>stakeholder-map</td>
+<td>5.3</td>
+</tr>
+<tr>
+<td>A4</td>
+<td>Ecosystem map</td>
+<td>ecosystem-map</td>
+<td>5.4</td>
+</tr>
+<tr>
+<td>A5</td>
+<td>Persona set</td>
+<td>persona-set</td>
+<td>5.5</td>
+</tr>
+<tr>
+<td>A6</td>
+<td>Templates (research plan, KPI tree, interview guide)</td>
+<td>research-plan / kpi-tree / interview-guide</td>
+<td>5.6</td>
+</tr>
+<tr>
+<td>A7</td>
+<td>Mock dataset (contact-centre sample)</td>
+<td>evidence rows</td>
+<td>5.7</td>
+</tr>
+<tr>
+<td>A8</td>
+<td>Charts (failure demand, NPS)</td>
+<td>from kpi-tree data</td>
+<td>5.8</td>
+</tr>
+<tr>
+<td>A9</td>
+<td>Journey-to-blueprint traceability</td>
+<td>traceability table (article-level)</td>
+<td>5.9</td>
+</tr>
+<tr>
+<td>A10</td>
+<td>Good Services audit</td>
+<td>insight-set (via good-services-audit)</td>
+<td>5.10</td>
+</tr>
+</tbody></table>
+<h3 id="51-current-state-journey-map-evidence-gated-emotion-15">5.1 Current-state journey map (evidence-gated; emotion 1–5)</h3>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 232" role="img" aria-hidden="true"><defs><marker id="arr-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Before</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Travel</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">After</text><line x1="0" y1="230" x2="296" y2="230" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 3</span><span class="figcap">1 Current-state journey map (evidence-gated; emotion 1–5)</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Emotion</th>
+<th>Pain</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Plan</td>
+<td>3</td>
+<td>Website shows scheduled, not actual, departures</td>
+</tr>
+<tr>
+<td>Pre-trip</td>
+<td>2</td>
+<td>No confidence device</td>
+</tr>
+<tr>
+<td>Approach</td>
+<td>2</td>
+<td>Stop signage lacks next-bus times</td>
+</tr>
+<tr>
+<td>Board</td>
+<td>3</td>
+<td>Reader rejects top-up card mid-peak</td>
+</tr>
+<tr>
+<td>En route</td>
+<td>2</td>
+<td>No disruption info in-vehicle</td>
+</tr>
+<tr>
+<td>Transfer</td>
+<td>1</td>
+<td>Connection not protected; 16-min gap</td>
+</tr>
+<tr>
+<td>Arrive</td>
+<td>2</td>
+<td>22 min late; no proactive explanation</td>
+</tr>
+<tr>
+<td>Post-trip</td>
+<td>1</td>
+<td>Complaints need paper; no reference</td>
+</tr>
+</tbody></table>
+<h3 id="52-future-state-service-blueprint-five-lanes">5.2 Future-state service blueprint (five lanes)</h3>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Evidence</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Customer</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Frontstage</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Backstage</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Support</text><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/><line x1="94" y1="156" x2="296" y2="156" stroke="#171817" stroke-width="1.2"/><text x="98" y="152" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of interaction</text><line x1="94" y1="220" x2="296" y2="220" stroke="#171817" stroke-width="1.2"/><text x="98" y="216" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of visibility</text><line x1="94" y1="284" x2="296" y2="284" stroke="#171817" stroke-width="1.2"/><text x="98" y="280" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of internal interaction</text></svg><figcaption><span class="fignum">Figure 4</span><span class="figcap">2 Future-state service blueprint (five lanes)</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Lane</th>
+<th>Action</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Physical evidence</td>
+<td>Stop boards, app, SMS</td>
+<td>Real-time truth everywhere</td>
+</tr>
+<tr>
+<td>Customer actions</td>
+<td>Plan, tap, ride, claim</td>
+<td>Evidenced, observable</td>
+</tr>
+<tr>
+<td>Frontstage (line of visibility)</td>
+<td>Countdown, driver assist, control push</td>
+<td>What the rider sees</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>GTFS-realtime, fare cap, prediction</td>
+<td>Invisible enablers</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>Data quality, fare ops, reconciliation</td>
+<td>Organisation behind the line</td>
+</tr>
+</tbody></table>
+<h3 id="5355-maps-and-personas">5.3–5.5 Maps and personas</h3>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 622 192" role="img" aria-hidden="true"><defs><marker id="arr-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 130.80506329113922,112.25 196.79999999999998,87.75 230.39999999999998,87.75" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 338.0509960159362,72.75 424.79999999999995,25 465.99999999999994,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 138.76363636363635,142.25 196.79999999999998,160.25 222.79999999999995,160.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 391.19999999999993,90.0421052631579 424.79999999999995,91 450.79999999999995,91" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><path d="M 335.4931407942238,102.75 424.79999999999995,157 477.3999999999999,157" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-5)"/><rect x="10" y="112.25" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="90.39999999999999" y="131.25" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Regional Authority</text><rect x="230.39999999999998" y="72.75" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="310.79999999999995" y="91.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Lighthouse Transit</text><rect x="465.99999999999994" y="10" width="130.39999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="531.1999999999999" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Control centre</text><rect x="222.79999999999995" y="138.75" width="176" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="310.79999999999995" y="157.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Riders and community</text><text x="310.79999999999995" y="170.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">boards</text><rect x="450.79999999999995" y="76" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="531.1999999999999" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Drivers and unions</text><rect x="477.3999999999999" y="142" width="107.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="531.1999999999999" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Fare vendor</text></svg><figcaption><span class="fignum">Figure 5</span><span class="figcap">3–5.5 Maps and personas</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Stakeholder</th>
+<th>Influence</th>
+<th>Interest</th>
+<th>Strategy</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Regional Authority</td>
+<td>High</td>
+<td>High</td>
+<td>Co-designer; contract KPIs</td>
+</tr>
+<tr>
+<td>Drivers + unions</td>
+<td>High</td>
+<td>High</td>
+<td>Early consultation; roster hard</td>
+</tr>
+<tr>
+<td>Contact centre</td>
+<td>Medium</td>
+<td>High</td>
+<td>Retrained to value work</td>
+</tr>
+<tr>
+<td>Fare vendor</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Contracted SLA penalties</td>
+</tr>
+<tr>
+<td>Riders</td>
+<td>Low</td>
+<td>High</td>
+<td>Evidence register + community board</td>
+</tr>
+</tbody></table>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 432 327" role="img" aria-hidden="true"><defs><marker id="arr-6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 102.49090909090908,142 196.79999999999998,25 230.39999999999998,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 114.58181818181816,142 196.79999999999998,91 268.4,91" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 170.79999999999998,157 196.79999999999998,157 241.8,157" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 114.58181818181816,172 196.79999999999998,223 222.8,223" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><path d="M 101.9234657039711,172 196.79999999999998,295.5 249.39999999999998,295.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-6)"/><rect x="10" y="142" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="90.39999999999999" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Lighthouse Transit</text><rect x="230.39999999999998" y="10" width="183.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="322.2" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">AVL and GTFS-realtime</text><rect x="268.4" y="76" width="107.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="322.2" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Fare vendor</text><rect x="241.8" y="142" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="322.2" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Regional Authority</text><rect x="222.8" y="208" width="198.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="322.2" y="227" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Micro-mobility partners</text><rect x="249.39999999999998" y="274" width="145.6" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="322.2" y="293" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Rail interchange</text><text x="322.2" y="306" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">partners</text></svg><figcaption><span class="fignum">Figure 6</span><span class="figcap">3–5.5 Maps and personas</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Share</th>
+<th>Behavioural signature</th>
+<th>Key need</th>
+<th>Evidence rows</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P1 The Shift Worker</td>
+<td>27%</td>
+<td>Peak-shoulder, night, cash-heavy</td>
+<td>Certainty and recovery</td>
+<td>41</td>
+</tr>
+<tr>
+<td>P2 The Commuter</td>
+<td>34%</td>
+<td>Fixed hours, car-owning</td>
+<td>Predictability</td>
+<td>38</td>
+</tr>
+<tr>
+<td>P3 The Occasional Rider</td>
+<td>22%</td>
+<td>Weekends, price-sensitive</td>
+<td>Simplicity of fare</td>
+<td>29</td>
+</tr>
+<tr>
+<td>P4 The Captive User</td>
+<td>17%</td>
+<td>No car, low income</td>
+<td>Dignity, information</td>
+<td>34</td>
+</tr>
+</tbody></table>
+<h3 id="56-templates">5.6 Templates</h3>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>Research plan: &lt;objective&gt; &lt;questions 3-6&gt; &lt;method mix&gt; &lt;sample + rationale&gt;
   &lt;decision the research informs&gt; &lt;evidence rule: source + quote per claim&gt;
 Interview guide: 1) walk me through a trip that did not go to plan
   2) what did you know and when? 3) what would have made you trust it?
 KPI tree row: &lt;metric&gt; &lt;driver&gt; &lt;experience link&gt; &lt;business link&gt;
-  &lt;baseline + source&gt;</code></pre></div><h3 id="57-mock-dataset-contact-centre-sample-the-real-evidence-rows">5.7 Mock dataset (contact-centre sample; the real evidence rows)</h3><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>call_id,date,demand,sub_reason,quote,resolution_min
+  &lt;baseline + source&gt;
+</code></pre></div>
+<h3 id="57-mock-dataset-contact-centre-sample-illustrative-evidence-rows">5.7 Mock dataset (contact-centre sample; illustrative evidence rows)</h3>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>call_id,date,demand,sub_reason,quote,resolution_min
 821004,2025-11-03,failure,missed_connection,&quot;Told to wait 15 min for next bus; nobody held the tram.&quot;,9
 821011,2025-11-03,value,fares,&quot;How do I buy a weekly pass with the app?&quot;,4
 821020,2025-11-03,failure,no_info,&quot;Road closed since 6am; no sign, no message.&quot;,12
@@ -176,18 +651,154 @@ KPI tree row: &lt;metric&gt; &lt;driver&gt; &lt;experience link&gt; &lt;business
 821044,2025-11-04,value,schedule,&quot;When does the last tram run on Sundays?&quot;,3
 821058,2025-11-04,failure,complaints,&quot;Paper form lost; I want my refund.&quot;,16
 821063,2025-11-04,value,lost_property,&quot;Left a coat on route 41.&quot;,2
-821077,2025-11-05,failure,missed_connection,&quot;Bus left 2 min early; connection gone.&quot;,8</code></pre></div><p>The four quotes marked failure above are exactly the rows the register holds as content-addressed evidence; call-821004&#39;s sha-256 id appears in §4.1 and again in §13.</p>
-<h3 id="58-charts-numbers-consistent-across-the-case">5.8 Charts (numbers consistent across the case)</h3><figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">10</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">20</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">30</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">40</text><line x1="44" y1="304" x2="730" y2="304" stroke="#DEDEDA" stroke-width="1"/><text x="215.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Before</text><text x="558.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">After</text><rect x="588" y="7" width="14" height="10" rx="2" fill="#171817"/><text x="610" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">bar</text><rect x="198.5" y="57" width="34" height="247" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="215.5" y="51" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">38</text><rect x="541.5" y="187" width="34" height="117" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="558.5" y="181" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">18</text></svg><figcaption><span class="fignum">Figure 7</span><span class="figcap">Failure demand share of contact volume</span></figcaption></figure>
+821077,2025-11-05,failure,missed_connection,&quot;Bus left 2 min early; connection gone.&quot;,8
+</code></pre></div>
+<p>The four quotes marked failure above are exactly the rows the register holds as content-addressed evidence; call-821004&#39;s sha-256 id appears in §4.1 and again in §13.</p>
+<h3 id="58-charts-numbers-consistent-across-the-case">5.8 Charts (numbers consistent across the case)</h3>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">10</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">20</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">30</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">40</text><line x1="44" y1="304" x2="730" y2="304" stroke="#DEDEDA" stroke-width="1"/><text x="215.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Before</text><text x="558.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">After</text><rect x="588" y="7" width="14" height="10" rx="2" fill="#171817"/><text x="610" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">bar</text><rect x="198.5" y="57" width="34" height="247" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="215.5" y="51" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">38</text><rect x="541.5" y="187" width="34" height="117" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="558.5" y="181" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">18</text></svg><figcaption><span class="fignum">Figure 7</span><span class="figcap">Failure demand share of contact volume</span></figcaption></figure>
 <figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">-20</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">-7.5</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">5</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">17.5</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">30</text><line x1="44" y1="304" x2="730" y2="304" stroke="#DEDEDA" stroke-width="1"/><text x="215.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Before</text><text x="558.5" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">After</text><line x1="600" y1="12" x2="616" y2="12" stroke="#171817" stroke-width="2" stroke-linecap="round"/><text x="622" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">line</text><polyline points="215.5,262.4 558.5,75.19999999999999" fill="none" stroke="#171817" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="215.5" cy="262.4" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="558.5" cy="75.19999999999999" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><text x="567.5" y="78.69999999999999" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">24</text></svg><figcaption><span class="fignum">Figure 8</span><span class="figcap">Rider NPS before and after</span></figcaption></figure>
-<h3 id="59-traceability-article-level-roll-up-not-an-engine-kind">5.9 Traceability (article-level roll-up; not an engine kind)</h3><div class="tbl-wrap tbl-trace"><table><thead><tr><th>Opportunity (journey node)</th><th>Design principle</th><th>Blueprint change</th><th>KPI</th></tr></thead><tbody><tr><td>No certainty before/during</td><td>Live truth everywhere</td><td>GTFS-realtime + in-vehicle feed</td><td>OTP 85%</td></tr><tr><td scope="row">Fare complexity + card failure</td><td>Frictionless pay</td><td>Contactless + cap, in-app fix</td><td>Digital 60%</td></tr><tr><td scope="row">Missed connections</td><td>Protect the journey</td><td>Recovery engine + auto-credit</td><td>failure demand ≤20%</td></tr><tr><td scope="row">Complaint black hole</td><td>No second failure</td><td>Digital claim + SLA</td><td>Resolution 5 days</td></tr></tbody></table></div><h3 id="510-good-services-audit-via-good-services-audit-output-kind-insight-set">5.10 Good Services audit (via good-services-audit; output kind insight-set)</h3><div class="ba-table"><div class="ba-row ba-header"><span class="ba-head">One plan</span><span class="ba-head">2</span><span class="ba-head">4</span></div><div class="ba-row"><span class="bac bac-k">No unnecessary work</span><span class="bac bac-a">1</span><span class="bac bac-b">4</span></div><div class="ba-row"><span class="bac bac-k">No confusing language</span><span class="bac bac-a">2</span><span class="bac bac-b">4</span></div><div class="ba-row"><span class="bac bac-k">Carry out decisions</span><span class="bac bac-a">2</span><span class="bac bac-b">4</span></div><div class="ba-row"><span class="bac bac-k">Overall (15 principles)</span><span class="bac bac-a">28/75</span><span class="bac bac-b">54/75</span></div></div><p>The method&#39;s own machine contract (pulled live with <code>sd_method_run --methodId good-services-audit</code>): the Researcher scores each heuristic citing evidence for every score below target; the Critic step carries <code>gate: true</code> — <em>&quot;Reject any below-target score with no cited evidence&quot;</em>; acceptance is ≥3 nodes, ≥1 evidence ref per node, <code>theme</code> non-empty; output kind insight-set. The full JSON is in §13.</p>
-</section><section class="art-sec sec-6"><span class="sec-kicker">06 · Use cases</span><h2 id="sec-6-use-cases-routed-to-the-right-agents">Use cases (routed to the right agents)</h2><p><strong>6.1 The shift worker&#39;s night — recovery engine.</strong> Prototyper session: &quot;Storyboard the failed-connection night from P1 with <code>storyboard-authoring</code>; the storyboard names the assumption, subjects, and pass/fail criteria.&quot; Output: a storyboard artifact plus a concierge-pilot plan (<code>concierge-pilot</code> skill). Team analysis: the voucher-economics model (outside the engine, marked). Pilot: P1 journey abandonment 1-in-3 → 1-in-12.</p>
+<h3 id="59-traceability-article-level-roll-up-not-an-engine-kind">5.9 Traceability (article-level roll-up; not an engine kind)</h3>
+<table>
+<thead>
+<tr>
+<th>Opportunity (journey node)</th>
+<th>Design principle</th>
+<th>Blueprint change</th>
+<th>KPI</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>No certainty before/during</td>
+<td>Live truth everywhere</td>
+<td>GTFS-realtime + in-vehicle feed</td>
+<td>OTP 85%</td>
+</tr>
+<tr>
+<td>Fare complexity + card failure</td>
+<td>Frictionless pay</td>
+<td>Contactless + cap, in-app fix</td>
+<td>Digital 60%</td>
+</tr>
+<tr>
+<td>Missed connections</td>
+<td>Protect the journey</td>
+<td>Recovery engine + auto-credit</td>
+<td>failure demand ≤20%</td>
+</tr>
+<tr>
+<td>Complaint black hole</td>
+<td>No second failure</td>
+<td>Digital claim + SLA</td>
+<td>Resolution 5 days</td>
+</tr>
+</tbody></table>
+<h3 id="510-good-services-audit-via-good-services-audit-output-kind-insight-set">5.10 Good Services audit (via good-services-audit; output kind insight-set)</h3>
+<table>
+<thead>
+<tr>
+<th>Principle</th>
+<th>Before</th>
+<th>After</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>One plan</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>No unnecessary work</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>No confusing language</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Carry out decisions</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Overall (15 principles)</td>
+<td>28/75</td>
+<td>54/75</td>
+</tr>
+</tbody></table>
+<p>The method&#39;s own machine contract (pulled live with <code>sd_method_run --methodId good-services-audit</code>): the Researcher scores each heuristic citing evidence for every score below target; the Critic step carries <code>gate: true</code> — <em>&quot;Reject any below-target score with no cited evidence&quot;</em>; acceptance is ≥3 nodes, ≥1 evidence ref per node, <code>theme</code> non-empty; output kind insight-set. The full JSON is in §13.</p>
+</section><section class="art-sec sec-6"><span class="sec-kicker">06 · Use cases</span><h2 id="sec-6-use-cases-routed-to-the-right-agents">Use cases (routed to the right agents)</h2>
+<p><strong>6.1 The shift worker&#39;s night — recovery engine.</strong> Prototyper session: &quot;Storyboard the failed-connection night from P1 with <code>storyboard-authoring</code>; the storyboard names the assumption, subjects, and pass/fail criteria.&quot; Output: a storyboard artifact plus a concierge-pilot plan (<code>concierge-pilot</code> skill). Team analysis: the voucher-economics model (outside the engine, marked). Pilot: P1 journey abandonment 1-in-3 → 1-in-12.</p>
 <p><strong>6.2 The occasional rider goes digital — fare simplification.</strong> Ideator session: &quot;Author the fare-capping concept with <code>concept-brief-authoring</code>, insight→HMW lineage intact.&quot; Output: a concept-set artifact. Team analysis: revenue-neutrality model from 100k synthetic trips (analytics, marked). Weekend ridership +9%.</p>
 <p><strong>6.3 The interchange handoff — living lines.</strong> Mapper session: &quot;Re-run <code>ecosystem-value-mapping</code> on the interchange partners, then draft the delta into the evidence-gated blueprint variant.&quot; The Critic&#39;s verdict on the variant cited the register; no clause contradicted it. Interchange wait variance −41%.</p>
-</section><section class="art-sec sec-7"><span class="sec-kicker">07 · SOPs for AI</span><h2 id="sec-7-sops-for-ai-the-skills-encode-the-method-and-you-can-read-them">SOPs for AI — the skills encode the method, and you can read them</h2><p>Open any skill and the whole SOP is plain text. <code>journey-from-transcripts</code>: Researcher extracts actions/channels/breakdowns with verbatim quotes → Mapper orders stages, emotion from quotes → Critic rejects unquoted stages (gate). <code>evidence-gated-blueprint</code>: five named lanes, fail/wait points cited, deny-listed lane names rejected, current ≠ future. <code>good-services-audit</code>: score each principle with evidence; the Critic step rejects uncited low scores. The meta-SOP is the role contract: <strong>handoffs are artifacts, not chat</strong>; evidence rows are content-addressed with verbatim quotes; status is draft→final through <code>sd_review</code>; the Critic&#39;s rows are required schema, not vibes; the human owns gates.</p>
+</section><section class="art-sec sec-7"><span class="sec-kicker">07 · SOPs for AI</span><h2 id="sec-7-sops-for-ai-the-skills-encode-the-method-and-you-can-read-them">SOPs for AI — the skills encode the method, and you can read them</h2>
+<p>Open any skill and the whole SOP is plain text. <code>journey-from-transcripts</code>: Researcher extracts actions/channels/breakdowns with verbatim quotes → Mapper orders stages, emotion from quotes → Critic rejects unquoted stages (gate). <code>evidence-gated-blueprint</code>: five named lanes, fail/wait points cited, deny-listed lane names rejected, current ≠ future. <code>good-services-audit</code>: score each principle with evidence; the Critic step rejects uncited low scores. The meta-SOP is the role contract: <strong>handoffs are artifacts, not chat</strong>; evidence rows are content-addressed with verbatim quotes; status is draft→final through <code>sd_review</code>; the Critic&#39;s rows are required schema, not vibes; the human owns gates.</p>
 <p><strong>Failure modes observed.</strong> (1) NPS −12 vs −10 drifted across two drafts — fact-check re-gated. (2) A persona cited a nonexistent row — integrity made the write a hard error. (3) The 3-minute connection rule contradicted the roster — the Critic caught it by re-reading the register (the veto log of §4.2). (4) A field note went in as kind <code>observation</code> and the tool refused it — evidence kinds are <code>quote</code>, <code>telemetry</code>, <code>document</code>, full stop. (5) A rejected write still lands as a draft with its failures attached — remediate the same id with <code>--artifactId</code>; do not leave failing drafts lying around, because <code>sd_factcheck</code> will (correctly) report <code>pass: false</code> and exit 1 over them.</p>
-</section><section class="art-sec sec-8"><span class="sec-kicker">08 · Value & measurement</span><h2 id="sec-8-value-creation-amp-measurement">Value creation &amp; measurement</h2><div class="ba-table"><div class="ba-row ba-header"><span class="ba-head">On-time performance</span><span class="ba-head">71%</span><span class="ba-head">87%</span><span class="ba-head">Target ≥85%</span></div><div class="ba-row"><span class="bac bac-k">Failure demand share</span><span class="bac bac-a">38%</span><span class="bac bac-b">18%</span><span class="bac bac-b">Target ≤20%</span></div><div class="ba-row"><span class="bac bac-k">Rider NPS</span><span class="bac bac-a">−12</span><span class="bac bac-b">+24</span><span class="bac bac-b">Target ≥+15</span></div><div class="ba-row"><span class="bac bac-k">Digital ticketing share</span><span class="bac bac-a">22%</span><span class="bac bac-b">68%</span><span class="bac bac-b">Target ≥60%</span></div><div class="ba-row"><span class="bac bac-k">Complaints (per 100k)</span><span class="bac bac-a">41</span><span class="bac bac-b">24</span><span class="bac bac-b">illustrative</span></div><div class="ba-row"><span class="bac bac-k">Cost per journey</span><span class="bac bac-a">100%</span><span class="bac bac-b">91%</span><span class="bac bac-b">−9%</span></div><div class="ba-row"><span class="bac bac-k">Contact volume (annual)</span><span class="bac bac-a">1.9M</span><span class="bac bac-b">1.1M</span><span class="bac bac-b">−42%</span></div><div class="ba-row"><span class="bac bac-k">Missed-connection events</span><span class="bac bac-a">100%</span><span class="bac bac-b">61%</span><span class="bac bac-b">−39%</span></div></div><p>Causal logic (book 20): operational quality → external value → loyalty → revenue stability. Each hop is a row in the kpi-tree.</p>
-</section><section class="art-sec sec-9"><span class="sec-kicker">09 · AI tool playbook</span><h2 id="sec-9-ai-tool-playbook">AI tool playbook</h2><p><strong>Claude Code + ASD plugin</strong> — the engagement itself: <code>/asd</code> to plan and dispatch; <code>@researcher</code>, <code>@mapper</code>, <code>@critic</code> and the rest of the ten as subagents; 74 skills as readable SOP files; the vendored MCP server providing the sixteen <code>sd_*</code> tools, 215 <code>asd://</code> resources (20 books, 159 chapters, 36 articles, cursor-paginated at 100 per page with a <code>nextCursor</code>), and the ten role prompts. Real MCP frames from the engagement&#39;s server: <code>initialize</code> → capabilities <code>{ tools, resources, prompts }</code>, serverInfo <code>asd-mcp 0.1.0</code>; <code>resources/list</code> page 1 → 100 resources, <code>nextCursor: b2Zmc2V0OjEwMA</code>; <code>prompts/get critic</code> → <em>&quot;The adversarial conscience of the engagement. Sits on the write path, not after it…&quot;</em>. <strong>What it failed at:</strong> political feasibility (union consultation) — that stayed the designer&#39;s. <strong><code>asd</code> CLI shim</strong> — the same engine in a terminal: every deterministic cross-check in this article ran through <code>platform/packs/cli/asd</code>, dashed aliases included. <strong>GitHub</strong> — issues as design tasks, PRs as artifact gates (schema/evidence/mermaid Actions). Sibling packs for other hosts ship in the same tree (<code>platform/packs/</code> also carries opencode, codex, kimi, grok, omp, pi, agy, dsh and a standalone mcp pack); this engagement ran Claude-Code-plugin-first.</p>
-</section><section class="art-sec sec-10"><span class="sec-kicker">10 · Lessons learned</span><h2 id="sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</h2><ol>
+</section><section class="art-sec sec-8"><span class="sec-kicker">08 · Value & measurement</span><h2 id="sec-8-value-creation-amp-measurement">Value creation &amp; measurement</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Before</th>
+<th>After</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>On-time performance</td>
+<td>71%</td>
+<td>87%</td>
+<td>Target ≥85%</td>
+</tr>
+<tr>
+<td>Failure demand share</td>
+<td>38%</td>
+<td>18%</td>
+<td>Target ≤20%</td>
+</tr>
+<tr>
+<td>Rider NPS</td>
+<td>−12</td>
+<td>+24</td>
+<td>Target ≥+15</td>
+</tr>
+<tr>
+<td>Digital ticketing share</td>
+<td>22%</td>
+<td>68%</td>
+<td>Target ≥60%</td>
+</tr>
+<tr>
+<td>Complaints (per 100k)</td>
+<td>41</td>
+<td>24</td>
+<td>illustrative</td>
+</tr>
+<tr>
+<td>Cost per journey</td>
+<td>100%</td>
+<td>91%</td>
+<td>−9%</td>
+</tr>
+<tr>
+<td>Contact volume (annual)</td>
+<td>1.9M</td>
+<td>1.1M</td>
+<td>−42%</td>
+</tr>
+<tr>
+<td>Missed-connection events</td>
+<td>100%</td>
+<td>61%</td>
+<td>−39%</td>
+</tr>
+</tbody></table>
+<p>Causal logic (book 20): operational quality → external value → loyalty → revenue stability. Each hop is a row in the kpi-tree.</p>
+</section><section class="art-sec sec-9"><span class="sec-kicker">09 · AI tool playbook</span><h2 id="sec-9-ai-tool-playbook">AI tool playbook</h2>
+<p><strong>ASD pack surfaces</strong> — source-verified structure: <code>/asd</code> planning, ten role agents, 74 skills as readable SOP files, and a vendored MCP/CLI engine with 29 tools, 225 paginated resources, and ten role prompts in the current shared-pack release. The historical modernization probe recorded 224 resources; it is not a current count. Disposable MCP probes verified initialize, counts, and the representative project→evidence→artifact→review→factcheck workflow; host installation and execution remain unverified. <strong>GitHub</strong> is a possible governance surface for artifact gates, but no live repository workflow is claimed here. Sibling packs exist in the source tree; their host execution is unverified.</p>
+</section><section class="art-sec sec-10"><span class="sec-kicker">10 · Lessons learned</span><h2 id="sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</h2>
+<ol>
 <li>The 61% peak-shoulder finding changed everything; evidence-gating kept it alive against the loudest interview.</li>
 <li>NPS drift across drafts is the normal state — make fact-check part of the gate.</li>
 <li>The Critic caught the impossible connection rule three weeks before the pilot; roster constraints are design input.</li>
@@ -196,14 +807,99 @@ KPI tree row: &lt;metric&gt; &lt;driver&gt; &lt;experience link&gt; &lt;business
 <li>Presenter packs from artifacts only; chat-built decks drift within a week.</li>
 <li>A failing write is a persisted draft, not a refusal — treat <code>check.failures</code> as a work queue and remediate by id.</li>
 </ol>
-</section><section class="art-sec sec-11"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2><p><code>01-this-is-service-design-doing/04-research-methods.md</code>; <code>09-mapping-experiences/04-journey-maps.md</code>; <code>10-the-users-journey/03-touchpoints-and-channels.md</code>; <code>19-service-management-and-marketing/06-service-recovery.md</code>; <code>20-the-service-profit-chain/03-external-service-value.md</code>; <code>12-service-dominant-logic/01-the-service-dominant-mindset.md</code> [series convention]; <code>05-good-services/02-the-principles.md</code>; <code>17-101-design-methods/</code>. Platform: <code>platform/packs/claude-code</code> (README, <code>.claude-plugin/plugin.json</code>, <code>.mcp.json</code>, <code>agents/</code>, <code>skills/</code>, <code>commands/asd.md</code>, <code>mcp/</code>); <code>platform/templates/catalog.md</code> (the 38-kind template contract); <code>suite/packages/knowledge/data/methods</code> and <code>suite/packages/knowledge/data/artifact-kinds</code> (method manifests and kind schemas the engine enforces); <code>suite/packages/runtime</code> (CLI, MCP server, fact-check). External: GTFS-realtime spec <code>[unverified]</code> for version detail.</p>
-</section><section class="art-sec sec-12"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-appendix-artifact-index">Appendix: artifact index</h2><div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Artifact</th><th>Section</th><th>Kind</th><th>Purpose</th></tr></thead><tbody><tr><td>Journey map (current)</td><td>5.1</td><td>journey-map</td><td>Anchor pains</td></tr><tr><td scope="row">Blueprint (future)</td><td>5.2</td><td>service-blueprint</td><td>Target operation</td></tr><tr><td scope="row">Stakeholder map</td><td>5.3</td><td>stakeholder-map</td><td>Power/interest</td></tr><tr><td scope="row">Ecosystem map</td><td>5.4</td><td>ecosystem-map</td><td>Partner context</td></tr><tr><td scope="row">Personas</td><td>5.5</td><td>persona-set</td><td>Segments</td></tr><tr><td scope="row">Templates</td><td>5.6</td><td>research-plan / kpi-tree / interview-guide</td><td>Replication</td></tr><tr><td scope="row">Mock dataset</td><td>5.7</td><td>evidence rows</td><td>Evidence realism</td></tr><tr><td scope="row">Charts</td><td>5.8</td><td>kpi-tree data</td><td>Metrics</td></tr><tr><td scope="row">Traceability</td><td>5.9</td><td>article-level table</td><td>Principle linkage</td></tr><tr><td scope="row">Standards audit</td><td>5.10</td><td>insight-set</td><td>Good Services</td></tr><tr><td scope="row">Review log</td><td>4.2</td><td>review-veto-log</td><td>Critic&#39;s evidence-cited verdicts</td></tr></tbody></table></div></section><section class="art-sec"><h2 id="sec-13-tutorial-reproduce-this-engagement-20-minutes">Tutorial — reproduce this engagement (20 minutes)</h2><p>The designer&#39;s command log, executed for this article against the real CLI (<code>platform/packs/cli/asd</code>, suite built per §3.1) in a scratch workspace. Every output below is pasted from that run, trimmed only for length. It is the whole lifecycle in a shell: project → evidence (including a deliberate kind rejection) → typed artifact through the <code>journey-from-transcripts</code> gate → in-place remediation → Critic veto → remediation → Critic pass → method contract → knowledge query → renders → deterministic fact-check.</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>export ASD_WORKSPACE=/tmp/consult-lighthouse   # scratch workspace for the run
+</section><section class="art-sec sec-11"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2>
+<p><code>01-this-is-service-design-doing/04-research-methods.md</code>; <code>09-mapping-experiences/04-journey-maps.md</code>; <code>10-the-users-journey/03-touchpoints-and-channels.md</code>; <code>19-service-management-and-marketing/06-service-recovery.md</code>; <code>20-the-service-profit-chain/03-external-service-value.md</code>; <code>12-service-dominant-logic/01-the-service-dominant-mindset.md</code> [series convention]; <code>05-good-services/02-the-principles.md</code>; <code>17-101-design-methods/</code>. Platform: <code>platform/packs/claude-code</code> (README, <code>.claude-plugin/plugin.json</code>, <code>.mcp.json</code>, <code>agents/</code>, <code>skills/</code>, <code>commands/asd.md</code>, <code>mcp/</code>); <code>platform/templates/catalog.md</code> (38-row vocabulary; six authored templates, with per-kind runtime typed schemas deferred); <code>suite/packages/knowledge/data/methods</code> and <code>suite/packages/knowledge/data/artifact-kinds</code> (method manifests and registered kinds); <code>suite/packages/runtime</code> (CLI, MCP server, fact-check). External: GTFS-realtime spec <code>[unverified]</code> for version detail.</p>
+</section><section class="art-sec sec-12"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-appendix-artifact-index">Appendix: artifact index</h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Kind</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Journey map (current)</td>
+<td>5.1</td>
+<td>journey-map</td>
+<td>Anchor pains</td>
+</tr>
+<tr>
+<td>Blueprint (future)</td>
+<td>5.2</td>
+<td>service-blueprint</td>
+<td>Target operation</td>
+</tr>
+<tr>
+<td>Stakeholder map</td>
+<td>5.3</td>
+<td>stakeholder-map</td>
+<td>Power/interest</td>
+</tr>
+<tr>
+<td>Ecosystem map</td>
+<td>5.4</td>
+<td>ecosystem-map</td>
+<td>Partner context</td>
+</tr>
+<tr>
+<td>Personas</td>
+<td>5.5</td>
+<td>persona-set</td>
+<td>Segments</td>
+</tr>
+<tr>
+<td>Templates</td>
+<td>5.6</td>
+<td>research-plan / kpi-tree / interview-guide</td>
+<td>Replication</td>
+</tr>
+<tr>
+<td>Mock dataset</td>
+<td>5.7</td>
+<td>evidence rows</td>
+<td>Evidence realism</td>
+</tr>
+<tr>
+<td>Charts</td>
+<td>5.8</td>
+<td>kpi-tree data</td>
+<td>Metrics</td>
+</tr>
+<tr>
+<td>Traceability</td>
+<td>5.9</td>
+<td>article-level table</td>
+<td>Principle linkage</td>
+</tr>
+<tr>
+<td>Standards audit</td>
+<td>5.10</td>
+<td>insight-set</td>
+<td>Good Services</td>
+</tr>
+<tr>
+<td>Review log</td>
+<td>4.2</td>
+<td>review-veto-log</td>
+<td>Critic&#39;s evidence-cited verdicts</td>
+</tr>
+</tbody></table>
+</section><section class="art-sec"><h2 id="sec-13-tutorial-reproduce-this-engagement-20-minutes">Tutorial — reproduce this engagement (20 minutes)</h2>
+<p>The following is an illustrative command transcript using the current CLI syntax. It is not a live host acceptance receipt: IDs, outputs, and project data are synthetic. The lifecycle shape is project → evidence (including a deliberate kind rejection) → structured artifact through the <code>journey-from-transcripts</code> gate → in-place remediation → Critic veto → remediation → Critic pass → method contract → knowledge query → renders → deterministic fact-check.</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>export ASD_WORKSPACE=${ASD_WORKSPACE:-$HOME/.asd/projects/lighthouse-transit-tutorial}   # disposable workspace for the run
 ASD=platform/packs/cli/asd                      # from the repo root
-$ASD project-create --name lighthouse-transit --client &quot;Fictional composite&quot; \
-  --sector public-transport --service &quot;commuter journeys&quot; --phase discover</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;project&quot;: { &quot;projectId&quot;: &quot;lighthouse-transit-f7e5f8a2&quot;, &quot;name&quot;: &quot;lighthouse-transit&quot;,
+OUT=$($ASD project-create --name lighthouse-transit --client &quot;Fictional composite&quot; \
+  --sector public-transport --service &quot;commuter journeys&quot; --phase discover)
+echo &quot;$OUT&quot;
+ID=$(printf &#39;%s&#39; &quot;$OUT&quot; | grep -oE &#39;lighthouse-transit-[a-f0-9]{8}&#39; | head -1)
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;project&quot;: { &quot;projectId&quot;: &quot;lighthouse-transit-&lt;run-id&gt;&quot;, &quot;name&quot;: &quot;lighthouse-transit&quot;,
   &quot;client&quot;: &quot;Fictional composite&quot;, &quot;sector&quot;: &quot;public-transport&quot;,
-  &quot;service&quot;: &quot;commuter journeys&quot;, &quot;phase&quot;: &quot;discover&quot;, … } }</code></pre></div><p>Evidence next — the three real kinds, one row each shown:</p>
+  &quot;service&quot;: &quot;commuter journeys&quot;, &quot;phase&quot;: &quot;discover&quot;, … } }
+</code></pre></div>
+<p>Evidence next — the three supported kinds, one illustrative row each:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ASD evidence-add --projectId &quot;$ID&quot; --source call-821004 --kind quote \
   --body &quot;Told to wait 15 min for next bus; nobody held the tram.&quot;
 $ASD evidence-add --projectId &quot;$ID&quot; --source call-821020 --kind quote \
@@ -211,40 +907,64 @@ $ASD evidence-add --projectId &quot;$ID&quot; --source call-821020 --kind quote 
 $ASD evidence-add --projectId &quot;$ID&quot; --source rosters-07 --kind document \
   --body &quot;Eleven routes cannot hold a 3-minute connection under current roster rules.&quot;
 $ASD evidence-add --projectId &quot;$ID&quot; --source avl-extract-2025-11 --kind telemetry \
-  --body &quot;Route 41 weekday OTP 71 percent; peak-shoulder misses cluster 16:00-19:00.&quot;</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;evidence&quot;: { &quot;id&quot;: &quot;c0f1736916289286b470528c08711c2b39ec7a7e3e853b00a162590b1197a174&quot;,
+  --body &quot;Route 41 weekday OTP 71 percent; peak-shoulder misses cluster 16:00-19:00.&quot;
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;evidence&quot;: { &quot;id&quot;: &quot;c0f1736916289286b470528c08711c2b39ec7a7e3e853b00a162590b1197a174&quot;,
   &quot;projectId&quot;: &quot;lighthouse-transit-f7e5f8a2&quot;, &quot;source&quot;: &quot;call-821004&quot;, &quot;kind&quot;: &quot;quote&quot;,
   &quot;body&quot;: &quot;Told to wait 15 min for next bus; nobody held the tram.&quot;,
-  &quot;capturedAt&quot;: &quot;2026-08-19T00:23:29.065Z&quot; } }</code></pre></div><p>The ids are sha-256 content hashes — run this twice and you get the same ids. Now the deliberate mistake, because it teaches the register&#39;s vocabulary better than any paragraph:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ASD evidence-add --projectId &quot;$ID&quot; --source int-07 --kind observation --body &quot;…&quot;</code></pre></div><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>asd evidence-add: invalid arguments: &quot;kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]
-running `asd help` shows usage</code></pre></div><p>Exit code 1; nothing was written. Field notes go in as kind document with the observation in the body. Grab the four ids into shell variables (query by content, parse the id), then write the journey map — first with the transfer node citing zero evidence, to watch the gate work:</p>
+  &quot;capturedAt&quot;: &quot;2026-08-19T00:23:29.065Z&quot; } }
+</code></pre></div>
+<p>The ids are sha-256 content hashes — run this twice and you get the same ids. Now the deliberate mistake, because it teaches the register&#39;s vocabulary better than any paragraph:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ASD evidence-add --projectId &quot;$ID&quot; --source int-07 --kind observation --body &quot;…&quot;
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>asd evidence-add: invalid arguments: &quot;kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]
+running `asd help` shows usage
+</code></pre></div>
+<p>Exit code 1; nothing was written. Field notes go in as kind document with the observation in the body. Grab the four ids into shell variables (query by content, parse the id), then write the journey map — first with the transfer node citing zero evidence, to watch the gate work:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>E1=c0f1736916289286b470528c08711c2b39ec7a7e3e853b00a162590b1197a174   # call-821004 quote
 E2=b38cf37fef5b8460e82bad3592964293233aeb627ee291e9f7a64e5007c4c586   # call-821020 quote
 E3=ebc691cacc31cf5fb2db2f3c8347e5e085690a0971b0d3ca4d104a6e150fdc6a   # rosters-07 document
 E4=553d5015b4910740c2c2bfafc5aa4681b33997a2db3949d7c9004d72951809b2   # avl telemetry
-NODES_BAD='[{&quot;id&quot;:&quot;plan&quot;,&quot;label&quot;:&quot;Plan journey&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;3&quot;,&quot;touchpoint&quot;:&quot;website&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;'$E3'&quot;}]},{&quot;id&quot;:&quot;wait&quot;,&quot;label&quot;:&quot;Wait at stop&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;2&quot;,&quot;touchpoint&quot;:&quot;stop&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;'$E1'&quot;},{&quot;evidenceId&quot;:&quot;'$E4'&quot;}]},{&quot;id&quot;:&quot;transfer&quot;,&quot;label&quot;:&quot;Missed connection&quot;,&quot;kind&quot;:&quot;pain&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;1&quot;,&quot;touchpoint&quot;:&quot;transfer&quot;},&quot;evidence&quot;:[]}]'
+NODES_BAD=&#39;[{&quot;id&quot;:&quot;plan&quot;,&quot;label&quot;:&quot;Plan journey&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;3&quot;,&quot;touchpoint&quot;:&quot;website&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;&#39;$E3&#39;&quot;}]},{&quot;id&quot;:&quot;wait&quot;,&quot;label&quot;:&quot;Wait at stop&quot;,&quot;kind&quot;:&quot;step&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;2&quot;,&quot;touchpoint&quot;:&quot;stop&quot;},&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;&#39;$E1&#39;&quot;},{&quot;evidenceId&quot;:&quot;&#39;$E4&#39;&quot;}]},{&quot;id&quot;:&quot;transfer&quot;,&quot;label&quot;:&quot;Missed connection&quot;,&quot;kind&quot;:&quot;pain&quot;,&quot;fields&quot;:{&quot;emotion&quot;:&quot;1&quot;,&quot;touchpoint&quot;:&quot;transfer&quot;},&quot;evidence&quot;:[]}]&#39;
 $ASD artifact-write --projectId &quot;$ID&quot; --methodId journey-from-transcripts \
-  --title &quot;Current-state journey&quot; --nodes &quot;$NODES_BAD&quot;</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;accepted&quot;: false, &quot;status&quot;: &quot;draft&quot;,
+  --title &quot;Current-state journey&quot; --nodes &quot;$NODES_BAD&quot;
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;accepted&quot;: false, &quot;status&quot;: &quot;draft&quot;,
   &quot;artifact&quot;: { &quot;id&quot;: &quot;2f537689386e439abd3ae43769ab710c&quot;, &quot;kind&quot;: &quot;journey-map&quot;,
     &quot;methodId&quot;: &quot;journey-from-transcripts&quot;, &quot;status&quot;: &quot;draft&quot;,
     &quot;check&quot;: { &quot;pass&quot;: false, &quot;failures&quot;: [
       { &quot;rule&quot;: &quot;min-evidence-per-node&quot;, &quot;nodeId&quot;: &quot;transfer&quot;,
         &quot;message&quot;: &quot;node \&quot;transfer\&quot; cites 0 evidence refs, needs 1&quot; } ] } },
-  &quot;failures&quot;: [ …the same list, repeated top-level… ] }</code></pre></div><p>Note what did not happen: the write was not refused. The artifact exists, as a draft, with its failures attached — and <code>sd_artifact_list</code> shows it. Remediate the same artifact by id (the transfer node now cites the two quotes):</p>
+  &quot;failures&quot;: [ …the same list, repeated top-level… ] }
+</code></pre></div>
+<p>Note what did not happen: the write was not refused. The artifact exists, as a draft, with its failures attached — and <code>sd_artifact_list</code> shows it. Remediate the same artifact by id (the transfer node now cites the two quotes):</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ASD artifact-write --projectId &quot;$ID&quot; --methodId journey-from-transcripts \
   --title &quot;Current-state journey&quot; --artifactId 2f537689386e439abd3ae43769ab710c \
   --nodes &quot;$NODES_FIXED&quot;        # transfer node cites E1 and E2
-# → { &quot;accepted&quot;: true, &quot;status&quot;: &quot;draft&quot;, &quot;failures&quot;: [] }  (same artifact id)</code></pre></div><p>Accepted drafts under a critic gate are still drafts. The Critic now reviews — here with a real veto, one defect (severity high, <code>fix</code> required) and one proposal:</p>
+# → { &quot;accepted&quot;: true, &quot;status&quot;: &quot;draft&quot;, &quot;failures&quot;: [] }  (same artifact id)
+</code></pre></div>
+<p>Accepted drafts under a critic gate are still drafts. This illustrative Critic review carries one defect (severity high, <code>fix</code> required) and one proposal, following the verified CLI/MCP review contract:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ASD review --projectId &quot;$ID&quot; --artifactId 2f537689386e439abd3ae43769ab710c \
-  --verdict veto --rows '[{&quot;rowKind&quot;:&quot;defect&quot;,&quot;severity&quot;:&quot;high&quot;,&quot;rule&quot;:&quot;evidence-sufficiency&quot;,&quot;message&quot;:&quot;The missed-connection node needs the roster-constraint document cited alongside the rider quotes; without it the 3-minute connection fix looks feasible and is not&quot;,&quot;fix&quot;:&quot;Cite rosters-07 on the transfer node&quot;,&quot;evidenceId&quot;:&quot;'$E3'&quot;},{&quot;rowKind&quot;:&quot;proposal&quot;,&quot;severity&quot;:&quot;medium&quot;,&quot;rule&quot;:&quot;source-diversity&quot;,&quot;message&quot;:&quot;Quote the closure notice verbatim on the transfer node so the emotion score stays evidence-coded&quot;}]'</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;status&quot;: &quot;draft&quot;, &quot;verdict&quot;: &quot;veto&quot;,
-  &quot;logArtifactId&quot;: &quot;a3c09c90fdb24c49be6efd1c1a58ce43&quot;, &quot;rowsWritten&quot;: 2 }</code></pre></div><p>The artifact is demoted to draft; the rows live in a new <code>review-veto-log</code> artifact (status final, <code>reviewOf</code> the journey map — visible on the review board via <code>asd review-list --projectId &quot;$ID&quot;</code>). Apply the fix — cite <code>E3</code> on the transfer node — re-write by id, then re-review:</p>
+  --verdict veto --rows &#39;[{&quot;rowKind&quot;:&quot;defect&quot;,&quot;severity&quot;:&quot;high&quot;,&quot;rule&quot;:&quot;evidence-sufficiency&quot;,&quot;message&quot;:&quot;The missed-connection node needs the roster-constraint document cited alongside the rider quotes; without it the 3-minute connection fix looks feasible and is not&quot;,&quot;fix&quot;:&quot;Cite rosters-07 on the transfer node&quot;,&quot;evidenceId&quot;:&quot;&#39;$E3&#39;&quot;},{&quot;rowKind&quot;:&quot;proposal&quot;,&quot;severity&quot;:&quot;medium&quot;,&quot;rule&quot;:&quot;source-diversity&quot;,&quot;message&quot;:&quot;Quote the closure notice verbatim on the transfer node so the emotion score stays evidence-coded&quot;}]&#39;
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;status&quot;: &quot;draft&quot;, &quot;verdict&quot;: &quot;veto&quot;,
+  &quot;logArtifactId&quot;: &quot;a3c09c90fdb24c49be6efd1c1a58ce43&quot;, &quot;rowsWritten&quot;: 2 }
+</code></pre></div>
+<p>The artifact is demoted to draft; the rows live in a new <code>review-veto-log</code> artifact (status final, <code>reviewOf</code> the journey map — visible on the review board via <code>asd review-list --projectId &quot;$ID&quot;</code>). Apply the fix — cite <code>E3</code> on the transfer node — re-write by id, then re-review:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ASD artifact-write --projectId &quot;$ID&quot; --methodId journey-from-transcripts \
   --title &quot;Current-state journey&quot; --artifactId 2f537689386e439abd3ae43769ab710c \
   --nodes &quot;$NODES_FINAL&quot;        # transfer node cites E1, E2 and E3
 $ASD review --projectId &quot;$ID&quot; --artifactId 2f537689386e439abd3ae43769ab710c \
-  --verdict pass --rows '[]'</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;status&quot;: &quot;final&quot;, &quot;verdict&quot;: &quot;pass&quot;,
-  &quot;logArtifactId&quot;: &quot;a3c09c90fdb24c49be6efd1c1a58ce43&quot;, &quot;rowsWritten&quot;: 0 }</code></pre></div><p>Same log artifact, updated: the veto rows remain as the record; the artifact now carries <code>review: { &quot;verdict&quot;: &quot;pass&quot;, &quot;logArtifactId&quot;: &quot;a3c09c90…&quot; }</code>. Pull the machine contract for the audit method and query the knowledge base:</p>
+  --verdict pass --rows &#39;[{&quot;rowKind&quot;:&quot;proposal&quot;,&quot;severity&quot;:&quot;low&quot;,&quot;rule&quot;:&quot;evidence-sufficiency&quot;,&quot;message&quot;:&quot;Keep the roster constraint attached when the transfer design changes&quot;,&quot;evidenceId&quot;:&quot;&#39;$E3&#39;&quot;}]&#39;
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;status&quot;: &quot;final&quot;, &quot;verdict&quot;: &quot;pass&quot;,
+  &quot;logArtifactId&quot;: &quot;a3c09c90fdb24c49be6efd1c1a58ce43&quot;, &quot;rowsWritten&quot;: 1 }
+</code></pre></div>
+<p>Same log artifact, updated: the veto rows remain as the record; the artifact now carries <code>review: { &quot;verdict&quot;: &quot;pass&quot;, &quot;logArtifactId&quot;: &quot;a3c09c90…&quot; }</code>. Pull the machine contract for the audit method and query the knowledge base:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ASD method-run --methodId good-services-audit --projectId &quot;$ID&quot;
-$ASD knowledge --query journey</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;method&quot;: { &quot;id&quot;: &quot;good-services-audit&quot;, &quot;name&quot;: &quot;Good Services Audit&quot;,
+$ASD knowledge --query journey
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;method&quot;: { &quot;id&quot;: &quot;good-services-audit&quot;, &quot;name&quot;: &quot;Good Services Audit&quot;,
     &quot;phase&quot;: &quot;measurement&quot;,
     &quot;sources&quot;: [ { &quot;article&quot;: &quot;27&quot; }, { &quot;book&quot;: &quot;01-this-is-service-design-doing&quot;, &quot;chapter&quot;: &quot;04&quot; } ] },
   &quot;steps&quot;: [
@@ -253,12 +973,16 @@ $ASD knowledge --query journey</code></pre></div><div class="codeblock"><div cla
   &quot;acceptance&quot;: [ { &quot;rule&quot;: &quot;min-nodes&quot;, &quot;min&quot;: 3 },
     { &quot;rule&quot;: &quot;min-evidence-per-node&quot;, &quot;min&quot;: 1 },
     { &quot;rule&quot;: &quot;field-non-empty&quot;, &quot;field&quot;: &quot;theme&quot; } ],
-  &quot;outputKind&quot;: &quot;insight-set&quot;, &quot;availableEvidence&quot;: 4 }</code></pre></div><p><code>sd_knowledge</code> answers with methods (id, phase, produces, reviewGate, SourceRefs including article citations) and matching artifact kinds. Render the deliverables, then run the deterministic fact-check:</p>
+  &quot;outputKind&quot;: &quot;insight-set&quot;, &quot;availableEvidence&quot;: 4 }
+</code></pre></div>
+<p><code>sd_knowledge</code> answers with methods (id, phase, produces, reviewGate, SourceRefs including article citations) and matching artifact kinds. Render the deliverables, then run the deterministic fact-check:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>$ASD export-artifact --projectId &quot;$ID&quot; --artifactId 2f537689386e439abd3ae43769ab710c
 # → { &quot;path&quot;: &quot;…/renders/journey-map.2f537689.svg&quot;, &quot;kind&quot;: &quot;journey-map&quot;, &quot;bytes&quot;: 3819 }
 $ASD export-report --projectId &quot;$ID&quot; --kind executive-summary
 # → { &quot;path&quot;: &quot;…/renders/report.executive-summary.html&quot;, &quot;kind&quot;: &quot;executive-summary&quot;, &quot;bytes&quot;: 2777 }
-$ASD factcheck --projectId &quot;$ID&quot;</code></pre></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;pass&quot;: true, &quot;rows&quot;: [
+$ASD factcheck --projectId &quot;$ID&quot;
+</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;pass&quot;: true, &quot;rows&quot;: [
   { &quot;artifactId&quot;: &quot;2f537689386e439abd3ae43769ab710c&quot;, &quot;kind&quot;: &quot;journey-map&quot;,
     &quot;status&quot;: &quot;final&quot;, &quot;integrity&quot;: { &quot;pass&quot;: true, &quot;dangling&quot;: [] },
     &quot;acceptance&quot;: { &quot;pass&quot;: true },
@@ -268,18 +992,22 @@ $ASD factcheck --projectId &quot;$ID&quot;</code></pre></div><div class="codeblo
     &quot;status&quot;: &quot;final&quot;, &quot;integrity&quot;: { &quot;pass&quot;: true, &quot;dangling&quot;: [] },
     &quot;acceptance&quot;: { &quot;pass&quot;: true },
     &quot;review&quot;: { &quot;pass&quot;: true, &quot;gate&quot;: null, &quot;verdict&quot;: null },
-    &quot;methodId&quot;: null, &quot;methodResolution&quot;: &quot;inferred&quot; } ] }</code></pre></div><p>Exit code 0. Everything on disk is plain files you can audit — <code>project.json</code>, <code>evidence/index.json</code>, one JSON per artifact under <code>artifacts/</code>, the renders under <code>renders/</code>:</p>
+    &quot;methodId&quot;: null, &quot;methodResolution&quot;: &quot;inferred&quot; } ] }
+</code></pre></div>
+<p>In the verified disposable CLI workflow, exit code 0 leaves plain files that can be audited — <code>project.json</code>, <code>evidence/index.json</code>, one JSON per artifact under <code>artifacts/</code>, and renders under <code>renders/</code>. The case-specific names below remain illustrative:</p>
 <div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>lighthouse-transit-f7e5f8a2/artifacts/journey-map.current-state-journey.2f537689.json
 lighthouse-transit-f7e5f8a2/artifacts/review-veto-log.review-current-state-journey.a3c09c90.json
 lighthouse-transit-f7e5f8a2/evidence/index.json
 lighthouse-transit-f7e5f8a2/project.json
 lighthouse-transit-f7e5f8a2/renders/journey-map.2f537689.svg
-lighthouse-transit-f7e5f8a2/renders/report.executive-summary.html</code></pre></div><p><strong>Try-it checklist.</strong> (1) Install per §3.1 into a scratch Claude Code project; run <code>/asd</code>; (2) <code>@researcher</code> — add two evidence rows and read the content-addressed ids; try a fourth kind and read the refusal; (3) <code>@mapper</code> — write the journey through the <code>journey-from-transcripts</code> gate and watch a zero-evidence node come back as a persisted draft with failures; (4) <code>@critic</code> — veto with one defect row (remember <code>severity</code> and <code>fix</code>) and re-review to pass after remediation; (5) run the fact-check at your gate and read the per-artifact rows — then try it with a failing draft still in the project and watch <code>pass</code> flip to false with exit code 1. The loop — prompt → agent → skill → tool → gate → critic → fact-check — is the engagement, and it lands as files you can audit.</p>
+lighthouse-transit-f7e5f8a2/renders/report.executive-summary.html
+</code></pre></div>
+<p><strong>Try-it checklist.</strong> (1) Install per §3.1 into a scratch Claude Code project; run <code>/asd</code>; (2) <code>@researcher</code> — add two evidence rows and read the content-addressed ids; try a fourth kind and read the refusal; (3) <code>@mapper</code> — write the journey through the <code>journey-from-transcripts</code> gate and watch a zero-evidence node come back as a persisted draft with failures; (4) <code>@critic</code> — veto with one defect row (remember <code>severity</code> and <code>fix</code>) and re-review to pass after remediation; (5) run the fact-check at your gate and read the per-artifact rows — then try it with a failing draft still in the project and watch <code>pass</code> flip to false with exit code 1. The loop — prompt → agent → skill → tool → gate → critic → fact-check — is the engagement, and it lands as files you can audit.</p>
 </section></article></div>
-    <div class="cross-links"><a class="xlink" href="./30/index.html"><span class="lbl">← Previous case</span><span class="ttl">30. The Future of Service Design: AI-Native Practice</span><span class="rt">40 min read</span></a><a class="xlink" href="./32/index.html"><span class="lbl">Next case →</span><span class="ttl">32. Air in the Cylinders: Servitizing a Capital-Equipment Vendor with the ASD Plugin</span><span class="rt">22 min read</span></a></div>
+    <div class="cross-links"><a class="xlink" href="../30/index.html"><span class="lbl">← Previous case</span><span class="ttl">30. The Future of Service Design: AI-Native Practice</span><span class="rt">41 min read</span></a><a class="xlink" href="../32/index.html"><span class="lbl">Next case →</span><span class="ttl">32. Air in the Cylinders: Servitizing a Capital-Equipment Vendor with the ASD Plugin</span><span class="rt">22 min read</span></a></div>
     <div class="art-foot">
-      <span>8 figures · ~6.8k words · evidence-cited · reviewed by an adversarial AI critic.</span>
-      · <a href="../index.html">Back to the archive</a>
+    <span>8 figures · ~6.8k words · evidence-cited · reviewed by an adversarial AI critic.</span>
+    · <a href="../../index.html">Back to the archive</a>
     </div>
     <button class="backtop" id="backtop" type="button">Back to top</button></main>
 <footer class="footer">
@@ -287,4 +1015,5 @@ lighthouse-transit-f7e5f8a2/renders/report.executive-summary.html</code></pre></
   <span><a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
 </footer>
 <script src="../../assets/site.js"></script>
+
 </body></html>

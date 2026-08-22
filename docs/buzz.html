@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="How the keyless ASD Persona Pack, identity-backed BUZZ runtimes, pack-local MCP server and human-gated Service Design workflow fit together.">
+<title>BUZZ integration — The Agentic Service Designer</title>
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
+
+</head><body>
+<header class="site-head">
+  <a class="brand" href="../index.html">
+    <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
+    <div class="brand-sub">Sam Mozaffari</div>
+  </a>
+  <nav class="main-nav">
+    <a href="../index.html" class="">Index</a>
+    <a href="../courses.html" class="">Courses</a>
+    <a href="../harness.html" class="">Harness</a>
+    <a href="../docs/index.html" class="on">Docs</a>
+    <a href="../about.html" class="">About</a>
+    <a href="../cv.html" class="">CV</a>
+  </nav>
+</header>
+<main class="art">
+  <div class="art-progress"><div class="art-progress-bar" id="progress"></div></div>
+  <nav class="docs-tabs" aria-label="Docs sections"><a href="./index.html">Start</a><a href="./plugin-claude-code.html" class="on">Surfaces</a><a href="./acp.html">Concepts</a><a href="./reference-tools.html">Reference</a><a href="./use-cases.html">Use cases</a></nav>
+  <section class="page-hero">
+    <span class="kicker">Docs · Surfaces</span>
+    <h1>BUZZ integration</h1>
+    <p class="lede">How the keyless ASD Persona Pack, identity-backed BUZZ runtimes, pack-local MCP server and human-gated Service Design workflow fit together.</p>
+  </section>
+  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Surfaces</b><ol><li><a href="./plugin-claude-code.html">The Claude Code plugin</a></li><li><a href="./plugin-hosts.html">Host packs and the compiler</a></li><li><a href="./mcp.html">The MCP server</a></li><li><a href="./cli.html">The CLI</a></li><li><a href="./dsh-workbench.html">The DeepSeek Harness workbench</a></li><li><a href="./buzz.html" class="on">BUZZ integration</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#what-ships-in-the-persona-pack">What ships in the Persona Pack</a></li><li><a href="#the-ten-roles-and-their-handoff-responsibilities">The ten roles and their handoff responsibilities</a></li><li><a href="#definition-identity-versus-runtime-identity">Definition identity versus runtime identity</a></li><li><a href="#safe-install-and-audit-sequence">Safe install and audit sequence</a></li><li><a href="#mention-routing-and-collaboration">Mention routing and collaboration</a></li><li><a href="#the-pack-local-mcp-boundary">The pack-local MCP boundary</a></li><li><a href="#the-observed-article-37-slice">The observed Article 37 slice</a></li><li><a href="#recommended-project-operating-model">Recommended project operating model</a></li><li><a href="#evidence-and-troubleshooting">Evidence and troubleshooting</a></li></ol></nav></aside><article class="art-body"><h1 id="buzz-integration">BUZZ integration</h1>
+<p>BUZZ is the collaboration surface for the Agentic Service Designer team: a
+private channel where a human designer can coordinate role personas, inspect
+handoffs and keep a visible project index in Canvas. The ASD pack does not turn
+BUZZ into a second project database. The ASD workspace, evidence register,
+artifact store, review log and fact-check remain owned by the shared runtime
+and are accessed through the CLI, MCP or a host that has actually integrated
+those tools.</p>
+<p>This distinction matters. A BUZZ message can be a real collaboration event and
+still not be an ASD evidence row. A Canvas link can be a useful index and still
+not prove that the linked artifact persisted in the ASD store. The pack and the
+protocols fail closed when the missing binding is not proven.</p>
+<h2 id="what-ships-in-the-persona-pack">What ships in the Persona Pack</h2>
+<p><code>platform/packs/buzz/</code> is a generated, self-contained, keyless Persona Pack.
+The native Open Plugin manifest is <code>.plugin/plugin.json</code>; <code>instructions.md</code>
+contains the shared role protocol; <code>.mcp.json</code> points to the pack-relative MCP
+server; <code>agents/</code> contains the ten role personas; and <code>skills/</code> contains the
+74 generated role-accessible method skills. <code>teams.json</code> and
+<code>managed-agents.json</code> are retained as compatibility projections for the
+historical managed-agent store. They are not native Persona Pack inputs and
+must not be copied into an application store as if they were the installation
+manifest.</p>
+<p>The generated inventory is:</p>
+<table>
+<thead>
+<tr>
+<th>Payload</th>
+<th align="right">Current value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Canonical roles/personas</td>
+<td align="right">10</td>
+</tr>
+<tr>
+<td>Skill directories</td>
+<td align="right">74 (75 sources, including the authored flagship source)</td>
+</tr>
+<tr>
+<td>Canonical runtime tools</td>
+<td align="right">29 <code>sd_*</code> tools</td>
+</tr>
+<tr>
+<td>Method manifests</td>
+<td align="right">74</td>
+</tr>
+<tr>
+<td>Registered artifact-kind contracts</td>
+<td align="right">32</td>
+</tr>
+<tr>
+<td>Vocabulary/catalog rows</td>
+<td align="right">38</td>
+</tr>
+<tr>
+<td>Authored templates</td>
+<td align="right">6</td>
+</tr>
+<tr>
+<td>Pack-local MCP resources</td>
+<td align="right">225 when the corpus roots are available</td>
+</tr>
+<tr>
+<td>Pack-local MCP prompts</td>
+<td align="right">10 role prompts</td>
+</tr>
+</tbody></table>
+<p>The six emitted MCP bundles with fresh disposable stdio evidence are BUZZ,
+Claude Code, Codex, Kimi, the standalone MCP target and OpenCode. This is
+pack-local evidence: it proves initialize, discovery and representative ASD
+tool workflows in isolated environments. It does not prove that BUZZ&#39;s native
+host has executed every tool or role.</p>
+<h2 id="the-ten-roles-and-their-handoff-responsibilities">The ten roles and their handoff responsibilities</h2>
+<p>Every persona receives the same evidence, review and human-gate contract. The
+role-specific ownership is:</p>
+<table>
+<thead>
+<tr>
+<th>Role / BUZZ handle</th>
+<th>Primary responsibility</th>
+<th>Typical outputs or handoff</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Orchestrator · <code>sd-orchestrator</code></td>
+<td>Plan the engagement, sequence methods, coordinate handoffs and surface phase-gate decisions.</td>
+<td>Orchestration records and human handoffs.</td>
+</tr>
+<tr>
+<td>Researcher · <code>sd-researcher</code></td>
+<td>Gather verbatim evidence, provenance and context from interviews, observations and documents.</td>
+<td>Evidence register, research plan, stakeholder/context inputs.</td>
+</tr>
+<tr>
+<td>Synthesizer · <code>sd-synthesizer</code></td>
+<td>Cluster evidence and form insights, personas, empathy maps and first-pass journeys.</td>
+<td>Insight, affinity, persona and synthesis artifacts.</td>
+</tr>
+<tr>
+<td>Mapper · <code>sd-mapper</code></td>
+<td>Build deterministic journey maps, service blueprints, mental models and ecosystem maps.</td>
+<td>Evidence-linked map/blueprint nodes; no hand-authored Mermaid.</td>
+</tr>
+<tr>
+<td>Ideator · <code>sd-ideator</code></td>
+<td>Frame HMWs and concepts from the evidence-backed insight set.</td>
+<td>HMW, concept, story and value-proposition artifacts.</td>
+</tr>
+<tr>
+<td>Prototyper · <code>sd-prototyper</code></td>
+<td>Design and test prototypes; separate test evidence from assumptions.</td>
+<td>Prototype/test artifacts and evidence requests.</td>
+</tr>
+<tr>
+<td>Measurer · <code>sd-measurer</code></td>
+<td>Connect service quality, KPI and outcomes through a causal measurement chain.</td>
+<td>KPI trees, audits, opportunities and roadmaps.</td>
+</tr>
+<tr>
+<td>Critic · <code>sd-critic</code></td>
+<td>Challenge evidence sufficiency and record defect/proposal rows.</td>
+<td>Evidence-cited <code>review-veto-log</code>; veto keeps a candidate in draft.</td>
+</tr>
+<tr>
+<td>Presenter · <code>sd-presenter</code></td>
+<td>Assemble reports and presentation narratives from final artifacts without inventing content.</td>
+<td>Report/export requests; decks remain a planned vocabulary item unless a renderer produces one.</td>
+</tr>
+<tr>
+<td>Librarian · <code>sd-librarian</code></td>
+<td>Maintain corpus provenance, method/skill drift and template/catalog references.</td>
+<td>Knowledge lookups and drift reports.</td>
+</tr>
+</tbody></table>
+<p>The handles above are Persona Pack definitions. They are not runtime public
+keys. Mention routing must use the identity-backed runtime chosen after the
+owner has materialized and verified each persona.</p>
+<h2 id="definition-identity-versus-runtime-identity">Definition identity versus runtime identity</h2>
+<p>The Persona Pack is intentionally keyless. A definition has a stable canonical
+slug/persona ID, display name, model/runtime metadata and prompt. A running BUZZ
+runtime has a separate identity-backed public key. The safe relationship is:</p>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1055 63" role="img" aria-hidden="true"><defs><marker id="arr-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 186,31.5 212,31.5 238,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="218" y="26.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">persona_id join</text><path d="M 376,31.5 402,31.5 428,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 619.2,31.5 645.2,31.5 671.2,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 816.8,31.5 842.8000000000001,31.5 868.8000000000001,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><rect x="10" y="16.5" width="176" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="98" y="35.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Pack definition slug</text><rect x="238" y="16.5" width="138" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="307" y="35.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Running runtime</text><rect x="428" y="10" width="191.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="523.6" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Identity-backed public</text><text x="523.6" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">key</text><rect x="671.2" y="10" width="145.6" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="744" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Verified channel</text><text x="744" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">membership</text><rect x="868.8000000000001" y="16.5" width="176" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="956.8000000000001" y="35.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Exact mention target</text></svg><figcaption><span class="fignum">Figure 1</span><span class="figcap">Definition identity versus runtime identity</span></figcaption></figure>
+<p>Do not use a persona slug as a public key, do not treat a keyless definition and
+its runtime as duplicates, and do not infer that a green persona card means the
+runtime is reachable in the chosen channel. Identity creation, provider health
+and channel membership require owner-authorized BUZZ UI/CLI operations outside
+the generated pack.</p>
+<h2 id="safe-install-and-audit-sequence">Safe install and audit sequence</h2>
+<p>The compiler emits files; it does not create identities, write BUZZ application
+storage, contact a relay or bind a channel. Use BUZZ&#39;s native Persona Pack
+installation UI for the pack directory and retain the emitted digest. The
+repository&#39;s installer helper is an atomic, keyless file-copy/validation
+library used by the disposable acceptance runner; it is not a credential or
+identity provisioner.</p>
+<p>After an owner has materialized runtimes and selected a channel, run the
+read-only audit from an isolated environment:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>node scripts/buzz-live-identity-audit.mjs \
+  --input ./audit.json \
+  --channel-id &lt;channel-uuid&gt; \
+  --output ./identity-audit.json
+</code></pre></div>
+<p>The audit joins definitions, runtimes, public keys, optional membership and
+mention candidates. It never loads credentials and has no <code>--apply</code> or
+<code>--confirm</code> mode. When membership is supplied, its only emitted BUZZ CLI
+inspection is:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>buzz channels members --channel &lt;channel-uuid&gt;
+</code></pre></div>
+<p>Review the exact runtime public key and membership before sending a mention.
+Avoid broad “Deploy Team” or <code>forceNewInstance</code> operations: they can create
+ambiguous runtimes and make a truthful mention-to-reply claim impossible.</p>
+<h2 id="mention-routing-and-collaboration">Mention routing and collaboration</h2>
+<p>Each native persona is configured with <code>mentions: true</code>, <code>thread_replies: true</code>
+and <code>broadcast_replies: false</code>. The safe routing sequence is:</p>
+<ol>
+<li>Confirm the keyless definition slug maps to exactly one active runtime.</li>
+<li>Confirm that runtime&#39;s public key is a member of the designated channel.</li>
+<li>Address the message to that exact runtime in BUZZ and retain the visible
+sent state, recipient attribution, response and handoff.</li>
+<li>Match the reply to the audited runtime public key, not only to a display name
+or persona card.</li>
+<li>If the workflow writes ASD records through MCP/CLI, record the resulting
+project/evidence/artifact/review IDs separately and link them from Canvas.</li>
+<li>Stop at the human phase gate; the human designer authorizes progression.</li>
+</ol>
+<p>An unaddressed message, a working indicator, a seeded transcript or a reply
+from an ambiguous runtime is not an end-to-end acceptance result.</p>
+<h2 id="the-pack-local-mcp-boundary">The pack-local MCP boundary</h2>
+<p><code>.mcp.json</code> is deliberately relative to the installed pack:</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+  &quot;mcpServers&quot;: {
+    &quot;asd&quot;: {
+      &quot;command&quot;: &quot;node&quot;,
+      &quot;args&quot;: [&quot;mcp/bin/server.mjs&quot;]
+    }
+  }
+}
+</code></pre></div>
+<p>The server exposes the canonical 29 tools and, when its corpus is available,
+225 resources and 10 prompts. Its workspace is controlled by the same
+<code>ASD_WORKSPACE</code> boundary as the other runtime surfaces and defaults to
+<code>~/.asd/projects</code>. Keep a BUZZ channel&#39;s messages and Canvas separate from this
+workspace unless an explicitly verified host integration writes and reads the
+same project IDs.</p>
+<p>The pack supports tool execution, metadata/schema/template lookup, evidence
+import, orchestration recording and phase-advance requests through MCP. ACP is
+not bundled as a transport: <code>asd-acp/1</code> is a record-only, fail-closed envelope.
+<code>host-agent-spawn</code> is unsupported for the emitted BUZZ pack and host execution
+is unverified unless a later BUZZ receipt proves it.</p>
+<h2 id="the-observed-article-37-slice">The observed Article 37 slice</h2>
+<p>Article 37 is the authoritative live-UI evidence for the current BUZZ boundary.
+In the captured private channel <code>sd/metrovale-one-recovery</code>, the owner first
+observed the ten ASD personas and then added general Claude and Codex advisory
+identities, producing a visible 13-member roster. The slice includes a genuine
+orchestrator reply, relay-confirmed orchestrator → researcher/mapper handoffs,
+synthetic researcher/mapper content, a Canvas artifact index and advisory
+Claude/Codex storyboard responses. The human Discover gate remained blocked.</p>
+<p>The capture does <strong>not</strong> prove MCP project/artifact IDs, durable persistence,
+visible Critic verdict, ACP spawn/transport, host execution, reload/recovery/
+cleanup, phase completion, a Talia reply or a rendered deck file. The Canvas is
+an observed collaboration index with observed/draft/planned statuses and persona
+ownership; it is not the ASD store. Read the <a href="../articles/37/index.html">full Article 37 case study</a>
+for screenshots and the evidence ledger.</p>
+<h2 id="recommended-project-operating-model">Recommended project operating model</h2>
+<p>For a real engagement, keep the systems legible:</p>
+<table>
+<thead>
+<tr>
+<th>Concern</th>
+<th>System of record</th>
+<th>BUZZ role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Team discussion and human decisions</td>
+<td>BUZZ private channel</td>
+<td>Conversation, mention, visible gate discussion</td>
+</tr>
+<tr>
+<td>Research/evidence/artifacts/reviews</td>
+<td>ASD workspace via CLI/MCP/verified host</td>
+<td>Link IDs and summaries; do not duplicate records in prose</td>
+</tr>
+<tr>
+<td>Role SOPs and provenance</td>
+<td>Canonical knowledge/skills + Persona Pack prompts</td>
+<td>Ask the relevant persona to apply the method, then cite the produced record</td>
+</tr>
+<tr>
+<td>Phase authorization</td>
+<td>Human designer and ASD phase gate</td>
+<td>Canvas checklist may index the decision; it does not authorize it</td>
+</tr>
+<tr>
+<td>Cross-tool handoff</td>
+<td>Typed ASD/ACP record when supported</td>
+<td>Message may announce it; record ID is the durable handoff</td>
+</tr>
+</tbody></table>
+<p>This model supports collaboration without turning a chat transcript into
+unverifiable evidence. When a capability is absent, keep the Canvas row
+<code>planned</code> or <code>blocked</code> and record the exact acceptance evidence still required.</p>
+<h2 id="evidence-and-troubleshooting">Evidence and troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Safe interpretation</th>
+<th>Next check</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Persona appears in the pack but cannot be mentioned</td>
+<td>Definition exists; runtime or membership is not proven.</td>
+<td>Run the read-only identity audit and verify the exact channel member public key.</td>
+</tr>
+<tr>
+<td>BUZZ reply appears but no ASD ID exists</td>
+<td>Collaboration occurred; ASD persistence is unproven.</td>
+<td>Execute the shared MCP/CLI workflow with an isolated <code>ASD_WORKSPACE</code>.</td>
+</tr>
+<tr>
+<td>MCP discovery is empty</td>
+<td>Corpus roots may be unavailable outside the source checkout.</td>
+<td>Verify the pack-local corpus and receipt; tools can still be independently tested.</td>
+</tr>
+<tr>
+<td><code>host-agent-spawn</code> or ACP transport is requested</td>
+<td>Capability is outside this pack&#39;s verified boundary.</td>
+<td>Record a structured unsupported result and stop; do not substitute a fake spawn.</td>
+</tr>
+<tr>
+<td>Canvas link points to a planned artifact</td>
+<td>Index is honest; artifact is not complete.</td>
+<td>Keep the human gate blocked until the ASD artifact and review receipt exist.</td>
+</tr>
+</tbody></table>
+<p>See the <a href="./dsh-workbench.html">DSH workbench</a> for the separate profile-composed
+Studio integration and <a href="./mcp.html">MCP reference</a> for the shared stdio surface.</p>
+</article></div>
+  <button class="backtop" id="backtop" type="button">Back to top</button>
+</main>
+<footer class="footer">
+  <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
+  <span><a href="../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
+</footer>
+<script src="../assets/site.js"></script>
+
+</body></html>
