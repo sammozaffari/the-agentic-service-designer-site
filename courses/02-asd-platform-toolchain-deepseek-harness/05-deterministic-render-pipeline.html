@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../02-asd-platform-toolchain-deepseek-harness.html">← The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a></nav>
+    <nav class="module-crumb"><a href="../02-asd-platform-toolchain-deepseek-harness.html"><i data-lucide="arrow-left"></i>The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a></nav>
     <article class="module-body">
 
 <h1 id="module-025-the-deterministic-export-pipeline-typed-json-to-svg-and-html-byte-for-byte">Module 02.5: The Deterministic Export Pipeline — Typed JSON to SVG and HTML, Byte for Byte</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="./README.md">The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 55 min · <strong>Format</strong>: Theory, Verified Export Runlog &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will be able to:</p>
 <ol>
 <li><strong>Argue the determinism thesis</strong>: why LLMs must never draw diagrams directly, and what a compiler gives you that a generator cannot.</li>
@@ -56,13 +72,15 @@
 <li><strong>Complete the hands-on lab</strong>: export, hash, re-export, compare.</li>
 </ol>
 <hr>
-<h2 id="1-foundational-theory-amp-literature-grounding">📖 1. Foundational Theory &amp; Literature Grounding</h2>
+<h2 id="1-foundational-theory-amp-literature-grounding"><i data-lucide="book-open" class="ic"></i> 1. Foundational Theory &amp; Literature Grounding</h2>
 <h3 id="maps-are-arguments-and-arguments-must-be-reproducible">Maps are arguments, and arguments must be reproducible</h3>
 <p>Kalbach&#39;s <em>Mapping Experiences</em> (<code>books/09-mapping-experiences/07-designing-the-map</code>) treats a map as a <em>model</em> — a simplified, defensible claim about reality whose value lies in the integrity of the mapping from observation to representation. If the same evidence produced a different map every time you drew it, the map would stop being evidence of anything. That is precisely the failure mode of asking a generative model to draw: the visual becomes a new, unauditable interpretation layered on top of the data.</p>
 <p><em>Orchestrating Experiences</em> (<code>books/08-orchestrating-experiences/01-why-orchestration</code>) adds the channel dimension: the same underlying model must be renderable as a workshop printout, a stakeholder HTML dossier, and an SVG in a slide deck without semantic drift. Compilation — not regeneration — is what keeps the channels coherent.</p>
 <p>The platform&#39;s answer: <strong>artifacts are the single source of truth (typed, schema-validated JSON); renders are pure functions of artifacts.</strong> <code>@asd/render</code> ships one compiler per registered artifact kind (journey-map, service-blueprint, kpi-tree, … 32 kinds), and <code>@asd/report</code> composes fixed document sections (cover, evidence base, traceability matrix, …) around the same JSON. No pixels are invented at export time.</p>
 <h3 id="concept-diagram-compilation-not-generation">Concept diagram — compilation, not generation</h3>
-<div class="diagram"><pre class="mermaid">flowchart LR
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart LR
     subgraph Truth[&quot;Single source of truth (workspace)&quot;]
         AJ[&quot;artifact JSON: journey-map.5b43c26c.json (schema v1, status final)&quot;]
         EJ[&quot;evidence/index.json (SHA-256 records)&quot;]
@@ -88,7 +106,8 @@
     classDef gold  fill:#fffbeb,stroke:#b7791f,stroke-width:1.5px,color:#744210;
     class AJ,EJ blue;
     class REN,REP purple;
-    class SVG,HTML gold;</pre></div>
+    class SVG,HTML gold;</pre>
+</div>
 <h3 id="key-principles">Key principles</h3>
 <ul>
 <li><strong>No hallucination surface</strong>: the renderer cannot invent a stage, an emotion, or a quote — it only lays out what the schema permits.</li>
@@ -96,7 +115,7 @@
 <li><strong>Traceability rendered</strong>: dossier sections resolve evidence ids back to their verbatim bodies, so the printed artifact carries its own audit trail.</li>
 </ul>
 <hr>
-<h2 id="2-agent-topology-amp-role-contracts">🤖 2. Agent Topology &amp; Role Contracts</h2>
+<h2 id="2-agent-topology-amp-role-contracts"><i data-lucide="bot" class="ic"></i> 2. Agent Topology &amp; Role Contracts</h2>
 <table>
 <thead>
 <tr>
@@ -129,7 +148,7 @@
 <h3 id="agentic-workflow-diagram-export-as-the-terminal-step-of-the-loop">Agentic workflow diagram — export as the terminal step of the loop</h3>
 <p></p>
 <hr>
-<h2 id="3-verified-export-runlog">💻 3. Verified Export Runlog</h2>
+<h2 id="3-verified-export-runlog"><i data-lucide="code" class="ic"></i> 3. Verified Export Runlog</h2>
 <p>Continuing the project from modules 02.1–02.4 (<code>fernwood-repairs-sprint-6b4b0c26</code>, journey-map <code>5b43c26cf11b41b3ba3793880ceee4de</code>, status <code>final</code>). All outputs below are real, from today&#39;s run.</p>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-c02-1787398523
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
@@ -199,14 +218,14 @@ md5 -q .../renders/journey-map.5b43c26c.svg   # 42ed431d1f9573f4e5ff1ec8818b1d1b
 <li><strong>Filename stability</strong>: <code>&lt;kind&gt;.&lt;short-artifact-id&gt;.svg</code> and <code>report.&lt;kind&gt;.html</code> — re-exports overwrite in place, so your <code>renders/</code> directory is always the current truth.</li>
 </ul>
 <hr>
-<h2 id="4-enterprise-case-study-lens">🏢 4. Enterprise Case Study Lens</h2>
+<h2 id="4-enterprise-case-study-lens"> 4. Enterprise Case Study Lens</h2>
 <h3 id="article-02-revisited-for-delivery-northgate-health-telehealth-onboarding-articles02">Article 02 (revisited for delivery) — <em>Northgate Health Telehealth Onboarding</em> (<code>articles/02</code>)</h3>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong></p>
 </blockquote>
 <p>Northgate&#39;s stakeholders — a clinical advisor, two client-side sponsors, a delivery partner — needed the <em>same</em> journey and blueprint in three formats: a workshop wall print, an HTML dossier for the steering group, and SVGs embedded in the pilot SOPs. The article&#39;s credibility claim rests on the property you verified above: every format compiled from the same artifact JSON, so the steering group could never be shown a journey map that disagreed with the workshop wall. The headline metrics (completion 45→76%, no-shows 23→7%) are illustrative, but the mechanism they depend on — one truth, many renders — is the real pipeline you just ran.</p>
 <hr>
-<h2 id="5-critic-gate-amp-review-veto-rules-export-edition">⚖️ 5. Critic Gate &amp; Review Veto Rules (export edition)</h2>
+<h2 id="5-critic-gate-amp-review-veto-rules-export-edition"><i data-lucide="undefined" class="ic"></i> 5. Critic Gate &amp; Review Veto Rules (export edition)</h2>
 <blockquote>
 <p>[!IMPORTANT]</p>
 <ol>
@@ -217,7 +236,7 @@ md5 -q .../renders/journey-map.5b43c26c.svg   # 42ed431d1f9573f4e5ff1ec8818b1d1b
 </ol>
 </blockquote>
 <hr>
-<h2 id="6-hands-on-lab-assignment">🧪 6. Hands-On Lab Assignment</h2>
+<h2 id="6-hands-on-lab-assignment"><i data-lucide="flask-conical" class="ic"></i> 6. Hands-On Lab Assignment</h2>
 <h3 id="objective">Objective</h3>
 <p>Prove determinism on your own project and inspect what the compilers actually emitted.</p>
 <h3 id="steps">Steps</h3>
@@ -247,7 +266,7 @@ echo &quot;LAB 02.5 PASS ($S1)&quot;
 <li><input disabled="" type="checkbox"> <code>export-report --kind nonsense</code> fails closed (try it)</li>
 </ul>
 <hr>
-<h2 id="7-summary-amp-reference-anchors">📚 7. Summary &amp; Reference Anchors</h2>
+<h2 id="7-summary-amp-reference-anchors"><i data-lucide="library" class="ic"></i> 7. Summary &amp; Reference Anchors</h2>
 <h3 id="key-takeaways">Key takeaways</h3>
 <ul>
 <li>Artifacts are truth; renders are pure functions. Determinism is what makes design deliverables versionable, diffable, and auditable.</li>
@@ -268,5 +287,6 @@ echo &quot;LAB 02.5 PASS ($S1)&quot;
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

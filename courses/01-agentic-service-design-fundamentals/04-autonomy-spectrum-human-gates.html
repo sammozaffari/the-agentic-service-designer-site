@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../01-agentic-service-design-fundamentals.html">← Agentic Service Design Fundamentals</a></nav>
+    <nav class="module-crumb"><a href="../01-agentic-service-design-fundamentals.html"><i data-lucide="arrow-left"></i>Agentic Service Design Fundamentals</a></nav>
     <article class="module-body">
 
 <h1 id="module-014-the-autonomy-spectrum-amp-the-sovereign-human-decision-gate">Module 01.4: The Autonomy Spectrum &amp; The Sovereign Human Decision Gate</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="./README.md">Agentic Service Design Fundamentals</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 45 min · <strong>Format</strong>: Theory, Architecture, Verified CLI Run &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will be able to:</p>
 <ol>
 <li><strong>Place any service design task on the autonomy spectrum</strong> and justify the placement from the theory of accountable decision-making.</li>
@@ -55,7 +71,7 @@
 <li><strong>Demonstrate fail-closed governance</strong> — run a phase advance without a receipt and watch it refuse.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-why-some-decisions-cannot-be-delegated">📖 1. Theoretical Grounding: Why Some Decisions Cannot Be Delegated</h2>
+<h2 id="1-theoretical-grounding-why-some-decisions-cannot-be-delegated"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding: Why Some Decisions Cannot Be Delegated</h2>
 <p>The service design canon is unambiguous that design is a normative act, not just an analytic one. Stickdorn et al. (<em>This is Service Design Doing</em>, Ch. 2, <code>books/01-this-is-service-design-doing/02-principles-of-service-design.md</code>) put &quot;human-centered&quot; first among the principles: services are judged by the people who live them, so decisions that trade one group&#39;s burden against another&#39;s convenience are <em>ethical</em> decisions. Kumar (<em>101 Design Methods</em>, <code>books/17-101-design-methods/01-innovation-as-a-process.md</code>) adds the organizational half: innovation is a managed discipline, and management means <em>accountable owners</em> for each mode transition — his &quot;non-linear looping&quot; is a governance structure, not a free-for-all.</p>
 <p>This yields the autonomy spectrum&#39;s logic. <strong>Automate what is reversible and verifiable</strong>: evidence capture, clustering, draft generation, schema validation, citation checking. These fail safely — a bad draft is deleted. <strong>Reserve for humans what is irreversible or normative</strong>: publishing a claim about real people, advancing a project phase, spending client money on a recommendation. These fail badly — a published falsehood about a tenant&#39;s experience cannot be unpublished.</p>
 <p>The platform encodes this as three concentric gates, each stricter than the last:</p>
@@ -65,7 +81,9 @@
 <li><strong>The phase gate (<code>sd_phase_advance --approvalReceipt</code>)</strong> — the sovereign gate. Moving a project from <code>discover</code> to <code>define</code> requires a signed JSON receipt with <code>receiptId</code>, <code>approvedBy</code>, <code>decision</code>, <code>rationale</code>, and <code>approvedAt</code>. No receipt, no advance. <strong>Agents prepare; humans authorize.</strong></li>
 </ol>
 <h3 id="concept-diagram-the-autonomy-spectrum">Concept diagram — the autonomy spectrum</h3>
-<div class="diagram"><pre class="mermaid">flowchart LR
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart LR
     subgraph Auto[&quot;FULL AGENT AUTONOMY (reversible, machine-verifiable)&quot;]
         A1[&quot;Evidence capture&lt;br/&gt;sd_evidence_add&quot;]
         A2[&quot;Contract read&lt;br/&gt;sd_method_run&quot;]
@@ -90,14 +108,15 @@
     classDef bad   fill:#fff5f5,stroke:#c53030,stroke-width:1.5px,color:#742a2a;
     class A1,A2,A3,A4 blue;
     class S1,S2 gold;
-    class H1,H2,H3 bad;</pre></div>
+    class H1,H2,H3 bad;</pre>
+</div>
 <hr>
-<h2 id="2-the-two-phase-enums-do-not-conflate-them">🤖 2. The Two Phase Enums — Do Not Conflate Them</h2>
+<h2 id="2-the-two-phase-enums-do-not-conflate-them"><i data-lucide="bot" class="ic"></i> 2. The Two Phase Enums — Do Not Conflate Them</h2>
 <p>The runtime has <strong>two different phase vocabularies on two different axes</strong>, and mixing them up produces meaningless sentences like &quot;advance the project to synthesis&quot;:</p>
 <p></p>
 <p>A project in <code>discover</code> typically runs <code>research</code>- and <code>synthesis</code>-phase methods (like <code>journey-from-transcripts</code>, whose contract declares <code>&quot;phase&quot;:&quot;synthesis&quot;</code>). A project in <code>deliver</code> runs <code>measurement</code>-phase methods (like <code>service-profit-chain-mapping</code>). The mapping is a convention, not a constraint — the hard rule is only that <strong>project-phase transitions need a human receipt</strong>, whatever methods were run inside the phase.</p>
 <hr>
-<h2 id="3-verified-execution-fail-closed-governance-run-today-2026-08-22">💻 3. Verified Execution: Fail-Closed Governance (run today, 2026-08-22)</h2>
+<h2 id="3-verified-execution-fail-closed-governance-run-today-2026-08-22"><i data-lucide="code" class="ic"></i> 3. Verified Execution: Fail-Closed Governance (run today, 2026-08-22)</h2>
 <p><strong>The fail-closed refusal</strong> — no receipt, no advance, exit 1:</p>
 <pre><code class="language-bash">$CLI phase-advance --projectId fernwood-repairs-sprint-f0d60fa1 --toPhase define --idempotencyKey gate-1
 # → asd phase-advance: missing required flag &quot;--approvalReceipt&quot;   (exit 1)
@@ -122,13 +141,13 @@
 <h3 id="sequence-diagram-three-gates-around-one-artifact">Sequence diagram — three gates around one artifact</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-article-04-quotservice-design-for-business-turning-claims-into-an-experience-at-aurelia-insurancequot">📊 4. Case Study Lens: Article 04 — &quot;Service Design for Business: Turning Claims into an Experience at Aurelia Insurance&quot;</h2>
+<h2 id="4-case-study-lens-article-04-quotservice-design-for-business-turning-claims-into-an-experience-at-aurelia-insurancequot"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 04 — &quot;Service Design for Business: Turning Claims into an Experience at Aurelia Insurance&quot;</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong></p>
 </blockquote>
 <p>Article 04 (<code>articles/04/README.md</code>) is the right lens for autonomy boundaries: insurance claims are a domain where a wrong automated assertion has regulatory and human cost. As you read it, classify every agent action in the article onto the spectrum above — you will find the pattern is always the same: agents ingest, cluster, draft, and check; humans sign the gate documents. The article&#39;s review cadence is the <code>humanCheckpoints</code> pattern wearing a suit: named people answering named questions at named points, with the answers recorded.</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab-04
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
 
@@ -155,7 +174,7 @@ $CLI phase-advance --projectId &lt;pid&gt; --toPhase define --idempotencyKey gat
 <li><input disabled="" type="checkbox"> You can name the two <code>humanCheckpoints</code> on <code>journey-from-transcripts</code> and their <code>when</code> values.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
 <li><strong>Autonomy is allocated by reversibility.</strong> Agents own reversible, machine-verifiable work; humans own irreversible, normative decisions.</li>
 <li><strong>Three gates, ascending authority</strong>: critic (machine adversary per artifact) → method <code>humanCheckpoints</code> (named human per method) → <code>sd_phase_advance --approvalReceipt</code> (sovereign human per phase).</li>
@@ -173,5 +192,6 @@ $CLI phase-advance --projectId &lt;pid&gt; --toPhase define --idempotencyKey gat
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=4</script>
 </body>
 </html>

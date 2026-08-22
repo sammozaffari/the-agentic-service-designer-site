@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../03-evidence-registers-fact-checking-review-gates.html">← Evidence Registers, Fact-Checking &amp; Review Gates</a></nav>
+    <nav class="module-crumb"><a href="../03-evidence-registers-fact-checking-review-gates.html"><i data-lucide="arrow-left"></i>Evidence Registers, Fact-Checking &amp; Review Gates</a></nav>
     <article class="module-body">
 
 <h1 id="module-034-the-critic-agent-adversarial-review-amp-the-review-veto-log-lifecycle">Module 03.4: The Critic Agent: Adversarial Review &amp; the Review-Veto-Log Lifecycle</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="../README.md">Evidence Registers, Fact-Checking &amp; Review Gates</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 50 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will master:</p>
 <ol>
 <li><strong>Theoretical Foundations</strong>: Adversarial review as applied epistemology — Peirce&#39;s abduction, Martin&#39;s validity, and why a gate that cannot say <em>no</em> is not a gate.</li>
@@ -57,14 +73,16 @@
 <li><strong>Hands-on Practice</strong>: Veto, remediate in place, pass — and read the log artifact the runtime wrote for you.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="why-the-gate-must-be-adversarial">Why the gate must be adversarial</h3>
 <p>Martin (<em>The Design of Business</em>, ch. 03 &quot;Abduction and Design Thinking&quot;) roots design reasoning in Peirce&#39;s triad: deduction proves what <em>must</em> be, induction what <em>probably</em> is, and <strong>abduction</strong> — the leap toward what <em>might</em> be — is the only engine that introduces new ideas. But abduction&#39;s gift is its danger: a novel explanatory hypothesis is, by construction, unproven. Martin&#39;s design thinker survives by <em>rhythmically orchestrating</em> the three modes: abduct the hypothesis, deduce its necessary consequences, <strong>inductively test it against evidence</strong>.</p>
 <p>The critic agent is that third beat, mechanized. Its mandate is falsification in the Popperian sense: it does not ask &quot;is this artifact good?&quot; but &quot;which specific claims in this artifact fail against the register, the schema, or the acceptance rules — and what exact fix would make them pass?&quot; A review that cannot block is a compliment, not a gate.</p>
 <p><em>This is Service Design Doing</em> (ch. 08) makes the same point organizationally: critique rituals fail when feedback is untraceable opinion. The veto-log design answers that failure mode directly — every objection is a <strong>typed row</strong> with a severity, an optional rule it violated, a mandatory fix for defects, and an optional evidence citation. Opinion has been made auditable.</p>
 <p>Fittingly, the runtime stamps every <code>review-veto-log</code> artifact with source references to exactly this lineage — <em>The Design of Business</em> ch. 03, <em>Design Unbound</em> ch. 04, <em>This is Service Design Doing</em> ch. 08 — which you will see in the live capture below.</p>
 <h3 id="concept-diagram-the-falsification-loop">Concept diagram — the falsification loop</h3>
-<div class="diagram"><pre class="mermaid">flowchart LR
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart LR
     HYP[&quot;abduction: mapper drafts a hypothesis-artifact&quot;] --&gt; GATE{&quot;critic gate (reviewGate of the method)&quot;}
     GATE --&gt;|&quot;deduction: does the claim follow from THIS evidenceId?&quot;| DED[&quot;rowKind defect, rule evidence-support&quot;]
     GATE --&gt;|&quot;induction: do the numbers support the magnitude?&quot;| IND[&quot;rowKind defect, severity high&quot;]
@@ -80,9 +98,10 @@
     class HYP,FIX blue;
     class GATE purple;
     class DED,IND,VETO bad;
-    class PASS paper;</pre></div>
+    class PASS paper;</pre>
+</div>
 <hr>
-<h2 id="2-multi-agent-topology-amp-role-contracts">🤖 2. Multi-Agent Topology &amp; Role Contracts</h2>
+<h2 id="2-multi-agent-topology-amp-role-contracts"><i data-lucide="bot" class="ic"></i> 2. Multi-Agent Topology &amp; Role Contracts</h2>
 <table>
 <thead>
 <tr>
@@ -123,7 +142,7 @@
 <h3 id="agentic-workflow-write-path-with-the-critic-seated-on-it">Agentic workflow — write path with the critic seated on it</h3>
 <p></p>
 <hr>
-<h2 id="3-production-schemas-code-amp-verified-execution">💻 3. Production Schemas, Code &amp; Verified Execution</h2>
+<h2 id="3-production-schemas-code-amp-verified-execution"><i data-lucide="code" class="ic"></i> 3. Production Schemas, Code &amp; Verified Execution</h2>
 <h3 id="the-review-surface-in-types-asdcore">The review surface in types (<code>@asd/core</code>)</h3>
 <pre><code class="language-typescript">export const REVIEW_VERDICTS = [&#39;pass&#39;, &#39;veto&#39;] as const
 export type ReviewVerdict = (typeof REVIEW_VERDICTS)[number]
@@ -212,13 +231,13 @@ asd review: rows[0]: &quot;severity&quot; must be one of critical, high, medium,
 <h3 id="the-full-lifecycle-as-a-sequence">The full lifecycle as a sequence</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-article-35-the-butler39s-memory-sable-amp-slate">📊 4. Case Study Lens: Article 35 — <em>The Butler&#39;s Memory</em> (Sable &amp; Slate)</h2>
+<h2 id="4-case-study-lens-article-35-the-butler39s-memory-sable-amp-slate"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 35 — <em>The Butler&#39;s Memory</em> (Sable &amp; Slate)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 35 is a fictional luxury-hospitality composite; this lens applies the veto lifecycle to its narrative.</p>
 </blockquote>
 <p>Article 35 is explicitly about &quot;the ASD Critic on the write path&quot; — a boutique-hotel case where personalization claims (&quot;the butler remembers&quot;) are exactly the kind of assertion that sounds wonderful in a workshop and collapses under evidence. Read it alongside the lifecycle you just ran: every &quot;the guest prefers X&quot; in a luxury journey map is an abductive leap that must survive the critic&#39;s inductive test — <em>which register record says so?</em> The article&#39;s tools list (ASD CLI, ASD MCP, GitHub, plus the role prompt pack) mirrors the topology in §2: the critic is one of the 10 role prompts, and its power comes not from intelligence but from position — seated on the write path, armed with a schema that makes unactionable objections unrepresentable.</p>
 <hr>
-<h2 id="5-hands-on-lab-exercise">🔬 5. Hands-On Lab Exercise</h2>
+<h2 id="5-hands-on-lab-exercise"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab Exercise</h2>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab03-$(date +%s)
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
 # (reuse the 03.1 lab project, or rebuild: project + 3 quotes + accepted journey-map draft)
@@ -248,7 +267,7 @@ $CLI review-list --projectId $PID
 <li><input disabled="" type="checkbox"> <code>review-list</code> shows your artifact with <code>verdict: pass</code> and <code>failures: []</code>.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
 <li><strong>The critic mechanizes Martin&#39;s third beat</strong>: abduction proposes, the gate falsifies against the register, induction clears.</li>
 <li><strong>Veto requires defect + fix; pass requires an evidence citation</strong> — asymmetric contracts that make both unactionable objections and ungrounded compliments unrepresentable.</li>
@@ -266,5 +285,6 @@ $CLI review-list --projectId $PID
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

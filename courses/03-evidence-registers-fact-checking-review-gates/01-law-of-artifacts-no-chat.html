@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../03-evidence-registers-fact-checking-review-gates.html">← Evidence Registers, Fact-Checking &amp; Review Gates</a></nav>
+    <nav class="module-crumb"><a href="../03-evidence-registers-fact-checking-review-gates.html"><i data-lucide="arrow-left"></i>Evidence Registers, Fact-Checking &amp; Review Gates</a></nav>
     <article class="module-body">
 
 <h1 id="module-031-the-law-of-artifacts-why-conversational-memory-destroys-rigor">Module 03.1: The Law of Artifacts: Why Conversational Memory Destroys Rigor</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="../README.md">Evidence Registers, Fact-Checking &amp; Review Gates</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 45 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will master:</p>
 <ol>
 <li><strong>Theoretical Foundations</strong>: Why service-design knowledge decays inside conversational context windows, and why the discipline&#39;s own literature (Kalbach&#39;s research-based maps, Martin&#39;s knowledge funnel, Pendleton-Jullian &amp; Brown&#39;s artifact-as-probe) already demands durable, inspectable artifacts.</li>
@@ -57,7 +73,7 @@
 <li><strong>Hands-on Practice</strong>: Run the canonical loop yourself and watch a dangling citation fail closed at write time.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="the-epistemic-problem-with-chat-memory">The epistemic problem with chat memory</h3>
 <p>An LLM agent&#39;s conversational context is a <strong>lossy, private, non-replayable channel</strong>. Three structural properties make it unfit as the carrier of design truth:</p>
 <ol>
@@ -74,7 +90,9 @@
 </blockquote>
 <p>Every claim in a downstream deliverable must resolve to an immutable, content-addressed record in the project&#39;s evidence register — a per-project JSON file at <code>&lt;project&gt;/evidence/index.json</code> under <code>ASD_WORKSPACE</code> (default <code>~/.asd/projects</code>). There is no database server and no SQLite file anywhere in the store: the register is one auditable JSON document you can read with <code>jq</code> and diff with <code>git</code>.</p>
 <h3 id="concept-diagram-two-handoff-styles">Concept diagram — two handoff styles</h3>
-<div class="diagram"><pre class="mermaid">flowchart LR
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart LR
     subgraph Chat[&quot;Chat-mediated handoff (rejected)&quot;]
         C1[&quot;Agent A context window&quot;] --&gt;|&quot;summarized prose, lossy&quot;| C2[&quot;Agent B context window&quot;]
         C2 --&gt;|&quot;compaction drops verbatim quotes&quot;| C3[&quot;Claim detached from source&quot;]
@@ -92,7 +110,8 @@
     class C1,C2 paper;
     class C3,C4 bad;
     class A1,A3,A4 blue;
-    class A2,A5 paper;</pre></div>
+    class A2,A5 paper;</pre>
+</div>
 <h3 id="where-the-chat-style-fails-in-practice">Where the chat style fails in practice</h3>
 <ul>
 <li><strong>The confident paraphrase.</strong> Agent B receives &quot;users find the hotline slow&quot; instead of the verbatim <em>&quot;I called the repair line four times before anyone even logged my ticket.&quot;</em> The number four — the actual magnitude — is gone, and with it the design requirement.</li>
@@ -100,7 +119,7 @@
 <li><strong>The silent regression.</strong> A draft is edited after approval. With chat handoffs, nothing notices. Under the Law, a content write clears the recorded verdict (see §3), so edited content is unreviewed until re-gated.</li>
 </ul>
 <hr>
-<h2 id="2-multi-agent-topology-amp-role-contracts">🤖 2. Multi-Agent Topology &amp; Role Contracts</h2>
+<h2 id="2-multi-agent-topology-amp-role-contracts"><i data-lucide="bot" class="ic"></i> 2. Multi-Agent Topology &amp; Role Contracts</h2>
 <p>The topology is not a slogan; it is the method manifest. This is the real contract returned by <code>asd method-run --methodId journey-from-transcripts</code> (captured live):</p>
 <table>
 <thead>
@@ -150,7 +169,7 @@
 <h3 id="agentic-workflow-this-module39s-loop-with-real-tool-names">Agentic workflow — this module&#39;s loop with real tool names</h3>
 <p></p>
 <hr>
-<h2 id="3-production-schemas-code-amp-verified-execution">💻 3. Production Schemas, Code &amp; Verified Execution</h2>
+<h2 id="3-production-schemas-code-amp-verified-execution"><i data-lucide="code" class="ic"></i> 3. Production Schemas, Code &amp; Verified Execution</h2>
 <h3 id="the-real-artifact-contract-asdcore-suitepackagescoresrctypests">The real <code>Artifact</code> contract (<code>@asd/core</code>, <code>suite/packages/core/src/types.ts</code>)</h3>
 <pre><code class="language-typescript">export type Artifact = {
   readonly id: string
@@ -226,14 +245,14 @@ which is not in the project evidence store                            (exit 1)
 </code></pre>
 <p>A conforming write returns <code>&quot;accepted&quot;: true, &quot;status&quot;: &quot;draft&quot;</code> — draft, not final, because the critic gate has not yet spoken (artifact <code>c0720c4ac9bc4044bf15bdd7ca0f92a9</code> in this run; module 03.4 continues its story through veto and pass).</p>
 <hr>
-<h2 id="4-case-study-lens-article-31-riding-the-current-lighthouse-transit">📊 4. Case Study Lens: Article 31 — <em>Riding the Current</em> (Lighthouse Transit)</h2>
+<h2 id="4-case-study-lens-article-31-riding-the-current-lighthouse-transit"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 31 — <em>Riding the Current</em> (Lighthouse Transit)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 31 is a fictional composite client engagement; the mapping below applies this module&#39;s law to its narrative, and the ids quoted in §3 come from the live verification run, not from the article.</p>
 </blockquote>
 <p>Article 31 follows a public-transport service-design engagement (bus + light rail) run on the ASD plugin. Read through the Law of Artifacts, its pivotal moment is not any single deliverable but the discipline of the handoffs: transcripts became register records, the journey map cited record ids rather than vibes, and the critic&#39;s objections were written down as rows with fixes instead of evaporating in a debrief call. The article&#39;s tools list (<code>ASD CLI</code>, <code>ASD MCP</code>, GitHub) is exactly the toolchain you ran in §3 — the CLI and MCP server are two surfaces over the <strong>same 29 tools and the same JSON store</strong>, which is why the Law holds regardless of which host drives it.</p>
 <p>The counterfactual is the lesson: had the disruption-recovery insights lived in a chain of chat summaries, the moment the engagement paused for a week (context gone), the team would have been back to Kalbach&#39;s assumption-based map — designing against their own biases with great confidence.</p>
 <hr>
-<h2 id="5-hands-on-lab-exercise">🔬 5. Hands-On Lab Exercise</h2>
+<h2 id="5-hands-on-lab-exercise"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab Exercise</h2>
 <p>Work in <code>courses/labs/lab-03-evidence-gates/</code>. You will reproduce this module&#39;s loop end to end.</p>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab03-$(date +%s)
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;   # from the repo root
@@ -265,7 +284,7 @@ $CLI artifact-write --projectId $PID --methodId journey-from-transcripts \
 <li><input disabled="" type="checkbox"> <code>&lt;workspace&gt;/&lt;projectId&gt;/evidence/index.json</code> is plain JSON you can open in an editor (no database).</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
 <li><strong>Conversational context is lossy, private, and non-replayable</strong> — three properties that each independently disqualify it as a design handoff medium.</li>
 <li><strong>The Law of Artifacts predates AI</strong>: Kalbach&#39;s evidence tagging, Martin&#39;s knowledge funnel, and Pendleton-Jullian &amp; Brown&#39;s artifact-as-probe all demand durable, inspectable, citable surfaces.</li>
@@ -283,5 +302,6 @@ $CLI artifact-write --projectId $PID --methodId journey-from-transcripts \
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../05-living-journey-mapping-mental-models.html">← Living Journey Mapping &amp; Mental Model Alignment</a></nav>
+    <nav class="module-crumb"><a href="../05-living-journey-mapping-mental-models.html"><i data-lucide="arrow-left"></i>Living Journey Mapping &amp; Mental Model Alignment</a></nav>
     <article class="module-body">
 
 <h1 id="module-051-mental-spaces-vs-feature-tracks-the-indi-young-paradigm">Module 05.1: Mental Spaces vs. Feature Tracks: The Indi Young Paradigm</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="../README.md">Living Journey Mapping &amp; Mental Model Alignment</a> · <strong>Level</strong>: Intermediate · <strong>Duration</strong>: 55 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will master:</p>
 <ol>
 <li><strong>Theoretical Foundations</strong>: Indi Young&#39;s mental-model diagram as canonized by Jim Kalbach (<em>Mapping Experiences</em>, ch. 6) — mental spaces, task towers, and the alignment line that separates what users think from what the organization ships.</li>
@@ -57,7 +73,7 @@
 <li><strong>Hands-on Practice</strong>: Produce an accepted <code>mental-model-map</code> from verbatim evidence.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="the-diagram-that-is-not-chronological">The diagram that is not chronological</h3>
 <p>Most journey artifacts are timelines: they answer &quot;what happens, in what order?&quot; Indi Young&#39;s mental model diagram answers a different question — <strong>&quot;how do people think about this part of their life, independent of our product?&quot;</strong> Kalbach places it in the family of <em>alignment diagrams</em> (<em>Mapping Experiences</em>, ch. 6, &quot;Other Alignment Diagrams&quot;) and gives it a precise anatomy:</p>
 <ul>
@@ -76,7 +92,9 @@
 <h3 id="why-the-agentic-tooling-exists">Why the agentic tooling exists</h3>
 <p>The failure modes above are all <em>evidence discipline</em> failures, and they are precisely what the ASD toolchain makes structurally impossible: every tower is an <code>ArtifactNode</code> whose <code>evidence[]</code> must resolve to content-addressed records in the project evidence store, whose <code>belief</code> field is <strong>required</strong>, and whose vocabulary is policed by an acceptance rule that rejects interface words. The critic gate then attempts to falsify each tower against its quote before the map can go final.</p>
 <h3 id="concept-diagram-the-skyline-and-the-alignment-line">Concept diagram — the skyline and the alignment line</h3>
-<div class="diagram"><pre class="mermaid">flowchart TB
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart TB
     subgraph MS[&quot;TOP HALF: Mental Spaces (how riders think — no product nouns)&quot;]
         direction LR
         subgraph SPA[&quot;Mental space: Anticipate&quot;]
@@ -113,9 +131,10 @@
     class T1,T2,T3 blue;
     class LINE gold;
     class O1,O2,O3 purple;
-    class O4,X bad;</pre></div>
+    class O4,X bad;</pre>
+</div>
 <hr>
-<h2 id="2-agentic-topology-amp-contracts">🤖 2. Agentic Topology &amp; Contracts</h2>
+<h2 id="2-agentic-topology-amp-contracts"><i data-lucide="bot" class="ic"></i> 2. Agentic Topology &amp; Contracts</h2>
 <p>The method that operationalizes this paradigm is <code>mental-model-diagramming</code> (synthesis phase), verified live from <code>asd method-run</code>:</p>
 <table>
 <thead>
@@ -165,7 +184,7 @@
 <h3 id="agentic-workflow-diagram">Agentic workflow diagram</h3>
 <p></p>
 <hr>
-<h2 id="3-schemas-amp-verified-execution">💻 3. Schemas &amp; Verified Execution</h2>
+<h2 id="3-schemas-amp-verified-execution"><i data-lucide="code" class="ic"></i> 3. Schemas &amp; Verified Execution</h2>
 <h3 id="the-artifactnode-contract-asdcore-suitepackagescoresrctypests">The <code>ArtifactNode</code> contract (<code>@asd/core</code> <code>suite/packages/core/src/types.ts</code>)</h3>
 <p>A tower is not a special type. It is the generic evidence-bearing unit with kind-specific fields:</p>
 <pre><code class="language-typescript">/** A pointer into the project&#39;s evidence store, optionally with the quote. */
@@ -278,7 +297,7 @@ $CLI review --projectId … --artifactId 817bb8ebd20c49efbe13bc7ccf64a8c1 --verd
 <h3 id="review-lifecycle-diagram">Review lifecycle diagram</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-lumen-edtech-article-10">📊 4. Case Study Lens: Lumen EdTech (Article 10)</h2>
+<h2 id="4-case-study-lens-lumen-edtech-article-10"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Lumen EdTech (Article 10)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Lumen EdTech is a fictional composite client from <code>articles/10/</code>; figures are illustrative.</p>
 </blockquote>
@@ -291,7 +310,7 @@ $CLI review --projectId … --artifactId 817bb8ebd20c49efbe13bc7ccf64a8c1 --verd
 </ul>
 <p>This is the pattern the toolchain enforces by default: the <code>forbid-field-values</code> acceptance rule on <code>belief</code> (denying <code>ui</code>, <code>interface</code>, <code>screen</code>) is Lumen&#39;s lesson compiled into the write path.</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <h3 id="instructions">Instructions</h3>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab-05-01
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
@@ -328,12 +347,12 @@ $CLI factcheck --projectId &lt;pid&gt;   # exit 0 only when every artifact passe
 <li><input disabled="" type="checkbox"> <code>review --verdict pass</code> flipped <code>status</code> to <code>final</code>; <code>factcheck</code> exited 0.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
-<li>✅ <strong>Mental spaces describe purposes, not pages.</strong> The skyline&#39;s top half must survive the test &quot;would the user say this if our product didn&#39;t exist?&quot;</li>
-<li>✅ <strong>Alignment is read vertically across one line</strong>: supported towers, gap towers (opportunities), orphan features (bloat).</li>
-<li>✅ <strong>In the toolchain, a tower is an <code>ArtifactNode</code></strong>: <code>belief</code> is required, interface vocabulary is denied by acceptance rule, and every tower resolves to SHA-256 evidence.</li>
-<li>✅ <strong>The critic gate falsifies beliefs against quotes</strong> — an overreaching belief earns a veto with a <code>fix</code>, and only a content edit plus a fresh pass can reach <code>final</code>.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Mental spaces describe purposes, not pages.</strong> The skyline&#39;s top half must survive the test &quot;would the user say this if our product didn&#39;t exist?&quot;</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Alignment is read vertically across one line</strong>: supported towers, gap towers (opportunities), orphan features (bloat).</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>In the toolchain, a tower is an <code>ArtifactNode</code></strong>: <code>belief</code> is required, interface vocabulary is denied by acceptance rule, and every tower resolves to SHA-256 evidence.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>The critic gate falsifies beliefs against quotes</strong> — an overreaching belief earns a veto with a <code>fix</code>, and only a content edit plus a fresh pass can reach <code>final</code>.</li>
 </ul>
 <hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
@@ -346,5 +365,6 @@ $CLI factcheck --projectId &lt;pid&gt;   # exit 0 only when every artifact passe
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

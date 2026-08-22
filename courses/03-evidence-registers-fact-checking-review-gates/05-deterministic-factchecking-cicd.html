@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../03-evidence-registers-fact-checking-review-gates.html">← Evidence Registers, Fact-Checking &amp; Review Gates</a></nav>
+    <nav class="module-crumb"><a href="../03-evidence-registers-fact-checking-review-gates.html"><i data-lucide="arrow-left"></i>Evidence Registers, Fact-Checking &amp; Review Gates</a></nav>
     <article class="module-body">
 
 <h1 id="module-035-deterministic-fact-checking-amp-ci-gates-with-sd-factcheck">Module 03.5: Deterministic Fact-Checking &amp; CI Gates with <code>sd_factcheck</code></h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="../README.md">Evidence Registers, Fact-Checking &amp; Review Gates</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 50 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will master:</p>
 <ol>
 <li><strong>Theoretical Foundations</strong>: Why a design pipeline needs a <em>replayable</em> verifier, and which properties can be machine-checked versus which remain human.</li>
@@ -57,7 +73,7 @@
 <li><strong>Hands-on Practice</strong>: Break a project, watch the red report name the failing field, remediate, go green.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="the-replay-path-of-rigor">The replay path of rigor</h3>
 <p>Modules 03.1–03.4 built the <em>authoring</em> side of rigor: artifacts, content-addressed evidence, adversarial review. This module is the <strong>replay</strong> side: a deterministic verifier that re-derives &quot;is this project sound?&quot; from the files on disk, indifferent to what any agent remembers or claims.</p>
 <p>Martin&#39;s reliability/validity frame (<em>The Design of Business</em>, ch. 02) tells you both why this exists and where its limits are. Factcheck is a <strong>reliability machine</strong>: given the same project files, any operator — your laptop, a colleague, a CI runner — gets the identical verdict. That is the property that makes it CI-gateable. But reliability machines cannot adjudicate <em>validity</em>: no exit code can tell you whether the journey map solves the real problem. The honest division of labor, encoded in the platform, is:</p>
@@ -73,7 +89,9 @@
 <li><strong>Retained visibility</strong>: because acceptance-failing drafts are <em>kept</em> (03.1), a project with unfinished work is red until the work is finished or removed. Factcheck is how the repository refuses to forget.</li>
 </ul>
 <h3 id="concept-diagram-four-fields-one-verdict">Concept diagram — four fields, one verdict</h3>
-<div class="diagram"><pre class="mermaid">flowchart TD
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart TD
     subgraph Row[&quot;Per-artifact factcheck row&quot;]
         I[&quot;integrity — every evidenceId and artifact reference resolves; dangling[] must be empty&quot;]
         S[&quot;schema — kind registered, typed schema validates, cross-artifact references consistent&quot;]
@@ -96,10 +114,11 @@
     class ALL purple;
     class E0 paper;
     class E1 bad;
-    class HUMAN gold;</pre></div>
+    class HUMAN gold;</pre>
+</div>
 <p>One precision point from the evaluation code itself (<code>suite/packages/core/src/factcheck.ts</code>): the review field is <code>pass</code> when the artifact is <strong>draft</strong>, when the method declares <strong>no gate</strong>, or when the recorded verdict is <strong>pass</strong>. Drafts are legitimately in the loop; the <em>finality</em> requirement is enforced where it belongs — <code>sd_phase_advance</code> refuses to advance with drafts in play. Factcheck&#39;s job is machine-checkable truth, not lifecycle policy.</p>
 <hr>
-<h2 id="2-multi-agent-topology-amp-role-contracts">🤖 2. Multi-Agent Topology &amp; Role Contracts</h2>
+<h2 id="2-multi-agent-topology-amp-role-contracts"><i data-lucide="bot" class="ic"></i> 2. Multi-Agent Topology &amp; Role Contracts</h2>
 <table>
 <thead>
 <tr>
@@ -127,7 +146,7 @@
 <h3 id="agentic-workflow-from-push-to-gate">Agentic workflow — from push to gate</h3>
 <p></p>
 <hr>
-<h2 id="3-production-schemas-code-amp-verified-execution">💻 3. Production Schemas, Code &amp; Verified Execution</h2>
+<h2 id="3-production-schemas-code-amp-verified-execution"><i data-lucide="code" class="ic"></i> 3. Production Schemas, Code &amp; Verified Execution</h2>
 <h3 id="the-four-fields-from-the-implementation-asdcore-factcheckts">The four fields, from the implementation (<code>@asd/core</code>, <code>factcheck.ts</code>)</h3>
 <table>
 <thead>
@@ -231,13 +250,13 @@ jobs:
 <h3 id="red-green-loop-as-a-sequence">Red → green loop as a sequence</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-article-36-running-a-service-design-engagement-inside-the-harness-wattle-grove">📊 4. Case Study Lens: Article 36 — <em>Running a Service Design Engagement Inside the Harness</em> (Wattle Grove)</h2>
+<h2 id="4-case-study-lens-article-36-running-a-service-design-engagement-inside-the-harness-wattle-grove"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 36 — <em>Running a Service Design Engagement Inside the Harness</em> (Wattle Grove)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 36 is a fictional aged-care composite whose distinguishing discipline is separating bounded integration receipts from illustrative narrative — exactly the instinct factcheck mechanizes.</p>
 </blockquote>
 <p>Article 36&#39;s care-scheduling case is the CI gate&#39;s natural argument. Aged-care scheduling is a domain where a hallucinated constraint (&quot;workers can do 12 visits/day&quot;) is a safety issue, not an embarrassment. The article&#39;s structure — evidence receipts kept distinct from narrative claims, current host capability stated precisely — is what a red/green verifier enforces <em>by default</em>: you cannot merge the artifact while its citations dangle, whatever the prose around it claims. The lesson generalizes the article&#39;s honesty posture into a build rule: <strong>the pipeline must be able to say no when the author cannot.</strong></p>
 <hr>
-<h2 id="5-hands-on-lab-exercise">🔬 5. Hands-On Lab Exercise</h2>
+<h2 id="5-hands-on-lab-exercise"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab Exercise</h2>
 <p>The capstone verifier in <code>courses/labs/lab-03-evidence-gates/</code> automates exactly this:</p>
 <pre><code class="language-bash">node courses/labs/lab-03-evidence-gates/verify_lab-03.mjs
 </code></pre>
@@ -259,7 +278,7 @@ $CLI factcheck --projectId $PID ; echo &quot;exit=$?&quot;   # expect: pass true
 <li><input disabled="" type="checkbox"> You can explain why an unreviewed draft passes the <code>review</code> field — and which command (not factcheck) enforces finality before phase advance.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
 <li><strong><code>asd factcheck --projectId</code> is the exit-code contract</strong>: 0 when every artifact passes all four fields, 1 otherwise — CI-gateable with zero parsing.</li>
 <li><strong>The four fields divide the truth</strong>: integrity (citations resolve), schema (types hold), acceptance (method rules re-evaluated), review (recorded verdict consistent).</li>
@@ -277,5 +296,6 @@ $CLI factcheck --projectId $PID ; echo &quot;exit=$?&quot;   # expect: pass true
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

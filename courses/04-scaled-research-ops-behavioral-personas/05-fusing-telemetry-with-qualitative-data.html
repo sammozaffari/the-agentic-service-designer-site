@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../04-scaled-research-ops-behavioral-personas.html">← Scaled Research Ops, Mining &amp; Behavioral Personas</a></nav>
+    <nav class="module-crumb"><a href="../04-scaled-research-ops-behavioral-personas.html"><i data-lucide="arrow-left"></i>Scaled Research Ops, Mining &amp; Behavioral Personas</a></nav>
     <article class="module-body">
 
 <h1 id="module-045-fusing-telemetry-with-qualitative-data-triangulation-on-one-node">Module 04.5: Fusing Telemetry with Qualitative Data — Triangulation on One Node</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="./README.md">Scaled Research Ops, Mining &amp; Behavioral Personas</a> · <strong>Level</strong>: Intermediate · <strong>Duration</strong>: 50 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <ol>
 <li><strong>Theoretical Foundations</strong>: Ground data triangulation (Denzin) and mixed-methods service research — when quant corroborates qual, when it contradicts it, and what each outcome means.</li>
 <li><strong>Agent Topology &amp; Contracts</strong>: Show how <code>kind: quote</code> and <code>kind: telemetry</code> evidence coexist on <strong>one artifact node</strong> — the runtime&#39;s unit of fusion.</li>
@@ -56,7 +72,7 @@
 <li><strong>Hands-on Practice</strong>: Add telemetry evidence to a project, cite it alongside quotes on a persona node, and pass the gate.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="triangulation-as-a-service-design-discipline">Triangulation as a service-design discipline</h3>
 <p>Denzin&#39;s triangulation principle — <em>data</em>, <em>investigator</em>, <em>theory</em>, <em>method</em> — exists because every single instrument is biased in a direction you cannot see from inside it. In service research the most productive axis is <strong>data triangulation across the qual/quant seam</strong>: interviews tell you what an experience <em>meant</em>; telemetry tells you what the population <em>did</em>; policy documents tell you what the service <em>promised</em>. Manning &amp; Bodine (vol. 14, ch. 4) operationalize this as the closed-loop Voice of the Customer system: standing qualitative and quantitative collection reconciled continuously, not in an annual survey. Heskett et al.&#39;s Service Profit Chain (vol. 20) is built on the same move — employee capability data, operational metrics, and customer outcomes are only meaningful when instrumented <em>at the same unit level</em> so they can corroborate or contradict.</p>
 <p>Three outcomes of a triangulation attempt, each with a different design meaning:</p>
@@ -72,7 +88,9 @@
 <li><strong>Explicit</strong> — the triangulation <em>logic</em> is written into the node&#39;s fields (<code>context</code>, <code>description</code>), so a reviewer can see <em>why</em> the quote and the metric are claimed to bear on the same behavior.</li>
 </ul>
 <h3 id="diagram-1-concept-the-triangulation-triangle-and-its-three-outcomes">Diagram 1 — Concept: the triangulation triangle and its three outcomes</h3>
-<div class="diagram"><pre class="mermaid">flowchart TD
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart TD
     subgraph Sources[&quot;Three instrument families, one store&quot;]
         Q[&quot;kind quote — what the experience meant&quot;]
         T[&quot;kind telemetry — what the population did&quot;]
@@ -96,9 +114,10 @@
     class NODE purple;
     class CO gold;
     class CM paper;
-    class CT bad;</pre></div>
+    class CT bad;</pre>
+</div>
 <hr>
-<h2 id="2-agentic-topology-amp-role-contracts">🤖 2. Agentic Topology &amp; Role Contracts</h2>
+<h2 id="2-agentic-topology-amp-role-contracts"><i data-lucide="bot" class="ic"></i> 2. Agentic Topology &amp; Role Contracts</h2>
 <table>
 <thead>
 <tr>
@@ -135,7 +154,7 @@
 </tbody></table>
 <p>The contract-level fact that makes fusion safe: <code>transcript-mining</code>, <code>aeiou-coding</code>, and <code>behavioural-personas</code> all declare <code>evidenceRules: {traceability: &quot;required&quot;, provenance: &quot;required&quot;}</code> — the rule applies to telemetry citations exactly as to quotes.</p>
 <hr>
-<h2 id="3-schemas-amp-verified-execution">💻 3. Schemas &amp; Verified Execution</h2>
+<h2 id="3-schemas-amp-verified-execution"><i data-lucide="code" class="ic"></i> 3. Schemas &amp; Verified Execution</h2>
 <h3 id="telemetry-as-a-first-class-evidence-record-verified-live">Telemetry as a first-class evidence record (verified live)</h3>
 <pre><code class="language-bash">$CLI evidence-add --projectId fernwood-repairs-research-ops-b0254f32 \
   --source tel-ivr-q3 --kind telemetry \
@@ -179,14 +198,14 @@
 <h3 id="diagram-3-sequence-a-bounded-telemetry-snapshot-becomes-a-citation">Diagram 3 — Sequence: a bounded telemetry snapshot becomes a citation</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-halcyon39s-contradiction-article-05">📊 4. Case Study Lens: Halcyon&#39;s Contradiction (Article 05)</h2>
+<h2 id="4-case-study-lens-halcyon39s-contradiction-article-05"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Halcyon&#39;s Contradiction (Article 05)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Receipt ids above come from the verified live session.</p>
 </blockquote>
 <p>Halcyon Logistics (fictional) is the contradiction case in pure form: SLA dashboards at 87.4% &quot;acceptable&quot; while shipper churn ran 11.8%. Neither instrument was lying — they measured different realities. The program&#39;s value came from refusing to average the two and instead instrumenting all five Service Profit Chain links at account-unit level, so quant and qual could be reconciled <em>per account</em>.</p>
 <p>The module&#39;s fused nodes are the same discipline at citation granularity. When <code>per-quiet-deserter</code> cites &quot;I do not report small issues any more&quot; beside <code>repair_form_abandon_rate: 0.42</code>, the artifact is not claiming the quote <em>caused</em> the metric; it is recording that two instrument families independently observed exit behavior — and the critic row says so, citing the telemetry id. If the metric had instead shown 0.04 abandonment, the honest outcome would be a <strong>contradiction defect row</strong>, not a quieter quote.</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab-04e
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
 # On a project that already has quote evidence (modules 04.1/04.2):
@@ -209,12 +228,12 @@ $CLI artifact-write --projectId $PID --methodId behavioural-personas \
 <li><input disabled="" type="checkbox"> A dangling telemetry id fails the write exactly as a dangling quote id does (kind-agnostic integrity).</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
-<li>✅ <strong>Fusion is structural, not pipelined:</strong> one artifact node&#39;s <code>evidence[]</code> cites any kind; integrity checking is kind-agnostic and fail-closed.</li>
-<li>✅ <strong>The triangulation logic belongs in the fields</strong> — write the arithmetic and the claim (&quot;2380s ≈ the forty-minute verbatim&quot;) where a reviewer can challenge it.</li>
-<li>✅ <strong>Contradiction between instruments is a finding, not noise.</strong> Record it as a defect row; never average it away.</li>
-<li>✅ <strong>Corroboration is citable:</strong> critic proposal rows can point at the telemetry <code>evidenceId</code> itself, making confidence auditable.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Fusion is structural, not pipelined:</strong> one artifact node&#39;s <code>evidence[]</code> cites any kind; integrity checking is kind-agnostic and fail-closed.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>The triangulation logic belongs in the fields</strong> — write the arithmetic and the claim (&quot;2380s ≈ the forty-minute verbatim&quot;) where a reviewer can challenge it.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Contradiction between instruments is a finding, not noise.</strong> Record it as a defect row; never average it away.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Corroboration is citable:</strong> critic proposal rows can point at the telemetry <code>evidenceId</code> itself, making confidence auditable.</li>
 </ul>
 <hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
@@ -227,5 +246,6 @@ $CLI artifact-write --projectId $PID --methodId behavioural-personas \
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

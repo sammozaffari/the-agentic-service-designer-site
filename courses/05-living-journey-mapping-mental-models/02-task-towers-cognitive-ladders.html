@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../05-living-journey-mapping-mental-models.html">← Living Journey Mapping &amp; Mental Model Alignment</a></nav>
+    <nav class="module-crumb"><a href="../05-living-journey-mapping-mental-models.html"><i data-lucide="arrow-left"></i>Living Journey Mapping &amp; Mental Model Alignment</a></nav>
     <article class="module-body">
 
 <h1 id="module-052-constructing-task-towers-amp-cognitive-ladders">Module 05.2: Constructing Task Towers &amp; Cognitive Ladders</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="../README.md">Living Journey Mapping &amp; Mental Model Alignment</a> · <strong>Level</strong>: Intermediate · <strong>Duration</strong>: 55 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will master:</p>
 <ol>
 <li><strong>Theoretical Foundations</strong>: How atomic task statements climb into towers and towers into mental spaces — and the three alignment states (support, half-way, counter) that result when organizational capability is read against them.</li>
@@ -57,7 +73,7 @@
 <li><strong>Hands-on Practice</strong>: Build a two-sided alignment map that survives the gate.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="from-task-statements-to-towers-to-spaces">From task statements to towers to spaces</h3>
 <p>Indi Young&#39;s construction recipe (canonized in Kalbach, <em>Mapping Experiences</em> ch. 6) is a disciplined climb up a cognitive ladder:</p>
 <ol>
@@ -97,7 +113,9 @@
 <h3 id="two-mental-models-one-process">Two mental models, one process</h3>
 <p><em>Outside-In</em> (Manning &amp; Bodine, ch. 4–5) adds the organizational half: frontline staff hold their own mental model of the same process, and divergence between the two models is where experience breaks. A rider thinks &quot;the helpline will rebook me&quot;; the agent&#39;s model is &quot;I am authorized to read the website aloud.&quot; Both are locally rational. The failure lives in the seam — which is why the <code>mental-model-alignment</code> method builds <strong>two parallel journeys for the same process, stage by stage</strong>, and marks divergence with a quote from <em>each</em> side.</p>
 <h3 id="concept-diagram-the-alignment-spectrum">Concept diagram — the alignment spectrum</h3>
-<div class="diagram"><pre class="mermaid">flowchart LR
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart LR
     subgraph TOWER[&quot;Rider tower: Trust the information at the stop&quot;]
         TASK1[&quot;'check the posted times'&quot;]
         TASK2[&quot;'ask the driver'&quot;]
@@ -121,9 +139,10 @@
     class S1 blue;
     class SUP,ACT1 gold;
     class HALF,ACT2 purple;
-    class COUNT,ACT3 bad;</pre></div>
+    class COUNT,ACT3 bad;</pre>
+</div>
 <hr>
-<h2 id="2-agentic-topology-amp-contracts">🤖 2. Agentic Topology &amp; Contracts</h2>
+<h2 id="2-agentic-topology-amp-contracts"><i data-lucide="bot" class="ic"></i> 2. Agentic Topology &amp; Contracts</h2>
 <p>The <code>mental-model-alignment</code> method (synthesis phase), verified live via <code>asd method-run</code>:</p>
 <table>
 <thead>
@@ -168,7 +187,7 @@
 <h3 id="agentic-workflow-diagram">Agentic workflow diagram</h3>
 <p></p>
 <hr>
-<h2 id="3-schemas-amp-verified-execution">💻 3. Schemas &amp; Verified Execution</h2>
+<h2 id="3-schemas-amp-verified-execution"><i data-lucide="code" class="ic"></i> 3. Schemas &amp; Verified Execution</h2>
 <h3 id="two-sided-divergence-as-journey-map-nodes">Two-sided divergence as <code>journey-map</code> nodes</h3>
 <p>The map rides the <code>journey-map</code> kind schema (fields: <code>stage</code>, <code>emotion</code> <strong>required</strong>, <code>touchpoint</code>, <code>actor</code>, <code>pain</code>, <code>gain</code>, <code>opportunity</code>, <code>description</code>, <code>notes</code>, <code>tags</code> — closed policy). The alignment encoding convention:</p>
 <pre><code class="language-json">{
@@ -207,7 +226,7 @@ $CLI artifact-write … --nodes &#39;[{&quot;id&quot;:&quot;s2&quot;, …, &quot
 <h3 id="alignment-sequence-diagram">Alignment sequence diagram</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-meridian-move-night-buses-article-15">📊 4. Case Study Lens: Meridian Move Night Buses (Article 15)</h2>
+<h2 id="4-case-study-lens-meridian-move-night-buses-article-15"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Meridian Move Night Buses (Article 15)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Meridian Move is a fictional composite client from <code>articles/15/</code>; figures are illustrative.</p>
 </blockquote>
@@ -220,7 +239,7 @@ $CLI artifact-write … --nodes &#39;[{&quot;id&quot;:&quot;s2&quot;, …, &quot
 </ul>
 <p>The co-design output — a service specification turned into an implementation plan — reads as a tower-by-tower remediation of exactly these states. That is the point of the method: alignment states are not commentary, they are the backlog.</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab-05-02
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
 
@@ -251,12 +270,12 @@ $CLI factcheck --projectId &lt;pid&gt;
 <li><input disabled="" type="checkbox"> The remediated map passed the critic gate and <code>factcheck</code> exited 0.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
-<li>✅ <strong>Towers are climbed, not declared</strong>: task statements → towers → mental spaces, each rung with its own evidentiary burden.</li>
-<li>✅ <strong>Every tower–offering pair resolves to support, half-way, or counter-productive</strong> — and half-way support is the highest-leverage redesign target.</li>
-<li>✅ <strong>Divergence is a two-sided claim</strong>: <code>min-evidence-per-node: 2</code> makes a one-sided divergence structurally unwritable.</li>
-<li>✅ <strong>Emotions are evidence-gated</strong>: drawn from quotes, never inferred — the discipline that makes module 05.4&#39;s sentiment curve honest.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Towers are climbed, not declared</strong>: task statements → towers → mental spaces, each rung with its own evidentiary burden.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Every tower–offering pair resolves to support, half-way, or counter-productive</strong> — and half-way support is the highest-leverage redesign target.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Divergence is a two-sided claim</strong>: <code>min-evidence-per-node: 2</code> makes a one-sided divergence structurally unwritable.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Emotions are evidence-gated</strong>: drawn from quotes, never inferred — the discipline that makes module 05.4&#39;s sentiment curve honest.</li>
 </ul>
 <hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
@@ -269,5 +288,6 @@ $CLI factcheck --projectId &lt;pid&gt;
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

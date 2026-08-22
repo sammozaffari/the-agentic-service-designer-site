@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../02-asd-platform-toolchain-deepseek-harness.html">← The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a></nav>
+    <nav class="module-crumb"><a href="../02-asd-platform-toolchain-deepseek-harness.html"><i data-lucide="arrow-left"></i>The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a></nav>
     <article class="module-body">
 
 <h1 id="module-024-terminal-ergonomics-the-asd-cli-grammar-fail-closed-errors-and-the-workspace-layout">Module 02.4: Terminal Ergonomics — the asd CLI Grammar, Fail-Closed Errors, and the Workspace Layout</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="./README.md">The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 45 min · <strong>Format</strong>: Theory, Verified Command Reference &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will be able to:</p>
 <ol>
 <li><strong>Use the real CLI grammar</strong>: <code>asd &lt;kebab-short-name&gt; [--flag value]</code> — and recognize the commands that do <em>not</em> exist (<code>init</code>, <code>run</code>, <code>status</code>, <code>agent</code>, <code>render</code> — there are none).</li>
@@ -56,7 +72,7 @@
 <li><strong>Complete the hands-on lab</strong>: a scripted sprint driven entirely by exit codes.</li>
 </ol>
 <hr>
-<h2 id="1-foundational-theory-amp-literature-grounding">📖 1. Foundational Theory &amp; Literature Grounding</h2>
+<h2 id="1-foundational-theory-amp-literature-grounding"><i data-lucide="book-open" class="ic"></i> 1. Foundational Theory &amp; Literature Grounding</h2>
 <h3 id="tools-should-make-the-right-thing-easy-and-the-wrong-thing-loud">Tools should make the right thing easy and the wrong thing loud</h3>
 <p><em>The Design of Everyday Things</em> thinking runs through all of Don Norman&#39;s influence on service design, but the sharpest operational statement in our canon is Lou Downe&#39;s: a good service &quot;is easy to use&quot; and &quot;clearly explains its purpose&quot; (<em>Good Services</em>, <code>books/05-good-services/03-principles-usability</code>). A CLI <em>is</em> a service surface, and the same principles apply. The asd CLI&#39;s ergonomics follow three of them directly:</p>
 <ul>
@@ -66,7 +82,9 @@
 </ul>
 <p>The deeper principle is from <em>Service Design: From Insight to Implementation</em> (<code>books/03-service-design-from-insight-to-implementation/03-principles-of-service-design</code>): co-created tools must be <em>legible to all parties</em>. A content-addressed JSON store plus a terse kebab-case grammar is legible to the designer, the orchestrator agent, and the CI pipeline alike.</p>
 <h3 id="concept-diagram-the-cli-grammar-and-its-closed-vocabularies">Concept diagram — the CLI grammar and its closed vocabularies</h3>
-<div class="diagram"><pre class="mermaid">flowchart TD
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart TD
     G[&quot;asd &lt;kebab-short-name&gt; [--flag value ...]&quot;] --&gt; FAM[&quot;6 tool families (29 tools)&quot;]
     FAM --&gt; P[&quot;project: project-list / project-create / project-open&quot;]
     FAM --&gt; E[&quot;evidence: evidence-add / evidence-query / evidence-import&quot;]
@@ -84,7 +102,8 @@
     classDef gold  fill:#fffbeb,stroke:#b7791f,stroke-width:1.5px,color:#744210;
     class G purple;
     class FAM,P,E,A,M,R,GOV blue;
-    class EK,PH,MPH gold;</pre></div>
+    class EK,PH,MPH gold;</pre>
+</div>
 <h3 id="key-principles">Key principles</h3>
 <ul>
 <li><strong>Kebab short names map 1:1 to <code>sd_*</code> tools</strong>: <code>project-create</code> → <code>sd_project_create</code>, <code>export-artifact</code> → <code>sd_export_artifact</code>. Learn one, know the other.</li>
@@ -92,7 +111,7 @@
 <li><strong>Two different phase enums exist and must not be conflated</strong>: <em>method</em> phases (<code>research|synthesis|ideation|prototyping|delivery|measurement</code>, used by <code>method-list --phase</code>) vs <em>project</em> phases (<code>discover|define|develop|deliver</code>, used by <code>phase-advance --toPhase</code>).</li>
 </ul>
 <hr>
-<h2 id="2-agent-topology-amp-role-contracts">🤖 2. Agent Topology &amp; Role Contracts</h2>
+<h2 id="2-agent-topology-amp-role-contracts"><i data-lucide="bot" class="ic"></i> 2. Agent Topology &amp; Role Contracts</h2>
 <table>
 <thead>
 <tr>
@@ -140,7 +159,7 @@
 <h3 id="agentic-workflow-diagram-a-scripted-sprint-through-the-cli">Agentic workflow diagram — a scripted sprint through the CLI</h3>
 <p></p>
 <hr>
-<h2 id="3-the-verified-command-reference">💻 3. The Verified Command Reference</h2>
+<h2 id="3-the-verified-command-reference"><i data-lucide="code" class="ic"></i> 3. The Verified Command Reference</h2>
 <h3 id="31-help-is-the-contract">3.1 Help is the contract</h3>
 <p><code>asd help</code> prints the full surface — verified today, trimmed:</p>
 <pre><code>usage: asd &lt;tool&gt; [--flag value ...]
@@ -217,14 +236,14 @@ $CLI knowledge --resourceQuery &quot;profit&quot;   # substring over corpus reso
 $CLI knowledge --resource &quot;asd://books/20-the-service-profit-chain/03-external-service-value&quot;
 </code></pre>
 <hr>
-<h2 id="4-enterprise-case-study-lens">🏢 4. Enterprise Case Study Lens</h2>
+<h2 id="4-enterprise-case-study-lens"> 4. Enterprise Case Study Lens</h2>
 <h3 id="article-31-revisited-for-the-terminal-riding-the-current-articles31">Article 31 (revisited for the terminal) — <em>Riding the Current</em> (<code>articles/31</code>)</h3>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> The §13 transcript in the article is synthetic and syntax-checked against the current CLI contract; its ids and outputs are illustrative.</p>
 </blockquote>
 <p>The article&#39;s designer runs the entire 18-week transit engagement from a terminal-first posture: capture during site visits (<code>evidence-add</code> on a laptop), contract checks before mapping (<code>method-run</code>), gate checks in CI (<code>factcheck</code> exit codes deciding whether a render may be published). The transferable habit is the one this module drills: <strong>treat exit 1 as information, not as failure of the tool</strong> — each refusal above (&quot;project has 2&quot;, &quot;missing required flag&quot;, &quot;must be one of [...]&quot;) is the platform protecting the evidence chain the engagement&#39;s credibility rests on.</p>
 <hr>
-<h2 id="5-critic-gate-amp-review-veto-rules-cli-edition">⚖️ 5. Critic Gate &amp; Review Veto Rules (CLI edition)</h2>
+<h2 id="5-critic-gate-amp-review-veto-rules-cli-edition"><i data-lucide="undefined" class="ic"></i> 5. Critic Gate &amp; Review Veto Rules (CLI edition)</h2>
 <blockquote>
 <p>[!IMPORTANT]</p>
 <ol>
@@ -235,7 +254,7 @@ $CLI knowledge --resource &quot;asd://books/20-the-service-profit-chain/03-exter
 </ol>
 </blockquote>
 <hr>
-<h2 id="6-hands-on-lab-assignment">🧪 6. Hands-On Lab Assignment</h2>
+<h2 id="6-hands-on-lab-assignment"><i data-lucide="flask-conical" class="ic"></i> 6. Hands-On Lab Assignment</h2>
 <h3 id="objective">Objective</h3>
 <p>Script an entire sprint with shell exit-code checks only — no eyeballing.</p>
 <h3 id="steps">Steps</h3>
@@ -269,7 +288,7 @@ echo &quot;LAB 02.4 PASS&quot;
 <li><input disabled="" type="checkbox"> <code>factcheck</code> exited 0</li>
 </ul>
 <hr>
-<h2 id="7-summary-amp-reference-anchors">📚 7. Summary &amp; Reference Anchors</h2>
+<h2 id="7-summary-amp-reference-anchors"><i data-lucide="library" class="ic"></i> 7. Summary &amp; Reference Anchors</h2>
 <h3 id="key-takeaways">Key takeaways</h3>
 <ul>
 <li>The CLI grammar is deliberately tiny: <code>asd &lt;kebab-name&gt; --flag value</code>, 29 tools, help is the contract. Anything you remember about <code>init</code>/<code>run</code>/<code>status</code> is from another tool.</li>
@@ -290,5 +309,6 @@ echo &quot;LAB 02.4 PASS&quot;
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

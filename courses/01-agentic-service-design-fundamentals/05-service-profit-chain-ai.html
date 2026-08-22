@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../01-agentic-service-design-fundamentals.html">← Agentic Service Design Fundamentals</a></nav>
+    <nav class="module-crumb"><a href="../01-agentic-service-design-fundamentals.html"><i data-lucide="arrow-left"></i>Agentic Service Design Fundamentals</a></nav>
     <article class="module-body">
 
 <h1 id="module-015-the-service-profit-chain-linking-frontline-tooling-to-customer-loyalty">Module 01.5: The Service Profit Chain: Linking Frontline Tooling to Customer Loyalty</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="./README.md">Agentic Service Design Fundamentals</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 45 min · <strong>Format</strong>: Theory, Architecture, Verified CLI Run &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will be able to:</p>
 <ol>
 <li><strong>Explain the seven causal links</strong> of Heskett, Sasser &amp; Schlesinger&#39;s Service Profit Chain and why loyalty — not satisfaction — is the financial hinge.</li>
@@ -55,7 +71,7 @@
 <li><strong>Run the <code>service-profit-chain-mapping</code> method</strong> and defend its critic rule: no uncited causal link survives the gate.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-the-chain-as-an-operating-logic">📖 1. Theoretical Grounding: The Chain as an Operating Logic</h2>
+<h2 id="1-theoretical-grounding-the-chain-as-an-operating-logic"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding: The Chain as an Operating Logic</h2>
 <p><em>The Service Profit Chain</em> (Heskett, Sasser &amp; Schlesinger 1997; corpus summary at <code>books/20-the-service-profit-chain/01-the-service-profit-chain.md</code>) makes a claim most organizations still resist: profit in service businesses is <em>produced upstream</em>, inside the employee experience, and merely <em>collected</em> downstream at the customer. The seven links:</p>
 <pre><code class="language-text">Internal Service Quality → Employee Satisfaction → Employee Retention &amp; Productivity
 → External Service Value → Customer Satisfaction → Customer Loyalty → Revenue Growth &amp; Profitability
@@ -75,7 +91,9 @@
 <li><strong>Time-lagged causality</strong> — a tooling investment may take ~30 days to lift employee satisfaction, ~60 to improve service value, ~90 to lift retention, ~180 to reach margin. Patience is a measurement property, not a virtue.</li>
 </ul>
 <h3 id="concept-diagram-the-chain-with-leadlag-instrumentation">Concept diagram — the chain with lead/lag instrumentation</h3>
-<div class="diagram"><pre class="mermaid">flowchart LR
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart LR
     subgraph Lead[&quot;LEADING indicators (manage these)&quot;]
         L1[&quot;Internal Service Quality&lt;br/&gt;tool uptime, training, job design&quot;]
         L2[&quot;Employee Satisfaction&lt;br/&gt;engagement, support ratings&quot;]
@@ -98,9 +116,10 @@
     classDef bad   fill:#fff5f5,stroke:#c53030,stroke-width:1.5px,color:#742a2a;
     class L1,L2,L3 blue;
     class C1,C2 gold;
-    class G1,G2 purple;</pre></div>
+    class G1,G2 purple;</pre>
+</div>
 <hr>
-<h2 id="2-theory-tooling-two-artifact-kinds">🤖 2. Theory → Tooling: Two Artifact Kinds</h2>
+<h2 id="2-theory-tooling-two-artifact-kinds"><i data-lucide="bot" class="ic"></i> 2. Theory → Tooling: Two Artifact Kinds</h2>
 <p>The chain maps onto two registered artifact kinds (verified via <code>sd_schema_get</code> today):</p>
 <p><strong><code>service-profit-chain</code></strong> — the causal map. Produced by the <code>service-profit-chain-mapping</code> method (owner <code>measurer</code>, gate <code>critic</code>). Node fields: <code>metric</code> (required), <code>value</code>, <code>measure</code>, <code>target</code>, <code>outcome</code>, <code>owner</code>, <code>description</code>, <code>notes</code>, <code>tags</code>. Edges carry optional <code>weight</code> and <code>label</code>. Acceptance: <strong>≥4 nodes, <code>metric</code> non-empty on every node, ≥1 evidence per node</strong>. References can <code>derived-from</code> research artifacts and <code>supports</code> a <code>kpi-tree</code>, <code>service-blueprint</code>, or <code>business-model-canvas</code>.</p>
 <p><strong><code>kpi-tree</code></strong> — the measurement hierarchy. Node fields: <code>metric</code> (required), <code>tier</code>, <code>parent</code>, <code>target</code>, <code>baseline</code>, <code>measure</code>, plus descriptive fields. This is Ch. 5&#39;s lead/lag discipline as a data structure: <code>tier</code> separates leading from lagging, <code>parent</code> links each KPI into the causal narrative, <code>baseline</code>/<code>target</code> make improvement falsifiable.</p>
@@ -136,7 +155,7 @@
 <h3 id="agentic-workflow-diagram-building-the-chain-under-the-critic-gate">Agentic workflow diagram — building the chain under the critic gate</h3>
 <p></p>
 <hr>
-<h2 id="3-verified-execution-the-real-schemas-run-today-2026-08-22">💻 3. Verified Execution: The Real Schemas (run today, 2026-08-22)</h2>
+<h2 id="3-verified-execution-the-real-schemas-run-today-2026-08-22"><i data-lucide="code" class="ic"></i> 3. Verified Execution: The Real Schemas (run today, 2026-08-22)</h2>
 <pre><code class="language-bash">$CLI schema-get --kind service-profit-chain
 </code></pre>
 <pre><code class="language-json">{&quot;kind&quot;:&quot;service-profit-chain&quot;,
@@ -169,13 +188,13 @@
 <h3 id="lifecycle-diagram-from-raw-staff-data-to-an-investment-grade-chain">Lifecycle diagram — from raw staff data to an investment-grade chain</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-article-05-quotthe-service-profit-chain-in-logistics-halcyon39s-account-experiencequot">📊 4. Case Study Lens: Article 05 — &quot;The Service Profit Chain in Logistics: Halcyon&#39;s Account Experience&quot;</h2>
+<h2 id="4-case-study-lens-article-05-quotthe-service-profit-chain-in-logistics-halcyon39s-account-experiencequot"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 05 — &quot;The Service Profit Chain in Logistics: Halcyon&#39;s Account Experience&quot;</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong></p>
 </blockquote>
 <p>Article 05 (<code>articles/05/README.md</code>) is the method&#39;s source citation (<code>&quot;sources&quot;:[{&quot;book&quot;:&quot;20-the-service-profit-chain&quot;,&quot;chapter&quot;:&quot;01&quot;},{&quot;article&quot;:&quot;05&quot;}]</code> — see the live contract in §3 of this module and module 01.2). Halcyon&#39;s account-experience program walks the chain in order: internal tooling for account teams (link 1), team satisfaction and tenure (links 2–3), OTIF service value (link 4), shipper satisfaction (link 5), NPS-band share-of-wallet (link 6), and revenue outcomes (link 7). The charts are labeled <em>illustrative</em> — treat them as the shape of the argument, then ask: which <code>sd_evidence_add</code> records would you need for each link, and which would the critic veto as uncited?</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab-05
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
 
@@ -211,7 +230,7 @@ $CLI factcheck --projectId &lt;pid&gt; ; echo &quot;exit=$?&quot;
 <li><input disabled="" type="checkbox"> You can state the time-lag implication: how many days before a tooling fix should show in margin (per Ch. 5&#39;s ~180-day cascade)?</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
 <li><strong>Profit is produced upstream.</strong> Internal service quality — including agentic tooling — is the first link, not an overhead line.</li>
 <li><strong>Loyalty is the hinge; satisfaction is a waypoint.</strong> Measure conversion from satisfaction to loyalty or your chain stops halfway.</li>
@@ -229,5 +248,6 @@ $CLI factcheck --projectId &lt;pid&gt; ; echo &quot;exit=$?&quot;
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

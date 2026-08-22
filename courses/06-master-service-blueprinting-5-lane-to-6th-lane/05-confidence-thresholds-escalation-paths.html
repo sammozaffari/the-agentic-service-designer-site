@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../06-master-service-blueprinting-5-lane-to-6th-lane.html">← Master Service Blueprinting — 5-Lane Architecture to the Orchestration Sixth Lane</a></nav>
+    <nav class="module-crumb"><a href="../06-master-service-blueprinting-5-lane-to-6th-lane.html"><i data-lucide="arrow-left"></i>Master Service Blueprinting — 5-Lane Architecture to the Orchestration Sixth Lane</a></nav>
     <article class="module-body">
 
 <h1 id="module-065-confidence-thresholds-error-handling-amp-human-escalation-paths">Module 06.5: Confidence Thresholds, Error Handling &amp; Human Escalation Paths</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="../README.md">Master Service Blueprinting: 5-Lane Architecture to the Orchestration Sixth Lane</a> · <strong>Level</strong>: Intermediate · <strong>Duration</strong>: 50 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will master:</p>
 <ol>
 <li><strong>Theoretical Foundations</strong>: why &quot;confidence&quot; in a governed design pipeline is a <em>layered gate architecture</em>, not a scalar threshold on a model&#39;s self-report.</li>
@@ -57,7 +73,7 @@
 <li><strong>Hands-on Practice</strong>: force a veto, remediate it, and escalate a blocked orchestration step to a human.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="the-problem-with-confidence-scores">The problem with confidence scores</h3>
 <p>A tempting design for agentic pipelines is a numeric confidence threshold: if the model&#39;s self-reported confidence drops below τ, escalate to a human. It fails in practice for three structural reasons. First, self-reported confidence is <em>uncalibrated</em> — the same model asserts wrong answers and right ones with equal fluency. Second, a single scalar conflates <em>different failure classes</em> — missing evidence, schema violation, and factual dispute need different responses, not different positions on one dial. Third, a threshold is a <em>policy hidden in a constant</em>: nobody can audit why τ was 0.7, and nobody can prove what happened when it tripped.</p>
 <p>The service-design literature never trusted self-assessment either. Grönroos&#39;s quality model (<code>books/07-designing-for-service-key-issues/02-service-design-and-management.md</code>) separates technical quality (what was delivered — objectively checkable) from functional quality (how it was delivered — judgment-requiring). Shostack&#39;s blueprint discipline attached <em>explicit time standards</em> to backstage steps precisely so that conformance could be checked mechanically instead of vibes being asserted (<code>books/02/01</code>). The pattern is always the same: <strong>push every check that can be deterministic into a deterministic gate, and route everything irreducibly judgmental to a named adversary or a named human.</strong></p>
@@ -99,7 +115,9 @@
 </tbody></table>
 <p>The rungs are ordered by <em>cost of the check</em>: deterministic rules are free and run on every write; the critic costs a review cycle; a human gate costs a meeting. Escalation means a lower rung <em>declining to decide</em> and handing a well-formed question upward — with the evidence attached.</p>
 <h3 id="concept-diagram-the-escalation-ladder">Concept diagram — the escalation ladder</h3>
-<div class="diagram"><pre class="mermaid">flowchart TB
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart TB
     W[&quot;sd_artifact_write&quot;] --&gt; R1{&quot;Rung 1 · deterministic acceptance&lt;br/&gt;min-nodes · min-evidence-per-node&lt;br/&gt;field-non-empty lane · forbid placeholder values&quot;}
     R1 --&gt;|&quot;accepted:false —&lt;br/&gt;check.failures[] recorded&quot;| FIX1[&quot;Author fixes structure&lt;br/&gt;and rewrites&quot;]
     FIX1 --&gt; W
@@ -124,9 +142,10 @@
     class FIX1,FIX2 blue;
     class R1,R2,R3 purple;
     class R4,DONE gold;
-    class BLOCK,STOP bad;</pre></div>
+    class BLOCK,STOP bad;</pre>
+</div>
 <hr>
-<h2 id="2-agentic-topology-amp-role-contracts">🤖 2. Agentic Topology &amp; Role Contracts</h2>
+<h2 id="2-agentic-topology-amp-role-contracts"><i data-lucide="bot" class="ic"></i> 2. Agentic Topology &amp; Role Contracts</h2>
 <h3 id="the-review-contract-sd-review">The review contract (<code>sd_review</code>)</h3>
 <p>Rows are the escalation vocabulary. Each row is:</p>
 <pre><code class="language-typescript">type ReviewRow = {
@@ -151,7 +170,7 @@
 <h3 id="escalation-state-diagram-artifact-and-step-side-by-side">Escalation state diagram — artifact and step, side by side</h3>
 <p></p>
 <hr>
-<h2 id="3-verified-execution-a-real-escalation-session">💻 3. Verified Execution — A Real Escalation Session</h2>
+<h2 id="3-verified-execution-a-real-escalation-session"><i data-lucide="code" class="ic"></i> 3. Verified Execution — A Real Escalation Session</h2>
 <p>From this course&#39;s live run (blueprint <code>4d64fbd3395440efa44c17363e5b8f10</code>):</p>
 <pre><code class="language-bash">CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
 PID=fernwood-repairs-blueprint-sprint-7cee33e4
@@ -189,13 +208,13 @@ $CLI phase-advance --projectId $PID --toPhase define --idempotencyKey gate-1 --a
 </code></pre>
 <p>Read the shape of that last error: even <em>with</em> a signed receipt, the human gate refuses while any design artifact is still a draft. Escalation paths terminate at humans, but the humans are protected from rubber-stamping unfinished work — the machine&#39;s &quot;no&quot; is structural, not advisory.</p>
 <hr>
-<h2 id="4-case-study-lens-article-33-the-critic-on-every-gate">📊 4. Case Study Lens: Article 33 — The Critic on Every Gate</h2>
+<h2 id="4-case-study-lens-article-33-the-critic-on-every-gate"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 33 — The Critic on Every Gate</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong></p>
 </blockquote>
 <p>Article 33 (<em>The Virtual Ward at Capacity: Scaling Telehealth with the ASD Critic on Every Gate</em>) is the escalation-discipline case study. A telehealth service at capacity cannot afford a single unreviewed clinical-pathway claim reaching production, so the engagement put the critic gate on <em>every</em> artifact — not just headline deliverables. Read through this module: the article&#39;s &quot;gates&quot; are rung 2 applied uniformly; its clinical-safety sign-offs are rung 4 human checkpoints with named authorities; and its incident reviews map to rung 3 failure records (<code>error</code> + <code>retryable</code>) rather than post-hoc blame. The transferable lesson: escalation architecture is something you <em>design before the sprint</em>, choosing per artifact which rungs apply — the method contract&#39;s <code>reviewGate</code> and <code>humanCheckpoints</code> fields are where those decisions live.</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab06
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
 
@@ -230,12 +249,12 @@ $CLI orchestration-status --projectId &lt;pid&gt; --planId &lt;planId&gt;   # ob
 <li><input disabled="" type="checkbox"> <code>phase-advance</code> without all-final artifacts fails closed, naming the offending draft ids.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
-<li>✅ <strong>There is no confidence-threshold router — deliberately.</strong> Calibrated gates beat uncalibrated scalars: deterministic acceptance for structure, an adversarial critic for content, retry policy for execution, humans for judgment.</li>
-<li>✅ <strong>A veto must be actionable</strong>: every defect row carries a <code>fix</code>, and the whole row set persists as a <code>review-veto-log</code>. Escalation without structure is just obstruction.</li>
-<li>✅ <strong>Failure policy is data</strong>: <code>error</code>, <code>retryable</code>, <code>retryOf</code>, <code>maxRetries</code> turn &quot;something went wrong&quot; into an auditable retry chain with a defined terminal state (<code>blocked</code> → human).</li>
-<li>✅ <strong>Every escalation path terminates at a named human authority</strong> — and the human gate fails closed on unfinished work. Agents prepare; humans authorize.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>There is no confidence-threshold router — deliberately.</strong> Calibrated gates beat uncalibrated scalars: deterministic acceptance for structure, an adversarial critic for content, retry policy for execution, humans for judgment.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>A veto must be actionable</strong>: every defect row carries a <code>fix</code>, and the whole row set persists as a <code>review-veto-log</code>. Escalation without structure is just obstruction.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Failure policy is data</strong>: <code>error</code>, <code>retryable</code>, <code>retryOf</code>, <code>maxRetries</code> turn &quot;something went wrong&quot; into an auditable retry chain with a defined terminal state (<code>blocked</code> → human).</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Every escalation path terminates at a named human authority</strong> — and the human gate fails closed on unfinished work. Agents prepare; humans authorize.</li>
 </ul>
 <hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
@@ -248,5 +267,6 @@ $CLI orchestration-status --projectId &lt;pid&gt; --planId &lt;planId&gt;   # ob
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

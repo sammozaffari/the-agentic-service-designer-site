@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../06-master-service-blueprinting-5-lane-to-6th-lane.html">← Master Service Blueprinting — 5-Lane Architecture to the Orchestration Sixth Lane</a></nav>
+    <nav class="module-crumb"><a href="../06-master-service-blueprinting-5-lane-to-6th-lane.html"><i data-lucide="arrow-left"></i>Master Service Blueprinting — 5-Lane Architecture to the Orchestration Sixth Lane</a></nav>
     <article class="module-body">
 
 <h1 id="module-063-lines-of-visibility-interaction-amp-internal-penetration">Module 06.3: Lines of Visibility, Interaction &amp; Internal Penetration</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="../README.md">Master Service Blueprinting: 5-Lane Architecture to the Orchestration Sixth Lane</a> · <strong>Level</strong>: Intermediate · <strong>Duration</strong>: 45 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will master:</p>
 <ol>
 <li><strong>Theoretical Foundations</strong>: the three canonical demarcation lines — interaction, visibility, internal interaction — and the operations-management lineage of the deeper &quot;penetration&quot; boundary.</li>
@@ -57,7 +73,7 @@
 <li><strong>Hands-on Practice</strong>: encode the three lines on your own blueprint and get a malformed edge rejected.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="the-three-canonical-lines">The three canonical lines</h3>
 <p>Shostack&#39;s 1982/1984 formulation established the structural divisions that Bitner, Ostrom &amp; Morgan (2008) codified (<code>books/07-designing-for-service-key-issues/02-service-design-and-management.md</code>; <code>books/09-mapping-experiences/05-service-blueprints.md</code>):</p>
 <ol>
@@ -97,7 +113,9 @@
 </tbody></table>
 <p>The Fernwood blueprint makes this concrete: the tenant&#39;s anxious phone call (<code>ca2</code>) is an interaction-line crossing <em>caused by</em> a visibility-line decision (repair status kept backstage) <em>caused by</em> an internal-interaction failure (the ticketing system has no status API). One symptom, three lines, three different owners. A blueprint that draws the lanes but not the lines can locate the pain but never route the fix.</p>
 <h3 id="concept-diagram-the-three-lines-with-real-fernwood-crossings">Concept diagram — the three lines with real Fernwood crossings</h3>
-<div class="diagram"><pre class="mermaid">flowchart TB
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart TB
     subgraph Above[&quot;Customer domain&quot;]
         ca1[&quot;ca1: Tenant reports leak&lt;br/&gt;via portal&quot;]
         ca2[&quot;ca2: Tenant phones for status · W&quot;]
@@ -128,11 +146,12 @@
     class fs1 purple;
     class fs2 bad;
     class bs1,bs2 paper;
-    class sp1 gold;</pre></div>
+    class sp1 gold;</pre>
+</div>
 <h3 id="the-critical-encoding-decision-lines-live-on-edges">The critical encoding decision: lines live on edges</h3>
 <p>A line is not a place; it is a <em>property of a crossing</em>. Two nodes sitting in adjacent lanes mean nothing until an edge connects them — and that edge is where the demarcation is real. So the <code>service-blueprint</code> schema encodes demarcation on edges: every edge carries a required <code>relation</code> and free-form <code>fields.label</code>, and the house convention (taught by the presenter step of the method contract) is that a lane-crossing edge&#39;s label <strong>names the line it crosses</strong>. That single convention turns &quot;the line of visibility&quot; from a horizontal rule drawn in marker into a queryable set: every edge whose endpoints straddle frontstage and backstage lanes. Diagnostics in module 06.7 exploit exactly this.</p>
 <hr>
-<h2 id="2-agentic-topology-amp-role-contracts">🤖 2. Agentic Topology &amp; Role Contracts</h2>
+<h2 id="2-agentic-topology-amp-role-contracts"><i data-lucide="bot" class="ic"></i> 2. Agentic Topology &amp; Role Contracts</h2>
 <table>
 <thead>
 <tr>
@@ -162,7 +181,7 @@
 <h3 id="annotation-sequence">Annotation sequence</h3>
 <p></p>
 <hr>
-<h2 id="3-schemas-amp-verified-execution">💻 3. Schemas &amp; Verified Execution</h2>
+<h2 id="3-schemas-amp-verified-execution"><i data-lucide="code" class="ic"></i> 3. Schemas &amp; Verified Execution</h2>
 <h3 id="the-edge-schema-verified-via-schema-get">The edge schema (verified via <code>schema-get</code>)</h3>
 <pre><code class="language-json">&quot;edge&quot;: {
   &quot;policy&quot;: &quot;optional&quot;,
@@ -193,7 +212,7 @@ asd artifact-write: edges[0].relation must be a non-empty string
 </code></pre>
 <p>The malformed-edge rejections matter pedagogically: the toolchain refuses to let a crossing exist <em>anonymously</em>. An edge must say what kind of relationship it is (<code>relation</code>) before the critic will even consider whether its line label is right.</p>
 <hr>
-<h2 id="4-case-study-lens-article-11-visibility-as-policy-at-fernwood">📊 4. Case Study Lens: Article 11 — Visibility as Policy at Fernwood</h2>
+<h2 id="4-case-study-lens-article-11-visibility-as-policy-at-fernwood"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 11 — Visibility as Policy at Fernwood</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong></p>
 </blockquote>
@@ -205,7 +224,7 @@ asd artifact-write: edges[0].relation must be a non-empty string
 </ul>
 <p>When you read any blueprint — including ones produced in this toolchain — audit it line by line: for each of the three lines, list the crossings, then ask <em>who decided this boundary sits here, and what evidence supports it?</em></p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab06
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
 
@@ -232,12 +251,12 @@ $CLI artifact-write --projectId &lt;pid&gt; --methodId service-blueprinting --ti
 <li><input disabled="" type="checkbox"> You found at least one stage where the customer acts with zero interaction crossings — and can say whether that is a gap or a deliberate self-service design.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
-<li>✅ <strong>Interaction, visibility, internal interaction</strong> — three lines, three governors, three distinct cost models. The penetration boundary marks how deep a specific customer&#39;s order drives otherwise-standard systems.</li>
-<li>✅ <strong>Visible failures originate below the line of visibility</strong> — but their <em>cause</em> usually sits at an internal-interaction crossing. Trace symptoms across two lines, not one.</li>
-<li>✅ <strong>Lines are encoded on edges</strong> (<code>relation</code> + <code>fields.label</code>), making demarcations queryable data rather than drawing conventions — and malformed crossings fail closed at write time.</li>
-<li>✅ <strong>Moving an element across the line of visibility is a design decision with a price</strong>; the blueprint&#39;s job is to make that price explicit before launch, not after the complaints.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Interaction, visibility, internal interaction</strong> — three lines, three governors, three distinct cost models. The penetration boundary marks how deep a specific customer&#39;s order drives otherwise-standard systems.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Visible failures originate below the line of visibility</strong> — but their <em>cause</em> usually sits at an internal-interaction crossing. Trace symptoms across two lines, not one.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Lines are encoded on edges</strong> (<code>relation</code> + <code>fields.label</code>), making demarcations queryable data rather than drawing conventions — and malformed crossings fail closed at write time.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Moving an element across the line of visibility is a design decision with a price</strong>; the blueprint&#39;s job is to make that price explicit before launch, not after the complaints.</li>
 </ul>
 <hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
@@ -250,5 +269,6 @@ $CLI artifact-write --projectId &lt;pid&gt; --methodId service-blueprinting --ti
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

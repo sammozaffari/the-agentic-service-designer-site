@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../02-asd-platform-toolchain-deepseek-harness.html">← The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a></nav>
+    <nav class="module-crumb"><a href="../02-asd-platform-toolchain-deepseek-harness.html"><i data-lucide="arrow-left"></i>The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a></nav>
     <article class="module-body">
 
 <h1 id="module-026-the-host-matrix-honestly-verified-profiles-unverified-hosts-and-the-acp-boundary">Module 02.6: The Host Matrix, Honestly — Verified Profiles, Unverified Hosts, and the ACP Boundary</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="./README.md">The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 45 min · <strong>Format</strong>: Theory, Pack Audit &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will be able to:</p>
 <ol>
 <li><strong>Read the host matrix without being misled</strong>: which packs vendor the same MCP server, which are prompt/structural projections, and what &quot;verified&quot; does and does not cover.</li>
@@ -56,13 +72,15 @@
 <li><strong>Complete the hands-on lab</strong>: audit the pack manifests yourself and reproduce this module&#39;s table.</li>
 </ol>
 <hr>
-<h2 id="1-foundational-theory-amp-literature-grounding">📖 1. Foundational Theory &amp; Literature Grounding</h2>
+<h2 id="1-foundational-theory-amp-literature-grounding"><i data-lucide="book-open" class="ic"></i> 1. Foundational Theory &amp; Literature Grounding</h2>
 <h3 id="distribution-is-a-service-design-problem-and-honesty-is-a-feature">Distribution is a service-design problem, and honesty is a feature</h3>
 <p><em>Service-Dominant Logic</em> (<code>books/12-service-dominant-logic/04-service-ecosystems</code>) frames ecosystems as actors integrating resources through shared institutional arrangements. A toolchain distributed across a dozen agent hosts is exactly such an ecosystem — and its institutional arrangement is the <strong>capability contract</strong>: a machine-readable statement of what each surface provably does. Without it, every host integration becomes bespoke folklore; with it, &quot;does Codex pack X?&quot; is a lookup, not a rumor.</p>
 <p><em>Good Services</em> (<code>books/05-good-services/04-principles-trust</code>) makes the second point: trust is built by services that &quot;don&#39;t make claims they can&#39;t back up.&quot; Downe&#39;s principle is about end-user services, but it is the same muscle a platform needs when describing itself. The ASD host matrix therefore encodes <strong>proof status, not aspiration</strong>: every pack manifest declares <code>liveHostExecution: &quot;unverified&quot;</code> unless a host receipt exists, and the capability contract&#39;s support labels are <code>supported</code> / <code>unverified</code> / <code>unsupported</code> — there is deliberately no &quot;probably works&quot; label.</p>
 <p>The theoretical payoff: <strong>one registry, honestly labeled projections.</strong> Everything you learned in modules 02.1–02.5 travels to every host because the packs vendor or reference the <em>same</em> server and the <em>same</em> contracts — and where a host cannot execute, the matrix says so in the open.</p>
 <h3 id="concept-diagram-one-server-four-distribution-modes">Concept diagram — one server, four distribution modes</h3>
-<div class="diagram"><pre class="mermaid">flowchart TD
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart TD
     subgraph Canon[&quot;Canonical suite (verified live today)&quot;]
         REG[&quot;@asd/engine: 29 tools / 74 methods / 32 kind schemas&quot;]
         MCP0[&quot;asd-mcp stdio server: 29 tools, 216 repo-corpus resources, 10 prompts&quot;]
@@ -99,7 +117,8 @@
     class REG,MCP0,CLI0 purple;
     class CC,CX,KM,OC blue;
     class AGY,PI,OMP,GR gold;
-    class DSH,BZ,ACP bad;</pre></div>
+    class DSH,BZ,ACP bad;</pre>
+</div>
 <h3 id="key-principles">Key principles</h3>
 <ul>
 <li><strong>The vendored server is identical</strong>: pack MCP bundles boot with the same 29 tools and 10 prompts; resource counts rise only because packs bundle pack-local corpus copies (225 vs the repo&#39;s 216).</li>
@@ -107,7 +126,7 @@
 <li><strong>Support labels are claims about proof.</strong> A row saying <code>unsupported</code> (e.g. the DSH pack&#39;s <code>phase.gate.status</code> row) is the matrix working as designed, not an embarrassment.</li>
 </ul>
 <hr>
-<h2 id="2-agent-topology-amp-role-contracts">🤖 2. Agent Topology &amp; Role Contracts</h2>
+<h2 id="2-agent-topology-amp-role-contracts"><i data-lucide="bot" class="ic"></i> 2. Agent Topology &amp; Role Contracts</h2>
 <table>
 <thead>
 <tr>
@@ -140,7 +159,7 @@
 <h3 id="agentic-workflow-diagram-orchestrating-only-what-is-proven">Agentic workflow diagram — orchestrating only what is proven</h3>
 <p></p>
 <hr>
-<h2 id="3-the-verified-host-matrix">💻 3. The Verified Host Matrix</h2>
+<h2 id="3-the-verified-host-matrix"><i data-lucide="code" class="ic"></i> 3. The Verified Host Matrix</h2>
 <p>Every row below is read from the pack&#39;s committed <code>capabilities.json</code> / <code>manifest.json</code> (checked today, 2026-08-22), not from memory.</p>
 <table>
 <thead>
@@ -293,14 +312,14 @@
 </tr>
 </tbody></table>
 <hr>
-<h2 id="4-enterprise-case-study-lens">🏢 4. Enterprise Case Study Lens</h2>
+<h2 id="4-enterprise-case-study-lens"> 4. Enterprise Case Study Lens</h2>
 <h3 id="article-36-as-honesty-benchmark-wattle-grove-community-care-articles36">Article 36 (as honesty benchmark) — <em>Wattle Grove Community Care</em> (<code>articles/36</code>)</h3>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong></p>
 </blockquote>
 <p>Read Article 36&#39;s §0 as a <em>style guide for claims</em>: it records the DSH receipt (profile composition, six host slots, official lifecycle commands, smoke/accessibility/portability checks) and then states what the receipt does <strong>not</strong> show — that the current host chat dispatched providers or completed the case end to end. Its capability projection is equally blunt: 22 rows supported, <code>phase.gate.status</code> <strong>unsupported</strong>. When you write about any host integration — in a design dossier, a client proposal, or a course answer — this is the register to use: enumerate the evidence, name its class, and let <code>unsupported</code> rows stand in daylight.</p>
 <hr>
-<h2 id="5-critic-gate-amp-review-veto-rules-claims-edition">⚖️ 5. Critic Gate &amp; Review Veto Rules (claims edition)</h2>
+<h2 id="5-critic-gate-amp-review-veto-rules-claims-edition"><i data-lucide="undefined" class="ic"></i> 5. Critic Gate &amp; Review Veto Rules (claims edition)</h2>
 <blockquote>
 <p>[!IMPORTANT]</p>
 <ol>
@@ -313,7 +332,7 @@
 <h3 id="host-claim-lifecycle-diagram">Host-claim lifecycle diagram</h3>
 <p></p>
 <hr>
-<h2 id="6-hands-on-lab-assignment">🧪 6. Hands-On Lab Assignment</h2>
+<h2 id="6-hands-on-lab-assignment"><i data-lucide="flask-conical" class="ic"></i> 6. Hands-On Lab Assignment</h2>
 <h3 id="objective">Objective</h3>
 <p>Reproduce this module&#39;s host matrix from the repo, and catch one inflated claim.</p>
 <h3 id="steps">Steps</h3>
@@ -347,7 +366,7 @@ jq -c &#39;.counts&#39; platform/packs/manifest.json
 <li><input disabled="" type="checkbox"> You can quote the ACP boundary sentence from <code>docs/INTEGRATION.md</code> without opening this module</li>
 </ul>
 <hr>
-<h2 id="7-summary-amp-reference-anchors">📚 7. Summary &amp; Reference Anchors</h2>
+<h2 id="7-summary-amp-reference-anchors"><i data-lucide="library" class="ic"></i> 7. Summary &amp; Reference Anchors</h2>
 <h3 id="key-takeaways">Key takeaways</h3>
 <ul>
 <li>The host matrix is a <strong>claims discipline</strong>: mcp-host packs vendor the same server and add host-format prompts/skills; static/prompt-only packs are text projections; grok attaches as a generic MCP client; DSH and BUZZ are deferred; ACP is record-only and fail-closed.</li>
@@ -368,5 +387,6 @@ jq -c &#39;.counts&#39; platform/packs/manifest.json
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../07-cross-channel-orchestration-prototyping-sops.html">← Cross-Channel Orchestration, Prototyping &amp; SOPs-as-Code</a></nav>
+    <nav class="module-crumb"><a href="../07-cross-channel-orchestration-prototyping-sops.html"><i data-lucide="arrow-left"></i>Cross-Channel Orchestration, Prototyping &amp; SOPs-as-Code</a></nav>
     <article class="module-body">
 
 <h1 id="module-075-sops-as-code-versioned-execution-playbooks-amp-governance">Module 07.5: SOPs-as-Code: Versioned Execution Playbooks &amp; Governance</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="../README.md">Cross-Channel Orchestration, Prototyping &amp; SOPs-as-Code</a> · <strong>Level</strong>: Advanced · <strong>Duration</strong>: 50 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <ol>
 <li><strong>Theoretical Foundations</strong>: Why static SOP binders fail under real service change, and why measurable standards plus governed rollout plans are the service-design answer.</li>
 <li><strong>Agent Topology &amp; Contracts</strong>: <code>service-standard-authoring</code> → <code>service-standard-set</code>, <code>change-pack-authoring</code> → <code>change-plan</code>, <code>implementation-roadmap</code> → <code>roadmap</code>, plus <code>sd_orchestration_plan</code> / <code>sd_orchestration_dispatch</code> for rollout tracking.</li>
@@ -56,7 +72,7 @@
 <li><strong>Hands-on Practice</strong>: Author a measurable standard, convert it into a change plan, sequence it as a roadmap, then track rollout dispatches.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="the-binder-fails-because-services-change-faster-than-prose">The binder fails because services change faster than prose</h3>
 <p><em>Service Design for Business</em> (Reason, Løvlie, Flu, 2015) makes the core organizational point twice: in Ch. 2 (<em>The Frontline</em>), the authors argue that frontline quality is limited by internal structures — fragmented tools, conflicting incentives, rigid approvals — rather than employee goodwill; in Ch. 6 (<em>Organizational Change</em>), they argue that any serious service redesign is fundamentally an organizational change program. Those two claims explain why the SOP binder fails:</p>
 <ul>
@@ -81,7 +97,9 @@
 <h3 id="there-is-no-separate-sop-tool-family">There is no separate SOP tool family</h3>
 <p>This matters because teams often expect a dedicated SOP authoring namespace. The verified runtime surface contains <strong>29 tools</strong>, and SOP work is expressed through typed artifacts plus review/governance commands. The project filesystem <em>does</em> contain a <code>sops/</code> directory, but the runtime uses it as a record surface for orchestration plans (<code>sops/orchestration.json</code> in the verified run), not as a parallel pseudo-tool namespace. In the <code>@asd</code> model, the &quot;SOP&quot; is the <strong>typed artifact</strong> — a <code>service-standard-set</code> linked to <code>change-plan</code>, <code>roadmap</code>, and rollout dispatch records.</p>
 <h3 id="sop-lifecycle-as-a-governed-chain">SOP lifecycle as a governed chain</h3>
-<div class="diagram"><pre class="mermaid">flowchart LR
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart LR
     S0[&quot;Draft standard — measurable service rule&quot;] --&gt;|&quot;sd_review critic gate&quot;| S1[&quot;service-standard-set final&quot;]
     S1 --&gt;|&quot;derived-from&quot;| C0[&quot;change-plan — owner, action, status&quot;]
     C0 --&gt;|&quot;critic gate&quot;| C1[&quot;change-plan final&quot;]
@@ -96,10 +114,11 @@
     classDef bad   fill:#fff5f5,stroke:#c53030,stroke-width:1.5px,color:#742a2a;
     class S0,C0,R0 blue;
     class S1,C1,O0 purple;
-    class O1,P gold;</pre></div>
+    class O1,P gold;</pre>
+</div>
 <p>The important design decision is that each edge carries a <strong>typed artifact or recorded dispatch</strong>, not a meeting. The chain is what gives governance something to inspect.</p>
 <hr>
-<h2 id="2-agent-topology-amp-method-contracts">🤖 2. Agent Topology &amp; Method Contracts</h2>
+<h2 id="2-agent-topology-amp-method-contracts"><i data-lucide="bot" class="ic"></i> 2. Agent Topology &amp; Method Contracts</h2>
 <table>
 <thead>
 <tr>
@@ -160,7 +179,7 @@
 </tbody></table>
 <p></p>
 <hr>
-<h2 id="3-schemas-amp-verified-execution">💻 3. Schemas &amp; Verified Execution</h2>
+<h2 id="3-schemas-amp-verified-execution"><i data-lucide="code" class="ic"></i> 3. Schemas &amp; Verified Execution</h2>
 <h3 id="typescript-schema-asdcore">TypeScript schema (<code>@asd/core</code>)</h3>
 <pre><code class="language-typescript">// &quot;service-standard-set&quot;: measure: string REQUIRED   target: number   owner: string   test: string   status: string
 //   relations: derived-from → service-blueprint | journey-map | experience-audit
@@ -233,13 +252,13 @@ $CLI orchestration-status --projectId juniper-collect-and-return-sprint-5cdce310
 <p>That is the exact governance boundary the course should teach: agents prepare artifacts and rollout records; humans authorize phase movement with a signed receipt.</p>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-pilots-scaling-amp-organizational-change-at-aurelia-insurance-article-21">📊 4. Case Study Lens: Pilots, Scaling &amp; Organizational Change at Aurelia Insurance (Article 21)</h2>
+<h2 id="4-case-study-lens-pilots-scaling-amp-organizational-change-at-aurelia-insurance-article-21"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Pilots, Scaling &amp; Organizational Change at Aurelia Insurance (Article 21)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 21 is an illustrative composite.</p>
 </blockquote>
 <p>Aurelia&#39;s composite program did not fail at ideation or prototyping; it failed at the binder stage. Pilot teams had a good idea of the target experience, but one region was operating from an old desk script, another from a local wiki, and a third from a PDF in SharePoint. The move that unlocked scaling was not &quot;write better SOPs&quot; but <strong>split the bundle into typed layers</strong>: one measurable service-standard-set, one accountable change-plan, one rollout roadmap, and one orchestration record of step execution. In other words, the operational memory moved from prose to artifacts. That is why the runtime&#39;s orchestration status matters pedagogically: it is the concrete answer to &quot;how do I know wave 1 actually happened?&quot;</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <pre><code class="language-bash">$CLI method-run --projectId &lt;pid&gt; --methodId service-standard-authoring  # needs blueprint or journey-map
 $CLI artifact-write ... --methodId service-standard-authoring --nodes &#39;&lt;measure + target + owner + test&gt;&#39;
 $CLI review ... --artifactId &lt;standardId&gt; --verdict pass --rows &#39;&lt;evidence-cited proposal&gt;&#39;
@@ -273,12 +292,12 @@ $CLI orchestration-status --projectId &lt;pid&gt; --planId &lt;planId&gt;
 <li><input disabled="" type="checkbox"> Phase advancement attempted only with an approval receipt.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
-<li>✅ In <code>@asd</code>, an SOP is a typed artifact chain, not a new tool family: <code>service-standard-set → change-plan → roadmap → orchestration-plan</code>.</li>
-<li>✅ There are no <code>sd_sop_*</code> tools; measurable standards and rollout records are the operational truth.</li>
-<li>✅ Rollout tracking is first-class: <code>sd_orchestration_plan</code>, <code>dispatch</code>, and <code>status</code> persist step outcomes in <code>sops/orchestration.json</code>.</li>
-<li>✅ Humans still own authorization. <code>sd_phase_advance</code> refuses to move without an approval receipt.</li>
+<li><i data-lucide="circle-check" class="ic"></i> In <code>@asd</code>, an SOP is a typed artifact chain, not a new tool family: <code>service-standard-set → change-plan → roadmap → orchestration-plan</code>.</li>
+<li><i data-lucide="circle-check" class="ic"></i> There are no <code>sd_sop_*</code> tools; measurable standards and rollout records are the operational truth.</li>
+<li><i data-lucide="circle-check" class="ic"></i> Rollout tracking is first-class: <code>sd_orchestration_plan</code>, <code>dispatch</code>, and <code>status</code> persist step outcomes in <code>sops/orchestration.json</code>.</li>
+<li><i data-lucide="circle-check" class="ic"></i> Humans still own authorization. <code>sd_phase_advance</code> refuses to move without an approval receipt.</li>
 </ul>
 <hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
@@ -291,5 +310,6 @@ $CLI orchestration-status --projectId &lt;pid&gt; --planId &lt;planId&gt;
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

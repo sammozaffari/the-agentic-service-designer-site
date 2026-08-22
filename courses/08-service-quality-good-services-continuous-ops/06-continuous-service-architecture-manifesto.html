@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../08-service-quality-good-services-continuous-ops.html">← Service Quality, Good Services Audits &amp; Continuous Operations</a></nav>
+    <nav class="module-crumb"><a href="../08-service-quality-good-services-continuous-ops.html"><i data-lucide="arrow-left"></i>Service Quality, Good Services Audits &amp; Continuous Operations</a></nav>
     <article class="module-body">
 
 <h1 id="module-086-continuous-service-architecture-approval-gates-re-open-loops-and-living-ownership">Module 08.6: Continuous Service Architecture — Approval Gates, Re-Open Loops, and Living Ownership</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="./README.md">Service Quality, Good Services Audits &amp; Continuous Operations</a> · <strong>Level</strong>: Advanced · <strong>Duration</strong>: 60 min · <strong>Format</strong>: Theory, Architecture, Verified CLI &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <ol>
 <li>Distinguish the <strong>project phase enum</strong> (<code>discover | define | develop | deliver</code>) from the <strong>method phase enum</strong> (<code>research | synthesis | ideation | prototyping | delivery | measurement</code>) and explain why the toolchain keeps them separate.</li>
 <li>Run and interpret <code>sd_phase_advance</code>, including the <code>approvalReceipt</code> requirement and the preflight conditions it enforces.</li>
@@ -55,7 +71,7 @@
 <li>Define ongoing ownership with <code>roadmap</code> and <code>raci-matrix</code> artifacts so the blueprint becomes an operating rhythm rather than a slide.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding">📖 1. Theoretical Grounding</h2>
+<h2 id="1-theoretical-grounding"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding</h2>
 <h3 id="11-a-service-blueprint-is-only-useful-if-it-stays-alive">1.1 A service blueprint is only useful if it stays alive</h3>
 <p>Service design literature has always wanted more than a workshop artifact. Grönroos wants service quality continuously measured against expectations. Outside In wants journey governance, tied metrics, and industrialized capability. Downe wants a service that keeps responding to change. The only way to satisfy all three is to treat the blueprint, the KPI tree, the audits, the recovery playbook, and the standards set as <strong>versioned operational artifacts</strong> — always open to new evidence and always passing their gates <em>for now</em>.</p>
 <p>In the ASD runtime, &quot;continuous&quot; is not a metaphor. It is a rhythm of typed updates:</p>
@@ -89,7 +105,9 @@
 </ol>
 <p>This is why roadmap and ownership artifacts matter: somebody has to own the re-open.</p>
 <h3 id="concept-diagram-living-blueprint-operating-rhythm">Concept diagram — living blueprint operating rhythm</h3>
-<div class="diagram"><pre class="mermaid">flowchart LR
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart LR
     E[&quot;new evidence&quot;] --&gt; M[&quot;method re-run&quot;] --&gt; A[&quot;new artifact version&quot;] --&gt; R[&quot;critic review&quot;] --&gt; F[&quot;factcheck&quot;]
     F --&gt;|&quot;pass&quot;| H[&quot;human gate: approvalReceipt if phase move needed&quot;]
     F --&gt;|&quot;fail&quot;| FIX[&quot;fix artifact or gather better evidence&quot;] --&gt; M
@@ -104,9 +122,10 @@
     class M,A blue;
     class R,F purple;
     class FIX bad;
-    class H gold;</pre></div>
+    class H gold;</pre>
+</div>
 <hr>
-<h2 id="2-verified-governance-semantics">🤖 2. Verified Governance Semantics</h2>
+<h2 id="2-verified-governance-semantics"><i data-lucide="bot" class="ic"></i> 2. Verified Governance Semantics</h2>
 <h3 id="21-sd-phase-advance-preflight-source-and-receipts">2.1 <code>sd_phase_advance</code> preflight (source and receipts)</h3>
 <p>The tool source (<code>suite/packages/engine/src/tools/phase.ts</code>) computes a preflight on every advance attempt:</p>
 <ul>
@@ -160,7 +179,7 @@ $CLI phase-advance --projectId gate-replay-probe-4d155435 --toPhase define \
 <h3 id="sequence-diagram-approval-gate-with-replay-semantics">Sequence diagram — approval gate with replay semantics</h3>
 <p></p>
 <hr>
-<h2 id="3-roadmap-and-raci-ownership-of-the-living-system">🧭 3. Roadmap and RACI — ownership of the living system</h2>
+<h2 id="3-roadmap-and-raci-ownership-of-the-living-system"><i data-lucide="compass" class="ic"></i> 3. Roadmap and RACI — ownership of the living system</h2>
 <p>A living blueprint dies when nobody owns the refresh loop. Two registered delivery methods supply the ownership artifacts:</p>
 <ul>
 <li><strong><code>implementation-roadmap</code> / <code>blueprint-to-backlog</code> / <code>wave-gated-rollout</code></strong> → <code>roadmap</code> kind (<code>milestone</code> required in the closed kind schema)</li>
@@ -198,13 +217,13 @@ $CLI phase-advance --projectId gate-replay-probe-4d155435 --toPhase define \
 <h3 id="ownership-diagram-roadmap-raci-spine">Ownership diagram — roadmap + RACI spine</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-running-an-engagement-inside-the-harness-article-36">📊 4. Case Study Lens: Running an Engagement Inside the Harness (Article 36)</h2>
+<h2 id="4-case-study-lens-running-an-engagement-inside-the-harness-article-36"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Running an Engagement Inside the Harness (Article 36)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 36 (<code>articles/36/README.md</code>) narrates a full engagement inside the ASD harness.</p>
 </blockquote>
 <p>It is the capstone fit because the article is less about a single method than about the <strong>operating model</strong>: how evidence, artifacts, critic verdicts, and phase gates accumulate across an engagement. The current course&#39;s verified receipts mirror that narrative more honestly than marketing ever could: drafts block gates, veto logs persist, failed keys replay, fresh keys advance, and every artifact remains inspectable in the store. That is what &quot;continuous architecture&quot; means here — not autonomous magic, but a rigorously versioned design system with explicit human checkpoints.</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <ol>
 <li>Create a fresh project. Attempt <code>phase-advance</code> immediately with a legal receipt JSON — observe <code>requires at least one design artifact</code>.</li>
 <li>Add evidence, write and pass-review <strong>one</strong> design artifact, and re-attempt with the <strong>same</strong> key; observe the recorded rejection replay.</li>
@@ -221,7 +240,7 @@ $CLI phase-advance --projectId gate-replay-probe-4d155435 --toPhase define \
 <li><input disabled="" type="checkbox"> Roadmap milestone + accountable owner named for each cadence</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
 <li>Continuous ops = evidence refresh → method rerun → new artifact version → critic gate → factcheck → human gate; the blueprint stays alive because the loop stays alive.</li>
 <li><code>project</code> phases and <code>method</code> phases are different enums; they solve different governance problems.</li>
@@ -240,5 +259,6 @@ $CLI phase-advance --projectId gate-replay-probe-4d155435 --toPhase define \
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

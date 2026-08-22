@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../06-master-service-blueprinting-5-lane-to-6th-lane.html">← Master Service Blueprinting — 5-Lane Architecture to the Orchestration Sixth Lane</a></nav>
+    <nav class="module-crumb"><a href="../06-master-service-blueprinting-5-lane-to-6th-lane.html"><i data-lucide="arrow-left"></i>Master Service Blueprinting — 5-Lane Architecture to the Orchestration Sixth Lane</a></nav>
     <article class="module-body">
 
 <h1 id="module-061-why-blueprints-are-the-architecture-of-service-delivery">Module 06.1: Why Blueprints Are the Architecture of Service Delivery</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="../README.md">Master Service Blueprinting: 5-Lane Architecture to the Orchestration Sixth Lane</a> · <strong>Level</strong>: Intermediate · <strong>Duration</strong>: 45 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will master:</p>
 <ol>
 <li><strong>Theoretical Foundations</strong>: Shostack&#39;s 1982/1984 process-engineering argument and the Bitner/Ostrom/Morgan 2008 codification — why a blueprint is an operational specification, not a poster.</li>
@@ -57,7 +73,7 @@
 <li><strong>Adversarial Verification</strong>: why the critic gate and <code>sd_factcheck</code> are what turn a drawing into architecture.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="shostack39s-original-argument-services-are-processes-and-processes-can-be-engineered">Shostack&#39;s original argument: services are processes, and processes can be engineered</h3>
 <p>G. Lynn Shostack introduced the service blueprint in <em>&quot;How to Design a Service&quot;</em> (European Journal of Marketing, 1982) and <em>&quot;Designing Services That Deliver&quot;</em> (Harvard Business Review, 1984). Her move was radical for a marketing audience: she insisted that a service is not an atmosphere or a brand promise but a <strong>process rendered against time</strong>, and that anything processual can be documented, measured, and engineered with the same rigour as a manufacturing line (see <code>books/02-this-is-service-design-thinking/01-what-is-service-design.md</code> for the 1982/1984 publication lineage, and <code>books/07-designing-for-service-key-issues/02-service-design-and-management.md</code> for the managerial framing).</p>
 <p>Her canonical demonstration was a retail discount brokerage (<code>books/02/01</code>, <code>books/07/02</code>). Management believed customer satisfaction turned on broker demeanor. The blueprint proved otherwise: satisfaction depended on <strong>backstage check-clearing speed and error-free monthly statement generation</strong> — processes the customer never saw. By drawing the <em>line of visibility</em> and separating what the customer experiences from what the organization executes, Shostack could attach <strong>explicit time standards</strong> to backstage steps and locate failure points that no amount of frontline charm could compensate for. Three durable claims follow:</p>
@@ -105,7 +121,9 @@
 </tbody></table>
 <p>A journey map that showed an unexplained two-hour discharge wait could not say <em>why</em>; the blueprint revealed the wait spanned four disjointed backstage departments — pharmacy, ward sign-off, billing, transport — and a single new &quot;Discharge Coordinator&quot; role eliminated the handoff friction (<code>books/09/05</code>, hospital case). Read the two artifacts as a pair: the journey map supplies the <em>symptom</em>, the blueprint supplies the <em>diagnosis</em>. This is why the <code>@asd</code> schema lets a <code>service-blueprint</code> carry a typed <code>derived-from</code> reference to a <code>journey-map</code> — the toolchain hard-wires the theory&#39;s division of labour into the data model.</p>
 <h3 id="concept-diagram-the-two-views-of-one-service">Concept diagram — the two views of one service</h3>
-<div class="diagram"><pre class="mermaid">flowchart TB
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart TB
     subgraph EXP[&quot;Experience view — journey-map&quot;]
         J1[&quot;Stage: report&lt;br/&gt;emotion: relieved&quot;] --&gt; J2[&quot;Stage: wait&lt;br/&gt;emotion: anxious&quot;]
         J2 --&gt; J3[&quot;Stage: visit&lt;br/&gt;emotion: frustrated&quot;]
@@ -128,7 +146,8 @@
     classDef purple fill:#faf5ff,stroke:#805ad5,stroke-width:1.5px,color:#553c9e;
     class J1,J2,J3 paper;
     class L1,L2 blue;
-    class L3,L4 purple;</pre></div>
+    class L3,L4 purple;</pre>
+</div>
 <h3 id="why-quotarchitecturequot-is-the-right-word-and-why-the-tooling-exists">Why &quot;architecture&quot; is the right word — and why the tooling exists</h3>
 <p>Architecture is the set of load-bearing decisions that are expensive to change later. A blueprint earns the word because it fixes the contracts that everything else depends on: which actor owns which step, what the customer may see, where system boundaries sit, what happens when a step fails. Traditional blueprinting died in workshops because the artifact was a static poster: it drifted from reality within weeks and nobody could prove which claim rested on which observation. The agentic toolchain exists to make the blueprint <em>executable architecture</em>: typed nodes with mandatory lane fields, every node citing content-addressed evidence, an adversarial critic gate on the write path, and a deterministic compiler that renders the same SVG from the same JSON every time. The theory&#39;s invariants become the schema&#39;s acceptance rules.</p>
 <h3 id="methodological-invariants">Methodological invariants</h3>
@@ -138,7 +157,7 @@
 <li><strong>Adversarial falsification</strong>: the critic role sits on the write path and tries to disprove the blueprint before any client sees it. Shostack wanted engineering rigour; the gate is how rigour survives contact with deadline pressure.</li>
 </ul>
 <hr>
-<h2 id="2-agentic-topology-amp-role-contracts">🤖 2. Agentic Topology &amp; Role Contracts</h2>
+<h2 id="2-agentic-topology-amp-role-contracts"><i data-lucide="bot" class="ic"></i> 2. Agentic Topology &amp; Role Contracts</h2>
 <p>The <code>service-blueprinting</code> method (phase <code>synthesis</code>, owner <code>mapper</code>) declares exactly three execution steps, and each maps to real tools:</p>
 <table>
 <thead>
@@ -174,7 +193,7 @@
 <h3 id="lifecycle-sequence-who-does-what-in-order">Lifecycle sequence — who does what, in order</h3>
 <p></p>
 <hr>
-<h2 id="3-schemas-amp-verified-execution">💻 3. Schemas &amp; Verified Execution</h2>
+<h2 id="3-schemas-amp-verified-execution"><i data-lucide="code" class="ic"></i> 3. Schemas &amp; Verified Execution</h2>
 <h3 id="typescript-contract-asdcore">TypeScript contract (<code>@asd/core</code>)</h3>
 <pre><code class="language-typescript">/** Real types from @asd/core — suite/packages/core/src/types.ts */
 export type Artifact = {
@@ -231,7 +250,7 @@ $CLI method-run --projectId fernwood-repairs-blueprint-sprint-7cee33e4 --methodI
 </code></pre>
 <p>Note the fail-closed behaviour: with fewer than 4 evidence records, <code>method-run</code> refuses — <code>&quot;requires at least 4 evidence records; project has N.&quot;</code> The contract is enforced <em>before</em> any agent writes a word.</p>
 <hr>
-<h2 id="4-case-study-lens-article-11-fernwood-council-housing-repairs">📊 4. Case Study Lens: Article 11 — Fernwood Council Housing Repairs</h2>
+<h2 id="4-case-study-lens-article-11-fernwood-council-housing-repairs"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 11 — Fernwood Council Housing Repairs</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 11 (<em>Service Blueprints as Operational Diagnostics: Fernwood Council&#39;s Housing Repairs Service</em>) is a synthetic composite case study from this repo&#39;s <code>articles/</code> corpus. Its counts and transcripts are illustrative, not measured production data.</p>
 </blockquote>
@@ -244,7 +263,7 @@ $CLI method-run --projectId fernwood-repairs-blueprint-sprint-7cee33e4 --methodI
 </ul>
 <p>The full 5-lane Fernwood blueprint is authored live in module 06.6 and diagnosed in 06.7; this module established <em>why</em> that artifact and not a prettier journey map.</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <p>Work in <code>courses/labs/lab-06-blueprinting-6lane/</code> — the verifier script there drives exactly this spine.</p>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab06
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
@@ -273,12 +292,12 @@ $CLI artifact-write --projectId &lt;pid&gt; --methodId service-blueprinting --ti
 <li><input disabled="" type="checkbox"> You can explain, in one sentence each, what the journey map cannot tell you that the blueprint can, and vice versa.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
-<li>✅ <strong>Shostack&#39;s insight (1982/1984): services are processes; processes can be engineered.</strong> The line of visibility turned &quot;improve the service&quot; from a vibes exercise into cycle-time and failure-mode arithmetic.</li>
-<li>✅ <strong>Bitner/Ostrom/Morgan (2008) codified the five components and three lines.</strong> The express-parcel and hospital-discharge cases show satisfaction is backstage synchronization made visible.</li>
-<li>✅ <strong>A journey map shows the symptom; a blueprint shows the mechanism.</strong> The toolchain hard-wires this with the typed <code>derived-from</code> reference (provenance required).</li>
-<li>✅ <strong>Architecture means load-bearing contracts with enforcement.</strong> In <code>@asd</code> the enforcement is mechanical: closed schema, required <code>lane</code> field, per-node evidence, critic gate, deterministic factcheck.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Shostack&#39;s insight (1982/1984): services are processes; processes can be engineered.</strong> The line of visibility turned &quot;improve the service&quot; from a vibes exercise into cycle-time and failure-mode arithmetic.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Bitner/Ostrom/Morgan (2008) codified the five components and three lines.</strong> The express-parcel and hospital-discharge cases show satisfaction is backstage synchronization made visible.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>A journey map shows the symptom; a blueprint shows the mechanism.</strong> The toolchain hard-wires this with the typed <code>derived-from</code> reference (provenance required).</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Architecture means load-bearing contracts with enforcement.</strong> In <code>@asd</code> the enforcement is mechanical: closed schema, required <code>lane</code> field, per-node evidence, critic gate, deterministic factcheck.</li>
 </ul>
 <hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
@@ -291,5 +310,6 @@ $CLI artifact-write --projectId &lt;pid&gt; --methodId service-blueprinting --ti
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

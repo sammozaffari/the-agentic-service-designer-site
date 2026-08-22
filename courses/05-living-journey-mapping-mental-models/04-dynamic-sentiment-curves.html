@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../05-living-journey-mapping-mental-models.html">← Living Journey Mapping &amp; Mental Model Alignment</a></nav>
+    <nav class="module-crumb"><a href="../05-living-journey-mapping-mental-models.html"><i data-lucide="arrow-left"></i>Living Journey Mapping &amp; Mental Model Alignment</a></nav>
     <article class="module-body">
 
 <h1 id="module-054-deriving-dynamic-sentiment-curves-from-verbatim-quotes">Module 05.4: Deriving Dynamic Sentiment Curves from Verbatim Quotes</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="../README.md">Living Journey Mapping &amp; Mental Model Alignment</a> · <strong>Level</strong>: Intermediate · <strong>Duration</strong>: 55 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will master:</p>
 <ol>
 <li><strong>Theoretical Foundations</strong>: The emotional curve as Kalbach defines it (<em>Mapping Experiences</em>, ch. 4) — affective valence coded on a −5…+5 scale, plotted across phases, with steep drops annotated by trigger events and the deepest valleys treated as priority redesign targets.</li>
@@ -57,7 +73,7 @@
 <li><strong>Hands-on Practice</strong>: Derive a sentiment view from a real artifact&#39;s fields and render it.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="the-emotional-curve-defined-properly">The emotional curve, defined properly</h3>
 <p>Kalbach (ch. 4) gives the journey map its most scannable element: <strong>a continuous plotted trajectory of affective valence</strong> — peaks of delight and confidence against valleys of frustration and anxiety. The construction recipe is empirical, not aesthetic:</p>
 <ol>
@@ -78,7 +94,9 @@
 <h3 id="why-there-is-no-sentiment-calculation-tool-and-why-that-is-the-point">Why there is no sentiment-calculation tool — and why that is the point</h3>
 <p>The ASD toolchain deliberately stores <strong>the raw material of the curve and nothing else</strong>: every journey stage carries <code>fields.emotion</code> — a <em>string</em>, required by the <code>journey-map</code> kind schema, gated non-empty by method acceptance, and (per the method instruction) <em>&quot;drawn from the quotes, never inferred.&quot;</em> There is no sentiment tool in the 29-tool surface. The curve is a <strong>derived view</strong>: you read a real artifact&#39;s nodes, apply a declared emotion→valence mapping in front of the reviewer, and plot. If the derivation is challenged, the resolution path is not an argument about the algorithm — it is a walk down each node to its <code>evidence[].quote</code>. Stored truth: quote-backed fields. Derived view: the curve. Never confuse the layers.</p>
 <h3 id="concept-diagram-from-quote-to-curve-honestly">Concept diagram — from quote to curve, honestly</h3>
-<div class="diagram"><pre class="mermaid">flowchart TD
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart TD
     subgraph STORE[&quot;Stored truth (artifact JSON, evidence-gated)&quot;]
         N1[&quot;n1 fields.emotion: 'anxious'&lt;br/&gt;quote: 'I check the app three times…'&quot;]
         N2[&quot;n2 fields.emotion: 'confused'&lt;br/&gt;quote: 'I found out from another passenger…'&quot;]
@@ -105,9 +123,10 @@
     class N1,N2,N3,N4 blue;
     class M,C purple;
     class V,WALK bad;
-    class USE gold;</pre></div>
+    class USE gold;</pre>
+</div>
 <hr>
-<h2 id="2-agentic-topology-amp-contracts">🤖 2. Agentic Topology &amp; Contracts</h2>
+<h2 id="2-agentic-topology-amp-contracts"><i data-lucide="bot" class="ic"></i> 2. Agentic Topology &amp; Contracts</h2>
 <p>No new method is needed — the sentiment curve rides the same <code>journey-from-transcripts</code> contract from module 05.3. What changes is the <em>lens</em> each role applies:</p>
 <table>
 <thead>
@@ -137,7 +156,7 @@
 <h3 id="agentic-workflow-diagram">Agentic workflow diagram</h3>
 <p></p>
 <hr>
-<h2 id="3-schemas-amp-verified-execution">💻 3. Schemas &amp; Verified Execution</h2>
+<h2 id="3-schemas-amp-verified-execution"><i data-lucide="code" class="ic"></i> 3. Schemas &amp; Verified Execution</h2>
 <h3 id="the-schema-boundary-verified">The schema boundary, verified</h3>
 <p>The <code>journey-map</code> kind schema is <strong>closed</strong>: <code>stage, emotion, touchpoint, actor, pain, gain, opportunity, description, notes, tags</code>. A write carrying <code>fields.valence: -3</code> is rejected — <code>artifact.nodes[0].fields.valence is not allowed by the closed kind schema</code>. Valence therefore lives exactly where it should: in the derived view, computed from the gated <code>emotion</code> string, never smuggled into storage as an unevidenced number.</p>
 <h3 id="verified-derivation-from-a-real-artifact">Verified derivation from a real artifact</h3>
@@ -158,7 +177,7 @@
 <li><strong>What you may not claim:</strong> statistical significance, population-level sentiment, or precision beyond the mapping&#39;s declared granularity. Four quote-backed stages produce a <em>shape to argue with</em>, not a measurement.</li>
 </ul>
 <hr>
-<h2 id="4-case-study-lens-albatross-airways-article-09">📊 4. Case Study Lens: Albatross Airways (Article 09)</h2>
+<h2 id="4-case-study-lens-albatross-airways-article-09"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Albatross Airways (Article 09)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Albatross Airways is a fictional composite client from <code>articles/09/</code>; figures are illustrative.</p>
 </blockquote>
@@ -169,7 +188,7 @@
 <li><strong>The annotation did the work.</strong> Kalbach&#39;s step 4 — annotate steep drops with the specific trigger event — is what turned &quot;passengers feel bad&quot; into &quot;passengers feel worst <em>while uninformed</em>, so fix information latency.&quot; An unannotated curve is a mood; an annotated curve is a backlog.</li>
 </ol>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab-05-04
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
 
@@ -197,12 +216,12 @@ $CLI artifact-write --projectId &lt;pid&gt; --methodId journey-from-transcripts 
 <li><input disabled="" type="checkbox"> The curve&#39;s deepest valley matches the node with the strongest negative emotion word — not the one that &quot;feels&quot; worst.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
-<li>✅ <strong>The emotional curve is coded, averaged, plotted, annotated, prioritized</strong> — Kalbach&#39;s five steps, each one falsifiable.</li>
-<li>✅ <strong>Valence lives in derived views; the store holds quote-backed <code>emotion</code> strings</strong> — the closed schema rejects numeric smuggling by construction.</li>
-<li>✅ <strong>There is no sentiment tool in the 29-tool surface, deliberately</strong>: the critic gate plus the quote chain is the entire honesty mechanism.</li>
-<li>✅ <strong>A curve moves when evidence moves</strong> — new quotes, a rewritten artifact version, a re-run gate. That is the only &quot;dynamic&quot; a living map needs.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>The emotional curve is coded, averaged, plotted, annotated, prioritized</strong> — Kalbach&#39;s five steps, each one falsifiable.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Valence lives in derived views; the store holds quote-backed <code>emotion</code> strings</strong> — the closed schema rejects numeric smuggling by construction.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>There is no sentiment tool in the 29-tool surface, deliberately</strong>: the critic gate plus the quote chain is the entire honesty mechanism.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>A curve moves when evidence moves</strong> — new quotes, a rewritten artifact version, a re-run gate. That is the only &quot;dynamic&quot; a living map needs.</li>
 </ul>
 <hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
@@ -215,5 +234,6 @@ $CLI artifact-write --projectId &lt;pid&gt; --methodId journey-from-transcripts 
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

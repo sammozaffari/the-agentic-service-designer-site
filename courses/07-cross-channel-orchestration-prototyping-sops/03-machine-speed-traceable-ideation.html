@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../07-cross-channel-orchestration-prototyping-sops.html">← Cross-Channel Orchestration, Prototyping &amp; SOPs-as-Code</a></nav>
+    <nav class="module-crumb"><a href="../07-cross-channel-orchestration-prototyping-sops.html"><i data-lucide="arrow-left"></i>Cross-Channel Orchestration, Prototyping &amp; SOPs-as-Code</a></nav>
     <article class="module-body">
 
 <h1 id="module-073-machine-speed-traceable-ideation-amp-hmw-scoring">Module 07.3: Machine-Speed Traceable Ideation &amp; HMW Scoring</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="../README.md">Cross-Channel Orchestration, Prototyping &amp; SOPs-as-Code</a> · <strong>Level</strong>: Advanced · <strong>Duration</strong>: 50 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <ol>
 <li><strong>Theoretical Foundations</strong>: Disciplined divergence — Kumar&#39;s Mode 5 concept exploration, morphological analysis, and the NUF (New–Useful–Feasible) triple lens — and why traceability is the difference between ideation and slop.</li>
 <li><strong>Agent Topology &amp; Contracts</strong>: The <code>insight-set → hmw-set → concept-set</code> chain (<code>hmw-formulation</code>, <code>morphological-concept-matrix</code>, <code>nuf-triple-lens-filter</code>, <code>speed-dating-concepts</code>) with real input gates and acceptance rules.</li>
@@ -56,7 +72,7 @@
 <li><strong>Hands-on Practice</strong>: Run the full ideation spine and inspect the reference graph.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="divergence-with-a-paper-trail">Divergence with a paper trail</h3>
 <p>Vijay Kumar&#39;s <em>101 Design Methods</em> (2012) frames ideation as <strong>Mode 5: Explore Concepts</strong> — and its first discipline is that <em>concepts must be directly traceable to framed insights</em>. Mode 5 is deliberately combinatorial: structured tools force the team beyond the first obvious idea, culminating in a Concept Catalog of distinct value hypotheses. The two canonical instruments this module operationalizes:</p>
 <ul>
@@ -65,7 +81,9 @@
 </ul>
 <p>The two instruments are complementary halves of one loop: morphological analysis maximizes divergence <em>inside a structure</em>; NUF applies convergence <em>without a meeting</em>. The classic failure mode of machine-speed ideation is skipping the first half of Kumar&#39;s rule — high-velocity generation with no lineage back to insight. Volume without traceability is slop.</p>
 <h3 id="the-traceability-chain-this-module-builds">The traceability chain this module builds</h3>
-<div class="diagram"><pre class="mermaid">flowchart LR
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart LR
     IS[&quot;insight-set — 2 insights, evidence-cited&quot;] --&gt;|&quot;derived-from (hmw-formulation)&quot;| HMW[&quot;hmw-set — 3 questions&quot;]
     HMW --&gt;|&quot;derived-from (morphological-concept-matrix)&quot;| CS1[&quot;concept-set — matrix + combined concepts&quot;]
     CS1 --&gt;|&quot;NUF scoring pass (nuf-triple-lens-filter)&quot;| CS2[&quot;concept-set — scored: 4.3 advance / 2.7 park&quot;]
@@ -81,14 +99,15 @@
     class IS,EV paper;
     class HMW blue;
     class CS1,CS2 purple;
-    class PP gold;</pre></div>
+    class PP gold;</pre>
+</div>
 <p>Every edge in that diagram is a <strong>typed, provenance-stamped reference</strong> stored in the artifact itself — not a claim in a slide deck. <code>asd factcheck</code> walks these references; a concept that cannot name its parent HMW set is structurally incomplete.</p>
 <h3 id="the-morphological-matrix-as-a-constrained-search-space">The morphological matrix as a constrained search space</h3>
 <p></p>
 <h3 id="why-agentic-infrastructure">Why agentic infrastructure</h3>
 <p>Human ideation at this volume collapses under bookkeeping, not creativity. The toolchain&#39;s contribution: (1) <code>hmw-formulation</code> <em>fails closed</em> without an <code>insight-set</code> — reframing cannot start from thin air; (2) acceptance rules force every HMW node to cite ≥1 evidence record (<code>min-evidence-per-node 1</code>) and carry a non-empty <code>opportunity</code>; (3) the NUF filter&#39;s scores live in a <strong>reviewable artifact</strong> (<code>concept-set</code> with numeric <code>score</code>, <code>feasibility</code>, <code>risk</code>), so the convergence decision is itself auditable — and the Critic&#39;s proposal rows are where the per-lens reasoning is recorded.</p>
 <hr>
-<h2 id="2-agent-topology-amp-method-contracts">🤖 2. Agent Topology &amp; Method Contracts</h2>
+<h2 id="2-agent-topology-amp-method-contracts"><i data-lucide="bot" class="ic"></i> 2. Agent Topology &amp; Method Contracts</h2>
 <table>
 <thead>
 <tr>
@@ -143,7 +162,7 @@
 </tbody></table>
 <p></p>
 <hr>
-<h2 id="3-schemas-amp-verified-execution">💻 3. Schemas &amp; Verified Execution</h2>
+<h2 id="3-schemas-amp-verified-execution"><i data-lucide="code" class="ic"></i> 3. Schemas &amp; Verified Execution</h2>
 <h3 id="typescript-schema-asdcore">TypeScript schema (<code>@asd/core</code>)</h3>
 <pre><code class="language-typescript">// kind-schema for &quot;hmw-set&quot; (closed node fields):
 //   question: string REQUIRED   insight: string   opportunity: string   theme: string
@@ -202,13 +221,13 @@ $CLI artifact-write --projectId juniper-collect-and-return-sprint-5cdce310 \
 </code></pre>
 <p>A <strong>veto</strong> on an unjustified score would look like: <code>{&quot;rowKind&quot;:&quot;defect&quot;,&quot;severity&quot;:&quot;high&quot;,&quot;message&quot;:&quot;score 4.3 has no feasibility basis&quot;,&quot;fix&quot;:&quot;cite scanner capability evidence or lower feasibility&quot;,&quot;rule&quot;:&quot;nuf-feasibility&quot;}</code> — every defect row must carry a <code>fix</code>, and the artifact stays draft.</p>
 <hr>
-<h2 id="4-case-study-lens-concept-briefs-at-forge-industrial-article-18">📊 4. Case Study Lens: Concept Briefs at Forge Industrial (Article 18)</h2>
+<h2 id="4-case-study-lens-concept-briefs-at-forge-industrial-article-18"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Concept Briefs at Forge Industrial (Article 18)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 18 (<em>Concept Briefs &amp; Value Propositions: Funding Predictive Care at Forge Industrial</em>) is an illustrative composite.</p>
 </blockquote>
 <p>Forge&#39;s predictive-care program nearly died in a committee that could not compare twelve loosely-described ideas. The composite account&#39;s turnaround was exactly this module&#39;s chain: insights reframed as HMW questions, a morphological pass that manufactured combinations (including the eventual winner — remote sensor triage staffed by existing field engineers — which no one had proposed in open brainstorming), and a triple-lens filter that parked seven combinations in one afternoon. The funding committee never saw the seven; they saw three scored concepts whose lineage — insight → question → combination → score — could be walked node by node. That walkability is what <code>derived-from</code> references plus <code>sd_factcheck</code> give you for free.</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <pre><code class="language-bash">$CLI method-run --projectId &lt;pid&gt; --methodId hmw-formulation          # needs a final insight-set
 $CLI artifact-write --projectId &lt;pid&gt; --methodId hmw-formulation --title &quot;&lt;title&gt;&quot; \
   --references &#39;&lt;derived-from insight-set&gt;&#39; --nodes &#39;&lt;≥3 nodes: question + opportunity + evidence&gt;&#39;
@@ -231,12 +250,12 @@ kind concept-set; project has 0. Produce the typed input artifact before startin
 <li><input disabled="" type="checkbox"> <code>sd_factcheck --projectId &lt;pid&gt;</code> exits 0.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
-<li>✅ Machine-speed ideation is only safe when divergence is structured (morphological) and convergence is scored (NUF) — with lineage enforced at write time.</li>
-<li>✅ <code>hmw-set → concept-set → prototype-plan</code> is a typed reference graph, not a narrative; <code>sd_factcheck</code> walks it.</li>
-<li>✅ The NUF filter&#39;s reasoning belongs in Critic proposal rows — convergence is a reviewable decision.</li>
-<li>✅ Placeholder scores and string scores are rejected; the filter demands numbers it can compare.</li>
+<li><i data-lucide="circle-check" class="ic"></i> Machine-speed ideation is only safe when divergence is structured (morphological) and convergence is scored (NUF) — with lineage enforced at write time.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <code>hmw-set → concept-set → prototype-plan</code> is a typed reference graph, not a narrative; <code>sd_factcheck</code> walks it.</li>
+<li><i data-lucide="circle-check" class="ic"></i> The NUF filter&#39;s reasoning belongs in Critic proposal rows — convergence is a reviewable decision.</li>
+<li><i data-lucide="circle-check" class="ic"></i> Placeholder scores and string scores are rejected; the filter demands numbers it can compare.</li>
 </ul>
 <hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
@@ -249,5 +268,6 @@ kind concept-set; project has 0. Produce the typed input artifact before startin
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

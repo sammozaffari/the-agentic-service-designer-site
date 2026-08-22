@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../04-scaled-research-ops-behavioral-personas.html">← Scaled Research Ops, Mining &amp; Behavioral Personas</a></nav>
+    <nav class="module-crumb"><a href="../04-scaled-research-ops-behavioral-personas.html"><i data-lucide="arrow-left"></i>Scaled Research Ops, Mining &amp; Behavioral Personas</a></nav>
     <article class="module-body">
 
 <h1 id="module-043-eliminating-bias-with-structured-parallelism-agreement-without-swarms">Module 04.3: Eliminating Bias with Structured Parallelism — Agreement Without Swarms</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="./README.md">Scaled Research Ops, Mining &amp; Behavioral Personas</a> · <strong>Level</strong>: Intermediate · <strong>Duration</strong>: 50 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <ol>
 <li><strong>Theoretical Foundations</strong>: Name the biases that corrupt qualitative synthesis (confirmation, single-coder, selection) and the classic countermeasure — independent coders with explicit agreement checking.</li>
 <li><strong>Agent Topology &amp; Contracts</strong>: Express inter-coder agreement honestly in this toolchain — as <strong>critic review rows</strong> and method-step gate conditions, with no claims of swarms, host-agent spawning, or distributed extractors.</li>
@@ -56,7 +72,7 @@
 <li><strong>Hands-on Practice</strong>: Drive two independent method runs over one evidence store and reconcile them through review rows.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="the-bias-problem-in-qualitative-synthesis">The bias problem in qualitative synthesis</h3>
 <p>Coding is interpretation, and interpretation is biased by construction. The canonical threats:</p>
 <ul>
@@ -75,7 +91,9 @@
 </ol>
 <p><strong>The NUF check as a review idiom.</strong> <em>New, Useful, Feasible</em> is the registered <code>nuf-triple-lens-filter</code> method — an <strong>ideation-phase</strong> filter that consumes a <code>concept-set</code>, so it belongs downstream of this course&#39;s artifacts, not inside research ops. But its three lenses are a good <em>review-row checklist</em> for challenging synthesis claims: is this insight actually new (or a restated brief), useful (does it change a decision), and feasible to act on? Teach it as a critic-row discipline here, and as a runnable method in the ideation course.</p>
 <h3 id="diagram-1-concept-where-bias-enters-and-where-the-gates-sit">Diagram 1 — Concept: where bias enters and where the gates sit</h3>
-<div class="diagram"><pre class="mermaid">flowchart TD
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart TD
     CORPUS[&quot;200-transcript corpus&quot;] --&gt; C1{&quot;Coder 1 hypotheses&quot;}
     CORPUS --&gt; C2{&quot;Coder 2 hypotheses&quot;}
     C1 -.-&gt;|&quot;confirmation bias: finds expected theme&quot;| B1[&quot;Biased cluster set&quot;]
@@ -99,9 +117,10 @@
     class IND1,IND2 blue;
     class CMP purple;
     class KEEP gold;
-    class FIX bad;</pre></div>
+    class FIX bad;</pre>
+</div>
 <hr>
-<h2 id="2-agentic-topology-amp-role-contracts">🤖 2. Agentic Topology &amp; Role Contracts</h2>
+<h2 id="2-agentic-topology-amp-role-contracts"><i data-lucide="bot" class="ic"></i> 2. Agentic Topology &amp; Role Contracts</h2>
 <table>
 <thead>
 <tr>
@@ -138,7 +157,7 @@
 </tbody></table>
 <p>The invariant: <strong>agreement is a filesystem record</strong> (<code>review-veto-log.&lt;…&gt;.json</code> inside <code>artifacts/</code>), not a meeting outcome.</p>
 <hr>
-<h2 id="3-schemas-amp-verified-execution">💻 3. Schemas &amp; Verified Execution</h2>
+<h2 id="3-schemas-amp-verified-execution"><i data-lucide="code" class="ic"></i> 3. Schemas &amp; Verified Execution</h2>
 <h3 id="the-review-row-sd-review">The review row (<code>sd_review</code>)</h3>
 <pre><code class="language-typescript">// asd review --rows &#39;&lt;json&gt;&#39; — the inter-coder agreement record
 type ReviewRow = {
@@ -183,14 +202,14 @@ artifacts/review-veto-log.review-fernwood-behavioural-personas-v1.fd18bc3f.json
 <h3 id="diagram-3-sequence-the-vetoremediation-handshake">Diagram 3 — Sequence: the veto/remediation handshake</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-halcyon-logistics-service-profit-chain-article-05">📊 4. Case Study Lens: Halcyon Logistics Service Profit Chain (Article 05)</h2>
+<h2 id="4-case-study-lens-halcyon-logistics-service-profit-chain-article-05"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Halcyon Logistics Service Profit Chain (Article 05)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 05 is a fictional composite; receipt ids above come from the verified live session.</p>
 </blockquote>
 <p>Halcyon Logistics (fictional 3PL, ~4,200 B2B accounts) believed its 87.4% SLA attainment meant satisfied shippers while churn ran at 11.8%. The engagement instrumented all five Service Profit Chain links with <strong>unit-level data from independent vantage points</strong> — account managers, warehouse telemetry, and shipper interviews — and the disagreements between those codings were the finding: dashboards said &quot;acceptable&quot; while shippers were exiting.</p>
 <p>That is inter-coder disagreement doing its job. In this toolchain the same dynamic is enforced rather than hoped for: each vantage point is an independent method run over one store, and the critic gate forces disagreements into defect rows with fixes. Halcyon&#39;s redesigned weekly service review ritual is the organizational analogue of <code>sd_review_list</code> — a standing board where contested interpretations stay visible until resolved.</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab-04c
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
 # Reuse a project with ≥5 evidence records (module 04.1 lab), then run two passes:
@@ -213,12 +232,12 @@ $CLI review-list --projectId $PID    # the agreement board
 <li><input disabled="" type="checkbox"> No claim anywhere in your working notes requires a swarm, host-agent spawning, or a tool that is not in the verified 29.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
-<li>✅ <strong>Inter-coder agreement = critic review rows</strong>, corroboration as evidence-cited proposals, disagreement as defects with mandatory fixes. No swarm claims; the filesystem is the record.</li>
-<li>✅ <strong>Parallelism means independent method runs over one content-addressed store</strong>, made safe by idempotent rewrites and idempotency keys — not by spawning agents.</li>
-<li>✅ <strong>Vetoes are artifacts.</strong> The <code>review-veto-log</code> is persisted, listed by <code>sd_review_list</code>, and read by the human before handoff approval.</li>
-<li>✅ <strong>NUF is a review idiom here, a method downstream.</strong> <code>nuf-triple-lens-filter</code> is an ideation-phase filter over a <code>concept-set</code>; in research ops its lenses guide critic rows.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Inter-coder agreement = critic review rows</strong>, corroboration as evidence-cited proposals, disagreement as defects with mandatory fixes. No swarm claims; the filesystem is the record.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Parallelism means independent method runs over one content-addressed store</strong>, made safe by idempotent rewrites and idempotency keys — not by spawning agents.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Vetoes are artifacts.</strong> The <code>review-veto-log</code> is persisted, listed by <code>sd_review_list</code>, and read by the human before handoff approval.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>NUF is a review idiom here, a method downstream.</strong> <code>nuf-triple-lens-filter</code> is an ideation-phase filter over a <code>concept-set</code>; in research ops its lenses guide critic rows.</li>
 </ul>
 <hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
@@ -231,5 +250,6 @@ $CLI review-list --projectId $PID    # the agreement board
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

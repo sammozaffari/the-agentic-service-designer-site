@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../04-scaled-research-ops-behavioral-personas.html">← Scaled Research Ops, Mining &amp; Behavioral Personas</a></nav>
+    <nav class="module-crumb"><a href="../04-scaled-research-ops-behavioral-personas.html"><i data-lucide="arrow-left"></i>Scaled Research Ops, Mining &amp; Behavioral Personas</a></nav>
     <article class="module-body">
 
 <h1 id="module-046-machine-checkable-personas-the-full-executable-spine">Module 04.6: Machine-Checkable Personas — the Full Executable Spine</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="./README.md">Scaled Research Ops, Mining &amp; Behavioral Personas</a> · <strong>Level</strong>: Intermediate · <strong>Duration</strong>: 60 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <ol>
 <li><strong>Theoretical Foundations</strong>: Understand <em>executable method contracts</em> — why a persona set that a machine can falsify is worth more than a beautiful poster.</li>
 <li><strong>Agent Topology &amp; Contracts</strong>: Run the complete spine end to end: <code>method-run → artifact-write → review → factcheck → export-artifact</code>, with the critic gate and veto loop in the middle.</li>
@@ -56,7 +72,7 @@
 <li><strong>Hands-on Practice</strong>: Produce a final, exported, deterministic SVG of a persona set from raw CSV rows.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="why-quotmachine-checkablequot-changes-the-epistemics-of-a-persona">Why &quot;machine-checkable&quot; changes the epistemics of a persona</h3>
 <p>A conventional persona is a <em>claim</em>: a poster asserting that a segment exists. Its quality rests on the maker&#39;s reputation and the audience&#39;s trust. Stickdorn et al. (vol. 01, ch. 4) warn that research artifacts decay into decoration the moment their link to evidence becomes ceremonial. The correction from the synthesis-methods literature (vol. 18, ch. 5) is procedural — keep the raw material attached — but procedure alone decays under deadline pressure.</p>
 <p>The agentic move is to make the contract <em>executable</em>: the persona set is a typed artifact whose claims are checked by a deterministic gate at write time, whose interpretive choices are challenged by an adversarial review gate, and whose final state is reproducible by anyone who re-runs the checks. Trust moves from the maker to the mechanism. Three properties do the work:</p>
@@ -68,7 +84,9 @@
 <h3 id="the-spine-as-a-state-machine">The spine as a state machine</h3>
 <p>Every artifact in this toolchain walks the same lifecycle: <strong>refused → draft(failing) → draft(accepted) → vetoed(draft) → final → rendered</strong>, with the human gate (<code>phase-advance</code> with an approval receipt) beyond it. Knowing the states — and which command moves you between them — is the operational content of this module.</p>
 <h3 id="diagram-1-concept-the-executable-contract-as-a-checklist">Diagram 1 — Concept: the executable contract as a checklist</h3>
-<div class="diagram"><pre class="mermaid">flowchart TD
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart TD
     C[&quot;Method contract: behavioural-personas&quot;] --&gt; R1[&quot;inputs: ≥5 evidence + ≥1 insight-set artifact&quot;]
     C --&gt; R2[&quot;acceptance: min-nodes 2&quot;]
     C --&gt; R3[&quot;acceptance: min-evidence-per-node 2&quot;]
@@ -92,9 +110,10 @@
     class R6 gold;
     class R7,R8 paper;
     class EXE blue;
-    class HUM1,HUM2 gold;</pre></div>
+    class HUM1,HUM2 gold;</pre>
+</div>
 <hr>
-<h2 id="2-agentic-topology-amp-role-contracts">🤖 2. Agentic Topology &amp; Role Contracts</h2>
+<h2 id="2-agentic-topology-amp-role-contracts"><i data-lucide="bot" class="ic"></i> 2. Agentic Topology &amp; Role Contracts</h2>
 <table>
 <thead>
 <tr>
@@ -142,7 +161,7 @@
 </tr>
 </tbody></table>
 <hr>
-<h2 id="3-schemas-amp-verified-execution-the-complete-live-spine">💻 3. Schemas &amp; Verified Execution — the complete live spine</h2>
+<h2 id="3-schemas-amp-verified-execution-the-complete-live-spine"><i data-lucide="code" class="ic"></i> 3. Schemas &amp; Verified Execution — the complete live spine</h2>
 <p>Everything below was executed today against a disposable workspace (<code>ASD_WORKSPACE=/tmp/asd-c04-spine-…</code>). Project: <code>fernwood-repairs-research-ops-b0254f32</code>; 18 evidence records (15 imported CSV quotes, 2 telemetry, 1 document).</p>
 <p><strong>Step 1 — load the contract (fails closed without inputs):</strong></p>
 <pre><code class="language-bash">$CLI method-run --projectId $PID --methodId behavioural-personas
@@ -188,13 +207,13 @@ $CLI export-report --projectId $PID --kind artifact-dossier
 <h3 id="diagram-3-lifecycle-artifact-states-and-the-commands-that-move-them">Diagram 3 — Lifecycle: artifact states and the commands that move them</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-northgate39s-register-discipline-at-ship-time-article-02">📊 4. Case Study Lens: Northgate&#39;s Register Discipline at Ship Time (Article 02)</h2>
+<h2 id="4-case-study-lens-northgate39s-register-discipline-at-ship-time-article-02"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Northgate&#39;s Register Discipline at Ship Time (Article 02)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Receipt ids above come from the verified live session.</p>
 </blockquote>
 <p>Northgate Health&#39;s (fictional) telehealth program treated its evidence register as the thing that shipped: journey maps, blueprints, and concept briefs were projections of register-backed artifacts, which is why the 45%→76% completion claim could survive procurement scrutiny. This module&#39;s spine is that discipline reduced to five commands. The lesson the case adds is organizational: the human gate is <em>last</em>, not first — <code>sd_phase_advance</code> fails closed without a signed approval receipt and while any design artifact is still a draft, so authorization happens on verified state, not on a slide about state.</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <p>The lab verifier (<a href="../labs/lab-04-research-ops-personas/README.md"><code>courses/labs/lab-04-research-ops-personas/</code></a>) automates this entire spine against a temp workspace, including the negative case. Run it:</p>
 <pre><code class="language-bash">node courses/labs/lab-04-research-ops-personas/verify_lab-04.mjs
 </code></pre>
@@ -207,12 +226,12 @@ $CLI export-report --projectId $PID --kind artifact-dossier
 <li><input disabled="" type="checkbox"> Phase advance is human-authorized: receipt JSON required, drafts block it.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
-<li>✅ <strong>A machine-checkable persona is a typed artifact under executable contract</strong> — schema, integrity, acceptance, review, and render are five separate gates with real exit codes.</li>
-<li>✅ <strong>Failure modes are features:</strong> refused writes, retained failing drafts, and factcheck exit 1 are how the toolchain teaches and protects.</li>
-<li>✅ <strong>The render is a projection of checked state</strong> — deterministic SVG from <code>@asd/render</code>, so the deliverable cannot drift from the evidence.</li>
-<li>✅ <strong>Humans authorize; machines verify.</strong> The phase gate requires an approval receipt precisely because everything before it was mechanical.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>A machine-checkable persona is a typed artifact under executable contract</strong> — schema, integrity, acceptance, review, and render are five separate gates with real exit codes.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Failure modes are features:</strong> refused writes, retained failing drafts, and factcheck exit 1 are how the toolchain teaches and protects.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>The render is a projection of checked state</strong> — deterministic SVG from <code>@asd/render</code>, so the deliverable cannot drift from the evidence.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Humans authorize; machines verify.</strong> The phase gate requires an approval receipt precisely because everything before it was mechanical.</li>
 </ul>
 <hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
@@ -225,5 +244,6 @@ $CLI export-report --projectId $PID --kind artifact-dossier
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

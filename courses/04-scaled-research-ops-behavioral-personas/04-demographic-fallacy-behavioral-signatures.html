@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../04-scaled-research-ops-behavioral-personas.html">← Scaled Research Ops, Mining &amp; Behavioral Personas</a></nav>
+    <nav class="module-crumb"><a href="../04-scaled-research-ops-behavioral-personas.html"><i data-lucide="arrow-left"></i>Scaled Research Ops, Mining &amp; Behavioral Personas</a></nav>
     <article class="module-body">
 
 <h1 id="module-044-the-demographic-fallacy-amp-behavioral-signatures">Module 04.4: The Demographic Fallacy &amp; Behavioral Signatures</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="./README.md">Scaled Research Ops, Mining &amp; Behavioral Personas</a> · <strong>Level</strong>: Intermediate · <strong>Duration</strong>: 55 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <ol>
 <li><strong>Theoretical Foundations</strong>: Argue the demographic fallacy from first principles and from the literature — why age/income/postcode segments mislead service design and behavioral signatures don&#39;t.</li>
 <li><strong>Agent Topology &amp; Contracts</strong>: Run <code>behavioural-personas</code> (synthesis) and <code>customer-typology-mapping</code> (measurement) live, reading their real contracts and acceptance rules.</li>
@@ -56,7 +72,7 @@
 <li><strong>Hands-on Practice</strong>: Produce a three-persona set from the Fernwood corpus with triangulated citations.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="the-demographic-fallacy-stated-precisely">The demographic fallacy, stated precisely</h3>
 <p>A demographic segment tells you <em>who</em> someone is; a service encounter depends on <em>what they are trying to do, under what constraints, with what prior experiences</em>. The fallacy is the inference from the first to the second. Martin &amp; Hanington (vol. 18, ch. 5) put it flatly: effective design personas are &quot;grounded in empirical behavioral patterns, mental models, goals, and constraints — not in fictional demographic trivia (age, stock photos, marital status) that often reinforces subconscious designer bias.&quot;</p>
 <p>Manning &amp; Bodine&#39;s <em>Outside In</em> (vol. 14, ch. 4, &quot;Customer Understanding&quot;) sets the quality bar this course adopts: the <strong>decision-grade persona</strong>. A persona is decision-grade only if a product manager, an engineer, and a frontline worker can each use it to resolve a real trade-off. Their Fidelity Investments case is the canonical demonstration: shifting from demographic segments (age, income) to the <em>behavioral</em> &quot;Transition to Retirement&quot; journey exposed that pre-retirees&#39; acute anxiety over tax sequencing and healthcare costs was invisible to age-based segmentation — and redesigning around the behavior produced integrated retirement transition services that demographics never implied.</p>
@@ -64,7 +80,9 @@
 <h3 id="behavioral-signatures">Behavioral signatures</h3>
 <p>A <strong>behavioral signature</strong> is an observable, repeatable pattern of action under a defined context: <em>self-documenting after data loss</em>, <em>exit-to-private after six weeks of silence</em>, <em>repeat-calling when records don&#39;t travel</em>. Signatures are what survive aggregation: they are falsifiable (you can count them), segmentable (people sort by them), and actionable (each implies a design response). A persona in this course is a named cluster of signatures with a goal — nothing more, and crucially nothing less.</p>
 <h3 id="diagram-1-concept-demographic-proxy-vs-behavioral-signature">Diagram 1 — Concept: demographic proxy vs behavioral signature</h3>
-<div class="diagram"><pre class="mermaid">flowchart TD
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart TD
     subgraph Fallacy[&quot;The demographic fallacy&quot;]
         DEMO[&quot;Age 55-64, postcode 3044, income band C&quot;] -.-&gt;|&quot;correlation assumed, context ignored&quot;| PRED[&quot;Predicted portal behavior&quot;]
         PRED -.-&gt;|&quot;breaks when the channel breaks&quot;| WRONG[&quot;Wrong service design&quot;]
@@ -87,9 +105,10 @@
     class WRONG bad;
     class OBS1,OBS2,OBS3 blue;
     class SIG,PER purple;
-    class DESIGN gold;</pre></div>
+    class DESIGN gold;</pre>
+</div>
 <hr>
-<h2 id="2-agentic-topology-amp-role-contracts">🤖 2. Agentic Topology &amp; Role Contracts</h2>
+<h2 id="2-agentic-topology-amp-role-contracts"><i data-lucide="bot" class="ic"></i> 2. Agentic Topology &amp; Role Contracts</h2>
 <p>Two registered methods produce persona sets in this toolchain; their contracts differ in phase and intent, and both were retrieved live:</p>
 <table>
 <thead>
@@ -124,7 +143,7 @@
 <li><strong>Human designer</strong>: <code>scope-confirmation</code> before run; <code>handoff-approval</code> before the set moves to ideation.</li>
 </ul>
 <hr>
-<h2 id="3-schemas-amp-verified-execution">💻 3. Schemas &amp; Verified Execution</h2>
+<h2 id="3-schemas-amp-verified-execution"><i data-lucide="code" class="ic"></i> 3. Schemas &amp; Verified Execution</h2>
 <h3 id="the-persona-set-schema-from-asd-schema-get-kind-persona-set">The <code>persona-set</code> schema (from <code>asd schema-get --kind persona-set</code>)</h3>
 <pre><code class="language-typescript">// node fields — fieldPolicy: &quot;closed&quot;; edges forbidden
 {
@@ -180,11 +199,11 @@
 <h3 id="diagram-3-persona-node-anatomy-what-the-machine-checks">Diagram 3 — Persona node anatomy (what the machine checks)</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-decision-grade-personas-at-fidelity-vol-14-ch-4">📊 4. Case Study Lens: Decision-Grade Personas at Fidelity (vol. 14, ch. 4)</h2>
+<h2 id="4-case-study-lens-decision-grade-personas-at-fidelity-vol-14-ch-4"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Decision-Grade Personas at Fidelity (vol. 14, ch. 4)</h2>
 <p>Manning &amp; Bodine&#39;s discipline is the lens: personas earn their keep only when they settle trade-offs. Fidelity&#39;s move from age/income segments to the behavioral &quot;Transition to Retirement&quot; journey found the anxiety signature (tax sequencing, healthcare cost fear) that demographics structurally could not see. The Fernwood set above is built to the same bar: &quot;The Quiet Deserter&quot; (exit-to-private after broken promises) tells a housing officer exactly which trade-off to make — visible outcome history before new channel features — while &quot;women, 45–54&quot; tells them nothing.</p>
 <p>The synthetic program articles apply the same discipline: Northgate (Articles 02/12) organized its telehealth redesign around behavioral onboarding archetypes rather than member demographics, which is why its completion fixes targeted behavior (form abandonment, no-show patterns) rather than age bands.</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab-04d
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
 # Prereq: a project with ≥5 evidence records AND one insight-set artifact (modules 04.1–04.2)
@@ -205,12 +224,12 @@ $CLI artifact-write --projectId $PID --methodId behavioural-personas \
 <li><input disabled="" type="checkbox"> A <code>description</code> of <code>&quot;demographic&quot;</code> is rejected by <code>forbid-field-values</code> (run it).</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
-<li>✅ <strong>The demographic fallacy is a mechanical risk, so the fix is mechanical:</strong> <code>behavioural-personas</code> requires evidence-cited behavioral goals and forbids demographic description values at write time.</li>
-<li>✅ <strong>Behavioral signatures — observable action patterns under context — are the persona&#39;s unit of construction</strong>, and each maps to a design response.</li>
-<li>✅ <strong>Personas are built on insight, not hunch:</strong> the method fails closed until a prior <code>insight-set</code> artifact exists.</li>
-<li>✅ <strong>Decision-grade is the bar</strong> (Manning &amp; Bodine): if a persona cannot settle a trade-off for a frontline worker, it is decoration.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>The demographic fallacy is a mechanical risk, so the fix is mechanical:</strong> <code>behavioural-personas</code> requires evidence-cited behavioral goals and forbids demographic description values at write time.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Behavioral signatures — observable action patterns under context — are the persona&#39;s unit of construction</strong>, and each maps to a design response.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Personas are built on insight, not hunch:</strong> the method fails closed until a prior <code>insight-set</code> artifact exists.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Decision-grade is the bar</strong> (Manning &amp; Bodine): if a persona cannot settle a trade-off for a frontline worker, it is decoration.</li>
 </ul>
 <hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
@@ -223,5 +242,6 @@ $CLI artifact-write --projectId $PID --methodId behavioural-personas \
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

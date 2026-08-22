@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../01-agentic-service-design-fundamentals.html">← Agentic Service Design Fundamentals</a></nav>
+    <nav class="module-crumb"><a href="../01-agentic-service-design-fundamentals.html"><i data-lucide="arrow-left"></i>Agentic Service Design Fundamentals</a></nav>
     <article class="module-body">
 
 <h1 id="module-016-hands-on-sprint-running-your-first-agentic-service-discovery">Module 01.6: Hands-On Sprint: Running Your First Agentic Service Discovery</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="./README.md">Agentic Service Design Fundamentals</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 60 min · <strong>Format</strong>: Full verified capstone — every command below was executed today against the built runtime</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will have:</p>
 <ol>
 <li><strong>Run the complete canonical loop yourself</strong> — project → evidence → contract → draft → critic gate → final → factcheck → export → human-gated phase advance — in a disposable workspace.</li>
@@ -58,10 +74,12 @@
 <p><strong>Provenance:</strong> the receipts below are real output from a disposable run on 2026-08-22 (<code>ASD_WORKSPACE=/tmp/asd-c01-…</code>). Your ids will differ — the CLI mints them from content and time. Shapes will match exactly.</p>
 </blockquote>
 <hr>
-<h2 id="1-the-sprint-as-theory-compressed">📖 1. The Sprint as Theory, Compressed</h2>
+<h2 id="1-the-sprint-as-theory-compressed"><i data-lucide="book-open" class="ic"></i> 1. The Sprint as Theory, Compressed</h2>
 <p>Kumar&#39;s <em>101 Design Methods</em> (<code>books/17-101-design-methods/01-innovation-as-a-process.md</code>) frames innovation as <em>Knowing → Making</em> against <em>Reality → Abstraction</em>. This sprint traverses three quadrants in one loop: <strong>Reality/Knowing</strong> (verbatim capture), <strong>Abstraction/Knowing</strong> (journey synthesis from transcripts), and the governance membrane between Knowing and Making (critic gate + human phase advance). TISDD&#39;s research standards (Ch. 4: triangulation across say/do/observe) are satisfied structurally: you will capture all three evidence kinds before the method will even run.</p>
 <h3 id="concept-diagram-the-sprint-map">Concept diagram — the sprint map</h3>
-<div class="diagram"><pre class="mermaid">flowchart LR
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart LR
     subgraph Know[&quot;KNOWING&quot;]
         K1[&quot;1. project-create&lt;br/&gt;discover phase&quot;]
         K2[&quot;2. evidence-add ×4&lt;br/&gt;quote + telemetry + document&quot;]
@@ -85,9 +103,10 @@
     classDef bad   fill:#fff5f5,stroke:#c53030,stroke-width:1.5px,color:#742a2a;
     class K1,K2,K3,K4 blue;
     class G1,G2,G3,G4 purple;
-    class MK gold;</pre></div>
+    class MK gold;</pre>
+</div>
 <hr>
-<h2 id="2-the-verified-run-end-to-end">💻 2. The Verified Run, End to End</h2>
+<h2 id="2-the-verified-run-end-to-end"><i data-lucide="code" class="ic"></i> 2. The Verified Run, End to End</h2>
 <p>Setup (from the repo root; the CLI is the built runtime):</p>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-sprint-$(date +%s)
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
@@ -205,13 +224,13 @@ $CLI phase-advance --projectId fernwood-repairs-sprint-f0d60fa1 --toPhase define
 <h3 id="lifecycle-diagram-artifact-states-across-the-sprint">Lifecycle diagram — artifact states across the sprint</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-article-09-quotjourney-mapping-from-transcripts-the-disruption-recovery-map-at-albatross-airwaysquot">📊 4. Case Study Lens: Article 09 — &quot;Journey Mapping from Transcripts: The Disruption Recovery Map at Albatross Airways&quot;</h2>
+<h2 id="4-case-study-lens-article-09-quotjourney-mapping-from-transcripts-the-disruption-recovery-map-at-albatross-airwaysquot"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 09 — &quot;Journey Mapping from Transcripts: The Disruption Recovery Map at Albatross Airways&quot;</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong></p>
 </blockquote>
 <p>Article 09 (<code>articles/09/README.md</code>) runs this exact method — <code>journey-from-transcripts</code> cites <code>{&quot;article&quot;:&quot;09&quot;}</code> in its <code>sources</code> — on airline disruption recovery. Compare its stages with your Fernwood run: same contract, different domain. The transferable insight is the emotion rule (&quot;drawn from the quotes, never inferred&quot;) — in the article&#39;s case, passenger fury at rebooking opacity; in yours, tenant exhaustion at story-repeating. Different words, same discipline: the map says only what the evidence says.</p>
 <hr>
-<h2 id="5-capstone-checklist-this-is-the-lab">🔬 5. Capstone Checklist (this IS the lab)</h2>
+<h2 id="5-capstone-checklist-this-is-the-lab"><i data-lucide="microscope" class="ic"></i> 5. Capstone Checklist (this IS the lab)</h2>
 <p>The full scripted version lives in <code>courses/labs/lab-01-fundamentals/</code> with a verifier. Working through §2 above, confirm:</p>
 <ul>
 <li><input disabled="" type="checkbox"> Project created in <code>discover</code>; you can explain the difference between this and a method phase.</li>
@@ -225,7 +244,7 @@ $CLI phase-advance --projectId fernwood-repairs-sprint-f0d60fa1 --toPhase define
 <li><input disabled="" type="checkbox"> You ran everything in a disposable <code>ASD_WORKSPACE</code> and can delete it without losing anything.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
 <li><strong>The loop is short enough to memorize and strict enough to trust</strong>: 8 commands, 3 fail-closed refusals, 1 human signature.</li>
 <li><strong>Every refusal is a feature.</strong> Invalid kinds, thin evidence, dangling citations, unsigned phases — each exit 1 is a workshop-theater failure mode made impossible.</li>
@@ -243,5 +262,6 @@ $CLI phase-advance --projectId fernwood-repairs-sprint-f0d60fa1 --toPhase define
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=4</script>
 </body>
 </html>

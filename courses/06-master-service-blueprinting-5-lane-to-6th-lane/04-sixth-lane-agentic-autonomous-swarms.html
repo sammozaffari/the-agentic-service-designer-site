@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../06-master-service-blueprinting-5-lane-to-6th-lane.html">← Master Service Blueprinting — 5-Lane Architecture to the Orchestration Sixth Lane</a></nav>
+    <nav class="module-crumb"><a href="../06-master-service-blueprinting-5-lane-to-6th-lane.html"><i data-lucide="arrow-left"></i>Master Service Blueprinting — 5-Lane Architecture to the Orchestration Sixth Lane</a></nav>
     <article class="module-body">
 
 <h1 id="module-064-the-sixth-lane-done-right-orchestration-plans-amp-human-gates">Module 06.4: The Sixth Lane Done Right — Orchestration Plans &amp; Human Gates</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="../README.md">Master Service Blueprinting: 5-Lane Architecture to the Orchestration Sixth Lane</a> · <strong>Level</strong>: Intermediate · <strong>Duration</strong>: 55 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will master:</p>
 <ol>
 <li><strong>Theoretical Foundations</strong>: experience orchestration theory (Risdon &amp; Quattlebaum, <code>books/08</code>) and the module 06.2 test — a lane earns its existence only if it has a distinct governor.</li>
@@ -57,7 +73,7 @@
 <li><strong>Hands-on Practice</strong>: create a plan, record a failed-retryable dispatch, retry it, and complete a typed handoff — live.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="orchestration-is-a-discipline-not-a-swarm">Orchestration is a discipline, not a swarm</h3>
 <p><em>Orchestrating Experiences</em> (Risdon &amp; Quattlebaum; <code>books/08-orchestrating-experiences/02-what-is-orchestration.md</code>) defines experience orchestration as <strong>the deliberate alignment and real-time coordination of organizational actors, channels, environments, processes, and technology systems around a shared understanding of the customer&#39;s journey</strong>. Its governing metaphor is the conductor: the conductor produces no sound directly — they interpret the score, set tempo, cue sections, and keep individual virtuosos harmonized. The customer journey is the score; the specialist teams (and, now, software agents) are the sections; orchestration is the discipline that keeps them coherent.</p>
 <p>Two tenets from that tradition discipline everything in this module:</p>
@@ -69,7 +85,9 @@
 <p>Module 06.2 set the bar: a lane exists only if its boundary has a <strong>distinct governor</strong>. &quot;AI agents&quot; drawn as a sixth swimlane of boxes making autonomous decisions fails that test — it is just the support lane with new nouns, and its governor is still system ownership. But there <em>is</em> a sixth demarcation with a genuinely different governor: <strong>orchestration authority</strong> — who sequences the work, what happens on failure, when a human must approve. That plane has its own vocabulary (plans, attempts, retries, handoffs, gates), its own failure modes (stalled steps, exhausted retries, unowned handoffs), and its own accountability (the human checkpoint authority). Drawn honestly, the sixth lane is the <em>orchestration lane</em>: the record of how all the other lanes&#39; work is coordinated.</p>
 <p>This is what the standalone runtime actually implements. There are no swarm primitives in the tool registry — no agent-spawning, no autonomous decision loops. There are four orchestration tools, and their own descriptions state the honesty boundary in plain text: <em>&quot;The plan records work; it does not claim that this host can spawn agents.&quot;</em></p>
 <h3 id="concept-diagram-the-orchestration-lane-as-the-sixth-demarcation">Concept diagram — the orchestration lane as the sixth demarcation</h3>
-<div class="diagram"><pre class="mermaid">flowchart TB
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart TB
     subgraph BP[&quot;Five canonical lanes — the service itself&quot;]
         L1[&quot;physical-evidence&quot;]
         L2[&quot;customer-actions&quot;]
@@ -94,9 +112,10 @@
     class L1,L2,L3,L4,L5 paper;
     class PLAN,DISP blue;
     class HAND purple;
-    class GATE gold;</pre></div>
+    class GATE gold;</pre>
+</div>
 <hr>
-<h2 id="2-agentic-topology-amp-contracts-the-four-real-tools">🤖 2. Agentic Topology &amp; Contracts — The Four Real Tools</h2>
+<h2 id="2-agentic-topology-amp-contracts-the-four-real-tools"><i data-lucide="bot" class="ic"></i> 2. Agentic Topology &amp; Contracts — The Four Real Tools</h2>
 <p>Probed live against <code>asd help</code> and executed in this course&#39;s verification run:</p>
 <h3 id="sd-orchestration-plan-declare-the-work"><code>sd_orchestration_plan</code> — declare the work</h3>
 <p>Parameters: <code>projectId</code>, <code>idempotencyKey</code>, <code>title</code>, <strong><code>steps</code> (JSON array, required)</strong> — each step <code>{id, role, instruction, maxRetries?}</code> where <code>role</code> must be one of the ten registered practice roles (<code>orchestrator, researcher, synthesizer, mapper, ideator, prototyper, measurer, critic, presenter, librarian</code>). The persisted plan is stamped <code>scheduler: &quot;host-independent&quot;</code> — the record is portable across host packs.</p>
@@ -111,7 +130,7 @@
 <h3 id="step-lifecycle-state-diagram">Step lifecycle state diagram</h3>
 <p></p>
 <hr>
-<h2 id="3-verified-execution-the-real-orchestration-session">💻 3. Verified Execution — The Real Orchestration Session</h2>
+<h2 id="3-verified-execution-the-real-orchestration-session"><i data-lucide="code" class="ic"></i> 3. Verified Execution — The Real Orchestration Session</h2>
 <p>Everything below is real output from this course&#39;s disposable-workspace run (project <code>fernwood-repairs-blueprint-sprint-7cee33e4</code>).</p>
 <pre><code class="language-bash">CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
 PID=fernwood-repairs-blueprint-sprint-7cee33e4
@@ -162,13 +181,13 @@ $CLI orchestration-handoff … --artifactId 4d64fbd3… --artifactKind roadmap
 </code></pre>
 <p>Notice what this session <em>is</em>: an auditable record of who was cued to do what, what happened, what was retried, and what changed hands — with humans holding the gates. That is the sixth lane done right. Notice also what it is <em>not</em>: nothing in this transcript claims an agent was spawned, decided, or acted autonomously. Where a host cannot spawn agents, the record says <code>unsupported</code> — explicitly, in writing, forever.</p>
 <hr>
-<h2 id="4-case-study-lens-article-1139s-pilot-as-an-orchestration-plan">📊 4. Case Study Lens: Article 11&#39;s Pilot as an Orchestration Plan</h2>
+<h2 id="4-case-study-lens-article-1139s-pilot-as-an-orchestration-plan"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 11&#39;s Pilot as an Orchestration Plan</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong></p>
 </blockquote>
 <p>Article 11&#39;s Phase 4 pilot (two repairs teams, weeks 11–20) reads naturally as an orchestration plan rather than a project memo: steps for retraining the contact centre (role: presenter), reconfiguring the scheduler (role: prototyper), weekly failure review (role: critic), each with retry limits and a typed handoff of the future-state <code>service-blueprint</code> between roles. The article&#39;s &quot;weekly steering gate&quot; is precisely the human <code>handoff-approval</code> checkpoint — authority <code>human-designer</code> — that the method contract declares. Read this way, the sixth lane adds no new mysticism to the engagement; it adds the <em>ledger</em> of coordination that a five-lane blueprint has nowhere to put.</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab06
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
 
@@ -203,12 +222,12 @@ $CLI orchestration-status --projectId &lt;pid&gt; --planId &lt;planId&gt;
 <li><input disabled="" type="checkbox"> <code>orchestration-status</code> reads back plans, dispatches, and handoffs as one coherent ledger.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
-<li>✅ <strong>The sixth lane earns its demarcation because its governor is orchestration authority</strong> — sequencing, failure policy, and human gates — not because &quot;AI&quot; needs its own swimlane of boxes.</li>
-<li>✅ <strong>The real tools are a ledger</strong>: <code>orchestration_plan</code> (steps + retry limits), <code>orchestration_dispatch</code> (capability/outcome/retryable/retryOf), <code>orchestration_status</code> (the sensing surface), <code>orchestration_handoff</code> (typed role-to-role artifact movement).</li>
-<li>✅ <strong>Honesty is mechanical</strong>: <code>host-agent-spawn</code> is recorded as <code>unsupported</code> and returned explicitly. This runtime never simulates autonomy it does not have.</li>
-<li>✅ <strong>Humans hold the gates</strong>: scope-confirmation before the run, handoff-approval before work moves on, phase advance only with a signed receipt. Orchestration plans coordinate; people authorize.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>The sixth lane earns its demarcation because its governor is orchestration authority</strong> — sequencing, failure policy, and human gates — not because &quot;AI&quot; needs its own swimlane of boxes.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>The real tools are a ledger</strong>: <code>orchestration_plan</code> (steps + retry limits), <code>orchestration_dispatch</code> (capability/outcome/retryable/retryOf), <code>orchestration_status</code> (the sensing surface), <code>orchestration_handoff</code> (typed role-to-role artifact movement).</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Honesty is mechanical</strong>: <code>host-agent-spawn</code> is recorded as <code>unsupported</code> and returned explicitly. This runtime never simulates autonomy it does not have.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Humans hold the gates</strong>: scope-confirmation before the run, handoff-approval before work moves on, phase advance only with a signed receipt. Orchestration plans coordinate; people authorize.</li>
 </ul>
 <hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
@@ -221,5 +240,6 @@ $CLI orchestration-status --projectId &lt;pid&gt; --planId &lt;planId&gt;
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

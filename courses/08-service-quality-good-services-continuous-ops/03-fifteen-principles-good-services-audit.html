@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../08-service-quality-good-services-continuous-ops.html">← Service Quality, Good Services Audits &amp; Continuous Operations</a></nav>
+    <nav class="module-crumb"><a href="../08-service-quality-good-services-continuous-ops.html"><i data-lucide="arrow-left"></i>Service Quality, Good Services Audits &amp; Continuous Operations</a></nav>
     <article class="module-body">
 
 <h1 id="module-083-lou-downe39s-15-principles-decoded-into-a-machine-auditable-scorecard">Module 08.3: Lou Downe&#39;s 15 Principles — Decoded into a Machine-Auditable Scorecard</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="./README.md">Service Quality, Good Services Audits &amp; Continuous Operations</a> · <strong>Level</strong>: Advanced · <strong>Duration</strong>: 60 min · <strong>Format</strong>: Theory, Architecture, Verified CLI &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <ol>
 <li>Explain the inductive origin of Downe&#39;s 15 principles, the principles-vs-rules distinction, and the three functional clusters.</li>
 <li>Score a live service against all fifteen principles using the Good Services Scale (pass / partial / fail), citing observable evidence for every below-target score.</li>
@@ -55,7 +71,7 @@
 <li>Turn audit output into a remediation backlog rather than a compliance trophy.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding">📖 1. Theoretical Grounding</h2>
+<h2 id="1-theoretical-grounding"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding</h2>
 <h3 id="11-principles-from-failure-not-theory">1.1 Principles from failure, not theory</h3>
 <p>Lou Downe&#39;s <em>Good Services</em> (<code>books/05-good-services/02-the-fifteen-principles.md</code>) derived the 15 principles <strong>inductively</strong> — from years at the UK Government Digital Service watching how services actually fail. The empirical claim: services vary infinitely in subject matter, but the <em>ways they fail are remarkably consistent</em>. Users cannot find them, cannot tell what they are for, get stranded mid-journey, face contradictory rules across channels, or are excluded by the technology.</p>
 <p>That origin matters for auditing: each principle is a <strong>failure-mode inversion</strong>. Principle 7 (&quot;agnostic of organisational structures&quot;) inverts Conway&#39;s Law — the organisation shipping its org chart to the customer. Principle 10 (&quot;no dead ends&quot;) inverts the rejection-screen pathology. When you audit against principle N, you are really asking &quot;does failure mode N exist here, and where is the evidence?&quot;</p>
@@ -148,7 +164,9 @@
 </tbody></table>
 <p>The Good Services Scale scores each <strong>pass / partial / fail</strong> on observable evidence. One genuine fail degrades the whole service — the principles form a chain, not a menu.</p>
 <h3 id="concept-diagram-three-clusters-one-chain">Concept diagram — three clusters, one chain</h3>
-<div class="diagram"><pre class="mermaid">flowchart LR
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart LR
     subgraph C1[&quot;Usability and discoverability (1-6)&quot;]
         P1[&quot;1 easy to find&quot;] --&gt; P2[&quot;2 explains purpose&quot;] --&gt; P3[&quot;3 sets expectations&quot;] --&gt; P4[&quot;4 completes outcome&quot;] --&gt; P5[&quot;5 familiar&quot;] --&gt; P6[&quot;6 no prior knowledge&quot;]
     end
@@ -170,9 +188,10 @@
     class P7,P8,P9,P10 purple;
     class P11,P12,P13,P14,P15 gold;
     class OUT paper;
-    class FAIL bad;</pre></div>
+    class FAIL bad;</pre>
+</div>
 <hr>
-<h2 id="2-agentic-topology-amp-method-contract">🤖 2. Agentic Topology &amp; Method Contract</h2>
+<h2 id="2-agentic-topology-amp-method-contract"><i data-lucide="bot" class="ic"></i> 2. Agentic Topology &amp; Method Contract</h2>
 <p><code>asd method-run --methodId good-services-audit-15</code> (verified, trimmed):</p>
 <pre><code class="language-json">{ &quot;outputKind&quot;: &quot;insight-set&quot;, &quot;owner&quot;: &quot;measurer&quot;, &quot;reviewGate&quot;: &quot;critic&quot;,
   &quot;inputs&quot;: [ { &quot;kind&quot;: &quot;artifact&quot;, &quot;min&quot;: 1,
@@ -199,7 +218,7 @@
 <h3 id="agentic-workflow-diagram">Agentic workflow diagram</h3>
 <p></p>
 <hr>
-<h2 id="3-verified-execution">💻 3. Verified Execution</h2>
+<h2 id="3-verified-execution"><i data-lucide="code" class="ic"></i> 3. Verified Execution</h2>
 <p>Project <code>kestrel-quality-ops-1e9bfb41</code> (5 evidence records, journey-map present — inputs satisfied).</p>
 <pre><code class="language-bash"># FAIL-CLOSED DEMO: a 3-node &quot;sample&quot; audit
 $CLI artifact-write --projectId $PID --methodId good-services-audit-15 \
@@ -241,13 +260,13 @@ $CLI review --projectId $PID --artifactId a416ee0a… --verdict pass \
 <h3 id="score-matrix-diagram-the-run39s-verdicts-by-cluster">Score matrix diagram — the run&#39;s verdicts by cluster</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-the-virtual-ward-at-capacity-article-33">📊 4. Case Study Lens: The Virtual Ward at Capacity (Article 33)</h2>
+<h2 id="4-case-study-lens-the-virtual-ward-at-capacity-article-33"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: The Virtual Ward at Capacity (Article 33)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 33 (<code>articles/33/README.md</code>) is an illustrative composite of a telehealth scale-up &quot;with the ASD Critic on every gate.&quot;</p>
 </blockquote>
 <p>A virtual ward is a service where the control cluster (11–15) is existential: patients who cannot get human assistance or an explained decision are not inconvenienced — they are unsafe. The article&#39;s audit pattern matches this module: the full fifteen scored on post-launch evidence, no sampling, and the critic refusing to let a &quot;mostly good&quot; scorecard through when individual principles fail on evidence. The transferable lesson: <strong>the scorecard&#39;s value is the remediation sequence it forces</strong> — in the Kestrel run above, ten fails ordered by severity, starting with the dead-end that strands users after job closure.</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <ol>
 <li>Satisfy the inputs: a <code>journey-map</code> artifact and ≥2 post-launch evidence records (<code>quote</code> from support verbatims, <code>document</code> from a complaint log).</li>
 <li>Reproduce the fail-closed demo: write 3 nodes, observe <code>accepted:false</code> + <code>failures:[min-nodes]</code>, and confirm the draft is <strong>retained</strong> (not deleted) via <code>artifact-list</code>.</li>
@@ -263,7 +282,7 @@ $CLI review --projectId $PID --artifactId a416ee0a… --verdict pass \
 <li><input disabled="" type="checkbox"> Both factcheck exit codes observed and explained</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
 <li>The 15 principles are inductive failure-mode inversions; audit = &quot;does failure mode N exist, cite the evidence.&quot;</li>
 <li><code>good-services-audit-15</code> → <code>insight-set</code>: all fifteen nodes mandatory, <code>theme</code>/<code>source</code> non-empty, evidence per node; handoff to mapper for remediation.</li>
@@ -281,5 +300,6 @@ $CLI review --projectId $PID --artifactId a416ee0a… --verdict pass \
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

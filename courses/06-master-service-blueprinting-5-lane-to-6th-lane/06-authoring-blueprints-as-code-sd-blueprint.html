@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../06-master-service-blueprinting-5-lane-to-6th-lane.html">← Master Service Blueprinting — 5-Lane Architecture to the Orchestration Sixth Lane</a></nav>
+    <nav class="module-crumb"><a href="../06-master-service-blueprinting-5-lane-to-6th-lane.html"><i data-lucide="arrow-left"></i>Master Service Blueprinting — 5-Lane Architecture to the Orchestration Sixth Lane</a></nav>
     <article class="module-body">
 
 <h1 id="module-066-blueprints-as-code-the-full-authoring-session">Module 06.6: Blueprints-as-Code — The Full Authoring Session</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="../README.md">Master Service Blueprinting: 5-Lane Architecture to the Orchestration Sixth Lane</a> · <strong>Level</strong>: Intermediate · <strong>Duration</strong>: 50 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will master:</p>
 <ol>
 <li><strong>Theoretical Foundations</strong>: what &quot;as-code&quot; buys a design artifact — diffability, reproducibility, mechanical validation, deterministic rendering — and why implementation literature (<code>books/03</code>) demands it.</li>
@@ -57,7 +73,7 @@
 <li><strong>Hands-on Practice</strong>: author the full chain yourself in a disposable workspace.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="why-quotas-codequot-is-a-methodological-position-not-a-file-format">Why &quot;as-code&quot; is a methodological position, not a file format</h3>
 <p><em>Service Design: From Insight to Implementation</em> (<code>books/03-service-design-from-insight-to-implementation</code>, ch. 07 — a registered source of the <code>blueprint-to-backlog</code> method) makes the implementation argument: the distance between a design artifact and a delivery backlog is where most service redesigns die. The cause is representational: a workshop poster cannot be diffed against last week&#39;s version, cannot be validated in CI, cannot generate its own visualizations, and cannot prove which interview supports which box. Every translation step — poster to slide, slide to ticket, ticket to shipped system — is an opportunity for silent mutation.</p>
 <p>Blueprints-as-code removes the translation steps by making the blueprint <em>the single source of truth</em>:</p>
@@ -70,7 +86,9 @@
 </ul>
 <p>This is Shostack&#39;s 1984 ambition completed by tooling: the blueprint as an engineering document that operations, finance, and technology can all compute over.</p>
 <h3 id="concept-diagram-the-provenance-chain-this-module-builds">Concept diagram — the provenance chain this module builds</h3>
-<div class="diagram"><pre class="mermaid">flowchart LR
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart LR
     subgraph EVID[&quot;Evidence layer (content-addressed)&quot;]
         E1[&quot;int-01 quote&lt;br/&gt;sha256: 1515c366…&quot;]
         E4[&quot;obs-04 document&lt;br/&gt;sha256: d8ccdeaa…&quot;]
@@ -99,9 +117,10 @@
     class E1,E4,E6 paper;
     class JM,BP blue;
     class RM purple;
-    class SVG,HTML gold;</pre></div>
+    class SVG,HTML gold;</pre>
+</div>
 <hr>
-<h2 id="2-agentic-topology-amp-role-contracts">🤖 2. Agentic Topology &amp; Role Contracts</h2>
+<h2 id="2-agentic-topology-amp-role-contracts"><i data-lucide="bot" class="ic"></i> 2. Agentic Topology &amp; Role Contracts</h2>
 <p>The authoring session touches every role this course has introduced, in contract order:</p>
 <table>
 <thead>
@@ -156,7 +175,7 @@
 </tr>
 </tbody></table>
 <hr>
-<h2 id="3-the-full-verified-session">💻 3. The Full Verified Session</h2>
+<h2 id="3-the-full-verified-session"><i data-lucide="code" class="ic"></i> 3. The Full Verified Session</h2>
 <p>Every command and id below is from the real disposable-workspace run performed for this course (workspace <code>/tmp/asd-c06-live</code>, 2026-08-22). Reproduce it exactly; only the ids will differ, because evidence ids are content hashes.</p>
 <h3 id="step-1-project-and-evidence-with-the-kind-vocabulary-failing-closed">Step 1 — project and evidence (with the kind vocabulary failing closed)</h3>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab06
@@ -247,13 +266,13 @@ $CLI method-run --projectId &lt;pid&gt; --methodId blueprint-to-backlog
 <h3 id="session-sequence-diagram">Session sequence diagram</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-article-1139s-portfolio-as-this-provenance-chain">📊 4. Case Study Lens: Article 11&#39;s Portfolio as This Provenance Chain</h2>
+<h2 id="4-case-study-lens-article-1139s-portfolio-as-this-provenance-chain"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 11&#39;s Portfolio as This Provenance Chain</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong></p>
 </blockquote>
 <p>Article 11&#39;s artifact portfolio is exactly the chain built in this module: A1 (journey map) → A1b (current-state blueprint, the diagnostic centerpiece) → A1c (fail-point root-cause trace) → A2 (future-state blueprint) → prioritized backlog. The article&#39;s Phase 3 prioritization workshop is what <code>blueprint-to-backlog</code> formalizes: every fail point becomes a work item with an owning team, and the critic rejects any item with no wave assignment (&quot;an unsequenced backlog cannot be delivered&quot; — contract, verbatim). Where the article narrates the chain in prose, the toolchain <em>persists</em> it: the <code>derived-from</code> reference and the <code>supports</code> link to the roadmap are queryable data, so six months later a new team member can traverse from any backlog item back to the tenant quote that justifies it.</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <p>The lab directory&#39;s verifier (<code>courses/labs/lab-06-blueprinting-6lane/verify_lab-06.mjs</code>) drives this entire spine headlessly — run it, read it, then reproduce it manually:</p>
 <pre><code class="language-bash"># Headless: full spine + negative assertions (empty lane, dangling evidence)
 node courses/labs/lab-06-blueprinting-6lane/verify_lab-06.mjs
@@ -271,12 +290,12 @@ $CLI artifact-get --projectId &lt;pid&gt; --artifactId &lt;bp-id&gt;   # read ba
 <li><input disabled="" type="checkbox"> You can traverse the chain: backlog candidate → blueprint fail point → journey stage → tenant quote, using only ids.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
-<li>✅ <strong>Blueprints-as-code eliminates translation drift</strong>: one typed JSON source of truth, deterministic renders as views, line-level diffs for review.</li>
-<li>✅ <strong>Provenance is mandatory, not decorative</strong>: <code>references[].provenance</code> is required by schema, and every node cites content-addressed evidence — the chain from quote to backlog never breaks.</li>
-<li>✅ <strong>The full spine is seven commands</strong>: project → evidence → journey map → blueprint → review → factcheck → export, each failing closed on its own class of error.</li>
-<li>✅ <strong>Implementation starts where the blueprint ends</strong>: <code>blueprint-to-backlog</code> consumes a validated <code>service-blueprint</code> and emits a sequenced <code>roadmap</code> — the <code>supports</code> reference makes the handoff explicit.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Blueprints-as-code eliminates translation drift</strong>: one typed JSON source of truth, deterministic renders as views, line-level diffs for review.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Provenance is mandatory, not decorative</strong>: <code>references[].provenance</code> is required by schema, and every node cites content-addressed evidence — the chain from quote to backlog never breaks.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>The full spine is seven commands</strong>: project → evidence → journey map → blueprint → review → factcheck → export, each failing closed on its own class of error.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <strong>Implementation starts where the blueprint ends</strong>: <code>blueprint-to-backlog</code> consumes a validated <code>service-blueprint</code> and emits a sequenced <code>roadmap</code> — the <code>supports</code> reference makes the handoff explicit.</li>
 </ul>
 <hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
@@ -289,5 +308,6 @@ $CLI artifact-get --projectId &lt;pid&gt; --artifactId &lt;bp-id&gt;   # read ba
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=2</script>
 </body>
 </html>

@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../02-asd-platform-toolchain-deepseek-harness.html">← The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a></nav>
+    <nav class="module-crumb"><a href="../02-asd-platform-toolchain-deepseek-harness.html"><i data-lucide="arrow-left"></i>The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a></nav>
     <article class="module-body">
 
 <h1 id="module-023-the-asd-mcp-server-29-tools-216-corpus-resources-10-role-prompts-over-stdio">Module 02.3: The asd-mcp Server — 29 Tools, 216 Corpus Resources, 10 Role Prompts over stdio</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="./README.md">The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 55 min · <strong>Format</strong>: Theory, Live Protocol Session &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will be able to:</p>
 <ol>
 <li><strong>Speak the MCP stdio protocol by hand</strong>: newline-delimited JSON-RPC 2.0, <code>initialize</code> handshake, <code>notifications/initialized</code>, request/response id matching.</li>
@@ -56,13 +72,15 @@
 <li><strong>Complete the hands-on lab</strong>: a scripted MCP session you run and verify yourself.</li>
 </ol>
 <hr>
-<h2 id="1-foundational-theory-amp-literature-grounding">📖 1. Foundational Theory &amp; Literature Grounding</h2>
+<h2 id="1-foundational-theory-amp-literature-grounding"><i data-lucide="book-open" class="ic"></i> 1. Foundational Theory &amp; Literature Grounding</h2>
 <h3 id="a-protocol-is-a-service-contract-for-tools">A protocol is a service contract for tools</h3>
 <p><em>Service-Dominant Logic</em> (Lusch &amp; Vargo, <code>books/12-service-dominant-logic/04-service-ecosystems</code>) describes value creation as governed by <em>institutions</em> — shared rules that let strangers coordinate. MCP plays that role for agent tooling: a host (Claude Code, Codex, any MCP client) and a server (asd-mcp) coordinate without bespoke integration because both honor the same institutional rules: JSON-RPC 2.0 framing, capability negotiation at <code>initialize</code>, and enumerated <code>tools</code>/<code>resources</code>/<code>prompts</code> capability buckets.</p>
 <p><em>Mapping Experiences</em> (Kalbach, <code>books/09-mapping-experiences/02-the-anatomy-of-experience-maps</code>) supplies the second idea: a map (or a corpus) is only useful if its <em>anatomy is legible</em> — you can enumerate its parts and trace any part back to source. The asd-mcp resource surface is exactly that: the repo&#39;s Service Design canon (<code>books/</code> 20 volumes, <code>articles/</code> 37 case studies) exposed as addressable, paginated <code>asd://</code> URIs, sorted by URI so successive <code>resources/list</code> calls are stable. The corpus is scanned <strong>per request, not at boot</strong> (<code>src/corpus.ts</code>), so what the server reports is what is on disk right now.</p>
 <p>The verified inventory for this repo&#39;s corpus, from the live session below: <strong>29 tools, 216 resources, 10 prompts</strong>. Emitted host packs bundle additional pack-local corpus copies, so pack servers report more (the pack README records 225). Teachable rule: <em>216 from the repo corpus; emitted packs ship more.</em></p>
 <h3 id="concept-diagram-the-mcp-capability-buckets-over-the-asd-corpus">Concept diagram — the MCP capability buckets over the ASD corpus</h3>
-<div class="diagram"><pre class="mermaid">flowchart TD
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart TD
     subgraph Handshake[&quot;initialize (protocol 2025-06-18)&quot;]
         CAPS[&quot;capabilities: tools + resources + prompts&quot;]
     end
@@ -91,9 +109,10 @@
     class CAPS purple;
     class T1,T2,T3 blue;
     class R1,R2,R3 gold;
-    class P1,P2 paper;</pre></div>
+    class P1,P2 paper;</pre>
+</div>
 <hr>
-<h2 id="2-agent-topology-amp-role-contracts">🤖 2. Agent Topology &amp; Role Contracts</h2>
+<h2 id="2-agent-topology-amp-role-contracts"><i data-lucide="bot" class="ic"></i> 2. Agent Topology &amp; Role Contracts</h2>
 <p>The 10 entries in <code>prompts/list</code> are not generic personas — each is the host-format rendering of a role contract whose canonical source is <code>suite/packages/knowledge/data/practice-contract.json</code>:</p>
 <table>
 <thead>
@@ -131,7 +150,7 @@
 </tbody></table>
 <p><code>prompts/get</code> on any name returns the role contract as a user message — verified below with <code>mapper</code>, whose returned text begins with the SDAP Role Contract header and cites its canonical source.</p>
 <hr>
-<h2 id="3-the-live-session-verified-2026-08-22">💻 3. The Live Session (verified 2026-08-22)</h2>
+<h2 id="3-the-live-session-verified-2026-08-22"><i data-lucide="code" class="ic"></i> 3. The Live Session (verified 2026-08-22)</h2>
 <p>Everything in this section was executed against <code>suite/packages/runtime/lib/mcp.mjs</code> with <code>ASD_WORKSPACE=/tmp/asd-c02-1787398523</code>. The framing is <strong>newline-delimited JSON-RPC</strong>: one complete JSON message per line, in each direction.</p>
 <h3 id="31-initialize-and-enumerate">3.1 Initialize and enumerate</h3>
 <pre><code class="language-bash">{
@@ -209,14 +228,14 @@
 <h3 id="pagination-state-diagram-walking-the-corpus-to-the-end">Pagination state diagram — walking the corpus to the end</h3>
 <p></p>
 <hr>
-<h2 id="4-enterprise-case-study-lens">🏢 4. Enterprise Case Study Lens</h2>
+<h2 id="4-enterprise-case-study-lens"> 4. Enterprise Case Study Lens</h2>
 <h3 id="article-31-riding-the-current-public-transport-service-design-on-the-asd-claude-code-plugin-articles31">Article 31 — <em>Riding the Current: Public-Transport Service Design on the ASD Claude Code Plugin</em> (<code>articles/31</code>)</h3>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Lighthouse Transit is a fictional composite; the article is an illustrative platform walkthrough over the committed pack sources.</p>
 </blockquote>
 <p>Lighthouse Transit is the MCP module&#39;s case because its entire operating model is &quot;one designer + ten role agents&quot; coordinated through the vendored <code>asd</code> MCP server inside a host pack. The article&#39;s evidence note records the pack-local CLI and disposable MCP bundles at 29 tools and 10 prompts — the same inventory you enumerated by hand above — while keeping host execution honestly unverified. The transit scenario shows why corpus resources matter in practice: the Librarian role grounding ideation in <code>books/19-service-management-and-marketing/06-service-recovery</code> and <code>books/20-the-service-profit-chain/03-external-service-value</code> is a <code>resources/read</code> (or <code>sd_knowledge --resource</code>) call away, with provenance pointing at the repo path, not a paraphrase from model memory.</p>
 <hr>
-<h2 id="5-critic-gate-amp-review-veto-rules-protocol-edition">⚖️ 5. Critic Gate &amp; Review Veto Rules (protocol edition)</h2>
+<h2 id="5-critic-gate-amp-review-veto-rules-protocol-edition"><i data-lucide="undefined" class="ic"></i> 5. Critic Gate &amp; Review Veto Rules (protocol edition)</h2>
 <blockquote>
 <p>[!IMPORTANT]</p>
 <ol>
@@ -227,7 +246,7 @@
 </ol>
 </blockquote>
 <hr>
-<h2 id="6-hands-on-lab-assignment">🧪 6. Hands-On Lab Assignment</h2>
+<h2 id="6-hands-on-lab-assignment"><i data-lucide="flask-conical" class="ic"></i> 6. Hands-On Lab Assignment</h2>
 <h3 id="objective">Objective</h3>
 <p>Script a complete MCP session: handshake, full corpus pagination, one tool call, one corpus read, one role prompt.</p>
 <h3 id="steps">Steps</h3>
@@ -272,7 +291,7 @@ EOF
 <li><input disabled="" type="checkbox"> A bogus <code>asd://</code> URI returns error <code>-32002</code>, not a crash</li>
 </ul>
 <hr>
-<h2 id="7-summary-amp-reference-anchors">📚 7. Summary &amp; Reference Anchors</h2>
+<h2 id="7-summary-amp-reference-anchors"><i data-lucide="library" class="ic"></i> 7. Summary &amp; Reference Anchors</h2>
 <h3 id="key-takeaways">Key takeaways</h3>
 <ul>
 <li>The stdio server is a thin, honest projection: newline-delimited JSON-RPC, 29 tools, 216 repo-corpus resources across three stable pages, 10 role prompts. Emitted packs ship more resources (225) from pack-local copies.</li>
@@ -293,5 +312,6 @@ EOF
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

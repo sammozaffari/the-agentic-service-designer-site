@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../01-agentic-service-design-fundamentals.html">← Agentic Service Design Fundamentals</a></nav>
+    <nav class="module-crumb"><a href="../01-agentic-service-design-fundamentals.html"><i data-lucide="arrow-left"></i>Agentic Service Design Fundamentals</a></nav>
     <article class="module-body">
 
 <h1 id="module-011-the-death-of-workshop-theater-moving-to-an-executable-service-os">Module 01.1: The Death of Workshop Theater: Moving to an Executable Service OS</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="./README.md">Agentic Service Design Fundamentals</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 50 min · <strong>Format</strong>: Theory, Architecture, Verified CLI Run &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will be able to:</p>
 <ol>
 <li><strong>Diagnose workshop theater</strong> — name the exact mechanisms (hierarchy distortion, unprovenanced synthesis, artifact decay) that make sticky-note deliverables rot, citing <em>This is Service Design Doing</em> and Kumar&#39;s <em>101 Design Methods</em>.</li>
@@ -55,7 +71,7 @@
 <li><strong>Read a method contract</strong> — owner, step roles, acceptance rules, human checkpoints — before writing a single artifact node.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-why-workshops-became-theater">📖 1. Theoretical Grounding: Why Workshops Became Theater</h2>
+<h2 id="1-theoretical-grounding-why-workshops-became-theater"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding: Why Workshops Became Theater</h2>
 <h3 id="11-what-the-canon-actually-says-about-workshops">1.1 What the canon actually says about workshops</h3>
 <p>Stickdorn, Lawrence, Hormess and Schneider devote a full chapter of <em>This is Service Design Doing</em> (2018, Ch. 8, <em>Facilitating Workshops</em> — summarized in <code>books/01-this-is-service-design-doing/08-facilitating-workshops.md</code>) to a warning most teams skip: a workshop is itself a service, and it must be <em>designed</em> — pre-workshop onboarding, in-session cognitive rhythm, and post-workshop offboarding with &quot;rapid photographic documentation, synthesized decision memos, and clear ownership tracking.&quot; The same chapter gives the facilitator explicit countermeasures for hierarchy distortion: silent generation before verbal sharing because &quot;the HiPPO (Highest Paid Person&#39;s Opinion)&quot; otherwise anchors the room; parking lots for solution-jumpers; round-robin turns for passive observers.</p>
 <p>Notice what those countermeasures admit: <strong>the default physics of a workshop corrupt the data</strong>. Verbal-first brainstorming is dominated by rank. Synthesis on a physical wall is anonymous, unversioned, and gone when the room is released. The chapter&#39;s own definition of success is a <em>single mandatory output artifact</em> — &quot;if no tangible artifact is needed, cancel the workshop&quot; — yet the artifact it produces (a photographed wall) has no provenance: you cannot ask a sticky note which participant said it, in what context, or whether two notes contradict.</p>
@@ -98,7 +114,9 @@
 </tr>
 </tbody></table>
 <h3 id="concept-diagram-from-theater-to-evidence-gated-practice">Concept diagram — from theater to evidence-gated practice</h3>
-<div class="diagram"><pre class="mermaid">flowchart LR
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart LR
     subgraph Theater[&quot;Workshop Theater (decays)&quot;]
         W1[&quot;Verbal brainstorm&lt;br/&gt;HiPPO-anchored&quot;] --&gt; W2[&quot;Sticky-note wall&lt;br/&gt;no provenance&quot;]
         W2 --&gt; W3[&quot;Photographed wall&lt;br/&gt;+ summary deck&quot;]
@@ -121,9 +139,10 @@
     class W1,W2,W3,W4 bad;
     class G1,G3,G4 blue;
     class G2 gold;
-    class G5,G6 purple;</pre></div>
+    class G5,G6 purple;</pre>
+</div>
 <hr>
-<h2 id="2-agentic-topology-the-research-wall-rebuilt-as-infrastructure">🤖 2. Agentic Topology: The Research Wall, Rebuilt as Infrastructure</h2>
+<h2 id="2-agentic-topology-the-research-wall-rebuilt-as-infrastructure"><i data-lucide="bot" class="ic"></i> 2. Agentic Topology: The Research Wall, Rebuilt as Infrastructure</h2>
 <p>The Agentic Service Design runtime keeps the <em>function</em> of the research wall — externalized, shared, inspectable evidence — and replaces the medium with a per-project JSON store under <code>ASD_WORKSPACE</code> (default <code>~/.asd/projects</code>). Every piece of evidence is content-addressed: its id is the SHA-256 of <code>[source, kind, body, origin]</code>, so a quote cannot be silently edited after something cites it.</p>
 <p>The roles in this module&#39;s slice of the 10-role team (module 01.3 covers the full topology):</p>
 <table>
@@ -160,7 +179,7 @@
 <p><em>Handoffs between roles are typed filesystem artifacts, never conversational memory.</em> A role that cannot cite an evidence id has nothing to say.</p>
 </blockquote>
 <hr>
-<h2 id="3-verified-execution-the-canonical-loop-run-today-2026-08-22">💻 3. Verified Execution: The Canonical Loop (run today, 2026-08-22)</h2>
+<h2 id="3-verified-execution-the-canonical-loop-run-today-2026-08-22"><i data-lucide="code" class="ic"></i> 3. Verified Execution: The Canonical Loop (run today, 2026-08-22)</h2>
 <p>Everything below was executed against the built runtime (<code>suite/packages/runtime/lib/cli.mjs</code>) in a disposable workspace. Ids are real output from that run; your run will mint different hashes because they are content- and time-derived.</p>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab   # per-project JSON store
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
@@ -221,13 +240,13 @@ export type Artifact = {
 <h3 id="lifecycle-diagram-artifact-states">Lifecycle diagram — artifact states</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-article-01-quotthe-ai-first-service-design-operating-systemquot">📊 4. Case Study Lens: Article 01 — &quot;The AI-First Service Design Operating System&quot;</h2>
+<h2 id="4-case-study-lens-article-01-quotthe-ai-first-service-design-operating-systemquot"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 01 — &quot;The AI-First Service Design Operating System&quot;</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> The <code>articles/</code> corpus is a set of illustrative composites, not client runlogs.</p>
 </blockquote>
 <p>Article 01 (<code>articles/01/README.md</code>) narrates exactly this module&#39;s argument: a program that replaced episodic workshop cycles with a continuously-running evidence pipeline. Read it alongside TISDD Ch. 8 and note the mapping: the article&#39;s &quot;evidence register&quot; is the research wall with provenance restored; its &quot;critic pass before any client-facing artifact&quot; is the facilitator&#39;s neutral-process role, mechanized. Article 02 (Northgate Health telehealth onboarding) shows the same loop applied to a concrete 28-week redesign — useful as a second lens on what changes when synthesis artifacts stay addressable and re-runnable after the workshop ends.</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <p>Work in a disposable workspace — nothing here touches your real projects.</p>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab-01
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
@@ -259,7 +278,7 @@ $CLI artifact-write --projectId &lt;pid&gt; --methodId journey-from-transcripts 
 <li><input disabled="" type="checkbox"> You can explain, in one sentence each, which workshop-theater failure each fail-closed behavior prevents.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
 <li><strong>Workshop theater is a provenance failure, not a facilitation failure.</strong> The literature (TISDD Ch. 4/8, Kumar Ch. 1) already demanded verbatim evidence, triangulation, and repeatable process; rooms full of sticky notes simply cannot enforce them.</li>
 <li><strong>The research wall&#39;s function survives; its medium is replaced.</strong> A SHA-256 content-addressed evidence store keeps everything the wall was for — shared, externalized, inspectable — and adds immutability and citability.</li>
@@ -277,5 +296,6 @@ $CLI artifact-write --projectId &lt;pid&gt; --methodId journey-from-transcripts 
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

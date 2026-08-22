@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../07-cross-channel-orchestration-prototyping-sops.html">← Cross-Channel Orchestration, Prototyping &amp; SOPs-as-Code</a></nav>
+    <nav class="module-crumb"><a href="../07-cross-channel-orchestration-prototyping-sops.html"><i data-lucide="arrow-left"></i>Cross-Channel Orchestration, Prototyping &amp; SOPs-as-Code</a></nav>
     <article class="module-body">
 
 <h1 id="module-072-service-story-mapping-amp-narrative-arc-construction">Module 07.2: Service Story Mapping &amp; Narrative Arc Construction</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="../README.md">Cross-Channel Orchestration, Prototyping &amp; SOPs-as-Code</a> · <strong>Level</strong>: Advanced · <strong>Duration</strong>: 45 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <ol>
 <li><strong>Theoretical Foundations</strong>: Narrative structure as a service-design instrument — Lichaw&#39;s story-first product structure and Pine &amp; Gilmore&#39;s experience staging — and why beats must be <em>sequenced</em>, not listed.</li>
 <li><strong>Agent Topology &amp; Contracts</strong>: <code>story-mapping</code> → <code>story-map</code> and <code>storyboard-authoring</code> → <code>storyboard</code>, their input gates, acceptance rules, and the ideator→mapper→critic step chain.</li>
@@ -56,13 +72,15 @@
 <li><strong>Hands-on Practice</strong>: Sequence a story map from an evidence-gated journey map and export its deterministic SVG.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="story-is-structure-not-decoration">Story is structure, not decoration</h3>
 <p>Donna Lichaw&#39;s <em>The User&#39;s Journey</em> (2016) makes the load-bearing claim for this module: products and services that &quot;work&quot; narratively are built on the same structural spine as stories — an <strong>expositional setup</strong>, <strong>rising action</strong> through a series of crises, a <strong>climax</strong>, and a <strong>resolution</strong> (Ch. 3, <em>Structuring Your Product</em>). The user is the hero; the service is the plot machinery that moves them between states. The practical consequence: a service journey is not an unordered bag of touchpoints. The <em>same</em> touchpoints in a different order produce a different experience, because each beat re-frames the customer&#39;s emotional reading of the next.</p>
 <p>Pine &amp; Gilmore&#39;s <em>The Experience Economy</em> (Ch. 3, <em>Staging Experiences</em>) supplies the staging discipline: theme the experience, harmonize impressions with positive cues, eliminate negative cues, mix in memorabilia, engage the senses. Narrative arc tells you <em>when</em> the climax should land; staging tells you <em>what cues</em> must be present at each beat for the arc to be felt. A collect-and-return service whose climax (the kiosk moment) is staffed by conflicting cues — &quot;ready for collection&quot; vs &quot;we need a paper receipt&quot; — fails on both axes at once.</p>
 <h3 id="the-narrative-arc-as-an-ordered-evidence-gated-structure">The narrative arc as an ordered, evidence-gated structure</h3>
 <p>The craft move of this module is encoding the arc as <strong>ordered artifact nodes</strong> with an explicit tension value per beat. Order carries the theory: the backbone node sequence <em>is</em> the plot.</p>
-<div class="diagram"><pre class="mermaid">flowchart LR
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart LR
     B1[&quot;Beat 1: setup — order placed (tension 1)&quot;] --&gt;|&quot;narrative arc: rising&quot;| B2[&quot;Beat 2: confrontation — kiosk cannot find order (tension 4)&quot;]
     B2 --&gt;|&quot;climax decision: designed or accidental&quot;| B3[&quot;Beat 3: resolution — desk resolves with full context (tension 2)&quot;]
     B3 --&gt;|&quot;denouement: loop closed&quot;| B4[&quot;Memorabilia: app confirmation as receipt of the experience&quot;]
@@ -75,11 +93,12 @@
     class B1,B4 paper;
     class B2 gold;
     class B3 blue;
-    class X bad;</pre></div>
+    class X bad;</pre>
+</div>
 <h3 id="why-agentic-infrastructure">Why agentic infrastructure</h3>
 <p>Two failure modes kill workshop story maps. <strong>Drift</strong>: beats invented in the room lose their connection to research within days. <strong>Sequence decay</strong>: sticky notes get photographed once and never re-ordered again, so the arc is never tested as an arc. The toolchain addresses both mechanically: <code>story-mapping</code> <em>fails closed</em> unless a <code>journey-map</code> or <code>insight-set</code> artifact already exists, so the backbone is always derived from evidence-gated research; and every beat node must carry a non-empty <code>beat</code> field plus cited evidence before the Critic will pass it.</p>
 <hr>
-<h2 id="2-agent-topology-amp-method-contracts">🤖 2. Agent Topology &amp; Method Contracts</h2>
+<h2 id="2-agent-topology-amp-method-contracts"><i data-lucide="bot" class="ic"></i> 2. Agent Topology &amp; Method Contracts</h2>
 <table>
 <thead>
 <tr>
@@ -134,7 +153,7 @@
 </tbody></table>
 <p></p>
 <hr>
-<h2 id="3-schemas-amp-verified-execution">💻 3. Schemas &amp; Verified Execution</h2>
+<h2 id="3-schemas-amp-verified-execution"><i data-lucide="code" class="ic"></i> 3. Schemas &amp; Verified Execution</h2>
 <h3 id="typescript-schema-asdcore">TypeScript schema (<code>@asd/core</code>)</h3>
 <pre><code class="language-typescript">// kind-schema for &quot;story-map&quot; (closed node fields):
 //   action: string REQUIRED   beat: string   tension: number   stage: string   actor: string
@@ -186,13 +205,13 @@ $CLI export-artifact --projectId juniper-collect-and-return-sprint-5cdce310 --ar
 <h3 id="sequence-who-does-what-when">Sequence: who does what when</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-re-storying-onboarding-at-quill-article-14">📊 4. Case Study Lens: Re-Storying Onboarding at Quill (Article 14)</h2>
+<h2 id="4-case-study-lens-re-storying-onboarding-at-quill-article-14"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Re-Storying Onboarding at Quill (Article 14)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 14 (<em>Story Mapping &amp; Narrative Structure: Re-Storying Onboarding at Quill</em>) is an illustrative composite from the course corpus.</p>
 </blockquote>
 <p>Quill&#39;s onboarding failed Lichaw&#39;s test: the touchpoints were individually fine but ordered as an anticlimax — the payoff screen arrived before the customer had done anything to earn it, and the actual climax (first successful publish) was visually indistinguishable from a settings page. The re-storying moved one beat and re-cued two others; activation rose in the composite account. The transferable mechanic: <strong>tension values make the arc arguable</strong>. When <code>s2</code> carries <code>tension: 4</code> against <code>s1</code>&#39;s <code>1</code>, the claim &quot;the kiosk moment is the climax&quot; becomes a falsifiable design assertion the Critic can interrogate against journey evidence — <code>int-01</code>&#39;s forty-minute drive is exactly the kind of citation that keeps the climax honest.</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <pre><code class="language-bash"># Prerequisite: the lab project already holds a final journey-map (07.1/05 chain).
 $CLI method-run --projectId &lt;pid&gt; --methodId story-mapping       # contract + input gate
 $CLI artifact-write --projectId &lt;pid&gt; --methodId story-mapping --title &quot;&lt;title&gt;&quot; \
@@ -216,12 +235,12 @@ journey-map, insight-set; project has 0. Produce the typed input artifact before
 <li><input disabled="" type="checkbox"> Both artifacts <code>final</code> via critic pass; <code>renders/story-map.&lt;id&gt;.svg</code> exists.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
-<li>✅ Narrative arc is sequence plus tension — encode it as ordered nodes with numeric tension, not prose.</li>
-<li>✅ <code>story-mapping</code> derives from an evidence-gated journey; the input gate forbids evidence-free storytelling.</li>
-<li>✅ Storyboards dramatize the beats worth testing; they <code>support</code> prototype-plans and walkthrough-scripts (07.4).</li>
-<li>✅ The climax is a design claim — make it falsifiable with cited evidence.</li>
+<li><i data-lucide="circle-check" class="ic"></i> Narrative arc is sequence plus tension — encode it as ordered nodes with numeric tension, not prose.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <code>story-mapping</code> derives from an evidence-gated journey; the input gate forbids evidence-free storytelling.</li>
+<li><i data-lucide="circle-check" class="ic"></i> Storyboards dramatize the beats worth testing; they <code>support</code> prototype-plans and walkthrough-scripts (07.4).</li>
+<li><i data-lucide="circle-check" class="ic"></i> The climax is a design claim — make it falsifiable with cited evidence.</li>
 </ul>
 <hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
@@ -234,5 +253,6 @@ journey-map, insight-set; project has 0. Produce the typed input artifact before
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

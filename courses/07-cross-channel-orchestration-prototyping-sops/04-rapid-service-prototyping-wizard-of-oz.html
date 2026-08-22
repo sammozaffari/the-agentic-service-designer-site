@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../07-cross-channel-orchestration-prototyping-sops.html">← Cross-Channel Orchestration, Prototyping &amp; SOPs-as-Code</a></nav>
+    <nav class="module-crumb"><a href="../07-cross-channel-orchestration-prototyping-sops.html"><i data-lucide="arrow-left"></i>Cross-Channel Orchestration, Prototyping &amp; SOPs-as-Code</a></nav>
     <article class="module-body">
 
 <h1 id="module-074-rapid-service-prototyping-desktop-walkthroughs-to-wizard-of-oz">Module 07.4: Rapid Service Prototyping: Desktop Walkthroughs to Wizard-of-Oz</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="../README.md">Cross-Channel Orchestration, Prototyping &amp; SOPs-as-Code</a> · <strong>Level</strong>: Advanced · <strong>Duration</strong>: 50 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <ol>
 <li><strong>Theoretical Foundations</strong>: Why services must be prototyped in performance, not on paper — Polaine, Løvlie &amp; Reason&#39;s rehearsal methodology and the fidelity ladder as a risk instrument.</li>
 <li><strong>Agent Topology &amp; Contracts</strong>: <code>desktop-walkthrough</code> → <code>walkthrough-script</code>, <code>wizard-of-oz</code> / <code>concierge-pilot</code> → <code>prototype-plan</code>, <code>pilot-test-report</code> → <code>test-report</code>, and <code>prototype-ladder-gating</code> → <code>decision-matrix</code>.</li>
@@ -56,7 +72,7 @@
 <li><strong>Hands-on Practice</strong>: Gate a Wizard-of-Oz rung with a real test-report and a decision-matrix.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="services-exist-only-in-performance">Services exist only in performance</h3>
 <p><em>Service Design: From Insight to Implementation</em> (Polaine, Løvlie, Reason, 2013), Ch. 6 (<em>Prototyping Services</em>), states the module&#39;s premise: a physical product can be prototyped as a static object, but a service exists only in <strong>performance, interaction, and temporal sequence</strong>. You cannot learn whether a token-based collection feels seamless from a rendering of a kiosk screen; you learn it by staging the moment with real latency, real queues, and a real customer holding a phone. The chapter&#39;s practical machinery:</p>
 <ul>
@@ -66,7 +82,9 @@
 </ul>
 <h3 id="the-fidelity-ladder-and-its-gates">The fidelity ladder and its gates</h3>
 <p>The ladder, low to high: <strong>tabletop/desktop walkthrough</strong> (staff rehearse the service with props on a table) → <strong>Wizard-of-Oz</strong> (the customer experiences apparent automation that a hidden human actually performs) → <strong>concierge pilot</strong> (a real but manually-delivered service for a few customers) → <strong>staffed pilot</strong> → <strong>operational rollout</strong>. The discipline is not the rungs; it is the <strong>gates between them</strong>. Each gate consumes the prior rung&#39;s test evidence and decides: advance a rung, repeat the current rung with changes, or stop. Ungated ladders are how organizations leap from a successful workshop straight to a capital commitment.</p>
-<div class="diagram"><pre class="mermaid">flowchart LR
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart LR
     R0[&quot;Rung 0: desktop walkthrough — staff rehearse exception path&quot;] --&gt;|&quot;walkthrough-script final + critic pass&quot;| G1{&quot;gate: is the path coherent?&quot;}
     G1 --&gt;|&quot;advance&quot;| R1[&quot;Rung 1: Wizard-of-Oz — hidden staff simulate token automation&quot;]
     G1 --&gt;|&quot;repeat&quot;| R0
@@ -84,11 +102,12 @@
     class R0,R1,R2 blue;
     class G1,G2,G3 purple;
     class R3 gold;
-    class K bad;</pre></div>
+    class K bad;</pre>
+</div>
 <h3 id="why-agentic-infrastructure">Why agentic infrastructure</h3>
 <p>Wizard-of-Oz testing fails quietly in two ways: the &quot;wizard&quot; behaviors drift between sessions (so results are not comparable), and gate decisions get made in hallways with no record of <em>what evidence justified the leap</em>. The toolchain addresses both: the <code>prototype-plan</code> artifact pins the hypothesis, fidelity, and pass gate <em>before</em> the run (<code>forbid-field-values fidelity</code> rejects placeholder fidelity claims); the <code>test-report</code> demands <strong>two evidence records per node</strong> (<code>min-evidence-per-node 2</code>) so a single anecdote cannot carry a gate; and <code>prototype-ladder-gating</code> fails closed unless a <code>test-report</code> exists — you structurally cannot advance a rung on vibes.</p>
 <hr>
-<h2 id="2-agent-topology-amp-method-contracts">🤖 2. Agent Topology &amp; Method Contracts</h2>
+<h2 id="2-agent-topology-amp-method-contracts"><i data-lucide="bot" class="ic"></i> 2. Agent Topology &amp; Method Contracts</h2>
 <table>
 <thead>
 <tr>
@@ -143,7 +162,7 @@
 </tbody></table>
 <p></p>
 <hr>
-<h2 id="3-schemas-amp-verified-execution">💻 3. Schemas &amp; Verified Execution</h2>
+<h2 id="3-schemas-amp-verified-execution"><i data-lucide="code" class="ic"></i> 3. Schemas &amp; Verified Execution</h2>
 <h3 id="typescript-schema-asdcore">TypeScript schema (<code>@asd/core</code>)</h3>
 <pre><code class="language-typescript">// &quot;prototype-plan&quot;:  hypothesis: string REQUIRED   fidelity: string   gate: string   test: string   learning: string   status: string
 //   relations: derived-from → concept-set | journey-map | service-blueprint | decision-matrix
@@ -198,13 +217,13 @@ $CLI artifact-write ... --methodId prototype-ladder-gating --title &quot;Ladder 
 <h3 id="rung-state-machine">Rung state machine</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-rapid-experiments-at-ember-hospitality-article-17">📊 4. Case Study Lens: Rapid Experiments at Ember Hospitality (Article 17)</h2>
+<h2 id="4-case-study-lens-rapid-experiments-at-ember-hospitality-article-17"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Rapid Experiments at Ember Hospitality (Article 17)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 17 (<em>Prototyping Services: Rapid Experiments at Ember Hospitality</em>) is an illustrative composite.</p>
 </blockquote>
 <p>Ember&#39;s composite account runs the full ladder for a lobby-free check-in: a desktop walkthrough exposed that nobody owned the &quot;reservation not found&quot; exception (the rehearsal stalled for six minutes on exactly that beat); a Wizard-of-Oz rung with a staffer behind a fake kiosk validated that guests accepted the token handoff; and the ladder gate <em>repeated</em> the payment-exception rung because only two exceptions had been observed — below the threshold the team had pinned in the <code>prototype-plan</code>&#39;s <code>gate</code> field. That repeat decision is the module in miniature: the gate field written before the run is what made &quot;we need more exception data&quot; a mechanical conclusion rather than an argument.</p>
 <hr>
-<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <pre><code class="language-bash">$CLI method-run --projectId &lt;pid&gt; --methodId wizard-of-oz            # needs a concept-set
 $CLI artifact-write ... --methodId wizard-of-oz --nodes &#39;&lt;hypothesis + fidelity + gate&gt;&#39;
 $CLI method-run --projectId &lt;pid&gt; --methodId desktop-walkthrough     # needs blueprint or concept-set
@@ -228,12 +247,12 @@ kind test-report; project has 0. Produce the typed input artifact before startin
 <li><input disabled="" type="checkbox"> Every gate crossed has a critic <code>pass</code> verdict on both the test-report and the decision-matrix.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
-<li>✅ Services are prototyped in performance: rehearse with walkthroughs, simulate with wizards, deliver manually with concierge pilots.</li>
-<li>✅ The ladder&#39;s value is its gates — each gate is a Critic review consuming a two-evidence test-report.</li>
-<li>✅ Pin the pass condition (<code>gate</code>) before the run; the pre-registered threshold turns &quot;advance?&quot; into arithmetic.</li>
-<li>✅ <code>prototype-ladder-gating</code> fails closed without a test-report: no evidence, no rung.</li>
+<li><i data-lucide="circle-check" class="ic"></i> Services are prototyped in performance: rehearse with walkthroughs, simulate with wizards, deliver manually with concierge pilots.</li>
+<li><i data-lucide="circle-check" class="ic"></i> The ladder&#39;s value is its gates — each gate is a Critic review consuming a two-evidence test-report.</li>
+<li><i data-lucide="circle-check" class="ic"></i> Pin the pass condition (<code>gate</code>) before the run; the pre-registered threshold turns &quot;advance?&quot; into arithmetic.</li>
+<li><i data-lucide="circle-check" class="ic"></i> <code>prototype-ladder-gating</code> fails closed without a test-report: no evidence, no rung.</li>
 </ul>
 <hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
@@ -246,5 +265,6 @@ kind test-report; project has 0. Produce the typed input artifact before startin
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>

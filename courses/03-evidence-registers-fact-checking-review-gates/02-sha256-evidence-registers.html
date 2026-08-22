@@ -9,14 +9,16 @@
 <style>
   :root { color-scheme: light; }
   body.module-page { background: var(--paper-tint); }
-  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
   .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
-  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
-  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
-  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
-  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
   .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
   .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
   .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
   .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
@@ -25,20 +27,34 @@
   .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
   .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
   .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
-  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
-  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
-  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function () {
-    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
-  });
-</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
 </head>
 <body class="module-page">
   <div class="module-wrap">
-    <nav class="module-crumb"><a href="../../03-evidence-registers-fact-checking-review-gates.html">← Evidence Registers, Fact-Checking &amp; Review Gates</a></nav>
+    <nav class="module-crumb"><a href="../03-evidence-registers-fact-checking-review-gates.html"><i data-lucide="arrow-left"></i>Evidence Registers, Fact-Checking &amp; Review Gates</a></nav>
     <article class="module-body">
 
 <h1 id="module-032-sha-256-evidence-registers-amp-content-addressed-storage">Module 03.2: SHA-256 Evidence Registers &amp; Content-Addressed Storage</h1>
@@ -46,7 +62,7 @@
 <p><strong>Course</strong>: <a href="../README.md">Evidence Registers, Fact-Checking &amp; Review Gates</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 50 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
 <hr>
-<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <p>By completing this module, you will master:</p>
 <ol>
 <li><strong>Theoretical Foundations</strong>: Content addressing as the computational form of Martin&#39;s <em>reliability</em> — identical inputs must yield identical identifiers, or nothing downstream can be trusted.</li>
@@ -57,7 +73,7 @@
 <li><strong>Hands-on Practice</strong>: Prove dedup and avalanche yourself with three paste-able commands.</li>
 </ol>
 <hr>
-<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis"><i data-lucide="book-open" class="ic"></i> 1. Theoretical Grounding &amp; Literature Synthesis</h2>
 <h3 id="content-addressing-is-reliability-formalized">Content addressing is reliability, formalized</h3>
 <p>Martin (<em>The Design of Business</em>, ch. 02 &quot;Reliability versus Validity&quot;) defines <strong>reliability</strong> as the orientation that produces &quot;consistent, replicable outcomes across repeated trials. Its core test is: <em>Will different operators following the same process achieve the identical result?</em>&quot; That is precisely the property a service-design evidence base needs and precisely what a mutable store (a wiki page, a quote spreadsheet, a chat log) cannot offer: edit the source and every downstream citation silently changes meaning.</p>
 <p>A <strong>content-addressed</strong> register makes the identifier a pure function of the content:</p>
@@ -75,7 +91,9 @@
 </blockquote>
 <p>This is the module&#39;s central design lesson: <strong>provenance is part of identity</strong>. Two interviewees saying &quot;the hold music drives me mad&quot; are two evidence records, not one — because in service research, <em>who said it</em> is evidentiary content, not metadata.</p>
 <h3 id="concept-diagram-identity-as-a-pure-function-of-content">Concept diagram — identity as a pure function of content</h3>
-<div class="diagram"><pre class="mermaid">flowchart TD
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart TD
     subgraph Inputs[&quot;Evidence content (the only inputs)&quot;]
         S[&quot;source: int-01&quot;]
         K[&quot;kind: quote&quot;]
@@ -99,9 +117,10 @@
     class H,ID purple;
     class REG,CITE blue;
     class SAME blue;
-    class EDIT,DANGLE bad;</pre></div>
+    class EDIT,DANGLE bad;</pre>
+</div>
 <hr>
-<h2 id="2-multi-agent-topology-amp-role-contracts">🤖 2. Multi-Agent Topology &amp; Role Contracts</h2>
+<h2 id="2-multi-agent-topology-amp-role-contracts"><i data-lucide="bot" class="ic"></i> 2. Multi-Agent Topology &amp; Role Contracts</h2>
 <table>
 <thead>
 <tr>
@@ -130,7 +149,7 @@
 <h3 id="agentic-workflow-capture-dedup-cite">Agentic workflow — capture, dedup, cite</h3>
 <p></p>
 <hr>
-<h2 id="3-production-schemas-code-amp-verified-execution">💻 3. Production Schemas, Code &amp; Verified Execution</h2>
+<h2 id="3-production-schemas-code-amp-verified-execution"><i data-lucide="code" class="ic"></i> 3. Production Schemas, Code &amp; Verified Execution</h2>
 <h3 id="the-real-store-types-asdcore-suitepackagescoresrcstoreevidencets">The real store types (<code>@asd/core</code>, <code>suite/packages/core/src/store/evidence.ts</code>)</h3>
 <pre><code class="language-typescript">export type EvidenceKind = &#39;quote&#39; | &#39;telemetry&#39; | &#39;document&#39;
 
@@ -207,13 +226,13 @@ console.log(id(&quot;int-01&quot;,&quot;quote&quot;,
 <h3 id="mutation-forensics-how-an-edit-becomes-visible">Mutation forensics — how an edit becomes visible</h3>
 <p></p>
 <hr>
-<h2 id="4-case-study-lens-article-34-the-street-of-small-business-vela-bank">📊 4. Case Study Lens: Article 34 — <em>The Street of Small Business</em> (Vela Bank)</h2>
+<h2 id="4-case-study-lens-article-34-the-street-of-small-business-vela-bank"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 34 — <em>The Street of Small Business</em> (Vela Bank)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 34 is a fictional composite SME-banking engagement; this lens applies the module&#39;s mechanics to its narrative.</p>
 </blockquote>
 <p>A bank that &quot;learns the business&quot; accumulates evidence for years: onboarding interviews, cash-flow telemetry, covenant documents. Article 34&#39;s banking case is exactly where content addressing stops being hygiene and becomes the product. Re-importing last quarter&#39;s transcript bundle must converge (dedup) rather than double-count sentiment; a clause in a credit policy that is silently edited must <em>break</em> the citing artifacts (avalanche) rather than launder the change. The <code>(source, kind, body)</code> identity rule matters doubly in multi-client banking: two café owners saying &quot;the bank never calls back&quot; are two records with two provenances, and collapsing them would destroy the segment analysis the engagement exists to produce.</p>
 <hr>
-<h2 id="5-hands-on-lab-exercise">🔬 5. Hands-On Lab Exercise</h2>
+<h2 id="5-hands-on-lab-exercise"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab Exercise</h2>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab03-$(date +%s)
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
 $CLI project-create --name &quot;Lab03 Hashing&quot; --client &quot;Lab&quot; --sector government --service &quot;hash lab&quot;
@@ -238,7 +257,7 @@ $CLI evidence-add --projectId $PID --source int-01 --kind quote \
 <li><input disabled="" type="checkbox"> Steps C and D produced two <em>different</em> new ids, demonstrating that both body and source are hashed.</li>
 </ul>
 <hr>
-<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
 <ul>
 <li><strong><code>id = sha256(JSON([source, kind, body, origin | null]))</code></strong> — proven live, recomputed independently, reproducible on your machine.</li>
 <li><strong>Dedup and avalanche are free consequences</strong> of content addressing: re-imports converge; silent edits become dangling citations.</li>
@@ -256,5 +275,6 @@ $CLI evidence-add --projectId $PID --source int-01 --kind quote \
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=3</script>
 </body>
 </html>
