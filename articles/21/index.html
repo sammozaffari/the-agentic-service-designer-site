@@ -28,11 +28,11 @@
       <span class="chip">Implementation &amp; Operations</span>
       <span class="sep">·</span><span class="chip">Insurance</span>
       <span class="sep">·</span><span class="chip">14 months</span>
-      <span class="sep">·</span><span class="chip">42 min read</span>
+      <span class="sep">·</span><span class="chip">43 min read</span>
     </div>
     <h1>Pilots, Scaling &amp; Organizational Change at Aurelia Insurance</h1>
     <p class="deck">Fictional composite client. All names, figures, and data are illustrative and anonymized.</p>
-    <div class="art-stats"><span><b>13</b> figures</span><span><b>~9.5k</b> words</span><span><b>4</b> tools of record</span><span><b>critic-reviewed</b> every gate</span></div>
+    <div class="art-stats"><span><b>13</b> figures</span><span><b>~9.6k</b> words</span><span><b>7</b> tools of record</span><span><b>critic-reviewed</b> every gate</span></div>
     <div class="author-block">
       <div class="author-id">
         <div class="author-avatar">SM</div>
@@ -40,46 +40,238 @@
       </div>
       <p class="author-note">I ran the 14-month pilot-to-scale programme at Aurelia — wave-gated rollout, change packs for frontline teams, and the measurement rig that tracked every wave.</p>
     </div>
-  </div><div class="art-layout"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</a></li><li><a href="#sec-1-executive-summary">Executive summary</a></li><li><a href="#sec-2-the-brief">The brief</a></li><li><a href="#sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</a></li><li><a href="#sec-4-phase-by-phase-narrative">Phase-by-phase narrative</a></li><li><a href="#sec-5-artifacts-portfolio">Artifacts portfolio</a></li><li><a href="#sec-6-use-cases-case-studies">Use cases / case studies</a></li><li><a href="#sec-7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">SOPs for AI — how service design SOPs are best used by agents</a></li><li><a href="#sec-8-value-creation-amp-measurement">Value creation &amp; measurement</a></li><li><a href="#sec-9-ai-tool-playbook">AI tool playbook</a></li><li><a href="#sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</a></li><li><a href="#sec-11-references">References</a></li><li><a href="#sec-12-appendix-artifact-index">Appendix: artifact index</a></li></ol></nav></aside><article class="art-body"><h1 id="pilots-scaling-amp-organizational-change-at-aurelia-insurance">Pilots, Scaling &amp; Organizational Change at Aurelia Insurance</h1><section class="art-sec sec-0"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</h2><p>Aurelia Insurance is a fictional composite of several mid-size European insurers; every name, figure, and dataset in this article is illustrative and anonymized. This phase-2 case study continues the claims redesign first documented in <a href="../03/index.html">article 03</a>: the pilot outcomes are preserved, but all rollout details here are reconstructed for teaching purposes. The point is to share implementation mechanics, governance, and AI-first working methods, not client specifics. Claude Code, OpenCode, Codex, and GitHub were used as the primary working tools; the human designer kept responsibility for framing, politics, ethics, and every go or no-go decision.</p>
-</section><section class="art-sec sec-1"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2><p>Article 03 proved that Aurelia Insurance could redesign claims as a service: a two-region pilot across 11,200 claims cut cycle time by 52%, reduced status-chase calls by 81%, and lifted First-Contact Resolution from 61% to 83%. The hard part started the week after that gate. Scaling the service nationally meant moving from two champion-heavy urban regions to a 900,000-policy insurer with four regional centres, eight satellite claims desks, legacy batch architecture, rural phone-first claimants, skeptical middle managers, and dozens of locally invented workarounds. Over 14 months Aurelia treated rollout as design continued: it audited what the pilot had not tested, built a six-wave rollout play, formed a cross-site change network, versioned runbooks and readiness gates in GitHub, and used AI agents to author training packs, maintain a site-by-wave tracker, stress-test the business case, and generate readiness dashboards. Nationally, the scaled service settled all claims in 15.8 days versus a 28.9-day baseline, lifted FCR to 79%, improved claims NPS from −12 to +18, and verified a €5.9M conservative annual run-rate benefit after the 13-week hardening review.</p>
-<div class="facts-grid"><div class="fact"><span class="fact-k">Client</span><span class="fact-v">Aurelia Insurance (fictional composite EU insurer)</span></div><div class="fact"><span class="fact-k">Sector</span><span class="fact-v">Insurance — motor, home, small commercial, broker-assisted claims</span></div><div class="fact"><span class="fact-k">Scope</span><span class="fact-v">National rollout of the redesigned claims service proven in article 03</span></div><div class="fact"><span class="fact-k">Scale</span><span class="fact-v">~900,000 policies; ~96,000 claims/year; 210 claims handlers; 12 rollout sites</span></div><div class="fact"><span class="fact-k">Duration</span><span class="fact-v">14 months, six rollout waves plus 13-week hardening loop</span></div><div class="fact"><span class="fact-k">Team</span><span class="fact-v">1 lead designer + 1 transformation lead + AI agent team + regional change network</span></div><div class="fact"><span class="fact-k">AI tools</span><span class="fact-v">Claude Code, OpenCode, Codex, GitHub</span></div><div class="fact"><span class="fact-k">Headline results</span><span class="fact-v">All-claims cycle 28.9→15.8 days; FCR 61%→79%; claims NPS −12→+18; handling cost €34→€20; verified benefit €5.9M run rate</span></div></div><p>What you will learn:</p>
+  </div><div class="art-layout"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</a></li><li><a href="#sec-1-executive-summary">Executive summary</a></li><li><a href="#sec-2-the-brief">The brief</a></li><li><a href="#sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</a></li><li><a href="#sec-4-phase-by-phase-narrative">Phase-by-phase narrative</a></li><li><a href="#sec-5-artifacts-portfolio">Artifacts portfolio</a></li><li><a href="#sec-6-use-cases-case-studies">Use cases / case studies</a></li><li><a href="#sec-7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">SOPs for AI — how service design SOPs are best used by agents</a></li><li><a href="#sec-8-value-creation-amp-measurement">Value creation &amp; measurement</a></li><li><a href="#sec-9-ai-tool-playbook">AI tool playbook</a></li><li><a href="#sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</a></li><li><a href="#sec-11-references">References</a></li><li><a href="#sec-12-appendix-artifact-index">Appendix: artifact index</a></li></ol></nav></aside><article class="art-body"><h1 id="pilots-scaling-amp-organizational-change-at-aurelia-insurance">Pilots, Scaling &amp; Organizational Change at Aurelia Insurance</h1>
+<section class="art-sec sec-0"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</h2>
+<p>Aurelia Insurance is a fictional composite of several mid-size European insurers; every name, figure, and dataset in this article is illustrative and anonymized. This phase-2 case study continues the claims redesign first documented in <a href="../03/index.html">article 03</a>: the pilot outcomes are preserved as an illustrative narrative, but all rollout details here are reconstructed for teaching purposes. The point is to share implementation mechanics, governance, and agentic working methods, not client specifics. Claude Code, OpenCode, Codex, and GitHub are illustrative working surfaces; the human designer keeps responsibility for framing, politics, ethics, and every go or no-go decision.</p>
+<p><strong>Evidence boundary (2026-08-21).</strong> The Aurelia project, rollout, staff, policy changes, metrics, artifacts, and conversations are fictional/illustrative. The modernization receipt cited here is historical: the six disposable MCP probes recorded 29 tools, 224 paginated resources, and 10 prompts. The current shared-pack release records 29 tools, 225 paginated resources, and 10 prompts; host execution is unverified, ACP is record-only/fail-closed, and BUZZ/DeepSeek Harness live integration is not claimed. See <code>../../docs/reports/article-modernization-evidence.json</code> for the historical receipt.</p>
+</section><section class="art-sec sec-1"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2>
+<p>Article 03 proved that Aurelia Insurance could redesign claims as a service: a two-region pilot across 11,200 claims cut cycle time by 52%, reduced status-chase calls by 81%, and lifted First-Contact Resolution from 61% to 83%. The hard part started the week after that gate. Scaling the service nationally meant moving from two champion-heavy urban regions to a 900,000-policy insurer with four regional centres, eight satellite claims desks, legacy batch architecture, rural phone-first claimants, skeptical middle managers, and dozens of locally invented workarounds. Over 14 months Aurelia treated rollout as design continued: it audited what the pilot had not tested, built a six-wave rollout play, formed a cross-site change network, versioned runbooks and readiness gates in GitHub, and used AI agents to author training packs, maintain a site-by-wave tracker, stress-test the business case, and generate readiness dashboards. Nationally, the scaled service settled all claims in 15.8 days versus a 28.9-day baseline, lifted FCR to 79%, improved claims NPS from −12 to +18, and verified a €5.9M conservative annual run-rate benefit after the 13-week hardening review.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Value (illustrative)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Aurelia Insurance (fictional composite EU insurer)</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>Insurance — motor, home, small commercial, broker-assisted claims</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>National rollout of the redesigned claims service proven in article 03</td>
+</tr>
+<tr>
+<td>Scale</td>
+<td>~900,000 policies; ~96,000 claims/year; 210 claims handlers; 12 rollout sites</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>14 months, six rollout waves plus 13-week hardening loop</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>1 lead designer + 1 transformation lead + AI agent team + regional change network</td>
+</tr>
+<tr>
+<td>AI tools</td>
+<td>Claude Code, OpenCode, Codex, GitHub</td>
+</tr>
+<tr>
+<td>Headline results</td>
+<td>All-claims cycle 28.9→15.8 days; FCR 61%→79%; claims NPS −12→+18; handling cost €34→€20; verified benefit €5.9M run rate</td>
+</tr>
+</tbody></table>
+<p>What you will learn:</p>
 <ul>
 <li>How to close the pilot-rollout gap: what a successful pilot proves, what it hides, and how to convert pilot evidence into a six-wave national rollout plan.</li>
 <li>How to run organizational change as service design: manager incentive resets, frontline enablement, journey governance, and explicit choices about which legacy workarounds to kill versus keep.</li>
 <li>How to use AI agents in implementation without AI-washing the work: runbook authoring, readiness dashboards, risk-register review, and rollout governance as versioned operational artifacts.</li>
 </ul>
-</section><section class="art-sec sec-2"><span class="sec-kicker">02 · The brief</span><h2 id="sec-2-the-brief">The brief</h2><p><strong>Client portrait.</strong> Aurelia Insurance is the same fictional Benelux insurer introduced in article 03: roughly 900,000 active policies, about 96,000 claims a year, and four regional claims centres supported by eight smaller satellite desks that handle broker queries, phone overflow, and complex-document intake. The insurer writes motor, home, and small commercial lines, operates with two legacy PAS environments plus a shared claims module, and still carries the cultural shape of a traditional insurer: strong regional autonomy, manager scorecards tilted toward handle time and file-age metrics, and high local pride in &quot;how we do claims here.&quot; The phase-1 pilot ran in the east and west regions, which together represented about 47% of annual claim volume and had the strongest local managers.</p>
+</section><section class="art-sec sec-2"><span class="sec-kicker">02 · The brief</span><h2 id="sec-2-the-brief">The brief</h2>
+<p><strong>Client portrait.</strong> Aurelia Insurance is the same fictional Benelux insurer introduced in article 03: roughly 900,000 active policies, about 96,000 claims a year, and four regional claims centres supported by eight smaller satellite desks that handle broker queries, phone overflow, and complex-document intake. The insurer writes motor, home, and small commercial lines, operates with two legacy PAS environments plus a shared claims module, and still carries the cultural shape of a traditional insurer: strong regional autonomy, manager scorecards tilted toward handle time and file-age metrics, and high local pride in &quot;how we do claims here.&quot; The phase-1 pilot ran in the east and west regions, which together represented about 47% of annual claim volume and had the strongest local managers.</p>
 <p><strong>The challenge.</strong> The pilot succeeded, but scaling exposed three gaps immediately. First, the pilot skewed urban and digitally capable: it proved the self-service assistant, proactive milestone messaging, and concierge model under good staffing conditions, but it barely touched rural phone-heavy behaviour or broker-heavy home claims. Second, east and west had managers who co-designed the service; north and south had to inherit it. Middle-manager resistance appeared within two weeks of the board approval: &quot;our claims are different,&quot; &quot;the pilot had extra people,&quot; and &quot;this will hurt my queue numbers.&quot; Third, local workarounds sat everywhere: handler-owned spreadsheets, manager-only approval inboxes, a broker fax queue kept alive for one commercial desk, and shadow SMS lists maintained by supervisors because the old telephony platform could not reliably push confirmations before 09:00. The real problem was no longer whether the service concept worked. It was whether Aurelia could replace vertical local habits with one national service system without breaking claims performance in the process.</p>
 <p><strong>Continuity from article 03.</strong></p>
-<div class="tbl-wrap"><table><thead><tr><th>Item</th><th>Phase 1 pilot result from article 03</th><th>Phase 2 implication for rollout</th></tr></thead><tbody><tr><td>Pilot scope</td><td>11,200 claims across east and west regions over 12 weeks</td><td>Use as proof point, but test non-pilot regions and satellite desks explicitly</td></tr><tr><td scope="row">Cycle time</td><td>29.1 days control vs 14.4 days pilot</td><td>Set national target at ≤ 17 days to allow scale friction</td></tr><tr><td scope="row">FCR</td><td>61% baseline → 83% pilot</td><td>Accept some scale regression; hold national floor at 78%</td></tr><tr><td scope="row">Claims NPS</td><td>−12 baseline → +31 pilot</td><td>Plan for +15 or better nationally after hardening</td></tr><tr><td scope="row">Service concept</td><td>Digital assistant, proactive status, concierge</td><td>Keep all three, but rebalance digital and human by site type</td></tr><tr><td scope="row">Business case</td><td>€5.5M conservative annual benefit at scale</td><td>Rebuild assumptions against national adoption, coaching capacity, and legacy load</td></tr></tbody></table></div><p><strong>Success criteria (agreed for national rollout).</strong></p>
-<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Metric</th><th>Phase-1 baseline</th><th>National rollout target</th><th>13-week harden result</th></tr></thead><tbody><tr><td>All-claims cycle time</td><td>28.9 days</td><td>≤ 17 days</td><td>15.8 days</td></tr><tr><td scope="row">First-Contact Resolution</td><td>61%</td><td>≥ 78%</td><td>79%</td></tr><tr><td scope="row">Claims NPS</td><td>−12</td><td>≥ +15</td><td>+18</td></tr><tr><td scope="row">Handling cost per claim</td><td>€34</td><td>≤ €21</td><td>€20</td></tr><tr><td scope="row">Status-chase calls per claim</td><td>4.4</td><td>≤ 1.5</td><td>1.3</td></tr><tr><td scope="row">Eligible-claim adoption of new flow</td><td>0%</td><td>≥ 65%</td><td>67%</td></tr><tr><td scope="row">Leader standards adherence</td><td>41%</td><td>≥ 90%</td><td>93%</td></tr><tr><td scope="row">Red sites after 13 weeks</td><td>12/12 unknown</td><td>≤ 2</td><td>1</td></tr></tbody></table></div><p><strong>Constraints.</strong> Scale budget capped at €1.9M including change, training, and vendor work; no PAS replacement; works-council consultation required for scorecard changes; broker contracts could not be rewritten midyear; storm season would spike motor and home claims in waves 4 and 5; and the board wanted rollout complete inside 14 months so the next renewal cycle could benefit. The service also had to stay audit-safe: fraud review thresholds, complaint handling rules, and payout authorities could evolve only with compliance sign-off.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Phase 1 pilot result from article 03</th>
+<th>Phase 2 implication for rollout</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pilot scope</td>
+<td>11,200 claims across east and west regions over 12 weeks</td>
+<td>Use as proof point, but test non-pilot regions and satellite desks explicitly</td>
+</tr>
+<tr>
+<td>Cycle time</td>
+<td>29.1 days control vs 14.4 days pilot</td>
+<td>Set national target at ≤ 17 days to allow scale friction</td>
+</tr>
+<tr>
+<td>FCR</td>
+<td>61% baseline → 83% pilot</td>
+<td>Accept some scale regression; hold national floor at 78%</td>
+</tr>
+<tr>
+<td>Claims NPS</td>
+<td>−12 baseline → +31 pilot</td>
+<td>Plan for +15 or better nationally after hardening</td>
+</tr>
+<tr>
+<td>Service concept</td>
+<td>Digital assistant, proactive status, concierge</td>
+<td>Keep all three, but rebalance digital and human by site type</td>
+</tr>
+<tr>
+<td>Business case</td>
+<td>€5.5M conservative annual benefit at scale</td>
+<td>Rebuild assumptions against national adoption, coaching capacity, and legacy load</td>
+</tr>
+</tbody></table>
+<p><strong>Success criteria (agreed for national rollout).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Phase-1 baseline</th>
+<th>National rollout target</th>
+<th>13-week harden result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>All-claims cycle time</td>
+<td>28.9 days</td>
+<td>≤ 17 days</td>
+<td>15.8 days</td>
+</tr>
+<tr>
+<td>First-Contact Resolution</td>
+<td>61%</td>
+<td>≥ 78%</td>
+<td>79%</td>
+</tr>
+<tr>
+<td>Claims NPS</td>
+<td>−12</td>
+<td>≥ +15</td>
+<td>+18</td>
+</tr>
+<tr>
+<td>Handling cost per claim</td>
+<td>€34</td>
+<td>≤ €21</td>
+<td>€20</td>
+</tr>
+<tr>
+<td>Status-chase calls per claim</td>
+<td>4.4</td>
+<td>≤ 1.5</td>
+<td>1.3</td>
+</tr>
+<tr>
+<td>Eligible-claim adoption of new flow</td>
+<td>0%</td>
+<td>≥ 65%</td>
+<td>67%</td>
+</tr>
+<tr>
+<td>Leader standards adherence</td>
+<td>41%</td>
+<td>≥ 90%</td>
+<td>93%</td>
+</tr>
+<tr>
+<td>Red sites after 13 weeks</td>
+<td>12/12 unknown</td>
+<td>≤ 2</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<p><strong>Constraints.</strong> Scale budget capped at €1.9M including change, training, and vendor work; no PAS replacement; works-council consultation required for scorecard changes; broker contracts could not be rewritten midyear; storm season would spike motor and home claims in waves 4 and 5; and the board wanted rollout complete inside 14 months so the next renewal cycle could benefit. The service also had to stay audit-safe: fraud review thresholds, complaint handling rules, and payout authorities could evolve only with compliance sign-off.</p>
 <p><strong>Why service design.</strong> This was implementation in the exact sense described by the literature: design carried out under live organizational constraints, where the organization itself is the delivery system (See: <code>03-service-design-from-insight-to-implementation/07-implementation.md</code>). Aurelia did not need a project-management overlay alone. It needed a journey governance model, frontline enablement, capability transfer, incentive redesign, and a disciplined distinction between what the pilot had proven and what the rollout still had to learn (See: <code>01-this-is-service-design-doing/07-implementation-and-piloting.md</code>). It also needed protection from corporate antibodies — demands for false certainty, local budget protection, and the reliability trap that punishes experimentation once the project leaves the innovation halo (See: <code>15-change-by-design/07-design-thinking-meets-the-corporation.md</code>).</p>
-</section><section class="art-sec sec-3"><span class="sec-kicker">03 · Approach</span><h2 id="sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</h2><p>Aurelia treated scaling as a second design programme, not a mechanical deployment of article 03. The double diamond still applied, but the emphasis shifted: Discover meant auditing pilot evidence and local resistance; Define meant building the rollout architecture and governance; Develop meant creating runbooks, training, trackers, and gate logic; Deliver meant six operational waves plus a hardening loop. The same future-state service blueprint from article 03 became a binding national operating contract, translated into readiness gates, site scorecards, manager standards, and GitHub-controlled runbooks.</p>
+</section><section class="art-sec sec-3"><span class="sec-kicker">03 · Approach</span><h2 id="sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</h2>
+<p>Aurelia treated scaling as a second design programme, not a mechanical deployment of article 03. The double diamond still applied, but the emphasis shifted: Discover meant auditing pilot evidence and local resistance; Define meant building the rollout architecture and governance; Develop meant creating runbooks, training, trackers, and gate logic; Deliver meant six operational waves plus a hardening loop. The same future-state service blueprint from article 03 became a binding national operating contract, translated into readiness gates, site scorecards, manager standards, and GitHub-controlled runbooks.</p>
 <figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 296" role="img" aria-hidden="true"><defs><marker id="arr-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Discover weeks 1 to 6</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Define weeks 5 to 10</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Develop weeks 8 to 16</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Deliver months 5 to 14</text><line x1="0" y1="294" x2="296" y2="294" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 1</span><span class="figcap">Approach: the AI-first service design process</span></figcaption></figure>
 <figure class="fig fig-gantt"><div class="gantt"><div class="gantt-head"><span class="gantt-taskcol">Phase</span><span class="gantt-track"><span>Sept 2026</span><span>Dec 2026</span><span>Apr 2027</span><span>Jul 2027</span><span>Oct 2027</span></span></div><div class="gantt-section">Mobilize</div><div class="gantt-row"><span class="gantt-taskcol">Pilot readout and site audit</span><span class="gantt-track"><span class="gantt-bar future" style="left:0.00%;width:10.59%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Governance charter and scorecards</span><span class="gantt-track"><span class="gantt-bar future" style="left:3.29%;width:8.24%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Gate G1 rollout design</span><span class="gantt-track"><span class="gantt-bar future" style="left:11.53%;width:1.20%"></span></span></div><div class="gantt-section">Wave rollout</div><div class="gantt-row"><span class="gantt-taskcol">Wave 1 urban high volume</span><span class="gantt-track"><span class="gantt-bar future" style="left:11.76%;width:9.41%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Gate G2 wave one review</span><span class="gantt-track"><span class="gantt-bar future" style="left:21.41%;width:1.20%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Wave 2 mixed urban desks</span><span class="gantt-track"><span class="gantt-bar future" style="left:21.65%;width:10.59%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Wave 3 broker heavy desks</span><span class="gantt-track"><span class="gantt-bar future" style="left:32.71%;width:9.88%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Gate G3 mid programme review</span><span class="gantt-track"><span class="gantt-bar future" style="left:42.82%;width:1.20%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Wave 4 rural low bandwidth</span><span class="gantt-track"><span class="gantt-bar future" style="left:43.06%;width:10.59%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Wave 5 phone dominant hybrid</span><span class="gantt-track"><span class="gantt-bar future" style="left:54.12%;width:10.35%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Gate G4 national readiness</span><span class="gantt-track"><span class="gantt-bar future" style="left:64.71%;width:1.20%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Wave 6 legacy resistant sites</span><span class="gantt-track"><span class="gantt-bar future" style="left:64.94%;width:10.35%"></span></span></div><div class="gantt-section">Harden</div><div class="gantt-row"><span class="gantt-taskcol">National harden and SOP cleanup</span><span class="gantt-track"><span class="gantt-bar future" style="left:75.53%;width:14.12%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Rolling 13 week reviews</span><span class="gantt-track"><span class="gantt-bar future" style="left:78.82%;width:21.18%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Gate G5 embed in BAU</span><span class="gantt-track"><span class="gantt-bar future" style="left:100.00%;width:1.20%"></span></span></div></div><figcaption><span class="fignum">Figure 2</span><span class="figcap">Aurelia national claims rollout 14 months</span></figcaption></figure>
-<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Phase</th><th>SD method and book reference</th><th>AI tool(s) used</th><th>Artifact produced</th><th>Client involvement</th></tr></thead><tbody><tr><td>Discover</td><td>Pilot evaluation, failure-demand audit, stakeholder impact mapping (See: <code>01-this-is-service-design-doing/07-implementation-and-piloting.md</code>; <code>04-service-design-for-business/06-organizational-change.md</code>)</td><td>Claude Code synthesis agents; OpenCode comparison pipeline; Codex business-case challenge</td><td>Pilot-to-rollout gap register, site impact matrix</td><td>4 regional directors, 12 team leaders, works-council rep</td></tr><tr><td scope="row">Define</td><td>Blueprint-to-backlog translation, journey governance charter, wave sequencing (See: <code>03-service-design-from-insight-to-implementation/07-implementation.md</code>; <code>14-outside-in/07-governance-and-culture.md</code>)</td><td>Claude Code runbook authoring; GitHub epics/issues/PR templates</td><td>Rollout charter, KPI owner matrix, phased scaling logic</td><td>COO sponsor, CIO, claims director, compliance</td></tr><tr><td scope="row">Develop</td><td>Frontline enablement triad, change network design, SOP standardization (See: <code>03-service-design-from-insight-to-implementation/07-implementation.md</code>; <code>20-the-service-profit-chain/06-leadership-and-implementation.md</code>)</td><td>Claude Code training packs; OpenCode tracker and dashboards; Codex risk-register review</td><td>Change pack, leader standards, readiness checklist, risk register</td><td>24 site champions, 8 satellite supervisors, HR learning lead</td></tr><tr><td scope="row">Deliver</td><td>Operational rollout, readiness gating, rolling service reviews (See: <code>01-this-is-service-design-doing/07-implementation-and-piloting.md</code>; <code>14-outside-in/07-governance-and-culture.md</code>)</td><td>GitHub Actions dashboards; OpenCode site KPI jobs; Claude Code review packs</td><td>Site-by-wave tracker, go/no-go packs, hardening backlog</td><td>Weekly wave room, monthly design council, executive steering</td></tr></tbody></table></div></section><section class="art-sec sec-4"><span class="sec-kicker">04 · The work, phase by phase</span><h2 id="sec-4-phase-by-phase-narrative">Phase-by-phase narrative</h2><h3 id="41-discover-what-the-pilot-did-not-prove">4.1 Discover what the pilot did not prove</h3><p><strong>Goal.</strong> Convert article 03&#39;s successful pilot into a realistic national rollout thesis by identifying missing conditions, hidden dependencies, and change risks.</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>SD method and book reference</th>
+<th>AI tool(s) used</th>
+<th>Artifact produced</th>
+<th>Client involvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Discover</td>
+<td>Pilot evaluation, failure-demand audit, stakeholder impact mapping (See: <code>01-this-is-service-design-doing/07-implementation-and-piloting.md</code>; <code>04-service-design-for-business/06-organizational-change.md</code>)</td>
+<td>Claude Code synthesis agents; OpenCode comparison pipeline; Codex business-case challenge</td>
+<td>Pilot-to-rollout gap register, site impact matrix</td>
+<td>4 regional directors, 12 team leaders, works-council rep</td>
+</tr>
+<tr>
+<td>Define</td>
+<td>Blueprint-to-backlog translation, journey governance charter, wave sequencing (See: <code>03-service-design-from-insight-to-implementation/07-implementation.md</code>; <code>14-outside-in/07-governance-and-culture.md</code>)</td>
+<td>Claude Code runbook authoring; GitHub epics/issues/PR templates</td>
+<td>Rollout charter, KPI owner matrix, phased scaling logic</td>
+<td>COO sponsor, CIO, claims director, compliance</td>
+</tr>
+<tr>
+<td>Develop</td>
+<td>Frontline enablement triad, change network design, SOP standardization (See: <code>03-service-design-from-insight-to-implementation/07-implementation.md</code>; <code>20-the-service-profit-chain/06-leadership-and-implementation.md</code>)</td>
+<td>Claude Code training packs; OpenCode tracker and dashboards; Codex risk-register review</td>
+<td>Change pack, leader standards, readiness checklist, risk register</td>
+<td>24 site champions, 8 satellite supervisors, HR learning lead</td>
+</tr>
+<tr>
+<td>Deliver</td>
+<td>Operational rollout, readiness gating, rolling service reviews (See: <code>01-this-is-service-design-doing/07-implementation-and-piloting.md</code>; <code>14-outside-in/07-governance-and-culture.md</code>)</td>
+<td>GitHub Actions dashboards; OpenCode site KPI jobs; Claude Code review packs</td>
+<td>Site-by-wave tracker, go/no-go packs, hardening backlog</td>
+<td>Weekly wave room, monthly design council, executive steering</td>
+</tr>
+</tbody></table>
+</section><section class="art-sec sec-4"><span class="sec-kicker">04 · The work, phase by phase</span><h2 id="sec-4-phase-by-phase-narrative">Phase-by-phase narrative</h2>
+<h3 id="41-discover-what-the-pilot-did-not-prove">4.1 Discover what the pilot did not prove</h3>
+<p><strong>Goal.</strong> Convert article 03&#39;s successful pilot into a realistic national rollout thesis by identifying missing conditions, hidden dependencies, and change risks.</p>
 <p><strong>Method &amp; SOP.</strong> The team ran a structured pilot-to-rollout review using three inputs: the phase-1 pilot scorecard, site-by-site operating diagnostics, and stakeholder incentive mapping (See: <code>01-this-is-service-design-doing/07-implementation-and-piloting.md</code>, <code>04-service-design-for-business/06-organizational-change.md</code>). The SOP was simple and strict. For every pilot success, ask: under what operating conditions did this occur; which of those conditions disappear at national scale; and which site types, managers, or claimant segments were absent? The team then layered on a corporate-antibody diagnostic: who would rationally resist, why, and what metrics or budget logic would make that resistance predictable rather than personal (See: <code>15-change-by-design/07-design-thinking-meets-the-corporation.md</code>).</p>
 <p><strong>AI execution.</strong> Claude Code was used as the first-pass synthesis engine. One agent compared pilot and control metrics from article 03 against non-pilot regional baselines; another extracted every unresolved exception from pilot steering notes; a third built a &quot;not yet proven&quot; register with evidence links back to the pilot readout. OpenCode ran the operational comparison pipeline over six months of post-pilot claims data, segmenting by site type, line of business, and intake channel. That is where the first major scale risk surfaced: outside the pilot regions, 63% of rural home claims still entered through phone or broker, and those claimants had 1.9 times the document resubmission rate of urban digital claimants. Codex then challenged the national business case before any rollout wave was locked:</p>
+<p><strong>Illustrative Codex host command — emitted pack; live case execution unverified.</strong></p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>codex exec --skip-git-repo-check &quot;Read article 03 metrics, rollout assumptions,
 and the site segmentation table. Attack the scale case. Identify where pilot
 adoption, manager coverage, training intensity, or legacy-system throughput are
 unlikely to hold at national level. Return only defects that change the rollout
-plan or the economics.&quot;</code></pre></div><p>Codex flagged two real defects. The first draft assumed pilot adoption levels would hold in all regions; the rural phone-heavy sites made that false. The second assumed manager coaching capacity was evenly distributed; in reality three sites had supervisors carrying individual caseloads and could not run change properly without backfill.</p>
+plan or the economics.&quot;
+</code></pre></div>
+<p>Codex flagged two real defects. The first draft assumed pilot adoption levels would hold in all regions; the rural phone-heavy sites made that false. The second assumed manager coaching capacity was evenly distributed; in reality three sites had supervisors carrying individual caseloads and could not run change properly without backfill.</p>
 <p><strong>Human designer judgment.</strong> The designer made two politically important calls. First, the programme would stop describing non-pilot regions as &quot;laggards&quot; and instead describe them as operating under different constraints. Second, the programme would not promise a pure digital rollout. The service concept remained digital plus human. That choice preserved credibility with brokers, works council members, and the supervisors running phone-heavy teams.</p>
 <p><strong>Artifact produced.</strong> A pilot-rollout gap register with 27 items, of which five changed the rollout sequence: rural hybrid channel design, manager backfill, legacy batch-load rehearsal, broker handoff preservation, and a wave-specific training model instead of one national course.</p>
-<h3 id="42-define-the-national-operating-model-and-governance">4.2 Define the national operating model and governance</h3><p><strong>Goal.</strong> Turn the phase-1 blueprint into a national operating contract with named decision rights, explicit gate logic, and a sequencing model that fits Aurelia&#39;s real delivery system.</p>
+<h3 id="42-define-the-national-operating-model-and-governance">4.2 Define the national operating model and governance</h3>
+<p><strong>Goal.</strong> Turn the phase-1 blueprint into a national operating contract with named decision rights, explicit gate logic, and a sequencing model that fits Aurelia&#39;s real delivery system.</p>
 <p><strong>Method &amp; SOP.</strong> This phase combined blueprint-to-backlog translation with journey governance design (See: <code>03-service-design-from-insight-to-implementation/07-implementation.md</code>, <code>14-outside-in/07-governance-and-culture.md</code>). The future-state claims blueprint from article 03 was re-walked column by column and lane by lane, but this time every step had to answer four implementation questions: which sites will run it first; who owns the metric; which legacy behaviour must stop; and which exception path remains valid at scale. The team also used the journey governance charter pattern from the organizational-change literature: appoint one national claims Journey Owner, create a cross-functional Claims Design Council, define escalation routes, and integrate CX review gates into every change affecting the claims journey.</p>
 <p><strong>AI execution.</strong> Claude Code authored the first draft of the rollout charter, KPI owner matrix, manager-standard cards, and the change-pack skeleton. GitHub became the implementation control plane: one epic per wave, issues tagged by blueprint step ID, and pull requests as the gate for any runbook or training change. OpenCode built the first version of the rollout tracker and dashboard spec from the site matrix. To keep the governance structure honest, Codex reviewed the risk register and charter language for missing decision rights, especially around disputed trade-offs between claims speed, fraud-control, and local manager autonomy.</p>
 <p>Representative rollout tracker build:</p>
-<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>opencode run --agent build &quot;Read articles/21/data/rollout_sample.csv and
+<p><strong>Illustrative OpenCode host command — emitted pack; live case execution unverified.</strong></p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>opencode run --agent measurer &quot;Read articles/21/data/rollout_sample.csv and
 rollout/site-metadata.csv. Generate a site by wave tracker with readiness,
 volume, FCR, NPS delta, adoption, and red amber green status. Output a static
 HTML dashboard and a CSV summary for GitHub Actions publication. Preserve the
-store column name for compatibility, but label it claims_site in the UI.&quot;</code></pre></div><p><strong>Human designer judgment.</strong> The crucial decisions here were subtractive. Three workarounds were killed nationally: the handler shadow spreadsheet, the manager-only approval inbox, and the supervisor shadow SMS list. Two were intentionally retained with expiry dates: broker-assisted FNOL for commercial fleet and a phone-first severe-weather intake path for high-distress home claims. Those were not compromises of principle; they were controlled exceptions backed by claimant evidence and operational reality.</p>
+store column name for compatibility, but label it claims_site in the UI.&quot;
+</code></pre></div>
+<p><strong>Human designer judgment.</strong> The crucial decisions here were subtractive. Three workarounds were killed nationally: the handler shadow spreadsheet, the manager-only approval inbox, and the supervisor shadow SMS list. Two were intentionally retained with expiry dates: broker-assisted FNOL for commercial fleet and a phone-first severe-weather intake path for high-distress home claims. Those were not compromises of principle; they were controlled exceptions backed by claimant evidence and operational reality.</p>
 <p><strong>Artifact produced.</strong> The national rollout charter, phased scaling logic, current-versus-target operating model, governance matrix, and 186 implementation issues across Operations, IT, HR, Compliance, and Broker Support.</p>
 <figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1656 98" role="img" aria-hidden="true"><defs><marker id="arr-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 178.4,12.58938294010889 204.4,6.75 314.6,6.75 424.8,6.75 450.79999999999995,12.394736842105253" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 626.8,12.394736842105264 652.8,6.75 782,6.75 911.1999999999999,6.75 937.1999999999998,11.730650154798752" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 1139.6071428571427,10 1169.6,3.5 1298.8,3.5 1428,3.5 1456.2285714285715,10" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 178.4,50.41061705989111 204.4,56.25 230.40000000000003,56.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 398.8,56.25 424.8,56.25 450.79999999999995,50.60526315789475" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 626.8,50.60526315789474 652.8,56.25 678.8,56.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 885.2,56.25 911.1999999999999,56.25 937.1999999999998,51.26934984520125" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 1139.6071428571427,53 1169.6,59.5 1195.6,59.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 1402,59.5 1428,59.5 1456.2285714285715,53" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><rect x="10" y="10" width="168.4" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="94.2" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Pilot east and west</text><text x="94.2" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">proved value</text><rect x="450.79999999999995" y="10" width="176" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="538.8" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Controlled expansion</text><text x="538.8" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">waves 1 to 3</text><rect x="937.1999999999998" y="10" width="206.39999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1040.3999999999999" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">National rollout waves 4</text><text x="1040.3999999999999" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">to 6</text><rect x="1454" y="10" width="191.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1549.6" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Harden through 13 week</text><text x="1549.6" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">reviews</text><rect x="230.40000000000003" y="34.75" width="168.4" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="314.6" y="53.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Log pilot gaps and</text><text x="314.6" y="66.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">unproven conditions</text><rect x="678.8" y="34.75" width="206.39999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="782" y="53.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Site readiness gates and</text><text x="782" y="66.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">manager certification</text><rect x="1195.6" y="31.5" width="206.39999999999998" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1298.8" y="50.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Lock operating model and</text><text x="1298.8" y="63.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">retire shadow</text><text x="1298.8" y="76.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">workarounds…</text></svg><figcaption><span class="fignum">Figure 3</span><span class="figcap">2 Define the national operating model and governance</span></figcaption></figure>
 <figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 168" role="img" aria-hidden="true"><defs><marker id="arr-4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Current operating model before scale</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Target operating model after scale</text><line x1="0" y1="166" x2="296" y2="166" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 4</span><span class="figcap">2 Define the national operating model and governance</span></figcaption></figure>
-<h3 id="43-develop-the-change-system-around-frontline-adoption">4.3 Develop the change system around frontline adoption</h3><p><strong>Goal.</strong> Equip frontline staff and middle managers with the capability, authority, and motivation to deliver the new service without coercion or blame.</p>
+<h3 id="43-develop-the-change-system-around-frontline-adoption">4.3 Develop the change system around frontline adoption</h3>
+<p><strong>Goal.</strong> Equip frontline staff and middle managers with the capability, authority, and motivation to deliver the new service without coercion or blame.</p>
 <p><strong>Method &amp; SOP.</strong> Aurelia used the frontline enablement triad directly: capability, authority, motivation (See: <code>03-service-design-from-insight-to-implementation/07-implementation.md</code>). Capability meant scenario-based training, cleaner tools, and one versioned claims playbook. Authority meant explicit discretionary thresholds, clarified escalation routes, and permission to resolve routine exceptions without manager delay. Motivation meant changing the scorecards: FCR, claimant effort, and adherence to leader standards replaced pure handle-time and open-file-age measures. The change plan also followed the distributed-champion model from the organizational-change chapter: every site nominated one champion and one skeptic into the change network, so the programme did not create an innovation-club blind to local objections (See: <code>04-service-design-for-business/06-organizational-change.md</code>).</p>
 <p><strong>AI execution.</strong> Claude Code authored the change pack in layers: site kickoff decks, FAQ sets for handlers and team leaders, scenario rehearsal scripts, and a runbook diff summary for every wave. The highest-value SOP was the change-pack authoring workflow itself: one agent drafted, one agent checked evidence against pilot and site diagnostics, and one agent applied a guardrail pass for tone, coercion, or hidden blame. GitHub PRs enforced review: no training pack merged without one operations reviewer and one site champion reviewer. OpenCode maintained the readiness checklist and certification tracker. Codex reviewed the risk register and the most sensitive comms.</p>
 <div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>You are CHANGE-PACK-AUTHOR. Input: site profile, current metrics, top three
@@ -89,30 +281,210 @@ for team leaders, what stops, what stays, top five FAQs, three rehearsal
 scenarios, site-specific risks, escalation path.
 Rules: no blame language, no claim that staff resistance is irrational, no
 promise of benefits without local evidence, cite at least one pilot or site
-metric in every why section.</code></pre></div><p><strong>Human designer judgment.</strong> The designer rejected the first AI draft of team-leader communications because it framed low adoption as a discipline problem. It was rewritten around obstacle removal, not compliance theatre. The designer also insisted that middle managers keep agency: they could adapt staffing patterns and coaching sequences locally as long as they did not violate the service standard. That distinction mattered. It turned the design council into a governing body, not a script police unit.</p>
+metric in every why section.
+</code></pre></div>
+<p><strong>Human designer judgment.</strong> The designer rejected the first AI draft of team-leader communications because it framed low adoption as a discipline problem. It was rewritten around obstacle removal, not compliance theatre. The designer also insisted that middle managers keep agency: they could adapt staffing patterns and coaching sequences locally as long as they did not violate the service standard. That distinction mattered. It turned the design council into a governing body, not a script police unit.</p>
 <p><strong>Artifact produced.</strong> The change map, stakeholder map, site-persona set, go or no-go scorecard template, risk register template, leader standards, and versioned rollout-wave SOPs.</p>
 <figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 232" role="img" aria-hidden="true"><defs><marker id="arr-5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Who changes</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">What changes</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Resistance vectors</text><line x1="0" y1="230" x2="296" y2="230" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 5</span><span class="figcap">3 Develop the change system around frontline adoption</span></figcaption></figure>
-<h3 id="44-deliver-the-six-wave-rollout">4.4 Deliver the six-wave rollout</h3><p><strong>Goal.</strong> Roll out the redesigned claims service nationally without confusing a rollout for a pilot repeat: every wave must meet readiness gates, expose real local conditions, and either scale, iterate, or pause.</p>
+<h3 id="44-deliver-the-six-wave-rollout">4.4 Deliver the six-wave rollout</h3>
+<p><strong>Goal.</strong> Roll out the redesigned claims service nationally without confusing a rollout for a pilot repeat: every wave must meet readiness gates, expose real local conditions, and either scale, iterate, or pause.</p>
 <p><strong>Method &amp; SOP.</strong> Each wave followed the same rollout-wave SOP-as-code. Ten working days before go-live, the site had to show certified staff, production-tested interfaces, live feedback capture, compensation guardrails, and an agreed red-issue owner. Seven days after go-live, the wave room reviewed volume, FCR, claimant sentiment, and open defects daily. At week 4 and week 13, the service review decided whether the site was green, amber, or red. This was deliberately unit-level measurement, not corporate averaging, following the Service Profit Chain warning against hiding weak sites inside enterprise means (See: <code>20-the-service-profit-chain/06-leadership-and-implementation.md</code>).</p>
 <p><strong>AI execution.</strong> GitHub structured the work. Each wave lived as an epic with linked issues for site prep, training, technical fixes, and sign-offs. A GitHub Action regenerated the readiness dashboard from <code>data/rollout_sample.csv</code> plus the live tracker tables and published a per-site HTML summary for the steering group. Claude Code drafted the weekly wave-review packs; OpenCode refreshed the dashboards nightly; Codex reviewed the risk register when a site remained amber beyond week 4. The programme&#39;s most useful automation was not glamorous: a runbook-diff bot that highlighted exactly what changed between waves so handlers did not have to reread a 40-page pack.</p>
+<p><strong>Illustrative Codex/GitHub CLI host block — emitted pack or synthetic GitHub workflow; live execution unverified.</strong></p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>gh issue create --title &quot;Wave 4 readiness review&quot;   --label rollout,wave-4,claims-site   --body-file rollout/wave-4/go-no-go-pack.md
 
 codex exec --skip-git-repo-check &quot;Review rollout/wave-6/risk-register.md.
 Flag risks that are understated, duplicated, or missing mitigations. Pay special
-attention to local manager incentives, telephony fallback, and complaint volume.&quot;</code></pre></div><p><strong>Human designer judgment.</strong> Go-live decisions never came from the dashboard alone. In wave 4 the GRO-Rural site hit the numeric readiness threshold, but the designer and Journey Owner held go-live 72 hours because the local broker desk could not yet see the same status timestamps as the claims core. In wave 6 the NAM-Legacy site went live even though readiness was only 74 because keeping it permanently outside the new service would have institutionalized a second-class journey; instead the team paired the go-live with on-site coaching and a temporary exception budget.</p>
+attention to local manager incentives, telephony fallback, and complaint volume.&quot;
+</code></pre></div>
+<p><strong>Human designer judgment.</strong> Go-live decisions never came from the dashboard alone. In wave 4 the GRO-Rural site hit the numeric readiness threshold, but the designer and Journey Owner held go-live 72 hours because the local broker desk could not yet see the same status timestamps as the claims core. In wave 6 the NAM-Legacy site went live even though readiness was only 74 because keeping it permanently outside the new service would have institutionalized a second-class journey; instead the team paired the go-live with on-site coaching and a temporary exception budget.</p>
 <p><strong>Artifact produced.</strong> A six-wave rollout history, site tracker, readiness pack archive, and a national hardening backlog of 43 items, 17 of which were closed before Gate G5.</p>
-<h3 id="45-harden-measure-and-embed">4.5 Harden, measure, and embed</h3><p><strong>Goal.</strong> Prevent the service from decaying back into local variants once the formal programme ends.</p>
+<h3 id="45-harden-measure-and-embed">4.5 Harden, measure, and embed</h3>
+<p><strong>Goal.</strong> Prevent the service from decaying back into local variants once the formal programme ends.</p>
 <p><strong>Method &amp; SOP.</strong> Aurelia moved from programme governance to operating governance. The Claims Design Council became the monthly forum for journey health, while a rolling 13-week review loop became the hardening mechanism: every site is re-scored 13 weeks after go-live on adoption, FCR, claimant sentiment, complaint volume, and leader-standard adherence. This follows the governance-and-culture logic directly: customer-centricity survives only when decision rights, review rhythms, and incentives make it the default behaviour (See: <code>14-outside-in/07-governance-and-culture.md</code>). Leadership also adopted a &quot;walk the chain&quot; routine: every regional director and one executive sponsor had to spend one half-day per quarter on claimant calls or handler shadowing, logging barriers for removal (See: <code>20-the-service-profit-chain/06-leadership-and-implementation.md</code>).</p>
 <p><strong>AI execution.</strong> OpenCode maintained the 13-week review dataset and produced the outlier tables. Claude Code turned the review into an actionable pack: top three wins, top three breakpoints, sites drifting from leader standards, and required runbook edits. Codex challenged the post-rollout benefit case again and found one inflation error in the first draft: a proposed call-cost saving assumed all reduced contacts were fully removable labour, which Operations rejected. The corrected readout kept only verified cost-to-serve improvements and a conservative retention effect.</p>
 <p><strong>Human designer judgment.</strong> The designer pushed for one more hard choice: delete the old SOP library. As long as both old and new playbooks remained accessible, local reversion stayed socially acceptable. After Gate G5 only the new national SOP library remained active, with two documented exception playbooks retained by design.</p>
 <p><strong>Artifact produced.</strong> The KPI tree, traceability table linking pilot learnings to scaled controls, the national claims audit, and a permanent governance cadence owned by the claims Journey Owner rather than the project team.</p>
-</section><section class="art-sec sec-5"><span class="sec-kicker">05 · Artifact portfolio</span><h2 id="sec-5-artifacts-portfolio">Artifacts portfolio</h2><p>All figures illustrative. The dataset field name <code>store</code> is retained for dashboard compatibility; in this insurance context it means <strong>claims site</strong>.</p>
-<h3 id="a1-customer-journey-map-current-state-at-the-start-of-national-scale">A1 — Customer journey map (current state at the start of national scale)</h3><p>This is the awkward in-between state after the east and west pilot succeeded but before the national rollout landed. The pain is inconsistency: one brand promise, multiple operational realities.</p>
+</section><section class="art-sec sec-5"><span class="sec-kicker">05 · Artifact portfolio</span><h2 id="sec-5-artifacts-portfolio">Artifacts portfolio</h2>
+<p>All figures illustrative. The dataset field name <code>store</code> is retained for dashboard compatibility; in this insurance context it means <strong>claims site</strong>.</p>
+<h3 id="a1-customer-journey-map-current-state-at-the-start-of-national-scale">A1 — Customer journey map (current state at the start of national scale)</h3>
+<p>This is the awkward in-between state after the east and west pilot succeeded but before the national rollout landed. The pain is inconsistency: one brand promise, multiple operational realities.</p>
 <figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 1 report claim emotion 2 of 5</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 2 submit evidence emotion 2 of 5</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 3 wait for status emotion 1 of 5</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 4 resolve claim emotion 2 of 5</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 5 close and renew emotion 2 of 5</text><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 6</span><span class="figcap">A1 — Customer journey map (current state at the start of national scale)</span></figcaption></figure>
-<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Phase</th><th>Emotion (1–5)</th><th>Dominant pain</th><th>Supporting evidence</th></tr></thead><tbody><tr><td>Report claim</td><td>2</td><td>National brand promise routes to different service realities by region</td><td>Site audit week 2; broker complaints cluster 14</td></tr><tr><td scope="row">Submit evidence</td><td>2</td><td>Outside pilot, documents still bounce across email and phone</td><td>Non-pilot home claims had 1.9x document resubmission rate</td></tr><tr><td scope="row">Wait for status</td><td>1</td><td>Claimants compare pilot certainty with non-pilot silence</td><td>Status-chase calls 4.4 outside pilot vs 0.8 in pilot</td></tr><tr><td scope="row">Resolve claim</td><td>2</td><td>Manager discretion and authority differ by site</td><td>Approval delay variation of 4.7 days across non-pilot sites</td></tr><tr><td scope="row">Close and renew</td><td>2</td><td>Closure experience inconsistent, weakening trust</td><td>Renewal-intent gap of 17 points between pilot and non-pilot claimants</td></tr></tbody></table></div><h3 id="a2-updated-national-claims-service-blueprint-scaled-future-state">A2 — Updated national claims service blueprint (scaled future state)</h3><figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Physical and digital evidence</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Customer actions</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Frontstage staff actions</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Backstage actions</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Support systems and governance</text><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/><line x1="94" y1="156" x2="296" y2="156" stroke="#171817" stroke-width="1.2"/><text x="98" y="152" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of interaction</text><line x1="94" y1="220" x2="296" y2="220" stroke="#171817" stroke-width="1.2"/><text x="98" y="216" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of visibility</text><line x1="94" y1="284" x2="296" y2="284" stroke="#171817" stroke-width="1.2"/><text x="98" y="280" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of internal interaction</text></svg><figcaption><span class="fignum">Figure 7</span><span class="figcap">A2 — Updated national claims service blueprint (scaled future state)</span></figcaption></figure>
-<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Lane</th><th>Step</th><th>National standard</th><th>Owner</th><th>KPI</th></tr></thead><tbody><tr><td>Evidence</td><td>Postcode-aware entry</td><td>Claimant never lands in a dead-end path</td><td>Digital product lead</td><td>Entry completion</td></tr><tr><td scope="row">Customer</td><td>Evidence once</td><td>Claimant never repeats known facts across channels</td><td>Journey Owner</td><td>CES, resubmission rate</td></tr><tr><td scope="row">Frontstage</td><td>Complex case concierge</td><td>Contact within 24 hours for eligible cases</td><td>Regional claims lead</td><td>Complex-claim FCR</td></tr><tr><td scope="row">Backstage</td><td>Triaged first time right</td><td>Reassignment under 10%</td><td>Claims operations lead</td><td>FCR, cycle time</td></tr><tr><td scope="row">Support</td><td>Runbook versioning</td><td>One live SOP set, site exceptions documented</td><td>Service design ops lead</td><td>Leader-standards adherence</td></tr><tr><td scope="row">Governance</td><td>13-week review</td><td>Every site re-scored at week 13</td><td>Journey Owner + COO sponsor</td><td>Red-site count</td></tr></tbody></table></div><h3 id="a3-stakeholder-map">A3 — Stakeholder map</h3><figure class="fig fig-quad"><svg class="fgsvg quad" viewBox="0 0 660 446" role="img" aria-hidden="true"><line x1="330" y1="44" x2="330" y2="376" stroke="#DEDEDA" stroke-width="1"/><line x1="44" y1="210" x2="616" y2="210" stroke="#DEDEDA" stroke-width="1"/><text x="54" y="60" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.8">Keep satisfied</text><text x="606" y="60" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0.8">Manage closely</text><text x="54" y="366" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.8">Keep informed</text><text x="606" y="366" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0.8">Monitor</text><circle cx="547.36" cy="57.280000000000015" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="556.36" y="60.780000000000015" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">COO sponsor</text><circle cx="587.4" cy="67.23999999999998" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="596.4" y="70.73999999999998" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Claims journey owner</text><circle cx="524.48" cy="93.80000000000001" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="533.48" y="97.30000000000001" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Regional directors</text><circle cx="570.24" cy="170.16" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="579.24" y="173.66" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Team leaders</text><circle cx="375.76" cy="117.03999999999999" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="384.76" y="120.53999999999999" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Works council</text><circle cx="404.36" cy="107.07999999999998" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="413.36" y="110.57999999999998" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Compliance and fraud</text><circle cx="335.72" cy="100.44000000000001" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="344.72" y="103.94000000000001" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">CIO legacy systems</text><circle cx="392.92" cy="190.07999999999998" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="401.92" y="193.57999999999998" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Broker association</text><circle cx="295.68" cy="246.51999999999998" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="304.68" y="250.01999999999998" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Repairer network</text><circle cx="535.9200000000001" cy="213.32" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="544.9200000000001" y="216.82" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Site champions</text></svg><figcaption><span class="fignum">Figure 8</span><span class="figcap">Aurelia national claims rollout stakeholders</span></figcaption></figure>
-<div class="tbl-wrap"><table><thead><tr><th>Stakeholder</th><th>Change posture</th><th>Engagement move</th></tr></thead><tbody><tr><td>Claims Journey Owner</td><td>Accountable sponsor</td><td>Owns KPI matrix, chairs monthly council</td></tr><tr><td scope="row">Regional directors</td><td>Mixed</td><td>Quarterly walk-the-chain reviews plus red-site escalation</td></tr><tr><td scope="row">Team leaders</td><td>Critical middle layer</td><td>Leader standards, coaching backfill, site-level dashboards</td></tr><tr><td scope="row">Works council</td><td>Watchful but constructive</td><td>Early consultation on scorecard changes and training load</td></tr><tr><td scope="row">Broker association</td><td>Risk of perceived bypass</td><td>Preserve broker-assisted path where claimant value is genuine</td></tr></tbody></table></div><h3 id="a4-ecosystem-and-channel-map">A4 — Ecosystem and channel map</h3><figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1093 416" role="img" aria-hidden="true"><defs><marker id="arr-9" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 57.380582524271844,282 120.8,91 146.8,91" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 60.08539325842696,282 120.8,163.5 165.8,163.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 89.04285714285714,282 120.8,269 211.2,269" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 75.4561797752809,312 120.8,341.5 169.6,341.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 345.59999999999997,91 371.6,91 478.5123595505618,247.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 326.59999999999997,163.5 371.6,163.5 468.4189573459716,247.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 281.2,269 371.6,269 397.6,269" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 322.79999999999995,341.5 371.6,341.5 457.1393103448276,290.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 511.64373897707236,247.5 614.8,127.25 655.9999999999999,127.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 530.9530685920578,247.5 614.8,199.75 675,199.75" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 766.5677261613691,105.75 865.5999999999999,25 906.8,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 814.575172413793,105.75 865.5999999999999,91 891.5999999999999,91" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 771.1008595988538,148.75 865.5999999999999,214.5 895.4,214.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 760.3955056179775,148.75 865.5999999999999,260.75 973.1961612284068,376" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 588.8000000000001,271.5550986842105 614.8,272.25 640.8,272.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 542.7620853080568,290.5 614.8,321.75 668.5428571428571,333" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 922,391 865.5999999999999,391 740.1999999999999,391 614.8,391 493.20000000000005,391 371.6,391 246.2,391 120.8,391 63.314893617021276,312" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 648.4,356.41866028708137 614.8,359.5 522.0883977900553,290.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><rect x="10" y="282" width="84.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="52.4" y="301" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Claimant</text><rect x="146.8" y="76" width="198.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="246.2" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Web and app claim entry</text><rect x="165.8" y="142" width="160.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="246.2" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Phone and callback</text><text x="246.2" y="174" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">channel</text><rect x="211.2" y="254" width="70" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="246.2" y="273" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Broker</text><rect x="169.6" y="320" width="153.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="246.2" y="339" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Roadside or home</text><text x="246.2" y="352" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">emergency partner</text><rect x="397.6" y="247.5" width="191.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="493.20000000000005" y="266.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Aurelia claims journey</text><text x="493.20000000000005" y="279.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">office</text><rect x="655.9999999999999" y="105.75" width="168.4" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="740.1999999999999" y="124.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">12 claims sites and</text><text x="740.1999999999999" y="137.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">satellite desks</text><rect x="675" y="184.75" width="130.39999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="740.1999999999999" y="203.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Concierge desk</text><rect x="906.8" y="10" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="987.1999999999999" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Motor and home PAS</text><rect x="891.5999999999999" y="76" width="191.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="987.1999999999999" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Fraud and rules engine</text><rect x="895.4" y="193" width="183.6" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="987.1999999999999" y="212" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Repairer and assessor</text><text x="987.1999999999999" y="225" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">network</text><rect x="922" y="376" width="130.39999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="987.1999999999999" y="395" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Payment engine</text><rect x="640.8" y="250.75" width="198.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="740.1999999999999" y="269.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">GitHub rollout repo and</text><text x="740.1999999999999" y="282.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">review gates</text><rect x="648.4" y="333" width="183.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="740.1999999999999" y="352" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Survey and VoC engine</text></svg><figcaption><span class="fignum">Figure 9</span><span class="figcap">A4 — Ecosystem and channel map</span></figcaption></figure>
-<h3 id="a5-persona-set">A5 — Persona set</h3><div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Persona</th><th>Segment</th><th>What success looks like</th><th>Risk in rollout</th><th>Design response</th></tr></thead><tbody><tr><td>Lena van Dijk — rural claimant</td><td>62, home claim, phone-first, low trust in portals</td><td>&quot;Tell me what happens next without making me hunt&quot;</td><td>Self-service-only rollout would reduce adoption and raise repeat contacts</td><td>Hybrid path: guided phone script, SMS proof, local broker context carryover</td></tr><tr><td scope="row">Amir Rahmani — urban motor claimant</td><td>31, simple motor, mobile-first, low patience for delay</td><td>6-minute claim, visible status, no calls</td><td>Any morning status lag creates immediate digital churn</td><td>Wave 1 urban rollout with load tests and status timestamp transparency</td></tr><tr><td scope="row">Marta Jansen — frontline champion</td><td>Team leader at RTM-West, part of article 03 pilot panel</td><td>Wants one service standard and fewer handler workarounds</td><td>Burnout if change support becomes informal extra work</td><td>Named site champion, coaching backfill, council seat</td></tr><tr><td scope="row">Pieter Smeets — frontline denier</td><td>Supervisor at NAM-Legacy, strong local identity, skeptical of central teams</td><td>Wants proof that new model will not wreck queue numbers</td><td>May preserve shadow spreadsheets and coach passive resistance</td><td>Pair as explicit skeptic in change network, expose site-level evidence, remove perverse metrics first</td></tr></tbody></table></div><h3 id="a6-templates-used-on-this-engagement">A6 — Templates used on this engagement</h3><p><strong>(a) Rollout wave go or no-go gate scorecard template.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Emotion (1–5)</th>
+<th>Dominant pain</th>
+<th>Supporting evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Report claim</td>
+<td>2</td>
+<td>National brand promise routes to different service realities by region</td>
+<td>Site audit week 2; broker complaints cluster 14</td>
+</tr>
+<tr>
+<td>Submit evidence</td>
+<td>2</td>
+<td>Outside pilot, documents still bounce across email and phone</td>
+<td>Non-pilot home claims had 1.9x document resubmission rate</td>
+</tr>
+<tr>
+<td>Wait for status</td>
+<td>1</td>
+<td>Claimants compare pilot certainty with non-pilot silence</td>
+<td>Status-chase calls 4.4 outside pilot vs 0.8 in pilot</td>
+</tr>
+<tr>
+<td>Resolve claim</td>
+<td>2</td>
+<td>Manager discretion and authority differ by site</td>
+<td>Approval delay variation of 4.7 days across non-pilot sites</td>
+</tr>
+<tr>
+<td>Close and renew</td>
+<td>2</td>
+<td>Closure experience inconsistent, weakening trust</td>
+<td>Renewal-intent gap of 17 points between pilot and non-pilot claimants</td>
+</tr>
+</tbody></table>
+<h3 id="a2-updated-national-claims-service-blueprint-scaled-future-state">A2 — Updated national claims service blueprint (scaled future state)</h3>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Physical and digital evidence</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Customer actions</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Frontstage staff actions</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Backstage actions</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Support systems and governance</text><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/><line x1="94" y1="156" x2="296" y2="156" stroke="#171817" stroke-width="1.2"/><text x="98" y="152" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of interaction</text><line x1="94" y1="220" x2="296" y2="220" stroke="#171817" stroke-width="1.2"/><text x="98" y="216" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of visibility</text><line x1="94" y1="284" x2="296" y2="284" stroke="#171817" stroke-width="1.2"/><text x="98" y="280" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="1">Line of internal interaction</text></svg><figcaption><span class="fignum">Figure 7</span><span class="figcap">A2 — Updated national claims service blueprint (scaled future state)</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Lane</th>
+<th>Step</th>
+<th>National standard</th>
+<th>Owner</th>
+<th>KPI</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Evidence</td>
+<td>Postcode-aware entry</td>
+<td>Claimant never lands in a dead-end path</td>
+<td>Digital product lead</td>
+<td>Entry completion</td>
+</tr>
+<tr>
+<td>Customer</td>
+<td>Evidence once</td>
+<td>Claimant never repeats known facts across channels</td>
+<td>Journey Owner</td>
+<td>CES, resubmission rate</td>
+</tr>
+<tr>
+<td>Frontstage</td>
+<td>Complex case concierge</td>
+<td>Contact within 24 hours for eligible cases</td>
+<td>Regional claims lead</td>
+<td>Complex-claim FCR</td>
+</tr>
+<tr>
+<td>Backstage</td>
+<td>Triaged first time right</td>
+<td>Reassignment under 10%</td>
+<td>Claims operations lead</td>
+<td>FCR, cycle time</td>
+</tr>
+<tr>
+<td>Support</td>
+<td>Runbook versioning</td>
+<td>One live SOP set, site exceptions documented</td>
+<td>Service design ops lead</td>
+<td>Leader-standards adherence</td>
+</tr>
+<tr>
+<td>Governance</td>
+<td>13-week review</td>
+<td>Every site re-scored at week 13</td>
+<td>Journey Owner + COO sponsor</td>
+<td>Red-site count</td>
+</tr>
+</tbody></table>
+<h3 id="a3-stakeholder-map">A3 — Stakeholder map</h3>
+<figure class="fig fig-quad"><svg class="fgsvg quad" viewBox="0 0 660 446" role="img" aria-hidden="true"><line x1="330" y1="44" x2="330" y2="376" stroke="#DEDEDA" stroke-width="1"/><line x1="44" y1="210" x2="616" y2="210" stroke="#DEDEDA" stroke-width="1"/><text x="54" y="60" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.8">Keep satisfied</text><text x="606" y="60" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0.8">Manage closely</text><text x="54" y="366" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.8">Keep informed</text><text x="606" y="366" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0.8">Monitor</text><circle cx="547.36" cy="57.280000000000015" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="556.36" y="60.780000000000015" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">COO sponsor</text><circle cx="587.4" cy="67.23999999999998" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="596.4" y="70.73999999999998" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Claims journey owner</text><circle cx="524.48" cy="93.80000000000001" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="533.48" y="97.30000000000001" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Regional directors</text><circle cx="570.24" cy="170.16" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="579.24" y="173.66" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Team leaders</text><circle cx="375.76" cy="117.03999999999999" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="384.76" y="120.53999999999999" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Works council</text><circle cx="404.36" cy="107.07999999999998" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="413.36" y="110.57999999999998" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Compliance and fraud</text><circle cx="335.72" cy="100.44000000000001" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="344.72" y="103.94000000000001" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">CIO legacy systems</text><circle cx="392.92" cy="190.07999999999998" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="401.92" y="193.57999999999998" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Broker association</text><circle cx="295.68" cy="246.51999999999998" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="304.68" y="250.01999999999998" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Repairer network</text><circle cx="535.9200000000001" cy="213.32" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="544.9200000000001" y="216.82" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">Site champions</text></svg><figcaption><span class="fignum">Figure 8</span><span class="figcap">Aurelia national claims rollout stakeholders</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Stakeholder</th>
+<th>Change posture</th>
+<th>Engagement move</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Claims Journey Owner</td>
+<td>Accountable sponsor</td>
+<td>Owns KPI matrix, chairs monthly council</td>
+</tr>
+<tr>
+<td>Regional directors</td>
+<td>Mixed</td>
+<td>Quarterly walk-the-chain reviews plus red-site escalation</td>
+</tr>
+<tr>
+<td>Team leaders</td>
+<td>Critical middle layer</td>
+<td>Leader standards, coaching backfill, site-level dashboards</td>
+</tr>
+<tr>
+<td>Works council</td>
+<td>Watchful but constructive</td>
+<td>Early consultation on scorecard changes and training load</td>
+</tr>
+<tr>
+<td>Broker association</td>
+<td>Risk of perceived bypass</td>
+<td>Preserve broker-assisted path where claimant value is genuine</td>
+</tr>
+</tbody></table>
+<h3 id="a4-ecosystem-and-channel-map">A4 — Ecosystem and channel map</h3>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1093 416" role="img" aria-hidden="true"><defs><marker id="arr-9" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 57.380582524271844,282 120.8,91 146.8,91" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 60.08539325842696,282 120.8,163.5 165.8,163.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 89.04285714285714,282 120.8,269 211.2,269" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 75.4561797752809,312 120.8,341.5 169.6,341.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 345.59999999999997,91 371.6,91 478.5123595505618,247.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 326.59999999999997,163.5 371.6,163.5 468.4189573459716,247.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 281.2,269 371.6,269 397.6,269" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 322.79999999999995,341.5 371.6,341.5 457.1393103448276,290.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 511.64373897707236,247.5 614.8,127.25 655.9999999999999,127.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 530.9530685920578,247.5 614.8,199.75 675,199.75" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 766.5677261613691,105.75 865.5999999999999,25 906.8,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 814.575172413793,105.75 865.5999999999999,91 891.5999999999999,91" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 771.1008595988538,148.75 865.5999999999999,214.5 895.4,214.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 760.3955056179775,148.75 865.5999999999999,260.75 973.1961612284068,376" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 588.8000000000001,271.5550986842105 614.8,272.25 640.8,272.25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 542.7620853080568,290.5 614.8,321.75 668.5428571428571,333" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 922,391 865.5999999999999,391 740.1999999999999,391 614.8,391 493.20000000000005,391 371.6,391 246.2,391 120.8,391 63.314893617021276,312" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><path d="M 648.4,356.41866028708137 614.8,359.5 522.0883977900553,290.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-9)"/><rect x="10" y="282" width="84.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="52.4" y="301" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Claimant</text><rect x="146.8" y="76" width="198.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="246.2" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Web and app claim entry</text><rect x="165.8" y="142" width="160.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="246.2" y="161" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Phone and callback</text><text x="246.2" y="174" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">channel</text><rect x="211.2" y="254" width="70" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="246.2" y="273" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Broker</text><rect x="169.6" y="320" width="153.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="246.2" y="339" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Roadside or home</text><text x="246.2" y="352" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">emergency partner</text><rect x="397.6" y="247.5" width="191.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="493.20000000000005" y="266.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Aurelia claims journey</text><text x="493.20000000000005" y="279.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">office</text><rect x="655.9999999999999" y="105.75" width="168.4" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="740.1999999999999" y="124.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">12 claims sites and</text><text x="740.1999999999999" y="137.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">satellite desks</text><rect x="675" y="184.75" width="130.39999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="740.1999999999999" y="203.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Concierge desk</text><rect x="906.8" y="10" width="160.79999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="987.1999999999999" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Motor and home PAS</text><rect x="891.5999999999999" y="76" width="191.2" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="987.1999999999999" y="95" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Fraud and rules engine</text><rect x="895.4" y="193" width="183.6" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="987.1999999999999" y="212" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Repairer and assessor</text><text x="987.1999999999999" y="225" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">network</text><rect x="922" y="376" width="130.39999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="987.1999999999999" y="395" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Payment engine</text><rect x="640.8" y="250.75" width="198.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="740.1999999999999" y="269.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">GitHub rollout repo and</text><text x="740.1999999999999" y="282.75" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">review gates</text><rect x="648.4" y="333" width="183.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="740.1999999999999" y="352" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Survey and VoC engine</text></svg><figcaption><span class="fignum">Figure 9</span><span class="figcap">A4 — Ecosystem and channel map</span></figcaption></figure>
+<h3 id="a5-persona-set">A5 — Persona set</h3>
+<table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Segment</th>
+<th>What success looks like</th>
+<th>Risk in rollout</th>
+<th>Design response</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Lena van Dijk — rural claimant</td>
+<td>62, home claim, phone-first, low trust in portals</td>
+<td>&quot;Tell me what happens next without making me hunt&quot;</td>
+<td>Self-service-only rollout would reduce adoption and raise repeat contacts</td>
+<td>Hybrid path: guided phone script, SMS proof, local broker context carryover</td>
+</tr>
+<tr>
+<td>Amir Rahmani — urban motor claimant</td>
+<td>31, simple motor, mobile-first, low patience for delay</td>
+<td>6-minute claim, visible status, no calls</td>
+<td>Any morning status lag creates immediate digital churn</td>
+<td>Wave 1 urban rollout with load tests and status timestamp transparency</td>
+</tr>
+<tr>
+<td>Marta Jansen — frontline champion</td>
+<td>Team leader at RTM-West, part of article 03 pilot panel</td>
+<td>Wants one service standard and fewer handler workarounds</td>
+<td>Burnout if change support becomes informal extra work</td>
+<td>Named site champion, coaching backfill, council seat</td>
+</tr>
+<tr>
+<td>Pieter Smeets — frontline denier</td>
+<td>Supervisor at NAM-Legacy, strong local identity, skeptical of central teams</td>
+<td>Wants proof that new model will not wreck queue numbers</td>
+<td>May preserve shadow spreadsheets and coach passive resistance</td>
+<td>Pair as explicit skeptic in change network, expose site-level evidence, remove perverse metrics first</td>
+</tr>
+</tbody></table>
+<h3 id="a6-templates-used-on-this-engagement">A6 — Templates used on this engagement</h3>
+<p><strong>(a) Rollout wave go or no-go gate scorecard template.</strong></p>
 <div class="codeblock"><div class="codebar"><span>SOP / PROMPT</span></div><pre><code># Wave Go or No Go Scorecard
 Site: [claims site code] | Wave: [1-6] | Review date: [YYYY-MM-DD]
 
@@ -128,14 +500,18 @@ Site: [claims site code] | Wave: [1-6] | Review date: [YYYY-MM-DD]
 | Customer continuity | Broker and phone fallbacks verified | Yes | [ ] | 10 | [ ] | Journey Owner | |
 
 Decision rule: any failed 15-point gate or total score below 85 = no go.
-Escalation route: Site sponsor -&gt; Journey Owner -&gt; COO sponsor within 24 hours.</code></pre></div><p><strong>(b) Change risk register template.</strong></p>
+Escalation route: Site sponsor -&gt; Journey Owner -&gt; COO sponsor within 24 hours.
+</code></pre></div>
+<p><strong>(b) Change risk register template.</strong></p>
 <div class="codeblock"><div class="codebar"><span>SOP / PROMPT</span></div><pre><code># Change Risk Register
 | Risk ID | Site or wave | Risk statement | Leading signal | Impact | Likelihood | Mitigation | Owner | Review date | Status |
 |---|---|---|---|---|---|---|---|---|---|
 | CR-01 | Wave 4 | Rural claimants avoid digital path and overload phone queue | Adoption &lt;55% by day 10 | High | Medium | Activate guided callback script and broker briefing | Regional lead | [date] | [ ] |
 | CR-02 | Wave 6 | Team leaders keep shadow spreadsheets alive | Runbook diff not acknowledged; duplicate status lists found | Medium | High | Remove old share drive, on-site coaching, dashboard training | Journey Owner | [date] | [ ] |
 | CR-03 | All | New comms create pressure or blame language | Complaints from staff, council feedback | Medium | Medium | Guardrail review on all training packs | Service designer | [date] | [ ] |
-| CR-04 | All | Legacy batch delays create false status timestamps | 07:00 to 09:00 delta exceeds 45 min | High | Medium | Morning cache banner and API replay job | CIO delegate | [date] | [ ] |</code></pre></div><p><strong>(c) Rollout wave SOP as code.</strong></p>
+| CR-04 | All | Legacy batch delays create false status timestamps | 07:00 to 09:00 delta exceeds 45 min | High | Medium | Morning cache banner and API replay job | CIO delegate | [date] | [ ] |
+</code></pre></div>
+<p><strong>(c) Rollout wave SOP as code.</strong></p>
 <div class="codeblock"><div class="codebar"><span>SOP / PROMPT</span></div><pre><code># SOP Wave Rollout
 1. Read site profile, prior-wave defect log, and current runbook diff.
 2. Validate readiness scorecard. Stop if any 15-point gate fails.
@@ -144,9 +520,79 @@ Escalation route: Site sponsor -&gt; Journey Owner -&gt; COO sponsor within 24 h
 5. Publish site FAQ and escalation matrix.
 6. Day 1-10: review live KPIs daily; log defects within 2 hours.
 7. Week 4: re-score adoption, FCR, complaints, leader standards.
-8. Week 13: decide green, amber, or red; update hardening backlog.</code></pre></div><h3 id="a7-mock-rollout-dataset-and-tracker-sample">A7 — Mock rollout dataset and tracker sample</h3><p>Full file: <a href="data/rollout_sample.csv"><code>data/rollout_sample.csv</code></a>
+8. Week 13: decide green, amber, or red; update hardening backlog.
+</code></pre></div>
+<h3 id="a7-mock-rollout-dataset-and-tracker-sample">A7 — Mock rollout dataset and tracker sample</h3>
+<p>Full file: <a href="data/rollout_sample.csv"><code>data/rollout_sample.csv</code></a>
 <code>claims_volume</code> is the average monthly claim load for that site; across the 12 sites the mock dataset totals roughly 8,000 claims per month, aligned to Aurelia&#39;s ~96,000 annual-claim scale from article 03.</p>
-<div class="tbl-wrap tbl-matrix"><table><thead><tr><th>store</th><th>wave</th><th>readiness_score</th><th>claims_volume</th><th>FCR</th><th>NPS_delta</th><th>adoption</th></tr></thead><tbody><tr><td>AMS-Central</td><td>1</td><td>89</td><td>1055</td><td>78</td><td>30</td><td>62</td></tr><tr><td scope="row">BRU-Broker</td><td>3</td><td>82</td><td>854</td><td>80</td><td>35</td><td>72</td></tr><tr><td scope="row">GRO-Rural</td><td>4</td><td>78</td><td>452</td><td>76</td><td>24</td><td>61</td></tr><tr><td scope="row">HSS-Phone</td><td>5</td><td>85</td><td>382</td><td>80</td><td>34</td><td>74</td></tr><tr><td scope="row">NAM-Legacy</td><td>6</td><td>74</td><td>704</td><td>72</td><td>19</td><td>56</td></tr><tr><td scope="row">LUX-Satellite</td><td>6</td><td>77</td><td>271</td><td>74</td><td>22</td><td>60</td></tr></tbody></table></div><div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>store,wave,readiness_score,claims_volume,FCR,NPS_delta,adoption
+<table>
+<thead>
+<tr>
+<th>store</th>
+<th align="right">wave</th>
+<th align="right">readiness_score</th>
+<th align="right">claims_volume</th>
+<th align="right">FCR</th>
+<th align="right">NPS_delta</th>
+<th align="right">adoption</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AMS-Central</td>
+<td align="right">1</td>
+<td align="right">89</td>
+<td align="right">1055</td>
+<td align="right">78</td>
+<td align="right">30</td>
+<td align="right">62</td>
+</tr>
+<tr>
+<td>BRU-Broker</td>
+<td align="right">3</td>
+<td align="right">82</td>
+<td align="right">854</td>
+<td align="right">80</td>
+<td align="right">35</td>
+<td align="right">72</td>
+</tr>
+<tr>
+<td>GRO-Rural</td>
+<td align="right">4</td>
+<td align="right">78</td>
+<td align="right">452</td>
+<td align="right">76</td>
+<td align="right">24</td>
+<td align="right">61</td>
+</tr>
+<tr>
+<td>HSS-Phone</td>
+<td align="right">5</td>
+<td align="right">85</td>
+<td align="right">382</td>
+<td align="right">80</td>
+<td align="right">34</td>
+<td align="right">74</td>
+</tr>
+<tr>
+<td>NAM-Legacy</td>
+<td align="right">6</td>
+<td align="right">74</td>
+<td align="right">704</td>
+<td align="right">72</td>
+<td align="right">19</td>
+<td align="right">56</td>
+</tr>
+<tr>
+<td>LUX-Satellite</td>
+<td align="right">6</td>
+<td align="right">77</td>
+<td align="right">271</td>
+<td align="right">74</td>
+<td align="right">22</td>
+<td align="right">60</td>
+</tr>
+</tbody></table>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>store,wave,readiness_score,claims_volume,FCR,NPS_delta,adoption
 AMS-Central,1,89,1055,78,30,62
 RTM-West,1,87,930,79,31,64
 UTR-Mixed,2,85,804,79,32,68
@@ -158,85 +604,457 @@ LEE-Rural,4,80,412,78,27,65
 BRE-Hybrid,5,86,628,81,37,75
 HSS-Phone,5,85,382,80,34,74
 NAM-Legacy,6,74,704,72,19,56
-LUX-Satellite,6,77,271,74,22,60</code></pre></div><h3 id="a8-charts">A8 — Charts</h3><figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">22.5</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">45</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">67.5</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">90</text><line x1="44" y1="304" x2="730" y2="304" stroke="#DEDEDA" stroke-width="1"/><text x="93" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Pilot</text><text x="191" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">W1</text><text x="289" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">W2</text><text x="387" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">W3</text><text x="485" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">W4</text><text x="583" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">W5</text><text x="681" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">W6</text><rect x="588" y="7" width="14" height="10" rx="2" fill="#4A7FA8"/><text x="610" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">bar</text><line x1="458" y1="12" x2="474" y2="12" stroke="#171817" stroke-width="2" stroke-linecap="round"/><text x="480" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">line</text><polyline points="93,64.2222222222222 191,75.77777777777777 289,72.88888888888891 387,70 485,81.55555555555557 583,70 681,93.11111111111111" fill="none" stroke="#171817" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="93" cy="64.2222222222222" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="191" cy="75.77777777777777" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="289" cy="72.88888888888891" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="387" cy="70" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="485" cy="81.55555555555557" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="583" cy="70" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="681" cy="93.11111111111111" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><text x="690" y="96.61111111111111" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">73</text><rect x="76" y="214.44444444444446" width="34" height="89.55555555555554" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="93" y="208.44444444444446" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">31</text><rect x="174" y="214.44444444444446" width="34" height="89.55555555555554" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="191" y="208.44444444444446" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">31</text><rect x="272" y="208.66666666666669" width="34" height="95.33333333333331" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="289" y="202.66666666666669" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">33</text><rect x="370" y="200" width="34" height="104" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="387" y="194" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">36</text><rect x="468" y="228.8888888888889" width="34" height="75.11111111111109" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="485" y="222.8888888888889" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">26</text><rect x="566" y="200" width="34" height="104" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="583" y="194" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">36</text><rect x="664" y="243.33333333333334" width="34" height="60.66666666666666" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="681" y="237.33333333333334" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">21</text></svg><figcaption><span class="fignum">Figure 10</span><span class="figcap">FCRandNPSbyrolloutwave</span></figcaption></figure>
+LUX-Satellite,6,77,271,74,22,60
+</code></pre></div>
+<h3 id="a8-charts">A8 — Charts</h3>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">22.5</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">45</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">67.5</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">90</text><line x1="44" y1="304" x2="730" y2="304" stroke="#DEDEDA" stroke-width="1"/><text x="93" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Pilot</text><text x="191" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">W1</text><text x="289" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">W2</text><text x="387" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">W3</text><text x="485" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">W4</text><text x="583" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">W5</text><text x="681" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">W6</text><rect x="588" y="7" width="14" height="10" rx="2" fill="#4A7FA8"/><text x="610" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">bar</text><line x1="458" y1="12" x2="474" y2="12" stroke="#171817" stroke-width="2" stroke-linecap="round"/><text x="480" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">line</text><polyline points="93,64.2222222222222 191,75.77777777777777 289,72.88888888888891 387,70 485,81.55555555555557 583,70 681,93.11111111111111" fill="none" stroke="#171817" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="93" cy="64.2222222222222" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="191" cy="75.77777777777777" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="289" cy="72.88888888888891" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="387" cy="70" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="485" cy="81.55555555555557" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="583" cy="70" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="681" cy="93.11111111111111" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><text x="690" y="96.61111111111111" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">73</text><rect x="76" y="214.44444444444446" width="34" height="89.55555555555554" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="93" y="208.44444444444446" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">31</text><rect x="174" y="214.44444444444446" width="34" height="89.55555555555554" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="191" y="208.44444444444446" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">31</text><rect x="272" y="208.66666666666669" width="34" height="95.33333333333331" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="289" y="202.66666666666669" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">33</text><rect x="370" y="200" width="34" height="104" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="387" y="194" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">36</text><rect x="468" y="228.8888888888889" width="34" height="75.11111111111109" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="485" y="222.8888888888889" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">26</text><rect x="566" y="200" width="34" height="104" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="583" y="194" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">36</text><rect x="664" y="243.33333333333334" width="34" height="60.66666666666666" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="681" y="237.33333333333334" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">21</text></svg><figcaption><span class="fignum">Figure 10</span><span class="figcap">FCRandNPSbyrolloutwave</span></figcaption></figure>
 <figure class="fig fig-pie"><svg class="fgsvg pie" viewBox="0 0 560 340" role="img" aria-hidden="true"><path d="M 200 112 L 200 65 A 105 105 0 0 1 303.14016132651227 189.67503803150112 L 256.97266054226395 180.86811624597203 A 58 58 0 0 0 200 112 Z" fill="#171817"/><text x="299.2321023758705" y="96.37169724040855" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="start" letter-spacing="0">Loss of local discretion · 28%</text><path d="M 256.97266054226395 180.86811624597203 L 303.14016132651227 189.67503803150112 A 105 105 0 0 1 199.99999999999997 275 L 200 228 A 58 58 0 0 0 256.97266054226395 180.86811624597203 Z" fill="#4A7FA8"/><text x="283.1283027595914" y="266.7321023758705" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="start" letter-spacing="0">Legacy workaround trust · 22%</text><path d="M 200 228 L 199.99999999999997 275 A 105 105 0 0 1 104.99315949106794 214.70682561433262 L 147.52003095697086 194.6951989107742 A 58 58 0 0 0 200 228 Z" fill="#5E7F5A"/><text x="129.16495780754138" y="275.6636789857438" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">Training overload · 18%</text><path d="M 147.52003095697086 194.6951989107742 L 104.99315949106794 214.70682561433262 A 105 105 0 0 1 111.34556782228843 113.73818652720533 L 151.02898032088314 138.92204589121818 A 58 58 0 0 0 147.52003095697086 194.6951989107742 Z" fill="#7B61C4"/><text x="73.23876586017914" y="165.90234713695304" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">Metric anxiety · 16%</text><path d="M 151.02898032088314 138.92204589121818 L 111.34556782228843 113.73818652720533 A 105 105 0 0 1 161.34692196810883 72.3734689817336 L 178.64877594428867 116.07296381848141 A 58 58 0 0 0 151.02898032088314 138.92204589121818 Z" fill="#B08A00"/><text x="116.87169724040857" y="80.26789762412949" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">Broker handoff fear · 10%</text><path d="M 178.64877594428867 116.07296381848141 L 161.34692196810883 72.3734689817336 A 105 105 0 0 1 199.99999999999997 65 L 200 112 A 58 58 0 0 0 178.64877594428867 116.07296381848141 Z" fill="#9B9B96"/><text x="183.3268609351273" y="54.643242661828666" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">Pilot resentment · 6%</text><text x="200" y="174" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="26" fill="#171817" font-weight="600" text-anchor="middle" letter-spacing="0">100</text><text x="200" y="190" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="1.5">total</text></svg><figcaption><span class="fignum">Figure 11</span><span class="figcap">Resistance reasons</span></figcaption></figure>
 <figure class="fig fig-quad"><svg class="fgsvg quad" viewBox="0 0 660 446" role="img" aria-hidden="true"><line x1="330" y1="44" x2="330" y2="376" stroke="#DEDEDA" stroke-width="1"/><line x1="44" y1="210" x2="616" y2="210" stroke="#DEDEDA" stroke-width="1"/><text x="54" y="60" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.8">Protect closely</text><text x="606" y="60" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0.8">Leverage fast</text><text x="54" y="366" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.8">Standard rollout</text><text x="606" y="366" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0.8">Coach first</text><circle cx="553.0799999999999" cy="67.23999999999998" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="562.0799999999999" y="70.73999999999998" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">AMS Central</text><circle cx="541.64" cy="90.48" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="550.64" y="93.98" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">RTM West</text><circle cx="513.04" cy="113.71999999999998" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="522.04" y="117.21999999999998" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">BRU Broker</text><circle cx="490.16" cy="279.72" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="499.16" y="283.22" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">GRO Rural</text><circle cx="530.2" cy="306.28000000000003" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="539.2" y="309.78000000000003" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">HSS Phone</text><circle cx="467.28" cy="166.84" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="476.28" y="170.34" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">NAM Legacy</text><circle cx="484.44" cy="336.16" r="5" fill="#171817" stroke="#fff" stroke-width="1.5"/><text x="493.44" y="339.66" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">LUX Satellite</text></svg><figcaption><span class="fignum">Figure 12</span><span class="figcap">Readiness and volume by site</span></figcaption></figure>
-<h3 id="a9-traceability-from-pilot-learning-to-scaled-change">A9 — Traceability from pilot learning to scaled change</h3><div class="tbl-wrap"><table><thead><tr><th>Pilot learning from article 03</th><th>Scaled change in article 21</th><th>Operating control</th><th>KPI moved</th></tr></thead><tbody><tr><td>FCR hit 83% only where handlers had clean context and authority</td><td>National discretion policy and one claim file view</td><td>Leader standards plus discretion audit</td><td>FCR 61%→79% nationally</td></tr><tr><td scope="row">Pilot adoption was strongest in urban simple claims</td><td>Hybrid rollout for rural and phone-heavy sites</td><td>Site-type wave design, broker-preserved path</td><td>Adoption 67% national</td></tr><tr><td scope="row">Concierge worked for the 12% complex tail</td><td>Concierge expanded with site eligibility rules</td><td>Concierge assignment SLA under 24h</td><td>Complex-claim cycle 61→37 days</td></tr><tr><td scope="row">Status-chase calls collapsed when messages were trusted</td><td>Morning batch lag fixed and visible</td><td>Timestamp transparency and cache replay check</td><td>Status-chase 4.4→1.3</td></tr><tr><td scope="row">Champion managers accelerated pilot learning</td><td>Change network included champions and skeptics</td><td>Team-leader certification before site go-live</td><td>Leader standards 41%→93%</td></tr><tr><td scope="row">Shadow workarounds masked true failure points</td><td>Old SOPs and spreadsheets retired after G5</td><td>PR-gated SOP library, share-drive shutdown</td><td>Handling cost €34→€20</td></tr><tr><td scope="row">Closure note lifted renewal intent</td><td>National close-and-renew step standardized</td><td>Closure message gate in runbook</td><td>Claims NPS −12→+18</td></tr></tbody></table></div><h3 id="a10-claims-service-audit-after-national-hardening">A10 — Claims service audit after national hardening</h3><div class="ba-table"><div class="ba-row ba-header"><span class="ba-head">Is easy to find</span><span class="ba-head">Partial</span><span class="ba-head">Pass</span><span class="ba-head">Pass</span><span class="ba-head">National claims page plus broker and guided-phone entry points replaced region-specific contact routes.</span></div><div class="ba-row"><span class="bac bac-k">Clearly explains its purpose</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Start-page and phone-script openings explain who the flow is for, what happens next, and which claim types stay broker-led.</span></div><div class="ba-row"><span class="bac bac-k">Sets a user&#39;s expectations</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Milestone dates, document prompts, and callback promises now appear upfront instead of after handoff.</span></div><div class="ba-row"><span class="bac bac-k">Enables each user to complete the outcome they set out to do</span><span class="bac bac-a">Partial</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Closure counts only when payment or repair authorization lands, not when an internal task merely changes status.</span></div><div class="ba-row"><span class="bac bac-k">Works in a way that is familiar</span><span class="bac bac-a">Partial</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Status tracker, guided phone FNOL, and broker-preserved path match claimant channel habits by site type.</span></div><div class="ba-row"><span class="bac bac-k">Requires no prior knowledge to use</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Plain-language claim copy and phone scripts removed policy and workflow jargon.</span></div><div class="ba-row"><span class="bac bac-k">Is agnostic of organizational structures</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Partial</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Broker, phone, and digital routes now share one evidence and status backbone across all 12 sites.</span></div><div class="ba-row"><span class="bac bac-k">Requires the minimum possible steps to complete</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Claimants upload or confirm evidence once; duplicate email and re-key loops were retired.</span></div><div class="ba-row"><span class="bac bac-k">Is consistent throughout</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Pass</span><span class="bac bac-b">One live SOP library, one milestone language set, and shared leader standards replaced site-local variants.</span></div><div class="ba-row"><span class="bac bac-k">Has no dead ends</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Every rejection, stale-status, or vulnerable-claim state now routes to callback, concierge, or a named next step.</span></div><div class="ba-row"><span class="bac bac-k">Is usable by everyone, equally</span><span class="bac bac-a">Partial</span><span class="bac bac-b">Partial</span><span class="bac bac-b">Partial</span><span class="bac bac-b">Hybrid phone support widened access, but LUX-Satellite remained amber and equal digital performance was not universal.</span></div><div class="ba-row"><span class="bac bac-k">Responds to change quickly</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Partial</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Wave-specific runbook diffs, cache-freshness banner reuse, and 13-week hardening let the service absorb storms and site defects without rollback.</span></div><div class="ba-row"><span class="bac bac-k">Clearly explains why a decision has been made</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Plain-language settlement summaries and exception scripts explain outcomes instead of generic status codes.</span></div><div class="ba-row"><span class="bac bac-k">Makes it easy to get human assistance</span><span class="bac bac-a">Partial</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Concierge desk, guided phone path, and broker support remained explicit service components at scale.</span></div><div class="ba-row"><span class="bac bac-k">Requires the right knowledge from the user</span><span class="bac bac-a">Fail</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Pass</span><span class="bac bac-b">Postcode-aware routing and PAS-backed context stopped claimants being asked for internal policy or queue data.</span></div></div><p>Before scale: 0 Pass / 5 Partial / 10 Fail. After pilot: 12 Pass / 3 Partial / 0 Fail. After national harden: 14 Pass / 1 Partial / 0 Fail. See: <code>05-good-services/02-the-fifteen-principles.md</code>.</p>
-</section><section class="art-sec sec-6"><span class="sec-kicker">06 · Use cases</span><h2 id="sec-6-use-cases-case-studies">Use cases / case studies</h2><h3 id="uc1-high-volume-urban-region-rollout-with-legacy-ramp">UC1 — High-volume urban region rollout with legacy ramp</h3><p><strong>Scenario.</strong> Wave 1 opened in AMS-Central, Aurelia&#39;s largest urban claims site at roughly 1,055 claims per month. It looked like the safest place to scale because digital uptake was already high. It was not. Morning batch lag created 35 to 50 minutes of stale status during the first two days, which immediately triggered social-media complaints from motor claimants who expected the pilot&#39;s near-live visibility.</p>
+<h3 id="a9-traceability-from-pilot-learning-to-scaled-change">A9 — Traceability from pilot learning to scaled change</h3>
+<table>
+<thead>
+<tr>
+<th>Pilot learning from article 03</th>
+<th>Scaled change in article 21</th>
+<th>Operating control</th>
+<th>KPI moved</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FCR hit 83% only where handlers had clean context and authority</td>
+<td>National discretion policy and one claim file view</td>
+<td>Leader standards plus discretion audit</td>
+<td>FCR 61%→79% nationally</td>
+</tr>
+<tr>
+<td>Pilot adoption was strongest in urban simple claims</td>
+<td>Hybrid rollout for rural and phone-heavy sites</td>
+<td>Site-type wave design, broker-preserved path</td>
+<td>Adoption 67% national</td>
+</tr>
+<tr>
+<td>Concierge worked for the 12% complex tail</td>
+<td>Concierge expanded with site eligibility rules</td>
+<td>Concierge assignment SLA under 24h</td>
+<td>Complex-claim cycle 61→37 days</td>
+</tr>
+<tr>
+<td>Status-chase calls collapsed when messages were trusted</td>
+<td>Morning batch lag fixed and visible</td>
+<td>Timestamp transparency and cache replay check</td>
+<td>Status-chase 4.4→1.3</td>
+</tr>
+<tr>
+<td>Champion managers accelerated pilot learning</td>
+<td>Change network included champions and skeptics</td>
+<td>Team-leader certification before site go-live</td>
+<td>Leader standards 41%→93%</td>
+</tr>
+<tr>
+<td>Shadow workarounds masked true failure points</td>
+<td>Old SOPs and spreadsheets retired after G5</td>
+<td>PR-gated SOP library, share-drive shutdown</td>
+<td>Handling cost €34→€20</td>
+</tr>
+<tr>
+<td>Closure note lifted renewal intent</td>
+<td>National close-and-renew step standardized</td>
+<td>Closure message gate in runbook</td>
+<td>Claims NPS −12→+18</td>
+</tr>
+</tbody></table>
+<h3 id="a10-claims-service-audit-after-national-hardening">A10 — Claims service audit after national hardening</h3>
+<table>
+<thead>
+<tr>
+<th>Principle</th>
+<th>Before scale</th>
+<th>After pilot</th>
+<th>After national harden</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Is easy to find</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Pass</td>
+<td>National claims page plus broker and guided-phone entry points replaced region-specific contact routes.</td>
+</tr>
+<tr>
+<td>Clearly explains its purpose</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Pass</td>
+<td>Start-page and phone-script openings explain who the flow is for, what happens next, and which claim types stay broker-led.</td>
+</tr>
+<tr>
+<td>Sets a user&#39;s expectations</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Pass</td>
+<td>Milestone dates, document prompts, and callback promises now appear upfront instead of after handoff.</td>
+</tr>
+<tr>
+<td>Enables each user to complete the outcome they set out to do</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Pass</td>
+<td>Closure counts only when payment or repair authorization lands, not when an internal task merely changes status.</td>
+</tr>
+<tr>
+<td>Works in a way that is familiar</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Pass</td>
+<td>Status tracker, guided phone FNOL, and broker-preserved path match claimant channel habits by site type.</td>
+</tr>
+<tr>
+<td>Requires no prior knowledge to use</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Pass</td>
+<td>Plain-language claim copy and phone scripts removed policy and workflow jargon.</td>
+</tr>
+<tr>
+<td>Is agnostic of organizational structures</td>
+<td>Fail</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Broker, phone, and digital routes now share one evidence and status backbone across all 12 sites.</td>
+</tr>
+<tr>
+<td>Requires the minimum possible steps to complete</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Pass</td>
+<td>Claimants upload or confirm evidence once; duplicate email and re-key loops were retired.</td>
+</tr>
+<tr>
+<td>Is consistent throughout</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Pass</td>
+<td>One live SOP library, one milestone language set, and shared leader standards replaced site-local variants.</td>
+</tr>
+<tr>
+<td>Has no dead ends</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Pass</td>
+<td>Every rejection, stale-status, or vulnerable-claim state now routes to callback, concierge, or a named next step.</td>
+</tr>
+<tr>
+<td>Is usable by everyone, equally</td>
+<td>Partial</td>
+<td>Partial</td>
+<td>Partial</td>
+<td>Hybrid phone support widened access, but LUX-Satellite remained amber and equal digital performance was not universal.</td>
+</tr>
+<tr>
+<td>Responds to change quickly</td>
+<td>Fail</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Wave-specific runbook diffs, cache-freshness banner reuse, and 13-week hardening let the service absorb storms and site defects without rollback.</td>
+</tr>
+<tr>
+<td>Clearly explains why a decision has been made</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Pass</td>
+<td>Plain-language settlement summaries and exception scripts explain outcomes instead of generic status codes.</td>
+</tr>
+<tr>
+<td>Makes it easy to get human assistance</td>
+<td>Partial</td>
+<td>Pass</td>
+<td>Pass</td>
+<td>Concierge desk, guided phone path, and broker support remained explicit service components at scale.</td>
+</tr>
+<tr>
+<td>Requires the right knowledge from the user</td>
+<td>Fail</td>
+<td>Pass</td>
+<td>Pass</td>
+<td>Postcode-aware routing and PAS-backed context stopped claimants being asked for internal policy or queue data.</td>
+</tr>
+</tbody></table>
+<p>Before scale: 0 Pass / 5 Partial / 10 Fail. After pilot: 12 Pass / 3 Partial / 0 Fail. After national harden: 14 Pass / 1 Partial / 0 Fail. See: <code>05-good-services/02-the-fifteen-principles.md</code>.</p>
+</section><section class="art-sec sec-6"><span class="sec-kicker">06 · Use cases</span><h2 id="sec-6-use-cases-case-studies">Use cases / case studies</h2>
+<h3 id="uc1-high-volume-urban-region-rollout-with-legacy-ramp">UC1 — High-volume urban region rollout with legacy ramp</h3>
+<p><strong>Scenario.</strong> Wave 1 opened in AMS-Central, Aurelia&#39;s largest urban claims site at roughly 1,055 claims per month. It looked like the safest place to scale because digital uptake was already high. It was not. Morning batch lag created 35 to 50 minutes of stale status during the first two days, which immediately triggered social-media complaints from motor claimants who expected the pilot&#39;s near-live visibility.</p>
 <p><strong>What was designed.</strong> A dual-rail urban ramp: the new claim journey went live nationally at AMS-Central, but status timestamps displayed a plain-language freshness banner until the replay job stabilized. Team leaders also ran a 10-day &quot;urban spike&quot; staffing pattern that shifted two handlers from afternoon backlog work into morning live-contact response.</p>
 <p><strong>Mini flow.</strong> <code>incident -&gt; digital claim -&gt; status freshness banner if stale &gt; 20 min -&gt; live update -&gt; self-serve or handler rescue</code></p>
 <p><strong>AI working session summary.</strong> Claude Code wrote the day-1 exception script and the claim-status freshness copy after reviewing the pilot messaging library from article 03. OpenCode built a one-page ops dashboard showing stale-timestamp counts by 15-minute interval. Codex reviewed the public-facing copy to ensure it was transparent without over-disclosing system weakness.</p>
 <p><strong>Outcome.</strong> AMS-Central landed week-4 FCR at 78%, NPS delta at +30, and adoption at 62%. More importantly, the site proved the programme could expose legacy-system limitations without hiding them from claimants. The freshness banner was later reused in waves 2 and 3, then retired after the replay job stabilized.</p>
-<h3 id="uc2-rural-region-where-phone-dominates-and-the-service-stays-hybrid">UC2 — Rural region where phone dominates and the service stays hybrid</h3><p><strong>Scenario.</strong> Wave 5 included HSS-Phone, a low-volume but strategically important site covering rural home claims and elderly policyholders. Here the pilot&#39;s digital-first assumptions failed fastest: 68% of eligible claimants still started by phone in the first five days, and brokers warned that a forced app path would push vulnerable customers back into complaint loops.</p>
+<h3 id="uc2-rural-region-where-phone-dominates-and-the-service-stays-hybrid">UC2 — Rural region where phone dominates and the service stays hybrid</h3>
+<p><strong>Scenario.</strong> Wave 5 included HSS-Phone, a low-volume but strategically important site covering rural home claims and elderly policyholders. Here the pilot&#39;s digital-first assumptions failed fastest: 68% of eligible claimants still started by phone in the first five days, and brokers warned that a forced app path would push vulnerable customers back into complaint loops.</p>
 <p><strong>What was designed.</strong> A deliberately hybrid service. The site used the same national blueprint, but the front door differed: handlers followed a guided phone FNOL script, sent SMS proof-of-claim links, and offered a scheduled callback instead of insisting on live self-service completion. Team leaders listened to three calls per handler per week to coach clarity rather than speed.</p>
 <p><strong>AI working session summary.</strong> Claude Code authored the phone-script pack, including the plain-language phrases that explained why a claimant might receive a text after a phone report. OpenCode instrumented a call-tagging dashboard that measured how often guided calls later converted into self-serve evidence uploads. Codex reviewed the broker briefing note and removed two sentences that implied brokers were a temporary legacy channel; politically and operationally, that was false.</p>
 <p><strong>Outcome.</strong> HSS-Phone reached 74% adoption of the new flow only because phone-assisted claims counted as adoption when they used the same evidence and status backbone. FCR reached 80%, NPS delta +34, and complaint volume stayed flat despite the channel shift. This was the clearest proof that scale did not mean uniformity.</p>
-<h3 id="uc3-recalcitrant-region-where-pilot-learnings-did-not-transfer">UC3 — Recalcitrant region where pilot learnings did not transfer</h3><p><strong>Scenario.</strong> NAM-Legacy, wave 6, was the programme&#39;s hardest site. The supervisor persona represented by Pieter in A5 was real enough in composite form: local managers believed their spreadsheet tracker and approval inbox were what made the site performant. Pre-go-live observation showed handlers printing the new runbook while still keeping the old spreadsheet open beside it.</p>
+<h3 id="uc3-recalcitrant-region-where-pilot-learnings-did-not-transfer">UC3 — Recalcitrant region where pilot learnings did not transfer</h3>
+<p><strong>Scenario.</strong> NAM-Legacy, wave 6, was the programme&#39;s hardest site. The supervisor persona represented by Pieter in A5 is an <strong>illustrative composite</strong>: in the fictional scenario, local managers believe their spreadsheet tracker and approval inbox are what make the site performant. The represented pre-go-live observation shows handlers printing the new runbook while still keeping the old spreadsheet open beside it.</p>
 <p><strong>What was designed.</strong> The site did not get a heavier training deck. It got a different change design. The team paired the skeptical supervisor with Marta, a champion from RTM-West, for two live coaching days; removed handle-time targets from the site scorecard before go-live; and turned the spreadsheet into the explicit subject of the first 13-week review rather than pretending it would disappear by decree.</p>
 <p><strong>AI working session summary.</strong> Claude Code generated an adoption-diagnosis pack that compared NAM-Legacy with RTM-West on leader standards, not just claimant metrics. OpenCode plotted where the spreadsheet created duplicate status work. Codex reviewed the risk register and insisted the programme name the true risk: not low enthusiasm, but management incentives still rewarding the old behaviour.</p>
 <p><strong>Outcome.</strong> NAM-Legacy went live at readiness 74, below the programme average, and underperformed at week 4: FCR 68%, adoption 41%, NPS delta +12. By week 13, after the scorecard change and coaching intervention, the site improved to FCR 72%, adoption 56%, and NPS delta +19. It remained the only amber site at Gate G5. That was acceptable because the service had a truthful remediation plan, not because the programme averaged it away.</p>
-</section><section class="art-sec sec-7"><span class="sec-kicker">07 · SOPs for AI</span><h2 id="sec-7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">SOPs for AI — how service design SOPs are best used by agents</h2><p>This engagement worked when methods were encoded as executable operating routines rather than vague instructions. The pattern repeated across artifacts:</p>
+</section><section class="art-sec sec-7"><span class="sec-kicker">07 · SOPs for AI</span><h2 id="sec-7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">SOPs for AI — how service design SOPs are best used by agents</h2>
+<p>This engagement worked when methods were encoded as executable operating routines rather than vague instructions. The pattern repeated across artifacts:</p>
 <p><strong>Method -&gt; step list -&gt; output schema -&gt; acceptance criteria -&gt; review gate.</strong></p>
-<h3 id="meta-sop-used-across-the-programme">Meta-SOP used across the programme</h3><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>1. Read prior evidence and the current site context.
+<h3 id="meta-sop-used-across-the-programme">Meta-SOP used across the programme</h3>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>1. Read prior evidence and the current site context.
 2. Extract only grounded facts; quote pilot or site evidence where available.
 3. Produce the requested artifact in the required schema.
 4. Run a self-check against guardrails and number consistency.
-5. Send to human or PR gate for sign-off before it affects a live wave.</code></pre></div><h3 id="sop-1-change-pack-authoring">SOP 1 — Change-pack authoring</h3><ul>
+5. Send to human or PR gate for sign-off before it affects a live wave.
+</code></pre></div>
+<h3 id="sop-1-change-pack-authoring">SOP 1 — Change-pack authoring</h3>
+<ul>
 <li><strong>Input:</strong> site profile, prior-wave defect list, pilot evidence, latest runbook diff.</li>
 <li><strong>Output schema:</strong> why this wave, what changes, what stops, what stays, FAQs, rehearsal scenarios, risks, escalation path.</li>
 <li><strong>Acceptance criteria:</strong> every why statement cites evidence; no blame language; no unsupported promise of savings; site-specific objections addressed.</li>
 <li><strong>Review gate:</strong> one operations reviewer plus one site champion reviewer in GitHub.</li>
 </ul>
-<h3 id="sop-2-rollout-wave-sop-as-code">SOP 2 — Rollout-wave SOP as code</h3><ul>
+<h3 id="sop-2-rollout-wave-sop-as-code">SOP 2 — Rollout-wave SOP as code</h3>
+<ul>
 <li><strong>Input:</strong> readiness scorecard, site risk register, certification records, production test log.</li>
 <li><strong>Output schema:</strong> go/no-go decision pack with weighted scores, blockers, and owner actions.</li>
 <li><strong>Acceptance criteria:</strong> any failed critical gate stops go-live; metrics tied to named owners.</li>
 <li><strong>Review gate:</strong> Journey Owner, regional director, and COO delegate.</li>
 </ul>
-<h3 id="sop-3-adoption-diagnosis-prompt">SOP 3 — Adoption-diagnosis prompt</h3><div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>You are ADOPTION-DIAGNOSER. Compare one weak site to one healthy site.
+<h3 id="sop-3-adoption-diagnosis-prompt">SOP 3 — Adoption-diagnosis prompt</h3>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>You are ADOPTION-DIAGNOSER. Compare one weak site to one healthy site.
 Inputs: readiness table, leader-standards audit, claims-volume mix, channel mix,
 open defects, site notes. Output exactly five sections: (1) what differs in
 context, (2) which differences are controllable, (3) which differences are not,
 (4) first three actions, (5) what evidence would disconfirm your diagnosis.
 Rules: never say staff resistance is the root cause without identifying the
 broken tool, metric, policy, or backlog condition that makes the behavior
-rational.</code></pre></div><h3 id="guardrails">Guardrails</h3><ul>
+rational.
+</code></pre></div>
+<h3 id="guardrails">Guardrails</h3>
+<ul>
 <li>No coercive communications. AI-generated training packs were forbidden from using shame, urgency theatre, or &quot;compliance mindset&quot; language.</li>
 <li>Preserve middle-manager agency. Agents could recommend leader standards, but not centralize every staffing decision.</li>
 <li>Evidence over rhetoric. Change claims had to cite article-03 pilot results, local site metrics, or direct observation notes.</li>
 <li>Human sign-off at all live gates. No AI-authored readiness pack could trigger a go-live without named operational approval.</li>
 <li>Privacy controls. The tracker used site-level operational data only; no personal claimant data entered the article repo.</li>
 </ul>
-<h3 id="failure-modes-observed-and-mitigated">Failure modes observed and mitigated</h3><ol>
+<h3 id="failure-modes-observed-and-mitigated">Failure modes observed and mitigated</h3>
+<ol>
 <li><strong>Training pack blames users.</strong> First Claude Code draft framed low adoption as poor discipline. Mitigation: tone guardrail pass plus human rewrite.</li>
 <li><strong>Business-case optimism leakage.</strong> First Codex challenge found removable labour overstated. Mitigation: only verified cost-to-serve savings survive.</li>
 <li><strong>Generic rollout advice.</strong> Agents initially produced one-size-fits-all wave plans. Mitigation: site profile required input and site-type segmentation.</li>
 <li><strong>Diagram drift from operations.</strong> Early blueprint updates simplified away broker and phone exceptions. Mitigation: keep controlled exceptions visible in the blueprint and runbook.</li>
 </ol>
-</section><section class="art-sec sec-8"><span class="sec-kicker">08 · Value & measurement</span><h2 id="sec-8-value-creation-amp-measurement">Value creation &amp; measurement</h2><h3 id="before-and-after-table">Before and after table</h3><div class="ba-table"><div class="ba-row ba-header"><span class="ba-head">Claims NPS</span><span class="ba-head">-12</span><span class="ba-head">+31</span><span class="ba-head">+18</span><span class="ba-head">+30 pts</span></div><div class="ba-row"><span class="bac bac-k">All-claims cycle time in days</span><span class="bac bac-a">28.9</span><span class="bac bac-b">14.4</span><span class="bac bac-b">15.8</span><span class="bac bac-b">-45%</span></div><div class="ba-row"><span class="bac bac-k">Simple motor cycle time in days</span><span class="bac bac-a">22.0</span><span class="bac bac-b">8.0</span><span class="bac bac-b">9.3</span><span class="bac bac-b">-58%</span></div><div class="ba-row"><span class="bac bac-k">Status-chase calls per claim</span><span class="bac bac-a">4.4</span><span class="bac bac-b">0.8</span><span class="bac bac-b">1.3</span><span class="bac bac-b">-70%</span></div><div class="ba-row"><span class="bac bac-k">Handling cost per claim</span><span class="bac bac-a">€34</span><span class="bac bac-b">€18</span><span class="bac bac-b">€20</span><span class="bac bac-b">-41%</span></div><div class="ba-row"><span class="bac bac-k">First-Contact Resolution</span><span class="bac bac-a">61%</span><span class="bac bac-b">83%</span><span class="bac bac-b">79%</span><span class="bac bac-b">+18 pts</span></div><div class="ba-row"><span class="bac bac-k">Eligible-claim adoption</span><span class="bac bac-a">0%</span><span class="bac bac-b">74%</span><span class="bac bac-b">67%</span><span class="bac bac-b">+67 pts</span></div><div class="ba-row"><span class="bac bac-k">Handler eNPS</span><span class="bac bac-a">-4</span><span class="bac bac-b">+18</span><span class="bac bac-b">+14</span><span class="bac bac-b">+18 pts</span></div><div class="ba-row"><span class="bac bac-k">Leader standards adherence</span><span class="bac bac-a">41%</span><span class="bac bac-b">86%</span><span class="bac bac-b">93%</span><span class="bac bac-b">+52 pts</span></div><div class="ba-row"><span class="bac bac-k">Conservative annual benefit</span><span class="bac bac-a">€0</span><span class="bac bac-b">€5.5M modeled</span><span class="bac bac-b">€5.9M verified run rate</span><span class="bac bac-b">+€5.9M</span></div></div><h3 id="adoption-trajectory-versus-plan">Adoption trajectory versus plan</h3><div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Wave</th><th>Planned adoption</th><th>Actual adoption</th><th>Read</th></tr></thead><tbody><tr><td>W1</td><td>60%</td><td>63%</td><td>Urban sites absorbed load better than feared</td></tr><tr><td scope="row">W2</td><td>66%</td><td>69%</td><td>Mixed desks followed the pilot closely</td></tr><tr><td scope="row">W3</td><td>72%</td><td>73%</td><td>Broker-heavy sites performed once handoff stayed explicit</td></tr><tr><td scope="row">W4</td><td>67%</td><td>63%</td><td>Rural bandwidth and coaching gap slowed pickup</td></tr><tr><td scope="row">W5</td><td>72%</td><td>75%</td><td>Hybrid phone path outperformed the plan</td></tr><tr><td scope="row">W6</td><td>62%</td><td>58%</td><td>NAM-Legacy dragged the wave below target</td></tr></tbody></table></div><h3 id="causal-logic">Causal logic</h3><p>The Service Profit Chain logic became more convincing at scale than in the pilot because Aurelia could see the middle links move, not just the endpoints. Internal service quality improved when shadow tools were removed, site dashboards made work visible, and leader standards forced supervisors to coach rather than inspect. That raised handler eNPS and reduced local firefighting. Capability then rose: FCR improved, complex-claim routing stabilized, and adoption held even outside the pilot halo. External value followed — lower effort, faster cycle time, fewer status chases — which lifted NPS and renewal confidence. Only after those links held at site level did the financial result become credible. That sequence matters. It is the main reason the programme resisted board pressure to judge rollout success on cost alone (See: <code>20-the-service-profit-chain/06-leadership-and-implementation.md</code>).</p>
+</section><section class="art-sec sec-8"><span class="sec-kicker">08 · Value & measurement</span><h2 id="sec-8-value-creation-amp-measurement">Value creation &amp; measurement</h2>
+<h3 id="before-and-after-table">Before and after table</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th align="right">Pre-scale baseline</th>
+<th align="right">Phase-1 pilot</th>
+<th align="right">National harden after 13 weeks</th>
+<th align="right">Delta vs baseline</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Claims NPS</td>
+<td align="right">-12</td>
+<td align="right">+31</td>
+<td align="right">+18</td>
+<td align="right">+30 pts</td>
+</tr>
+<tr>
+<td>All-claims cycle time in days</td>
+<td align="right">28.9</td>
+<td align="right">14.4</td>
+<td align="right">15.8</td>
+<td align="right">-45%</td>
+</tr>
+<tr>
+<td>Simple motor cycle time in days</td>
+<td align="right">22.0</td>
+<td align="right">8.0</td>
+<td align="right">9.3</td>
+<td align="right">-58%</td>
+</tr>
+<tr>
+<td>Status-chase calls per claim</td>
+<td align="right">4.4</td>
+<td align="right">0.8</td>
+<td align="right">1.3</td>
+<td align="right">-70%</td>
+</tr>
+<tr>
+<td>Handling cost per claim</td>
+<td align="right">€34</td>
+<td align="right">€18</td>
+<td align="right">€20</td>
+<td align="right">-41%</td>
+</tr>
+<tr>
+<td>First-Contact Resolution</td>
+<td align="right">61%</td>
+<td align="right">83%</td>
+<td align="right">79%</td>
+<td align="right">+18 pts</td>
+</tr>
+<tr>
+<td>Eligible-claim adoption</td>
+<td align="right">0%</td>
+<td align="right">74%</td>
+<td align="right">67%</td>
+<td align="right">+67 pts</td>
+</tr>
+<tr>
+<td>Handler eNPS</td>
+<td align="right">-4</td>
+<td align="right">+18</td>
+<td align="right">+14</td>
+<td align="right">+18 pts</td>
+</tr>
+<tr>
+<td>Leader standards adherence</td>
+<td align="right">41%</td>
+<td align="right">86%</td>
+<td align="right">93%</td>
+<td align="right">+52 pts</td>
+</tr>
+<tr>
+<td>Conservative annual benefit</td>
+<td align="right">€0</td>
+<td align="right">€5.5M modeled</td>
+<td align="right">€5.9M verified run rate</td>
+<td align="right">+€5.9M</td>
+</tr>
+</tbody></table>
+<h3 id="adoption-trajectory-versus-plan">Adoption trajectory versus plan</h3>
+<table>
+<thead>
+<tr>
+<th>Wave</th>
+<th align="right">Planned adoption</th>
+<th align="right">Actual adoption</th>
+<th>Read</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>W1</td>
+<td align="right">60%</td>
+<td align="right">63%</td>
+<td>Urban sites absorbed load better than feared</td>
+</tr>
+<tr>
+<td>W2</td>
+<td align="right">66%</td>
+<td align="right">69%</td>
+<td>Mixed desks followed the pilot closely</td>
+</tr>
+<tr>
+<td>W3</td>
+<td align="right">72%</td>
+<td align="right">73%</td>
+<td>Broker-heavy sites performed once handoff stayed explicit</td>
+</tr>
+<tr>
+<td>W4</td>
+<td align="right">67%</td>
+<td align="right">63%</td>
+<td>Rural bandwidth and coaching gap slowed pickup</td>
+</tr>
+<tr>
+<td>W5</td>
+<td align="right">72%</td>
+<td align="right">75%</td>
+<td>Hybrid phone path outperformed the plan</td>
+</tr>
+<tr>
+<td>W6</td>
+<td align="right">62%</td>
+<td align="right">58%</td>
+<td>NAM-Legacy dragged the wave below target</td>
+</tr>
+</tbody></table>
+<h3 id="causal-logic">Causal logic</h3>
+<p>The Service Profit Chain logic became more convincing at scale than in the pilot because Aurelia could see the middle links move, not just the endpoints. Internal service quality improved when shadow tools were removed, site dashboards made work visible, and leader standards forced supervisors to coach rather than inspect. That raised handler eNPS and reduced local firefighting. Capability then rose: FCR improved, complex-claim routing stabilized, and adoption held even outside the pilot halo. External value followed — lower effort, faster cycle time, fewer status chases — which lifted NPS and renewal confidence. Only after those links held at site level did the financial result become credible. That sequence matters. It is the main reason the programme resisted board pressure to judge rollout success on cost alone (See: <code>20-the-service-profit-chain/06-leadership-and-implementation.md</code>).</p>
 <figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1390 76" role="img" aria-hidden="true"><defs><marker id="arr-13" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 178.4,38 204.4,38 230.4,38" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-13)"/><path d="M 421.6,38 447.6,38 473.6,38" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-13)"/><path d="M 672.4,38 698.4,38 724.4,38" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-13)"/><path d="M 900.4,38 926.4,38 952.4000000000001,38" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-13)"/><path d="M 1136,38 1162,38 1188,38" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-13)"/><rect x="10" y="10" width="168.4" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="94.2" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Internal quality</text><text x="94.2" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">versioned SOPs tool</text><text x="94.2" y="55" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">clarity…</text><rect x="230.4" y="10" width="191.2" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="326" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Employee outcomes eNPS</text><text x="326" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">minus 4 to plus 14</text><text x="326" y="55" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">attrition…</text><rect x="473.6" y="16.5" width="198.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="573" y="35.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Capability FCR 61 to 79</text><text x="573" y="48.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">adoption 67</text><rect x="724.4" y="10" width="176" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="812.4" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">External value cycle</text><text x="812.4" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">28.9 to 15.8 status</text><text x="812.4" y="55" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">chase…</text><rect x="952.4000000000001" y="10" width="183.6" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1044.2" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Customer outcomes NPS</text><text x="1044.2" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">minus 12 to plus 18</text><text x="1044.2" y="55" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">complaints…</text><rect x="1188" y="10" width="191.2" height="56" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1283.6" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Financial impact</text><text x="1283.6" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">verified run rate 5.9M</text><text x="1283.6" y="55" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">EUR…</text></svg><figcaption><span class="fignum">Figure 13</span><span class="figcap">Causal logic</span></figcaption></figure>
-<h3 id="kpi-owner-matrix-and-leader-standards">KPI owner matrix and leader standards</h3><div class="tbl-wrap tbl-matrix"><table><thead><tr><th>KPI</th><th>Owner</th><th>Cadence</th><th>Escalation trigger</th></tr></thead><tbody><tr><td>FCR</td><td>Regional claims director</td><td>Weekly by site</td><td>&lt;75% for two weeks</td></tr><tr><td scope="row">NPS delta</td><td>Journey Owner</td><td>Monthly by wave cohort</td><td>&lt;+15 after week 13</td></tr><tr><td scope="row">Adoption</td><td>Site lead + digital product lead</td><td>Daily week 1-2, weekly after</td><td>&lt;55% by day 10</td></tr><tr><td scope="row">Handling cost</td><td>Claims operations controller</td><td>Monthly</td><td>&gt;€22 per claim</td></tr><tr><td scope="row">Leader standards adherence</td><td>Regional director</td><td>Weekly</td><td>&lt;90% any site</td></tr><tr><td scope="row">Complaints per 1,000 claims</td><td>Service quality lead</td><td>Weekly</td><td>+15% over baseline</td></tr></tbody></table></div><p>Leader standards were deliberately operational, not motivational posters: three call listens per team leader per week, one blocker-removal action logged weekly, runbook-diff acknowledgement inside 48 hours, and no local spreadsheet or off-book status list. These standards became the cultural bridge between governance and daily behavior.</p>
-</section><section class="art-sec sec-9"><span class="sec-kicker">09 · AI tool playbook</span><h2 id="sec-9-ai-tool-playbook">AI tool playbook</h2><h3 id="claude-code">Claude Code</h3><p><strong>Role on this engagement.</strong> Primary artifact author, synthesis partner, and runbook maintainer.</p>
+<h3 id="kpi-owner-matrix-and-leader-standards">KPI owner matrix and leader standards</h3>
+<table>
+<thead>
+<tr>
+<th>KPI</th>
+<th>Owner</th>
+<th>Cadence</th>
+<th>Escalation trigger</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FCR</td>
+<td>Regional claims director</td>
+<td>Weekly by site</td>
+<td>&lt;75% for two weeks</td>
+</tr>
+<tr>
+<td>NPS delta</td>
+<td>Journey Owner</td>
+<td>Monthly by wave cohort</td>
+<td>&lt;+15 after week 13</td>
+</tr>
+<tr>
+<td>Adoption</td>
+<td>Site lead + digital product lead</td>
+<td>Daily week 1-2, weekly after</td>
+<td>&lt;55% by day 10</td>
+</tr>
+<tr>
+<td>Handling cost</td>
+<td>Claims operations controller</td>
+<td>Monthly</td>
+<td>&gt;€22 per claim</td>
+</tr>
+<tr>
+<td>Leader standards adherence</td>
+<td>Regional director</td>
+<td>Weekly</td>
+<td>&lt;90% any site</td>
+</tr>
+<tr>
+<td>Complaints per 1,000 claims</td>
+<td>Service quality lead</td>
+<td>Weekly</td>
+<td>+15% over baseline</td>
+</tr>
+</tbody></table>
+<p>Leader standards were deliberately operational, not motivational posters: three call listens per team leader per week, one blocker-removal action logged weekly, runbook-diff acknowledgement inside 48 hours, and no local spreadsheet or off-book status list. These standards became the cultural bridge between governance and daily behavior.</p>
+</section><section class="art-sec sec-9"><span class="sec-kicker">09 · AI tool playbook</span><h2 id="sec-9-ai-tool-playbook">AI tool playbook</h2>
+<h3 id="claude-code">Claude Code</h3>
+<p><strong>Role on this engagement.</strong> Primary artifact author, synthesis partner, and runbook maintainer.</p>
 <p><strong>Concrete usage.</strong> Claude Code produced the rollout charter, change packs, FAQ sets, leader-standard cards, and weekly wave-review packs; it also generated the traceability table connecting article 03 pilot learnings to article 21 controls.</p>
 <p><strong>What it excelled at.</strong> Turning structured evidence and templates into usable operational documents fast, especially when the schema was explicit.</p>
 <p><strong>What it failed at.</strong> Tone drift under change pressure. Left unguarded, it over-framed resistance as a people problem.</p>
 <p><strong>When the human took over.</strong> Any communication to middle managers, works-council-sensitive text, and any go-live recommendation.</p>
-<h3 id="opencode">OpenCode</h3><p><strong>Role on this engagement.</strong> Data pipeline and dashboard builder.</p>
+<h3 id="opencode">OpenCode</h3>
+<p><strong>Role on this engagement.</strong> Data pipeline and dashboard builder.</p>
 <p><strong>Concrete usage.</strong> Built the site-by-wave tracker, readiness dashboards, and adoption comparison views from <code>rollout_sample.csv</code> and the live operational feeds.</p>
 <p><strong>What it excelled at.</strong> Mechanical data transformation and dashboard scaffolding with deterministic outputs.</p>
 <p><strong>What it failed at.</strong> It treated the <code>store</code> column literally until the brief clarified that it meant claims site; context mapping still needed a human.</p>
 <p><strong>When the human took over.</strong> Metric-definition disputes, site segmentation logic, and any interpretation of why a site was weak.</p>
-<h3 id="codex">Codex</h3><p><strong>Role on this engagement.</strong> Adversarial reviewer for economics, governance gaps, and change risk.</p>
+<h3 id="codex">Codex</h3>
+<p><strong>Role on this engagement.</strong> Adversarial reviewer for economics, governance gaps, and change risk.</p>
 <p><strong>Concrete usage.</strong> Stress-tested national-scale assumptions, challenged the risk register, and reviewed claimant-facing or staff-facing copy that carried political or regulatory risk.</p>
 <p><strong>What it excelled at.</strong> Finding over-optimistic assumptions and missing control logic.</p>
 <p><strong>What it failed at.</strong> It could recommend over-conservative pauses when live operational nuance mattered more than abstract risk containment.</p>
 <p><strong>When the human took over.</strong> Final business-case posture, deciding whether an amber site should still go live, and interpreting resistance in organizational context.</p>
-<h3 id="github">GitHub</h3><p><strong>Role on this engagement.</strong> System of record and operating gate.</p>
+<h3 id="github">GitHub</h3>
+<p><strong>Role on this engagement.</strong> System of record and operating gate.</p>
 <p><strong>Concrete usage.</strong> Rollout epics, site issues, PR review gates for runbooks and training packs, and Actions generating per-site readiness dashboards and diff summaries.</p>
 <p><strong>What it excelled at.</strong> Making implementation artifacts inspectable, diffable, and owned.</p>
 <p><strong>What it failed at.</strong> GitHub does not create adoption. Without live leadership behaviour, a perfectly versioned rollout can still die locally.</p>
 <p><strong>When the human took over.</strong> Steering conversations, escalation decisions, and reconciling dashboard truth with frontline reality.</p>
-</section><section class="art-sec sec-10"><span class="sec-kicker">10 · Lessons learned</span><h2 id="sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</h2><ul>
+</section><section class="art-sec sec-10"><span class="sec-kicker">10 · Lessons learned</span><h2 id="sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</h2>
+<ul>
 <li>A successful pilot can hide managerial heroics. If rollout assumes those heroics are normal operating conditions, scale will underperform.</li>
 <li>The middle-manager layer is where service design becomes real organizational change. Aurelia&#39;s hardest problems were scorecards and authority, not UI.</li>
 <li>Killing a workaround is a design act. Some workarounds are pathological; some are value-preserving exceptions that should stay until a better replacement exists.</li>
@@ -246,11 +1064,127 @@ rational.</code></pre></div><h3 id="guardrails">Guardrails</h3><ul>
 <li>Corporate averages are dangerous in rollout. NAM-Legacy would have disappeared inside the national mean; the 13-week review loop prevented that.</li>
 <li>Deleting the old SOP library was necessary. Coexistence between old and new instructions is usually disguised non-adoption.</li>
 </ul>
-</section><section class="art-sec sec-11"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2><div class="tbl-wrap"><table><thead><tr><th>Type</th><th>Source</th></tr></thead><tbody><tr><td>Series continuity</td><td><a href="../03/index.html">../03/README.md</a> — Aurelia claims pilot and business-case baseline</td></tr><tr><td scope="row">Book chapter</td><td><code>books/01-this-is-service-design-doing/07-implementation-and-piloting.md</code></td></tr><tr><td scope="row">Book chapter</td><td><code>books/03-service-design-from-insight-to-implementation/07-implementation.md</code></td></tr><tr><td scope="row">Book chapter</td><td><code>books/04-service-design-for-business/06-organizational-change.md</code></td></tr><tr><td scope="row">Book chapter</td><td><code>books/14-outside-in/07-governance-and-culture.md</code></td></tr><tr><td scope="row">Book chapter</td><td><code>books/15-change-by-design/07-design-thinking-meets-the-corporation.md</code></td></tr><tr><td scope="row">Book chapter</td><td><code>books/20-the-service-profit-chain/06-leadership-and-implementation.md</code></td></tr><tr><td scope="row">Related series article</td><td><code>../13/README.md</code> — orchestration governance patterns across channels</td></tr><tr><td scope="row">Related series article</td><td><code>../02/README.md</code> — insight-to-implementation arc and pilot gate structure</td></tr></tbody></table></div></section><section class="art-sec sec-12"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-appendix-artifact-index">Appendix: artifact index</h2><div class="tbl-wrap tbl-matrix"><table><thead><tr><th>Artifact</th><th>Section</th><th>Format</th><th>Purpose</th></tr></thead><tbody><tr><td>A1 Current-state journey map</td><td>5</td><td>Mermaid + table</td><td>Show the inconsistent national claims experience before scale</td></tr><tr><td scope="row">A2 National service blueprint</td><td>5</td><td>Mermaid + lane table</td><td>Define the scaled future-state operating contract</td></tr><tr><td scope="row">A3 Stakeholder map</td><td>5</td><td>Mermaid quadrantChart + table</td><td>Identify influence, posture, and engagement strategy</td></tr><tr><td scope="row">A4 Ecosystem and channel map</td><td>5</td><td>Mermaid flowchart</td><td>Show actors and systems involved in scaled delivery</td></tr><tr><td scope="row">A5 Persona set</td><td>5</td><td>Markdown table</td><td>Ground design in claimant and frontline archetypes including champion and denier</td></tr><tr><td scope="row">A6 Templates</td><td>5</td><td>Markdown forms</td><td>Operationalize wave gates, risk review, and SOP-as-code</td></tr><tr><td scope="row">A7 Rollout dataset</td><td>5</td><td>CSV + table</td><td>Provide realistic site-level rollout metrics consistent with the article</td></tr><tr><td scope="row">A8 Charts</td><td>5</td><td>Mermaid xychart, pie, quadrantChart</td><td>Visualize wave performance and resistance patterns</td></tr><tr><td scope="row">A9 Traceability table</td><td>5</td><td>Markdown table</td><td>Link pilot learning to scaled controls and KPIs</td></tr><tr><td scope="row">A10 Claims audit</td><td>5</td><td>Markdown table</td><td>Test whether scaled operations still meet service standards</td></tr></tbody></table></div></section></article></div>
-    <div class="cross-links"><a class="xlink" href="./20/index.html"><span class="lbl">← Previous case</span><span class="ttl">20. Service Recovery &amp; Complaint Journeys at Aria Telecom</span><span class="rt">34 min read</span></a><a class="xlink" href="./22/index.html"><span class="lbl">Next case →</span><span class="ttl">22. Service Quality Management at Kestrel Energy</span><span class="rt">40 min read</span></a></div>
+</section><section class="art-sec sec-11"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Series continuity</td>
+<td><a href="../03/index.html">../03/README.md</a> — Aurelia claims pilot and business-case baseline</td>
+</tr>
+<tr>
+<td>Book chapter</td>
+<td><code>books/01-this-is-service-design-doing/07-implementation-and-piloting.md</code></td>
+</tr>
+<tr>
+<td>Book chapter</td>
+<td><code>books/03-service-design-from-insight-to-implementation/07-implementation.md</code></td>
+</tr>
+<tr>
+<td>Book chapter</td>
+<td><code>books/04-service-design-for-business/06-organizational-change.md</code></td>
+</tr>
+<tr>
+<td>Book chapter</td>
+<td><code>books/14-outside-in/07-governance-and-culture.md</code></td>
+</tr>
+<tr>
+<td>Book chapter</td>
+<td><code>books/15-change-by-design/07-design-thinking-meets-the-corporation.md</code></td>
+</tr>
+<tr>
+<td>Book chapter</td>
+<td><code>books/20-the-service-profit-chain/06-leadership-and-implementation.md</code></td>
+</tr>
+<tr>
+<td>Related series article</td>
+<td><code>../13/README.md</code> — orchestration governance patterns across channels</td>
+</tr>
+<tr>
+<td>Related series article</td>
+<td><code>../02/README.md</code> — insight-to-implementation arc and pilot gate structure</td>
+</tr>
+</tbody></table>
+</section><section class="art-sec sec-12"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-appendix-artifact-index">Appendix: artifact index</h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Format</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A1 Current-state journey map</td>
+<td>5</td>
+<td>Mermaid + table</td>
+<td>Show the inconsistent national claims experience before scale</td>
+</tr>
+<tr>
+<td>A2 National service blueprint</td>
+<td>5</td>
+<td>Mermaid + lane table</td>
+<td>Define the scaled future-state operating contract</td>
+</tr>
+<tr>
+<td>A3 Stakeholder map</td>
+<td>5</td>
+<td>Mermaid quadrantChart + table</td>
+<td>Identify influence, posture, and engagement strategy</td>
+</tr>
+<tr>
+<td>A4 Ecosystem and channel map</td>
+<td>5</td>
+<td>Mermaid flowchart</td>
+<td>Show actors and systems involved in scaled delivery</td>
+</tr>
+<tr>
+<td>A5 Persona set</td>
+<td>5</td>
+<td>Markdown table</td>
+<td>Ground design in claimant and frontline archetypes including champion and denier</td>
+</tr>
+<tr>
+<td>A6 Templates</td>
+<td>5</td>
+<td>Markdown forms</td>
+<td>Operationalize wave gates, risk review, and SOP-as-code</td>
+</tr>
+<tr>
+<td>A7 Rollout dataset</td>
+<td>5</td>
+<td>CSV + table</td>
+<td>Provide realistic site-level rollout metrics consistent with the article</td>
+</tr>
+<tr>
+<td>A8 Charts</td>
+<td>5</td>
+<td>Mermaid xychart, pie, quadrantChart</td>
+<td>Visualize wave performance and resistance patterns</td>
+</tr>
+<tr>
+<td>A9 Traceability table</td>
+<td>5</td>
+<td>Markdown table</td>
+<td>Link pilot learning to scaled controls and KPIs</td>
+</tr>
+<tr>
+<td>A10 Claims audit</td>
+<td>5</td>
+<td>Markdown table</td>
+<td>Test whether scaled operations still meet service standards</td>
+</tr>
+</tbody></table>
+</section></article></div>
+    <div class="cross-links"><a class="xlink" href="../20/index.html"><span class="lbl">← Previous case</span><span class="ttl">20. Service Recovery &amp; Complaint Journeys at Aria Telecom</span><span class="rt">35 min read</span></a><a class="xlink" href="../22/index.html"><span class="lbl">Next case →</span><span class="ttl">22. Service Quality Management at Kestrel Energy</span><span class="rt">40 min read</span></a></div>
     <div class="art-foot">
-      <span>13 figures · ~9.5k words · evidence-cited · reviewed by an adversarial AI critic.</span>
-      · <a href="../index.html">Back to the archive</a>
+    <span>13 figures · ~9.6k words · evidence-cited · reviewed by an adversarial AI critic.</span>
+    · <a href="../../index.html">Back to the archive</a>
     </div>
     <button class="backtop" id="backtop" type="button">Back to top</button></main>
 <footer class="footer">
@@ -258,4 +1192,5 @@ rational.</code></pre></div><h3 id="guardrails">Guardrails</h3><ul>
   <span><a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
 </footer>
 <script src="../../assets/site.js"></script>
+
 </body></html>
