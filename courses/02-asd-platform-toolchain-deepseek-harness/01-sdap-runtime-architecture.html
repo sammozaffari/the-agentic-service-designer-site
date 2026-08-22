@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Module 02.1: The Unified SDAP Runtime Stack — Core, Engine, Knowledge, Render, Report, Runtime — The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh) | The Agentic Service Designer">
+<title>Module 02.1: The Unified SDAP Runtime Stack — Core, Engine, Knowledge, Render, Report, Runtime | The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  :root { color-scheme: light; }
+  body.module-page { background: var(--paper-tint); }
+  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
+  .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
+  .module-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  .module-body th, .module-body td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
+  .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
+  .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
+  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
+  });
+</script>
+</head>
+<body class="module-page">
+  <div class="module-wrap">
+    <nav class="module-crumb"><a href="../../02-asd-platform-toolchain-deepseek-harness.html">← The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a></nav>
+    <article class="module-body">
+
+<h1 id="module-021-the-unified-sdap-runtime-stack-core-engine-knowledge-render-report-runtime">Module 02.1: The Unified SDAP Runtime Stack — Core, Engine, Knowledge, Render, Report, Runtime</h1>
+<blockquote>
+<p><strong>Course</strong>: <a href="./README.md">The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 50 min · <strong>Format</strong>: Theory, Technical Runlog &amp; Hands-on Lab</p>
+</blockquote>
+<hr>
+<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<p>By completing this module, you will be able to:</p>
+<ol>
+<li><strong>Explain the package layering</strong> of the <code>@asd</code> monorepo suite — which package owns schemas, which owns tool execution, which owns rendering — and why the layering exists.</li>
+<li><strong>Read the capability registry</strong> (<code>@asd/core</code> capability contract) and explain the Studio RPC boundary as a projection of one canonical tool registry.</li>
+<li><strong>Execute the canonical loop</strong> end to end against the real runtime: project → evidence → method contract → artifact draft → critic gate → factcheck.</li>
+<li><strong>Predict failure modes</strong>: know which errors fail closed (dangling evidence, unmet acceptance, missing approval receipt) and why fail-closed is a design principle, not an inconvenience.</li>
+<li><strong>Complete the hands-on lab</strong> that reproduces every command in this module on your own machine.</li>
+</ol>
+<hr>
+<h2 id="1-foundational-theory-amp-literature-grounding">📖 1. Foundational Theory &amp; Literature Grounding</h2>
+<h3 id="from-workshop-artifacts-to-an-executable-practice">From workshop artifacts to an executable practice</h3>
+<p>Service design&#39;s classical literature is unanimous on one point: the deliverable is not the service. Stickdorn et al. frame service design as an <em>iterative, evidence-based process</em> whose prototypes exist to be tested against reality (<em>This is Service Design Doing</em>, <code>books/01-this-is-service-design-doing/04-research-methods</code>). Polaine, Løvlie and Reason go further in <em>Service Design: From Insight to Implementation</em> (<code>books/03-service-design-from-insight-to-implementation/07-implementation</code>): most service design projects die at the handoff from insight to implementation, because the artifacts — journey maps, blueprints, personas — are static documents that cannot <em>execute</em> anything. They persuade; they do not run.</p>
+<p>Lou Downe&#39;s <em>Good Services</em> (<code>books/05-good-services/02-the-fifteen-principles</code>) states the operational consequence: a good service is one whose <em>behavior</em> is designed and verifiable, not one whose intentions are documented. Principle-level claims (&quot;the service responds in a timely way&quot;) are only meaningful when you can check them against evidence.</p>
+<p>This is the theoretical gap the SDAP runtime stack closes. If the workshop artifact is inert, the fix is not a prettier artifact — it is an artifact with a <strong>contract</strong>: typed schemas, acceptance rules, evidence provenance, and a review gate, all enforced by the same runtime that produced the artifact. The platform treats every design object as <em>data with obligations</em>, not as a drawing.</p>
+<h3 id="why-one-registry-several-surfaces">Why one registry, several surfaces</h3>
+<p>The second theoretical commitment comes from <em>Service-Dominant Logic</em> (Lusch &amp; Vargo, <code>books/12-service-dominant-logic/03-value-co-creation</code>): value is co-created in use, so the tools of design must remain operable wherever the practitioner actually works — terminal, IDE agent, chat host, or Studio surface. If each surface had its own tool implementation, behavior would drift between surfaces and provenance would fork. SDAP therefore has <strong>one executable registry</strong> (<code>@asd/engine</code>&#39;s 29 <code>sd_*</code> tool definitions) and multiple thin projections of it: the <code>asd</code> CLI, the stdio MCP server, host packs, and the (deferred) DSH Studio RPC. The projections differ in <em>transport and presentation only</em>.</p>
+<h3 id="concept-diagram-one-registry-many-surfaces">Concept diagram — one registry, many surfaces</h3>
+<div class="diagram"><pre class="mermaid">flowchart TD
+    subgraph Surfaces[&quot;Thin projections (transport + presentation only)&quot;]
+        CLI[&quot;asd CLI (node suite/packages/runtime/lib/cli.mjs)&quot;]
+        MCP[&quot;asd-mcp stdio server (suite/packages/runtime/lib/mcp.mjs)&quot;]
+        PACKS[&quot;Host packs (claude-code, codex, kimi, opencode)&quot;]
+        DSH[&quot;DSH Studio RPC (deferred live integration)&quot;]
+    end
+
+    subgraph Registry[&quot;One canonical executable registry&quot;]
+        ENG[&quot;@asd/engine: 29 sd_* tool definitions&quot;]
+        CORE[&quot;@asd/core: types, acceptance rules, capability contract, factcheck&quot;]
+        KNOW[&quot;@asd/knowledge: 74 methods, practice contract, templates&quot;]
+    end
+
+    subgraph Output[&quot;Deterministic output compilers&quot;]
+        REN[&quot;@asd/render: per-kind SVG compilers&quot;]
+        REP[&quot;@asd/report: HTML dossier sections&quot;]
+    end
+
+    CLI --&gt;|&quot;asd &lt;kebab-name&gt; --flag value&quot;| ENG
+    MCP --&gt;|&quot;JSON-RPC tools/call&quot;| ENG
+    PACKS --&gt;|&quot;vendored server + host-format prompts&quot;| MCP
+    DSH -.-&gt;|&quot;loopback RPC (not yet a live student surface)&quot;| ENG
+    ENG --&gt; CORE
+    ENG --&gt; KNOW
+    ENG --&gt;|&quot;artifact JSON (schema-validated)&quot;| REN
+    ENG --&gt;|&quot;project artifact set&quot;| REP
+
+    classDef paper fill:#f8f9fa,stroke:#4a5568,stroke-width:1.5px,color:#1a202c;
+    classDef blue  fill:#ebf8ff,stroke:#3182ce,stroke-width:1.5px,color:#2b6cb0;
+    classDef purple fill:#faf5ff,stroke:#805ad5,stroke-width:1.5px,color:#553c9e;
+    classDef gold  fill:#fffbeb,stroke:#b7791f,stroke-width:1.5px,color:#744210;
+    class CLI,MCP,PACKS,DSH blue;
+    class ENG,CORE,KNOW paper;
+    class REN,REP gold;</pre></div>
+<h3 id="key-principles">Key principles</h3>
+<ul>
+<li><strong>The registry is the product.</strong> Counts are derived from the definitions themselves (<code>deriveRuntimeToolNames</code> in <code>@asd/core</code>), never hand-maintained per surface.</li>
+<li><strong>Fail closed.</strong> Every validation failure is a non-zero exit and a human-readable error. Partial success is not a state the runtime acknowledges.</li>
+<li><strong>Provenance is structural.</strong> Evidence ids are SHA-256 content hashes; artifact nodes cite them; factcheck walks the graph. Drift is mechanically detectable.</li>
+</ul>
+<hr>
+<h2 id="2-agent-topology-amp-role-contracts">🤖 2. Agent Topology &amp; Role Contracts</h2>
+<p>The 10 role prompts (<code>platform/agents/</code>) execute against this stack. In the canonical loop verified for this module:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Role</th>
+<th align="left">Tool calls it actually makes</th>
+<th align="left">Contract source</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Researcher</strong></td>
+<td align="left"><code>sd_evidence_add</code> (kinds <code>quote</code>/<code>telemetry</code>/<code>document</code>), <code>sd_evidence_query</code></td>
+<td align="left">method <code>steps[0]</code> of <code>journey-from-transcripts</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Mapper</strong> (method owner)</td>
+<td align="left"><code>sd_method_run --methodId journey-from-transcripts</code>, <code>sd_artifact_write</code></td>
+<td align="left">method contract <code>owner: &quot;mapper&quot;</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Critic</strong> (review gate)</td>
+<td align="left">`sd_review --verdict pass</td>
+<td align="left">veto --rows &#39;<json>&#39;<code>, </code>sd_factcheck`</td>
+</tr>
+<tr>
+<td align="left"><strong>Orchestrator</strong></td>
+<td align="left"><code>sd_orchestration_plan</code>, <code>sd_orchestration_dispatch</code>, <code>sd_orchestration_handoff</code></td>
+<td align="left">practice contract</td>
+</tr>
+<tr>
+<td align="left"><strong>Human designer</strong></td>
+<td align="left"><code>sd_phase_advance --approvalReceipt &#39;&lt;json&gt;&#39;</code> — agents prepare, humans authorize</td>
+<td align="left"><code>humanCheckpoints[]</code> in every method contract</td>
+</tr>
+</tbody></table>
+<h3 id="agentic-workflow-diagram-how-the-loop-runs-through-roles-and-tools">Agentic workflow diagram — how the loop runs through roles and tools</h3>
+<p></p>
+<h3 id="the-role-invariant">The role invariant</h3>
+<blockquote>
+<p><em>&quot;Handoffs between agents are typed filesystem artifacts, never conversational memory.&quot;</em> The mapper&#39;s draft at <code>&lt;project&gt;/artifacts/journey-map.&lt;slug&gt;.&lt;id&gt;.json</code> is the critic&#39;s entire input contract; nothing rides on chat history.</p>
+</blockquote>
+<hr>
+<h2 id="3-schemas-packages-amp-verified-execution">💻 3. Schemas, Packages &amp; Verified Execution</h2>
+<h3 id="package-map-all-verified-against-suitepackagespackagejson">Package map (all verified against <code>suite/packages/*/package.json</code>)</h3>
+<table>
+<thead>
+<tr>
+<th align="left">Package</th>
+<th align="center">Version</th>
+<th align="left">Owns</th>
+<th align="left">Key sources</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>@asd/core</code></td>
+<td align="center">0.1.0</td>
+<td align="left">Types, acceptance rules, capability contract, factcheck logic, kind schemas</td>
+<td align="left"><code>src/types.ts</code>, <code>src/acceptance.ts</code>, <code>src/capability.ts</code>, <code>src/factcheck.ts</code>, <code>src/kind-schema.ts</code></td>
+</tr>
+<tr>
+<td align="left"><code>@asd/engine</code></td>
+<td align="center">0.1.0</td>
+<td align="left">The 29 <code>sd_*</code> tool definitions (executable registry)</td>
+<td align="left"><code>src/tools/*.ts</code> (e.g. <code>knowledge.ts</code>)</td>
+</tr>
+<tr>
+<td align="left"><code>@asd/knowledge</code></td>
+<td align="center">0.1.0</td>
+<td align="left">74 method manifests, practice contract, template loader</td>
+<td align="left"><code>data/methods/</code>, <code>data/practice-contract.json</code></td>
+</tr>
+<tr>
+<td align="left"><code>@asd/render</code></td>
+<td align="center">0.1.0</td>
+<td align="left">Deterministic per-kind SVG compilers (32 registered kinds)</td>
+<td align="left"><code>src/&lt;kind&gt;.ts</code></td>
+</tr>
+<tr>
+<td align="left"><code>@asd/report</code></td>
+<td align="center">0.1.0</td>
+<td align="left">HTML dossier composition</td>
+<td align="left"><code>src/report.ts</code>, <code>src/sections/</code></td>
+</tr>
+<tr>
+<td align="left"><code>@asd/runtime</code></td>
+<td align="center">0.1.0</td>
+<td align="left">CLI, MCP stdio server, corpus discovery, ACP records, workspace store</td>
+<td align="left"><code>lib/cli.mjs</code>, <code>lib/mcp.mjs</code>, <code>src/corpus.ts</code></td>
+</tr>
+</tbody></table>
+<h3 id="the-capability-registry-and-the-studio-rpc-boundary">The capability registry and the Studio RPC boundary</h3>
+<p><code>@asd/core</code> ships a machine-readable capability contract (<code>data/capability-contract.json</code>, consumed via <code>src/capability.ts</code>) with six declared surfaces:</p>
+<pre><code class="language-typescript">// suite/packages/core/src/capability.ts (verbatim)
+export const CAPABILITY_SURFACES = [&#39;runtime-core&#39;, &#39;cli&#39;, &#39;mcp&#39;, &#39;acp&#39;, &#39;host-pack&#39;, &#39;studio-host&#39;] as const
+// Support labels are deliberately claims about proof, not implementation modes:
+//   &#39;supported&#39; | &#39;unverified&#39; | &#39;unsupported&#39;
+// Capability ids include: &#39;runtime-tool&#39;, &#39;tool-execution&#39;, &#39;record-only&#39;,
+// &#39;host-agent-spawn&#39;, &#39;phase-gates&#39;, &#39;corpus-resources&#39;, &#39;role-prompts&#39;, &#39;host-execution&#39;, ...
+</code></pre>
+<p>Two load-bearing consequences:</p>
+<ol>
+<li><strong>Support labels are claims about proof.</strong> A capability marked <code>unverified</code> is not &quot;broken&quot;; it is &quot;not yet evidenced.&quot; This is why the platform can ship a DSH Studio projection while honestly deferring live-integration claims (Module 02.2 and 02.6).</li>
+<li><strong>The Studio RPC boundary is a projection, not a fork.</strong> The DSH pack&#39;s capability profile declares <code>execution: &quot;canonical-tool-registry&quot;</code> — Studio RPC calls resolve into the same 29 tool definitions the CLI and MCP server expose. The boundary exists so the runtime can <code>return-structured-error</code> for anything the host cannot honor (the pack declares <code>unsupportedBehavior: &quot;return-structured-error&quot;</code>), rather than silently approximating.</li>
+</ol>
+<h3 id="package-layering-diagram">Package layering diagram</h3>
+<p></p>
+<h3 id="verified-execution-the-canonical-loop-run-today">Verified execution — the canonical loop, run today</h3>
+<p>The following is a real session against the built runtime (<code>node suite/packages/runtime/lib/cli.mjs</code>) in a disposable workspace, trimmed for length. The ids below were minted by this run.</p>
+<pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-c02-1787398523
+CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
+
+$CLI project-create --name &quot;Fernwood Repairs Sprint&quot; --client &quot;Fernwood Council&quot; \
+  --sector government --service &quot;housing repairs reporting&quot;
+# → {&quot;project&quot;:{&quot;projectId&quot;:&quot;fernwood-repairs-sprint-6b4b0c26&quot;,&quot;phase&quot;:&quot;discover&quot;, ...}}
+
+$CLI evidence-add --projectId fernwood-repairs-sprint-6b4b0c26 \
+  --source int-01 --kind quote \
+  --body &quot;I reported the leak three times and nobody told me what happens next.&quot;
+# → evidence id 45315827160ddf76a74e8213ee0caef866a8b0a0e9bb7a8629dc354693dd5c02
+# (id = SHA-256 of the record content; stored in &lt;project&gt;/evidence/index.json)
+
+$CLI method-run --projectId fernwood-repairs-sprint-6b4b0c26 --methodId journey-from-transcripts
+# → the method CONTRACT (trimmed):
+# {&quot;method&quot;:{&quot;id&quot;:&quot;journey-from-transcripts&quot;,&quot;phase&quot;:&quot;synthesis&quot;,&quot;owner&quot;:&quot;mapper&quot;,
+#   &quot;reviewGate&quot;:&quot;critic&quot;,&quot;evidenceRules&quot;:{&quot;traceability&quot;:&quot;required&quot;,&quot;provenance&quot;:&quot;required&quot;}},
+#  &quot;steps&quot;:[{&quot;role&quot;:&quot;researcher&quot;,...},{&quot;role&quot;:&quot;mapper&quot;,...},{&quot;role&quot;:&quot;critic&quot;,&quot;gate&quot;:true,...}],
+#  &quot;acceptance&quot;:[{&quot;rule&quot;:&quot;min-nodes&quot;,&quot;min&quot;:3},{&quot;rule&quot;:&quot;min-evidence-per-node&quot;,&quot;min&quot;:1},
+#   {&quot;rule&quot;:&quot;field-non-empty&quot;,&quot;field&quot;:&quot;emotion&quot;},{&quot;rule&quot;:&quot;field-non-empty&quot;,&quot;field&quot;:&quot;touchpoint&quot;}],
+#  &quot;inputs&quot;:[{&quot;kind&quot;:&quot;evidence-set&quot;,&quot;min&quot;:3}],
+#  &quot;handoff&quot;:{&quot;to&quot;:&quot;ideator&quot;,&quot;artifactKind&quot;:&quot;journey-map&quot;,...},
+#  &quot;humanCheckpoints&quot;:[{&quot;id&quot;:&quot;scope-confirmation&quot;,&quot;when&quot;:&quot;before-run&quot;,
+#    &quot;authority&quot;:&quot;human-designer&quot;,...}, ...]}
+
+$CLI artifact-write --projectId fernwood-repairs-sprint-6b4b0c26 \
+  --methodId journey-from-transcripts --title &quot;Current-state repairs reporting journey&quot; \
+  --nodes &#39;[{&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Notices leak; searches council site&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;48b48b5584b38cab2ecbbee621e48be83a67bb22dd19697d197892d17fe0cd94&quot;}],&quot;fields&quot;:{&quot;emotion&quot;:&quot;uncertain&quot;,&quot;touchpoint&quot;:&quot;website&quot;}}, ...]&#39;
+# → {&quot;accepted&quot;:true,&quot;status&quot;:&quot;draft&quot;,
+#    &quot;artifact&quot;:{&quot;id&quot;:&quot;5b43c26cf11b41b3ba3793880ceee4de&quot;,&quot;kind&quot;:&quot;journey-map&quot;, ...}}
+
+$CLI review --projectId fernwood-repairs-sprint-6b4b0c26 \
+  --artifactId 5b43c26cf11b41b3ba3793880ceee4de --verdict pass \
+  --rows &#39;[{&quot;rowKind&quot;:&quot;proposal&quot;,&quot;severity&quot;:&quot;low&quot;,&quot;message&quot;:&quot;Every stage cites verbatim evidence; status-chasing loop is the strongest intervention target.&quot;,&quot;rule&quot;:&quot;evidence-cited&quot;,&quot;evidenceId&quot;:&quot;45315827160ddf76a74e8213ee0caef866a8b0a0e9bb7a8629dc354693dd5c02&quot;}]&#39;
+# → {&quot;status&quot;:&quot;final&quot;,&quot;verdict&quot;:&quot;pass&quot;,&quot;logArtifactId&quot;:&quot;09b1dc29d9424fbfab24ab1991422384&quot;,&quot;rowsWritten&quot;:1}
+
+$CLI factcheck --projectId fernwood-repairs-sprint-6b4b0c26
+# → {&quot;pass&quot;:true,&quot;rows&quot;:[{&quot;artifactId&quot;:&quot;5b43c26c...&quot;,&quot;kind&quot;:&quot;journey-map&quot;,&quot;status&quot;:&quot;final&quot;,
+#     &quot;integrity&quot;:{&quot;pass&quot;:true,&quot;dangling&quot;:[]},&quot;schema&quot;:{&quot;pass&quot;:true},
+#     &quot;acceptance&quot;:{&quot;pass&quot;:true},&quot;review&quot;:{&quot;pass&quot;:true,&quot;gate&quot;:&quot;critic&quot;,&quot;verdict&quot;:&quot;pass&quot;}}, ...]}
+# exit code 0 — CI-gate semantics; exit 1 if any artifact fails
+</code></pre>
+<h3 id="fail-closed-behavior-verified-verbatim">Fail-closed behavior (verified verbatim)</h3>
+<pre><code class="language-bash"># artifact-write citing evidence that does not exist:
+asd artifact-write: node &quot;n1&quot; cites evidence &quot;deadbeef&quot; which is not in the project evidence store
+# exit 1 — nothing is written
+
+# method-run without enough inputs (fresh project, 2 evidence records):
+asd method-run: method &quot;journey-from-transcripts&quot; requires at least 3 evidence records; project has 2. Capture evidence with sd_evidence_add first.
+# exit 1 — the contract refuses to start
+
+# evidence-add with an invalid kind:
+asd evidence-add: invalid arguments: &quot;arguments.kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]
+# exit 1 — &quot;observation&quot; is rejected; the taxonomy is closed
+</code></pre>
+<hr>
+<h2 id="4-enterprise-case-study-lens">🏢 4. Enterprise Case Study Lens</h2>
+<h3 id="article-02-from-insight-to-implementation-redesigning-telehealth-onboarding-at-northgate-health-articles02">Article 02 — <em>From Insight to Implementation: Redesigning Telehealth Onboarding at Northgate Health</em> (<code>articles/02</code>)</h3>
+<blockquote>
+<p><strong>Synthetic illustration — not a production log.</strong> Northgate Health is a fictional composite; all names, figures, and artifacts are illustrative.</p>
+</blockquote>
+<p>Northgate is the theory of this module wearing a client&#39;s clothes. The engagement&#39;s central problem — 45% enrollment completion, 23% first-consult no-shows, 26-day median time-to-first-consult — was not a lack of journey maps. It was that previous maps were <strong>unverifiable</strong>: stakeholders disputed which pain points were real, and nothing could be checked after the workshops ended. The article&#39;s agentic intervention maps one-to-one onto the runtime stack you just executed:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Article move</th>
+<th align="left">Runtime mechanism</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">&quot;Evidence register&quot; built from 20 stakeholder interviews + 400-member survey</td>
+<td align="left"><code>sd_evidence_add</code> content-addressed records (<code>quote</code>/<code>telemetry</code>/<code>document</code>)</td>
+</tr>
+<tr>
+<td align="left">Pain points admitted only with citations</td>
+<td align="left"><code>sd_artifact_write</code> node-level <code>evidence[]</code> refs + fail-closed dangling check</td>
+</tr>
+<tr>
+<td align="left">Review gates before phases advanced</td>
+<td align="left"><code>sd_review</code> verdicts + <code>sd_factcheck</code> + <code>sd_phase_advance</code> approval receipts</td>
+</tr>
+<tr>
+<td align="left">One behavior across Claude Code, OpenCode, Codex surfaces</td>
+<td align="left">one <code>@asd/engine</code> registry projected per surface (this module&#39;s core claim)</td>
+</tr>
+</tbody></table>
+<p>Read the article&#39;s §0 provenance note alongside this module: it separates the <em>illustrative engagement</em> from the <em>verified platform receipts</em> — the same discipline the capability registry enforces with <code>supported</code>/<code>unverified</code>/<code>unsupported</code> labels.</p>
+<hr>
+<h2 id="5-critic-gate-amp-review-veto-rules">⚖️ 5. Critic Gate &amp; Review Veto Rules</h2>
+<blockquote>
+<p>[!IMPORTANT]
+<strong>Mandatory review criteria for any artifact on this stack:</strong></p>
+<ol>
+<li><strong>Evidence citation</strong> — structural nodes must cite ids present in the project&#39;s evidence store; dangling refs fail at <em>write</em> time.</li>
+<li><strong>Acceptance rules</strong> — the method contract&#39;s <code>acceptance[]</code> (min-nodes, min-evidence-per-node, field-non-empty) is evaluated on write; unmet writes are retained as draft with a <code>failures[]</code> list, never silently passed.</li>
+<li><strong>Review gate</strong> — <code>pass</code> requires at least one evidence-cited row and zero defect rows; <code>veto</code> requires every defect row to carry a <code>fix</code>, keeps the artifact in draft, and persists a <code>review-veto-log</code> artifact.</li>
+<li><strong>Factcheck as CI gate</strong> — <code>sd_factcheck</code> exits 0 only when every artifact passes integrity, schema, acceptance, and review checks.</li>
+<li><strong>Phase advance is human-gated</strong> — <code>sd_phase_advance</code> fails closed without <code>--approvalReceipt</code> and while any design artifact is still a draft.</li>
+</ol>
+</blockquote>
+<h3 id="artifact-lifecycle-diagram">Artifact lifecycle diagram</h3>
+<p></p>
+<hr>
+<h2 id="6-hands-on-lab-assignment">🧪 6. Hands-On Lab Assignment</h2>
+<h3 id="objective">Objective</h3>
+<p>Reproduce the verified loop above in a fresh disposable workspace, including one deliberate failure of each fail-closed gate.</p>
+<h3 id="steps">Steps</h3>
+<pre><code class="language-bash">cd ~/Documents/github/agentic-service-designer
+export ASD_WORKSPACE=/tmp/asd-lab-02-1
+CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
+
+# 1. Create a project; record the minted projectId
+$CLI project-create --name &quot;Lab 02.1&quot; --client &quot;&lt;client&gt;&quot; --sector government --service &quot;&lt;service&gt;&quot;
+
+# 2. FAIL-CLOSED DEMO A: run a method before feeding it
+$CLI method-run --projectId &lt;pid&gt; --methodId journey-from-transcripts
+# expect exit 1: &quot;requires at least 3 evidence records; project has 0.&quot;
+
+# 3. Add three evidence records (quote, quote, telemetry)
+$CLI evidence-add --projectId &lt;pid&gt; --source int-01 --kind quote --body &quot;&lt;verbatim&gt;&quot;
+# ... two more; record the minted 64-hex ids
+
+# 4. FAIL-CLOSED DEMO B: cite a fabricated evidence id
+$CLI artifact-write --projectId &lt;pid&gt; --methodId journey-from-transcripts --title &quot;x&quot; \
+  --nodes &#39;[{&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;x&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;deadbeef&quot;}],&quot;fields&quot;:{&quot;emotion&quot;:&quot;anger&quot;,&quot;touchpoint&quot;:&quot;phone&quot;}}]&#39;
+# expect exit 1: &#39;cites evidence &quot;deadbeef&quot; which is not in the project evidence store&#39;
+
+# 5. Write a real draft citing your minted ids, then review it to final
+$CLI artifact-write --projectId &lt;pid&gt; --methodId journey-from-transcripts --title &quot;&lt;title&gt;&quot; --nodes &#39;&lt;json&gt;&#39;
+$CLI review --projectId &lt;pid&gt; --artifactId &lt;aid&gt; --verdict pass \
+  --rows &#39;[{&quot;rowKind&quot;:&quot;proposal&quot;,&quot;severity&quot;:&quot;low&quot;,&quot;message&quot;:&quot;...&quot;,&quot;rule&quot;:&quot;evidence-cited&quot;,&quot;evidenceId&quot;:&quot;&lt;eid&gt;&quot;}]&#39;
+
+# 6. Gate the project
+$CLI factcheck --projectId &lt;pid&gt;   # expect exit 0, &quot;pass&quot;: true
+</code></pre>
+<h3 id="verification-checklist">Verification checklist</h3>
+<ul>
+<li><input disabled="" type="checkbox"> <code>project-create</code> returned a <code>projectId</code> ending in an 8-hex suffix</li>
+<li><input disabled="" type="checkbox"> Fail-closed demo A exited 1 with the evidence-minimum error</li>
+<li><input disabled="" type="checkbox"> Fail-closed demo B exited 1 with the dangling-evidence error</li>
+<li><input disabled="" type="checkbox"> Your draft artifact shows <code>&quot;accepted&quot;: true, &quot;status&quot;: &quot;draft&quot;</code></li>
+<li><input disabled="" type="checkbox"> After review, <code>&quot;status&quot;: &quot;final&quot;</code> and a <code>review-veto-log</code> artifact exists</li>
+<li><input disabled="" type="checkbox"> <code>factcheck</code> exits 0</li>
+</ul>
+<hr>
+<h2 id="7-summary-amp-reference-anchors">📚 7. Summary &amp; Reference Anchors</h2>
+<h3 id="key-takeaways">Key takeaways</h3>
+<ul>
+<li>SDAP is <strong>one executable registry with thin projections</strong>: CLI and MCP (today), host packs (vendored server), DSH Studio RPC (deferred). The layering — core contracts → engine tools → runtime transports → render/report compilers — is what makes &quot;same behavior everywhere&quot; a checkable claim instead of marketing.</li>
+<li>The capability registry encodes <strong>proof status, not enthusiasm</strong>: <code>supported</code> / <code>unverified</code> / <code>unsupported</code>.</li>
+<li>The canonical loop is fail-closed at every gate; the errors you saw verbatim are the design.</li>
+</ul>
+<h3 id="references">References</h3>
+<ul>
+<li><strong>Books</strong>: <code>books/03-service-design-from-insight-to-implementation/07-implementation</code>; <code>books/05-good-services/02-the-fifteen-principles</code>; <code>books/12-service-dominant-logic/03-value-co-creation</code></li>
+<li><strong>Case study</strong>: <code>articles/02</code> (synthetic illustration)</li>
+<li><strong>Code</strong>: <code>suite/packages/core/src/capability.ts</code>; <code>suite/packages/runtime/lib/cli.mjs</code>; <code>docs/INTEGRATION.md</code></li>
+</ul>
+<hr>
+<p><a href="./README.md">← Course Overview</a> · <a href="../README.md">Master Curriculum</a> · <a href="./02-deepseek-harness-cordis-wiring.md">Next: Module 02.2 →</a></p>
+
+
+      <div class="module-nav"><span><a href="./02-deepseek-harness-cordis-wiring.html">Module 02.2: One Runtime, Two Live Surfaces — CLI and MCP (DSH Studio as a Deferred Integration)</a> →</span></div>
+    </article>
+  </div>
+  <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+</body>
+</html>

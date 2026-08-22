@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Scaled Research Ops, Mining & Behavioral Personas — Mining 200+ Field Transcripts with Agent Swarms & Fusing Telemetry with Qualitative Need Clusters. Online course from The Agentic Service Designer.">
-  <title>Course 04: Scaled Research Ops, Mining & Behavioral Personas | The Agentic Service Designer</title>
+  <meta name="description" content="Scaled Research Ops & Behavioral Personas — Mining 200+ Field Transcripts with Agent Swarms & Fusing Telemetry with Qualitative Need Clusters. Online course from The Agentic Service Designer.">
+  <title>Course 04: Scaled Research Ops & Behavioral Personas | The Agentic Service Designer</title>
   <link rel="stylesheet" href="../assets/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
   <style>
@@ -68,7 +68,9 @@
       border: 1px solid #2d2e2b;
       border-radius: 8px;
       min-height: 440px;
-      padding: 48px;
+      aspect-ratio: 16 / 9;
+      max-height: 78vh;
+      padding: clamp(28px, 4vw, 48px);
       position: relative;
       box-shadow: 0 12px 36px rgba(0,0,0,0.35);
       display: flex;
@@ -79,28 +81,50 @@
       display: none;
       flex-direction: column;
       height: 100%;
-      animation: fadeIn 200ms ease;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #3d3e3a transparent;
+      animation: slideIn 220ms ease;
     }
     .slide-card.active {
       display: flex;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to { opacity: 1; transform: translateX(0); }
     }
     .slide-header {
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
       font-family: var(--mono);
       font-size: 12px;
-      color: #e4be5c;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    .slide-kicker {
+      color: #e4be5c;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+    }
+    .slide-kicker::before {
+      content: "";
+      width: 18px;
+      height: 2px;
+      background: #e4be5c;
+      display: inline-block;
+    }
+    .slide-page-num {
+      color: #83847c;
+      letter-spacing: 0.12em;
     }
     .slide-title {
-      font-size: clamp(26px, 3vw, 38px);
+      font-size: clamp(24px, 2.8vw, 38px);
       letter-spacing: -0.025em;
+      line-height: 1.12;
       color: #ffffff;
       margin: 0 0 24px;
       font-weight: 700;
@@ -111,10 +135,20 @@
       margin: 0 0 24px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      font-size: 16.5px;
-      line-height: 1.6;
+      gap: 12px;
+      font-size: clamp(15px, 1.35vw, 17px);
+      line-height: 1.55;
       color: #d6d6ce;
+    }
+    .slide-bullets code {
+      font-family: var(--mono);
+      font-size: 0.86em;
+      color: #f0d489;
+      background: rgba(228,190,92,0.09);
+      border: 1px solid rgba(228,190,92,0.18);
+      padding: 1px 5px;
+      border-radius: 3px;
+      white-space: nowrap;
     }
     .slide-bullets li {
       position: relative;
@@ -131,22 +165,26 @@
     .slide-quote {
       border-left: 3px solid #e4be5c;
       padding-left: 16px;
-      margin: 20px 0 0;
+      margin: auto 0 0;
+      padding-top: 16px;
       font-style: italic;
       color: #a8a89f;
-      font-size: 14.5px;
+      font-size: clamp(13px, 1.1vw, 14.5px);
+      line-height: 1.5;
     }
-    
+
     .deck-diagram {
       display: flex;
       align-items: center;
-      gap: 12px;
+      flex-wrap: wrap;
+      gap: 10px 12px;
       background: #212220;
       padding: 16px;
       border-radius: 6px;
       margin: 16px 0;
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: 12.5px;
+      line-height: 1.45;
       overflow-x: auto;
     }
     .d-box {
@@ -159,6 +197,107 @@
     .d-good { border-color: #38a169; color: #68d391; }
     .d-bad { border-color: #e53e3e; color: #fc8181; }
     .d-arrow { color: #e4be5c; font-weight: 700; }
+
+    /* Diagram pattern: pipeline — numbered stages chained with arrows */
+    .d-pipe { counter-reset: dstage; }
+    .d-stage {
+      position: relative;
+      padding-left: 34px;
+    }
+    .d-stage::before {
+      content: counter(dstage, decimal-leading-zero);
+      counter-increment: dstage;
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #e4be5c;
+    }
+
+    /* Diagram pattern: lane-row — stacked labeled lanes for blueprints & journeys */
+    .d-lanes {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .d-lane {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .d-lane-label {
+      flex: 0 0 132px;
+      text-align: right;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #9a9b93;
+    }
+    .d-lane-items {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-left: 2px solid #3d3e3a;
+    }
+    .d-lane-items--line { border-left-color: #e4be5c; }
+
+    /* Diagram pattern: gate — decision box with pass/veto branches */
+    .d-gate-wrap {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 12px;
+    }
+    .d-gate-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .d-gate {
+      border-color: #e4be5c;
+      color: #f0d489;
+      background: rgba(228,190,92,0.07);
+    }
+    .d-branches {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .d-branch {
+      flex: 1 1 200px;
+      border: 1px solid #3d3e3a;
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: normal;
+    }
+    .d-branch b {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .d-pass { border-color: #38a169; color: #9ae6b4; background: rgba(56,161,105,0.08); }
+    .d-veto { border-color: #c53030; color: #feb2b2; background: rgba(197,48,48,0.08); }
+
+    @media (max-width: 720px) {
+      .slide-viewport { aspect-ratio: auto; max-height: none; }
+      .d-lane { flex-direction: column; align-items: stretch; gap: 4px; }
+      .d-lane-label { flex: none; text-align: left; }
+      .d-lane-items { border-left: none; border-top: 2px solid #3d3e3a; }
+    }
 
     /* Deck Navigation Footer */
     .deck-nav-bar {
@@ -195,11 +334,19 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: #3a3b37;
+      background: transparent;
+      border: 1px solid #565750;
       cursor: pointer;
+      transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+    }
+    .dot:hover {
+      border-color: #b9bab0;
+      transform: scale(1.15);
     }
     .dot.active {
       background: #e4be5c;
+      border-color: #e4be5c;
+      transform: scale(1.3);
     }
 
     /* Modules Grid Section */
@@ -295,54 +442,6 @@
       font-size: 14px;
     }
     .lab-btn:hover { opacity: 0.9; }
-  
-/* course spec tiles */
-.metrics-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.metrics-row > div {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-card);
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.metrics-row dt {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 0;
-}
-.metrics-row dd {
-  margin: 0;
-  font-size: 14.5px;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.3;
-}
-.status-available {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.status-available::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #2f9e5f;
-  box-shadow: 0 0 0 3px rgba(47, 158, 95, 0.18);
-}
-
   </style>
 </head>
 <body>
@@ -366,9 +465,9 @@
       <div class="course-page-hero-inner">
         <a class="back-link" href="../courses.html">← All Courses</a>
         <div><span class="badge badge-intermediate">Intermediate</span></div>
-        <h1 class="course-page-title">Course 04: Scaled Research Ops, Mining & Behavioral Personas</h1>
+        <h1 class="course-page-title">Course 04: Scaled Research Ops & Behavioral Personas</h1>
         <p class="course-page-sub">Mining 200+ Field Transcripts with Agent Swarms & Fusing Telemetry with Qualitative Need Clusters</p>
-        <p style="max-width:760px; line-height:1.6; color:var(--ink-soft);">Scale user research operations without sacrificing qualitative nuance. Ingest and synthesize hundreds of transcripts using parallel extraction swarms while eliminating confirmation bias. Move past flat demographic personas by combining qualitative quotes with production telemetry to calculate true behavioral signatures using sd_persona.</p>
+        <p style="max-width:760px; line-height:1.6; color:var(--ink-soft);">Scale user research operations without sacrificing qualitative nuance. Ingest transcripts as typed evidence (sd_evidence_import), code them with registered methods (transcript-mining, aeiou-coding) into insight sets and affinity clusters whose every node cites its evidence, then generate behavioral personas that fuse qualitative quotes with telemetry — no demographic flat-mapping, no unregistered one-off tools.</p>
         <dl class="metrics-row" style="margin-top:24px;">
           <div><dt>Modules</dt><dd>6</dd></div>
           <div><dt>Duration</dt><dd>≈4h 50m</dd></div>
@@ -390,87 +489,187 @@
           
         <div class="slide-card active" data-slide-index="0">
           <div class="slide-header">
-            <span class="slide-kicker">Module 04.1</span>
-            <span class="slide-page-num">01 / 05</span>
+            <span class="slide-kicker">Paradigm Shift</span>
+            <span class="slide-page-num">01 / 10</span>
           </div>
-          <h2 class="slide-title">Scaled Qualitative Ingestion: Mining 200+ Field Transcripts & Inquiries</h2>
+          <h2 class="slide-title">Machine Scale, Human Depth</h2>
           <ul class="slide-bullets">
-            <li>Ingesting unstructured audio transcripts, field notes, and contextual inquiry logs into structured, token-budgeted research packets.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>200+ transcripts exceed any workshop's attention budget; they do not exceed a swarm's.</li><li>Scale without rigor is just faster bias — every extracted line keeps its provenance hash.</li><li>Researcher-role swarms work inside method contracts, not loose prompting.</li><li>The output is not a slide of themes; it is a deduplicated, cited evidence register.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Scaled Qualitative Ingestion</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">200+ transcripts</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Researcher swarm</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">SHA-256 evidence rows</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Cited synthesis</span>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Scaled Research Ops, Mining & Behavioral Personas."</blockquote>
+          <blockquote class="slide-quote">"Scale the corpus, keep the receipt."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="1">
           <div class="slide-header">
-            <span class="slide-kicker">Module 04.2</span>
-            <span class="slide-page-num">02 / 05</span>
+            <span class="slide-kicker">The Executable Spine</span>
+            <span class="slide-page-num">02 / 10</span>
           </div>
-          <h2 class="slide-title">Automated Coding, Thematic Tagging & Quote Provenance Preservation</h2>
+          <h2 class="slide-title">One Canonical Loop Behind All 8 Courses</h2>
           <ul class="slide-bullets">
-            <li>Deploying the Researcher agent swarm to perform grounded-theory open and axial coding while preserving speaker metadata and exact timestamps.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>Every module runs the same verified loop: project → evidence → method contract → artifact draft → critic gate → factcheck → export → human-gated phase advance.</li><li>This course lives in the loop's first half: research-phase and synthesis-phase methods of the 74.</li><li><code>sd_method_run</code> fails closed below the method's evidence minimum — no evidence, no artifact.</li><li><code>sd_phase_advance</code> refuses to run without a human approval receipt JSON.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Automated Coding, Thematic Tagging & Quote Provenance Preservation</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">sd_project_create</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_evidence_add</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_method_run</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_artifact_write</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">sd_review</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_factcheck</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_export_report</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">sd_phase_advance</span>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Scaled Research Ops, Mining & Behavioral Personas."</blockquote>
+          <blockquote class="slide-quote">"Agents prepare and verify with receipts; human leaders decide with accountability."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="2">
           <div class="slide-header">
-            <span class="slide-kicker">Module 04.3</span>
-            <span class="slide-page-num">03 / 05</span>
+            <span class="slide-kicker">Module 04.1</span>
+            <span class="slide-page-num">03 / 10</span>
           </div>
-          <h2 class="slide-title">Eliminating Researcher Bias with Parallel Extraction Swarms</h2>
+          <h2 class="slide-title">Scaled Qualitative Ingestion: Mining 200+ Field Transcripts & Inquiries</h2>
           <ul class="slide-bullets">
-            <li>Running adversarial blind extraction swarms with randomized prompt framing to prevent confirmation bias and isolate contradictory user signals.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>Methods transcript-mining and contextual-inquiry structure raw field material into research packets.</li><li><code>sd_evidence_import</code> bulk-ingests logs and notes; every row still gets a SHA-256 id.</li><li>Token-budgeted packets keep LLM context honest: selected, cited, bounded.</li><li>Volume never waives the evidence law — scale and provenance rise together.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Eliminating Researcher Bias with Parallel Extraction Swarms</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Audio / notes / logs</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_evidence_import</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Token-budgeted packets</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Method-ready evidence-set</span>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Scaled Research Ops, Mining & Behavioral Personas."</blockquote>
+          <blockquote class="slide-quote">"Ingest everything; address everything; trust nothing unaddressed."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="3">
           <div class="slide-header">
-            <span class="slide-kicker">Module 04.4</span>
-            <span class="slide-page-num">04 / 05</span>
+            <span class="slide-kicker">Module 04.2</span>
+            <span class="slide-page-num">04 / 10</span>
           </div>
-          <h2 class="slide-title">The Fallacy of Demographic Personas: Calculating Behavioral Signatures</h2>
+          <h2 class="slide-title">Automated Coding, Thematic Tagging & Quote Provenance Preservation</h2>
           <ul class="slide-bullets">
-            <li>Why age and job title fail to predict service adoption: constructing multidimensional behavioral vectors based on friction tolerances and goals.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>aeiou-coding and critical-incident-technique give grounded coding a strict, replayable frame.</li><li>Open + axial coding runs as researcher-role steps inside a method contract.</li><li>Speaker metadata and verbatim quotes survive as evidence records, hash-addressed.</li><li>affinity-diagramming clusters coded fragments into an affinity-cluster-set artifact.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">The Fallacy of Demographic Personas</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Transcript evidence</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Open / axial coding</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">affinity-cluster-set</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">insight-set (cited)</span>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Scaled Research Ops, Mining & Behavioral Personas."</blockquote>
+          <blockquote class="slide-quote">"Coding is a contract; provenance is the clause that matters."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="4">
           <div class="slide-header">
+            <span class="slide-kicker">Module 04.3</span>
+            <span class="slide-page-num">05 / 10</span>
+          </div>
+          <h2 class="slide-title">Eliminating Researcher Bias with Parallel Extraction Swarms</h2>
+          <ul class="slide-bullets">
+            <li>Parallel blind extraction with randomized framing surfaces contradictions instead of hiding them.</li><li>The critic role audits extraction output at the review gate — bias is a defect class, not a feeling.</li><li>Contradictory signals are preserved as separate evidence records — never averaged away.</li><li>Divergent reads reconcile at synthesis with citations, not seniority.</li>
+          </ul>
+          <div class="deck-diagram d-gate-wrap">
+  <div class="d-gate-row"><span class="d-box">Same corpus</span><span class="d-arrow">→</span><span class="d-box d-gate">Extraction strategy</span></div>
+  <div class="d-branches">
+    <div class="d-branch d-pass"><b>Adversarial swarm</b>Blind parallel reads → contradictions surfaced &amp; cited</div>
+    <div class="d-branch d-veto"><b>Single extractor</b>Confirmation bias compounding silently</div>
+  </div>
+</div>
+          <blockquote class="slide-quote">"Contradiction preserved is insight found."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="5">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 04.4</span>
+            <span class="slide-page-num">06 / 10</span>
+          </div>
+          <h2 class="slide-title">The Fallacy of Demographic Personas: Calculating Behavioral Signatures</h2>
+          <ul class="slide-bullets">
+            <li>Age and job title predict almost nothing about service adoption; behavior does.</li><li>behavioural-personas builds persona-set artifacts from friction tolerances, goals, and observed strategies.</li><li>customer-typology-mapping offers a complementary segmentation lens.</li><li>Every persona attribute traces to evidence ids — a persona is a query result, not a poster.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Evidence register</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Behavioral vectors</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">behavioural-personas</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">persona-set (cited)</span>
+</div>
+          <blockquote class="slide-quote">"A persona is a query result over evidence, not a poster on a wall."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="6">
+          <div class="slide-header">
             <span class="slide-kicker">Module 04.5</span>
-            <span class="slide-page-num">05 / 05</span>
+            <span class="slide-page-num">07 / 10</span>
           </div>
           <h2 class="slide-title">Fusing Telemetry Logs with Qualitative Friction Clusters</h2>
           <ul class="slide-bullets">
-            <li>Triangulating event analytics (drop-off rates, error counts, latency) with qualitative quote registers to validate persona pain points with statistical proof.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>Evidence kind telemetry: drop-off rates, error counts, latency — ingested beside quotes under the same hash law.</li><li>Triangulation rule: a pain point ships only when qualitative and quantitative records agree.</li><li>empathy-mapping fuses say/do/think/feel into empathy-map artifacts with citations.</li><li>Statistical signal plus verbatim voice kills both anecdote and dashboard worship.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Fusing Telemetry Logs with Qualitative Friction Clusters</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">Quotes</span><div class="d-lane-items"><span class="d-box">Verbatim friction</span><span class="d-box">Emotional context</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Telemetry</span><div class="d-lane-items"><span class="d-box">Drop-off · errors · latency</span><span class="d-box">Frequency proof</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Fused</span><div class="d-lane-items d-lane-items--line"><span class="d-box d-good">Validated friction clusters</span><span class="d-box d-good">empathy-map</span></div></div>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Scaled Research Ops, Mining & Behavioral Personas."</blockquote>
+          <blockquote class="slide-quote">"Pain you can triangulate is pain you can prioritize."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="7">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 04.6</span>
+            <span class="slide-page-num">08 / 10</span>
+          </div>
+          <h2 class="slide-title">Authoring Machine-Checkable Personas with the Persona Pipeline</h2>
+          <ul class="slide-bullets">
+            <li>Personas are authored via <code>sd_artifact_write</code> against the persona-set schema (<code>sd_schema_get</code> --kind persona-set).</li><li>Acceptance rules enforce evidence per attribute; unmet writes stay draft with named failures.</li><li>The critic gate blocks demographic-vibe personas from ever reaching final.</li><li>Downstream methods (journeys, blueprints) cite persona nodes like any other artifact.</li>
+          </ul>
+          <div class="deck-diagram d-gate-wrap">
+  <div class="d-gate-row"><span class="d-box">persona-set draft</span><span class="d-arrow">→</span><span class="d-box d-gate">Acceptance + critic</span></div>
+  <div class="d-branches">
+    <div class="d-branch d-pass"><b>Pass</b>Every attribute evidence-backed → final, citable downstream</div>
+    <div class="d-branch d-veto"><b>Veto</b>Uncited attributes → defect rows with fixes → stays draft</div>
+  </div>
+</div>
+          <blockquote class="slide-quote">"If the persona cannot pass its own acceptance rules, it is fiction."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="8">
+          <div class="slide-header">
+            <span class="slide-kicker">Dogfooding the Runtime</span>
+            <span class="slide-page-num">09 / 10</span>
+          </div>
+          <h2 class="slide-title">The Verified Toolchain Behind This Course</h2>
+          <ul class="slide-bullets">
+            <li>Ingest: <code>sd_evidence_add</code>, <code>sd_evidence_import</code>, <code>sd_evidence_query</code>.</li><li>Run: <code>sd_method_list</code> --phase research and --phase synthesis, then <code>sd_method_run</code>.</li><li>Author: <code>sd_artifact_write</code>; assure: <code>sd_review</code>, <code>sd_factcheck</code>.</li><li>Dogfooded methods: transcript-mining, aeiou-coding, affinity-diagramming, behavioural-personas, empathy-mapping.</li>
+          </ul>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">Ingest</span><div class="d-lane-items"><span class="d-box">sd_evidence_add</span><span class="d-box">sd_evidence_import</span><span class="d-box">sd_evidence_query</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Methods</span><div class="d-lane-items"><span class="d-box">transcript-mining</span><span class="d-box">aeiou-coding</span><span class="d-box">affinity-diagramming</span><span class="d-box">behavioural-personas</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Assure</span><div class="d-lane-items d-lane-items--line"><span class="d-box">sd_artifact_write</span><span class="d-box">sd_review</span><span class="d-box d-gate">sd_factcheck</span></div></div>
+</div>
+          <blockquote class="slide-quote">"Every method here runs through the same contract you verified in Course 02."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="9">
+          <div class="slide-header">
+            <span class="slide-kicker">Capstone</span>
+            <span class="slide-page-num">10 / 10</span>
+          </div>
+          <h2 class="slide-title">From Corpus to Defensible Personas</h2>
+          <ul class="slide-bullets">
+            <li>Mine a transcript corpus into a deduplicated, hash-addressed evidence register.</li><li>Cluster to insights, then derive a behavioral persona-set that passes the critic gate.</li><li>Prove triangulation: each persona pain cites both a quote and a telemetry record.</li><li>Green factcheck + exported dossier = research ops you can defend line by line.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Corpus</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Register</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Clusters</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">Gated persona-set</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Defensible research</span>
+</div>
+          <blockquote class="slide-quote">"Research ops you can defend, hash by hash."</blockquote>
         </div>
         
         </div>
@@ -478,7 +677,7 @@
         <div class="deck-nav-bar">
           <button class="deck-btn" id="prevBtn" onclick="changeSlide(-1)">◄ Previous Slide</button>
           <div class="slide-dots" id="slideDots">
-            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div><div class="dot " onclick="goToSlide(3)"></div><div class="dot " onclick="goToSlide(4)"></div>
+            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div><div class="dot " onclick="goToSlide(3)"></div><div class="dot " onclick="goToSlide(4)"></div><div class="dot " onclick="goToSlide(5)"></div><div class="dot " onclick="goToSlide(6)"></div><div class="dot " onclick="goToSlide(7)"></div><div class="dot " onclick="goToSlide(8)"></div><div class="dot " onclick="goToSlide(9)"></div>
           </div>
           <button class="deck-btn" id="nextBtn" onclick="changeSlide(1)">Next Slide ►</button>
         </div>
@@ -501,8 +700,8 @@
             <span class="mod-badge">04.1</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./04-scaled-research-ops-behavioral-personas/01-scaled-qualitative-ingestion.html" style="color:inherit; text-decoration:none;">Scaled Qualitative Ingestion: Mining 200+ Field Transcripts & Inquiries</a></h3>
-          <p class="mod-card-desc">Ingesting unstructured audio transcripts, field notes, and contextual inquiry logs into structured, token-budgeted research packets.</p>
+          <h3 class="mod-card-title"><a href="./04-scaled-research-ops-behavioral-personas/01-scaled-qualitative-ingestion.html" style="color:inherit; text-decoration:none;">Scaled Qualitative Ingestion — From 200 Transcripts to a Typed Evidence Store</a></h3>
+          <p class="mod-card-desc">Scaled ingestion as repeated typed adds + deterministic workspace-local CSV/transcript import; evidence-kind enum (`quote`/`telemetry`/`document`) and origin provenance; the `research-plan-design → discussion-guide-design → interview-guide` instrument chain.</p>
           <a class="mod-card-link" href="./04-scaled-research-ops-behavioral-personas/01-scaled-qualitative-ingestion.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -511,8 +710,8 @@
             <span class="mod-badge">04.2</span>
             <span class="mod-time">⏱️ 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./04-scaled-research-ops-behavioral-personas/02-automated-coding-quote-provenance.html" style="color:inherit; text-decoration:none;">Automated Coding, Thematic Tagging & Quote Provenance Preservation</a></h3>
-          <p class="mod-card-desc">Deploying the Researcher agent swarm to perform grounded-theory open and axial coding while preserving speaker metadata and exact timestamps.</p>
+          <h3 class="mod-card-title"><a href="./04-scaled-research-ops-behavioral-personas/02-automated-coding-quote-provenance.html" style="color:inherit; text-decoration:none;">Coding at Scale — Open/Axial Coding with Verbatim Provenance</a></h3>
+          <p class="mod-card-desc">KJ affinity and AEIOU coding as executable method contracts; provenance lives in `nodes[].evidence[]`, not timestamps; dangling-citation writes refused; acceptance failures retained as auditable drafts.</p>
           <a class="mod-card-link" href="./04-scaled-research-ops-behavioral-personas/02-automated-coding-quote-provenance.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -521,8 +720,8 @@
             <span class="mod-badge">04.3</span>
             <span class="mod-time">⏱️ 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./04-scaled-research-ops-behavioral-personas/03-eliminating-bias-parallel-swarms.html" style="color:inherit; text-decoration:none;">Eliminating Researcher Bias with Parallel Extraction Swarms</a></h3>
-          <p class="mod-card-desc">Running adversarial blind extraction swarms with randomized prompt framing to prevent confirmation bias and isolate contradictory user signals.</p>
+          <h3 class="mod-card-title"><a href="./04-scaled-research-ops-behavioral-personas/03-eliminating-bias-parallel-swarms.html" style="color:inherit; text-decoration:none;">Eliminating Bias with Structured Parallelism — Agreement Without Swarms</a></h3>
+          <p class="mod-card-desc">Confirmation/single-coder/selection bias; inter-coder agreement as critic review rows (proposal/defect + fix + evidenceId); parallelism = independent method runs over one content-addressed store with idempotent rewrites. No swarm claims.</p>
           <a class="mod-card-link" href="./04-scaled-research-ops-behavioral-personas/03-eliminating-bias-parallel-swarms.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -531,8 +730,8 @@
             <span class="mod-badge">04.4</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./04-scaled-research-ops-behavioral-personas/04-demographic-fallacy-behavioral-signatures.html" style="color:inherit; text-decoration:none;">The Fallacy of Demographic Personas: Calculating Behavioral Signatures</a></h3>
-          <p class="mod-card-desc">Why age and job title fail to predict service adoption: constructing multidimensional behavioral vectors based on friction tolerances and goals.</p>
+          <h3 class="mod-card-title"><a href="./04-scaled-research-ops-behavioral-personas/04-demographic-fallacy-behavioral-signatures.html" style="color:inherit; text-decoration:none;">The Demographic Fallacy & Behavioral Signatures</a></h3>
+          <p class="mod-card-desc">Why demographic segments mislead service design; behavioral signatures as the persona's unit of construction; live `behavioural-personas → persona-set` run with a `forbid-field-values: demographic` acceptance rule.</p>
           <a class="mod-card-link" href="./04-scaled-research-ops-behavioral-personas/04-demographic-fallacy-behavioral-signatures.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -541,8 +740,8 @@
             <span class="mod-badge">04.5</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./04-scaled-research-ops-behavioral-personas/05-fusing-telemetry-with-qualitative-data.html" style="color:inherit; text-decoration:none;">Fusing Telemetry Logs with Qualitative Friction Clusters</a></h3>
-          <p class="mod-card-desc">Triangulating event analytics (drop-off rates, error counts, latency) with qualitative quote registers to validate persona pain points with statistical proof.</p>
+          <h3 class="mod-card-title"><a href="./04-scaled-research-ops-behavioral-personas/05-fusing-telemetry-with-qualitative-data.html" style="color:inherit; text-decoration:none;">Fusing Telemetry with Qualitative Data — Triangulation on One Node</a></h3>
+          <p class="mod-card-desc">Denzin's triangulation at citation granularity; bounded telemetry snapshots as typed evidence; mixed-kind citations on one node with the triangulation logic written into fields; contradiction as a finding.</p>
           <a class="mod-card-link" href="./04-scaled-research-ops-behavioral-personas/05-fusing-telemetry-with-qualitative-data.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -551,8 +750,8 @@
             <span class="mod-badge">04.6</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./04-scaled-research-ops-behavioral-personas/06-machine-checkable-personas-sd-persona.html" style="color:inherit; text-decoration:none;">Authoring Machine-Checkable Personas with sd_persona</a></h3>
-          <p class="mod-card-desc">Compiling structured persona schemas, validating acceptance rules, and rendering persona cards ready for downstream journey mapping.</p>
+          <h3 class="mod-card-title"><a href="./04-scaled-research-ops-behavioral-personas/06-machine-checkable-personas-sd-persona.html" style="color:inherit; text-decoration:none;">Machine-Checkable Personas — the Full Executable Spine</a></h3>
+          <p class="mod-card-desc">The complete verified spine `method-run → artifact-write → review → factcheck → export-artifact`; all three refusal modes; deterministic SVG render; human-gated phase advance with approval receipts.</p>
           <a class="mod-card-link" href="./04-scaled-research-ops-behavioral-personas/06-machine-checkable-personas-sd-persona.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -560,7 +759,7 @@
 
         <div class="lab-box">
           <div>
-            <h3 style="margin:0 0 8px;">🧪 Hands-on Lab: Scaled Research Ops, Mining & Behavioral Personas</h3>
+            <h3 style="margin:0 0 8px;">🧪 Hands-on Lab: Scaled Research Ops & Behavioral Personas</h3>
             <p style="margin:0; color:var(--ink-soft); font-size:14px;">Complete the verified lab exercise on your terminal using the <code>@asd</code> CLI and test scripts.</p>
           </div>
           <a class="lab-btn" href="../../courses/labs/lab-04-fundamentals/README.md">Open Lab Guide ↗</a>
@@ -585,7 +784,7 @@
 
   <script>
     var currentSlide = 0;
-    var totalSlides = 5;
+    var totalSlides = 10;
 
     function showSlide(index) {
       if (index < 0) index = 0;

@@ -1,434 +1,293 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Module 06.6: Authoring Blueprints as Code: Typed JSON & Validation | Master Service Blueprinting: 5-Lane to 6th-Lane Swarms — The Agentic Service Designer</title>
-  <link rel="stylesheet" href="../../assets/style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-  <style>
-    .lesson-layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      max-width: 1380px;
-      margin: 0 auto;
-      gap: 48px;
-      padding: 32px var(--pad-d) 80px;
-    }
-    .lesson-sidebar {
-      position: sticky;
-      top: 24px;
-      height: calc(100vh - 48px);
-      overflow-y: auto;
-      border-right: 1px solid var(--line);
-      padding-right: 24px;
-    }
-    .sidebar-course-title {
-      font-size: 13px;
-      font-family: var(--mono);
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 8px;
-    }
-    .sidebar-heading {
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1.3;
-      margin: 0 0 20px;
-    }
-    .syllabus-list {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 24px;
-    }
-    .syllabus-list li {
-      margin-bottom: 8px;
-      font-size: 13.5px;
-      line-height: 1.4;
-    }
-    .syllabus-list li a {
-      display: block;
-      padding: 8px 12px;
-      border-radius: var(--radius-sm);
-      color: var(--ink-soft);
-      text-decoration: none;
-      transition: background 0.15s, color 0.15s;
-    }
-    .syllabus-list li a:hover {
-      background: var(--paper-tint);
-      color: var(--ink);
-    }
-    .syllabus-list li.active a {
-      background: var(--dark);
-      color: #ffffff;
-      font-weight: 600;
-    }
-    .syllabus-list .mod-num {
-      font-family: var(--mono);
-      font-size: 11px;
-      opacity: 0.8;
-      display: block;
-      margin-bottom: 2px;
-    }
-    .lesson-content {
-      max-width: 880px;
-      font-size: 16.5px;
-      line-height: 1.7;
-    }
-    .lesson-breadcrumb {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 16px;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .lesson-breadcrumb a {
-      color: var(--muted);
-      text-decoration: none;
-    }
-    .lesson-breadcrumb a:hover {
-      text-decoration: underline;
-    }
-    .lesson-content h1 {
-      font-size: clamp(28px, 4vw, 42px);
-      line-height: 1.15;
-      letter-spacing: -0.025em;
-      margin: 0 0 20px;
-      font-weight: 700;
-    }
-    .lesson-content h2 {
-      font-size: 24px;
-      margin: 48px 0 16px;
-      border-top: 1px solid var(--line);
-      padding-top: 28px;
-    }
-    .lesson-content h3 {
-      font-size: 18px;
-      margin: 28px 0 12px;
-    }
-    .lesson-content pre {
-      background: var(--dark);
-      color: #f8f8f5;
-      padding: 20px;
-      border-radius: var(--radius-card);
-      overflow-x: auto;
-      font-family: var(--mono);
-      font-size: 13px;
-      line-height: 1.5;
-      margin: 20px 0;
-    }
-    .lesson-content code {
-      font-family: var(--mono);
-      font-size: 0.9em;
-      background: var(--paper-tint);
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid var(--line);
-    }
-    .lesson-content pre code {
-      background: transparent;
-      padding: 0;
-      border: 0;
-      color: inherit;
-    }
-    .lesson-content table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 24px 0;
-      font-size: 14.5px;
-    }
-    .lesson-content th, .lesson-content td {
-      padding: 12px 14px;
-      border: 1px solid var(--line);
-      text-align: left;
-    }
-    .lesson-content th {
-      background: var(--paper-tint);
-      font-weight: 600;
-    }
-    .lesson-content blockquote {
-      margin: 24px 0;
-      padding: 16px 20px;
-      background: var(--paper-tint);
-      border-left: 4px solid var(--ink);
-      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-      font-style: italic;
-    }
-    .lesson-nav-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      margin-top: 56px;
-      padding-top: 28px;
-      border-top: 1px solid var(--line);
-    }
-    @media (max-width: 900px) {
-      .lesson-layout {
-        grid-template-columns: 1fr;
-      }
-      .lesson-sidebar {
-        display: none;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Module 06.6: Blueprints-as-Code — The Full Authoring Session — Master Service Blueprinting — 5-Lane Architecture to the Orchestration Sixth Lane | The Agentic Service Designer">
+<title>Module 06.6: Blueprints-as-Code — The Full Authoring Session | Master Service Blueprinting — 5-Lane Architecture to the Orchestration Sixth Lane</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  :root { color-scheme: light; }
+  body.module-page { background: var(--paper-tint); }
+  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
+  .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
+  .module-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  .module-body th, .module-body td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
+  .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
+  .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
+  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
+  });
+</script>
 </head>
-<body>
-  <header class="site-head">
-    <a class="brand" href="../../index.html">
-      <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
-      <div class="brand-sub">Sam Mozaffari</div>
-    </a>
-    <nav class="main-nav">
-      <a href="../../index.html">Index</a>
-      <a href="../../courses.html" class="on">Courses</a>
-      <a href="../../harness.html">Harness</a>
-      <a href="../../docs/index.html">Docs</a>
-      <a href="../../about.html">About</a>
-      <a href="../../cv.html">CV</a>
-    </nav>
-  </header>
+<body class="module-page">
+  <div class="module-wrap">
+    <nav class="module-crumb"><a href="../../06-master-service-blueprinting-5-lane-to-6th-lane.html">← Master Service Blueprinting — 5-Lane Architecture to the Orchestration Sixth Lane</a></nav>
+    <article class="module-body">
 
-  <main class="lesson-layout">
-    <aside class="lesson-sidebar">
-      <div class="sidebar-course-title">Course 06 · Intermediate</div>
-      <div class="sidebar-heading"><a href="../06-master-service-blueprinting-5-lane-to-6th-lane.html" style="color:inherit; text-decoration:none;">Master Service Blueprinting: 5-Lane to 6th-Lane Swarms</a></div>
-      <ul class="syllabus-list">
-        <li><a href="./01-why-blueprints-are-service-architecture.html"><span class="mod-num">06.1</span> <span class="mod-name">Why Blueprints are Service Architecture, Not Infographics</span></a></li>
-<li><a href="./02-five-canonical-lanes-boundaries.html"><span class="mod-num">06.2</span> <span class="mod-name">The Five Canonical Lanes & Demarcation Boundaries</span></a></li>
-<li><a href="./03-lines-of-visibility-interaction-penetration.html"><span class="mod-num">06.3</span> <span class="mod-name">Lines of Visibility, Interaction & Internal Penetration</span></a></li>
-<li><a href="./04-sixth-lane-agentic-autonomous-swarms.html"><span class="mod-num">06.4</span> <span class="mod-name">The Sixth Lane: Autonomous AI Agent Swarms & Tool Invocations</span></a></li>
-<li><a href="./05-confidence-thresholds-escalation-paths.html"><span class="mod-num">06.5</span> <span class="mod-name">Confidence Thresholds & Frontline Human Escalation Routing</span></a></li>
-<li class="active"><a href="./06-authoring-blueprints-as-code-sd-blueprint.html"><span class="mod-num">06.6</span> <span class="mod-name">Authoring Blueprints as Code: Typed JSON & Validation</span></a></li>
-<li><a href="./07-automated-blueprint-diagnostics-validation.html"><span class="mod-num">06.7</span> <span class="mod-name">Hands-On: 6-Lane Blueprinting & Integrity Verification</span></a></li>
-      </ul>
-      <div style="padding-top: 16px; border-top: 1px solid var(--line);">
-        <a href="../06-master-service-blueprinting-5-lane-to-6th-lane.html" class="btn-outline" style="width:100%; text-align:center; font-size:12px; padding:8px 12px; display:block;">Course Deck &amp; Lab ↑</a>
-      </div>
-    </aside>
-
-    <article class="lesson-content">
-      <div class="lesson-breadcrumb">
-        <a href="../../courses.html">Courses</a>
-        <span>/</span>
-        <a href="../06-master-service-blueprinting-5-lane-to-6th-lane.html">Course 06</a>
-        <span>/</span>
-        <span>Module 06.6</span>
-      </div>
-
-      <h1 id="module-066-authoring-blueprints-as-code-typed-json-validation">Module 06.6: Authoring Blueprints as Code: Typed JSON &amp; Validation</h1>
+<h1 id="module-066-blueprints-as-code-the-full-authoring-session">Module 06.6: Blueprints-as-Code — The Full Authoring Session</h1>
 <blockquote>
-<p><strong>Course</strong>: <a href="../README.md">Master Service Blueprinting: 5-Lane to 6th-Lane Swarms</a> · <strong>Level</strong>: Intermediate · <strong>Duration</strong>: 45 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
+<p><strong>Course</strong>: <a href="../README.md">Master Service Blueprinting: 5-Lane Architecture to the Orchestration Sixth Lane</a> · <strong>Level</strong>: Intermediate · <strong>Duration</strong>: 50 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="learning-objectives">🎯 Learning Objectives</h2>
-<p>By completing this module, you will master:
-1. <strong>Theoretical Foundations</strong>: Understand the literature and empirical rationale behind <code>Authoring Blueprints as Code: Typed JSON &amp; Validation</code>.
-2. <strong>Agent Topology &amp; Contracts</strong>: Master the exact role contracts, handoff schemas, and tool execution boundaries (Mapper).
-3. <strong>Architecture &amp; Schemas</strong>: Review production TypeScript schemas, JSON payloads, and mathematical scoring functions.
-4. <strong>Case Study Execution</strong>: Examine real-world implementation logs and receipts from <strong>Master Blueprint Schema Architecture</strong>.
-5. <strong>Adversarial Verification</strong>: Enforce Critic review gates and fact-checking checks.
-6. <strong>Hands-on Practice</strong>: Run executable code and verify your implementation with automated test suites.</p>
-<hr />
-<h2 id="1-theoretical-grounding-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
-<h3 id="academic-practice-foundations">Academic &amp; Practice Foundations</h3>
-<p>In traditional service design, methods have often been treated as informal, transient workshop exercises. However, rigorous academic literature—from <strong>Vargo &amp; Lusch</strong> (<em>Service-Dominant Logic</em>), <strong>Christian Grönroos</strong> (<em>Service Quality Management</em>), <strong>Mary Jo Bitner &amp; Lynn Shostack</strong> (<em>Service Blueprinting</em>), to <strong>Lou Downe</strong> (<em>Good Services</em>) and <strong>Jim Kalbach</strong> (<em>Mapping Experiences</em>)—has long demanded that services be treated as complex, adaptive, socio-technical systems.</p>
-<p>When we augment service design with autonomous AI agents, we do not invent a new discipline from scratch; rather, we provide the computational infrastructure necessary to execute these canonical theories at scale.</p>
-<div class="codehilite"><pre><span></span><code><span class="nx">flowchart</span><span class="w"> </span><span class="nx">TD</span>
-<span class="w">    </span><span class="nx">subgraph</span><span class="w"> </span><span class="nx">Inputs</span><span class="p">[</span><span class="s">&quot;Evidence Ingestion &amp; Provenance&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">Q1</span><span class="p">[</span><span class="s">&quot;Verbatim Transcripts (n=200+)&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">S1</span><span class="p">[</span><span class="s">&quot;Semantic Chunking&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">T1</span><span class="p">[</span><span class="s">&quot;Quantitative Telemetry&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">S1</span>
-<span class="w">        </span><span class="nx">P1</span><span class="p">[</span><span class="s">&quot;Policy &amp; Regulatory Constraints&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">S1</span>
-<span class="w">        </span><span class="nx">S1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">E_DB</span><span class="p">[(</span><span class="s">&quot;Immutable SQLite Evidence Register (SHA-256)&quot;</span><span class="p">)]</span>
-<span class="w">    </span><span class="nx">end</span>
-
-<span class="w">    </span><span class="nx">subgraph</span><span class="w"> </span><span class="nx">Agents</span><span class="p">[</span><span class="s">&quot;Agent Production Layer (SOPs-as-Code)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">E_DB</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">A1</span><span class="p">[</span><span class="s">&quot;Researcher (Kind 01)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">A1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">A2</span><span class="p">[</span><span class="s">&quot;Synthesizer (Kind 05)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">A2</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">A3</span><span class="p">[</span><span class="s">&quot;Mapper (Kind 12)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">A3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">A4</span><span class="p">[</span><span class="s">&quot;Ideator / Prototyper (Kind 20/24)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">A4</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">A5</span><span class="p">[</span><span class="s">&quot;Measurer (Kind 30)&quot;</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">end</span>
-
-<span class="w">    </span><span class="nx">subgraph</span><span class="w"> </span><span class="nx">Governance</span><span class="p">[</span><span class="s">&quot;Adversarial Review &amp; Deterministic Compilation&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">A5</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">CR</span><span class="p">[</span><span class="s">&quot;Critic Agent (Kind 38)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">CR</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="o">|</span><span class="nx">Issues</span><span class="w"> </span><span class="nx">Veto</span><span class="w"> </span><span class="nx">Log</span><span class="o">|</span><span class="w"> </span><span class="nx">A2</span>
-<span class="w">        </span><span class="nx">CR</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="o">|</span><span class="nx">Approved</span><span class="w"> </span><span class="nx">Verdict</span><span class="o">|</span><span class="w"> </span><span class="nx">COMP</span><span class="p">[</span><span class="s">&quot;@asd/render Pure Compiler&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">COMP</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">OUT1</span><span class="p">[</span><span class="s">&quot;Deterministic SVG Diagrams&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">COMP</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">OUT2</span><span class="p">[</span><span class="s">&quot;Interactive Web Portals&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">COMP</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">OUT3</span><span class="p">[</span><span class="s">&quot;CI/CD Gate Compliance&quot;</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">end</span>
-
-<span class="w">    </span><span class="nx">classDef</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">f8f9fa</span><span class="p">,</span><span class="nx">stroke</span><span class="p">:</span><span class="err">#</span><span class="mi">4</span><span class="nx">a5568</span><span class="p">,</span><span class="nx">stroke</span><span class="o">-</span><span class="nx">width</span><span class="p">:</span><span class="m m-Double">1.5</span><span class="nx">px</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">classDef</span><span class="w"> </span><span class="nx">ag</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">ebf8ff</span><span class="p">,</span><span class="nx">stroke</span><span class="p">:</span><span class="err">#</span><span class="mi">2</span><span class="nx">b6cb0</span><span class="p">,</span><span class="nx">stroke</span><span class="o">-</span><span class="nx">width</span><span class="p">:</span><span class="m m-Double">1.5</span><span class="nx">px</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">classDef</span><span class="w"> </span><span class="nx">gv</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">faf5ff</span><span class="p">,</span><span class="nx">stroke</span><span class="p">:</span><span class="err">#</span><span class="mi">6</span><span class="nx">b46c1</span><span class="p">,</span><span class="nx">stroke</span><span class="o">-</span><span class="nx">width</span><span class="p">:</span><span class="m m-Double">1.5</span><span class="nx">px</span><span class="p">;</span>
-<span class="w">    </span><span class="kd">class</span><span class="w"> </span><span class="nx">Q1</span><span class="p">,</span><span class="nx">T1</span><span class="p">,</span><span class="nx">P1</span><span class="p">,</span><span class="nx">S1</span><span class="p">,</span><span class="nx">E_DB</span><span class="w"> </span><span class="k">in</span><span class="p">;</span>
-<span class="w">    </span><span class="kd">class</span><span class="w"> </span><span class="nx">A1</span><span class="p">,</span><span class="nx">A2</span><span class="p">,</span><span class="nx">A3</span><span class="p">,</span><span class="nx">A4</span><span class="p">,</span><span class="nx">A5</span><span class="w"> </span><span class="nx">ag</span><span class="p">;</span>
-<span class="w">    </span><span class="kd">class</span><span class="w"> </span><span class="nx">CR</span><span class="p">,</span><span class="nx">COMP</span><span class="p">,</span><span class="nx">OUT1</span><span class="p">,</span><span class="nx">OUT2</span><span class="p">,</span><span class="nx">OUT3</span><span class="w"> </span><span class="nx">gv</span><span class="p">;</span>
-</code></pre></div>
-
-<h3 id="core-methodological-invariants">Core Methodological Invariants</h3>
+<p>By completing this module, you will master:</p>
+<ol>
+<li><strong>Theoretical Foundations</strong>: what &quot;as-code&quot; buys a design artifact — diffability, reproducibility, mechanical validation, deterministic rendering — and why implementation literature (<code>books/03</code>) demands it.</li>
+<li><strong>The Complete Authoring Spine</strong>: project → evidence → journey map → five-lane blueprint with <code>references[].provenance</code> → gate → export, executed live.</li>
+<li><strong>Cross-Artifact Provenance</strong>: the typed <code>derived-from</code> and <code>supports</code> relations that turn isolated deliverables into a traceable system of record.</li>
+<li><strong>Schemas &amp; Verified Execution</strong>: real payloads, real ids, real exit codes — the entire session is reproduced below.</li>
+<li><strong>Case Study Lens</strong>: Article 11&#39;s artifact portfolio (A1 journey map → A1b blueprint → backlog) as the provenance chain this module builds.</li>
+<li><strong>Hands-on Practice</strong>: author the full chain yourself in a disposable workspace.</li>
+</ol>
+<hr>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h3 id="why-quotas-codequot-is-a-methodological-position-not-a-file-format">Why &quot;as-code&quot; is a methodological position, not a file format</h3>
+<p><em>Service Design: From Insight to Implementation</em> (<code>books/03-service-design-from-insight-to-implementation</code>, ch. 07 — a registered source of the <code>blueprint-to-backlog</code> method) makes the implementation argument: the distance between a design artifact and a delivery backlog is where most service redesigns die. The cause is representational: a workshop poster cannot be diffed against last week&#39;s version, cannot be validated in CI, cannot generate its own visualizations, and cannot prove which interview supports which box. Every translation step — poster to slide, slide to ticket, ticket to shipped system — is an opportunity for silent mutation.</p>
+<p>Blueprints-as-code removes the translation steps by making the blueprint <em>the single source of truth</em>:</p>
 <ul>
-<li><strong>Referential Integrity</strong>: Every claim made in downstream deliverables must resolve to an immutable cryptographic SHA-256 hash in <code>.asd/evidence.db</code>.</li>
-<li><strong>Typing Over Chat Memory</strong>: No critical design handoffs occur in conversational context windows. All state is serialized to structured JSON on disk.</li>
-<li><strong>Adversarial Falsification</strong>: The Critic agent sits on the write path and actively attempts to disprove design assertions before client presentation.</li>
+<li><strong>Diffable</strong>: the blueprint is JSON; a change is a line-level diff a reviewer can actually read.</li>
+<li><strong>Validatable</strong>: acceptance rules (min-nodes, per-node evidence, non-placeholder lanes) run at write time, every time, identically.</li>
+<li><strong>Traceable</strong>: every node cites SHA-256-addressed evidence; every cross-artifact link carries mandatory provenance.</li>
+<li><strong>Renderable</strong>: <code>sd_export_artifact</code> compiles the same JSON to the same SVG deterministically — the picture is a <em>view</em>, never the master.</li>
+<li><strong>Composable</strong>: typed references (<code>derived-from</code>, <code>supports</code>) let artifacts form a graph — journey map → blueprint → roadmap — that diagnostics (module 06.7) can traverse.</li>
 </ul>
-<hr />
-<h2 id="2-multi-agent-topology-role-contracts">🤖 2. Multi-Agent Topology &amp; Role Contracts</h2>
-<p>This module directly engages the following specialized agent roles within the 10-role Eve architecture:</p>
+<p>This is Shostack&#39;s 1984 ambition completed by tooling: the blueprint as an engineering document that operations, finance, and technology can all compute over.</p>
+<h3 id="concept-diagram-the-provenance-chain-this-module-builds">Concept diagram — the provenance chain this module builds</h3>
+<div class="diagram"><pre class="mermaid">flowchart LR
+    subgraph EVID[&quot;Evidence layer (content-addressed)&quot;]
+        E1[&quot;int-01 quote&lt;br/&gt;sha256: 1515c366…&quot;]
+        E4[&quot;obs-04 document&lt;br/&gt;sha256: d8ccdeaa…&quot;]
+        E6[&quot;tel-06 telemetry&lt;br/&gt;sha256: 2bf9ed6f…&quot;]
+    end
+    subgraph ART[&quot;Artifact layer (typed, gated)&quot;]
+        JM[&quot;journey-map&lt;br/&gt;4c7e9d3c…&lt;br/&gt;status: final&quot;]
+        BP[&quot;service-blueprint&lt;br/&gt;4d64fbd3…&lt;br/&gt;status: final&quot;]
+        RM[&quot;roadmap&lt;br/&gt;(blueprint-to-backlog)&quot;]
+    end
+    subgraph REND[&quot;Render layer (deterministic views)&quot;]
+        SVG[&quot;service-blueprint.4d64fbd3.svg&lt;br/&gt;7,720 bytes&quot;]
+        HTML[&quot;report.artifact-dossier.html&lt;br/&gt;25,683 bytes&quot;]
+    end
+    E1 &amp; E4 &amp; E6 --&gt;|&quot;nodes[].evidence[].evidenceId&quot;| JM
+    E1 &amp; E4 &amp; E6 --&gt;|&quot;nodes[].evidence[].evidenceId&quot;| BP
+    JM --&gt;|&quot;references: derived-from&lt;br/&gt;provenance: {source: method, methodId: service-blueprinting}&quot;| BP
+    BP --&gt;|&quot;references: supports&lt;br/&gt;provenance required&quot;| RM
+    BP --&gt;|&quot;sd_export_artifact&quot;| SVG
+    BP --&gt;|&quot;sd_export_report --kind artifact-dossier&quot;| HTML
+
+    classDef paper fill:#f8f9fa,stroke:#4a5568,stroke-width:1.5px,color:#1a202c;
+    classDef blue  fill:#ebf8ff,stroke:#3182ce,stroke-width:1.5px,color:#2b6cb0;
+    classDef purple fill:#faf5ff,stroke:#805ad5,stroke-width:1.5px,color:#553c9e;
+    classDef gold  fill:#fffbeb,stroke:#b7791f,stroke-width:1.5px,color:#744210;
+    class E1,E4,E6 paper;
+    class JM,BP blue;
+    class RM purple;
+    class SVG,HTML gold;</pre></div>
+<hr>
+<h2 id="2-agentic-topology-amp-role-contracts">🤖 2. Agentic Topology &amp; Role Contracts</h2>
+<p>The authoring session touches every role this course has introduced, in contract order:</p>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Role</th>
-<th style="text-align: center;">Contract Kind</th>
-<th style="text-align: left;">Specific Responsibility in this Module</th>
-<th style="text-align: left;">Bound Tools</th>
+<th align="left">Stage</th>
+<th align="left">Role</th>
+<th align="left">Tool calls</th>
+<th align="left">Contract basis</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Mapper</strong></td>
-<td style="text-align: center;"><code>role:mapper</code></td>
-<td style="text-align: left;">Executes specialized SOPs for Authoring Blueprints as Code: Typed JSON &amp; Validation</td>
-<td style="text-align: left;"><code>sd_blueprint</code>, <code>blueprint_schema</code></td>
+<tbody><tr>
+<td align="left">Evidence intake</td>
+<td align="left">researcher</td>
+<td align="left"><code>sd_evidence_add</code> (quote / telemetry / document)</td>
+<td align="left"><code>inputs: [{kind: evidence-set, min: 4}]</code></td>
 </tr>
-</tbody>
-</table>
-<h3 id="the-invariant-contract">The Invariant Contract</h3>
+<tr>
+<td align="left">Journey input</td>
+<td align="left">mapper</td>
+<td align="left"><code>sd_method_run journey-from-transcripts</code>, <code>sd_artifact_write</code></td>
+<td align="left">journey-map = the symptom view the blueprint derives from</td>
+</tr>
+<tr>
+<td align="left">Blueprint authoring</td>
+<td align="left">mapper (owner)</td>
+<td align="left"><code>sd_method_run service-blueprinting</code>, <code>sd_artifact_write --nodes --edges --references</code></td>
+<td align="left">acceptance: min-nodes 4, min-evidence-per-node 1, lane non-empty, no placeholder lanes</td>
+</tr>
+<tr>
+<td align="left">Line annotation</td>
+<td align="left">presenter</td>
+<td align="left"><code>sd_artifact_write</code> (edge labels, <code>marker</code>)</td>
+<td align="left">step 2 of the contract</td>
+</tr>
+<tr>
+<td align="left">Gate</td>
+<td align="left">critic</td>
+<td align="left"><code>sd_review</code> veto/pass</td>
+<td align="left"><code>reviewGate: &quot;critic&quot;</code>, <code>gate: true</code> step</td>
+</tr>
+<tr>
+<td align="left">Verification</td>
+<td align="left">measurer</td>
+<td align="left"><code>sd_factcheck</code></td>
+<td align="left">exit 0 only when every artifact passes</td>
+</tr>
+<tr>
+<td align="left">Delivery</td>
+<td align="left">orchestrator</td>
+<td align="left"><code>sd_method_run blueprint-to-backlog</code> → <code>roadmap</code></td>
+<td align="left"><code>supports</code> reference target; <code>inputs</code> require a validated service-blueprint</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="3-the-full-verified-session">💻 3. The Full Verified Session</h2>
+<p>Every command and id below is from the real disposable-workspace run performed for this course (workspace <code>/tmp/asd-c06-live</code>, 2026-08-22). Reproduce it exactly; only the ids will differ, because evidence ids are content hashes.</p>
+<h3 id="step-1-project-and-evidence-with-the-kind-vocabulary-failing-closed">Step 1 — project and evidence (with the kind vocabulary failing closed)</h3>
+<pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab06
+CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
+
+$CLI project-create --name &quot;Fernwood Repairs Blueprint Sprint&quot; --client &quot;Fernwood Council&quot; \
+  --sector government --service &quot;housing repairs reporting&quot;
+# → projectId: fernwood-repairs-blueprint-sprint-7cee33e4
+
+$CLI evidence-add --projectId &lt;pid&gt; --source int-01 --kind quote \
+  --body &quot;I reported the leaking tap online and got a text back within an hour with a booking reference.&quot;
+# → id 1515c366a19faab7…        (also added: int-02, int-03 quotes; obs-04 + doc-05 documents; tel-06 telemetry)
+
+$CLI evidence-add --projectId &lt;pid&gt; --source obs-04 --kind observation --body &quot;…&quot;
+# → asd evidence-add: invalid arguments: &quot;arguments.kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]
+#   (the closed kind vocabulary fails closed — re-add the same body as --kind document)
+</code></pre>
+<h3 id="step-2-the-journey-map-input-the-symptom-view">Step 2 — the journey-map input (the symptom view)</h3>
+<pre><code class="language-bash">$CLI artifact-write --projectId &lt;pid&gt; --methodId journey-from-transcripts \
+  --title &quot;Tenant repairs reporting journey (current)&quot; --nodes &#39;[
+   {&quot;id&quot;:&quot;j1&quot;,&quot;label&quot;:&quot;Notice leak and report online&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;1515c366…&quot;}],
+    &quot;fields&quot;:{&quot;stage&quot;:&quot;report&quot;,&quot;touchpoint&quot;:&quot;online portal&quot;,&quot;emotion&quot;:&quot;relieved&quot;}},
+   {&quot;id&quot;:&quot;j2&quot;,&quot;label&quot;:&quot;Wait for triage and booking confirmation&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;b9ed3853…&quot;}],
+    &quot;fields&quot;:{&quot;stage&quot;:&quot;triage&quot;,&quot;touchpoint&quot;:&quot;sms updates&quot;,&quot;emotion&quot;:&quot;anxious&quot;}},
+   {&quot;id&quot;:&quot;j3&quot;,&quot;label&quot;:&quot;Plumber visit without job context&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;7079d287…&quot;}],
+    &quot;fields&quot;:{&quot;stage&quot;:&quot;visit&quot;,&quot;touchpoint&quot;:&quot;front door&quot;,&quot;emotion&quot;:&quot;frustrated&quot;}},
+   {&quot;id&quot;:&quot;j4&quot;,&quot;label&quot;:&quot;Reopen ticket after failed fix&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;2bf9ed6f…&quot;}],
+    &quot;fields&quot;:{&quot;stage&quot;:&quot;rework&quot;,&quot;touchpoint&quot;:&quot;contact centre&quot;,&quot;emotion&quot;:&quot;exhausted&quot;}}]&#39; \
+  --edges &#39;[{&quot;id&quot;:&quot;e-j1-j2&quot;,&quot;from&quot;:&quot;j1&quot;,&quot;to&quot;:&quot;j2&quot;,&quot;relation&quot;:&quot;precedes&quot;,&quot;fields&quot;:{&quot;label&quot;:&quot;waits&quot;}}, …]&#39;
+# → {&quot;accepted&quot;:true,&quot;status&quot;:&quot;draft&quot;,&quot;artifact&quot;:{&quot;id&quot;:&quot;4c7e9d3c5fea4c67bad20eb16b592398&quot;, …}}
+</code></pre>
+<h3 id="step-3-the-five-lane-blueprint-with-typed-provenance-the-diagnosis-view">Step 3 — the five-lane blueprint with typed provenance (the diagnosis view)</h3>
+<pre><code class="language-bash">$CLI artifact-write --projectId &lt;pid&gt; --methodId service-blueprinting \
+  --title &quot;Fernwood repairs reporting blueprint (current state)&quot; --nodes &#39;[
+   {&quot;id&quot;:&quot;pe1&quot;,&quot;label&quot;:&quot;Booking reference SMS with job number&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;1515c366…&quot;}],
+    &quot;fields&quot;:{&quot;lane&quot;:&quot;physical-evidence&quot;,&quot;stage&quot;:&quot;report&quot;,&quot;touchpoint&quot;:&quot;sms&quot;}},
+   {&quot;id&quot;:&quot;ca1&quot;,&quot;label&quot;:&quot;Tenant reports leak via online portal&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;1515c366…&quot;}],
+    &quot;fields&quot;:{&quot;lane&quot;:&quot;customer-actions&quot;,&quot;stage&quot;:&quot;report&quot;,&quot;emotion&quot;:&quot;relieved&quot;}},
+   {&quot;id&quot;:&quot;ca2&quot;,&quot;label&quot;:&quot;Tenant phones contact centre for status&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;b9ed3853…&quot;}],
+    &quot;fields&quot;:{&quot;lane&quot;:&quot;customer-actions&quot;,&quot;stage&quot;:&quot;wait&quot;,&quot;emotion&quot;:&quot;anxious&quot;,&quot;marker&quot;:&quot;W&quot;}},
+   {&quot;id&quot;:&quot;fs1&quot;,&quot;label&quot;:&quot;Contact centre agent triages urgency&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;d8ccdeaa…&quot;}],
+    &quot;fields&quot;:{&quot;lane&quot;:&quot;frontstage-actions&quot;,&quot;stage&quot;:&quot;triage&quot;,&quot;actor&quot;:&quot;contact-centre-agent&quot;}},
+   {&quot;id&quot;:&quot;fs2&quot;,&quot;label&quot;:&quot;Plumber attends without triage context&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;7079d287…&quot;}],
+    &quot;fields&quot;:{&quot;lane&quot;:&quot;frontstage-actions&quot;,&quot;stage&quot;:&quot;visit&quot;,&quot;actor&quot;:&quot;contractor-plumber&quot;,&quot;marker&quot;:&quot;F&quot;}},
+   {&quot;id&quot;:&quot;bs1&quot;,&quot;label&quot;:&quot;Agent re-keys repair details into scheduler&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;d8ccdeaa…&quot;}],
+    &quot;fields&quot;:{&quot;lane&quot;:&quot;backstage-actions&quot;,&quot;stage&quot;:&quot;triage&quot;,&quot;actor&quot;:&quot;contact-centre-agent&quot;}},
+   {&quot;id&quot;:&quot;bs2&quot;,&quot;label&quot;:&quot;Depot dispatches job to contractor round&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;7079d287…&quot;}],
+    &quot;fields&quot;:{&quot;lane&quot;:&quot;backstage-actions&quot;,&quot;stage&quot;:&quot;dispatch&quot;,&quot;actor&quot;:&quot;depot-controller&quot;}},
+   {&quot;id&quot;:&quot;sp1&quot;,&quot;label&quot;:&quot;Policy engine applies 24h/20-day clocks&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;48a61a15…&quot;}],
+    &quot;fields&quot;:{&quot;lane&quot;:&quot;support-processes&quot;,&quot;stage&quot;:&quot;triage&quot;}},
+   {&quot;id&quot;:&quot;sp2&quot;,&quot;label&quot;:&quot;Ticket system tracks reopen rate&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;2bf9ed6f…&quot;}],
+    &quot;fields&quot;:{&quot;lane&quot;:&quot;support-processes&quot;,&quot;stage&quot;:&quot;rework&quot;}}]&#39; \
+  --edges &#39;[
+   {&quot;id&quot;:&quot;b1&quot;,&quot;from&quot;:&quot;ca1&quot;,&quot;to&quot;:&quot;fs1&quot;,&quot;relation&quot;:&quot;triggers&quot;,&quot;fields&quot;:{&quot;label&quot;:&quot;crosses line of interaction&quot;}},
+   {&quot;id&quot;:&quot;b2&quot;,&quot;from&quot;:&quot;fs1&quot;,&quot;to&quot;:&quot;bs1&quot;,&quot;relation&quot;:&quot;hands-to&quot;,&quot;fields&quot;:{&quot;label&quot;:&quot;crosses line of visibility&quot;}},
+   {&quot;id&quot;:&quot;b3&quot;,&quot;from&quot;:&quot;bs1&quot;,&quot;to&quot;:&quot;sp1&quot;,&quot;relation&quot;:&quot;depends-on&quot;,&quot;fields&quot;:{&quot;label&quot;:&quot;crosses line of internal interaction&quot;}},
+   {&quot;id&quot;:&quot;b4&quot;,&quot;from&quot;:&quot;sp1&quot;,&quot;to&quot;:&quot;bs2&quot;,&quot;relation&quot;:&quot;schedules&quot;,&quot;fields&quot;:{}},
+   {&quot;id&quot;:&quot;b5&quot;,&quot;from&quot;:&quot;bs2&quot;,&quot;to&quot;:&quot;fs2&quot;,&quot;relation&quot;:&quot;dispatches&quot;,&quot;fields&quot;:{}},
+   {&quot;id&quot;:&quot;b6&quot;,&quot;from&quot;:&quot;fs2&quot;,&quot;to&quot;:&quot;ca2&quot;,&quot;relation&quot;:&quot;fails&quot;,&quot;fields&quot;:{&quot;label&quot;:&quot;fail point F&quot;}},
+   {&quot;id&quot;:&quot;b7&quot;,&quot;from&quot;:&quot;fs2&quot;,&quot;to&quot;:&quot;fs1&quot;,&quot;relation&quot;:&quot;recovery-loop&quot;,&quot;fields&quot;:{&quot;label&quot;:&quot;rework returns to triage&quot;}}]&#39; \
+  --references &#39;[
+   {&quot;artifactId&quot;:&quot;4c7e9d3c5fea4c67bad20eb16b592398&quot;,&quot;kind&quot;:&quot;journey-map&quot;,&quot;relation&quot;:&quot;derived-from&quot;,
+    &quot;provenance&quot;:{&quot;source&quot;:&quot;method&quot;,&quot;methodId&quot;:&quot;service-blueprinting&quot;,
+                  &quot;note&quot;:&quot;Current-state journey map mined from tenant transcripts; blueprint lanes operationalise its stages.&quot;}}]&#39;
+# → {&quot;accepted&quot;:true,&quot;status&quot;:&quot;draft&quot;,&quot;artifact&quot;:{&quot;id&quot;:&quot;4d64fbd3395440efa44c17363e5b8f10&quot;, …}}
+</code></pre>
+<p>The <code>references</code> block is the module&#39;s heart: <code>relation: &quot;derived-from&quot;</code> points at the journey map, and <code>provenance</code> — <code>{source: &quot;method&quot;|&quot;human&quot;|&quot;import&quot;, methodId?, note?}</code> — records <em>why this link is trusted</em>. The schema will not accept the reference without it: <strong>a reference never gets provenance invented</strong> (<code>@asd/core</code> type doc, verbatim).</p>
+<h3 id="step-4-gate-verify-export">Step 4 — gate, verify, export</h3>
+<pre><code class="language-bash">$CLI review --projectId &lt;pid&gt; --artifactId 4d64fbd3… --verdict pass --rows &#39;[
+ {&quot;rowKind&quot;:&quot;proposal&quot;,&quot;severity&quot;:&quot;low&quot;,&quot;message&quot;:&quot;Recovery loop explicit; verified against contractor interview.&quot;,
+  &quot;evidenceId&quot;:&quot;7079d287…&quot;}]&#39;
+# → {&quot;status&quot;:&quot;final&quot;,&quot;verdict&quot;:&quot;pass&quot;}
+
+$CLI factcheck --projectId &lt;pid&gt;; echo $?
+# → per-artifact rows {integrity, schema, acceptance, review}; exit 0 only when every artifact passes
+
+$CLI export-artifact --projectId &lt;pid&gt; --artifactId 4d64fbd3…
+# → renders/service-blueprint.4d64fbd3.svg  (7,720 bytes, deterministic @asd/render output)
+
+$CLI export-report --projectId &lt;pid&gt; --kind artifact-dossier
+# → renders/report.artifact-dossier.html  (25,683 bytes)
+
+$CLI method-run --projectId &lt;pid&gt; --methodId blueprint-to-backlog
+# → contract: owner orchestrator, outputKind roadmap, inputs require ≥1 validated service-blueprint,
+#   acceptance: min-nodes 3 + field-non-empty horizon + field-non-empty owner
+#   (the blueprint becomes a backlog — books/03 ch.07&#39;s implementation bridge, executable)
+</code></pre>
+<h3 id="session-sequence-diagram">Session sequence diagram</h3>
+<p></p>
+<hr>
+<h2 id="4-case-study-lens-article-1139s-portfolio-as-this-provenance-chain">📊 4. Case Study Lens: Article 11&#39;s Portfolio as This Provenance Chain</h2>
 <blockquote>
-<p><em>"Handoffs between agents are typed filesystem artifacts, never conversational memory."</em></p>
+<p><strong>Synthetic illustration — not a production log.</strong></p>
 </blockquote>
-<p>Every role is bounded by explicit system prompts and constrained tool registries, preventing scope creep and maintaining deep analytical rigor.</p>
-<hr />
-<h2 id="3-production-schemas-code-cli-execution">💻 3. Production Schemas, Code &amp; CLI Execution</h2>
-<h3 id="typescript-schema-definition-asdcore">TypeScript Schema Definition (<code>@asd/core</code>)</h3>
-<p>The artifact produced or verified in this module adheres strictly to the following canonical TypeScript interface:</p>
-<div class="codehilite"><pre><span></span><code><span class="cm">/**</span>
-<span class="cm"> * Canonical Interface for Authoring Blueprints as Code: Typed JSON &amp; Validation</span>
-<span class="cm"> * Package: @asd/core (v2026.1)</span>
-<span class="cm"> */</span>
-<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="mo">06</span><span class="nx">AuthoringBlueprintsAsCodeSdBlueprintArtifact</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nx">schemaVersion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2026.1&quot;</span><span class="p">;</span>
-<span class="w">  </span><span class="nx">artifactId</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;art-06-6-&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">  </span><span class="nx">kind</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;06-authoring-blueprints-as-code-sd-blueprint&quot;</span><span class="p">;</span>
-<span class="w">  </span><span class="nx">metadata</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">courseId</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;06&quot;</span><span class="p">;</span>
-<span class="w">    </span><span class="kr">module</span><span class="nx">Id</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;06.6&quot;</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">authorRole</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Mapper&quot;</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">createdAt</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span><span class="w"> </span><span class="c1">// ISO 8601 UTC</span>
-<span class="w">    </span><span class="nx">evidenceCitations</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">[];</span><span class="w"> </span><span class="c1">// Array of SHA-256 hashes</span>
-<span class="w">    </span><span class="nx">confidenceScore</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span><span class="w"> </span><span class="c1">// 0.00 to 1.00</span>
-<span class="w">  </span><span class="p">};</span>
-<span class="w">  </span><span class="nx">payload</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">context</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">keyNodes</span><span class="o">:</span><span class="w"> </span><span class="kt">Array</span><span class="o">&lt;</span><span class="p">{</span>
-<span class="w">      </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">      </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">      </span><span class="nx">evidenceHash</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">      </span><span class="nx">metricTarget?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span><span class="o">&gt;</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">reviewStatus</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;draft&quot;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s2">&quot;under_review&quot;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s2">&quot;approved&quot;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s2">&quot;vetoed&quot;</span><span class="p">;</span>
-<span class="w">  </span><span class="p">};</span>
-<span class="w">  </span><span class="nx">criticVerdict</span><span class="o">?:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">reviewedBy</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Critic&quot;</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">approved</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">vetoLog?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">[];</span>
-<span class="w">    </span><span class="nx">timestamp</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">  </span><span class="p">};</span>
-<span class="p">}</span>
-</code></pre></div>
+<p>Article 11&#39;s artifact portfolio is exactly the chain built in this module: A1 (journey map) → A1b (current-state blueprint, the diagnostic centerpiece) → A1c (fail-point root-cause trace) → A2 (future-state blueprint) → prioritized backlog. The article&#39;s Phase 3 prioritization workshop is what <code>blueprint-to-backlog</code> formalizes: every fail point becomes a work item with an owning team, and the critic rejects any item with no wave assignment (&quot;an unsequenced backlog cannot be delivered&quot; — contract, verbatim). Where the article narrates the chain in prose, the toolchain <em>persists</em> it: the <code>derived-from</code> reference and the <code>supports</code> link to the roadmap are queryable data, so six months later a new team member can traverse from any backlog item back to the tenant quote that justifies it.</p>
+<hr>
+<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<p>The lab directory&#39;s verifier (<code>courses/labs/lab-06-blueprinting-6lane/verify_lab-06.mjs</code>) drives this entire spine headlessly — run it, read it, then reproduce it manually:</p>
+<pre><code class="language-bash"># Headless: full spine + negative assertions (empty lane, dangling evidence)
+node courses/labs/lab-06-blueprinting-6lane/verify_lab-06.mjs
 
-<h3 id="cli-command-execution">CLI Command Execution</h3>
-<p>Execute this step in your terminal using the <code>@asd/runtime</code> CLI tools:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 1. Initialize and inspect project environment</span>
-asd<span class="w"> </span>status<span class="w"> </span>--project-dir<span class="w"> </span>.
-
-<span class="c1"># 2. Execute the role tool for this module</span>
-asd<span class="w"> </span>run<span class="w"> </span>--tool<span class="w"> </span>sd_blueprint<span class="w"> </span>--input<span class="w"> </span>./data/input.json<span class="w"> </span>--output<span class="w"> </span>./artifacts/06-authoring-blueprints-as-code-sd-blueprint.json
-
-<span class="c1"># 3. Perform deterministic fact-checking</span>
-asd<span class="w"> </span>factcheck<span class="w"> </span>./artifacts/06-authoring-blueprints-as-code-sd-blueprint.json<span class="w"> </span>--evidence-db<span class="w"> </span>.asd/evidence.db<span class="w"> </span>--strict
-
-<span class="c1"># 4. Compile deterministic SVG visualizations</span>
-asd<span class="w"> </span>render<span class="w"> </span>./artifacts/06-authoring-blueprints-as-code-sd-blueprint.json<span class="w"> </span>--out<span class="w"> </span>./renders/06-authoring-blueprints-as-code-sd-blueprint.svg
-</code></pre></div>
-
-<hr />
-<h2 id="4-real-world-case-study-runlog-master-blueprint-schema-architecture">📊 4. Real-World Case Study Runlog: Master Blueprint Schema Architecture</h2>
-<h3 id="empirical-context">Empirical Context</h3>
-<p>In the <strong>Master Blueprint Schema Architecture</strong> engagement, this exact module was executed under production constraints:
-- <strong>Input Corpus</strong>: Ingested 45 qualitative interview transcripts, 1,200 telemetry error events, and 12 policy mandates.
-- <strong>Execution Runlog</strong>:
-  1. The <code>Mapper</code> ingested raw sources and generated 142 discrete content-addressed evidence rows.
-  2. The initial artifact draft was submitted to the <strong>Critic agent</strong>, which returned a <code>review-veto-log</code> flagging 3 uncorroborated assertions.
-  3. The team remediated the citations by extracting supporting quotes from user session transcripts.
-  4. The second validation pass cleared the gate with a confidence score of <strong>0.96</strong>.</p>
-<div class="codehilite"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;auditLog&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;case&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Master Blueprint Schema Architecture&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;step&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;06.6&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;initialAssertions&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">18</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;criticVetoes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;remediatedWithHashes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="s2">&quot;e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="s2">&quot;8f4e2a1b9c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f&quot;</span>
-<span class="w">    </span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;finalStatus&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APPROVED_BY_GATE&quot;</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-
-<hr />
-<h2 id="5-hands-on-practical-lab-exercise">🔬 5. Hands-On Practical Lab Exercise</h2>
-<h3 id="lab-instructions">Lab Instructions</h3>
-<ol>
-<li>Open terminal in <code>courses/labs/lab-06-*/</code>.</li>
-<li>Inspect the raw fixture data in <code>courses/research/fixtures/</code>.</li>
-<li>Author the artifact payload according to the schema above, ensuring all nodes reference valid SHA-256 evidence hashes.</li>
-<li>Run the automated evaluation test script:</li>
-</ol>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>courses/labs/lab-06-*/verify_lab-06.py
-</code></pre></div>
-
-<h3 id="verification-criteria-checklist">Verification Criteria Checklist</h3>
+# Manual: reproduce steps 1–4 above in your own ASD_WORKSPACE, then:
+$CLI schema-get --kind service-blueprint        # confirm the reference relations and lane rule
+$CLI artifact-get --projectId &lt;pid&gt; --artifactId &lt;bp-id&gt;   # read back your provenance block
+</code></pre>
+<h3 id="verification-checklist">Verification checklist</h3>
 <ul>
-<li>[ ] Schema matches <code>@asd/core</code> v2026.1 specification.</li>
-<li>[ ] Every assertion cites a valid SHA-256 hash registered in SQLite.</li>
-<li>[ ] Critic review gate passed with 0 unresolved veto logs.</li>
-<li>[ ] Deterministic SVG visualizer compiles without geometry overlap or clipping.</li>
+<li><input disabled="" type="checkbox"> Your journey map and blueprint both reached <code>accepted:true</code>, then <code>final</code> after review.</li>
+<li><input disabled="" type="checkbox"> The blueprint&#39;s <code>references</code> contains <code>derived-from</code> → your journey map with a complete <code>provenance</code> block.</li>
+<li><input disabled="" type="checkbox"> <code>factcheck</code> exit code is 0 with all artifacts final, 1 while any draft fails acceptance — you observed both.</li>
+<li><input disabled="" type="checkbox"> The exported SVG regenerates byte-identically from unchanged JSON (run <code>export-artifact</code> twice and compare).</li>
+<li><input disabled="" type="checkbox"> You can traverse the chain: backlog candidate → blueprint fail point → journey stage → tenant quote, using only ids.</li>
 </ul>
-<hr />
-<h2 id="key-takeaways-next-steps">🚀 Key Takeaways &amp; Next Steps</h2>
+<hr>
+<h2 id="key-takeaways">🚀 Key Takeaways</h2>
 <ul>
-<li>✅ <strong>Author complete multi-lane blueprints in structured JSON matching <code>@asd/core</code> schemas.</strong></li>
-<li>✅ <strong>Validate lane connectivity, trigger dependencies, and evidence hashes automatically.</strong></li>
-<li>✅ <strong>Render multi-tier blueprints into layered SVG graphics.</strong></li>
+<li>✅ <strong>Blueprints-as-code eliminates translation drift</strong>: one typed JSON source of truth, deterministic renders as views, line-level diffs for review.</li>
+<li>✅ <strong>Provenance is mandatory, not decorative</strong>: <code>references[].provenance</code> is required by schema, and every node cites content-addressed evidence — the chain from quote to backlog never breaks.</li>
+<li>✅ <strong>The full spine is seven commands</strong>: project → evidence → journey map → blueprint → review → factcheck → export, each failing closed on its own class of error.</li>
+<li>✅ <strong>Implementation starts where the blueprint ends</strong>: <code>blueprint-to-backlog</code> consumes a validated <code>service-blueprint</code> and emits a sequenced <code>roadmap</code> — the <code>supports</code> reference makes the handoff explicit.</li>
 </ul>
-<hr />
+<hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
-  <span>← [Previous: 06.5 Confidence Thresholds & Frontline Human Escalation Routing](./05-confidence-thresholds-escalation-paths.md) · [Next: 06.7 Hands-On: 6-Lane Blueprinting & Integrity Verification](./07-automated-blueprint-diagnostics-validation.md) →</span>
+  <span>← [Previous: 06.5 Confidence Thresholds, Error Handling & Human Escalation Paths](./05-confidence-thresholds-escalation-paths.md) · [Next: 06.7 Automated Blueprint Diagnostics & Validation](./07-automated-blueprint-diagnostics-validation.md) →</span>
   <span><a href="../README.md">Back to Course Overview ↑</a></span>
 </div>
 
-      <div class="lesson-nav-footer">
-        <a href="./05-confidence-thresholds-escalation-paths.html" class="btn-ghost">← 06.5 Confidence Thresholds & Frontline Human Escalation Routing</a>
-        <a href="./07-automated-blueprint-diagnostics-validation.html" class="btn-ink">06.7 Hands-On: 6-Lane Blueprinting & Integrity Verification →</a>
-      </div>
+
+      <div class="module-nav"><span>← <a href="./05-confidence-thresholds-escalation-paths.html">Module 06.5: Confidence Thresholds, Error Handling &amp; Human Escalation Paths</a></span><span><a href="./07-automated-blueprint-diagnostics-validation.html">Module 06.7: Automated Blueprint Diagnostics, Validation &amp; Bottleneck Audits</a> →</span></div>
     </article>
-  </main>
-
-  <footer class="footer">
-    <span>Sam Mozaffari — The Agentic Service Designer. Academy &amp; Practice.</span>
-    <span><a href="../../courses.html">All Courses</a> · <a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a></span>
-  </footer>
-
-  <script>
-    mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
-  </script>
+  </div>
+  <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
 </body>
 </html>

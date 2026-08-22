@@ -68,7 +68,9 @@
       border: 1px solid #2d2e2b;
       border-radius: 8px;
       min-height: 440px;
-      padding: 48px;
+      aspect-ratio: 16 / 9;
+      max-height: 78vh;
+      padding: clamp(28px, 4vw, 48px);
       position: relative;
       box-shadow: 0 12px 36px rgba(0,0,0,0.35);
       display: flex;
@@ -79,28 +81,50 @@
       display: none;
       flex-direction: column;
       height: 100%;
-      animation: fadeIn 200ms ease;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #3d3e3a transparent;
+      animation: slideIn 220ms ease;
     }
     .slide-card.active {
       display: flex;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to { opacity: 1; transform: translateX(0); }
     }
     .slide-header {
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
       font-family: var(--mono);
       font-size: 12px;
-      color: #e4be5c;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    .slide-kicker {
+      color: #e4be5c;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+    }
+    .slide-kicker::before {
+      content: "";
+      width: 18px;
+      height: 2px;
+      background: #e4be5c;
+      display: inline-block;
+    }
+    .slide-page-num {
+      color: #83847c;
+      letter-spacing: 0.12em;
     }
     .slide-title {
-      font-size: clamp(26px, 3vw, 38px);
+      font-size: clamp(24px, 2.8vw, 38px);
       letter-spacing: -0.025em;
+      line-height: 1.12;
       color: #ffffff;
       margin: 0 0 24px;
       font-weight: 700;
@@ -111,10 +135,20 @@
       margin: 0 0 24px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      font-size: 16.5px;
-      line-height: 1.6;
+      gap: 12px;
+      font-size: clamp(15px, 1.35vw, 17px);
+      line-height: 1.55;
       color: #d6d6ce;
+    }
+    .slide-bullets code {
+      font-family: var(--mono);
+      font-size: 0.86em;
+      color: #f0d489;
+      background: rgba(228,190,92,0.09);
+      border: 1px solid rgba(228,190,92,0.18);
+      padding: 1px 5px;
+      border-radius: 3px;
+      white-space: nowrap;
     }
     .slide-bullets li {
       position: relative;
@@ -131,22 +165,26 @@
     .slide-quote {
       border-left: 3px solid #e4be5c;
       padding-left: 16px;
-      margin: 20px 0 0;
+      margin: auto 0 0;
+      padding-top: 16px;
       font-style: italic;
       color: #a8a89f;
-      font-size: 14.5px;
+      font-size: clamp(13px, 1.1vw, 14.5px);
+      line-height: 1.5;
     }
-    
+
     .deck-diagram {
       display: flex;
       align-items: center;
-      gap: 12px;
+      flex-wrap: wrap;
+      gap: 10px 12px;
       background: #212220;
       padding: 16px;
       border-radius: 6px;
       margin: 16px 0;
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: 12.5px;
+      line-height: 1.45;
       overflow-x: auto;
     }
     .d-box {
@@ -159,6 +197,107 @@
     .d-good { border-color: #38a169; color: #68d391; }
     .d-bad { border-color: #e53e3e; color: #fc8181; }
     .d-arrow { color: #e4be5c; font-weight: 700; }
+
+    /* Diagram pattern: pipeline — numbered stages chained with arrows */
+    .d-pipe { counter-reset: dstage; }
+    .d-stage {
+      position: relative;
+      padding-left: 34px;
+    }
+    .d-stage::before {
+      content: counter(dstage, decimal-leading-zero);
+      counter-increment: dstage;
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #e4be5c;
+    }
+
+    /* Diagram pattern: lane-row — stacked labeled lanes for blueprints & journeys */
+    .d-lanes {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .d-lane {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .d-lane-label {
+      flex: 0 0 132px;
+      text-align: right;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #9a9b93;
+    }
+    .d-lane-items {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-left: 2px solid #3d3e3a;
+    }
+    .d-lane-items--line { border-left-color: #e4be5c; }
+
+    /* Diagram pattern: gate — decision box with pass/veto branches */
+    .d-gate-wrap {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 12px;
+    }
+    .d-gate-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .d-gate {
+      border-color: #e4be5c;
+      color: #f0d489;
+      background: rgba(228,190,92,0.07);
+    }
+    .d-branches {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .d-branch {
+      flex: 1 1 200px;
+      border: 1px solid #3d3e3a;
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: normal;
+    }
+    .d-branch b {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .d-pass { border-color: #38a169; color: #9ae6b4; background: rgba(56,161,105,0.08); }
+    .d-veto { border-color: #c53030; color: #feb2b2; background: rgba(197,48,48,0.08); }
+
+    @media (max-width: 720px) {
+      .slide-viewport { aspect-ratio: auto; max-height: none; }
+      .d-lane { flex-direction: column; align-items: stretch; gap: 4px; }
+      .d-lane-label { flex: none; text-align: left; }
+      .d-lane-items { border-left: none; border-top: 2px solid #3d3e3a; }
+    }
 
     /* Deck Navigation Footer */
     .deck-nav-bar {
@@ -195,11 +334,19 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: #3a3b37;
+      background: transparent;
+      border: 1px solid #565750;
       cursor: pointer;
+      transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+    }
+    .dot:hover {
+      border-color: #b9bab0;
+      transform: scale(1.15);
     }
     .dot.active {
       background: #e4be5c;
+      border-color: #e4be5c;
+      transform: scale(1.3);
     }
 
     /* Modules Grid Section */
@@ -295,54 +442,6 @@
       font-size: 14px;
     }
     .lab-btn:hover { opacity: 0.9; }
-  
-/* course spec tiles */
-.metrics-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.metrics-row > div {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-card);
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.metrics-row dt {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 0;
-}
-.metrics-row dd {
-  margin: 0;
-  font-size: 14.5px;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.3;
-}
-.status-available {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.status-available::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #2f9e5f;
-  box-shadow: 0 0 0 3px rgba(47, 158, 95, 0.18);
-}
-
   </style>
 </head>
 <body>
@@ -390,87 +489,190 @@
           
         <div class="slide-card active" data-slide-index="0">
           <div class="slide-header">
-            <span class="slide-kicker">Module 03.1</span>
-            <span class="slide-page-num">01 / 05</span>
+            <span class="slide-kicker">Paradigm Shift</span>
+            <span class="slide-page-num">01 / 10</span>
           </div>
-          <h2 class="slide-title">The Law of Artifacts: Why Chat-Based Agent Handoffs Cause Toxic Drift</h2>
+          <h2 class="slide-title">Evidence or It Didn't Happen</h2>
           <ul class="slide-bullets">
-            <li>Why passing conversational context across LLM subagents causes loss of fidelity, and how filesystem-first typed artifacts enforce mathematical integrity.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>An insight without a citation is an opinion; an artifact without evidence is decoration.</li><li>Every downstream claim must resolve to a hash in the project evidence store.</li><li>The runtime enforces this at write time: dangling evidence ids are rejected, not discovered later.</li><li>Fact-checking is deterministic and CI-gated — no model judgment, only verifiable structure.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">The Law of Artifacts</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-gate-wrap">
+  <div class="d-gate-row"><span class="d-box">Any claim</span><span class="d-arrow">→</span><span class="d-box d-gate">Cited in evidence store?</span></div>
+  <div class="d-branches">
+    <div class="d-branch d-pass"><b>Yes</b>Claim is auditable → may enter an artifact</div>
+    <div class="d-branch d-veto"><b>No</b>Claim is rejected at write — fail closed</div>
+  </div>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Evidence Registers, Fact-Checking & Review Gates."</blockquote>
+          <blockquote class="slide-quote">"In an agentic practice, the burden of proof is architectural."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="1">
           <div class="slide-header">
-            <span class="slide-kicker">Module 03.2</span>
-            <span class="slide-page-num">02 / 05</span>
+            <span class="slide-kicker">The Executable Spine</span>
+            <span class="slide-page-num">02 / 10</span>
           </div>
-          <h2 class="slide-title">Content-Addressed Evidence Registers: SHA-256 Cryptographic Provenance</h2>
+          <h2 class="slide-title">One Canonical Loop Behind All 8 Courses</h2>
           <ul class="slide-bullets">
-            <li>How every research quote, telemetry row, and document snippet is assigned an immutable SHA-256 hash that downstream artifacts must cite.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>Every module runs the same verified loop: project → evidence → method contract → artifact draft → critic gate → factcheck → export → human-gated phase advance.</li><li>This course owns the spine's enforcement half: evidence law, the critic gate, and the factcheck exit code.</li><li><code>sd_method_run</code> fails closed below the method's evidence minimum — no evidence, no artifact.</li><li><code>sd_phase_advance</code> refuses to run without a human approval receipt JSON.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Content-Addressed Evidence Registers</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">sd_project_create</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_evidence_add</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_method_run</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_artifact_write</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">sd_review</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_factcheck</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_export_report</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">sd_phase_advance</span>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Evidence Registers, Fact-Checking & Review Gates."</blockquote>
+          <blockquote class="slide-quote">"Agents prepare and verify with receipts; human leaders decide with accountability."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="2">
           <div class="slide-header">
-            <span class="slide-kicker">Module 03.3</span>
-            <span class="slide-page-num">03 / 05</span>
+            <span class="slide-kicker">Module 03.1</span>
+            <span class="slide-page-num">03 / 10</span>
           </div>
-          <h2 class="slide-title">The Evidence Taxonomy: Quotes, Telemetry, and Document Registers</h2>
+          <h2 class="slide-title">The Law of Artifacts: Why Chat-Based Agent Handoffs Cause Toxic Drift</h2>
           <ul class="slide-bullets">
-            <li>Deep dive into the three formal evidence kinds: verbatim qualitative quotes, quantitative operational telemetry, and policy/institutional documents.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>Conversational handoffs drift: summaries summarize summaries until fidelity is gone.</li><li>Filesystem-first typed artifacts make every handoff explicit, diffable, and auditable.</li><li>Acceptance-unmet writes are retained as draft with a failures list — drift is visible, never silent.</li><li>The review-veto-log persists every rejection: institutional memory with teeth.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">The Evidence Taxonomy</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-gate-wrap">
+  <div class="d-gate-row"><span class="d-box">Agent handoff</span><span class="d-arrow">→</span><span class="d-box d-gate">Carried by?</span></div>
+  <div class="d-branches">
+    <div class="d-branch d-pass"><b>Typed artifact</b>Schema-checked, evidence-cited, replayable</div>
+    <div class="d-branch d-veto"><b>Chat memory</b>Unverifiable, lossy, toxic drift across roles</div>
+  </div>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Evidence Registers, Fact-Checking & Review Gates."</blockquote>
+          <blockquote class="slide-quote">"Chat handoffs summarize; artifacts preserve."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="3">
           <div class="slide-header">
-            <span class="slide-kicker">Module 03.4</span>
-            <span class="slide-page-num">04 / 05</span>
+            <span class="slide-kicker">Module 03.2</span>
+            <span class="slide-page-num">04 / 10</span>
           </div>
-          <h2 class="slide-title">The Adversarial Critic Agent & The Review-Veto-Log Lifecycle</h2>
+          <h2 class="slide-title">Content-Addressed Evidence Registers: SHA-256 Cryptographic Provenance</h2>
           <ul class="slide-bullets">
-            <li>How the Critic agent (kind 38) evaluates artifacts against machine rules, issues binding vetoes with mandatory fixes, and gates phase transitions.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li><code>sd_evidence_add</code> computes id = SHA-256 over [source, kind, body, origin] — 64 hex chars, immutable.</li><li>The same evidence added twice yields the same id: the register deduplicates by construction.</li><li><code>sd_artifact_write</code> rejects nodes citing ids not in the store: cites evidence &lt;hash&gt; which is not in the project evidence store.</li><li>Provenance is cryptographic, not procedural — it cannot be process-violated away.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">The Adversarial Critic Agent & The Review-Veto-Log Lifecycle</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Raw quote / row</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">SHA-256 id</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">evidence/index.json</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Cited by artifact nodes</span>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Evidence Registers, Fact-Checking & Review Gates."</blockquote>
+          <blockquote class="slide-quote">"Provenance you cannot forge is provenance you can build on."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="4">
           <div class="slide-header">
+            <span class="slide-kicker">Module 03.3</span>
+            <span class="slide-page-num">05 / 10</span>
+          </div>
+          <h2 class="slide-title">The Evidence Taxonomy: Quotes, Telemetry, and Document Registers</h2>
+          <ul class="slide-bullets">
+            <li>Exactly three evidence kinds: quote, telemetry, document — observation is rejected at the CLI.</li><li>Quotes carry voice-of-customer verbatim; telemetry carries operational ground truth; documents carry institutional constraint.</li><li>Methods declare evidence rules: journey-from-transcripts needs ≥3 records before it will even return its contract.</li><li><code>sd_evidence_query</code> retrieves and <code>sd_evidence_import</code> bulk-ingests — same hash law.</li>
+          </ul>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">quote</span><div class="d-lane-items"><span class="d-box">Verbatim voice-of-customer</span><span class="d-box">Speaker + timestamp</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">telemetry</span><div class="d-lane-items"><span class="d-box">Drop-off rates</span><span class="d-box">Error counts · latency</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">document</span><div class="d-lane-items d-lane-items--line"><span class="d-box">Policy &amp; regulation</span><span class="d-box">Institutional constraint</span></div></div>
+</div>
+          <blockquote class="slide-quote">"Three kinds of evidence, one law: nothing enters the store unaddressed."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="5">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 03.4</span>
+            <span class="slide-page-num">06 / 10</span>
+          </div>
+          <h2 class="slide-title">The Adversarial Critic Agent & The Review-Veto-Log Lifecycle</h2>
+          <ul class="slide-bullets">
+            <li><code>sd_review</code> rows are typed: rowKind proposal|defect, severity critical|high|medium|low, optional rule, fix, evidenceId.</li><li>pass requires ≥1 evidence-cited row and zero defects → artifact status final.</li><li>veto requires ≥1 defect row and every defect must carry a fix → stays draft; the veto log is persisted.</li><li>The critic is a binding gate with a paper trail, not a vibe check.</li>
+          </ul>
+          <div class="deck-diagram d-gate-wrap">
+  <div class="d-gate-row"><span class="d-box">Artifact draft</span><span class="d-arrow">→</span><span class="d-box d-gate">sd_review (critic)</span></div>
+  <div class="d-branches">
+    <div class="d-branch d-pass"><b>PASS</b>≥1 evidence-cited row · zero defects → status final</div>
+    <div class="d-branch d-veto"><b>VETO</b>≥1 defect row, each with fix → stays draft, veto logged, loop back</div>
+  </div>
+</div>
+          <blockquote class="slide-quote">"A veto with a mandatory fix is quality assurance; a veto without one is just noise."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="6">
+          <div class="slide-header">
             <span class="slide-kicker">Module 03.5</span>
-            <span class="slide-page-num">05 / 05</span>
+            <span class="slide-page-num">07 / 10</span>
           </div>
           <h2 class="slide-title">Deterministic Fact-Checking in CI/CD with sd_factcheck & Quality Gates</h2>
           <ul class="slide-bullets">
-            <li>Automating fact-checking in continuous integration: failing builds whenever an artifact references missing, altered, or hallucinated evidence hashes.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li><code>sd_factcheck</code> emits a per-artifact report: integrity (dangling), schema, acceptance, review verdict.</li><li>Exit 0 only when every artifact passes; exit 1 otherwise — CI gate semantics.</li><li>Wire it into CI: a hallucinated citation breaks the build exactly like a failing test.</li><li>No model judgment involved: the check is structural and replayable by anyone.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Deterministic Fact-Checking in CI/CD with sd_factcheck & Quality Gates</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-gate-wrap">
+  <div class="d-gate-row"><span class="d-box">All project artifacts</span><span class="d-arrow">→</span><span class="d-box d-gate">sd_factcheck</span></div>
+  <div class="d-branches">
+    <div class="d-branch d-pass"><b>exit 0</b>Integrity + schema + acceptance + review all pass → merge allowed</div>
+    <div class="d-branch d-veto"><b>exit 1</b>Any failure → build breaks, failures listed per artifact</div>
+  </div>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Evidence Registers, Fact-Checking & Review Gates."</blockquote>
+          <blockquote class="slide-quote">"If the build is green, every citation resolves — that is the whole promise."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="7">
+          <div class="slide-header">
+            <span class="slide-kicker">Dogfooding the Runtime</span>
+            <span class="slide-page-num">08 / 10</span>
+          </div>
+          <h2 class="slide-title">The Verified Toolchain Behind This Course</h2>
+          <ul class="slide-bullets">
+            <li>Evidence: <code>sd_evidence_add</code>, <code>sd_evidence_query</code>, <code>sd_evidence_import</code>.</li><li>Artifacts: <code>sd_artifact_list</code>, <code>sd_artifact_get</code>, <code>sd_artifact_write</code>.</li><li>Assurance: <code>sd_review</code>, <code>sd_review_list</code>, <code>sd_factcheck</code>.</li><li>Dogfooded methods from the 74: evidence-register-build and transcript-mining.</li>
+          </ul>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">Evidence</span><div class="d-lane-items"><span class="d-box">sd_evidence_add</span><span class="d-box">sd_evidence_query</span><span class="d-box">sd_evidence_import</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Artifacts</span><div class="d-lane-items"><span class="d-box">sd_artifact_write</span><span class="d-box">sd_artifact_get</span><span class="d-box">sd_artifact_list</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Assurance</span><div class="d-lane-items d-lane-items--line"><span class="d-box">sd_review</span><span class="d-box">sd_review_list</span><span class="d-box d-gate">sd_factcheck</span></div></div>
+</div>
+          <blockquote class="slide-quote">"The store is the source of truth; the tools are its enforcement arm."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="8">
+          <div class="slide-header">
+            <span class="slide-kicker">Field Protocol</span>
+            <span class="slide-page-num">09 / 10</span>
+          </div>
+          <h2 class="slide-title">Fail-Closed by Design: Practicing the Negative Cases</h2>
+          <ul class="slide-bullets">
+            <li>Deliberate failure is a teaching tool: cite an invented hash and watch the write fail with the exact reason.</li><li>Run a method below its evidence minimum and read the fail-closed message: requires at least 3 evidence records.</li><li>Attempt phase-advance without a receipt JSON: refused, with the reason printed.</li><li>Every negative case exits non-zero — scripts assert on failure, not just success.</li>
+          </ul>
+          <div class="deck-diagram d-gate-wrap">
+  <div class="d-gate-row"><span class="d-box">Hostile input</span><span class="d-arrow">→</span><span class="d-box d-gate">Runtime checks</span></div>
+  <div class="d-branches">
+    <div class="d-branch d-pass"><b>Valid</b>Proceeds — with receipts</div>
+    <div class="d-branch d-veto"><b>Invalid</b>Dangling ref · thin evidence · missing receipt → fail closed, exit 1</div>
+  </div>
+</div>
+          <blockquote class="slide-quote">"A gate you have never seen refuse is a gate you do not understand."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="9">
+          <div class="slide-header">
+            <span class="slide-kicker">Capstone</span>
+            <span class="slide-page-num">10 / 10</span>
+          </div>
+          <h2 class="slide-title">A Register, a Veto, and a Green Build</h2>
+          <ul class="slide-bullets">
+            <li>Build an evidence register from raw quotes, telemetry rows, and one policy document.</li><li>Run a method, cite evidence in every node, and survive a real veto cycle with fixes.</li><li>Close with a green <code>sd_factcheck</code> and an exported artifact-dossier.</li><li>Definition of done: exit 0, zero dangling, every defect fixed or never written.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Evidence register</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Cited artifact</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">Veto survived</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">factcheck exit 0</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Dossier exported</span>
+</div>
+          <blockquote class="slide-quote">"Exit 0 is the sound of evidence holding."</blockquote>
         </div>
         
         </div>
@@ -478,7 +680,7 @@
         <div class="deck-nav-bar">
           <button class="deck-btn" id="prevBtn" onclick="changeSlide(-1)">◄ Previous Slide</button>
           <div class="slide-dots" id="slideDots">
-            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div><div class="dot " onclick="goToSlide(3)"></div><div class="dot " onclick="goToSlide(4)"></div>
+            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div><div class="dot " onclick="goToSlide(3)"></div><div class="dot " onclick="goToSlide(4)"></div><div class="dot " onclick="goToSlide(5)"></div><div class="dot " onclick="goToSlide(6)"></div><div class="dot " onclick="goToSlide(7)"></div><div class="dot " onclick="goToSlide(8)"></div><div class="dot " onclick="goToSlide(9)"></div>
           </div>
           <button class="deck-btn" id="nextBtn" onclick="changeSlide(1)">Next Slide ►</button>
         </div>
@@ -501,8 +703,8 @@
             <span class="mod-badge">03.1</span>
             <span class="mod-time">⏱️ 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./03-evidence-registers-fact-checking-review-gates/01-law-of-artifacts-no-chat.html" style="color:inherit; text-decoration:none;">The Law of Artifacts: Why Chat-Based Agent Handoffs Cause Toxic Drift</a></h3>
-          <p class="mod-card-desc">Why passing conversational context across LLM subagents causes loss of fidelity, and how filesystem-first typed artifacts enforce mathematical integrity.</p>
+          <h3 class="mod-card-title"><a href="./03-evidence-registers-fact-checking-review-gates/01-law-of-artifacts-no-chat.html" style="color:inherit; text-decoration:none;">The Law of Artifacts: Why Conversational Memory Destroys Rigor</a></h3>
+          <p class="mod-card-desc">Chat context is lossy, private, and non-replayable; typed artifacts on disk are the only auditable handoff. Includes the draft→final state machine and a fail-closed dangling-citation demo.</p>
           <a class="mod-card-link" href="./03-evidence-registers-fact-checking-review-gates/01-law-of-artifacts-no-chat.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -511,8 +713,8 @@
             <span class="mod-badge">03.2</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./03-evidence-registers-fact-checking-review-gates/02-sha256-evidence-registers.html" style="color:inherit; text-decoration:none;">Content-Addressed Evidence Registers: SHA-256 Cryptographic Provenance</a></h3>
-          <p class="mod-card-desc">How every research quote, telemetry row, and document snippet is assigned an immutable SHA-256 hash that downstream artifacts must cite.</p>
+          <h3 class="mod-card-title"><a href="./03-evidence-registers-fact-checking-review-gates/02-sha256-evidence-registers.html" style="color:inherit; text-decoration:none;">SHA-256 Evidence Registers & Content-Addressed Storage</a></h3>
+          <p class="mod-card-desc">`id = sha256(JSON([source, kind, body, origin | null]))` — proven live: identical quote → identical id (dedup), one character changed → different id (avalanche). The register is plain per-project JSON; no SQLite.</p>
           <a class="mod-card-link" href="./03-evidence-registers-fact-checking-review-gates/02-sha256-evidence-registers.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -521,8 +723,8 @@
             <span class="mod-badge">03.3</span>
             <span class="mod-time">⏱️ 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./03-evidence-registers-fact-checking-review-gates/03-evidence-kinds-quotes-telemetry-docs.html" style="color:inherit; text-decoration:none;">The Evidence Taxonomy: Quotes, Telemetry, and Document Registers</a></h3>
-          <p class="mod-card-desc">Deep dive into the three formal evidence kinds: verbatim qualitative quotes, quantitative operational telemetry, and policy/institutional documents.</p>
+          <h3 class="mod-card-title"><a href="./03-evidence-registers-fact-checking-review-gates/03-evidence-kinds-quotes-telemetry-docs.html" style="color:inherit; text-decoration:none;">The Evidence Taxonomy: Quotes, Telemetry & Documents</a></h3>
+          <p class="mod-card-desc">Methodological triangulation as a closed kind set; `observation` rejected at the schema; the import pipeline probed live — workspace containment, strict UTF-8, hard `maxBytes` cap, `onError: fail|skip`.</p>
           <a class="mod-card-link" href="./03-evidence-registers-fact-checking-review-gates/03-evidence-kinds-quotes-telemetry-docs.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -531,8 +733,8 @@
             <span class="mod-badge">03.4</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./03-evidence-registers-fact-checking-review-gates/04-critic-agent-veto-log-lifecycle.html" style="color:inherit; text-decoration:none;">The Adversarial Critic Agent & The Review-Veto-Log Lifecycle</a></h3>
-          <p class="mod-card-desc">How the Critic agent (kind 38) evaluates artifacts against machine rules, issues binding vetoes with mandatory fixes, and gates phase transitions.</p>
+          <h3 class="mod-card-title"><a href="./03-evidence-registers-fact-checking-review-gates/04-critic-agent-veto-log-lifecycle.html" style="color:inherit; text-decoration:none;">The Critic Agent: Adversarial Review & the Review-Veto-Log Lifecycle</a></h3>
+          <p class="mod-card-desc">Full row schema (`rowKind`, `severity`, `message`, `rule?`, `fix?`, `evidenceId?`); veto requires defect+fix, pass requires an evidence citation; both verdicts run live with the persisted log artifact.</p>
           <a class="mod-card-link" href="./03-evidence-registers-fact-checking-review-gates/04-critic-agent-veto-log-lifecycle.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -541,8 +743,8 @@
             <span class="mod-badge">03.5</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./03-evidence-registers-fact-checking-review-gates/05-deterministic-factchecking-cicd.html" style="color:inherit; text-decoration:none;">Deterministic Fact-Checking in CI/CD with sd_factcheck & Quality Gates</a></h3>
-          <p class="mod-card-desc">Automating fact-checking in continuous integration: failing builds whenever an artifact references missing, altered, or hallucinated evidence hashes.</p>
+          <h3 class="mod-card-title"><a href="./03-evidence-registers-fact-checking-review-gates/05-deterministic-factchecking-cicd.html" style="color:inherit; text-decoration:none;">Deterministic Fact-Checking & CI Gates with `sd_factcheck`</a></h3>
+          <p class="mod-card-desc">The four fields (integrity / schema / acceptance / review), a real red report naming the failing rule, in-place remediation to green, and a GitHub Actions gate on the exit code.</p>
           <a class="mod-card-link" href="./03-evidence-registers-fact-checking-review-gates/05-deterministic-factchecking-cicd.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -575,7 +777,7 @@
 
   <script>
     var currentSlide = 0;
-    var totalSlides = 5;
+    var totalSlides = 10;
 
     function showSlide(index) {
       if (index < 0) index = 0;

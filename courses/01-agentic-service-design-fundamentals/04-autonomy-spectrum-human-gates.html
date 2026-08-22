@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Module 01.4: The Autonomy Spectrum &amp; The Sovereign Human Decision Gate — Agentic Service Design Fundamentals | The Agentic Service Designer">
+<title>Module 01.4: The Autonomy Spectrum &amp; The Sovereign Human Decision Gate | Agentic Service Design Fundamentals</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  :root { color-scheme: light; }
+  body.module-page { background: var(--paper-tint); }
+  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
+  .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
+  .module-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  .module-body th, .module-body td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
+  .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
+  .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
+  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
+  });
+</script>
+</head>
+<body class="module-page">
+  <div class="module-wrap">
+    <nav class="module-crumb"><a href="../../01-agentic-service-design-fundamentals.html">← Agentic Service Design Fundamentals</a></nav>
+    <article class="module-body">
+
+<h1 id="module-014-the-autonomy-spectrum-amp-the-sovereign-human-decision-gate">Module 01.4: The Autonomy Spectrum &amp; The Sovereign Human Decision Gate</h1>
+<blockquote>
+<p><strong>Course</strong>: <a href="./README.md">Agentic Service Design Fundamentals</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 45 min · <strong>Format</strong>: Theory, Architecture, Verified CLI Run &amp; Hands-on Lab</p>
+</blockquote>
+<hr>
+<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<p>By completing this module, you will be able to:</p>
+<ol>
+<li><strong>Place any service design task on the autonomy spectrum</strong> and justify the placement from the theory of accountable decision-making.</li>
+<li><strong>Distinguish the three enforcement layers</strong> the runtime provides: the critic <code>reviewGate</code> (machine adversary), <code>humanCheckpoints</code> (human authorization inside a method), and <code>sd_phase_advance --approvalReceipt</code> (human authorization between project phases).</li>
+<li><strong>Never conflate the two phase enums</strong> — project phases <code>discover|define|develop|deliver</code> vs. method phases <code>research|synthesis|ideation|prototyping|delivery|measurement</code> — and explain why they are different axes.</li>
+<li><strong>Demonstrate fail-closed governance</strong> — run a phase advance without a receipt and watch it refuse.</li>
+</ol>
+<hr>
+<h2 id="1-theoretical-grounding-why-some-decisions-cannot-be-delegated">📖 1. Theoretical Grounding: Why Some Decisions Cannot Be Delegated</h2>
+<p>The service design canon is unambiguous that design is a normative act, not just an analytic one. Stickdorn et al. (<em>This is Service Design Doing</em>, Ch. 2, <code>books/01-this-is-service-design-doing/02-principles-of-service-design.md</code>) put &quot;human-centered&quot; first among the principles: services are judged by the people who live them, so decisions that trade one group&#39;s burden against another&#39;s convenience are <em>ethical</em> decisions. Kumar (<em>101 Design Methods</em>, <code>books/17-101-design-methods/01-innovation-as-a-process.md</code>) adds the organizational half: innovation is a managed discipline, and management means <em>accountable owners</em> for each mode transition — his &quot;non-linear looping&quot; is a governance structure, not a free-for-all.</p>
+<p>This yields the autonomy spectrum&#39;s logic. <strong>Automate what is reversible and verifiable</strong>: evidence capture, clustering, draft generation, schema validation, citation checking. These fail safely — a bad draft is deleted. <strong>Reserve for humans what is irreversible or normative</strong>: publishing a claim about real people, advancing a project phase, spending client money on a recommendation. These fail badly — a published falsehood about a tenant&#39;s experience cannot be unpublished.</p>
+<p>The platform encodes this as three concentric gates, each stricter than the last:</p>
+<ol>
+<li><strong>The critic review gate (<code>reviewGate: &quot;critic&quot;</code>)</strong> — a machine adversary on every artifact. Fast, tireless, automatic: the <em>verification</em> half of autonomy.</li>
+<li><strong>Method <code>humanCheckpoints</code></strong> — embedded in the method contract itself. <code>journey-from-transcripts</code> carries <code>scope-confirmation</code> (before-run: &quot;Confirm the scope, inputs, consent and intended decision&quot;) and <code>handoff-approval</code> (before-handoff: &quot;Approve the evidence-backed journey-map and its open gaps&quot;). The method <em>cannot be honestly executed</em> without a named human answering these.</li>
+<li><strong>The phase gate (<code>sd_phase_advance --approvalReceipt</code>)</strong> — the sovereign gate. Moving a project from <code>discover</code> to <code>define</code> requires a signed JSON receipt with <code>receiptId</code>, <code>approvedBy</code>, <code>decision</code>, <code>rationale</code>, and <code>approvedAt</code>. No receipt, no advance. <strong>Agents prepare; humans authorize.</strong></li>
+</ol>
+<h3 id="concept-diagram-the-autonomy-spectrum">Concept diagram — the autonomy spectrum</h3>
+<div class="diagram"><pre class="mermaid">flowchart LR
+    subgraph Auto[&quot;FULL AGENT AUTONOMY (reversible, machine-verifiable)&quot;]
+        A1[&quot;Evidence capture&lt;br/&gt;sd_evidence_add&quot;]
+        A2[&quot;Contract read&lt;br/&gt;sd_method_run&quot;]
+        A3[&quot;Draft authoring&lt;br/&gt;sd_artifact_write&quot;]
+        A4[&quot;Adversarial check&lt;br/&gt;sd_review / sd_factcheck&quot;]
+    end
+    subgraph Shared[&quot;SHARED (agent prepares, human answers)&quot;]
+        S1[&quot;scope-confirmation&lt;br/&gt;before-run checkpoint&quot;]
+        S2[&quot;handoff-approval&lt;br/&gt;before-handoff checkpoint&quot;]
+    end
+    subgraph Human[&quot;SOVEREIGN HUMAN (irreversible, normative)&quot;]
+        H1[&quot;Phase advance&lt;br/&gt;sd_phase_advance + approvalReceipt&quot;]
+        H2[&quot;Client publication&lt;br/&gt;export released outside the team&quot;]
+        H3[&quot;Trade-off calls&lt;br/&gt;whose burden increases&quot;]
+    end
+    Auto --&gt;|&quot;draft artifacts only&quot;| Shared
+    Shared --&gt;|&quot;named human answers&quot;| Human
+    classDef paper fill:#f8f9fa,stroke:#4a5568,stroke-width:1.5px,color:#1a202c;
+    classDef blue  fill:#ebf8ff,stroke:#3182ce,stroke-width:1.5px,color:#2b6cb0;
+    classDef purple fill:#faf5ff,stroke:#805ad5,stroke-width:1.5px,color:#553c9e;
+    classDef gold  fill:#fffbeb,stroke:#b7791f,stroke-width:1.5px,color:#744210;
+    classDef bad   fill:#fff5f5,stroke:#c53030,stroke-width:1.5px,color:#742a2a;
+    class A1,A2,A3,A4 blue;
+    class S1,S2 gold;
+    class H1,H2,H3 bad;</pre></div>
+<hr>
+<h2 id="2-the-two-phase-enums-do-not-conflate-them">🤖 2. The Two Phase Enums — Do Not Conflate Them</h2>
+<p>The runtime has <strong>two different phase vocabularies on two different axes</strong>, and mixing them up produces meaningless sentences like &quot;advance the project to synthesis&quot;:</p>
+<p></p>
+<p>A project in <code>discover</code> typically runs <code>research</code>- and <code>synthesis</code>-phase methods (like <code>journey-from-transcripts</code>, whose contract declares <code>&quot;phase&quot;:&quot;synthesis&quot;</code>). A project in <code>deliver</code> runs <code>measurement</code>-phase methods (like <code>service-profit-chain-mapping</code>). The mapping is a convention, not a constraint — the hard rule is only that <strong>project-phase transitions need a human receipt</strong>, whatever methods were run inside the phase.</p>
+<hr>
+<h2 id="3-verified-execution-fail-closed-governance-run-today-2026-08-22">💻 3. Verified Execution: Fail-Closed Governance (run today, 2026-08-22)</h2>
+<p><strong>The fail-closed refusal</strong> — no receipt, no advance, exit 1:</p>
+<pre><code class="language-bash">$CLI phase-advance --projectId fernwood-repairs-sprint-f0d60fa1 --toPhase define --idempotencyKey gate-1
+# → asd phase-advance: missing required flag &quot;--approvalReceipt&quot;   (exit 1)
+</code></pre>
+<p>There is a second fail-closed layer: even <em>with</em> a receipt, the gate refuses while any design artifact is still a draft — <code>phase advance requires all design artifacts to be final; drafts: &lt;id&gt;</code>. Autonomy can produce; only finalized, reviewed work can justify a phase transition.</p>
+<p><strong>The authorized advance</strong> — a signed receipt, and the runtime records the full evaluation context:</p>
+<pre><code class="language-bash">$CLI phase-advance --projectId fernwood-repairs-sprint-f0d60fa1 --toPhase define --idempotencyKey gate-1 \
+  --approvalReceipt &#39;{&quot;receiptId&quot;:&quot;RCP-2026-08-22-01&quot;,&quot;approvedBy&quot;:&quot;Sam Mozaffari&quot;,&quot;decision&quot;:&quot;approve&quot;,&quot;rationale&quot;:&quot;Journey map final, evidence-backed, ready to frame opportunities.&quot;,&quot;approvedAt&quot;:&quot;2026-08-22T11:38:00Z&quot;}&#39;
+</code></pre>
+<pre><code class="language-json">{&quot;advanced&quot;:true,
+ &quot;decision&quot;:{&quot;kind&quot;:&quot;phase-gate-decision&quot;,&quot;id&quot;:&quot;e16f658814864488affb5d6d8a04fa41&quot;,
+  &quot;fromPhase&quot;:&quot;discover&quot;,&quot;toPhase&quot;:&quot;define&quot;,&quot;idempotencyKey&quot;:&quot;gate-1&quot;,
+  &quot;receipt&quot;:{&quot;receiptId&quot;:&quot;RCP-2026-08-22-01&quot;,&quot;approvedBy&quot;:&quot;Sam Mozaffari&quot;,&quot;decision&quot;:&quot;approve&quot;,
+   &quot;rationale&quot;:&quot;Journey map final, evidence-backed, ready to frame opportunities.&quot;,&quot;approvedAt&quot;:&quot;2026-08-22T11:38:00Z&quot;},
+  &quot;evaluation&quot;:{&quot;artifactCount&quot;:1,&quot;finalArtifactIds&quot;:[&quot;2baab028b1fb4cc997d5f8d977a049f5&quot;],
+   &quot;draftArtifactIds&quot;:[],&quot;vetoArtifactIds&quot;:[],&quot;factcheckPass&quot;:true},
+  &quot;outcome&quot;:&quot;advanced&quot;}}
+</code></pre>
+<p>Notice what the decision record preserves: not just <em>who</em> approved, but the <em>state of the world at approval time</em> — how many artifacts existed, which were final, whether factcheck passed. This is the audit trail a workshop can never produce: the decision and its evidential basis are one immutable record. The <code>idempotencyKey</code> means a retried submission replays the same decision instead of double-advancing.</p>
+<h3 id="state-diagram-the-full-governance-lifecycle">State diagram — the full governance lifecycle</h3>
+<p></p>
+<h3 id="sequence-diagram-three-gates-around-one-artifact">Sequence diagram — three gates around one artifact</h3>
+<p></p>
+<hr>
+<h2 id="4-case-study-lens-article-04-quotservice-design-for-business-turning-claims-into-an-experience-at-aurelia-insurancequot">📊 4. Case Study Lens: Article 04 — &quot;Service Design for Business: Turning Claims into an Experience at Aurelia Insurance&quot;</h2>
+<blockquote>
+<p><strong>Synthetic illustration — not a production log.</strong></p>
+</blockquote>
+<p>Article 04 (<code>articles/04/README.md</code>) is the right lens for autonomy boundaries: insurance claims are a domain where a wrong automated assertion has regulatory and human cost. As you read it, classify every agent action in the article onto the spectrum above — you will find the pattern is always the same: agents ingest, cluster, draft, and check; humans sign the gate documents. The article&#39;s review cadence is the <code>humanCheckpoints</code> pattern wearing a suit: named people answering named questions at named points, with the answers recorded.</p>
+<hr>
+<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab-04
+CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
+
+# 1. Confirm the two enums are different: list method phases, then read a contract&#39;s phase
+$CLI method-list --phase synthesis        # method axis
+$CLI project-create --name &quot;Gate Lab&quot; --client &quot;Lab&quot; --sector government --service &quot;permits&quot;
+#    → project.phase is &quot;discover&quot;        # project axis
+
+# 2. Build a one-artifact project (reuse module 01.6&#39;s spine), leaving the artifact in draft
+# 3. Fail-closed demo A — no receipt (expect exit 1)
+$CLI phase-advance --projectId &lt;pid&gt; --toPhase define --idempotencyKey gate-1 ; echo &quot;exit=$?&quot;
+
+# 4. Fail-closed demo B — receipt but artifact still draft (expect exit 1, &quot;drafts: &lt;id&gt;&quot;)
+$CLI phase-advance --projectId &lt;pid&gt; --toPhase define --idempotencyKey gate-1 \
+  --approvalReceipt &#39;{&quot;receiptId&quot;:&quot;R1&quot;,&quot;approvedBy&quot;:&quot;You&quot;,&quot;decision&quot;:&quot;approve&quot;,&quot;rationale&quot;:&quot;test&quot;,&quot;approvedAt&quot;:&quot;2026-08-22T00:00:00Z&quot;}&#39; ; echo &quot;exit=$?&quot;
+
+# 5. Pass the critic gate (sd_review), re-run factcheck, then advance — expect &quot;advanced&quot;:true
+</code></pre>
+<h3 id="verification-checklist">Verification checklist</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Exit 1 without <code>--approvalReceipt</code>; exit 1 with receipt while drafts exist; success only when all artifacts final + receipt present.</li>
+<li><input disabled="" type="checkbox"> The recorded decision includes <code>evaluation.finalArtifactIds</code> and <code>factcheckPass:true</code>.</li>
+<li><input disabled="" type="checkbox"> You can list both enums from memory and give a sentence that correctly uses both.</li>
+<li><input disabled="" type="checkbox"> You can name the two <code>humanCheckpoints</code> on <code>journey-from-transcripts</code> and their <code>when</code> values.</li>
+</ul>
+<hr>
+<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<ul>
+<li><strong>Autonomy is allocated by reversibility.</strong> Agents own reversible, machine-verifiable work; humans own irreversible, normative decisions.</li>
+<li><strong>Three gates, ascending authority</strong>: critic (machine adversary per artifact) → method <code>humanCheckpoints</code> (named human per method) → <code>sd_phase_advance --approvalReceipt</code> (sovereign human per phase).</li>
+<li><strong>Fail-closed is the default.</strong> Missing receipt, lingering drafts, failing factcheck — each independently blocks the advance with exit 1.</li>
+<li><strong>Two phase enums, two axes.</strong> Project phases (<code>discover|define|develop|deliver</code>) locate the engagement; method phases (<code>research|synthesis|ideation|prototyping|delivery|measurement</code>) classify the thinking. Never use one where the other belongs.</li>
+</ul>
+<hr>
+<div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
+  <span>← [Previous: 01.3 The 10-Role Agent Topology](./03-ten-agent-team-topology.md) · [Next: 01.5 The Service Profit Chain](./05-service-profit-chain-ai.md) →</span>
+  <span><a href="./README.md">Back to Course Overview ↑</a></span>
+</div>
+
+
+      <div class="module-nav"><span>← <a href="./03-ten-agent-team-topology.html">Module 01.3: The 10-Role Agent Topology: Role Contracts &amp; Boundaries</a></span><span><a href="./05-service-profit-chain-ai.html">Module 01.5: The Service Profit Chain: Linking Frontline Tooling to Customer Loyalty</a> →</span></div>
+    </article>
+  </div>
+  <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+</body>
+</html>

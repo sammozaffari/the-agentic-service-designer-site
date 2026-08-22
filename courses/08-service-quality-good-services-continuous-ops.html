@@ -68,7 +68,9 @@
       border: 1px solid #2d2e2b;
       border-radius: 8px;
       min-height: 440px;
-      padding: 48px;
+      aspect-ratio: 16 / 9;
+      max-height: 78vh;
+      padding: clamp(28px, 4vw, 48px);
       position: relative;
       box-shadow: 0 12px 36px rgba(0,0,0,0.35);
       display: flex;
@@ -79,28 +81,50 @@
       display: none;
       flex-direction: column;
       height: 100%;
-      animation: fadeIn 200ms ease;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #3d3e3a transparent;
+      animation: slideIn 220ms ease;
     }
     .slide-card.active {
       display: flex;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to { opacity: 1; transform: translateX(0); }
     }
     .slide-header {
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
       font-family: var(--mono);
       font-size: 12px;
-      color: #e4be5c;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    .slide-kicker {
+      color: #e4be5c;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+    }
+    .slide-kicker::before {
+      content: "";
+      width: 18px;
+      height: 2px;
+      background: #e4be5c;
+      display: inline-block;
+    }
+    .slide-page-num {
+      color: #83847c;
+      letter-spacing: 0.12em;
     }
     .slide-title {
-      font-size: clamp(26px, 3vw, 38px);
+      font-size: clamp(24px, 2.8vw, 38px);
       letter-spacing: -0.025em;
+      line-height: 1.12;
       color: #ffffff;
       margin: 0 0 24px;
       font-weight: 700;
@@ -111,10 +135,20 @@
       margin: 0 0 24px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      font-size: 16.5px;
-      line-height: 1.6;
+      gap: 12px;
+      font-size: clamp(15px, 1.35vw, 17px);
+      line-height: 1.55;
       color: #d6d6ce;
+    }
+    .slide-bullets code {
+      font-family: var(--mono);
+      font-size: 0.86em;
+      color: #f0d489;
+      background: rgba(228,190,92,0.09);
+      border: 1px solid rgba(228,190,92,0.18);
+      padding: 1px 5px;
+      border-radius: 3px;
+      white-space: nowrap;
     }
     .slide-bullets li {
       position: relative;
@@ -131,22 +165,26 @@
     .slide-quote {
       border-left: 3px solid #e4be5c;
       padding-left: 16px;
-      margin: 20px 0 0;
+      margin: auto 0 0;
+      padding-top: 16px;
       font-style: italic;
       color: #a8a89f;
-      font-size: 14.5px;
+      font-size: clamp(13px, 1.1vw, 14.5px);
+      line-height: 1.5;
     }
-    
+
     .deck-diagram {
       display: flex;
       align-items: center;
-      gap: 12px;
+      flex-wrap: wrap;
+      gap: 10px 12px;
       background: #212220;
       padding: 16px;
       border-radius: 6px;
       margin: 16px 0;
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: 12.5px;
+      line-height: 1.45;
       overflow-x: auto;
     }
     .d-box {
@@ -159,6 +197,107 @@
     .d-good { border-color: #38a169; color: #68d391; }
     .d-bad { border-color: #e53e3e; color: #fc8181; }
     .d-arrow { color: #e4be5c; font-weight: 700; }
+
+    /* Diagram pattern: pipeline — numbered stages chained with arrows */
+    .d-pipe { counter-reset: dstage; }
+    .d-stage {
+      position: relative;
+      padding-left: 34px;
+    }
+    .d-stage::before {
+      content: counter(dstage, decimal-leading-zero);
+      counter-increment: dstage;
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #e4be5c;
+    }
+
+    /* Diagram pattern: lane-row — stacked labeled lanes for blueprints & journeys */
+    .d-lanes {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .d-lane {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .d-lane-label {
+      flex: 0 0 132px;
+      text-align: right;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #9a9b93;
+    }
+    .d-lane-items {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-left: 2px solid #3d3e3a;
+    }
+    .d-lane-items--line { border-left-color: #e4be5c; }
+
+    /* Diagram pattern: gate — decision box with pass/veto branches */
+    .d-gate-wrap {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 12px;
+    }
+    .d-gate-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .d-gate {
+      border-color: #e4be5c;
+      color: #f0d489;
+      background: rgba(228,190,92,0.07);
+    }
+    .d-branches {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .d-branch {
+      flex: 1 1 200px;
+      border: 1px solid #3d3e3a;
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: normal;
+    }
+    .d-branch b {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .d-pass { border-color: #38a169; color: #9ae6b4; background: rgba(56,161,105,0.08); }
+    .d-veto { border-color: #c53030; color: #feb2b2; background: rgba(197,48,48,0.08); }
+
+    @media (max-width: 720px) {
+      .slide-viewport { aspect-ratio: auto; max-height: none; }
+      .d-lane { flex-direction: column; align-items: stretch; gap: 4px; }
+      .d-lane-label { flex: none; text-align: left; }
+      .d-lane-items { border-left: none; border-top: 2px solid #3d3e3a; }
+    }
 
     /* Deck Navigation Footer */
     .deck-nav-bar {
@@ -195,11 +334,19 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: #3a3b37;
+      background: transparent;
+      border: 1px solid #565750;
       cursor: pointer;
+      transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+    }
+    .dot:hover {
+      border-color: #b9bab0;
+      transform: scale(1.15);
     }
     .dot.active {
       background: #e4be5c;
+      border-color: #e4be5c;
+      transform: scale(1.3);
     }
 
     /* Modules Grid Section */
@@ -295,54 +442,6 @@
       font-size: 14px;
     }
     .lab-btn:hover { opacity: 0.9; }
-  
-/* course spec tiles */
-.metrics-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.metrics-row > div {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-card);
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.metrics-row dt {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 0;
-}
-.metrics-row dd {
-  margin: 0;
-  font-size: 14.5px;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.3;
-}
-.status-available {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.status-available::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #2f9e5f;
-  box-shadow: 0 0 0 3px rgba(47, 158, 95, 0.18);
-}
-
   </style>
 </head>
 <body>
@@ -368,7 +467,7 @@
         <div><span class="badge badge-advanced">Advanced</span></div>
         <h1 class="course-page-title">Course 08: Service Quality, Good Services Audits & Continuous Operations</h1>
         <p class="course-page-sub">Grönroos Perceived Quality, Lou Downe's 15 Principles Machine Audit, Service Recovery SLAs & Continuous Blueprints</p>
-        <p style="max-width:760px; line-height:1.6; color:var(--ink-soft);">The capstone course for enterprise service leaders. Implement Grönroos Perceived Quality, Parasuraman's 5 GAPs, and 3-tier KPI trees linking operational telemetry to financial ROI. Automate Lou Downe's 15 Principles of Good Services with good-services-audit-15. Engineer automated recovery playbooks to capitalize on the Service Recovery Paradox. Transition to Continuous Service Architecture.</p>
+        <p style="max-width:760px; line-height:1.6; color:var(--ink-soft);">The capstone course for enterprise service leaders. Implement Grönroos Perceived Quality, Parasuraman's 5 GAPs, and 3-tier KPI trees linking operational telemetry to financial ROI. Run Lou Downe's 15 Principles of Good Services as a machine-checkable experience-audit artifact. Engineer recovery playbooks that capitalize on the Service Recovery Paradox. Transition to continuous service architecture: evidence reopens loops, artifacts version, and phase gates stay human-owned.</p>
         <dl class="metrics-row" style="margin-top:24px;">
           <div><dt>Modules</dt><dd>6</dd></div>
           <div><dt>Duration</dt><dd>≈4h 50m</dd></div>
@@ -390,87 +489,187 @@
           
         <div class="slide-card active" data-slide-index="0">
           <div class="slide-header">
-            <span class="slide-kicker">Module 08.1</span>
-            <span class="slide-page-num">01 / 05</span>
+            <span class="slide-kicker">Paradigm Shift</span>
+            <span class="slide-page-num">01 / 10</span>
           </div>
-          <h2 class="slide-title">Service Quality Management: Grönroos Technical/Functional Quality & The 5 GAP Model</h2>
+          <h2 class="slide-title">Design Ends Where Operations Begin</h2>
           <ul class="slide-bullets">
-            <li>Mastering the mathematical difference between outcome quality and process quality, and systematically measuring the 5 service delivery gaps.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>The deliverable is not a map; it is a service that keeps its promises under load.</li><li>Quality, recovery, and measurement are designed systems — with artifacts, gates, and receipts.</li><li>Living blueprints sync with production telemetry; the model and the operation converge.</li><li>The series closes the loop: operations evidence feeds the next discovery cycle.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Service Quality Management</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Designed service</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Live operations</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Telemetry evidence</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Living blueprint sync</span>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Service Quality, Good Services Audits & Continuous Operations."</blockquote>
+          <blockquote class="slide-quote">"The series ends where continuous operations begin."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="1">
           <div class="slide-header">
-            <span class="slide-kicker">Module 08.2</span>
-            <span class="slide-page-num">02 / 05</span>
+            <span class="slide-kicker">The Executable Spine</span>
+            <span class="slide-page-num">02 / 10</span>
           </div>
-          <h2 class="slide-title">Building 3-Tier KPI Trees: Operational -> Experiential -> Financial Traceability</h2>
+          <h2 class="slide-title">One Canonical Loop Behind All 8 Courses</h2>
           <ul class="slide-bullets">
-            <li>Constructing end-to-end measurement trees that prove the direct financial ROI of UX friction reduction and service improvements.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>Every module runs the same verified loop: project → evidence → method contract → artifact draft → critic gate → factcheck → export → human-gated phase advance.</li><li>This course runs the measurement phase: <code>sd_method_list</code> --phase measurement is your syllabus.</li><li><code>sd_method_run</code> fails closed below the method's evidence minimum — no evidence, no artifact.</li><li><code>sd_phase_advance</code> refuses to run without a human approval receipt JSON.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Building 3-Tier KPI Trees</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">sd_project_create</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_evidence_add</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_method_run</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_artifact_write</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">sd_review</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_factcheck</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_export_report</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">sd_phase_advance</span>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Service Quality, Good Services Audits & Continuous Operations."</blockquote>
+          <blockquote class="slide-quote">"Agents prepare and verify with receipts; human leaders decide with accountability."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="2">
           <div class="slide-header">
-            <span class="slide-kicker">Module 08.3</span>
-            <span class="slide-page-num">03 / 05</span>
+            <span class="slide-kicker">Module 08.1</span>
+            <span class="slide-page-num">03 / 10</span>
           </div>
-          <h2 class="slide-title">Lou Downe's 15 Principles of Good Services: Decoded into Machine-Auditable Heuristics</h2>
+          <h2 class="slide-title">Service Quality Management: Grönroos Technical/Functional Quality & The 5 GAP Model</h2>
           <ul class="slide-bullets">
-            <li>Deconstructing the definitive public service standard (Lou Downe) into structured rules checkable by automated agents.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>Grönroos: technical quality (what was delivered) and functional quality (how) fail independently — measure both.</li><li>The 5 GAP model locates failure between expectations, specifications, delivery, and communication.</li><li>service-quality-diagnostic operationalizes both lenses as an auditable method.</li><li>Each gap is a measurable distance between two artifacts — not a sentiment.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Lou Downe's 15 Principles of Good Services</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Expectations</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Specification</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Delivery</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">Perception — measure each gap</span>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Service Quality, Good Services Audits & Continuous Operations."</blockquote>
+          <blockquote class="slide-quote">"What you delivered and how you delivered it fail independently; measure both."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="3">
           <div class="slide-header">
-            <span class="slide-kicker">Module 08.4</span>
-            <span class="slide-page-num">04 / 05</span>
+            <span class="slide-kicker">Module 08.2</span>
+            <span class="slide-page-num">04 / 10</span>
           </div>
-          <h2 class="slide-title">Automated Standards Auditing (good-services-audit-15) & Public Service Transformation</h2>
+          <h2 class="slide-title">Building 3-Tier KPI Trees: Operational → Experiential → Financial Traceability</h2>
           <ul class="slide-bullets">
-            <li>Running automated 15-principle audits on live civic and enterprise portals, generating defect scorecards with exact remediation tickets.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>kpi-tree-design builds kpi-tree artifacts with three tiers: operational → experiential → financial.</li><li>three-tier-measurement proves the ROI path from friction removal to revenue.</li><li>Every KPI node cites the telemetry evidence that feeds it.</li><li>A metric with no path to the financial tier is instrumentation, not insight.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Automated Standards Auditing (good-services-audit-15) & Public Service Transformation</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">Tier 1</span><div class="d-lane-items"><span class="d-box">Operational: queue time, error rate</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Tier 2</span><div class="d-lane-items"><span class="d-box">Experiential: effort, satisfaction</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Tier 3</span><div class="d-lane-items d-lane-items--line"><span class="d-box d-good">Financial: retention, LTV, cost-to-serve</span></div></div>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Service Quality, Good Services Audits & Continuous Operations."</blockquote>
+          <blockquote class="slide-quote">"A KPI without a tier is a number without a job."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="4">
           <div class="slide-header">
+            <span class="slide-kicker">Module 08.3</span>
+            <span class="slide-page-num">05 / 10</span>
+          </div>
+          <h2 class="slide-title">Lou Downe's 15 Principles of Good Services: Decoded into Machine-Auditable Heuristics</h2>
+          <ul class="slide-bullets">
+            <li>Lou Downe's 15 principles of good services decode into machine-checkable heuristics.</li><li>Each principle becomes typed review rows: rowKind, severity, message, rule, fix.</li><li>good-services-audit encodes the standard as a method any agent can run.</li><li>A principle that cannot be checked remains a poster; decoded, it becomes a gate.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">15 principles</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Machine heuristics</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Typed review rows</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Auditable standard</span>
+</div>
+          <blockquote class="slide-quote">"A principle that cannot be checked is a poster; decoded, it becomes a gate."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="5">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 08.4</span>
+            <span class="slide-page-num">06 / 10</span>
+          </div>
+          <h2 class="slide-title">Automated Standards Auditing (good-services-audit-15) & Public Service Transformation</h2>
+          <ul class="slide-bullets">
+            <li>good-services-audit-15 runs the full 15-principle audit on live portals and services.</li><li>Output is a defect scorecard: exact, severity-ranked remediation tickets.</li><li>experience-audit extends the same rigor to end-to-end experience reviews.</li><li>Public service transformation starts with an audit that produces tickets, not adjectives.</li>
+          </ul>
+          <div class="deck-diagram d-gate-wrap">
+  <div class="d-gate-row"><span class="d-box">Live service</span><span class="d-arrow">→</span><span class="d-box d-gate">good-services-audit-15</span></div>
+  <div class="d-branches">
+    <div class="d-branch d-pass"><b>Standard met</b>Principle satisfied with cited evidence</div>
+    <div class="d-branch d-veto"><b>Defect</b>Severity-ranked ticket with exact remediation fix</div>
+  </div>
+</div>
+          <blockquote class="slide-quote">"An audit that produces tickets, not adjectives."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="6">
+          <div class="slide-header">
             <span class="slide-kicker">Module 08.5</span>
-            <span class="slide-page-num">05 / 05</span>
+            <span class="slide-page-num">07 / 10</span>
           </div>
           <h2 class="slide-title">Service Recovery Engineering: The Recovery Paradox & Automated Compensation SLAs</h2>
           <ul class="slide-bullets">
-            <li>Designing proactive recovery workflows that turn critical service breakdowns into moments of customer advocacy with automated compensations.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>The recovery paradox: a well-recovered failure can build more loyalty than flawless service.</li><li>service-recovery-design produces recovery-playbook artifacts with compensation SLAs.</li><li>Recovery triggers are wired to telemetry — proactive, not apologetic after the fact.</li><li>Every playbook step is tested like a standard: authored, versioned, audited.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Service Recovery Engineering</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Failure signal (telemetry)</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">recovery-playbook</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Compensation SLA</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Advocacy (paradox)</span>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Service Quality, Good Services Audits & Continuous Operations."</blockquote>
+          <blockquote class="slide-quote">"Recover well and the failure becomes the story the customer tells in your favor."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="7">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 08.6</span>
+            <span class="slide-page-num">08 / 10</span>
+          </div>
+          <h2 class="slide-title">Continuous Service Architecture: Living Blueprints, Self-Healing Loops & The ASD Manifesto</h2>
+          <ul class="slide-bullets">
+            <li>cx-maturity-assessment scores organizational capability as a maturity-assessment artifact.</li><li>service-profit-chain-mapping closes the loop from operations back to enterprise value.</li><li>Living blueprints synchronize with production telemetry; drift between model and operation is detected, not assumed away.</li><li>The ASD Manifesto: self-healing loops, living blueprints, human-sovereign gates — the destination of all 8 courses.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Production telemetry</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Drift detection</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Blueprint patch</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">Critic gate</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Self-healing loop</span>
+</div>
+          <blockquote class="slide-quote">"The blueprint lives because the telemetry feeds it."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="8">
+          <div class="slide-header">
+            <span class="slide-kicker">Dogfooding the Runtime</span>
+            <span class="slide-page-num">09 / 10</span>
+          </div>
+          <h2 class="slide-title">The Verified Toolchain Behind This Course</h2>
+          <ul class="slide-bullets">
+            <li>Measure: kpi-tree-design, three-tier-measurement, service-quality-diagnostic.</li><li>Audit: good-services-audit, good-services-audit-15, experience-audit, cx-maturity-assessment.</li><li>Recover: service-recovery-design; assure with <code>sd_review</code> and <code>sd_factcheck</code>.</li><li>Report: <code>sd_export_report</code> renders the dossier leadership actually reads.</li>
+          </ul>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">Measure</span><div class="d-lane-items"><span class="d-box">kpi-tree-design</span><span class="d-box">three-tier-measurement</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Audit</span><div class="d-lane-items"><span class="d-box">good-services-audit-15</span><span class="d-box">experience-audit</span><span class="d-box">cx-maturity-assessment</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Recover</span><div class="d-lane-items d-lane-items--line"><span class="d-box">service-recovery-design</span><span class="d-box">sd_review</span><span class="d-box d-gate">sd_factcheck</span></div></div>
+</div>
+          <blockquote class="slide-quote">"Measure, audit, recover, report — the operational quartet."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="9">
+          <div class="slide-header">
+            <span class="slide-kicker">Capstone</span>
+            <span class="slide-page-num">10 / 10</span>
+          </div>
+          <h2 class="slide-title">Run the Operational Quartet</h2>
+          <ul class="slide-bullets">
+            <li>Run a 15-principle audit and convert defects into a remediation backlog.</li><li>Build a 3-tier KPI tree wired to telemetry evidence.</li><li>Author a recovery playbook with compensation SLAs and pass the critic gate.</li><li>Close the series: green factcheck, exported dossier, human-gated phase advance.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Audit backlog</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">KPI tree</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Recovery playbook</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">factcheck exit 0</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Continuous operations</span>
+</div>
+          <blockquote class="slide-quote">"Design is a hypothesis; operations is the experiment; evidence is the referee."</blockquote>
         </div>
         
         </div>
@@ -478,7 +677,7 @@
         <div class="deck-nav-bar">
           <button class="deck-btn" id="prevBtn" onclick="changeSlide(-1)">◄ Previous Slide</button>
           <div class="slide-dots" id="slideDots">
-            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div><div class="dot " onclick="goToSlide(3)"></div><div class="dot " onclick="goToSlide(4)"></div>
+            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div><div class="dot " onclick="goToSlide(3)"></div><div class="dot " onclick="goToSlide(4)"></div><div class="dot " onclick="goToSlide(5)"></div><div class="dot " onclick="goToSlide(6)"></div><div class="dot " onclick="goToSlide(7)"></div><div class="dot " onclick="goToSlide(8)"></div><div class="dot " onclick="goToSlide(9)"></div>
           </div>
           <button class="deck-btn" id="nextBtn" onclick="changeSlide(1)">Next Slide ►</button>
         </div>
@@ -501,8 +700,8 @@
             <span class="mod-badge">08.1</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./08-service-quality-good-services-continuous-ops/01-gronroos-quality-five-gaps.html" style="color:inherit; text-decoration:none;">Service Quality Management: Grönroos Technical/Functional Quality & The 5 GAP Model</a></h3>
-          <p class="mod-card-desc">Mastering the mathematical difference between outcome quality and process quality, and systematically measuring the 5 service delivery gaps.</p>
+          <h3 class="mod-card-title"><a href="./08-service-quality-good-services-continuous-ops/01-gronroos-quality-five-gaps.html" style="color:inherit; text-decoration:none;">Grönroos Quality Management & The Five Service Gaps</a></h3>
+          <p class="mod-card-desc">Total perceived service quality, technical vs. functional quality, and the five-gap model mapped directly onto ASD gates: evidence, acceptance, critic, factcheck, human approval.</p>
           <a class="mod-card-link" href="./08-service-quality-good-services-continuous-ops/01-gronroos-quality-five-gaps.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -511,8 +710,8 @@
             <span class="mod-badge">08.2</span>
             <span class="mod-time">⏱️ 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./08-service-quality-good-services-continuous-ops/02-three-tier-kpi-trees.html" style="color:inherit; text-decoration:none;">Building 3-Tier KPI Trees: Operational -> Experiential -> Financial Traceability</a></h3>
-          <p class="mod-card-desc">Constructing end-to-end measurement trees that prove the direct financial ROI of UX friction reduction and service improvements.</p>
+          <h3 class="mod-card-title"><a href="./08-service-quality-good-services-continuous-ops/02-three-tier-kpi-trees.html" style="color:inherit; text-decoration:none;">Three-Tier KPI Trees — From Operational Telemetry to Financial Outcome</a></h3>
+          <p class="mod-card-desc">Service Profit Chain and Outside In measurement turned into real `kpi-tree` artifacts with baselines, targets, and causal edges from operational drivers to financial outcomes.</p>
           <a class="mod-card-link" href="./08-service-quality-good-services-continuous-ops/02-three-tier-kpi-trees.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -521,8 +720,8 @@
             <span class="mod-badge">08.3</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./08-service-quality-good-services-continuous-ops/03-fifteen-principles-good-services-audit.html" style="color:inherit; text-decoration:none;">Lou Downe's 15 Principles of Good Services: Decoded into Machine-Auditable Heuristics</a></h3>
-          <p class="mod-card-desc">Deconstructing the definitive public service standard (Lou Downe) into structured rules checkable by automated agents.</p>
+          <h3 class="mod-card-title"><a href="./08-service-quality-good-services-continuous-ops/03-fifteen-principles-good-services-audit.html" style="color:inherit; text-decoration:none;">Lou Downe's 15 Principles — Decoded into a Machine-Auditable Scorecard</a></h3>
+          <p class="mod-card-desc">Canonical 15-principle theory plus `good-services-audit-15` as an evidence-backed `insight-set`, including fail-closed demos for partial audits and closed-field violations.</p>
           <a class="mod-card-link" href="./08-service-quality-good-services-continuous-ops/03-fifteen-principles-good-services-audit.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -531,8 +730,8 @@
             <span class="mod-badge">08.4</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./08-service-quality-good-services-continuous-ops/04-automated-standards-audit-good-services.html" style="color:inherit; text-decoration:none;">Automated Standards Auditing (good-services-audit-15) & Public Service Transformation</a></h3>
-          <p class="mod-card-desc">Running automated 15-principle audits on live civic and enterprise portals, generating defect scorecards with exact remediation tickets.</p>
+          <h3 class="mod-card-title"><a href="./08-service-quality-good-services-continuous-ops/04-automated-standards-audit-good-services.html" style="color:inherit; text-decoration:none;">Automated Standards Audit — the Continuous-Audit Loop</a></h3>
+          <p class="mod-card-desc">`service-standard-authoring`, `experience-audit`, `good-services-audit-15`, critic review, and `sd_factcheck` wired into a CI-style continuous-audit loop.</p>
           <a class="mod-card-link" href="./08-service-quality-good-services-continuous-ops/04-automated-standards-audit-good-services.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -541,8 +740,8 @@
             <span class="mod-badge">08.5</span>
             <span class="mod-time">⏱️ 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./08-service-quality-good-services-continuous-ops/05-service-recovery-engineering-slas.html" style="color:inherit; text-decoration:none;">Service Recovery Engineering: The Recovery Paradox & Automated Compensation SLAs</a></h3>
-          <p class="mod-card-desc">Designing proactive recovery workflows that turn critical service breakdowns into moments of customer advocacy with automated compensations.</p>
+          <h3 class="mod-card-title"><a href="./08-service-quality-good-services-continuous-ops/05-service-recovery-engineering-slas.html" style="color:inherit; text-decoration:none;">Service Recovery Engineering — Playbooks, Justice, and the Recovery Paradox</a></h3>
+          <p class="mod-card-desc">Grönroos service recovery theory turned into `recovery-playbook` artifacts with explicit triggers, justice dimensions, and learning loops back into evidence.</p>
           <a class="mod-card-link" href="./08-service-quality-good-services-continuous-ops/05-service-recovery-engineering-slas.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -551,8 +750,8 @@
             <span class="mod-badge">08.6</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./08-service-quality-good-services-continuous-ops/06-continuous-service-architecture-manifesto.html" style="color:inherit; text-decoration:none;">Continuous Service Architecture: Living Blueprints, Self-Healing Loops & The ASD Manifesto</a></h3>
-          <p class="mod-card-desc">The future of service design: blueprints dynamically synchronized with production telemetry, self-healing service loops, and the Manifesto of the Agentic Service Designer.</p>
+          <h3 class="mod-card-title"><a href="./08-service-quality-good-services-continuous-ops/06-continuous-service-architecture-manifesto.html" style="color:inherit; text-decoration:none;">Continuous Service Architecture — Approval Gates, Re-Open Loops, and Living Ownership</a></h3>
+          <p class="mod-card-desc">The living operating rhythm: project phases vs. method phases, approval receipts, rejected-key replay semantics, roadmap/RACI ownership, and evidence-driven re-versioning.</p>
           <a class="mod-card-link" href="./08-service-quality-good-services-continuous-ops/06-continuous-service-architecture-manifesto.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -585,7 +784,7 @@
 
   <script>
     var currentSlide = 0;
-    var totalSlides = 5;
+    var totalSlides = 10;
 
     function showSlide(index) {
       if (index < 0) index = 0;

@@ -68,7 +68,9 @@
       border: 1px solid #2d2e2b;
       border-radius: 8px;
       min-height: 440px;
-      padding: 48px;
+      aspect-ratio: 16 / 9;
+      max-height: 78vh;
+      padding: clamp(28px, 4vw, 48px);
       position: relative;
       box-shadow: 0 12px 36px rgba(0,0,0,0.35);
       display: flex;
@@ -79,28 +81,50 @@
       display: none;
       flex-direction: column;
       height: 100%;
-      animation: fadeIn 200ms ease;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #3d3e3a transparent;
+      animation: slideIn 220ms ease;
     }
     .slide-card.active {
       display: flex;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to { opacity: 1; transform: translateX(0); }
     }
     .slide-header {
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
       font-family: var(--mono);
       font-size: 12px;
-      color: #e4be5c;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    .slide-kicker {
+      color: #e4be5c;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+    }
+    .slide-kicker::before {
+      content: "";
+      width: 18px;
+      height: 2px;
+      background: #e4be5c;
+      display: inline-block;
+    }
+    .slide-page-num {
+      color: #83847c;
+      letter-spacing: 0.12em;
     }
     .slide-title {
-      font-size: clamp(26px, 3vw, 38px);
+      font-size: clamp(24px, 2.8vw, 38px);
       letter-spacing: -0.025em;
+      line-height: 1.12;
       color: #ffffff;
       margin: 0 0 24px;
       font-weight: 700;
@@ -111,10 +135,20 @@
       margin: 0 0 24px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      font-size: 16.5px;
-      line-height: 1.6;
+      gap: 12px;
+      font-size: clamp(15px, 1.35vw, 17px);
+      line-height: 1.55;
       color: #d6d6ce;
+    }
+    .slide-bullets code {
+      font-family: var(--mono);
+      font-size: 0.86em;
+      color: #f0d489;
+      background: rgba(228,190,92,0.09);
+      border: 1px solid rgba(228,190,92,0.18);
+      padding: 1px 5px;
+      border-radius: 3px;
+      white-space: nowrap;
     }
     .slide-bullets li {
       position: relative;
@@ -131,22 +165,26 @@
     .slide-quote {
       border-left: 3px solid #e4be5c;
       padding-left: 16px;
-      margin: 20px 0 0;
+      margin: auto 0 0;
+      padding-top: 16px;
       font-style: italic;
       color: #a8a89f;
-      font-size: 14.5px;
+      font-size: clamp(13px, 1.1vw, 14.5px);
+      line-height: 1.5;
     }
-    
+
     .deck-diagram {
       display: flex;
       align-items: center;
-      gap: 12px;
+      flex-wrap: wrap;
+      gap: 10px 12px;
       background: #212220;
       padding: 16px;
       border-radius: 6px;
       margin: 16px 0;
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: 12.5px;
+      line-height: 1.45;
       overflow-x: auto;
     }
     .d-box {
@@ -159,6 +197,107 @@
     .d-good { border-color: #38a169; color: #68d391; }
     .d-bad { border-color: #e53e3e; color: #fc8181; }
     .d-arrow { color: #e4be5c; font-weight: 700; }
+
+    /* Diagram pattern: pipeline — numbered stages chained with arrows */
+    .d-pipe { counter-reset: dstage; }
+    .d-stage {
+      position: relative;
+      padding-left: 34px;
+    }
+    .d-stage::before {
+      content: counter(dstage, decimal-leading-zero);
+      counter-increment: dstage;
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #e4be5c;
+    }
+
+    /* Diagram pattern: lane-row — stacked labeled lanes for blueprints & journeys */
+    .d-lanes {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .d-lane {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .d-lane-label {
+      flex: 0 0 132px;
+      text-align: right;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #9a9b93;
+    }
+    .d-lane-items {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-left: 2px solid #3d3e3a;
+    }
+    .d-lane-items--line { border-left-color: #e4be5c; }
+
+    /* Diagram pattern: gate — decision box with pass/veto branches */
+    .d-gate-wrap {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 12px;
+    }
+    .d-gate-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .d-gate {
+      border-color: #e4be5c;
+      color: #f0d489;
+      background: rgba(228,190,92,0.07);
+    }
+    .d-branches {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .d-branch {
+      flex: 1 1 200px;
+      border: 1px solid #3d3e3a;
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: normal;
+    }
+    .d-branch b {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .d-pass { border-color: #38a169; color: #9ae6b4; background: rgba(56,161,105,0.08); }
+    .d-veto { border-color: #c53030; color: #feb2b2; background: rgba(197,48,48,0.08); }
+
+    @media (max-width: 720px) {
+      .slide-viewport { aspect-ratio: auto; max-height: none; }
+      .d-lane { flex-direction: column; align-items: stretch; gap: 4px; }
+      .d-lane-label { flex: none; text-align: left; }
+      .d-lane-items { border-left: none; border-top: 2px solid #3d3e3a; }
+    }
 
     /* Deck Navigation Footer */
     .deck-nav-bar {
@@ -195,11 +334,19 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: #3a3b37;
+      background: transparent;
+      border: 1px solid #565750;
       cursor: pointer;
+      transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+    }
+    .dot:hover {
+      border-color: #b9bab0;
+      transform: scale(1.15);
     }
     .dot.active {
       background: #e4be5c;
+      border-color: #e4be5c;
+      transform: scale(1.3);
     }
 
     /* Modules Grid Section */
@@ -295,54 +442,6 @@
       font-size: 14px;
     }
     .lab-btn:hover { opacity: 0.9; }
-  
-/* course spec tiles */
-.metrics-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.metrics-row > div {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-card);
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.metrics-row dt {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 0;
-}
-.metrics-row dd {
-  margin: 0;
-  font-size: 14.5px;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.3;
-}
-.status-available {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.status-available::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #2f9e5f;
-  box-shadow: 0 0 0 3px rgba(47, 158, 95, 0.18);
-}
-
   </style>
 </head>
 <body>
@@ -391,115 +490,193 @@
         <div class="slide-card active" data-slide-index="0">
           <div class="slide-header">
             <span class="slide-kicker">Paradigm Shift</span>
-            <span class="slide-page-num">01 / 06</span>
+            <span class="slide-page-num">01 / 10</span>
           </div>
-          <h2 class="slide-title">The Death of Workshop Theater</h2>
+          <h2 class="slide-title">From Sticky Notes to an Executable Service OS</h2>
           <ul class="slide-bullets">
-            <li>Sticky-note workshops produce static artifacts that decay immediately upon project close.</li><li>Handoffs between research, mapping, and engineering suffer catastrophic information loss.</li><li>The Agentic Service Design OS replaces slides with executable, machine-checked filesystem models.</li>
+            <li>Workshop theater produces static artifacts that decay the day the engagement ends — nothing is queryable, nothing re-validates.</li><li>Research → mapping → engineering handoffs lose fidelity at every step because context travels as conversation.</li><li>The Agentic Service Design OS treats service design as a file-backed, machine-checked system of record.</li><li>Every deliverable is a typed artifact with acceptance rules; every claim resolves to an evidence hash.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box d-bad">Workshop Theater (Static Slides / PDF)</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Agentic Service OS (Executable / Evidence-Gated)</span>
+          <div class="deck-diagram d-gate-wrap">
+  <div class="d-gate-row"><span class="d-box">Design decision</span><span class="d-arrow">→</span><span class="d-box d-gate">How is it captured?</span></div>
+  <div class="d-branches">
+    <div class="d-branch d-pass"><b>Executable OS</b>Typed artifact: queryable, evidence-cited, CI-audited, re-renderable</div>
+    <div class="d-branch d-veto"><b>Workshop theater</b>Static slides &amp; PDFs: unverifiable, decaying, lost at handoff</div>
+  </div>
 </div>
-          <blockquote class="slide-quote">"If a design artifact cannot be queried by an agent or audited by a CI gate, it is decorative art, not architecture."</blockquote>
+          <blockquote class="slide-quote">"If a design artifact cannot be queried by an agent or audited by a CI gate, it is decorative, not architecture."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="1">
           <div class="slide-header">
-            <span class="slide-kicker">Foundational Theory</span>
-            <span class="slide-page-num">02 / 06</span>
+            <span class="slide-kicker">The Executable Spine</span>
+            <span class="slide-page-num">02 / 10</span>
           </div>
-          <h2 class="slide-title">Service-Dominant Logic & Co-Creation</h2>
+          <h2 class="slide-title">One Canonical Loop Behind All 8 Courses</h2>
           <ul class="slide-bullets">
-            <li>Stephen Vargo & Robert Lusch (2004, 2014): Value is never embedded in outputs; value is co-created in use (*value-in-use*).</li><li>Operand resources (static databases, forms) require action to produce an effect.</li><li>AI agents act as active **operant resources**, initiating value co-creation with human customers and frontline staff.</li>
+            <li>Every module runs the same verified loop: project → evidence → method contract → artifact draft → critic gate → factcheck → export → human-gated phase advance.</li><li><code>sd_method_run</code> fails closed below the method's evidence minimum — no evidence, no artifact.</li><li><code>sd_phase_advance</code> refuses to run without a human approval receipt JSON.</li><li>The spine is dogfooded: this curriculum was built and verified on the same runtime you will use.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Operant Agent Swarm</span>
-  <span class="d-arrow">⟷</span>
-  <span class="d-box">Customer in Context</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Co-Created Value</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">sd_project_create</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_evidence_add</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_method_run</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_artifact_write</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">sd_review</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_factcheck</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_export_report</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">sd_phase_advance</span>
 </div>
-          <blockquote class="slide-quote">"Value is not what you deliver in a sprint; value is what the beneficiary experiences in context."</blockquote>
+          <blockquote class="slide-quote">"Agents prepare and verify with receipts; human leaders decide with accountability."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="2">
           <div class="slide-header">
-            <span class="slide-kicker">Agent Architecture</span>
-            <span class="slide-page-num">03 / 06</span>
+            <span class="slide-kicker">Module 01.1</span>
+            <span class="slide-page-num">03 / 10</span>
           </div>
-          <h2 class="slide-title">The 10-Role Eve-Style Topology</h2>
+          <h2 class="slide-title">The Death of Workshop Theater: Moving to an Executable Service OS</h2>
           <ul class="slide-bullets">
-            <li>Single general-purpose LLM prompts fail on complex service design due to context pollution.</li><li>10 specialized roles: Researcher, Librarian, Synthesizer, Mapper, Ideator, Prototyper, Measurer, Presenter, Critic, Orchestrator.</li><li>The core invariant: Handoffs are typed filesystem artifacts, never conversational memory.</li>
+            <li>Sticky-note walls photograph well and query poorly — insight evaporates between the workshop and the backlog.</li><li>The fix is structural: typed, file-backed artifacts where the artifact itself is the handoff.</li><li>32 registered artifact kinds (31 produced by the 74 methods) give every deliverable an enforceable schema.</li><li>Acceptance-unmet work is retained as draft with explicit failures — drift becomes visible instead of silent.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Researcher (01)</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box">Synthesizer (05)</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box">Mapper (12)</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-bad">Critic Gate (38)</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Raw insight</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Evidence store (SHA-256)</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Typed artifact + acceptance</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Queryable system of record</span>
 </div>
-          <blockquote class="slide-quote">"Specialized boundaries preserve investigative depth and enable severe adversarial critique."</blockquote>
+          <blockquote class="slide-quote">"The artifact is the handoff; everything else is commentary."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="3">
           <div class="slide-header">
-            <span class="slide-kicker">Human Governance</span>
-            <span class="slide-page-num">04 / 06</span>
+            <span class="slide-kicker">Module 01.2</span>
+            <span class="slide-page-num">04 / 10</span>
           </div>
-          <h2 class="slide-title">The Autonomy Spectrum & Decision Gates</h2>
+          <h2 class="slide-title">Service-Dominant Logic & Value Co-Creation in the Age of AI</h2>
           <ul class="slide-bullets">
-            <li>High Autonomy: Transcript mining, quote normalization, graph traversal, telemetry cross-checks.</li><li>Shared Autonomy: How-Might-We generation, journey clustering, draft blueprint assembly.</li><li>Sovereign Human Authority: Phase gates, ethical risk sign-offs, trade-offs, and go/no-go pilot decisions.</li>
+            <li>Vargo &amp; Lusch (2004): value is never embedded in outputs — it is co-created in use (value-in-use).</li><li>Databases, forms, and scripts are operand resources: inert until acted upon.</li><li>Agents are operant resources: they act — mining evidence, drafting maps, checking their own drafts against rules.</li><li>The 74 registered methods are codified operant resources: structured value creation, invocable on demand.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Autonomous Discovery</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Sovereign Human Gate (Kind 37 Decision)</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box">Autonomous Execution</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Operand resources (data, forms)</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Operant agents (10 roles)</span><span class="d-arrow">⟷</span>
+  <span class="d-box d-stage">Customer in context</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Co-created value-in-use</span>
 </div>
-          <blockquote class="slide-quote">"Agents propose and verify with receipts; human leaders decide with accountability."</blockquote>
+          <blockquote class="slide-quote">"Value is not what you deliver in a sprint; value is what the beneficiary experiences in context."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="4">
           <div class="slide-header">
-            <span class="slide-kicker">Enterprise Economics</span>
-            <span class="slide-page-num">05 / 06</span>
+            <span class="slide-kicker">Module 01.3</span>
+            <span class="slide-page-num">05 / 10</span>
           </div>
-          <h2 class="slide-title">The Service Profit Chain in AI Systems</h2>
+          <h2 class="slide-title">The 10-Role Eve-Style Agent Topology: Role Contracts & Boundaries</h2>
           <ul class="slide-bullets">
-            <li>Heskett et al. (1994): Internal service quality is the root driver of customer loyalty and enterprise profit.</li><li>Equipping frontline staff with AI co-pilots eliminates cognitive burnout and screen tyranny.</li><li>Frontline empowerment directly drives first-contact resolution, NPS, and lifetime value.</li>
+            <li>A single generalist prompt pollutes its own context; specialized roles preserve investigative depth.</li><li>10 role prompts ship with the runtime: researcher, librarian, synthesizer, mapper, ideator, prototyper, measurer, presenter, critic, orchestrator.</li><li>Every method contract pins an <code>owner</code> and a <code>reviewGate</code> — e.g. journey-from-transcripts: owner mapper, gate critic.</li><li>Handoffs are typed artifacts on disk, never conversational memory.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Internal Agent Tooling</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box">Frontline Staff Ease</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Customer Loyalty & Profit</span>
+          <div class="deck-diagram d-gate-wrap">
+  <div class="d-gate-row">
+    <span class="d-box">researcher</span><span class="d-arrow">→</span>
+    <span class="d-box">synthesizer</span><span class="d-arrow">→</span>
+    <span class="d-box">mapper (owner)</span><span class="d-arrow">→</span>
+    <span class="d-box d-gate">critic (reviewGate)</span>
+  </div>
+  <div class="d-branches">
+    <div class="d-branch d-pass"><b>Gate pass</b>Artifact accepted → status final, handoff proceeds</div>
+    <div class="d-branch d-veto"><b>Gate veto</b>Defect rows with mandatory fixes → loop back to owner</div>
+  </div>
 </div>
-          <blockquote class="slide-quote">"Frontline tooling quality is the mathematical prerequisite for customer satisfaction."</blockquote>
+          <blockquote class="slide-quote">"Specialized boundaries preserve depth and make severe adversarial critique possible."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="5">
           <div class="slide-header">
-            <span class="slide-kicker">Enterprise Proof</span>
-            <span class="slide-page-num">06 / 06</span>
+            <span class="slide-kicker">Module 01.4</span>
+            <span class="slide-page-num">06 / 10</span>
           </div>
-          <h2 class="slide-title">Case Study: Calder Community Bank</h2>
+          <h2 class="slide-title">The Autonomy Spectrum & The Sovereign Human Decision Gate</h2>
           <ul class="slide-bullets">
-            <li>Challenge: 6-week manual discovery cycle across 45 branches for SME account opening.</li><li>Agentic Sprint: 6 Researcher agents ingested 180 interview hours and 1,420 friction rows in 4 hours.</li><li>Outcome: Critic caught a 9.4-day KYC batch delay before pilot, enabling same-day onboarding architecture.</li>
+            <li>High autonomy: ingestion, normalization, cross-referencing — mechanical, verifiable work.</li><li>Shared autonomy: agents draft, humans reshape — clustering, framing, blueprint assembly.</li><li>Sovereign human authority: <code>sd_phase_advance</code> fails closed without an approval receipt (receiptId, approvedBy, decision, rationale).</li><li>The spectrum is enforced by the runtime, not by convention or prompt etiquette.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">180h Interviews</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box">1,420 Evidence Hashes</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Verified 5-Lane Blueprint</span>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">Autonomous</span><div class="d-lane-items"><span class="d-box">Evidence ingest</span><span class="d-box">Transcript mining</span><span class="d-box">Graph traversal</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Shared</span><div class="d-lane-items"><span class="d-box">HMW drafts</span><span class="d-box">Journey clustering</span><span class="d-box">Blueprint assembly</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Sovereign human</span><div class="d-lane-items d-lane-items--line"><span class="d-box d-gate">Phase gates</span><span class="d-box d-gate">Ethical sign-off</span><span class="d-box d-gate">Go / no-go</span></div></div>
 </div>
-          <blockquote class="slide-quote">"100% receipt-backed confidence in 1/10th the time of traditional consulting."</blockquote>
+          <blockquote class="slide-quote">"Agents propose and verify with receipts; human leaders decide with accountability."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="6">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 01.5</span>
+            <span class="slide-page-num">07 / 10</span>
+          </div>
+          <h2 class="slide-title">The Service Profit Chain: Linking Frontline Tooling to Customer Loyalty</h2>
+          <ul class="slide-bullets">
+            <li>Heskett et al. (1994): internal service quality drives employee satisfaction, which drives customer loyalty and profit.</li><li>Frontline teams armed with agent co-pilots escape screen tyranny and cognitive burnout.</li><li>The method <code>service-profit-chain-mapping</code> produces a service-profit-chain artifact linking internal tooling to financial outcomes.</li><li>Frontline tooling quality is a leading indicator of NPS and lifetime value, not an IT concern.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Internal agent tooling</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Frontline ease &amp; retention</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">First-contact resolution</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Loyalty → growth → profit</span>
+</div>
+          <blockquote class="slide-quote">"Frontline tooling quality is the mathematical prerequisite for customer satisfaction."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="7">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 01.6</span>
+            <span class="slide-page-num">08 / 10</span>
+          </div>
+          <h2 class="slide-title">Hands-On Sprint: Running Your First Agentic Service Discovery</h2>
+          <ul class="slide-bullets">
+            <li>Sprint spine: <code>sd_project_create</code> → <code>sd_evidence_add</code> (kinds quote | telemetry | document) → <code>sd_method_run</code>.</li><li>journey-from-transcripts demands ≥3 evidence records and fails closed below the minimum.</li><li><code>sd_artifact_write</code> keeps acceptance-unmet work as draft with a named failures list — nothing lost, nothing fake-final.</li><li>Close with <code>sd_factcheck</code>: exit 0 only when every artifact passes integrity, schema, acceptance, and review.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Brief</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Project (discover)</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">≥3 evidence records</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Journey draft</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">Critic gate</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">factcheck exit 0</span>
+</div>
+          <blockquote class="slide-quote">"A sprint you cannot replay from its receipts never happened."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="8">
+          <div class="slide-header">
+            <span class="slide-kicker">Dogfooding the Runtime</span>
+            <span class="slide-page-num">09 / 10</span>
+          </div>
+          <h2 class="slide-title">The Verified Toolchain Behind This Course</h2>
+          <ul class="slide-bullets">
+            <li>This course runs on the verified runtime: 29 sd_* tools, one engine, two surfaces — CLI and MCP stdio.</li><li>Daily drivers: <code>sd_project_create</code>, <code>sd_evidence_add</code>, <code>sd_method_list</code>, <code>sd_method_run</code>, <code>sd_artifact_write</code>, <code>sd_review</code>, <code>sd_factcheck</code>.</li><li>Knowledge surface: <code>sd_knowledge</code>, <code>sd_schema_get</code>, <code>sd_template_list/get</code>, <code>sd_practice_get</code> over 216 repo-corpus resources.</li><li>Governance: <code>sd_export_report</code> dossiers and <code>sd_phase_advance</code> receipts close the loop.</li>
+          </ul>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">Project</span><div class="d-lane-items"><span class="d-box">sd_project_create</span><span class="d-box">sd_project_open</span><span class="d-box">sd_project_list</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Work</span><div class="d-lane-items"><span class="d-box">sd_evidence_add</span><span class="d-box">sd_method_run</span><span class="d-box">sd_artifact_write</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Governance</span><div class="d-lane-items d-lane-items--line"><span class="d-box">sd_review</span><span class="d-box">sd_factcheck</span><span class="d-box">sd_export_report</span><span class="d-box d-gate">sd_phase_advance</span></div></div>
+</div>
+          <blockquote class="slide-quote">"29 tools, one loop, zero invented capabilities."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="9">
+          <div class="slide-header">
+            <span class="slide-kicker">Capstone</span>
+            <span class="slide-page-num">10 / 10</span>
+          </div>
+          <h2 class="slide-title">Your First Verified Discovery Sprint</h2>
+          <ul class="slide-bullets">
+            <li>Run the full loop on a real brief: brief → project → ≥3 evidence records → journey map.</li><li>Survive the critic gate: pass requires ≥1 evidence-cited review row and zero defects.</li><li>Export the artifact-dossier HTML and the journey-map SVG via deterministic @asd/render.</li><li>Advance discover → define only with a signed human approval receipt.</li>
+          </ul>
+          <div class="deck-diagram d-gate-wrap">
+  <div class="d-gate-row"><span class="d-box">Capstone sprint</span><span class="d-arrow">→</span><span class="d-box d-gate">Human phase gate</span></div>
+  <div class="d-branches">
+    <div class="d-branch d-pass"><b>Approve</b>Receipt recorded → discover → define, artifacts final</div>
+    <div class="d-branch d-veto"><b>Reject</b>Receipt absent or denied → phase holds, drafts stay drafts</div>
+  </div>
+</div>
+          <blockquote class="slide-quote">"Receipts or it didn't happen."</blockquote>
         </div>
         
         </div>
@@ -507,7 +684,7 @@
         <div class="deck-nav-bar">
           <button class="deck-btn" id="prevBtn" onclick="changeSlide(-1)">◄ Previous Slide</button>
           <div class="slide-dots" id="slideDots">
-            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div><div class="dot " onclick="goToSlide(3)"></div><div class="dot " onclick="goToSlide(4)"></div><div class="dot " onclick="goToSlide(5)"></div>
+            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div><div class="dot " onclick="goToSlide(3)"></div><div class="dot " onclick="goToSlide(4)"></div><div class="dot " onclick="goToSlide(5)"></div><div class="dot " onclick="goToSlide(6)"></div><div class="dot " onclick="goToSlide(7)"></div><div class="dot " onclick="goToSlide(8)"></div><div class="dot " onclick="goToSlide(9)"></div>
           </div>
           <button class="deck-btn" id="nextBtn" onclick="changeSlide(1)">Next Slide ►</button>
         </div>
@@ -531,7 +708,7 @@
             <span class="mod-time">⏱️ 45 min</span>
           </div>
           <h3 class="mod-card-title"><a href="./01-agentic-service-design-fundamentals/01-death-of-workshop-theater.html" style="color:inherit; text-decoration:none;">The Death of Workshop Theater: Moving to an Executable Service OS</a></h3>
-          <p class="mod-card-desc">Why traditional sticky-note workshops produce static artifacts that decay upon project close, and how treating service design as an executable, file-backed operating system changes delivery velocity.</p>
+          <p class="mod-card-desc">Why sticky-note practice decays (TISDD Ch. 4/8, Kumar Ch. 1), and how a content-addressed evidence store plus fail-closed method contracts restore provenance and repeatability.</p>
           <a class="mod-card-link" href="./01-agentic-service-design-fundamentals/01-death-of-workshop-theater.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -541,7 +718,7 @@
             <span class="mod-time">⏱️ 50 min</span>
           </div>
           <h3 class="mod-card-title"><a href="./01-agentic-service-design-fundamentals/02-service-dominant-logic-value-cocreation.html" style="color:inherit; text-decoration:none;">Service-Dominant Logic & Value Co-Creation in the Age of AI</a></h3>
-          <p class="mod-card-desc">Bridging Vargo & Lusch's SDL theory with autonomous agents: understanding agents as active operant resources that dynamically co-create value with human actors.</p>
+          <p class="mod-card-desc">Vargo & Lusch's five axioms as evidence discipline; co-creation vs. co-production; value co-destruction; `sd_evidence_add` quotes as FP10 value records; `service-profit-chain-mapping` as SDL-aware measurement.</p>
           <a class="mod-card-link" href="./01-agentic-service-design-fundamentals/02-service-dominant-logic-value-cocreation.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -550,8 +727,8 @@
             <span class="mod-badge">01.3</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./01-agentic-service-design-fundamentals/03-ten-agent-team-topology.html" style="color:inherit; text-decoration:none;">The 10-Role Eve-Style Agent Topology: Role Contracts & Boundaries</a></h3>
-          <p class="mod-card-desc">Dissecting the 10 specialized agent roles (Researcher, Synthesizer, Mapper, Ideator, Prototyper, Critic, Presenter, Measurer, Librarian, Orchestrator) and why strict role boundaries prevent cognitive drift.</p>
+          <h3 class="mod-card-title"><a href="./01-agentic-service-design-fundamentals/03-ten-agent-team-topology.html" style="color:inherit; text-decoration:none;">The 10-Role Agent Topology: Role Contracts & Boundaries</a></h3>
+          <p class="mod-card-desc">The roles as the runtime really exposes them — verified MCP `prompts/list` (10 prompts), contract role fields, per-role tool boundaries, and the researcher→mapper→critic handoff as a sequence.</p>
           <a class="mod-card-link" href="./01-agentic-service-design-fundamentals/03-ten-agent-team-topology.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -561,7 +738,7 @@
             <span class="mod-time">⏱️ 40 min</span>
           </div>
           <h3 class="mod-card-title"><a href="./01-agentic-service-design-fundamentals/04-autonomy-spectrum-human-gates.html" style="color:inherit; text-decoration:none;">The Autonomy Spectrum & The Sovereign Human Decision Gate</a></h3>
-          <p class="mod-card-desc">Establishing where agents operate with full autonomy (discovery, transcription, cross-referencing) versus where human designers maintain sovereign decision authority (phase gates, ethics, trade-offs).</p>
+          <p class="mod-card-desc">Three concentric gates (critic, `humanCheckpoints`, `approvalReceipt`); the two phase enums kept straight; fail-closed phase advance demonstrated live.</p>
           <a class="mod-card-link" href="./01-agentic-service-design-fundamentals/04-autonomy-spectrum-human-gates.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -571,7 +748,7 @@
             <span class="mod-time">⏱️ 45 min</span>
           </div>
           <h3 class="mod-card-title"><a href="./01-agentic-service-design-fundamentals/05-service-profit-chain-ai.html" style="color:inherit; text-decoration:none;">The Service Profit Chain: Linking Frontline Tooling to Customer Loyalty</a></h3>
-          <p class="mod-card-desc">Operationalizing Heskett's Service Profit Chain in AI systems: how internal agentic capability directly drives frontline satisfaction, service value, and enterprise ROI.</p>
+          <p class="mod-card-desc">Heskett et al.'s seven links and Ch. 5's lead/lag measurement discipline, mapped to the `service-profit-chain` and `kpi-tree` artifact schemas — no metric, no link.</p>
           <a class="mod-card-link" href="./01-agentic-service-design-fundamentals/05-service-profit-chain-ai.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -581,7 +758,7 @@
             <span class="mod-time">⏱️ 55 min</span>
           </div>
           <h3 class="mod-card-title"><a href="./01-agentic-service-design-fundamentals/06-first-agentic-sd-sprint.html" style="color:inherit; text-decoration:none;">Hands-On Sprint: Running Your First Agentic Service Discovery</a></h3>
-          <p class="mod-card-desc">An end-to-end hands-on tutorial running an agentic service discovery sprint from a raw problem brief to an evidence-backed initial diagnostic.</p>
+          <p class="mod-card-desc">The complete canonical loop executed with real receipts: 8 commands, 3 deliberate fail-closed refusals, veto→pass, factcheck exit 0, deterministic renders, signed phase gate.</p>
           <a class="mod-card-link" href="./01-agentic-service-design-fundamentals/06-first-agentic-sd-sprint.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -614,7 +791,7 @@
 
   <script>
     var currentSlide = 0;
-    var totalSlides = 6;
+    var totalSlides = 10;
 
     function showSlide(index) {
       if (index < 0) index = 0;

@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="The ASD Platform, Toolchain & DeepSeek Harness (dsh) — DeepSeek Harness Studio, the @asd Runtime Engine, MCP Server, and CLI Ergonomics. Online course from The Agentic Service Designer.">
-  <title>Course 02: The ASD Platform, Toolchain & DeepSeek Harness (dsh) | The Agentic Service Designer</title>
+  <meta name="description" content="The ASD Platform & Toolchain — The @asd Runtime Engine, the MCP Server, and CLI Ergonomics. Online course from The Agentic Service Designer.">
+  <title>Course 02: The ASD Platform & Toolchain | The Agentic Service Designer</title>
   <link rel="stylesheet" href="../assets/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
   <style>
@@ -68,7 +68,9 @@
       border: 1px solid #2d2e2b;
       border-radius: 8px;
       min-height: 440px;
-      padding: 48px;
+      aspect-ratio: 16 / 9;
+      max-height: 78vh;
+      padding: clamp(28px, 4vw, 48px);
       position: relative;
       box-shadow: 0 12px 36px rgba(0,0,0,0.35);
       display: flex;
@@ -79,28 +81,50 @@
       display: none;
       flex-direction: column;
       height: 100%;
-      animation: fadeIn 200ms ease;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #3d3e3a transparent;
+      animation: slideIn 220ms ease;
     }
     .slide-card.active {
       display: flex;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to { opacity: 1; transform: translateX(0); }
     }
     .slide-header {
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
       font-family: var(--mono);
       font-size: 12px;
-      color: #e4be5c;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    .slide-kicker {
+      color: #e4be5c;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+    }
+    .slide-kicker::before {
+      content: "";
+      width: 18px;
+      height: 2px;
+      background: #e4be5c;
+      display: inline-block;
+    }
+    .slide-page-num {
+      color: #83847c;
+      letter-spacing: 0.12em;
     }
     .slide-title {
-      font-size: clamp(26px, 3vw, 38px);
+      font-size: clamp(24px, 2.8vw, 38px);
       letter-spacing: -0.025em;
+      line-height: 1.12;
       color: #ffffff;
       margin: 0 0 24px;
       font-weight: 700;
@@ -111,10 +135,20 @@
       margin: 0 0 24px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      font-size: 16.5px;
-      line-height: 1.6;
+      gap: 12px;
+      font-size: clamp(15px, 1.35vw, 17px);
+      line-height: 1.55;
       color: #d6d6ce;
+    }
+    .slide-bullets code {
+      font-family: var(--mono);
+      font-size: 0.86em;
+      color: #f0d489;
+      background: rgba(228,190,92,0.09);
+      border: 1px solid rgba(228,190,92,0.18);
+      padding: 1px 5px;
+      border-radius: 3px;
+      white-space: nowrap;
     }
     .slide-bullets li {
       position: relative;
@@ -131,22 +165,26 @@
     .slide-quote {
       border-left: 3px solid #e4be5c;
       padding-left: 16px;
-      margin: 20px 0 0;
+      margin: auto 0 0;
+      padding-top: 16px;
       font-style: italic;
       color: #a8a89f;
-      font-size: 14.5px;
+      font-size: clamp(13px, 1.1vw, 14.5px);
+      line-height: 1.5;
     }
-    
+
     .deck-diagram {
       display: flex;
       align-items: center;
-      gap: 12px;
+      flex-wrap: wrap;
+      gap: 10px 12px;
       background: #212220;
       padding: 16px;
       border-radius: 6px;
       margin: 16px 0;
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: 12.5px;
+      line-height: 1.45;
       overflow-x: auto;
     }
     .d-box {
@@ -159,6 +197,107 @@
     .d-good { border-color: #38a169; color: #68d391; }
     .d-bad { border-color: #e53e3e; color: #fc8181; }
     .d-arrow { color: #e4be5c; font-weight: 700; }
+
+    /* Diagram pattern: pipeline — numbered stages chained with arrows */
+    .d-pipe { counter-reset: dstage; }
+    .d-stage {
+      position: relative;
+      padding-left: 34px;
+    }
+    .d-stage::before {
+      content: counter(dstage, decimal-leading-zero);
+      counter-increment: dstage;
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #e4be5c;
+    }
+
+    /* Diagram pattern: lane-row — stacked labeled lanes for blueprints & journeys */
+    .d-lanes {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .d-lane {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .d-lane-label {
+      flex: 0 0 132px;
+      text-align: right;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #9a9b93;
+    }
+    .d-lane-items {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-left: 2px solid #3d3e3a;
+    }
+    .d-lane-items--line { border-left-color: #e4be5c; }
+
+    /* Diagram pattern: gate — decision box with pass/veto branches */
+    .d-gate-wrap {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 12px;
+    }
+    .d-gate-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .d-gate {
+      border-color: #e4be5c;
+      color: #f0d489;
+      background: rgba(228,190,92,0.07);
+    }
+    .d-branches {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .d-branch {
+      flex: 1 1 200px;
+      border: 1px solid #3d3e3a;
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: normal;
+    }
+    .d-branch b {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .d-pass { border-color: #38a169; color: #9ae6b4; background: rgba(56,161,105,0.08); }
+    .d-veto { border-color: #c53030; color: #feb2b2; background: rgba(197,48,48,0.08); }
+
+    @media (max-width: 720px) {
+      .slide-viewport { aspect-ratio: auto; max-height: none; }
+      .d-lane { flex-direction: column; align-items: stretch; gap: 4px; }
+      .d-lane-label { flex: none; text-align: left; }
+      .d-lane-items { border-left: none; border-top: 2px solid #3d3e3a; }
+    }
 
     /* Deck Navigation Footer */
     .deck-nav-bar {
@@ -195,11 +334,19 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: #3a3b37;
+      background: transparent;
+      border: 1px solid #565750;
       cursor: pointer;
+      transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+    }
+    .dot:hover {
+      border-color: #b9bab0;
+      transform: scale(1.15);
     }
     .dot.active {
       background: #e4be5c;
+      border-color: #e4be5c;
+      transform: scale(1.3);
     }
 
     /* Modules Grid Section */
@@ -295,54 +442,6 @@
       font-size: 14px;
     }
     .lab-btn:hover { opacity: 0.9; }
-  
-/* course spec tiles */
-.metrics-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.metrics-row > div {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-card);
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.metrics-row dt {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 0;
-}
-.metrics-row dd {
-  margin: 0;
-  font-size: 14.5px;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.3;
-}
-.status-available {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.status-available::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #2f9e5f;
-  box-shadow: 0 0 0 3px rgba(47, 158, 95, 0.18);
-}
-
   </style>
 </head>
 <body>
@@ -366,9 +465,9 @@
       <div class="course-page-hero-inner">
         <a class="back-link" href="../courses.html">← All Courses</a>
         <div><span class="badge badge-foundation">Foundation</span></div>
-        <h1 class="course-page-title">Course 02: The ASD Platform, Toolchain & DeepSeek Harness (dsh)</h1>
-        <p class="course-page-sub">DeepSeek Harness Studio, the @asd Runtime Engine, MCP Server, and CLI Ergonomics</p>
-        <p style="max-width:760px; line-height:1.6; color:var(--ink-soft);">Deep-dive technical breakdown of the Service Design Agent Platform (SDAP) runtime stack. Explains how DeepSeek Harness (dsh) mounts the ASD Cordis plugin, how @asd/engine exposes 52 native tools, how the asd-mcp server bridges external clients over stdio with 215 knowledge resources, and how the asd CLI operates in terminal sessions. Covers deterministic SVG/HTML rendering.</p>
+        <h1 class="course-page-title">Course 02: The ASD Platform & Toolchain</h1>
+        <p class="course-page-sub">The @asd Runtime Engine, the MCP Server, and CLI Ergonomics</p>
+        <p style="max-width:760px; line-height:1.6; color:var(--ink-soft);">Deep-dive technical breakdown of the ASD runtime stack. Teaches the @asd package architecture (core schemas, engine execution, knowledge registry, render compilation), drives the same 29-tool surface over both the stdio MCP server (29 tools, 216 repo-corpus resources, 10 role prompts) and the standalone CLI, and covers deterministic SVG/HTML export into project renders/. DeepSeek Harness (dsh) is introduced honestly as a deferred integration surface with separate acceptance evidence.</p>
         <dl class="metrics-row" style="margin-top:24px;">
           <div><dt>Modules</dt><dd>6</dd></div>
           <div><dt>Duration</dt><dd>≈5h 15m</dd></div>
@@ -390,59 +489,182 @@
           
         <div class="slide-card active" data-slide-index="0">
           <div class="slide-header">
-            <span class="slide-kicker">Stack Architecture</span>
-            <span class="slide-page-num">01 / 03</span>
+            <span class="slide-kicker">Paradigm Shift</span>
+            <span class="slide-page-num">01 / 10</span>
           </div>
-          <h2 class="slide-title">The Unified SDAP Runtime Stack</h2>
+          <h2 class="slide-title">One Engine, Every Surface</h2>
           <ul class="slide-bullets">
-            <li>Monorepo architecture: @asd/core (schemas), @asd/engine (tools), @asd/render (visuals), @asd/runtime (CLI/MCP).</li><li>One canonical engine tree compiles identically to CLI, stdio MCP server, and DeepSeek Harness workbench.</li><li>Zero platform divergence: whether in terminal or GUI, the same acceptance rules execute.</li>
+            <li>The @asd monorepo compiles one canonical engine to two student surfaces: the asd CLI and the MCP stdio server.</li><li>29 tools with identical acceptance rules and identical fail-closed behavior — zero platform divergence.</li><li>Host packs (claude-code, codex, kimi, opencode) vendor the same server and add role prompts in host format.</li><li>You learn the engine once; every host, terminal, and GUI speaks the same contract.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">@asd/core</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box">@asd/engine</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">CLI · MCP · DSH Workbench · Claude Code</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">@asd/core (schemas)</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">@asd/engine (29 tools)</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">@asd/render (SVG)</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">@asd/runtime (CLI · MCP stdio)</span>
 </div>
-          <blockquote class="slide-quote">"One engine, four delivery surfaces: the same practice wherever a designer actually works."</blockquote>
+          <blockquote class="slide-quote">"One engine, one contract — the same practice wherever a designer actually works."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="1">
           <div class="slide-header">
-            <span class="slide-kicker">Harness Integration</span>
-            <span class="slide-page-num">02 / 03</span>
+            <span class="slide-kicker">The Executable Spine</span>
+            <span class="slide-page-num">02 / 10</span>
           </div>
-          <h2 class="slide-title">DeepSeek Harness & Cordis Plugin Wiring</h2>
+          <h2 class="slide-title">One Canonical Loop Behind All 8 Courses</h2>
           <ul class="slide-bullets">
-            <li>Cordis plugin system mounts the ASD studio tab directly into the stock DeepSeek Harness UI.</li><li>Live workspace root binding, active project selector, and real-time artifact inspection.</li><li>Zero host modifications: 100% modular plugin architecture.</li>
+            <li>Every module runs the same verified loop: project → evidence → method contract → artifact draft → critic gate → factcheck → export → human-gated phase advance.</li><li>The CLI and the MCP server execute the identical loop against the identical workspace store.</li><li><code>sd_method_run</code> fails closed below the method's evidence minimum — no evidence, no artifact.</li><li><code>sd_phase_advance</code> refuses to run without a human approval receipt JSON.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">DeepSeek Harness</span>
-  <span class="d-arrow">⟷</span>
-  <span class="d-box">ASD Cordis Plugin</span>
-  <span class="d-arrow">⟷</span>
-  <span class="d-box d-good">Studio GUI & Inspector</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">sd_project_create</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_evidence_add</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_method_run</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_artifact_write</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">sd_review</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_factcheck</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_export_report</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">sd_phase_advance</span>
 </div>
-          <blockquote class="slide-quote">"A service design studio inside the harness — evidence registers, live blueprints, review boards."</blockquote>
+          <blockquote class="slide-quote">"Agents prepare and verify with receipts; human leaders decide with accountability."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="2">
           <div class="slide-header">
-            <span class="slide-kicker">MCP Server</span>
-            <span class="slide-page-num">03 / 03</span>
+            <span class="slide-kicker">Module 02.1</span>
+            <span class="slide-page-num">03 / 10</span>
           </div>
-          <h2 class="slide-title">The asd-mcp Knowledge & Tool Server</h2>
+          <h2 class="slide-title">The Unified SDAP Runtime Stack: Engine, Runtime, Render & Report</h2>
           <ul class="slide-bullets">
-            <li>Exposes 52 native service design tools over standard JSON-RPC stdio.</li><li>215 cursor-paginated knowledge resources via asd://corpus/... URIs.</li><li>Compatible with Claude Desktop, Cursor, OpenCode, and any MCP client.</li>
+            <li>@asd/core owns the schemas: 32 registered artifact kinds, validated at every write.</li><li>@asd/engine executes the 29 tools against a per-project JSON store (ASD_WORKSPACE, default ~/.asd/projects).</li><li>@asd/render compiles typed artifacts to deterministic SVG; report renders produce the artifact-dossier HTML.</li><li>@asd/runtime exposes everything as CLI kebab-verbs and MCP tool schemas — same code path.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">MCP Client (Claude/Cursor)</span>
-  <span class="d-arrow">⟷</span>
-  <span class="d-box">asd-mcp (stdio)</span>
-  <span class="d-arrow">⟷</span>
-  <span class="d-box d-good">215 Knowledge Books & Tools</span>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">core</span><div class="d-lane-items"><span class="d-box">32 kinds</span><span class="d-box">Schemas</span><span class="d-box">Acceptance rules</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">engine</span><div class="d-lane-items"><span class="d-box">29 sd_* tools</span><span class="d-box">Workspace store</span><span class="d-box">Review gates</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">runtime</span><div class="d-lane-items d-lane-items--line"><span class="d-box">asd CLI</span><span class="d-box">asd-mcp stdio</span><span class="d-box">@asd/render SVG/HTML</span></div></div>
 </div>
-          <blockquote class="slide-quote">"Service design capabilities and theoretical literature available to any agentic host."</blockquote>
+          <blockquote class="slide-quote">"Schemas at the core mean every surface inherits the same truth."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="3">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 02.2</span>
+            <span class="slide-page-num">04 / 10</span>
+          </div>
+          <h2 class="slide-title">DeepSeek Harness (dsh) Studio Workbench & Cordis Plugin Wiring</h2>
+          <ul class="slide-bullets">
+            <li>DSH Studio is a deferred, pending-live integration surface — it is not the student environment.</li><li>The Cordis plugin wiring is specified with its own acceptance evidence before it ships as a teaching surface.</li><li>Today every exercise runs on the standalone runtime: suite/packages/runtime/lib/cli.mjs and mcp.mjs.</li><li>BUZZ is likewise a pending-live integration surface; ACP is record-only. No host-agent spawning is claimed anywhere.</li>
+          </ul>
+          <div class="deck-diagram d-gate-wrap">
+  <div class="d-gate-row"><span class="d-box">ASD engine</span><span class="d-arrow">→</span><span class="d-box d-gate">Delivery surfaces</span></div>
+  <div class="d-branches">
+    <div class="d-branch d-pass"><b>Live now</b>asd CLI · asd-mcp stdio · host packs — the teaching environment</div>
+    <div class="d-branch d-veto"><b>Pending live</b>DSH Studio · BUZZ — deferred until their acceptance evidence lands</div>
+  </div>
+</div>
+          <blockquote class="slide-quote">"Integration surfaces earn their place with acceptance evidence; the runtime is what you learn on."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="4">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 02.3</span>
+            <span class="slide-page-num">05 / 10</span>
+          </div>
+          <h2 class="slide-title">The asd-mcp Server: 29 Tools, 216 Resources, 10 Prompts</h2>
+          <ul class="slide-bullets">
+            <li>asd-mcp speaks standard JSON-RPC over stdio, verified live: 29 tools / 216 resources / 10 prompts.</li><li>The 216 knowledge resources come from this repo's books+articles corpus; emitted packs bundle local corpus copies and ship more.</li><li>The 10 role prompts (critic, ideator, librarian, mapper, measurer, orchestrator, presenter, prototyper, researcher, synthesizer) register with any MCP client.</li><li>Cursor-paginated asd:// corpus URIs keep the full library navigable from a tool window.</li>
+          </ul>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">MCP client</span><div class="d-lane-items"><span class="d-box">Host agent</span><span class="d-arrow">⟷</span><span class="d-box">JSON-RPC stdio</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">asd-mcp</span><div class="d-lane-items d-lane-items--line"><span class="d-box">29 tools</span><span class="d-box">216 resources</span><span class="d-box">10 role prompts</span></div></div>
+</div>
+          <blockquote class="slide-quote">"One stdio server turns any MCP client into a service design workstation."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="5">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 02.4</span>
+            <span class="slide-page-num">06 / 10</span>
+          </div>
+          <h2 class="slide-title">Terminal Ergonomics with the asd CLI & Headless Scripting</h2>
+          <ul class="slide-bullets">
+            <li>CLI grammar: asd &lt;kebab-short-name&gt; --flag value — project-create, evidence-add, method-run, review, factcheck, phase-advance.</li><li>There is no asd init, run, status, agent, or render; the 29 short names are the whole grammar.</li><li>Evidence ids are 64-hex SHA-256 over [source, kind, body, origin] — content-addressed and deduplicating.</li><li>Headless by design: every lecture runlog in this curriculum is a paste-able CLI session with exit-code semantics.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">asd &lt;verb&gt; --flags</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">ASD_WORKSPACE JSON store</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Receipts &amp; runlogs</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">exit 0 / fail-closed exit 1</span>
+</div>
+          <blockquote class="slide-quote">"Twenty-nine verbs is the whole grammar; memorize the loop, not the manual."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="6">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 02.5</span>
+            <span class="slide-page-num">07 / 10</span>
+          </div>
+          <h2 class="slide-title">Deterministic Visualization: Compiling Structured JSON to Flawless SVG/HTML</h2>
+          <ul class="slide-bullets">
+            <li>LLMs should never draw: typed JSON compiles to zero-hallucination visuals.</li><li><code>sd_export_artifact</code> renders e.g. renders/journey-map.&lt;id&gt;.svg — deterministic @asd/render output.</li><li><code>sd_export_report</code> --kind artifact-dossier renders the full HTML dossier.</li><li>Deterministic means diff-stable: same artifact, same bytes, every run.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Typed artifact JSON</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">@asd/render compiler</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">SVG per artifact</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">HTML artifact-dossier</span>
+</div>
+          <blockquote class="slide-quote">"A renderer that cannot hallucinate is a renderer you can ship."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="7">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 02.6</span>
+            <span class="slide-page-num">08 / 10</span>
+          </div>
+          <h2 class="slide-title">Multi-Host Distribution: Claude Code, OpenCode, Codex & More</h2>
+          <ul class="slide-bullets">
+            <li>Each host pack vendors the identical server — capability counts never inflate per host.</li><li>Role prompts and skills are translated to host format (claude-code, codex, kimi, opencode, and others).</li><li>Diagnostic verification before teaching: tools/list must return exactly 29 on every host.</li><li>The host changes; the contract, acceptance rules, and evidence law do not.</li>
+          </ul>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">claude-code</span><div class="d-lane-items"><span class="d-box">vendored server</span><span class="d-box">role prompts</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">codex / kimi</span><div class="d-lane-items"><span class="d-box">vendored server</span><span class="d-box">host-format skills</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">opencode</span><div class="d-lane-items d-lane-items--line"><span class="d-box">vendored server</span><span class="d-box d-good">tools/list = 29</span></div></div>
+</div>
+          <blockquote class="slide-quote">"The host changes; the 29 tools do not."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="8">
+          <div class="slide-header">
+            <span class="slide-kicker">Dogfooding the Runtime</span>
+            <span class="slide-page-num">09 / 10</span>
+          </div>
+          <h2 class="slide-title">The Verified Toolchain Behind This Course</h2>
+          <ul class="slide-bullets">
+            <li>Introspection: <code>sd_knowledge</code>, <code>sd_schema_get</code> --kind &lt;kind&gt;, <code>sd_template_list/get</code>, <code>sd_practice_get</code>.</li><li>Delivery: <code>sd_export_report</code>, <code>sd_export_artifact</code>; orchestration: <code>sd_orchestration_plan/status/dispatch/handoff</code>.</li><li>Discovery: <code>sd_method_list</code> --phase research|synthesis|ideation|prototyping|delivery|measurement across the 74 methods.</li><li>Two different enums, never conflated: method phases (6) vs project phases (discover|define|develop|deliver).</li>
+          </ul>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">Method phases</span><div class="d-lane-items"><span class="d-box">research</span><span class="d-box">synthesis</span><span class="d-box">ideation</span><span class="d-box">prototyping</span><span class="d-box">delivery</span><span class="d-box">measurement</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Project phases</span><div class="d-lane-items d-lane-items--line"><span class="d-box d-gate">discover</span><span class="d-arrow">→</span><span class="d-box d-gate">define</span><span class="d-arrow">→</span><span class="d-box d-gate">develop</span><span class="d-arrow">→</span><span class="d-box d-gate">deliver</span></div></div>
+</div>
+          <blockquote class="slide-quote">"Introspect everything: if the runtime cannot describe it, it does not exist."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="9">
+          <div class="slide-header">
+            <span class="slide-kicker">Capstone</span>
+            <span class="slide-page-num">10 / 10</span>
+          </div>
+          <h2 class="slide-title">Stand Up the Stack & Prove It</h2>
+          <ul class="slide-bullets">
+            <li>Create a disposable ASD_WORKSPACE and run the full spine once, end to end.</li><li>Register the MCP stdio server in your host and verify tools/list returns 29.</li><li>Run <code>sd_schema_get</code> --kind journey-map and read the acceptance rules your artifacts must satisfy.</li><li>Export an artifact-dossier twice and confirm the render is byte-stable.</li>
+          </ul>
+          <div class="deck-diagram d-gate-wrap">
+  <div class="d-gate-row"><span class="d-box">Your environment</span><span class="d-arrow">→</span><span class="d-box d-gate">Verification checklist</span></div>
+  <div class="d-branches">
+    <div class="d-branch d-pass"><b>Green</b>29 tools listed · spine run exit 0 · renders byte-stable</div>
+    <div class="d-branch d-veto"><b>Red</b>Any mismatch → fix the wiring before designing anything</div>
+  </div>
+</div>
+          <blockquote class="slide-quote">"You now run the same engine this course was built with."</blockquote>
         </div>
         
         </div>
@@ -450,7 +672,7 @@
         <div class="deck-nav-bar">
           <button class="deck-btn" id="prevBtn" onclick="changeSlide(-1)">◄ Previous Slide</button>
           <div class="slide-dots" id="slideDots">
-            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div>
+            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div><div class="dot " onclick="goToSlide(3)"></div><div class="dot " onclick="goToSlide(4)"></div><div class="dot " onclick="goToSlide(5)"></div><div class="dot " onclick="goToSlide(6)"></div><div class="dot " onclick="goToSlide(7)"></div><div class="dot " onclick="goToSlide(8)"></div><div class="dot " onclick="goToSlide(9)"></div>
           </div>
           <button class="deck-btn" id="nextBtn" onclick="changeSlide(1)">Next Slide ►</button>
         </div>
@@ -473,8 +695,8 @@
             <span class="mod-badge">02.1</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./02-asd-platform-toolchain-deepseek-harness/01-sdap-runtime-architecture.html" style="color:inherit; text-decoration:none;">The Unified SDAP Runtime Stack: Engine, Runtime, Render & Report</a></h3>
-          <p class="mod-card-desc">Architecture of the monorepo suite: @asd/core schemas, @asd/engine execution, @asd/render compilation, and @asd/report generators.</p>
+          <h3 class="mod-card-title"><a href="./02-asd-platform-toolchain-deepseek-harness/01-sdap-runtime-architecture.html" style="color:inherit; text-decoration:none;">The Unified SDAP Runtime Stack — Core, Engine, Knowledge, Render, Report, Runtime</a></h3>
+          <p class="mod-card-desc">Package layering of the monorepo suite, the capability registry, the Studio RPC boundary, and the verified canonical loop (project → evidence → contract → draft → gate → factcheck).</p>
           <a class="mod-card-link" href="./02-asd-platform-toolchain-deepseek-harness/01-sdap-runtime-architecture.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -483,8 +705,8 @@
             <span class="mod-badge">02.2</span>
             <span class="mod-time">⏱️ 55 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./02-asd-platform-toolchain-deepseek-harness/02-deepseek-harness-cordis-wiring.html" style="color:inherit; text-decoration:none;">DeepSeek Harness (dsh) Studio Workbench & Cordis Plugin Wiring</a></h3>
-          <p class="mod-card-desc">Mounting the ASD Cordis plugin inside DeepSeek Harness to unlock the visual Service Design Studio, live project dashboards, and artifact inspector.</p>
+          <h3 class="mod-card-title"><a href="./02-asd-platform-toolchain-deepseek-harness/02-deepseek-harness-cordis-wiring.html" style="color:inherit; text-decoration:none;">One Runtime, Two Live Surfaces — CLI and MCP (DSH Studio as a Deferred Integration)</a></h3>
+          <p class="mod-card-desc">Surface parity proven by driving one project through both transports; the DSH Studio pack (`exact-dsh-rc.5`, `@asd/ui` 0.5.0) read honestly as a deferred integration surface.</p>
           <a class="mod-card-link" href="./02-asd-platform-toolchain-deepseek-harness/02-deepseek-harness-cordis-wiring.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -493,8 +715,8 @@
             <span class="mod-badge">02.3</span>
             <span class="mod-time">⏱️ 55 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./02-asd-platform-toolchain-deepseek-harness/03-asd-mcp-server-resources.html" style="color:inherit; text-decoration:none;">The asd-mcp Server: Exposing 52 Tools & 215 Knowledge Resources</a></h3>
-          <p class="mod-card-desc">Running the stdio Model Context Protocol server, paginating knowledge URIs (asd://corpus/...), and registering tool schemas with LLM clients.</p>
+          <h3 class="mod-card-title"><a href="./02-asd-platform-toolchain-deepseek-harness/03-asd-mcp-server-resources.html" style="color:inherit; text-decoration:none;">The asd-mcp Server: 29 Tools, 216 Corpus Resources, 10 Role Prompts over stdio</a></h3>
+          <p class="mod-card-desc">A live protocol session: initialize handshake, tools/list, paginated resources/list (100+100+16), resources/read and sd_knowledge corpus retrieval, prompts/get role contracts.</p>
           <a class="mod-card-link" href="./02-asd-platform-toolchain-deepseek-harness/03-asd-mcp-server-resources.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -503,8 +725,8 @@
             <span class="mod-badge">02.4</span>
             <span class="mod-time">⏱️ 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./02-asd-platform-toolchain-deepseek-harness/04-cli-ergonomics-workflows.html" style="color:inherit; text-decoration:none;">Terminal Ergonomics with the asd CLI & Headless Scripting</a></h3>
-          <p class="mod-card-desc">Executing scripted service design runs with the standalone asd CLI, handling project init, phase transitions, and headless batch operations.</p>
+          <h3 class="mod-card-title"><a href="./02-asd-platform-toolchain-deepseek-harness/04-cli-ergonomics-workflows.html" style="color:inherit; text-decoration:none;">Terminal Ergonomics — the asd CLI Grammar, Fail-Closed Errors, and the Workspace Layout</a></h3>
+          <p class="mod-card-desc">The real grammar (`asd <kebab-name> --flag value`), verbatim fail-closed errors as the manual, two phase enums not to conflate, and the per-project JSON workspace tree.</p>
           <a class="mod-card-link" href="./02-asd-platform-toolchain-deepseek-harness/04-cli-ergonomics-workflows.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -513,8 +735,8 @@
             <span class="mod-badge">02.5</span>
             <span class="mod-time">⏱️ 55 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./02-asd-platform-toolchain-deepseek-harness/05-deterministic-render-pipeline.html" style="color:inherit; text-decoration:none;">Deterministic Visualization: Compiling Structured JSON to Flawless SVG/HTML</a></h3>
-          <p class="mod-card-desc">Why LLMs should never draw diagrams directly: compiling typed JSON models to zero-hallucination Mermaid, SVG, and responsive HTML artifacts.</p>
+          <h3 class="mod-card-title"><a href="./02-asd-platform-toolchain-deepseek-harness/05-deterministic-render-pipeline.html" style="color:inherit; text-decoration:none;">The Deterministic Export Pipeline — Typed JSON to SVG and HTML, Byte for Byte</a></h3>
+          <p class="mod-card-desc">Why LLMs never draw: `@asd/render`'s 32 per-kind SVG compilers, `@asd/report`'s six dossier kinds, verified byte-identical re-export.</p>
           <a class="mod-card-link" href="./02-asd-platform-toolchain-deepseek-harness/05-deterministic-render-pipeline.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -523,8 +745,8 @@
             <span class="mod-badge">02.6</span>
             <span class="mod-time">⏱️ 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./02-asd-platform-toolchain-deepseek-harness/06-environment-diagnostics-health.html" style="color:inherit; text-decoration:none;">Multi-Host Distribution: Claude Code, OpenCode, Codex, AGY & Pi</a></h3>
-          <p class="mod-card-desc">Deploying the ASD plugin across 12 different agent runtime environments with unified role contracts and diagnostic verification.</p>
+          <h3 class="mod-card-title"><a href="./02-asd-platform-toolchain-deepseek-harness/06-environment-diagnostics-health.html" style="color:inherit; text-decoration:none;">The Host Matrix, Honestly — Verified Profiles, Unverified Hosts, and the ACP Boundary</a></h3>
+          <p class="mod-card-desc">claude-code/codex/kimi/opencode vendor the same server; agy/pi/omp are static; grok is prompt-only (generic MCP client); DSH/BUZZ deferred; ACP record-only and fail-closed.</p>
           <a class="mod-card-link" href="./02-asd-platform-toolchain-deepseek-harness/06-environment-diagnostics-health.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -532,7 +754,7 @@
 
         <div class="lab-box">
           <div>
-            <h3 style="margin:0 0 8px;">🧪 Hands-on Lab: The ASD Platform, Toolchain & DeepSeek Harness (dsh)</h3>
+            <h3 style="margin:0 0 8px;">🧪 Hands-on Lab: The ASD Platform & Toolchain</h3>
             <p style="margin:0; color:var(--ink-soft); font-size:14px;">Complete the verified lab exercise on your terminal using the <code>@asd</code> CLI and test scripts.</p>
           </div>
           <a class="lab-btn" href="../../courses/labs/lab-02-fundamentals/README.md">Open Lab Guide ↗</a>
@@ -557,7 +779,7 @@
 
   <script>
     var currentSlide = 0;
-    var totalSlides = 3;
+    var totalSlides = 10;
 
     function showSlide(index) {
       if (index < 0) index = 0;

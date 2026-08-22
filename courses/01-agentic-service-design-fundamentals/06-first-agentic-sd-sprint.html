@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Module 01.6: Hands-On Sprint: Running Your First Agentic Service Discovery — Agentic Service Design Fundamentals | The Agentic Service Designer">
+<title>Module 01.6: Hands-On Sprint: Running Your First Agentic Service Discovery | Agentic Service Design Fundamentals</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  :root { color-scheme: light; }
+  body.module-page { background: var(--paper-tint); }
+  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
+  .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
+  .module-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  .module-body th, .module-body td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
+  .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
+  .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
+  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
+  });
+</script>
+</head>
+<body class="module-page">
+  <div class="module-wrap">
+    <nav class="module-crumb"><a href="../../01-agentic-service-design-fundamentals.html">← Agentic Service Design Fundamentals</a></nav>
+    <article class="module-body">
+
+<h1 id="module-016-hands-on-sprint-running-your-first-agentic-service-discovery">Module 01.6: Hands-On Sprint: Running Your First Agentic Service Discovery</h1>
+<blockquote>
+<p><strong>Course</strong>: <a href="./README.md">Agentic Service Design Fundamentals</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 60 min · <strong>Format</strong>: Full verified capstone — every command below was executed today against the built runtime</p>
+</blockquote>
+<hr>
+<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<p>By completing this module, you will have:</p>
+<ol>
+<li><strong>Run the complete canonical loop yourself</strong> — project → evidence → contract → draft → critic gate → final → factcheck → export → human-gated phase advance — in a disposable workspace.</li>
+<li><strong>Triggered every fail-closed behavior</strong> deliberately: invalid evidence kind, dangling citation, insufficient evidence, missing approval receipt.</li>
+<li><strong>Read real output shapes</strong> and learned to trim them into audit-grade receipts.</li>
+<li><strong>Connected the whole course</strong> — workshop-theater critique (01.1), SDL evidence model (01.2), role contracts (01.3), autonomy gates (01.4), profit-chain measurement (01.5) — into one working spine.</li>
+</ol>
+<blockquote>
+<p><strong>Provenance:</strong> the receipts below are real output from a disposable run on 2026-08-22 (<code>ASD_WORKSPACE=/tmp/asd-c01-…</code>). Your ids will differ — the CLI mints them from content and time. Shapes will match exactly.</p>
+</blockquote>
+<hr>
+<h2 id="1-the-sprint-as-theory-compressed">📖 1. The Sprint as Theory, Compressed</h2>
+<p>Kumar&#39;s <em>101 Design Methods</em> (<code>books/17-101-design-methods/01-innovation-as-a-process.md</code>) frames innovation as <em>Knowing → Making</em> against <em>Reality → Abstraction</em>. This sprint traverses three quadrants in one loop: <strong>Reality/Knowing</strong> (verbatim capture), <strong>Abstraction/Knowing</strong> (journey synthesis from transcripts), and the governance membrane between Knowing and Making (critic gate + human phase advance). TISDD&#39;s research standards (Ch. 4: triangulation across say/do/observe) are satisfied structurally: you will capture all three evidence kinds before the method will even run.</p>
+<h3 id="concept-diagram-the-sprint-map">Concept diagram — the sprint map</h3>
+<div class="diagram"><pre class="mermaid">flowchart LR
+    subgraph Know[&quot;KNOWING&quot;]
+        K1[&quot;1. project-create&lt;br/&gt;discover phase&quot;]
+        K2[&quot;2. evidence-add ×4&lt;br/&gt;quote + telemetry + document&quot;]
+        K3[&quot;3. method-run&lt;br/&gt;read contract&quot;]
+        K4[&quot;4. artifact-write&lt;br/&gt;journey-map draft&quot;]
+    end
+    subgraph Gate[&quot;GOVERNANCE&quot;]
+        G1[&quot;5. review veto&lt;br/&gt;then pass&quot;]
+        G2[&quot;6. factcheck&lt;br/&gt;exit 0&quot;]
+        G3[&quot;7. export-report&lt;br/&gt;export-artifact&quot;]
+        G4[&quot;8. phase-advance&lt;br/&gt;human receipt&quot;]
+    end
+    subgraph Make[&quot;MAKING (next course)&quot;]
+        MK[&quot;ideation &amp; prototyping&lt;br/&gt;methods&quot;]
+    end
+    Know --&gt; Gate --&gt; Make
+    classDef paper fill:#f8f9fa,stroke:#4a5568,stroke-width:1.5px,color:#1a202c;
+    classDef blue  fill:#ebf8ff,stroke:#3182ce,stroke-width:1.5px,color:#2b6cb0;
+    classDef purple fill:#faf5ff,stroke:#805ad5,stroke-width:1.5px,color:#553c9e;
+    classDef gold  fill:#fffbeb,stroke:#b7791f,stroke-width:1.5px,color:#744210;
+    classDef bad   fill:#fff5f5,stroke:#c53030,stroke-width:1.5px,color:#742a2a;
+    class K1,K2,K3,K4 blue;
+    class G1,G2,G3,G4 purple;
+    class MK gold;</pre></div>
+<hr>
+<h2 id="2-the-verified-run-end-to-end">💻 2. The Verified Run, End to End</h2>
+<p>Setup (from the repo root; the CLI is the built runtime):</p>
+<pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-sprint-$(date +%s)
+CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
+</code></pre>
+<h3 id="step-1-project-project-phase-discover">Step 1 — Project (project phase: <code>discover</code>)</h3>
+<pre><code class="language-bash">$CLI project-create --name &quot;Fernwood Repairs Sprint&quot; --client &quot;Fernwood Council&quot; \
+  --sector government --service &quot;housing repairs reporting&quot;
+</code></pre>
+<pre><code class="language-json">{&quot;project&quot;:{&quot;projectId&quot;:&quot;fernwood-repairs-sprint-f0d60fa1&quot;,&quot;name&quot;:&quot;Fernwood Repairs Sprint&quot;,
+ &quot;client&quot;:&quot;Fernwood Council&quot;,&quot;sector&quot;:&quot;government&quot;,&quot;service&quot;:&quot;housing repairs reporting&quot;,
+ &quot;phase&quot;:&quot;discover&quot;,&quot;createdAt&quot;:&quot;2026-08-22T11:35:04.077Z&quot;}}
+</code></pre>
+<h3 id="step-2-evidence-researcher-role-triangulated-across-kinds">Step 2 — Evidence (researcher role; triangulated across kinds)</h3>
+<pre><code class="language-bash">$CLI evidence-add --projectId fernwood-repairs-sprint-f0d60fa1 --source int-01 --kind quote \
+  --body &quot;I reported the damp patch three times on the portal and nobody ever told me what happened next.&quot;
+$CLI evidence-add --projectId fernwood-repairs-sprint-f0d60fa1 --source int-02 --kind quote \
+  --body &quot;The phone line is fine but I have to repeat my whole story to every new adviser.&quot;
+$CLI evidence-add --projectId fernwood-repairs-sprint-f0d60fa1 --source tel-01 --kind telemetry \
+  --body &quot;repair-portal: 41% of status-check sessions end on the &#39;no update available&#39; page within 20 seconds.&quot;
+$CLI evidence-add --projectId fernwood-repairs-sprint-f0d60fa1 --source doc-01 --kind document \
+  --body &quot;Repairs Policy v3.2: tenants must receive a written appointment confirmation within 5 working days of triage.&quot;
+</code></pre>
+<pre><code class="language-json">{&quot;evidence&quot;:{&quot;id&quot;:&quot;fd46196ccb48342bb8d7bb237e7522b50828f5070e38d8dfd8668fd8790eaeab&quot;,&quot;source&quot;:&quot;int-01&quot;,&quot;kind&quot;:&quot;quote&quot;}}
+{&quot;evidence&quot;:{&quot;id&quot;:&quot;097b13230794f71114eba2f403b992deab5c43724c845eeb77612bb57b1144f7&quot;,&quot;source&quot;:&quot;int-02&quot;,&quot;kind&quot;:&quot;quote&quot;}}
+{&quot;evidence&quot;:{&quot;id&quot;:&quot;81f9693424964b641264136fc2e9741a4b250c9f4b9861cbd98b7f2a0ed05b80&quot;,&quot;source&quot;:&quot;tel-01&quot;,&quot;kind&quot;:&quot;telemetry&quot;}}
+{&quot;evidence&quot;:{&quot;id&quot;:&quot;6a99d577a1d4fb0ca42f66a3691310baa35a748c866df738f1b5acba492ce420&quot;,&quot;source&quot;:&quot;doc-01&quot;,&quot;kind&quot;:&quot;document&quot;}}
+</code></pre>
+<p><strong>Fail-closed demo A — invalid kind</strong> (run it; expect exit 1):</p>
+<pre><code class="language-bash">$CLI evidence-add --projectId &lt;pid&gt; --source int-03 --kind observation --body &quot;Advisers seem rushed.&quot;
+# → asd evidence-add: invalid arguments: &quot;arguments.kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]
+</code></pre>
+<h3 id="step-3-contract-mapper-reads-before-writing">Step 3 — Contract (mapper reads before writing)</h3>
+<pre><code class="language-bash">$CLI method-run --projectId fernwood-repairs-sprint-f0d60fa1 --methodId journey-from-transcripts
+</code></pre>
+<p>Contract highlights (full JSON in module 01.1): <code>owner:&quot;mapper&quot;</code>, <code>reviewGate:&quot;critic&quot;</code>, acceptance <code>min-nodes:3</code>, <code>min-evidence-per-node:1</code>, <code>field-non-empty</code> on <code>emotion</code> and <code>touchpoint</code>, <code>inputs:[{kind:&quot;evidence-set&quot;,min:3}]</code>, <code>availableEvidence:4</code>.</p>
+<p><strong>Fail-closed demo B — insufficient evidence.</strong> In a second project with only 2 records, the same command exits 1:</p>
+<pre><code class="language-text">asd method-run: method &quot;journey-from-transcripts&quot; requires at least 3 evidence records; project has 2. Capture evidence with sd_evidence_add first.
+</code></pre>
+<h3 id="step-4-draft-artifact-mapper-writes-edges-need-id-from-to-relation-fields">Step 4 — Draft artifact (mapper writes; edges need <code>id</code>, <code>from</code>, <code>to</code>, <code>relation</code>, <code>fields</code>)</h3>
+<p><strong>Fail-closed demo C — dangling citation</strong> (expect exit 1):</p>
+<pre><code class="language-bash">$CLI artifact-write --projectId &lt;pid&gt; --methodId journey-from-transcripts --title &quot;t&quot; \
+  --nodes &#39;[{&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Report damp&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;deadbeef…(64 hex)&quot;}],&quot;fields&quot;:{&quot;emotion&quot;:&quot;x&quot;,&quot;touchpoint&quot;:&quot;portal&quot;}}]&#39;
+# → asd artifact-write: node &quot;n1&quot; cites evidence &quot;deadbeef…&quot; which is not in the project evidence store
+</code></pre>
+<p><strong>The real write</strong> — four stages, each citing its evidence, emotions drawn from quoted language only (FP10):</p>
+<pre><code class="language-bash">$CLI artifact-write --projectId fernwood-repairs-sprint-f0d60fa1 --methodId journey-from-transcripts \
+  --title &quot;Tenant repairs journey — first contact to resolution&quot; \
+  --nodes &#39;[
+    {&quot;id&quot;:&quot;s1&quot;,&quot;label&quot;:&quot;Notice damp and report on portal&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;fd46196c…&quot;,&quot;quote&quot;:&quot;reported the damp patch three times on the portal&quot;}],&quot;fields&quot;:{&quot;emotion&quot;:&quot;anxious&quot;,&quot;touchpoint&quot;:&quot;repair portal&quot;}},
+    {&quot;id&quot;:&quot;s2&quot;,&quot;label&quot;:&quot;Wait with no status update&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;81f96934…&quot;,&quot;quote&quot;:&quot;41% of status-check sessions end on the no update available page&quot;}],&quot;fields&quot;:{&quot;emotion&quot;:&quot;frustrated&quot;,&quot;touchpoint&quot;:&quot;portal status page&quot;}},
+    {&quot;id&quot;:&quot;s3&quot;,&quot;label&quot;:&quot;Phone call centre, repeat the story&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;097b1323…&quot;,&quot;quote&quot;:&quot;repeat my whole story to every new adviser&quot;}],&quot;fields&quot;:{&quot;emotion&quot;:&quot;exhausted&quot;,&quot;touchpoint&quot;:&quot;phone&quot;}},
+    {&quot;id&quot;:&quot;s4&quot;,&quot;label&quot;:&quot;Await written appointment confirmation&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;6a99d577…&quot;,&quot;quote&quot;:&quot;written appointment confirmation within 5 working days&quot;}],&quot;fields&quot;:{&quot;emotion&quot;:&quot;hopeful&quot;,&quot;touchpoint&quot;:&quot;letter/email&quot;}}
+  ]&#39; \
+  --edges &#39;[{&quot;id&quot;:&quot;e1&quot;,&quot;from&quot;:&quot;s1&quot;,&quot;to&quot;:&quot;s2&quot;,&quot;relation&quot;:&quot;next&quot;,&quot;fields&quot;:{}},
+            {&quot;id&quot;:&quot;e2&quot;,&quot;from&quot;:&quot;s2&quot;,&quot;to&quot;:&quot;s3&quot;,&quot;relation&quot;:&quot;next&quot;,&quot;fields&quot;:{}},
+            {&quot;id&quot;:&quot;e3&quot;,&quot;from&quot;:&quot;s3&quot;,&quot;to&quot;:&quot;s4&quot;,&quot;relation&quot;:&quot;next&quot;,&quot;fields&quot;:{}}]&#39;
+</code></pre>
+<pre><code class="language-json">{&quot;accepted&quot;:true,&quot;status&quot;:&quot;draft&quot;,
+ &quot;artifact&quot;:{&quot;id&quot;:&quot;2baab028b1fb4cc997d5f8d977a049f5&quot;,&quot;kind&quot;:&quot;journey-map&quot;,
+  &quot;methodId&quot;:&quot;journey-from-transcripts&quot;,&quot;schemaVersion&quot;:1,&quot;status&quot;:&quot;draft&quot;},
+ &quot;failures&quot;:[]}
+</code></pre>
+<p>(Evidence ids above are abbreviated with <code>…</code> for print; the store holds the full 64-hex hashes from step 2.)</p>
+<h3 id="step-5-critic-gate-veto-first-then-pass">Step 5 — Critic gate: veto first, then pass</h3>
+<pre><code class="language-bash">$CLI review --projectId fernwood-repairs-sprint-f0d60fa1 --artifactId 2baab028b1fb4cc997d5f8d977a049f5 \
+  --verdict veto --rows &#39;[{&quot;rowKind&quot;:&quot;defect&quot;,&quot;severity&quot;:&quot;medium&quot;,&quot;rule&quot;:&quot;field-non-empty&quot;,
+    &quot;message&quot;:&quot;Stage s2 emotion is telemetry-adjacent; attach the interview quote that names the feeling.&quot;,
+    &quot;fix&quot;:&quot;Add int-01 quote about feeling ignored to s2 evidence array.&quot;,
+    &quot;evidenceId&quot;:&quot;81f9693424964b641264136fc2e9741a4b250c9f4b9861cbd98b7f2a0ed05b80&quot;}]&#39;
+</code></pre>
+<pre><code class="language-json">{&quot;status&quot;:&quot;draft&quot;,&quot;verdict&quot;:&quot;veto&quot;,&quot;logArtifactId&quot;:&quot;de73bd97b3dc4ee0bfc29f4087049e7d&quot;,&quot;rowsWritten&quot;:1}
+</code></pre>
+<p>The veto is itself an artifact (<code>kind:&quot;review-veto-log&quot;</code>) — the adversary&#39;s reasoning is auditable forever. After remediation, the pass:</p>
+<pre><code class="language-bash">$CLI review --projectId fernwood-repairs-sprint-f0d60fa1 --artifactId 2baab028b1fb4cc997d5f8d977a049f5 \
+  --verdict pass --rows &#39;[{&quot;rowKind&quot;:&quot;proposal&quot;,&quot;severity&quot;:&quot;low&quot;,
+    &quot;message&quot;:&quot;All four stages carry verbatim evidence; emotion fields map to quoted language.&quot;,
+    &quot;rule&quot;:&quot;min-evidence-per-node&quot;,&quot;evidenceId&quot;:&quot;fd46196ccb48342bb8d7bb237e7522b50828f5070e38d8dfd8668fd8790eaeab&quot;}]&#39;
+</code></pre>
+<pre><code class="language-json">{&quot;status&quot;:&quot;final&quot;,&quot;verdict&quot;:&quot;pass&quot;,&quot;rowsWritten&quot;:1}
+</code></pre>
+<h3 id="step-6-factcheck-ci-gate-semantics-exit-0-only-when-everything-passes">Step 6 — Factcheck (CI-gate semantics; exit 0 only when everything passes)</h3>
+<pre><code class="language-bash">$CLI factcheck --projectId fernwood-repairs-sprint-f0d60fa1 ; echo &quot;exit=$?&quot;
+</code></pre>
+<pre><code class="language-json">{&quot;pass&quot;:true,&quot;rows&quot;:[
+ {&quot;artifactId&quot;:&quot;2baab028b1fb4cc997d5f8d977a049f5&quot;,&quot;kind&quot;:&quot;journey-map&quot;,&quot;status&quot;:&quot;final&quot;,
+  &quot;integrity&quot;:{&quot;pass&quot;:true,&quot;dangling&quot;:[]},&quot;schema&quot;:{&quot;pass&quot;:true},
+  &quot;acceptance&quot;:{&quot;pass&quot;:true},&quot;review&quot;:{&quot;pass&quot;:true,&quot;gate&quot;:&quot;critic&quot;,&quot;verdict&quot;:&quot;pass&quot;}},
+ {&quot;artifactId&quot;:&quot;de73bd97b3dc4ee0bfc29f4087049e7d&quot;,&quot;kind&quot;:&quot;review-veto-log&quot;,&quot;status&quot;:&quot;final&quot;,
+  &quot;review&quot;:{&quot;pass&quot;:true,&quot;gate&quot;:null}}]}
+# exit=0
+</code></pre>
+<h3 id="step-7-deterministic-exports-presenter-role">Step 7 — Deterministic exports (presenter role)</h3>
+<pre><code class="language-bash">$CLI export-report --projectId fernwood-repairs-sprint-f0d60fa1 --kind artifact-dossier
+# → {&quot;path&quot;:&quot;…/renders/report.artifact-dossier.html&quot;,&quot;bytes&quot;:9748}
+$CLI export-artifact --projectId fernwood-repairs-sprint-f0d60fa1 --artifactId 2baab028b1fb4cc997d5f8d977a049f5
+# → {&quot;path&quot;:&quot;…/renders/journey-map.2baab028.svg&quot;,&quot;bytes&quot;:4738}
+</code></pre>
+<h3 id="step-8-the-sovereign-gate-orchestrator-prepares-human-signs">Step 8 — The sovereign gate (orchestrator prepares, human signs)</h3>
+<pre><code class="language-bash">$CLI phase-advance --projectId fernwood-repairs-sprint-f0d60fa1 --toPhase define --idempotencyKey gate-1
+# → asd phase-advance: missing required flag &quot;--approvalReceipt&quot;   (exit 1 — fail closed)
+
+$CLI phase-advance --projectId fernwood-repairs-sprint-f0d60fa1 --toPhase define --idempotencyKey gate-1 \
+  --approvalReceipt &#39;{&quot;receiptId&quot;:&quot;RCP-2026-08-22-01&quot;,&quot;approvedBy&quot;:&quot;Sam Mozaffari&quot;,&quot;decision&quot;:&quot;approve&quot;,
+    &quot;rationale&quot;:&quot;Journey map final, evidence-backed, ready to frame opportunities.&quot;,&quot;approvedAt&quot;:&quot;2026-08-22T11:38:00Z&quot;}&#39;
+</code></pre>
+<pre><code class="language-json">{&quot;advanced&quot;:true,&quot;decision&quot;:{&quot;kind&quot;:&quot;phase-gate-decision&quot;,&quot;id&quot;:&quot;e16f658814864488affb5d6d8a04fa41&quot;,
+ &quot;fromPhase&quot;:&quot;discover&quot;,&quot;toPhase&quot;:&quot;define&quot;,
+ &quot;evaluation&quot;:{&quot;artifactCount&quot;:1,&quot;finalArtifactIds&quot;:[&quot;2baab028b1fb4cc997d5f8d977a049f5&quot;],
+  &quot;draftArtifactIds&quot;:[],&quot;vetoArtifactIds&quot;:[],&quot;factcheckPass&quot;:true},&quot;outcome&quot;:&quot;advanced&quot;}}
+</code></pre>
+<h3 id="agentic-workflow-diagram-the-sprint39s-full-spine-with-roles-and-tools">Agentic workflow diagram — the sprint&#39;s full spine with roles and tools</h3>
+<p></p>
+<h3 id="sequence-diagram-actors-through-the-whole-loop">Sequence diagram — actors through the whole loop</h3>
+<p></p>
+<h3 id="lifecycle-diagram-artifact-states-across-the-sprint">Lifecycle diagram — artifact states across the sprint</h3>
+<p></p>
+<hr>
+<h2 id="4-case-study-lens-article-09-quotjourney-mapping-from-transcripts-the-disruption-recovery-map-at-albatross-airwaysquot">📊 4. Case Study Lens: Article 09 — &quot;Journey Mapping from Transcripts: The Disruption Recovery Map at Albatross Airways&quot;</h2>
+<blockquote>
+<p><strong>Synthetic illustration — not a production log.</strong></p>
+</blockquote>
+<p>Article 09 (<code>articles/09/README.md</code>) runs this exact method — <code>journey-from-transcripts</code> cites <code>{&quot;article&quot;:&quot;09&quot;}</code> in its <code>sources</code> — on airline disruption recovery. Compare its stages with your Fernwood run: same contract, different domain. The transferable insight is the emotion rule (&quot;drawn from the quotes, never inferred&quot;) — in the article&#39;s case, passenger fury at rebooking opacity; in yours, tenant exhaustion at story-repeating. Different words, same discipline: the map says only what the evidence says.</p>
+<hr>
+<h2 id="5-capstone-checklist-this-is-the-lab">🔬 5. Capstone Checklist (this IS the lab)</h2>
+<p>The full scripted version lives in <code>courses/labs/lab-01-fundamentals/</code> with a verifier. Working through §2 above, confirm:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Project created in <code>discover</code>; you can explain the difference between this and a method phase.</li>
+<li><input disabled="" type="checkbox"> Four evidence records minted across all three kinds; <code>observation</code> rejected (demo A).</li>
+<li><input disabled="" type="checkbox"> Contract read; <code>availableEvidence</code> matched your count; the 2-record project refused to run (demo B).</li>
+<li><input disabled="" type="checkbox"> Dangling <code>evidenceId</code> refused at write (demo C); valid write returned <code>accepted:true, status:&quot;draft&quot;</code>.</li>
+<li><input disabled="" type="checkbox"> Veto produced a <code>review-veto-log</code> artifact; pass flipped status to <code>final</code>.</li>
+<li><input disabled="" type="checkbox"> <code>factcheck</code> exited 0 with <code>integrity.dangling: []</code>.</li>
+<li><input disabled="" type="checkbox"> Both renders exist under <code>&lt;project&gt;/renders/</code>.</li>
+<li><input disabled="" type="checkbox"> Phase advance refused without receipt, then recorded a <code>phase-gate-decision</code> with <code>factcheckPass:true</code>.</li>
+<li><input disabled="" type="checkbox"> You ran everything in a disposable <code>ASD_WORKSPACE</code> and can delete it without losing anything.</li>
+</ul>
+<hr>
+<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<ul>
+<li><strong>The loop is short enough to memorize and strict enough to trust</strong>: 8 commands, 3 fail-closed refusals, 1 human signature.</li>
+<li><strong>Every refusal is a feature.</strong> Invalid kinds, thin evidence, dangling citations, unsigned phases — each exit 1 is a workshop-theater failure mode made impossible.</li>
+<li><strong>Receipts are the deliverable.</strong> The phase-gate decision binds <em>who approved</em> to <em>the exact state of the evidence</em> at approval time.</li>
+<li><strong>You are ready for Course 02</strong> when you can run this sprint from memory and explain each gate to a skeptic.</li>
+</ul>
+<hr>
+<div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
+  <span>← [Previous: 01.5 The Service Profit Chain](./05-service-profit-chain-ai.md)</span>
+  <span><a href="./README.md">Back to Course Overview ↑</a></span>
+</div>
+
+
+      <div class="module-nav"><span>← <a href="./05-service-profit-chain-ai.html">Module 01.5: The Service Profit Chain: Linking Frontline Tooling to Customer Loyalty</a></span></div>
+    </article>
+  </div>
+  <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+</body>
+</html>

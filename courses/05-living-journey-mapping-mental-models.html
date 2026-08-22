@@ -68,7 +68,9 @@
       border: 1px solid #2d2e2b;
       border-radius: 8px;
       min-height: 440px;
-      padding: 48px;
+      aspect-ratio: 16 / 9;
+      max-height: 78vh;
+      padding: clamp(28px, 4vw, 48px);
       position: relative;
       box-shadow: 0 12px 36px rgba(0,0,0,0.35);
       display: flex;
@@ -79,28 +81,50 @@
       display: none;
       flex-direction: column;
       height: 100%;
-      animation: fadeIn 200ms ease;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #3d3e3a transparent;
+      animation: slideIn 220ms ease;
     }
     .slide-card.active {
       display: flex;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to { opacity: 1; transform: translateX(0); }
     }
     .slide-header {
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
       font-family: var(--mono);
       font-size: 12px;
-      color: #e4be5c;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    .slide-kicker {
+      color: #e4be5c;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+    }
+    .slide-kicker::before {
+      content: "";
+      width: 18px;
+      height: 2px;
+      background: #e4be5c;
+      display: inline-block;
+    }
+    .slide-page-num {
+      color: #83847c;
+      letter-spacing: 0.12em;
     }
     .slide-title {
-      font-size: clamp(26px, 3vw, 38px);
+      font-size: clamp(24px, 2.8vw, 38px);
       letter-spacing: -0.025em;
+      line-height: 1.12;
       color: #ffffff;
       margin: 0 0 24px;
       font-weight: 700;
@@ -111,10 +135,20 @@
       margin: 0 0 24px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      font-size: 16.5px;
-      line-height: 1.6;
+      gap: 12px;
+      font-size: clamp(15px, 1.35vw, 17px);
+      line-height: 1.55;
       color: #d6d6ce;
+    }
+    .slide-bullets code {
+      font-family: var(--mono);
+      font-size: 0.86em;
+      color: #f0d489;
+      background: rgba(228,190,92,0.09);
+      border: 1px solid rgba(228,190,92,0.18);
+      padding: 1px 5px;
+      border-radius: 3px;
+      white-space: nowrap;
     }
     .slide-bullets li {
       position: relative;
@@ -131,22 +165,26 @@
     .slide-quote {
       border-left: 3px solid #e4be5c;
       padding-left: 16px;
-      margin: 20px 0 0;
+      margin: auto 0 0;
+      padding-top: 16px;
       font-style: italic;
       color: #a8a89f;
-      font-size: 14.5px;
+      font-size: clamp(13px, 1.1vw, 14.5px);
+      line-height: 1.5;
     }
-    
+
     .deck-diagram {
       display: flex;
       align-items: center;
-      gap: 12px;
+      flex-wrap: wrap;
+      gap: 10px 12px;
       background: #212220;
       padding: 16px;
       border-radius: 6px;
       margin: 16px 0;
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: 12.5px;
+      line-height: 1.45;
       overflow-x: auto;
     }
     .d-box {
@@ -159,6 +197,107 @@
     .d-good { border-color: #38a169; color: #68d391; }
     .d-bad { border-color: #e53e3e; color: #fc8181; }
     .d-arrow { color: #e4be5c; font-weight: 700; }
+
+    /* Diagram pattern: pipeline — numbered stages chained with arrows */
+    .d-pipe { counter-reset: dstage; }
+    .d-stage {
+      position: relative;
+      padding-left: 34px;
+    }
+    .d-stage::before {
+      content: counter(dstage, decimal-leading-zero);
+      counter-increment: dstage;
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #e4be5c;
+    }
+
+    /* Diagram pattern: lane-row — stacked labeled lanes for blueprints & journeys */
+    .d-lanes {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .d-lane {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .d-lane-label {
+      flex: 0 0 132px;
+      text-align: right;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #9a9b93;
+    }
+    .d-lane-items {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-left: 2px solid #3d3e3a;
+    }
+    .d-lane-items--line { border-left-color: #e4be5c; }
+
+    /* Diagram pattern: gate — decision box with pass/veto branches */
+    .d-gate-wrap {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 12px;
+    }
+    .d-gate-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .d-gate {
+      border-color: #e4be5c;
+      color: #f0d489;
+      background: rgba(228,190,92,0.07);
+    }
+    .d-branches {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .d-branch {
+      flex: 1 1 200px;
+      border: 1px solid #3d3e3a;
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: normal;
+    }
+    .d-branch b {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .d-pass { border-color: #38a169; color: #9ae6b4; background: rgba(56,161,105,0.08); }
+    .d-veto { border-color: #c53030; color: #feb2b2; background: rgba(197,48,48,0.08); }
+
+    @media (max-width: 720px) {
+      .slide-viewport { aspect-ratio: auto; max-height: none; }
+      .d-lane { flex-direction: column; align-items: stretch; gap: 4px; }
+      .d-lane-label { flex: none; text-align: left; }
+      .d-lane-items { border-left: none; border-top: 2px solid #3d3e3a; }
+    }
 
     /* Deck Navigation Footer */
     .deck-nav-bar {
@@ -195,11 +334,19 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: #3a3b37;
+      background: transparent;
+      border: 1px solid #565750;
       cursor: pointer;
+      transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+    }
+    .dot:hover {
+      border-color: #b9bab0;
+      transform: scale(1.15);
     }
     .dot.active {
       background: #e4be5c;
+      border-color: #e4be5c;
+      transform: scale(1.3);
     }
 
     /* Modules Grid Section */
@@ -295,54 +442,6 @@
       font-size: 14px;
     }
     .lab-btn:hover { opacity: 0.9; }
-  
-/* course spec tiles */
-.metrics-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.metrics-row > div {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-card);
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.metrics-row dt {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 0;
-}
-.metrics-row dd {
-  margin: 0;
-  font-size: 14.5px;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.3;
-}
-.status-available {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.status-available::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #2f9e5f;
-  box-shadow: 0 0 0 3px rgba(47, 158, 95, 0.18);
-}
-
   </style>
 </head>
 <body>
@@ -368,7 +467,7 @@
         <div><span class="badge badge-intermediate">Intermediate</span></div>
         <h1 class="course-page-title">Course 05: Living Journey Mapping & Mental Model Alignment</h1>
         <p class="course-page-sub">Generating Verbatim-Backed Journey Maps with Derived Emotional Sentiment & Indi Young Cognitive Ladders</p>
-        <p style="max-width:760px; line-height:1.6; color:var(--ink-soft);">Construct living customer journey maps and Indi Young mental model alignments anchored in immutable evidence. Calculate dynamic emotional sentiment curves from verbatim interview data. Map multi-channel touchpoints, identify failure demand points, and execute in-place remediation using sd_journey and sd_mental_model.</p>
+        <p style="max-width:760px; line-height:1.6; color:var(--ink-soft);">Construct living customer journey maps and Indi Young mental-model alignments anchored in immutable evidence. Encode emotion as quote-gated node fields, derive sentiment views honestly from those fields, map multi-channel touchpoints, identify failure demand, and execute in-place remediation as versioned artifact lineage — the living map is a versioned artifact chain, not a live-sync daemon.</p>
         <dl class="metrics-row" style="margin-top:24px;">
           <div><dt>Modules</dt><dd>6</dd></div>
           <div><dt>Duration</dt><dd>≈4h 40m</dd></div>
@@ -390,87 +489,180 @@
           
         <div class="slide-card active" data-slide-index="0">
           <div class="slide-header">
-            <span class="slide-kicker">Module 05.1</span>
-            <span class="slide-page-num">01 / 05</span>
+            <span class="slide-kicker">Paradigm Shift</span>
+            <span class="slide-page-num">01 / 10</span>
           </div>
-          <h2 class="slide-title">Mental Spaces vs. Feature Inventories: Cognitive Alignment (Indi Young)</h2>
+          <h2 class="slide-title">Maps That Stay Alive</h2>
           <ul class="slide-bullets">
-            <li>Decoupling how users conceptualize their problem spaces from the organization's internal feature lists to avoid inside-out product design.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>A journey map exported once to PDF is already lying; a living map re-validates against its evidence.</li><li>Every node cites verbatim evidence; every emotion field is derived, not guessed in a workshop.</li><li>Maps are artifacts in the store — patched in place, re-gated, re-rendered.</li><li>When the register changes, the map and its sentiment curve change with it.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Mental Spaces vs. Feature Inventories</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Evidence register</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">journey-map artifact</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">Critic re-gate</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Living render (SVG/HTML)</span>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Living Journey Mapping & Mental Model Alignment."</blockquote>
+          <blockquote class="slide-quote">"A map that defends itself changes how organizations argue."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="1">
           <div class="slide-header">
-            <span class="slide-kicker">Module 05.2</span>
-            <span class="slide-page-num">02 / 05</span>
+            <span class="slide-kicker">The Executable Spine</span>
+            <span class="slide-page-num">02 / 10</span>
           </div>
-          <h2 class="slide-title">Constructing Task Towers, Cognitive Ladders & Accidental Complexity Detection</h2>
+          <h2 class="slide-title">One Canonical Loop Behind All 8 Courses</h2>
           <ul class="slide-bullets">
-            <li>Building hierarchical mental models: beliefs, guiding principles, and tasks mapped against system capabilities to expose accidental complexity.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>Every module runs the same verified loop: project → evidence → method contract → artifact draft → critic gate → factcheck → export → human-gated phase advance.</li><li>This course centers on synthesis: transcripts in, cited journey maps and mental models out.</li><li><code>sd_method_run</code> fails closed below the method's evidence minimum — no evidence, no artifact.</li><li><code>sd_phase_advance</code> refuses to run without a human approval receipt JSON.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Constructing Task Towers, Cognitive Ladders & Accidental Complexity Detection</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">sd_project_create</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_evidence_add</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_method_run</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_artifact_write</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">sd_review</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_factcheck</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_export_report</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">sd_phase_advance</span>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Living Journey Mapping & Mental Model Alignment."</blockquote>
+          <blockquote class="slide-quote">"Agents prepare and verify with receipts; human leaders decide with accountability."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="2">
           <div class="slide-header">
-            <span class="slide-kicker">Module 05.3</span>
-            <span class="slide-page-num">03 / 05</span>
+            <span class="slide-kicker">Module 05.1</span>
+            <span class="slide-page-num">03 / 10</span>
           </div>
-          <h2 class="slide-title">Anatomy of an Evidence-Gated Journey Map: Verbatim Anchors & Channels</h2>
+          <h2 class="slide-title">Mental Spaces vs. Feature Inventories: Cognitive Alignment (Indi Young)</h2>
           <ul class="slide-bullets">
-            <li>The structural schema of living journeys: phases, user steps, touchpoints, thinking, feeling, and mandatory SHA-256 evidence citations.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>Indi Young: mental spaces belong to people's purposes, not to your org chart.</li><li>mental-model-diagramming builds mental-model-map artifacts from transcript evidence.</li><li>Decoupling user towers from feature inventories kills inside-out product design.</li><li>The model is built bottom-up from what people actually said — citations required.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Anatomy of an Evidence-Gated Journey Map</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">User towers</span><div class="d-lane-items"><span class="d-box">Beliefs</span><span class="d-box">Principles</span><span class="d-box">Tasks</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Org inventory</span><div class="d-lane-items d-lane-items--line"><span class="d-box">Features</span><span class="d-box">Capabilities</span><span class="d-box d-bad">Unsupported purposes</span></div></div>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Living Journey Mapping & Mental Model Alignment."</blockquote>
+          <blockquote class="slide-quote">"Design for the user's tower, not the org's feature list."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="3">
           <div class="slide-header">
-            <span class="slide-kicker">Module 05.4</span>
-            <span class="slide-page-num">04 / 05</span>
+            <span class="slide-kicker">Module 05.2</span>
+            <span class="slide-page-num">04 / 10</span>
           </div>
-          <h2 class="slide-title">Mathematical Derivation of Dynamic Sentiment Curves from Verbatim Evidence</h2>
+          <h2 class="slide-title">Constructing Task Towers, Cognitive Ladders & Accidental Complexity Detection</h2>
           <ul class="slide-bullets">
-            <li>Computing emotional valence and intensity mathematically from transcript evidence rather than subjective workshop guesswork.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>Towers stack beliefs → guiding principles → tasks; support columns map system capability beneath.</li><li>mental-model-alignment exposes accidental complexity: capability with no purpose, purpose with no support.</li><li>Gaps are computed from the model, not brainstormed in a room.</li><li>Every tower node cites the transcript evidence that built it.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Mathematical Derivation of Dynamic Sentiment Curves from Verbatim Evidence</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">Purpose</span><div class="d-lane-items"><span class="d-box">Beliefs</span><span class="d-arrow">→</span><span class="d-box">Guiding principles</span><span class="d-arrow">→</span><span class="d-box">Tasks</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Support</span><div class="d-lane-items d-lane-items--line"><span class="d-box">Aligned capability</span><span class="d-box d-bad">Orphan capability</span><span class="d-box d-bad">Unsupported task</span></div></div>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Living Journey Mapping & Mental Model Alignment."</blockquote>
+          <blockquote class="slide-quote">"Accidental complexity is just capability looking for a purpose."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="4">
           <div class="slide-header">
+            <span class="slide-kicker">Module 05.3</span>
+            <span class="slide-page-num">05 / 10</span>
+          </div>
+          <h2 class="slide-title">Anatomy of an Evidence-Gated Journey Map: Verbatim Anchors & Channels</h2>
+          <ul class="slide-bullets">
+            <li>journey-from-transcripts contract: inputs evidence-set min 3; acceptance min-nodes 3, min-evidence-per-node 1.</li><li>field-non-empty rules: every node carries emotion and touchpoint — enforced at write.</li><li>Nodes are {id, label, evidence[], fields}; edges and references are optional but typed.</li><li>outputKind journey-map; the contract also declares handoff and humanCheckpoints.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">evidence-set (≥3)</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Method contract</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Nodes + edges + fields</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">journey-map (accepted)</span>
+</div>
+          <blockquote class="slide-quote">"Every node cites; every emotion is derived; every map can defend itself."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="5">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 05.4</span>
+            <span class="slide-page-num">06 / 10</span>
+          </div>
+          <h2 class="slide-title">Mathematical Derivation of Dynamic Sentiment Curves from Verbatim Evidence</h2>
+          <ul class="slide-bullets">
+            <li>Sentiment is computed from valence and intensity in the verbatim evidence, then plotted per phase.</li><li>Workshop guesswork curves are replaced by derivations a reviewer can audit node by node.</li><li>Change the evidence and the curve changes — the map is a function of its register.</li><li>The emotion field is non-empty by acceptance rule: no ungrounded moods.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Verbatim evidence</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Valence × intensity</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Per-phase aggregation</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Auditable sentiment curve</span>
+</div>
+          <blockquote class="slide-quote">"The curve is a function of the evidence — change the register, change the curve."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="6">
+          <div class="slide-header">
             <span class="slide-kicker">Module 05.5</span>
-            <span class="slide-page-num">05 / 05</span>
+            <span class="slide-page-num">07 / 10</span>
           </div>
           <h2 class="slide-title">Pinpointing Failure Demand Points & Touchpoint Transition Hotspots</h2>
           <ul class="slide-bullets">
-            <li>Distinguishing value demand from failure demand (John Seddon) and highlighting root-cause friction across channel handoffs.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>John Seddon: failure demand is demand caused by failing to do something right for the customer.</li><li>failure-demand-analysis separates value demand from failure demand across steps and channels.</li><li>Transition hotspots — channel handoffs — are where evidence density exposes root-cause friction.</li><li>Hotspots land as defect-ready findings, not workshop stickies.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Pinpointing Failure Demand Points & Touchpoint Transition Hotspots</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">Journey</span><div class="d-lane-items"><span class="d-box">Apply</span><span class="d-arrow">→</span><span class="d-box d-bad">Handoff hotspot</span><span class="d-arrow">→</span><span class="d-box">Resolve</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Demand split</span><div class="d-lane-items d-lane-items--line"><span class="d-box d-good">Value demand</span><span class="d-box d-bad">Failure demand (rework, chase calls)</span></div></div>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Living Journey Mapping & Mental Model Alignment."</blockquote>
+          <blockquote class="slide-quote">"Failure demand is the tax you pay for disappointing the customer the first time."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="7">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 05.6</span>
+            <span class="slide-page-num">08 / 10</span>
+          </div>
+          <h2 class="slide-title">In-Place Remediation with sd_artifact_write & Interactive HTML Rendering</h2>
+          <ul class="slide-bullets">
+            <li>Patch journey nodes via <code>sd_artifact_write</code>; acceptance rules re-run on every write.</li><li><code>sd_review</code> re-gates the patched map; vetoes loop back with mandatory fixes.</li><li><code>sd_export_artifact</code> renders journey-map.&lt;id&gt;.svg; <code>sd_export_report</code> ships the dossier HTML.</li><li>Remediation is an edit to the system of record, not a new version of a dead file.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Patch node</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Acceptance re-run</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">Critic re-gate</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Fresh SVG + dossier</span>
+</div>
+          <blockquote class="slide-quote">"Patch, re-gate, re-render: the map stays alive because the loop stays closed."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="8">
+          <div class="slide-header">
+            <span class="slide-kicker">Dogfooding the Runtime</span>
+            <span class="slide-page-num">09 / 10</span>
+          </div>
+          <h2 class="slide-title">The Verified Toolchain Behind This Course</h2>
+          <ul class="slide-bullets">
+            <li>Run: journey-from-transcripts, mental-model-diagramming, mental-model-alignment, experience-mapping, failure-demand-analysis.</li><li>Author: <code>sd_artifact_write</code>; assure: <code>sd_review</code>, <code>sd_review_list</code>, <code>sd_factcheck</code>.</li><li>Render: <code>sd_export_artifact</code> and <code>sd_export_report</code> via deterministic @asd/render.</li><li>Map the territory first: <code>sd_method_list</code> --phase synthesis.</li>
+          </ul>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">Methods</span><div class="d-lane-items"><span class="d-box">journey-from-transcripts</span><span class="d-box">mental-model-alignment</span><span class="d-box">failure-demand-analysis</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Gate</span><div class="d-lane-items"><span class="d-box">sd_artifact_write</span><span class="d-box">sd_review</span><span class="d-box">sd_factcheck</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Render</span><div class="d-lane-items d-lane-items--line"><span class="d-box">sd_export_artifact (SVG)</span><span class="d-box d-good">sd_export_report (dossier)</span></div></div>
+</div>
+          <blockquote class="slide-quote">"The render is deterministic; only the evidence changes."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="9">
+          <div class="slide-header">
+            <span class="slide-kicker">Capstone</span>
+            <span class="slide-page-num">10 / 10</span>
+          </div>
+          <h2 class="slide-title">A Living Map That Survives Audit</h2>
+          <ul class="slide-bullets">
+            <li>Go from raw transcripts to an accepted journey-map with derived sentiment and cited nodes.</li><li>Remediate one failure-demand hotspot in place and re-pass the critic gate.</li><li>Export SVG + dossier; prove byte-stability with a second render.</li><li>Advance the phase only with a human receipt.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Transcripts</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Cited journey-map</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Hotspot remediated</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">Gate re-passed</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Living render</span>
+</div>
+          <blockquote class="slide-quote">"The deliverable is not the map; it is the loop that keeps the map true."</blockquote>
         </div>
         
         </div>
@@ -478,7 +670,7 @@
         <div class="deck-nav-bar">
           <button class="deck-btn" id="prevBtn" onclick="changeSlide(-1)">◄ Previous Slide</button>
           <div class="slide-dots" id="slideDots">
-            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div><div class="dot " onclick="goToSlide(3)"></div><div class="dot " onclick="goToSlide(4)"></div>
+            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div><div class="dot " onclick="goToSlide(3)"></div><div class="dot " onclick="goToSlide(4)"></div><div class="dot " onclick="goToSlide(5)"></div><div class="dot " onclick="goToSlide(6)"></div><div class="dot " onclick="goToSlide(7)"></div><div class="dot " onclick="goToSlide(8)"></div><div class="dot " onclick="goToSlide(9)"></div>
           </div>
           <button class="deck-btn" id="nextBtn" onclick="changeSlide(1)">Next Slide ►</button>
         </div>
@@ -501,8 +693,8 @@
             <span class="mod-badge">05.1</span>
             <span class="mod-time">⏱️ 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./05-living-journey-mapping-mental-models/01-mental-spaces-vs-features.html" style="color:inherit; text-decoration:none;">Mental Spaces vs. Feature Inventories: Cognitive Alignment (Indi Young)</a></h3>
-          <p class="mod-card-desc">Decoupling how users conceptualize their problem spaces from the organization's internal feature lists to avoid inside-out product design.</p>
+          <h3 class="mod-card-title"><a href="./05-living-journey-mapping-mental-models/01-mental-spaces-vs-features.html" style="color:inherit; text-decoration:none;">Mental Spaces vs. Feature Tracks: The Indi Young Paradigm</a></h3>
+          <p class="mod-card-desc">Mental-model skylines above the alignment line, offerings below; `mental-model-diagramming` writes towers as nodes whose `belief` field is required and policed against interface vocabulary.</p>
           <a class="mod-card-link" href="./05-living-journey-mapping-mental-models/01-mental-spaces-vs-features.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -511,8 +703,8 @@
             <span class="mod-badge">05.2</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./05-living-journey-mapping-mental-models/02-task-towers-cognitive-ladders.html" style="color:inherit; text-decoration:none;">Constructing Task Towers, Cognitive Ladders & Accidental Complexity Detection</a></h3>
-          <p class="mod-card-desc">Building hierarchical mental models: beliefs, guiding principles, and tasks mapped against system capabilities to expose accidental complexity.</p>
+          <h3 class="mod-card-title"><a href="./05-living-journey-mapping-mental-models/02-task-towers-cognitive-ladders.html" style="color:inherit; text-decoration:none;">Constructing Task Towers & Cognitive Ladders</a></h3>
+          <p class="mod-card-desc">Task statements → towers → mental spaces; the three alignment states (support / half-way / counter-productive); `mental-model-alignment` builds two parallel journeys where divergence needs a quote from *both* sides.</p>
           <a class="mod-card-link" href="./05-living-journey-mapping-mental-models/02-task-towers-cognitive-ladders.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -521,8 +713,8 @@
             <span class="mod-badge">05.3</span>
             <span class="mod-time">⏱️ 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./05-living-journey-mapping-mental-models/03-anatomy-evidence-gated-journey.html" style="color:inherit; text-decoration:none;">Anatomy of an Evidence-Gated Journey Map: Verbatim Anchors & Channels</a></h3>
-          <p class="mod-card-desc">The structural schema of living journeys: phases, user steps, touchpoints, thinking, feeling, and mandatory SHA-256 evidence citations.</p>
+          <h3 class="mod-card-title"><a href="./05-living-journey-mapping-mental-models/03-anatomy-evidence-gated-journey.html" style="color:inherit; text-decoration:none;">Anatomy of an Evidence-Gated Journey Map Schema</a></h3>
+          <p class="mod-card-desc">Kalbach's five-part anatomy mapped to the real `ArtifactNode` schema and the closed `journey-map` kind; the three write-failure modes, verified live.</p>
           <a class="mod-card-link" href="./05-living-journey-mapping-mental-models/03-anatomy-evidence-gated-journey.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -531,8 +723,8 @@
             <span class="mod-badge">05.4</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./05-living-journey-mapping-mental-models/04-dynamic-sentiment-curves.html" style="color:inherit; text-decoration:none;">Mathematical Derivation of Dynamic Sentiment Curves from Verbatim Evidence</a></h3>
-          <p class="mod-card-desc">Computing emotional valence and intensity mathematically from transcript evidence rather than subjective workshop guesswork.</p>
+          <h3 class="mod-card-title"><a href="./05-living-journey-mapping-mental-models/04-dynamic-sentiment-curves.html" style="color:inherit; text-decoration:none;">Deriving Dynamic Sentiment Curves from Verbatim Quotes</a></h3>
+          <p class="mod-card-desc">Kalbach's valence coding (−5…+5) with an honest architecture: emotions are quote-gated node *fields*, the curve is a declared derived view, and the closed schema rejects smuggled numbers.</p>
           <a class="mod-card-link" href="./05-living-journey-mapping-mental-models/04-dynamic-sentiment-curves.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -541,8 +733,8 @@
             <span class="mod-badge">05.5</span>
             <span class="mod-time">⏱️ 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./05-living-journey-mapping-mental-models/05-failure-demand-friction-hotspots.html" style="color:inherit; text-decoration:none;">Pinpointing Failure Demand Points & Touchpoint Transition Hotspots</a></h3>
-          <p class="mod-card-desc">Distinguishing value demand from failure demand (John Seddon) and highlighting root-cause friction across channel handoffs.</p>
+          <h3 class="mod-card-title"><a href="./05-living-journey-mapping-mental-models/05-failure-demand-friction-hotspots.html" style="color:inherit; text-decoration:none;">Failure Demand Identification & Friction Hotspots</a></h3>
+          <p class="mod-card-desc">Seddon's value/failure demand split; `failure-demand-analysis` produces an `insight-set` where every root cause cites convergent telemetry + quote evidence.</p>
           <a class="mod-card-link" href="./05-living-journey-mapping-mental-models/05-failure-demand-friction-hotspots.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -551,8 +743,8 @@
             <span class="mod-badge">05.6</span>
             <span class="mod-time">⏱️ 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./05-living-journey-mapping-mental-models/06-sd-journey-remediation-engine.html" style="color:inherit; text-decoration:none;">In-Place Remediation with sd_journey & High-Density Interactive HTML Rendering</a></h3>
-          <p class="mod-card-desc">Executing targeted patches on journey steps, re-validating Critic acceptance rules, and compiling standalone interactive HTML journey viewers.</p>
+          <h3 class="mod-card-title"><a href="./05-living-journey-mapping-mental-models/06-sd-journey-remediation-engine.html" style="color:inherit; text-decoration:none;">Journey Map Authoring & Remediation with the `journey-from-transcripts` Method</a></h3>
+          <p class="mod-card-desc">The living map as versioned artifact lineage: in-place `--artifactId` rewrites, verdict clearing, re-gating, deterministic re-export, and human-gated phase advance.</p>
           <a class="mod-card-link" href="./05-living-journey-mapping-mental-models/06-sd-journey-remediation-engine.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -585,7 +777,7 @@
 
   <script>
     var currentSlide = 0;
-    var totalSlides = 5;
+    var totalSlides = 10;
 
     function showSlide(index) {
       if (index < 0) index = 0;

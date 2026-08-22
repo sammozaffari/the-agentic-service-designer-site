@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Module 01.5: The Service Profit Chain: Linking Frontline Tooling to Customer Loyalty — Agentic Service Design Fundamentals | The Agentic Service Designer">
+<title>Module 01.5: The Service Profit Chain: Linking Frontline Tooling to Customer Loyalty | Agentic Service Design Fundamentals</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  :root { color-scheme: light; }
+  body.module-page { background: var(--paper-tint); }
+  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
+  .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
+  .module-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  .module-body th, .module-body td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
+  .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
+  .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
+  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
+  });
+</script>
+</head>
+<body class="module-page">
+  <div class="module-wrap">
+    <nav class="module-crumb"><a href="../../01-agentic-service-design-fundamentals.html">← Agentic Service Design Fundamentals</a></nav>
+    <article class="module-body">
+
+<h1 id="module-015-the-service-profit-chain-linking-frontline-tooling-to-customer-loyalty">Module 01.5: The Service Profit Chain: Linking Frontline Tooling to Customer Loyalty</h1>
+<blockquote>
+<p><strong>Course</strong>: <a href="./README.md">Agentic Service Design Fundamentals</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 45 min · <strong>Format</strong>: Theory, Architecture, Verified CLI Run &amp; Hands-on Lab</p>
+</blockquote>
+<hr>
+<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<p>By completing this module, you will be able to:</p>
+<ol>
+<li><strong>Explain the seven causal links</strong> of Heskett, Sasser &amp; Schlesinger&#39;s Service Profit Chain and why loyalty — not satisfaction — is the financial hinge.</li>
+<li><strong>Instrument the chain</strong> with lead/lag indicators at the operating-unit level, per the measurement discipline of Ch. 5.</li>
+<li><strong>Map the theory onto two artifact kinds</strong> — <code>service-profit-chain</code> (the causal map) and <code>kpi-tree</code> (the measurement hierarchy) — reading their real schemas.</li>
+<li><strong>Run the <code>service-profit-chain-mapping</code> method</strong> and defend its critic rule: no uncited causal link survives the gate.</li>
+</ol>
+<hr>
+<h2 id="1-theoretical-grounding-the-chain-as-an-operating-logic">📖 1. Theoretical Grounding: The Chain as an Operating Logic</h2>
+<p><em>The Service Profit Chain</em> (Heskett, Sasser &amp; Schlesinger 1997; corpus summary at <code>books/20-the-service-profit-chain/01-the-service-profit-chain.md</code>) makes a claim most organizations still resist: profit in service businesses is <em>produced upstream</em>, inside the employee experience, and merely <em>collected</em> downstream at the customer. The seven links:</p>
+<pre><code class="language-text">Internal Service Quality → Employee Satisfaction → Employee Retention &amp; Productivity
+→ External Service Value → Customer Satisfaction → Customer Loyalty → Revenue Growth &amp; Profitability
+</code></pre>
+<p>Three subtleties separate reading the chain from <em>using</em> it:</p>
+<ul>
+<li><strong>Internal service quality is the foundation, not an HR nicety.</strong> Ch. 1 defines it as the quality of the internal work environment: workplace design, job design, selection, training, rewards — and <em>tools/technology for serving customers</em>. &quot;Employees cannot consistently deliver value they are not equipped or supported to produce.&quot; An agentic toolchain sits exactly on this link: it is internal tooling that changes what frontline (and design) staff can deliver.</li>
+<li><strong>Satisfaction is an intermediate state; loyalty is the hinge.</strong> Ch. 1 is explicit that customer satisfaction &quot;is an intermediate state rather than an end in itself; only when satisfaction translates into true loyalty does it generate economic returns.&quot; Designing to raise a CSAT score without a loyalty mechanism is optimizing a waypoint.</li>
+<li><strong>The chain rejects silos.</strong> HR, Operations, Marketing, and Finance each own one link and each can destroy the chain by local optimization. The chain &quot;demands that leaders govern cross-functional handoffs and manage the system as an integrated whole.&quot;</li>
+</ul>
+<h3 id="11-measuring-the-chain-ch-5">1.1 Measuring the chain (Ch. 5)</h3>
+<p><code>books/20-the-service-profit-chain/05-measuring-the-chain.md</code> converts the model into discipline:</p>
+<ul>
+<li><strong>Linked causal measurement</strong> — metrics must form &quot;an unbroken narrative of cause and effect.&quot; A standalone NPS, unlinked from employee turnover, &quot;produces local optimization and cross-functional blame.&quot;</li>
+<li><strong>Lead vs. lag indicators</strong> — internal/employee metrics <em>lead</em>; loyalty and margin <em>lag</em>. &quot;Managing an organization purely by lag indicators is akin to driving a vehicle by looking only in the rearview mirror.&quot;</li>
+<li><strong>Unit-level linkage analysis</strong> — correlate at the branch/team/unit level, not the corporate average, because &quot;corporate-wide aggregate averages wash out variance.&quot;</li>
+<li><strong>Time-lagged causality</strong> — a tooling investment may take ~30 days to lift employee satisfaction, ~60 to improve service value, ~90 to lift retention, ~180 to reach margin. Patience is a measurement property, not a virtue.</li>
+</ul>
+<h3 id="concept-diagram-the-chain-with-leadlag-instrumentation">Concept diagram — the chain with lead/lag instrumentation</h3>
+<div class="diagram"><pre class="mermaid">flowchart LR
+    subgraph Lead[&quot;LEADING indicators (manage these)&quot;]
+        L1[&quot;Internal Service Quality&lt;br/&gt;tool uptime, training, job design&quot;]
+        L2[&quot;Employee Satisfaction&lt;br/&gt;engagement, support ratings&quot;]
+        L3[&quot;Retention &amp; Productivity&lt;br/&gt;tenure, first-contact resolution&quot;]
+    end
+    subgraph Mid[&quot;INTERMEDIATE (customer experience)&quot;]
+        C1[&quot;External Service Value&lt;br/&gt;results + process quality vs. price &amp; effort&quot;]
+        C2[&quot;Customer Satisfaction&lt;br/&gt;top-box CSAT, effort score&quot;]
+    end
+    subgraph Lag[&quot;LAGGING indicators (verify these)&quot;]
+        G1[&quot;Customer Loyalty&lt;br/&gt;retention, share of wallet, referrals&quot;]
+        G2[&quot;Revenue Growth &amp; Profit&lt;br/&gt;unit P&amp;L, CLV, margin&quot;]
+    end
+    L1 --&gt;|&quot;equips&quot;| L2 --&gt;|&quot;keeps &amp; grows&quot;| L3 --&gt;|&quot;delivers&quot;| C1 --&gt;|&quot;meets expectations&quot;| C2 --&gt;|&quot;converts&quot;| G1 --&gt;|&quot;compounds&quot;| G2
+    G2 -.-&gt;|&quot;reinvest in internal quality (the loop)&quot;| L1
+    classDef paper fill:#f8f9fa,stroke:#4a5568,stroke-width:1.5px,color:#1a202c;
+    classDef blue  fill:#ebf8ff,stroke:#3182ce,stroke-width:1.5px,color:#2b6cb0;
+    classDef purple fill:#faf5ff,stroke:#805ad5,stroke-width:1.5px,color:#553c9e;
+    classDef gold  fill:#fffbeb,stroke:#b7791f,stroke-width:1.5px,color:#744210;
+    classDef bad   fill:#fff5f5,stroke:#c53030,stroke-width:1.5px,color:#742a2a;
+    class L1,L2,L3 blue;
+    class C1,C2 gold;
+    class G1,G2 purple;</pre></div>
+<hr>
+<h2 id="2-theory-tooling-two-artifact-kinds">🤖 2. Theory → Tooling: Two Artifact Kinds</h2>
+<p>The chain maps onto two registered artifact kinds (verified via <code>sd_schema_get</code> today):</p>
+<p><strong><code>service-profit-chain</code></strong> — the causal map. Produced by the <code>service-profit-chain-mapping</code> method (owner <code>measurer</code>, gate <code>critic</code>). Node fields: <code>metric</code> (required), <code>value</code>, <code>measure</code>, <code>target</code>, <code>outcome</code>, <code>owner</code>, <code>description</code>, <code>notes</code>, <code>tags</code>. Edges carry optional <code>weight</code> and <code>label</code>. Acceptance: <strong>≥4 nodes, <code>metric</code> non-empty on every node, ≥1 evidence per node</strong>. References can <code>derived-from</code> research artifacts and <code>supports</code> a <code>kpi-tree</code>, <code>service-blueprint</code>, or <code>business-model-canvas</code>.</p>
+<p><strong><code>kpi-tree</code></strong> — the measurement hierarchy. Node fields: <code>metric</code> (required), <code>tier</code>, <code>parent</code>, <code>target</code>, <code>baseline</code>, <code>measure</code>, plus descriptive fields. This is Ch. 5&#39;s lead/lag discipline as a data structure: <code>tier</code> separates leading from lagging, <code>parent</code> links each KPI into the causal narrative, <code>baseline</code>/<code>target</code> make improvement falsifiable.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Role</th>
+<th align="left">Responsibility on the chain</th>
+<th align="left">Tools</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>researcher</strong></td>
+<td align="left">Captures the data behind each link — staff survey verbatims, turnover telemetry, NPS documents.</td>
+<td align="left"><code>sd_evidence_add</code>, <code>sd_evidence_query</code></td>
+</tr>
+<tr>
+<td align="left"><strong>measurer</strong></td>
+<td align="left">Owns the method; writes chain nodes with <code>metric</code> + citation on each; maintains the kpi-tree.</td>
+<td align="left"><code>sd_method_run</code>, <code>sd_artifact_write</code>, <code>sd_schema_get</code></td>
+</tr>
+<tr>
+<td align="left"><strong>critic</strong></td>
+<td align="left">&quot;Reject any link asserted with no cited data, since an unsupported causal link cannot justify an investment case.&quot;</td>
+<td align="left"><code>sd_review</code>, <code>sd_factcheck</code></td>
+</tr>
+<tr>
+<td align="left"><strong>presenter</strong></td>
+<td align="left">Renders the approved chain into the dossier for the investment case.</td>
+<td align="left"><code>sd_export_report</code>, <code>sd_export_artifact</code></td>
+</tr>
+</tbody></table>
+<h3 id="agentic-workflow-diagram-building-the-chain-under-the-critic-gate">Agentic workflow diagram — building the chain under the critic gate</h3>
+<p></p>
+<hr>
+<h2 id="3-verified-execution-the-real-schemas-run-today-2026-08-22">💻 3. Verified Execution: The Real Schemas (run today, 2026-08-22)</h2>
+<pre><code class="language-bash">$CLI schema-get --kind service-profit-chain
+</code></pre>
+<pre><code class="language-json">{&quot;kind&quot;:&quot;service-profit-chain&quot;,
+ &quot;schema&quot;:{&quot;version&quot;:1,
+  &quot;node&quot;:{&quot;requiredMembers&quot;:[&quot;id&quot;,&quot;label&quot;,&quot;evidence&quot;,&quot;fields&quot;],&quot;fieldPolicy&quot;:&quot;closed&quot;,
+   &quot;fields&quot;:{&quot;metric&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:true},
+             &quot;value&quot;:{&quot;type&quot;:&quot;string&quot;},&quot;measure&quot;:{&quot;type&quot;:&quot;string&quot;},
+             &quot;target&quot;:{&quot;type&quot;:&quot;number&quot;},&quot;outcome&quot;:{&quot;type&quot;:&quot;string&quot;},
+             &quot;owner&quot;:{&quot;type&quot;:&quot;string&quot;},&quot;tags&quot;:{&quot;type&quot;:&quot;string[]&quot;}}},
+  &quot;edge&quot;:{&quot;policy&quot;:&quot;optional&quot;,&quot;fields&quot;:{&quot;weight&quot;:{&quot;type&quot;:&quot;number&quot;},&quot;label&quot;:{&quot;type&quot;:&quot;string&quot;}}},
+  &quot;references&quot;:{&quot;provenance&quot;:&quot;required&quot;,
+   &quot;relations&quot;:[
+    {&quot;name&quot;:&quot;derived-from&quot;,&quot;targetKinds&quot;:[&quot;research-plan&quot;,&quot;ecosystem-map&quot;,&quot;experience-audit&quot;]},
+    {&quot;name&quot;:&quot;supports&quot;,&quot;targetKinds&quot;:[&quot;business-model-canvas&quot;,&quot;service-blueprint&quot;,&quot;kpi-tree&quot;]}]}}}
+</code></pre>
+<pre><code class="language-bash">$CLI schema-get --kind kpi-tree
+</code></pre>
+<pre><code class="language-json">{&quot;kind&quot;:&quot;kpi-tree&quot;,
+ &quot;schema&quot;:{&quot;version&quot;:1,
+  &quot;node&quot;:{&quot;requiredMembers&quot;:[&quot;id&quot;,&quot;label&quot;,&quot;evidence&quot;,&quot;fields&quot;],&quot;fieldPolicy&quot;:&quot;closed&quot;,
+   &quot;fields&quot;:{&quot;tier&quot;:{&quot;type&quot;:&quot;string&quot;},&quot;parent&quot;:{&quot;type&quot;:&quot;string&quot;},
+             &quot;metric&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;required&quot;:true},
+             &quot;target&quot;:{&quot;type&quot;:&quot;number&quot;},&quot;baseline&quot;:{&quot;type&quot;:&quot;number&quot;},
+             &quot;measure&quot;:{&quot;type&quot;:&quot;string&quot;}}},
+  &quot;references&quot;:{&quot;relations&quot;:[
+    {&quot;name&quot;:&quot;derived-from&quot;,&quot;targetKinds&quot;:[&quot;service-blueprint&quot;,&quot;service-standard-set&quot;,&quot;roadmap&quot;,&quot;experience-audit&quot;]},
+    {&quot;name&quot;:&quot;supports&quot;,&quot;targetKinds&quot;:[&quot;test-report&quot;,&quot;change-plan&quot;,&quot;review-veto-log&quot;]}]}}}
+</code></pre>
+<p>Note <code>fieldPolicy: &quot;closed&quot;</code> on both: you cannot invent fields. The schema is the theory&#39;s discipline — if Heskett&#39;s link has no metric, it is not a link.</p>
+<h3 id="lifecycle-diagram-from-raw-staff-data-to-an-investment-grade-chain">Lifecycle diagram — from raw staff data to an investment-grade chain</h3>
+<p></p>
+<hr>
+<h2 id="4-case-study-lens-article-05-quotthe-service-profit-chain-in-logistics-halcyon39s-account-experiencequot">📊 4. Case Study Lens: Article 05 — &quot;The Service Profit Chain in Logistics: Halcyon&#39;s Account Experience&quot;</h2>
+<blockquote>
+<p><strong>Synthetic illustration — not a production log.</strong></p>
+</blockquote>
+<p>Article 05 (<code>articles/05/README.md</code>) is the method&#39;s source citation (<code>&quot;sources&quot;:[{&quot;book&quot;:&quot;20-the-service-profit-chain&quot;,&quot;chapter&quot;:&quot;01&quot;},{&quot;article&quot;:&quot;05&quot;}]</code> — see the live contract in §3 of this module and module 01.2). Halcyon&#39;s account-experience program walks the chain in order: internal tooling for account teams (link 1), team satisfaction and tenure (links 2–3), OTIF service value (link 4), shipper satisfaction (link 5), NPS-band share-of-wallet (link 6), and revenue outcomes (link 7). The charts are labeled <em>illustrative</em> — treat them as the shape of the argument, then ask: which <code>sd_evidence_add</code> records would you need for each link, and which would the critic veto as uncited?</p>
+<hr>
+<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab-05
+CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
+
+# 1. Project + the two evidence minimum (staff data + customer data)
+$CLI project-create --name &quot;Chain Builder&quot; --client &quot;Logistics client&quot; --sector logistics --service &quot;account management&quot;
+$CLI evidence-add --projectId &lt;pid&gt; --source staff-survey --kind quote --body &quot;&lt;frontline verbatim about tooling&gt;&quot;
+$CLI evidence-add --projectId &lt;pid&gt; --source ops --kind telemetry --body &quot;&lt;turnover or OTIF metric with a number&gt;&quot;
+
+# 2. Read the contract and both schemas
+$CLI method-run --projectId &lt;pid&gt; --methodId service-profit-chain-mapping
+$CLI schema-get --kind service-profit-chain
+$CLI schema-get --kind kpi-tree
+
+# 3. Draft a 4-link chain: internal quality → satisfaction → value → loyalty
+#    every node needs fields.metric and at least one real evidenceId
+$CLI artifact-write --projectId &lt;pid&gt; --methodId service-profit-chain-mapping \
+  --title &quot;Account team profit chain&quot; \
+  --nodes &#39;[{&quot;id&quot;:&quot;l1&quot;,&quot;label&quot;:&quot;Internal quality: account tooling&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;&lt;e1&gt;&quot;}],&quot;fields&quot;:{&quot;metric&quot;:&quot;tool uptime %&quot;,&quot;owner&quot;:&quot;ops&quot;}},
+            {&quot;id&quot;:&quot;l2&quot;,&quot;label&quot;:&quot;Employee satisfaction&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;&lt;e1&gt;&quot;}],&quot;fields&quot;:{&quot;metric&quot;:&quot;eNPS&quot;}},
+            {&quot;id&quot;:&quot;l3&quot;,&quot;label&quot;:&quot;External service value&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;&lt;e2&gt;&quot;}],&quot;fields&quot;:{&quot;metric&quot;:&quot;OTIF %&quot;}},
+            {&quot;id&quot;:&quot;l4&quot;,&quot;label&quot;:&quot;Customer loyalty&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;&lt;e2&gt;&quot;}],&quot;fields&quot;:{&quot;metric&quot;:&quot;net revenue retention&quot;}}]&#39;
+
+# 4. Critic gate, then factcheck
+$CLI review --projectId &lt;pid&gt; --artifactId &lt;aid&gt; --verdict pass \
+  --rows &#39;[{&quot;rowKind&quot;:&quot;proposal&quot;,&quot;severity&quot;:&quot;low&quot;,&quot;message&quot;:&quot;All links cited.&quot;,&quot;evidenceId&quot;:&quot;&lt;e1&gt;&quot;}]&#39;
+$CLI factcheck --projectId &lt;pid&gt; ; echo &quot;exit=$?&quot;
+</code></pre>
+<h3 id="verification-checklist">Verification checklist</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Chain has ≥4 nodes, every node carries <code>fields.metric</code> and ≥1 registered <code>evidenceId</code>.</li>
+<li><input disabled="" type="checkbox"> You can name which nodes are leading vs. lagging indicators and where each would live in a <code>kpi-tree</code> <code>tier</code>.</li>
+<li><input disabled="" type="checkbox"> Critic pass required ≥1 evidence-cited row and zero defect rows; <code>sd_factcheck</code> exits 0.</li>
+<li><input disabled="" type="checkbox"> You can state the time-lag implication: how many days before a tooling fix should show in margin (per Ch. 5&#39;s ~180-day cascade)?</li>
+</ul>
+<hr>
+<h2 id="key-takeaways">🚀 Key Takeaways</h2>
+<ul>
+<li><strong>Profit is produced upstream.</strong> Internal service quality — including agentic tooling — is the first link, not an overhead line.</li>
+<li><strong>Loyalty is the hinge; satisfaction is a waypoint.</strong> Measure conversion from satisfaction to loyalty or your chain stops halfway.</li>
+<li><strong>No metric, no link.</strong> The <code>service-profit-chain</code> schema enforces Heskett&#39;s discipline: <code>metric</code> required, evidence required, fields closed, critic rejects uncited causality.</li>
+<li><strong>Lead vs. lag is a data structure.</strong> <code>kpi-tree</code> tiers, parents, baselines, and targets turn Ch. 5&#39;s measurement discipline into an auditable artifact.</li>
+</ul>
+<hr>
+<div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
+  <span>← [Previous: 01.4 The Autonomy Spectrum & Human Gates](./04-autonomy-spectrum-human-gates.md) · [Next: 01.6 Hands-On Sprint: Your First Agentic Service Discovery](./06-first-agentic-sd-sprint.md) →</span>
+  <span><a href="./README.md">Back to Course Overview ↑</a></span>
+</div>
+
+
+      <div class="module-nav"><span>← <a href="./04-autonomy-spectrum-human-gates.html">Module 01.4: The Autonomy Spectrum &amp; The Sovereign Human Decision Gate</a></span><span><a href="./06-first-agentic-sd-sprint.html">Module 01.6: Hands-On Sprint: Running Your First Agentic Service Discovery</a> →</span></div>
+    </article>
+  </div>
+  <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+</body>
+</html>

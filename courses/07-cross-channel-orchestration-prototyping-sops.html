@@ -68,7 +68,9 @@
       border: 1px solid #2d2e2b;
       border-radius: 8px;
       min-height: 440px;
-      padding: 48px;
+      aspect-ratio: 16 / 9;
+      max-height: 78vh;
+      padding: clamp(28px, 4vw, 48px);
       position: relative;
       box-shadow: 0 12px 36px rgba(0,0,0,0.35);
       display: flex;
@@ -79,28 +81,50 @@
       display: none;
       flex-direction: column;
       height: 100%;
-      animation: fadeIn 200ms ease;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #3d3e3a transparent;
+      animation: slideIn 220ms ease;
     }
     .slide-card.active {
       display: flex;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to { opacity: 1; transform: translateX(0); }
     }
     .slide-header {
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
       font-family: var(--mono);
       font-size: 12px;
-      color: #e4be5c;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    .slide-kicker {
+      color: #e4be5c;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+    }
+    .slide-kicker::before {
+      content: "";
+      width: 18px;
+      height: 2px;
+      background: #e4be5c;
+      display: inline-block;
+    }
+    .slide-page-num {
+      color: #83847c;
+      letter-spacing: 0.12em;
     }
     .slide-title {
-      font-size: clamp(26px, 3vw, 38px);
+      font-size: clamp(24px, 2.8vw, 38px);
       letter-spacing: -0.025em;
+      line-height: 1.12;
       color: #ffffff;
       margin: 0 0 24px;
       font-weight: 700;
@@ -111,10 +135,20 @@
       margin: 0 0 24px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      font-size: 16.5px;
-      line-height: 1.6;
+      gap: 12px;
+      font-size: clamp(15px, 1.35vw, 17px);
+      line-height: 1.55;
       color: #d6d6ce;
+    }
+    .slide-bullets code {
+      font-family: var(--mono);
+      font-size: 0.86em;
+      color: #f0d489;
+      background: rgba(228,190,92,0.09);
+      border: 1px solid rgba(228,190,92,0.18);
+      padding: 1px 5px;
+      border-radius: 3px;
+      white-space: nowrap;
     }
     .slide-bullets li {
       position: relative;
@@ -131,22 +165,26 @@
     .slide-quote {
       border-left: 3px solid #e4be5c;
       padding-left: 16px;
-      margin: 20px 0 0;
+      margin: auto 0 0;
+      padding-top: 16px;
       font-style: italic;
       color: #a8a89f;
-      font-size: 14.5px;
+      font-size: clamp(13px, 1.1vw, 14.5px);
+      line-height: 1.5;
     }
-    
+
     .deck-diagram {
       display: flex;
       align-items: center;
-      gap: 12px;
+      flex-wrap: wrap;
+      gap: 10px 12px;
       background: #212220;
       padding: 16px;
       border-radius: 6px;
       margin: 16px 0;
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: 12.5px;
+      line-height: 1.45;
       overflow-x: auto;
     }
     .d-box {
@@ -159,6 +197,107 @@
     .d-good { border-color: #38a169; color: #68d391; }
     .d-bad { border-color: #e53e3e; color: #fc8181; }
     .d-arrow { color: #e4be5c; font-weight: 700; }
+
+    /* Diagram pattern: pipeline — numbered stages chained with arrows */
+    .d-pipe { counter-reset: dstage; }
+    .d-stage {
+      position: relative;
+      padding-left: 34px;
+    }
+    .d-stage::before {
+      content: counter(dstage, decimal-leading-zero);
+      counter-increment: dstage;
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #e4be5c;
+    }
+
+    /* Diagram pattern: lane-row — stacked labeled lanes for blueprints & journeys */
+    .d-lanes {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .d-lane {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .d-lane-label {
+      flex: 0 0 132px;
+      text-align: right;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #9a9b93;
+    }
+    .d-lane-items {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-left: 2px solid #3d3e3a;
+    }
+    .d-lane-items--line { border-left-color: #e4be5c; }
+
+    /* Diagram pattern: gate — decision box with pass/veto branches */
+    .d-gate-wrap {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 12px;
+    }
+    .d-gate-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .d-gate {
+      border-color: #e4be5c;
+      color: #f0d489;
+      background: rgba(228,190,92,0.07);
+    }
+    .d-branches {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .d-branch {
+      flex: 1 1 200px;
+      border: 1px solid #3d3e3a;
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: normal;
+    }
+    .d-branch b {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .d-pass { border-color: #38a169; color: #9ae6b4; background: rgba(56,161,105,0.08); }
+    .d-veto { border-color: #c53030; color: #feb2b2; background: rgba(197,48,48,0.08); }
+
+    @media (max-width: 720px) {
+      .slide-viewport { aspect-ratio: auto; max-height: none; }
+      .d-lane { flex-direction: column; align-items: stretch; gap: 4px; }
+      .d-lane-label { flex: none; text-align: left; }
+      .d-lane-items { border-left: none; border-top: 2px solid #3d3e3a; }
+    }
 
     /* Deck Navigation Footer */
     .deck-nav-bar {
@@ -195,11 +334,19 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: #3a3b37;
+      background: transparent;
+      border: 1px solid #565750;
       cursor: pointer;
+      transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+    }
+    .dot:hover {
+      border-color: #b9bab0;
+      transform: scale(1.15);
     }
     .dot.active {
       background: #e4be5c;
+      border-color: #e4be5c;
+      transform: scale(1.3);
     }
 
     /* Modules Grid Section */
@@ -295,54 +442,6 @@
       font-size: 14px;
     }
     .lab-btn:hover { opacity: 0.9; }
-  
-/* course spec tiles */
-.metrics-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.metrics-row > div {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-card);
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.metrics-row dt {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 0;
-}
-.metrics-row dd {
-  margin: 0;
-  font-size: 14.5px;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.3;
-}
-.status-available {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.status-available::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #2f9e5f;
-  box-shadow: 0 0 0 3px rgba(47, 158, 95, 0.18);
-}
-
   </style>
 </head>
 <body>
@@ -368,7 +467,7 @@
         <div><span class="badge badge-advanced">Advanced</span></div>
         <h1 class="course-page-title">Course 07: Cross-Channel Orchestration, Prototyping & SOPs-as-Code</h1>
         <p class="course-page-sub">Narrative Arcs, Omnichannel Transitions, Morphological Ideation, Wizard-of-Oz Testing, and Versioned SOPs</p>
-        <p style="max-width:760px; line-height:1.6; color:var(--ink-soft);">Connect high-level strategy to frontline operational execution. Orchestrate fragmented channels into seamless narratives using the Orchestration Canvas and Story Mapping. Execute machine-speed ideation using morphological matrices and the NUF filter. Build live Wizard-of-Oz prototypes with agentic backends. Replace stagnant SOP binders with executable SOPs-as-Code.</p>
+        <p style="max-width:760px; line-height:1.6; color:var(--ink-soft);">Connect high-level strategy to frontline operational execution. Orchestrate fragmented channels into seamless narratives with story maps, storyboards, and registered ecosystem maps; execute machine-speed traceable ideation (hmw-set → concept-set under NUF triple-lens filtering encoded as critic rows); prototype with Wizard-of-Oz and concierge plans; and replace stagnant SOP binders with service-standard-sets and change-plans rolled out through real orchestration dispatch.</p>
         <dl class="metrics-row" style="margin-top:24px;">
           <div><dt>Modules</dt><dd>6</dd></div>
           <div><dt>Duration</dt><dd>≈4h 45m</dd></div>
@@ -390,87 +489,187 @@
           
         <div class="slide-card active" data-slide-index="0">
           <div class="slide-header">
-            <span class="slide-kicker">Module 07.1</span>
-            <span class="slide-page-num">01 / 05</span>
+            <span class="slide-kicker">Paradigm Shift</span>
+            <span class="slide-page-num">01 / 10</span>
           </div>
-          <h2 class="slide-title">Omnichannel Fragmentation & The Cross-Channel Orchestration Canvas</h2>
+          <h2 class="slide-title">Services Are Choreographed, Not Documented</h2>
           <ul class="slide-bullets">
-            <li>Overcoming channel silos (mobile, branch, web, contact center) by defining unified channel roles, transition protocols, and context carryover.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>Customers experience one service across many channels; organizations ship many departments.</li><li>Orchestration is designed choreography: channel roles, transition protocols, context carryover — explicit and executable.</li><li>SOPs stop being binders and become tested, versioned, schema-validated code.</li><li>Prototypes climb a gated ladder from tabletop to Wizard-of-Oz before engineering spends a dollar.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Omnichannel Fragmentation & The Cross-Channel Orchestration Canvas</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Channel silos</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Orchestration canvas</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Typed handoffs</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">One seamless experience</span>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Cross-Channel Orchestration, Prototyping & SOPs-as-Code."</blockquote>
+          <blockquote class="slide-quote">"The customer experiences one service; orchestration makes the organization act like it."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="1">
           <div class="slide-header">
-            <span class="slide-kicker">Module 07.2</span>
-            <span class="slide-page-num">02 / 05</span>
+            <span class="slide-kicker">The Executable Spine</span>
+            <span class="slide-page-num">02 / 10</span>
           </div>
-          <h2 class="slide-title">Service Story Mapping: Narrative Arcs, Climax Points & Experience Staging</h2>
+          <h2 class="slide-title">One Canonical Loop Behind All 8 Courses</h2>
           <ul class="slide-bullets">
-            <li>Borrowing narrative design and Pine & Gilmore's experience staging to structure service moments into compelling emotional arcs.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>Every module runs the same verified loop: project → evidence → method contract → artifact draft → critic gate → factcheck → export → human-gated phase advance.</li><li>This course runs the ideation and prototyping phases of the method catalog.</li><li><code>sd_method_run</code> fails closed below the method's evidence minimum — no evidence, no artifact.</li><li><code>sd_phase_advance</code> refuses to run without a human approval receipt JSON.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Service Story Mapping</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">sd_project_create</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_evidence_add</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_method_run</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_artifact_write</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">sd_review</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_factcheck</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_export_report</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">sd_phase_advance</span>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Cross-Channel Orchestration, Prototyping & SOPs-as-Code."</blockquote>
+          <blockquote class="slide-quote">"Agents prepare and verify with receipts; human leaders decide with accountability."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="2">
           <div class="slide-header">
-            <span class="slide-kicker">Module 07.3</span>
-            <span class="slide-page-num">03 / 05</span>
+            <span class="slide-kicker">Module 07.1</span>
+            <span class="slide-page-num">03 / 10</span>
           </div>
-          <h2 class="slide-title">Machine-Speed Ideation: Insight -> HMW -> Morphological Matrix -> NUF Filter</h2>
+          <h2 class="slide-title">Omnichannel Fragmentation & The Cross-Channel Orchestration Canvas</h2>
           <ul class="slide-bullets">
-            <li>Generating high-velocity divergence without slop: preserving strict lineage from research insights to How-Might-We reframes and NUF scoring.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>orchestration-canvas defines channel roles, transition protocols, and context carryover.</li><li><code>sd_orchestration_plan</code> builds the run plan; <code>sd_orchestration_status</code> tracks it live.</li><li><code>sd_orchestration_dispatch</code> and <code>sd_orchestration_handoff</code> move typed artifacts between roles — never chat memory.</li><li>Context carryover is designed: the customer never repeats themselves at a channel boundary.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Machine-Speed Ideation</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">orchestration_plan</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">orchestration_dispatch</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">orchestration_handoff</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">orchestration_status</span>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Cross-Channel Orchestration, Prototyping & SOPs-as-Code."</blockquote>
+          <blockquote class="slide-quote">"Orchestration moves artifacts, not conversations."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="3">
           <div class="slide-header">
-            <span class="slide-kicker">Module 07.4</span>
-            <span class="slide-page-num">04 / 05</span>
+            <span class="slide-kicker">Module 07.2</span>
+            <span class="slide-page-num">04 / 10</span>
           </div>
-          <h2 class="slide-title">Rapid Service Prototyping: Tabletop Walkthroughs to Wizard-of-Oz Agentic Backends</h2>
+          <h2 class="slide-title">Service Story Mapping: Narrative Arcs, Climax Points & Experience Staging</h2>
           <ul class="slide-bullets">
-            <li>Testing complex service interactions before engineering: tabletop roleplay, desktop walkthroughs, and live Wizard-of-Oz testing with agent backends.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>Pine &amp; Gilmore: experiences are staged; story-mapping borrows narrative structure for service moments.</li><li>story-mapping produces story-map artifacts with deliberate arcs and climax points.</li><li>storyboard-authoring stages each moment as a storyboard ready for walkthrough testing.</li><li>Flat services are a design choice too — made consciously, with the arc on record.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Rapid Service Prototyping</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Setup</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Rising action</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">Climax moment</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Resolution &amp; recall</span>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Cross-Channel Orchestration, Prototyping & SOPs-as-Code."</blockquote>
+          <blockquote class="slide-quote">"Stage the moment or the moment stages itself."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="4">
           <div class="slide-header">
-            <span class="slide-kicker">Module 07.5</span>
-            <span class="slide-page-num">05 / 05</span>
+            <span class="slide-kicker">Module 07.3</span>
+            <span class="slide-page-num">05 / 10</span>
           </div>
-          <h2 class="slide-title">The Failure of the SOP Binder: Engineering SOPs-as-Code (Author, Test, Version, Audit)</h2>
+          <h2 class="slide-title">Machine-Speed Ideation: Insight → HMW → Morphological Matrix → NUF Filter</h2>
           <ul class="slide-bullets">
-            <li>Transforming static operations manuals into versioned, schema-validated prompt-and-code architectures that execute reliably across teams.</li><li>Grounding: Applied to enterprise domains with evidence registers.</li><li>Tool Execution: Governed by the Critic agent and verified via sd_factcheck.</li>
+            <li>Strict lineage: insight-set → hmw-formulation (hmw-set) → morphological-concept-matrix (concept-set).</li><li>nuf-triple-lens-filter scores concepts on Novelty, Usefulness, Feasibility — divergence without slop.</li><li>Every HMW cites its insight; every concept cites its HMW — ideation with provenance.</li><li>Machine speed is safe precisely because the lineage is machine-checked.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">The Failure of the SOP Binder</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Critic Gate & Factcheck</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">insight-set</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">hmw-set</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">concept-set (matrix)</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">NUF-scored shortlist</span>
 </div>
-          <blockquote class="slide-quote">"Rigorous, executable service design grounded in Cross-Channel Orchestration, Prototyping & SOPs-as-Code."</blockquote>
+          <blockquote class="slide-quote">"Divergence with lineage is ideation; divergence without it is slop."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="5">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 07.4</span>
+            <span class="slide-page-num">06 / 10</span>
+          </div>
+          <h2 class="slide-title">Rapid Service Prototyping: Tabletop Walkthroughs to Wizard-of-Oz Agentic Backends</h2>
+          <ul class="slide-bullets">
+            <li>prototype-ladder-gating climbs tabletop → desktop-walkthrough → concierge-pilot with gates between rungs.</li><li>wizard-of-oz tests full service interactions with agent backends before engineering.</li><li>service-roleplay and bodystorming keep the body in the loop early and cheap.</li><li>Each rung produces a typed artifact (prototype-plan, walkthrough-script, test-report) with its own gate.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Tabletop</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Desktop walkthrough</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">Wizard-of-Oz</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Concierge pilot</span>
+</div>
+          <blockquote class="slide-quote">"Test the service before you build it; the ladder has gates for a reason."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="6">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 07.5</span>
+            <span class="slide-page-num">07 / 10</span>
+          </div>
+          <h2 class="slide-title">The Failure of the SOP Binder: Engineering SOPs-as-Code</h2>
+          <ul class="slide-bullets">
+            <li>service-standard-authoring produces service-standard-set artifacts: SOPs as schema-validated code.</li><li>Author, test, version, audit — the binder is dead; the standard is executable.</li><li>raci-definition assigns accountable roles to every standard step.</li><li>Standards drift is detected by the same factcheck loop as every other artifact.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Author (schema)</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Test (walkthrough)</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Version (artifact store)</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Audit (factcheck)</span>
+</div>
+          <blockquote class="slide-quote">"The binder is dead; the standard is executable."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="7">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 07.6</span>
+            <span class="slide-page-num">08 / 10</span>
+          </div>
+          <h2 class="slide-title">Co-Designing Frontline Co-Pilots & Context Handover Without Screen Tyranny</h2>
+          <ul class="slide-bullets">
+            <li>frontline-enablement designs co-pilots that give staff superhuman memory without screen tyranny.</li><li>Context handover rides <code>sd_orchestration_handoff</code>: typed state, not a retold story.</li><li>Co-pilot suggestions are proposals; the frontline human keeps sovereign authority.</li><li>Cognitive load is a design constraint with the same status as any acceptance rule.</li>
+          </ul>
+          <div class="deck-diagram d-gate-wrap">
+  <div class="d-gate-row"><span class="d-box">Frontline AI</span><span class="d-arrow">→</span><span class="d-box d-gate">Design stance</span></div>
+  <div class="d-branches">
+    <div class="d-branch d-pass"><b>Co-pilot</b>Recall + suggestions, human decides, screens stay quiet</div>
+    <div class="d-branch d-veto"><b>Screen tyranny</b>Alert storms, forced data entry, cognitive burnout</div>
+  </div>
+</div>
+          <blockquote class="slide-quote">"Superhuman memory, human judgment — that is the co-pilot contract."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="8">
+          <div class="slide-header">
+            <span class="slide-kicker">Dogfooding the Runtime</span>
+            <span class="slide-page-num">09 / 10</span>
+          </div>
+          <h2 class="slide-title">The Verified Toolchain Behind This Course</h2>
+          <ul class="slide-bullets">
+            <li>Orchestrate: <code>sd_orchestration_plan</code>, <code>sd_orchestration_status</code>, <code>sd_orchestration_dispatch</code>, <code>sd_orchestration_handoff</code>.</li><li>Ideate &amp; stage: hmw-formulation, morphological-concept-matrix, nuf-triple-lens-filter, story-mapping, storyboard-authoring.</li><li>Test: prototype-ladder-gating, wizard-of-oz, service-roleplay, desktop-walkthrough.</li><li>Standardize: service-standard-authoring, raci-definition; gate with <code>sd_phase_advance</code>.</li>
+          </ul>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">Orchestrate</span><div class="d-lane-items"><span class="d-box">sd_orchestration_plan</span><span class="d-box">sd_orchestration_dispatch</span><span class="d-box">sd_orchestration_handoff</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Methods</span><div class="d-lane-items"><span class="d-box">hmw-formulation</span><span class="d-box">nuf-triple-lens-filter</span><span class="d-box">wizard-of-oz</span><span class="d-box">service-standard-authoring</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Gate</span><div class="d-lane-items d-lane-items--line"><span class="d-box">sd_review</span><span class="d-box">sd_factcheck</span><span class="d-box d-gate">sd_phase_advance</span></div></div>
+</div>
+          <blockquote class="slide-quote">"Ideation, staging, testing, standardization — all four are method contracts, not meetings."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="9">
+          <div class="slide-header">
+            <span class="slide-kicker">Capstone</span>
+            <span class="slide-page-num">10 / 10</span>
+          </div>
+          <h2 class="slide-title">One Insight, Staged and Standardized</h2>
+          <ul class="slide-bullets">
+            <li>Take one insight to a staged, tested service moment: HMW → concept → Wizard-of-Oz run.</li><li>Author the resulting SOP as a service-standard-set and pass the critic gate.</li><li>Run the orchestration plan across two channels with a real typed handoff.</li><li>Advance the phase with a human receipt — choreography approved.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Insight</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Tested concept</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Standard-as-code</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">Human gate</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Live choreography</span>
+</div>
+          <blockquote class="slide-quote">"Choreography approved, standard executable, moment staged."</blockquote>
         </div>
         
         </div>
@@ -478,7 +677,7 @@
         <div class="deck-nav-bar">
           <button class="deck-btn" id="prevBtn" onclick="changeSlide(-1)">◄ Previous Slide</button>
           <div class="slide-dots" id="slideDots">
-            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div><div class="dot " onclick="goToSlide(3)"></div><div class="dot " onclick="goToSlide(4)"></div>
+            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div><div class="dot " onclick="goToSlide(3)"></div><div class="dot " onclick="goToSlide(4)"></div><div class="dot " onclick="goToSlide(5)"></div><div class="dot " onclick="goToSlide(6)"></div><div class="dot " onclick="goToSlide(7)"></div><div class="dot " onclick="goToSlide(8)"></div><div class="dot " onclick="goToSlide(9)"></div>
           </div>
           <button class="deck-btn" id="nextBtn" onclick="changeSlide(1)">Next Slide ►</button>
         </div>
@@ -501,8 +700,8 @@
             <span class="mod-badge">07.1</span>
             <span class="mod-time">⏱️ 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./07-cross-channel-orchestration-prototyping-sops/01-omnichannel-fragmentation-reality.html" style="color:inherit; text-decoration:none;">Omnichannel Fragmentation & The Cross-Channel Orchestration Canvas</a></h3>
-          <p class="mod-card-desc">Overcoming channel silos (mobile, branch, web, contact center) by defining unified channel roles, transition protocols, and context carryover.</p>
+          <h3 class="mod-card-title"><a href="./07-cross-channel-orchestration-prototyping-sops/01-omnichannel-fragmentation-reality.html" style="color:inherit; text-decoration:none;">Omnichannel Fragmentation & The Physical-Digital Reality</a></h3>
+          <p class="mod-card-desc">Diagnose cross-channel state loss with `ecosystem-value-mapping`, register collaborative boards with `sd_canvas_add`, and refine ownership via `orchestration-canvas`.</p>
           <a class="mod-card-link" href="./07-cross-channel-orchestration-prototyping-sops/01-omnichannel-fragmentation-reality.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -511,8 +710,8 @@
             <span class="mod-badge">07.2</span>
             <span class="mod-time">⏱️ 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./07-cross-channel-orchestration-prototyping-sops/02-service-story-mapping-narrative-arcs.html" style="color:inherit; text-decoration:none;">Service Story Mapping: Narrative Arcs, Climax Points & Experience Staging</a></h3>
-          <p class="mod-card-desc">Borrowing narrative design and Pine & Gilmore's experience staging to structure service moments into compelling emotional arcs.</p>
+          <h3 class="mod-card-title"><a href="./07-cross-channel-orchestration-prototyping-sops/02-service-story-mapping-narrative-arcs.html" style="color:inherit; text-decoration:none;">Service Story Mapping & Narrative Arc Construction</a></h3>
+          <p class="mod-card-desc">Turn evidence-gated journeys into ordered `story-map` beats and dramatized `storyboard` frames ready for prototyping.</p>
           <a class="mod-card-link" href="./07-cross-channel-orchestration-prototyping-sops/02-service-story-mapping-narrative-arcs.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -521,8 +720,8 @@
             <span class="mod-badge">07.3</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./07-cross-channel-orchestration-prototyping-sops/03-machine-speed-traceable-ideation.html" style="color:inherit; text-decoration:none;">Machine-Speed Ideation: Insight -> HMW -> Morphological Matrix -> NUF Filter</a></h3>
-          <p class="mod-card-desc">Generating high-velocity divergence without slop: preserving strict lineage from research insights to How-Might-We reframes and NUF scoring.</p>
+          <h3 class="mod-card-title"><a href="./07-cross-channel-orchestration-prototyping-sops/03-machine-speed-traceable-ideation.html" style="color:inherit; text-decoration:none;">Machine-Speed Traceable Ideation & HMW Scoring</a></h3>
+          <p class="mod-card-desc">Build the `insight-set → hmw-set → concept-set` chain with morphological combinations, NUF scoring, and typed traceability.</p>
           <a class="mod-card-link" href="./07-cross-channel-orchestration-prototyping-sops/03-machine-speed-traceable-ideation.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -531,8 +730,8 @@
             <span class="mod-badge">07.4</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./07-cross-channel-orchestration-prototyping-sops/04-rapid-service-prototyping-wizard-of-oz.html" style="color:inherit; text-decoration:none;">Rapid Service Prototyping: Tabletop Walkthroughs to Wizard-of-Oz Agentic Backends</a></h3>
-          <p class="mod-card-desc">Testing complex service interactions before engineering: tabletop roleplay, desktop walkthroughs, and live Wizard-of-Oz testing with agent backends.</p>
+          <h3 class="mod-card-title"><a href="./07-cross-channel-orchestration-prototyping-sops/04-rapid-service-prototyping-wizard-of-oz.html" style="color:inherit; text-decoration:none;">Rapid Service Prototyping: Desktop Walkthroughs to Wizard-of-Oz</a></h3>
+          <p class="mod-card-desc">Stage progressive-fidelity tests with `walkthrough-script`, `prototype-plan`, `test-report`, and `prototype-ladder-gating`.</p>
           <a class="mod-card-link" href="./07-cross-channel-orchestration-prototyping-sops/04-rapid-service-prototyping-wizard-of-oz.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -541,8 +740,8 @@
             <span class="mod-badge">07.5</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./07-cross-channel-orchestration-prototyping-sops/05-sops-as-code-lifecycle.html" style="color:inherit; text-decoration:none;">The Failure of the SOP Binder: Engineering SOPs-as-Code (Author, Test, Version, Audit)</a></h3>
-          <p class="mod-card-desc">Transforming static operations manuals into versioned, schema-validated prompt-and-code architectures that execute reliably across teams.</p>
+          <h3 class="mod-card-title"><a href="./07-cross-channel-orchestration-prototyping-sops/05-sops-as-code-lifecycle.html" style="color:inherit; text-decoration:none;">SOPs-as-Code: Versioned Execution Playbooks & Governance</a></h3>
+          <p class="mod-card-desc">Author measurable service standards, convert them into change plans and roadmaps, and track rollout with `sd_orchestration_plan` / `dispatch`.</p>
           <a class="mod-card-link" href="./07-cross-channel-orchestration-prototyping-sops/05-sops-as-code-lifecycle.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -551,8 +750,8 @@
             <span class="mod-badge">07.6</span>
             <span class="mod-time">⏱️ 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./07-cross-channel-orchestration-prototyping-sops/06-frontline-enablement-copilots.html" style="color:inherit; text-decoration:none;">Co-Designing Frontline Co-Pilots & Context Handover Without Screen Tyranny</a></h3>
-          <p class="mod-card-desc">Designing assistive AI co-pilots that empower frontline service staff with superhuman memory while avoiding cognitive fatigue and screen tyranny.</p>
+          <h3 class="mod-card-title"><a href="./07-cross-channel-orchestration-prototyping-sops/06-frontline-enablement-copilots.html" style="color:inherit; text-decoration:none;">Hands-On: Frontline Enablement & Worker Co-Pilots</a></h3>
+          <p class="mod-card-desc">Rewrite approved standards into frontline-ready enablement packs and connect them to Course 08 recovery-playbook work.</p>
           <a class="mod-card-link" href="./07-cross-channel-orchestration-prototyping-sops/06-frontline-enablement-copilots.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -585,7 +784,7 @@
 
   <script>
     var currentSlide = 0;
-    var totalSlides = 5;
+    var totalSlides = 10;
 
     function showSlide(index) {
       if (index < 0) index = 0;

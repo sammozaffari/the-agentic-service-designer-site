@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Module 02.3: The asd-mcp Server — 29 Tools, 216 Corpus Resources, 10 Role Prompts over stdio — The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh) | The Agentic Service Designer">
+<title>Module 02.3: The asd-mcp Server — 29 Tools, 216 Corpus Resources, 10 Role Prompts over stdio | The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  :root { color-scheme: light; }
+  body.module-page { background: var(--paper-tint); }
+  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
+  .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
+  .module-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  .module-body th, .module-body td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
+  .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
+  .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
+  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
+  });
+</script>
+</head>
+<body class="module-page">
+  <div class="module-wrap">
+    <nav class="module-crumb"><a href="../../02-asd-platform-toolchain-deepseek-harness.html">← The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a></nav>
+    <article class="module-body">
+
+<h1 id="module-023-the-asd-mcp-server-29-tools-216-corpus-resources-10-role-prompts-over-stdio">Module 02.3: The asd-mcp Server — 29 Tools, 216 Corpus Resources, 10 Role Prompts over stdio</h1>
+<blockquote>
+<p><strong>Course</strong>: <a href="./README.md">The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 55 min · <strong>Format</strong>: Theory, Live Protocol Session &amp; Hands-on Lab</p>
+</blockquote>
+<hr>
+<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<p>By completing this module, you will be able to:</p>
+<ol>
+<li><strong>Speak the MCP stdio protocol by hand</strong>: newline-delimited JSON-RPC 2.0, <code>initialize</code> handshake, <code>notifications/initialized</code>, request/response id matching.</li>
+<li><strong>Enumerate the live surface</strong>: <code>tools/list</code> (29 tools), <code>prompts/list</code> (10 role prompts), <code>resources/list</code> paginated across three pages to 216 repo-corpus resources.</li>
+<li><strong>Retrieve corpus knowledge</strong> two ways — <code>resources/read</code> on an <code>asd://</code> URI and the <code>sd_knowledge</code> tool&#39;s <code>resourceQuery</code>/<code>resource</code> arguments — and know when to use which.</li>
+<li><strong>Call tools correctly</strong>: <code>tools/call</code> argument shapes, error codes (<code>-32602</code> invalid params, <code>-32002</code> resource not found), and the stdin-lifetime rule for in-flight calls.</li>
+<li><strong>Complete the hands-on lab</strong>: a scripted MCP session you run and verify yourself.</li>
+</ol>
+<hr>
+<h2 id="1-foundational-theory-amp-literature-grounding">📖 1. Foundational Theory &amp; Literature Grounding</h2>
+<h3 id="a-protocol-is-a-service-contract-for-tools">A protocol is a service contract for tools</h3>
+<p><em>Service-Dominant Logic</em> (Lusch &amp; Vargo, <code>books/12-service-dominant-logic/04-service-ecosystems</code>) describes value creation as governed by <em>institutions</em> — shared rules that let strangers coordinate. MCP plays that role for agent tooling: a host (Claude Code, Codex, any MCP client) and a server (asd-mcp) coordinate without bespoke integration because both honor the same institutional rules: JSON-RPC 2.0 framing, capability negotiation at <code>initialize</code>, and enumerated <code>tools</code>/<code>resources</code>/<code>prompts</code> capability buckets.</p>
+<p><em>Mapping Experiences</em> (Kalbach, <code>books/09-mapping-experiences/02-the-anatomy-of-experience-maps</code>) supplies the second idea: a map (or a corpus) is only useful if its <em>anatomy is legible</em> — you can enumerate its parts and trace any part back to source. The asd-mcp resource surface is exactly that: the repo&#39;s Service Design canon (<code>books/</code> 20 volumes, <code>articles/</code> 37 case studies) exposed as addressable, paginated <code>asd://</code> URIs, sorted by URI so successive <code>resources/list</code> calls are stable. The corpus is scanned <strong>per request, not at boot</strong> (<code>src/corpus.ts</code>), so what the server reports is what is on disk right now.</p>
+<p>The verified inventory for this repo&#39;s corpus, from the live session below: <strong>29 tools, 216 resources, 10 prompts</strong>. Emitted host packs bundle additional pack-local corpus copies, so pack servers report more (the pack README records 225). Teachable rule: <em>216 from the repo corpus; emitted packs ship more.</em></p>
+<h3 id="concept-diagram-the-mcp-capability-buckets-over-the-asd-corpus">Concept diagram — the MCP capability buckets over the ASD corpus</h3>
+<div class="diagram"><pre class="mermaid">flowchart TD
+    subgraph Handshake[&quot;initialize (protocol 2025-06-18)&quot;]
+        CAPS[&quot;capabilities: tools + resources + prompts&quot;]
+    end
+    subgraph Tools[&quot;tools (29 sd_* tools)&quot;]
+        T1[&quot;project / evidence / artifacts / canvas&quot;]
+        T2[&quot;methods / review / export&quot;]
+        T3[&quot;knowledge / orchestration / governance&quot;]
+    end
+    subgraph Resources[&quot;resources (216 repo corpus)&quot;]
+        R1[&quot;asd://articles/01..37 (37 article resources)&quot;]
+        R2[&quot;asd://books/&lt;20 volumes&gt;/&lt;chapters&gt; (179 book resources)&quot;]
+        R3[&quot;paginated: 100 + 100 + 16, cursor offset:&lt;n&gt; (opaque, base64url)&quot;]
+    end
+    subgraph Prompts[&quot;prompts (10 role contracts)&quot;]
+        P1[&quot;critic, ideator, librarian, mapper, measurer&quot;]
+        P2[&quot;orchestrator, presenter, prototyper, researcher, synthesizer&quot;]
+    end
+    Handshake --&gt; Tools
+    Handshake --&gt; Resources
+    Handshake --&gt; Prompts
+
+    classDef paper fill:#f8f9fa,stroke:#4a5568,stroke-width:1.5px,color:#1a202c;
+    classDef blue  fill:#ebf8ff,stroke:#3182ce,stroke-width:1.5px,color:#2b6cb0;
+    classDef purple fill:#faf5ff,stroke:#805ad5,stroke-width:1.5px,color:#553c9e;
+    classDef gold  fill:#fffbeb,stroke:#b7791f,stroke-width:1.5px,color:#744210;
+    class CAPS purple;
+    class T1,T2,T3 blue;
+    class R1,R2,R3 gold;
+    class P1,P2 paper;</pre></div>
+<hr>
+<h2 id="2-agent-topology-amp-role-contracts">🤖 2. Agent Topology &amp; Role Contracts</h2>
+<p>The 10 entries in <code>prompts/list</code> are not generic personas — each is the host-format rendering of a role contract whose canonical source is <code>suite/packages/knowledge/data/practice-contract.json</code>:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Prompt</th>
+<th align="left">Role&#39;s first MCP moves</th>
+<th align="left">Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>librarian</strong></td>
+<td align="left"><code>resources/list</code> → <code>resources/read</code> / <code>sd_knowledge</code></td>
+<td align="left">Corpus lookup is its whole contract</td>
+</tr>
+<tr>
+<td align="left"><strong>mapper</strong></td>
+<td align="left"><code>tools/call sd_method_run</code> → <code>sd_artifact_write</code></td>
+<td align="left">Owns journey/blueprint methods</td>
+</tr>
+<tr>
+<td align="left"><strong>critic</strong></td>
+<td align="left"><code>tools/call sd_review</code>, <code>sd_factcheck</code></td>
+<td align="left">Gatekeeper; verdicts are artifacts</td>
+</tr>
+<tr>
+<td align="left"><strong>orchestrator</strong></td>
+<td align="left"><code>tools/call sd_orchestration_plan</code></td>
+<td align="left">Multi-step dispatch with idempotency keys</td>
+</tr>
+<tr>
+<td align="left"><strong>presenter</strong></td>
+<td align="left"><code>tools/call sd_export_report</code>, <code>sd_export_artifact</code></td>
+<td align="left">Deterministic compilation to HTML/SVG</td>
+</tr>
+</tbody></table>
+<p><code>prompts/get</code> on any name returns the role contract as a user message — verified below with <code>mapper</code>, whose returned text begins with the SDAP Role Contract header and cites its canonical source.</p>
+<hr>
+<h2 id="3-the-live-session-verified-2026-08-22">💻 3. The Live Session (verified 2026-08-22)</h2>
+<p>Everything in this section was executed against <code>suite/packages/runtime/lib/mcp.mjs</code> with <code>ASD_WORKSPACE=/tmp/asd-c02-1787398523</code>. The framing is <strong>newline-delimited JSON-RPC</strong>: one complete JSON message per line, in each direction.</p>
+<h3 id="31-initialize-and-enumerate">3.1 Initialize and enumerate</h3>
+<pre><code class="language-bash">{
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;initialize&quot;,&quot;params&quot;:{&quot;protocolVersion&quot;:&quot;2025-06-18&quot;,&quot;capabilities&quot;:{},&quot;clientInfo&quot;:{&quot;name&quot;:&quot;course-02-live&quot;,&quot;version&quot;:&quot;1.0.0&quot;}}}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;method&quot;:&quot;notifications/initialized&quot;}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:2,&quot;method&quot;:&quot;tools/list&quot;}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:3,&quot;method&quot;:&quot;prompts/list&quot;}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:4,&quot;method&quot;:&quot;resources/list&quot;}&#39;
+} | node suite/packages/runtime/lib/mcp.mjs
+</code></pre>
+<p>Responses (trimmed, real):</p>
+<pre><code class="language-jsonc">// id 1 — handshake
+{&quot;id&quot;:1,&quot;result&quot;:{&quot;protocolVersion&quot;:&quot;2025-06-18&quot;,
+  &quot;capabilities&quot;:{&quot;tools&quot;:{},&quot;resources&quot;:{},&quot;prompts&quot;:{}},
+  &quot;serverInfo&quot;:{&quot;name&quot;:&quot;asd-mcp&quot;,&quot;version&quot;:&quot;0.1.0&quot;}}}
+
+// id 2 — tools/list: result.tools.length === 29, beginning:
+//   sd_project_list, sd_project_create, sd_project_open, sd_evidence_add, ...
+
+// id 3 — prompts/list: result.prompts.length === 10:
+//   critic, ideator, librarian, mapper, measurer,
+//   orchestrator, presenter, prototyper, researcher, synthesizer
+
+// id 4 — resources/list page 1: 100 resources, and
+{&quot;id&quot;:4,&quot;result&quot;:{&quot;resources&quot;:[{&quot;uri&quot;:&quot;asd://articles/01&quot;, ...}, ...],
+  &quot;nextCursor&quot;:&quot;b2Zmc2V0OjEwMA&quot;}}        // base64url of &quot;offset:100&quot;
+</code></pre>
+<h3 id="32-paginate-the-corpus-to-the-end">3.2 Paginate the corpus to the end</h3>
+<pre><code class="language-bash"># page 2
+&#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:5,&quot;method&quot;:&quot;resources/list&quot;,&quot;params&quot;:{&quot;cursor&quot;:&quot;b2Zmc2V0OjEwMA&quot;}}&#39;
+# → 100 resources: &quot;asd://books/08-orchestrating-experiences/01-why-orchestration&quot;
+#    through &quot;asd://books/19-service-management-and-marketing/02-perceived-service-quality&quot;
+#    nextCursor &quot;b2Zmc2V0OjIwMA&quot;  (&quot;offset:200&quot;)
+
+# page 3
+&#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:9,&quot;method&quot;:&quot;resources/list&quot;,&quot;params&quot;:{&quot;cursor&quot;:&quot;b2Zmc2V0OjIwMA&quot;}}&#39;
+# → 16 resources: books/19/03 through books/20-the-service-profit-chain/08-future-of-the-chain
+#    NO nextCursor — end of corpus. Total: 100 + 100 + 16 = 216.
+</code></pre>
+<p>Cursor rules from the implementation (<code>mcp.mjs</code>): the cursor is an opaque base64url <code>offset:&lt;n&gt;</code> token; an undecodable cursor is rejected with <code>-32602 invalid cursor</code>; omitting <code>params.cursor</code> returns the first page. URIs are sorted, so pagination is stable across calls.</p>
+<h3 id="33-call-a-tool-and-read-the-corpus">3.3 Call a tool and read the corpus</h3>
+<pre><code class="language-bash">{
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;initialize&quot;,&quot;params&quot;:{&quot;protocolVersion&quot;:&quot;2025-06-18&quot;,&quot;capabilities&quot;:{},&quot;clientInfo&quot;:{&quot;name&quot;:&quot;c02&quot;,&quot;version&quot;:&quot;1.0.0&quot;}}}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;method&quot;:&quot;notifications/initialized&quot;}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:6,&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{&quot;name&quot;:&quot;sd_method_run&quot;,&quot;arguments&quot;:{&quot;projectId&quot;:&quot;fernwood-repairs-sprint-6b4b0c26&quot;,&quot;methodId&quot;:&quot;journey-from-transcripts&quot;}}}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:7,&quot;method&quot;:&quot;resources/read&quot;,&quot;params&quot;:{&quot;uri&quot;:&quot;asd://books/12-service-dominant-logic/03-value-co-creation&quot;}}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:9,&quot;method&quot;:&quot;prompts/get&quot;,&quot;params&quot;:{&quot;name&quot;:&quot;mapper&quot;}}&#39;
+  sleep 2   # hold stdin open or in-flight tools/call responses are aborted
+} | node suite/packages/runtime/lib/mcp.mjs
+</code></pre>
+<pre><code class="language-jsonc">// id 6 — tools/call sd_method_run: result.content[0].text is the CLI rendering:
+//   &quot;## Method contract\n```json\n{\&quot;method\&quot;:{\&quot;id\&quot;:\&quot;journey-from-transcripts\&quot;,
+//    \&quot;owner\&quot;:\&quot;mapper\&quot;,\&quot;reviewGate\&quot;:\&quot;critic\&quot;, ... \&quot;availableEvidence\&quot;:4}}&quot;
+
+// id 7 — resources/read: the chapter itself
+{&quot;id&quot;:7,&quot;result&quot;:{&quot;contents&quot;:[{&quot;uri&quot;:&quot;asd://books/12-service-dominant-logic/03-value-co-creation&quot;,
+  &quot;mimeType&quot;:&quot;text/markdown&quot;,&quot;text&quot;:&quot;---\nbook: \&quot;Service-Dominant Logic: ... (12127 chars)&quot;}]}}
+
+// id 9 — prompts/get mapper: {&quot;description&quot;: ..., &quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,
+//   &quot;content&quot;:{&quot;text&quot;:&quot;# SDAP Role Contract — the collaboration protocol\n&gt; Canonical source:
+//   suite/packages/knowledge/data/practice-contract.json ...&quot;}}]}
+</code></pre>
+<p>Error behavior, verified: a fabricated URI (<code>asd://books/12-service-dominant-logic/01-introduction</code>, which does not exist) returns <code>{&quot;id&quot;:7,&quot;error&quot;:{&quot;code&quot;:-32002,&quot;message&quot;:&quot;resource not found: asd://books/12-service-dominant-logic/01-introduction&quot;}}</code>. The correct first chapter URI is <code>asd://books/12-service-dominant-logic/01-from-goods-to-service-dominant-logic</code> — discover real URIs with <code>resources/list</code>, never guess stems.</p>
+<h3 id="34-corpus-retrieval-through-the-sd-knowledge-tool">3.4 Corpus retrieval through the <code>sd_knowledge</code> tool</h3>
+<p><code>resources/read</code> is the protocol-native path. The <code>sd_knowledge</code> tool is the role-facing path (the Librarian&#39;s lookup): <code>resourceQuery</code> searches corpus URIs/names case-insensitively, and <code>resource</code> fetches an exact URI:</p>
+<pre><code class="language-bash">&#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:8,&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{&quot;name&quot;:&quot;sd_knowledge&quot;,
+  &quot;arguments&quot;:{&quot;resource&quot;:&quot;asd://books/12-service-dominant-logic/03-value-co-creation&quot;}}}&#39;
+# → result JSON with top-level keys {methods, kinds, resource}; resource carries
+#   {uri, name, title, mimeType, size, version, provenance, text}
+#   provenance: &quot;books/12-service-dominant-logic/03-value-co-creation.md&quot; — the repo path
+</code></pre>
+<p>Rule of thumb: hosts that natively mount resources use <code>resources/list</code>/<code>resources/read</code>; role agents mid-workflow use <code>sd_knowledge</code> so the lookup stays inside the tool contract.</p>
+<h3 id="sequence-diagram-initialize-toolslist-toolscall">Sequence diagram — initialize → tools/list → tools/call</h3>
+<p></p>
+<h3 id="pagination-state-diagram-walking-the-corpus-to-the-end">Pagination state diagram — walking the corpus to the end</h3>
+<p></p>
+<hr>
+<h2 id="4-enterprise-case-study-lens">🏢 4. Enterprise Case Study Lens</h2>
+<h3 id="article-31-riding-the-current-public-transport-service-design-on-the-asd-claude-code-plugin-articles31">Article 31 — <em>Riding the Current: Public-Transport Service Design on the ASD Claude Code Plugin</em> (<code>articles/31</code>)</h3>
+<blockquote>
+<p><strong>Synthetic illustration — not a production log.</strong> Lighthouse Transit is a fictional composite; the article is an illustrative platform walkthrough over the committed pack sources.</p>
+</blockquote>
+<p>Lighthouse Transit is the MCP module&#39;s case because its entire operating model is &quot;one designer + ten role agents&quot; coordinated through the vendored <code>asd</code> MCP server inside a host pack. The article&#39;s evidence note records the pack-local CLI and disposable MCP bundles at 29 tools and 10 prompts — the same inventory you enumerated by hand above — while keeping host execution honestly unverified. The transit scenario shows why corpus resources matter in practice: the Librarian role grounding ideation in <code>books/19-service-management-and-marketing/06-service-recovery</code> and <code>books/20-the-service-profit-chain/03-external-service-value</code> is a <code>resources/read</code> (or <code>sd_knowledge --resource</code>) call away, with provenance pointing at the repo path, not a paraphrase from model memory.</p>
+<hr>
+<h2 id="5-critic-gate-amp-review-veto-rules-protocol-edition">⚖️ 5. Critic Gate &amp; Review Veto Rules (protocol edition)</h2>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<ol>
+<li><code>tools/call sd_review</code> with a <code>veto</code> verdict requires every defect row to carry a <code>fix</code>; the artifact stays <code>draft</code> and the veto log persists as a <code>review-veto-log</code> artifact — over MCP exactly as over CLI.</li>
+<li>A pass verdict without at least one evidence-cited row is rejected; the gate is not satisfiable by enthusiasm.</li>
+<li>Protocol errors fail closed: <code>-32602</code> for bad params/unknown tool/invalid cursor, <code>-32002</code> for unknown resource URIs, <code>-32601</code> for unknown methods.</li>
+<li>Tool calls before <code>initialize</code> complete are rejected (<code>-32000</code> &quot;server not initialized&quot;).</li>
+</ol>
+</blockquote>
+<hr>
+<h2 id="6-hands-on-lab-assignment">🧪 6. Hands-On Lab Assignment</h2>
+<h3 id="objective">Objective</h3>
+<p>Script a complete MCP session: handshake, full corpus pagination, one tool call, one corpus read, one role prompt.</p>
+<h3 id="steps">Steps</h3>
+<pre><code class="language-bash">cd ~/Documents/github/agentic-service-designer
+export ASD_WORKSPACE=/tmp/asd-lab-02-3
+CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
+$CLI project-create --name &quot;Lab 02.3&quot; --client &quot;&lt;c&gt;&quot; --sector government --service &quot;&lt;s&gt;&quot;
+$CLI evidence-add --projectId &lt;pid&gt; --source int-01 --kind quote --body &quot;&lt;v1&gt;&quot;
+$CLI evidence-add --projectId &lt;pid&gt; --source int-02 --kind quote --body &quot;&lt;v2&gt;&quot;
+$CLI evidence-add --projectId &lt;pid&gt; --source tel-01 --kind telemetry --body &quot;&lt;m&gt;&quot;
+
+{
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;initialize&quot;,&quot;params&quot;:{&quot;protocolVersion&quot;:&quot;2025-06-18&quot;,&quot;capabilities&quot;:{},&quot;clientInfo&quot;:{&quot;name&quot;:&quot;lab&quot;,&quot;version&quot;:&quot;1.0&quot;}}}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;method&quot;:&quot;notifications/initialized&quot;}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:2,&quot;method&quot;:&quot;tools/list&quot;}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:3,&quot;method&quot;:&quot;prompts/list&quot;}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:4,&quot;method&quot;:&quot;resources/list&quot;}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:5,&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{&quot;name&quot;:&quot;sd_method_run&quot;,&quot;arguments&quot;:{&quot;projectId&quot;:&quot;&lt;pid&gt;&quot;,&quot;methodId&quot;:&quot;journey-from-transcripts&quot;}}}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:6,&quot;method&quot;:&quot;resources/read&quot;,&quot;params&quot;:{&quot;uri&quot;:&quot;asd://books/12-service-dominant-logic/03-value-co-creation&quot;}}&#39;
+  sleep 2
+} | node suite/packages/runtime/lib/mcp.mjs &gt; /tmp/lab-02-3.jsonl
+
+# verify counts with jq (or python):
+python3 - &lt;&lt;&#39;EOF&#39;
+import json
+tools=prompts=resources=None
+for line in open(&#39;/tmp/lab-02-3.jsonl&#39;):
+    d=json.loads(line); r=d.get(&#39;result&#39;,{})
+    if d.get(&#39;id&#39;)==2: tools=len(r[&#39;tools&#39;])
+    if d.get(&#39;id&#39;)==3: prompts=[p[&#39;name&#39;] for p in r[&#39;prompts&#39;]]
+    if d.get(&#39;id&#39;)==4: resources=(len(r[&#39;resources&#39;]), r.get(&#39;nextCursor&#39;))
+print(tools, len(prompts), resources)
+assert tools==29 and len(prompts)==10 and resources==(100,&#39;b2Zmc2V0OjEwMA&#39;)
+EOF
+</code></pre>
+<h3 id="verification-checklist">Verification checklist</h3>
+<ul>
+<li><input disabled="" type="checkbox"> <code>tools/list</code> count is exactly 29; first tool is <code>sd_project_list</code></li>
+<li><input disabled="" type="checkbox"> <code>prompts/list</code> names the 10 roles in alphabetical order</li>
+<li><input disabled="" type="checkbox"> Page 1 is 100 resources with cursor <code>b2Zmc2V0OjEwMA</code>; paginating twice more reaches 216 total with no final cursor</li>
+<li><input disabled="" type="checkbox"> <code>sd_method_run</code> over MCP reports your project&#39;s <code>availableEvidence</code></li>
+<li><input disabled="" type="checkbox"> A bogus <code>asd://</code> URI returns error <code>-32002</code>, not a crash</li>
+</ul>
+<hr>
+<h2 id="7-summary-amp-reference-anchors">📚 7. Summary &amp; Reference Anchors</h2>
+<h3 id="key-takeaways">Key takeaways</h3>
+<ul>
+<li>The stdio server is a thin, honest projection: newline-delimited JSON-RPC, 29 tools, 216 repo-corpus resources across three stable pages, 10 role prompts. Emitted packs ship more resources (225) from pack-local copies.</li>
+<li>Cursors are opaque; ids match requests to responses; errors are typed JSON-RPC codes.</li>
+<li>Corpus retrieval is duplex: protocol-native <code>resources/read</code>, or role-facing <code>sd_knowledge</code> with <code>resourceQuery</code>/<code>resource</code> and repo-path provenance.</li>
+</ul>
+<h3 id="references">References</h3>
+<ul>
+<li><strong>Books</strong>: <code>books/12-service-dominant-logic/04-service-ecosystems</code>; <code>books/09-mapping-experiences/02-the-anatomy-of-experience-maps</code></li>
+<li><strong>Case study</strong>: <code>articles/31</code> (synthetic illustration)</li>
+<li><strong>Code</strong>: <code>suite/packages/runtime/lib/mcp.mjs</code> (framing, cursors, cooperative cancellation); <code>suite/packages/runtime/src/corpus.ts</code> (per-request corpus scan)</li>
+</ul>
+<hr>
+<p><a href="./02-deepseek-harness-cordis-wiring.md">← Module 02.2</a> · <a href="./README.md">Course Overview</a> · <a href="./04-cli-ergonomics-workflows.md">Next: Module 02.4 →</a></p>
+
+
+      <div class="module-nav"><span>← <a href="./02-deepseek-harness-cordis-wiring.html">Module 02.2: One Runtime, Two Live Surfaces — CLI and MCP (DSH Studio as a Deferred Integration)</a></span><span><a href="./04-cli-ergonomics-workflows.html">Module 02.4: Terminal Ergonomics — the asd CLI Grammar, Fail-Closed Errors, and the Workspace Layout</a> →</span></div>
+    </article>
+  </div>
+  <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+</body>
+</html>

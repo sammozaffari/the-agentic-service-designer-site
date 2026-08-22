@@ -1,434 +1,264 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Module 08.2: Designing Three-Tier KPI Trees: Strategic, Operational & Diagnostic | Service Quality, Good Services Audits & Continuous Operations — The Agentic Service Designer</title>
-  <link rel="stylesheet" href="../../assets/style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-  <style>
-    .lesson-layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      max-width: 1380px;
-      margin: 0 auto;
-      gap: 48px;
-      padding: 32px var(--pad-d) 80px;
-    }
-    .lesson-sidebar {
-      position: sticky;
-      top: 24px;
-      height: calc(100vh - 48px);
-      overflow-y: auto;
-      border-right: 1px solid var(--line);
-      padding-right: 24px;
-    }
-    .sidebar-course-title {
-      font-size: 13px;
-      font-family: var(--mono);
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 8px;
-    }
-    .sidebar-heading {
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1.3;
-      margin: 0 0 20px;
-    }
-    .syllabus-list {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 24px;
-    }
-    .syllabus-list li {
-      margin-bottom: 8px;
-      font-size: 13.5px;
-      line-height: 1.4;
-    }
-    .syllabus-list li a {
-      display: block;
-      padding: 8px 12px;
-      border-radius: var(--radius-sm);
-      color: var(--ink-soft);
-      text-decoration: none;
-      transition: background 0.15s, color 0.15s;
-    }
-    .syllabus-list li a:hover {
-      background: var(--paper-tint);
-      color: var(--ink);
-    }
-    .syllabus-list li.active a {
-      background: var(--dark);
-      color: #ffffff;
-      font-weight: 600;
-    }
-    .syllabus-list .mod-num {
-      font-family: var(--mono);
-      font-size: 11px;
-      opacity: 0.8;
-      display: block;
-      margin-bottom: 2px;
-    }
-    .lesson-content {
-      max-width: 880px;
-      font-size: 16.5px;
-      line-height: 1.7;
-    }
-    .lesson-breadcrumb {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 16px;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .lesson-breadcrumb a {
-      color: var(--muted);
-      text-decoration: none;
-    }
-    .lesson-breadcrumb a:hover {
-      text-decoration: underline;
-    }
-    .lesson-content h1 {
-      font-size: clamp(28px, 4vw, 42px);
-      line-height: 1.15;
-      letter-spacing: -0.025em;
-      margin: 0 0 20px;
-      font-weight: 700;
-    }
-    .lesson-content h2 {
-      font-size: 24px;
-      margin: 48px 0 16px;
-      border-top: 1px solid var(--line);
-      padding-top: 28px;
-    }
-    .lesson-content h3 {
-      font-size: 18px;
-      margin: 28px 0 12px;
-    }
-    .lesson-content pre {
-      background: var(--dark);
-      color: #f8f8f5;
-      padding: 20px;
-      border-radius: var(--radius-card);
-      overflow-x: auto;
-      font-family: var(--mono);
-      font-size: 13px;
-      line-height: 1.5;
-      margin: 20px 0;
-    }
-    .lesson-content code {
-      font-family: var(--mono);
-      font-size: 0.9em;
-      background: var(--paper-tint);
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid var(--line);
-    }
-    .lesson-content pre code {
-      background: transparent;
-      padding: 0;
-      border: 0;
-      color: inherit;
-    }
-    .lesson-content table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 24px 0;
-      font-size: 14.5px;
-    }
-    .lesson-content th, .lesson-content td {
-      padding: 12px 14px;
-      border: 1px solid var(--line);
-      text-align: left;
-    }
-    .lesson-content th {
-      background: var(--paper-tint);
-      font-weight: 600;
-    }
-    .lesson-content blockquote {
-      margin: 24px 0;
-      padding: 16px 20px;
-      background: var(--paper-tint);
-      border-left: 4px solid var(--ink);
-      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-      font-style: italic;
-    }
-    .lesson-nav-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      margin-top: 56px;
-      padding-top: 28px;
-      border-top: 1px solid var(--line);
-    }
-    @media (max-width: 900px) {
-      .lesson-layout {
-        grid-template-columns: 1fr;
-      }
-      .lesson-sidebar {
-        display: none;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Module 08.2: Three-Tier KPI Trees — From Operational Telemetry to Financial Outcome — Service Quality, Good Services Audits &amp; Continuous Operations | The Agentic Service Designer">
+<title>Module 08.2: Three-Tier KPI Trees — From Operational Telemetry to Financial Outcome | Service Quality, Good Services Audits &amp; Continuous Operations</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  :root { color-scheme: light; }
+  body.module-page { background: var(--paper-tint); }
+  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
+  .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
+  .module-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  .module-body th, .module-body td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
+  .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
+  .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
+  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
+  });
+</script>
 </head>
-<body>
-  <header class="site-head">
-    <a class="brand" href="../../index.html">
-      <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
-      <div class="brand-sub">Sam Mozaffari</div>
-    </a>
-    <nav class="main-nav">
-      <a href="../../index.html">Index</a>
-      <a href="../../courses.html" class="on">Courses</a>
-      <a href="../../harness.html">Harness</a>
-      <a href="../../docs/index.html">Docs</a>
-      <a href="../../about.html">About</a>
-      <a href="../../cv.html">CV</a>
-    </nav>
-  </header>
+<body class="module-page">
+  <div class="module-wrap">
+    <nav class="module-crumb"><a href="../../08-service-quality-good-services-continuous-ops.html">← Service Quality, Good Services Audits &amp; Continuous Operations</a></nav>
+    <article class="module-body">
 
-  <main class="lesson-layout">
-    <aside class="lesson-sidebar">
-      <div class="sidebar-course-title">Course 08 · Advanced</div>
-      <div class="sidebar-heading"><a href="../08-service-quality-good-services-continuous-ops.html" style="color:inherit; text-decoration:none;">Service Quality, Good Services Audits & Continuous Operations</a></div>
-      <ul class="syllabus-list">
-        <li><a href="./01-gronroos-quality-five-gaps.html"><span class="mod-num">08.1</span> <span class="mod-name">Grönroos Quality Management & The Five Service Gaps</span></a></li>
-<li class="active"><a href="./02-three-tier-kpi-trees.html"><span class="mod-num">08.2</span> <span class="mod-name">Designing Three-Tier KPI Trees: Strategic, Operational & Diagnostic</span></a></li>
-<li><a href="./03-fifteen-principles-good-services-audit.html"><span class="mod-num">08.3</span> <span class="mod-name">The 15 Principles of Good Services: Theory & Scoring Rubric</span></a></li>
-<li><a href="./04-automated-standards-audit-good-services.html"><span class="mod-num">08.4</span> <span class="mod-name">Automated Standards Auditing with `sd_good_services_audit`</span></a></li>
-<li><a href="./05-service-recovery-engineering-slas.html"><span class="mod-num">08.5</span> <span class="mod-name">Service Recovery Engineering & SLA Fallback Rules</span></a></li>
-<li><a href="./06-continuous-service-architecture-manifesto.html"><span class="mod-num">08.6</span> <span class="mod-name">Hands-On: The Continuous Service Architecture Manifesto</span></a></li>
-      </ul>
-      <div style="padding-top: 16px; border-top: 1px solid var(--line);">
-        <a href="../08-service-quality-good-services-continuous-ops.html" class="btn-outline" style="width:100%; text-align:center; font-size:12px; padding:8px 12px; display:block;">Course Deck &amp; Lab ↑</a>
-      </div>
-    </aside>
-
-    <article class="lesson-content">
-      <div class="lesson-breadcrumb">
-        <a href="../../courses.html">Courses</a>
-        <span>/</span>
-        <a href="../08-service-quality-good-services-continuous-ops.html">Course 08</a>
-        <span>/</span>
-        <span>Module 08.2</span>
-      </div>
-
-      <h1 id="module-082-designing-three-tier-kpi-trees-strategic-operational-diagnostic">Module 08.2: Designing Three-Tier KPI Trees: Strategic, Operational &amp; Diagnostic</h1>
+<h1 id="module-082-three-tier-kpi-trees-from-operational-telemetry-to-financial-outcome">Module 08.2: Three-Tier KPI Trees — From Operational Telemetry to Financial Outcome</h1>
 <blockquote>
-<p><strong>Course</strong>: <a href="../README.md">Service Quality, Good Services Audits &amp; Continuous Operations</a> · <strong>Level</strong>: Advanced · <strong>Duration</strong>: 50 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
+<p><strong>Course</strong>: <a href="./README.md">Service Quality, Good Services Audits &amp; Continuous Operations</a> · <strong>Level</strong>: Advanced · <strong>Duration</strong>: 55 min · <strong>Format</strong>: Theory, Architecture, Verified CLI &amp; Hands-on Lab</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="learning-objectives">🎯 Learning Objectives</h2>
-<p>By completing this module, you will master:
-1. <strong>Theoretical Foundations</strong>: Understand the literature and empirical rationale behind <code>Designing Three-Tier KPI Trees: Strategic, Operational &amp; Diagnostic</code>.
-2. <strong>Agent Topology &amp; Contracts</strong>: Master the exact role contracts, handoff schemas, and tool execution boundaries (Measurer).
-3. <strong>Architecture &amp; Schemas</strong>: Review production TypeScript schemas, JSON payloads, and mathematical scoring functions.
-4. <strong>Case Study Execution</strong>: Examine real-world implementation logs and receipts from <strong>Service Profit Chain (Heskett et al., Article 32)</strong>.
-5. <strong>Adversarial Verification</strong>: Enforce Critic review gates and fact-checking checks.
-6. <strong>Hands-on Practice</strong>: Run executable code and verify your implementation with automated test suites.</p>
-<hr />
-<h2 id="1-theoretical-grounding-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
-<h3 id="academic-practice-foundations">Academic &amp; Practice Foundations</h3>
-<p>In traditional service design, methods have often been treated as informal, transient workshop exercises. However, rigorous academic literature—from <strong>Vargo &amp; Lusch</strong> (<em>Service-Dominant Logic</em>), <strong>Christian Grönroos</strong> (<em>Service Quality Management</em>), <strong>Mary Jo Bitner &amp; Lynn Shostack</strong> (<em>Service Blueprinting</em>), to <strong>Lou Downe</strong> (<em>Good Services</em>) and <strong>Jim Kalbach</strong> (<em>Mapping Experiences</em>)—has long demanded that services be treated as complex, adaptive, socio-technical systems.</p>
-<p>When we augment service design with autonomous AI agents, we do not invent a new discipline from scratch; rather, we provide the computational infrastructure necessary to execute these canonical theories at scale.</p>
-<div class="codehilite"><pre><span></span><code><span class="nx">flowchart</span><span class="w"> </span><span class="nx">TD</span>
-<span class="w">    </span><span class="nx">subgraph</span><span class="w"> </span><span class="nx">Inputs</span><span class="p">[</span><span class="s">&quot;Evidence Ingestion &amp; Provenance&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">Q1</span><span class="p">[</span><span class="s">&quot;Verbatim Transcripts (n=200+)&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">S1</span><span class="p">[</span><span class="s">&quot;Semantic Chunking&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">T1</span><span class="p">[</span><span class="s">&quot;Quantitative Telemetry&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">S1</span>
-<span class="w">        </span><span class="nx">P1</span><span class="p">[</span><span class="s">&quot;Policy &amp; Regulatory Constraints&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">S1</span>
-<span class="w">        </span><span class="nx">S1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">E_DB</span><span class="p">[(</span><span class="s">&quot;Immutable SQLite Evidence Register (SHA-256)&quot;</span><span class="p">)]</span>
-<span class="w">    </span><span class="nx">end</span>
-
-<span class="w">    </span><span class="nx">subgraph</span><span class="w"> </span><span class="nx">Agents</span><span class="p">[</span><span class="s">&quot;Agent Production Layer (SOPs-as-Code)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">E_DB</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">A1</span><span class="p">[</span><span class="s">&quot;Researcher (Kind 01)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">A1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">A2</span><span class="p">[</span><span class="s">&quot;Synthesizer (Kind 05)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">A2</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">A3</span><span class="p">[</span><span class="s">&quot;Mapper (Kind 12)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">A3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">A4</span><span class="p">[</span><span class="s">&quot;Ideator / Prototyper (Kind 20/24)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">A4</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">A5</span><span class="p">[</span><span class="s">&quot;Measurer (Kind 30)&quot;</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">end</span>
-
-<span class="w">    </span><span class="nx">subgraph</span><span class="w"> </span><span class="nx">Governance</span><span class="p">[</span><span class="s">&quot;Adversarial Review &amp; Deterministic Compilation&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">A5</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">CR</span><span class="p">[</span><span class="s">&quot;Critic Agent (Kind 38)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">CR</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="o">|</span><span class="nx">Issues</span><span class="w"> </span><span class="nx">Veto</span><span class="w"> </span><span class="nx">Log</span><span class="o">|</span><span class="w"> </span><span class="nx">A2</span>
-<span class="w">        </span><span class="nx">CR</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="o">|</span><span class="nx">Approved</span><span class="w"> </span><span class="nx">Verdict</span><span class="o">|</span><span class="w"> </span><span class="nx">COMP</span><span class="p">[</span><span class="s">&quot;@asd/render Pure Compiler&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">COMP</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">OUT1</span><span class="p">[</span><span class="s">&quot;Deterministic SVG Diagrams&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">COMP</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">OUT2</span><span class="p">[</span><span class="s">&quot;Interactive Web Portals&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">COMP</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">OUT3</span><span class="p">[</span><span class="s">&quot;CI/CD Gate Compliance&quot;</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">end</span>
-
-<span class="w">    </span><span class="nx">classDef</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">f8f9fa</span><span class="p">,</span><span class="nx">stroke</span><span class="p">:</span><span class="err">#</span><span class="mi">4</span><span class="nx">a5568</span><span class="p">,</span><span class="nx">stroke</span><span class="o">-</span><span class="nx">width</span><span class="p">:</span><span class="m m-Double">1.5</span><span class="nx">px</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">classDef</span><span class="w"> </span><span class="nx">ag</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">ebf8ff</span><span class="p">,</span><span class="nx">stroke</span><span class="p">:</span><span class="err">#</span><span class="mi">2</span><span class="nx">b6cb0</span><span class="p">,</span><span class="nx">stroke</span><span class="o">-</span><span class="nx">width</span><span class="p">:</span><span class="m m-Double">1.5</span><span class="nx">px</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">classDef</span><span class="w"> </span><span class="nx">gv</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">faf5ff</span><span class="p">,</span><span class="nx">stroke</span><span class="p">:</span><span class="err">#</span><span class="mi">6</span><span class="nx">b46c1</span><span class="p">,</span><span class="nx">stroke</span><span class="o">-</span><span class="nx">width</span><span class="p">:</span><span class="m m-Double">1.5</span><span class="nx">px</span><span class="p">;</span>
-<span class="w">    </span><span class="kd">class</span><span class="w"> </span><span class="nx">Q1</span><span class="p">,</span><span class="nx">T1</span><span class="p">,</span><span class="nx">P1</span><span class="p">,</span><span class="nx">S1</span><span class="p">,</span><span class="nx">E_DB</span><span class="w"> </span><span class="k">in</span><span class="p">;</span>
-<span class="w">    </span><span class="kd">class</span><span class="w"> </span><span class="nx">A1</span><span class="p">,</span><span class="nx">A2</span><span class="p">,</span><span class="nx">A3</span><span class="p">,</span><span class="nx">A4</span><span class="p">,</span><span class="nx">A5</span><span class="w"> </span><span class="nx">ag</span><span class="p">;</span>
-<span class="w">    </span><span class="kd">class</span><span class="w"> </span><span class="nx">CR</span><span class="p">,</span><span class="nx">COMP</span><span class="p">,</span><span class="nx">OUT1</span><span class="p">,</span><span class="nx">OUT2</span><span class="p">,</span><span class="nx">OUT3</span><span class="w"> </span><span class="nx">gv</span><span class="p">;</span>
-</code></pre></div>
-
-<h3 id="core-methodological-invariants">Core Methodological Invariants</h3>
+<ol>
+<li>Explain the Service Profit Chain&#39;s causal logic and its lead/lag measurement discipline, and the Outside In three-tier measurement architecture (relationship, journey, operational).</li>
+<li>Construct a <code>kpi-tree</code> artifact in which <strong>every KPI traces upward to a business outcome</strong> through typed edges, and every KPI cites evidence.</li>
+<li>Operate the two measurement methods that produce <code>kpi-tree</code> artifacts — <code>kpi-tree-design</code> and <code>three-tier-measurement</code> — and read their differing acceptance rules.</li>
+<li>Use the closed <code>kpi-tree</code> kind schema (<code>metric</code> required; <code>tier</code>, <code>parent</code>, <code>target</code>, <code>baseline</code> optional) correctly.</li>
+<li>Avoid the single-metric trap by proving financial linkage with baseline/target pairs.</li>
+</ol>
+<hr>
+<h2 id="1-theoretical-grounding">📖 1. Theoretical Grounding</h2>
+<h3 id="11-the-service-profit-chain-causality-you-must-instrument">1.1 The Service Profit Chain: causality you must instrument</h3>
+<p>Heskett, Sasser &amp; Schlesinger&#39;s chain (<code>books/20-the-service-profit-chain/05-measuring-the-chain.md</code>) runs: internal service quality → employee satisfaction &amp; retention → productivity → <strong>external service value</strong> → customer satisfaction → loyalty → <strong>revenue growth &amp; profitability</strong>. Chapter 5 turns it from slogan to discipline with three rules that drive everything in this module:</p>
 <ul>
-<li><strong>Referential Integrity</strong>: Every claim made in downstream deliverables must resolve to an immutable cryptographic SHA-256 hash in <code>.asd/evidence.db</code>.</li>
-<li><strong>Typing Over Chat Memory</strong>: No critical design handoffs occur in conversational context windows. All state is serialized to structured JSON on disk.</li>
-<li><strong>Adversarial Falsification</strong>: The Critic agent sits on the write path and actively attempts to disprove design assertions before client presentation.</li>
+<li><strong>Measure at the operating-unit level</strong> (store, route, contact-centre queue) where employees and customers actually interact — corporate aggregates are misleading averages.</li>
+<li><strong>Distinguish lead from lag indicators.</strong> Leading indicators live upstream (tool uptime, training completion, first-contact resolution, frontline turnover); lagging indicators are financial outcomes (net revenue retention, churn, margin). <em>&quot;Managing an organization purely by lag indicators is akin to driving a vehicle by looking only in the rearview mirror.&quot;</em></li>
+<li><strong>Respect time-lagged causality.</strong> A tooling fix may take 30 days to lift employee satisfaction, 90 to lift retention, 180 to reach the income statement. A KPI tree with no tier structure cannot express this — it collapses lead and lag into one flat scoreboard.</li>
 </ul>
-<hr />
-<h2 id="2-multi-agent-topology-role-contracts">🤖 2. Multi-Agent Topology &amp; Role Contracts</h2>
-<p>This module directly engages the following specialized agent roles within the 10-role Eve architecture:</p>
+<h3 id="12-outside-in-the-three-tier-measurement-architecture">1.2 Outside In: the three-tier measurement architecture</h3>
+<p>Manning &amp; Bodine (<code>books/14-outside-in/06-measurement.md</code>) supply the tier structure itself. Their argument: CX programs get defunded because they measure perceptions without proving economic linkage. The fix is a <strong>multi-tiered framework</strong> that measures customer perceptions across three levels and statistically joins them to money:</p>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Role</th>
-<th style="text-align: center;">Contract Kind</th>
-<th style="text-align: left;">Specific Responsibility in this Module</th>
-<th style="text-align: left;">Bound Tools</th>
+<th align="left">Tier</th>
+<th align="left">Granularity</th>
+<th align="left">Example metrics</th>
+<th align="left">Audience</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Measurer</strong></td>
-<td style="text-align: center;"><code>role:measurer</code></td>
-<td style="text-align: left;">Executes specialized SOPs for Designing Three-Tier KPI Trees: Strategic, Operational &amp; Diagnostic</td>
-<td style="text-align: left;"><code>sd_kpi_tree</code>, <code>sd_tree_balance</code></td>
+<tbody><tr>
+<td align="left"><strong>Relationship / financial</strong></td>
+<td align="left">Whole relationship, annual cadence</td>
+<td align="left">CXi, NPS, retention, cost-to-serve</td>
+<td align="left">Executives</td>
 </tr>
-</tbody>
-</table>
-<h3 id="the-invariant-contract">The Invariant Contract</h3>
+<tr>
+<td align="left"><strong>Journey / experience</strong></td>
+<td align="left">After critical journey milestones</td>
+<td align="left">3-question diagnostic (meets needs / easy / enjoyable), CES, repeat-contact rate</td>
+<td align="left">Journey owners</td>
+</tr>
+<tr>
+<td align="left"><strong>Operational</strong></td>
+<td align="left">Touchpoint telemetry, continuous</td>
+<td align="left">Queue time, FCR, proactive-update coverage, error rates</td>
+<td align="left">Frontline teams</td>
+</tr>
+</tbody></table>
+<p>The <strong>single-metric trap</strong>: a top-level NPS tells leadership <em>how</em> the brand is perceived but <em>where nothing failed</em> and <em>what nobody must fix</em>. Their proof technique is financial linkage — join survey respondent ids to transaction records and compare revenue/churn across perception cohorts (Sprint: billing-dispute FCR re-engineering saved $1.7B).</p>
+<h3 id="13-why-a-tree">1.3 Why a <em>tree</em></h3>
+<p>A tier list is a table; a KPI <strong>tree</strong> is a causal claim: operational drivers <em>drive</em> experience KPIs, which <em>roll up</em> to financial outcomes. That is why the ASD <code>kpi-tree</code> artifact kind has <code>edges</code> with a <code>relation</code> field and a <code>parent</code> node field — the structure <em>is</em> the argument. A KPI that cannot name its parent outcome is exactly the vanity metric the critic is instructed to reject (&quot;Reject any KPI whose tier is missing or a placeholder, since an untiered KPI cannot be rolled up to the outcome it serves&quot;).</p>
+<h3 id="concept-diagram-the-three-tiers-roll-up">Concept diagram — the three tiers roll up</h3>
+<div class="diagram"><pre class="mermaid">flowchart BT
+    subgraph OPS[&quot;Operational tier (leading, continuous)&quot;]
+        O1[&quot;proactive status-update coverage&quot;]
+        O2[&quot;average handle time&quot;]
+    end
+    subgraph JOU[&quot;Experience tier (journey milestones)&quot;]
+        J1[&quot;repeat-call rate within 72h&quot;]
+        J2[&quot;customer effort score&quot;]
+    end
+    subgraph FIN[&quot;Financial tier (lagging outcome)&quot;]
+        F1[&quot;cost per outage event&quot;]
+        F2[&quot;net revenue retention&quot;]
+    end
+    O1 --&gt;|&quot;drives&quot;| J1
+    O2 --&gt;|&quot;drives&quot;| J1
+    J2 --&gt;|&quot;drives&quot;| J1
+    J1 --&gt;|&quot;rolls up&quot;| F1
+    J1 --&gt;|&quot;rolls up&quot;| F2
+
+    classDef paper fill:#f8f9fa,stroke:#4a5568,stroke-width:1.5px,color:#1a202c;
+    classDef blue  fill:#ebf8ff,stroke:#3182ce,stroke-width:1.5px,color:#2b6cb0;
+    classDef purple fill:#faf5ff,stroke:#805ad5,stroke-width:1.5px,color:#553c9e;
+    classDef gold  fill:#fffbeb,stroke:#b7791f,stroke-width:1.5px,color:#744210;
+    classDef bad   fill:#fff5f5,stroke:#c53030,stroke-width:1.5px,color:#742a2a;
+    class O1,O2 blue;
+    class J1,J2 purple;
+    class F1,F2 gold;</pre></div>
+<hr>
+<h2 id="2-agentic-topology-amp-method-contracts">🤖 2. Agentic Topology &amp; Method Contracts</h2>
+<p>Two registered methods produce <code>kpi-tree</code> artifacts, both in the <code>measurement</code> phase, both owned by the <strong>measurer</strong> role with <code>reviewGate: critic</code>:</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left"><code>kpi-tree-design</code></th>
+<th align="left"><code>three-tier-measurement</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Sources</td>
+<td align="left">Service Profit Chain ch.5; TISD ch.7</td>
+<td align="left">Service Mgmt &amp; Marketing ch.2; Outside In ch.6</td>
+</tr>
+<tr>
+<td align="left">Input</td>
+<td align="left">≥1 artifact: <code>service-blueprint</code> or <code>journey-map</code> (&quot;defining the outcomes to measure&quot;)</td>
+<td align="left">≥1 artifact: <code>service-blueprint</code> or <code>kpi-tree</code></td>
+</tr>
+<tr>
+<td align="left">Steps</td>
+<td align="left">synthesizer derives tiered tree → critic gate</td>
+<td align="left">researcher finds ≥1 data point per tier per metric → critic gate</td>
+</tr>
+<tr>
+<td align="left">Acceptance</td>
+<td align="left"><code>tier</code> non-empty; <code>tier</code> ∉ {tbd, unscored}; min-nodes 4</td>
+<td align="left">min-nodes 3; <code>tier</code> non-empty; <strong>min-evidence-per-node 1</strong></td>
+</tr>
+<tr>
+<td align="left">Handoff</td>
+<td align="left">→ presenter</td>
+<td align="left">→ presenter</td>
+</tr>
+</tbody></table>
+<p>Read them as a pair: <code>kpi-tree-design</code> enforces <em>structure</em> (every KPI tiered, no placeholder tiers), <code>three-tier-measurement</code> enforces <em>evidence</em> (every tier claim cites a data point). The critic instructions differ accordingly — an untiered KPI and an uncorroborated tier claim are different failure modes.</p>
+<h3 id="agentic-workflow-diagram">Agentic workflow diagram</h3>
+<p></p>
+<hr>
+<h2 id="3-schemas-amp-verified-execution">💻 3. Schemas &amp; Verified Execution</h2>
+<h3 id="31-the-kpi-tree-kind-schema">3.1 The <code>kpi-tree</code> kind schema</h3>
+<p><code>asd schema-get --kind kpi-tree</code> (verified): <code>fieldPolicy: closed</code>; node members <code>id, label, evidence, fields</code>; fields:</p>
+<pre><code class="language-json">{ &quot;tier&quot;:     { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: false },
+  &quot;parent&quot;:   { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: false },
+  &quot;metric&quot;:   { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: true  },
+  &quot;target&quot;:   { &quot;type&quot;: &quot;number&quot;, &quot;required&quot;: false },
+  &quot;baseline&quot;: { &quot;type&quot;: &quot;number&quot;, &quot;required&quot;: false },
+  &quot;measure&quot;:  { &quot;type&quot;: &quot;string&quot;, &quot;required&quot;: false } }
+</code></pre>
+<p>Omitting <code>metric</code> fails at write time (verified): <code>artifact.nodes[0].fields.metric is required</code>. Edges use the core <code>ArtifactEdge</code> shape — <code>{id, from, to, relation, fields}</code>; an edge field named <code>label</code> is rejected (<code>edges[0]: unknown field &quot;label&quot;</code>).</p>
+<h3 id="32-verified-terminal-session">3.2 Verified terminal session</h3>
+<p>Same project (<code>kestrel-quality-ops-1e9bfb41</code>); the journey-map from 08.1 satisfies the typed artifact input.</p>
+<pre><code class="language-bash">CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;; PID=kestrel-quality-ops-1e9bfb41
+
+# Input gate, verified on an empty project:
+#   asd method-run: method &quot;kpi-tree-design&quot; requires at least 1 artifact input
+#   of kind service-blueprint, journey-map; project has 0.
+
+$CLI artifact-write --projectId $PID --methodId kpi-tree-design --title &quot;Outage comms KPI tree&quot; \
+  --nodes &#39;[
+   {&quot;id&quot;:&quot;k0&quot;,&quot;label&quot;:&quot;Reduce repeat-call cost per outage event by 30%&quot;,
+    &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;98bc3f2e…&quot;}],
+    &quot;fields&quot;:{&quot;tier&quot;:&quot;financial&quot;,&quot;metric&quot;:&quot;cost per outage event&quot;,&quot;baseline&quot;:18.4,&quot;target&quot;:12.9}},
+   {&quot;id&quot;:&quot;k1&quot;,&quot;label&quot;:&quot;Repeat-call rate within 72h&quot;,
+    &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;98bc3f2e…&quot;}],
+    &quot;fields&quot;:{&quot;tier&quot;:&quot;experience&quot;,&quot;metric&quot;:&quot;repeat-call rate %&quot;,&quot;baseline&quot;:41,&quot;target&quot;:20}},
+   {&quot;id&quot;:&quot;k2&quot;,&quot;label&quot;:&quot;Proactive status-update coverage per outage&quot;,
+    &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;c18a3f85…&quot;}],
+    &quot;fields&quot;:{&quot;tier&quot;:&quot;operational&quot;,&quot;metric&quot;:&quot;% outages with proactive update&quot;,&quot;baseline&quot;:0,&quot;target&quot;:95}},
+   {&quot;id&quot;:&quot;k3&quot;,&quot;label&quot;:&quot;Average handle time for outage calls&quot;,
+    &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;98bc3f2e…&quot;}],
+    &quot;fields&quot;:{&quot;tier&quot;:&quot;operational&quot;,&quot;metric&quot;:&quot;AHT minutes&quot;,&quot;baseline&quot;:11.3,&quot;target&quot;:7}},
+   {&quot;id&quot;:&quot;k4&quot;,&quot;label&quot;:&quot;Customer effort score on outage journey&quot;,
+    &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;e7d429ba…&quot;}],
+    &quot;fields&quot;:{&quot;tier&quot;:&quot;experience&quot;,&quot;metric&quot;:&quot;CES 1-7&quot;,&quot;baseline&quot;:5.6,&quot;target&quot;:3}}]&#39; \
+  --edges &#39;[
+   {&quot;id&quot;:&quot;e1&quot;,&quot;from&quot;:&quot;k2&quot;,&quot;to&quot;:&quot;k1&quot;,&quot;relation&quot;:&quot;drives&quot;,&quot;fields&quot;:{}},
+   {&quot;id&quot;:&quot;e2&quot;,&quot;from&quot;:&quot;k3&quot;,&quot;to&quot;:&quot;k1&quot;,&quot;relation&quot;:&quot;drives&quot;,&quot;fields&quot;:{}},
+   {&quot;id&quot;:&quot;e3&quot;,&quot;from&quot;:&quot;k4&quot;,&quot;to&quot;:&quot;k1&quot;,&quot;relation&quot;:&quot;drives&quot;,&quot;fields&quot;:{}},
+   {&quot;id&quot;:&quot;e4&quot;,&quot;from&quot;:&quot;k1&quot;,&quot;to&quot;:&quot;k0&quot;,&quot;relation&quot;:&quot;rolls-up&quot;,&quot;fields&quot;:{}}]&#39;
+# → artifact ddfee25e70c44fcba51081b568e1ece7, draft, failures: []
+
+$CLI review --projectId $PID --artifactId ddfee25e… --verdict pass \
+  --rows &#39;[{&quot;rowKind&quot;:&quot;proposal&quot;,&quot;severity&quot;:&quot;medium&quot;,
+   &quot;message&quot;:&quot;Every KPI carries tier and metric with baseline/target; edges roll operational drivers into experience and financial outcomes.&quot;,
+   &quot;evidenceId&quot;:&quot;98bc3f2e…&quot;}]&#39;
+# → &quot;verdict&quot;: &quot;pass&quot;, &quot;status&quot;: &quot;final&quot;
+
+$CLI export-artifact --projectId $PID --artifactId ddfee25e…
+# → renders/kpi-tree.ddfee25e.svg   (deterministic @asd/render output)
+</code></pre>
+<h3 id="tree-diagram-the-real-artifact-drawn-from-its-nodes-and-edges">Tree diagram — the real artifact, drawn from its nodes and edges</h3>
+<p></p>
+<hr>
+<h2 id="4-case-study-lens-servitizing-a-capital-equipment-vendor-article-32">📊 4. Case Study Lens: Servitizing a Capital-Equipment Vendor (Article 32)</h2>
 <blockquote>
-<p><em>"Handoffs between agents are typed filesystem artifacts, never conversational memory."</em></p>
+<p><strong>Synthetic illustration — not a production log.</strong> Article 32 (<code>articles/32/README.md</code>, &quot;Air in the Cylinders&quot;) is an illustrative composite.</p>
 </blockquote>
-<p>Every role is bounded by explicit system prompts and constrained tool registries, preventing scope creep and maintaining deep analytical rigor.</p>
-<hr />
-<h2 id="3-production-schemas-code-cli-execution">💻 3. Production Schemas, Code &amp; CLI Execution</h2>
-<h3 id="typescript-schema-definition-asdcore">TypeScript Schema Definition (<code>@asd/core</code>)</h3>
-<p>The artifact produced or verified in this module adheres strictly to the following canonical TypeScript interface:</p>
-<div class="codehilite"><pre><span></span><code><span class="cm">/**</span>
-<span class="cm"> * Canonical Interface for Designing Three-Tier KPI Trees: Strategic, Operational &amp; Diagnostic</span>
-<span class="cm"> * Package: @asd/core (v2026.1)</span>
-<span class="cm"> */</span>
-<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="mo">02</span><span class="nx">ThreeTierKpiTreesArtifact</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nx">schemaVersion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2026.1&quot;</span><span class="p">;</span>
-<span class="w">  </span><span class="nx">artifactId</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;art-08-2-&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">  </span><span class="nx">kind</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;02-three-tier-kpi-trees&quot;</span><span class="p">;</span>
-<span class="w">  </span><span class="nx">metadata</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">courseId</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;08&quot;</span><span class="p">;</span>
-<span class="w">    </span><span class="kr">module</span><span class="nx">Id</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;08.2&quot;</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">authorRole</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Measurer&quot;</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">createdAt</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span><span class="w"> </span><span class="c1">// ISO 8601 UTC</span>
-<span class="w">    </span><span class="nx">evidenceCitations</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">[];</span><span class="w"> </span><span class="c1">// Array of SHA-256 hashes</span>
-<span class="w">    </span><span class="nx">confidenceScore</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span><span class="w"> </span><span class="c1">// 0.00 to 1.00</span>
-<span class="w">  </span><span class="p">};</span>
-<span class="w">  </span><span class="nx">payload</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">context</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">keyNodes</span><span class="o">:</span><span class="w"> </span><span class="kt">Array</span><span class="o">&lt;</span><span class="p">{</span>
-<span class="w">      </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">      </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">      </span><span class="nx">evidenceHash</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">      </span><span class="nx">metricTarget?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span><span class="o">&gt;</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">reviewStatus</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;draft&quot;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s2">&quot;under_review&quot;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s2">&quot;approved&quot;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s2">&quot;vetoed&quot;</span><span class="p">;</span>
-<span class="w">  </span><span class="p">};</span>
-<span class="w">  </span><span class="nx">criticVerdict</span><span class="o">?:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">reviewedBy</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Critic&quot;</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">approved</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">vetoLog?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">[];</span>
-<span class="w">    </span><span class="nx">timestamp</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">  </span><span class="p">};</span>
-<span class="p">}</span>
-</code></pre></div>
-
-<h3 id="cli-command-execution">CLI Command Execution</h3>
-<p>Execute this step in your terminal using the <code>@asd/runtime</code> CLI tools:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 1. Initialize and inspect project environment</span>
-asd<span class="w"> </span>status<span class="w"> </span>--project-dir<span class="w"> </span>.
-
-<span class="c1"># 2. Execute the role tool for this module</span>
-asd<span class="w"> </span>run<span class="w"> </span>--tool<span class="w"> </span>sd_kpi_tree<span class="w"> </span>--input<span class="w"> </span>./data/input.json<span class="w"> </span>--output<span class="w"> </span>./artifacts/02-three-tier-kpi-trees.json
-
-<span class="c1"># 3. Perform deterministic fact-checking</span>
-asd<span class="w"> </span>factcheck<span class="w"> </span>./artifacts/02-three-tier-kpi-trees.json<span class="w"> </span>--evidence-db<span class="w"> </span>.asd/evidence.db<span class="w"> </span>--strict
-
-<span class="c1"># 4. Compile deterministic SVG visualizations</span>
-asd<span class="w"> </span>render<span class="w"> </span>./artifacts/02-three-tier-kpi-trees.json<span class="w"> </span>--out<span class="w"> </span>./renders/02-three-tier-kpi-trees.svg
-</code></pre></div>
-
-<hr />
-<h2 id="4-real-world-case-study-runlog-service-profit-chain-heskett-et-al-article-32">📊 4. Real-World Case Study Runlog: Service Profit Chain (Heskett et al., Article 32)</h2>
-<h3 id="empirical-context">Empirical Context</h3>
-<p>In the <strong>Service Profit Chain (Heskett et al., Article 32)</strong> engagement, this exact module was executed under production constraints:
-- <strong>Input Corpus</strong>: Ingested 45 qualitative interview transcripts, 1,200 telemetry error events, and 12 policy mandates.
-- <strong>Execution Runlog</strong>:
-  1. The <code>Measurer</code> ingested raw sources and generated 142 discrete content-addressed evidence rows.
-  2. The initial artifact draft was submitted to the <strong>Critic agent</strong>, which returned a <code>review-veto-log</code> flagging 3 uncorroborated assertions.
-  3. The team remediated the citations by extracting supporting quotes from user session transcripts.
-  4. The second validation pass cleared the gate with a confidence score of <strong>0.96</strong>.</p>
-<div class="codehilite"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;auditLog&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;case&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Service Profit Chain (Heskett et al., Article 32)&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;step&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;08.2&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;initialAssertions&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">18</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;criticVetoes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;remediatedWithHashes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="s2">&quot;e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="s2">&quot;8f4e2a1b9c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f&quot;</span>
-<span class="w">    </span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;finalStatus&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APPROVED_BY_GATE&quot;</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-
-<hr />
-<h2 id="5-hands-on-practical-lab-exercise">🔬 5. Hands-On Practical Lab Exercise</h2>
-<h3 id="lab-instructions">Lab Instructions</h3>
+<p>A capital-equipment vendor shifting from selling compressors to selling <em>uptime</em> is the purest service-profit-chain scenario there is: the product&#39;s financial outcome (contract margin on uptime SLAs) is mechanically driven by operational telemetry (mean time between failures, first-time-fix rate) through experience KPIs (perceived reliability, effort). The article&#39;s KPI work is exactly the two-method pattern of this module: design the tiered tree from the blueprint&#39;s outcomes, then force every tier claim to cite a data point before the critic will let it through. The transferable lesson: <strong>a KPI tree is the contract between the service promise and the income statement</strong> — write it like one, with baselines, targets, and evidence.</p>
+<hr>
+<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
 <ol>
-<li>Open terminal in <code>courses/labs/lab-08-*/</code>.</li>
-<li>Inspect the raw fixture data in <code>courses/research/fixtures/</code>.</li>
-<li>Author the artifact payload according to the schema above, ensuring all nodes reference valid SHA-256 evidence hashes.</li>
-<li>Run the automated evaluation test script:</li>
+<li>On a fresh project, attempt <code>method-run --methodId kpi-tree-design</code> with no artifacts — record the fail-closed input-gate error.</li>
+<li>Produce a <code>journey-map</code> (see module 08.1 or course 05) and re-run; read the contract&#39;s <code>acceptance</code> block.</li>
+<li>Write a 4-node tree where one node has <code>&quot;tier&quot;:&quot;tbd&quot;</code> — observe the <code>forbid-field-values</code> acceptance failure (<code>tier</code> ∈ {tbd, unscored} denied) and the retained draft.</li>
+<li>Fix the tier, add edges with <code>relation</code> values <code>drives</code> / <code>rolls-up</code>, pass the critic, and <code>export-artifact</code> the SVG. Open it: every node label and edge comes from your JSON.</li>
+<li>Run <code>three-tier-measurement</code> and attempt a node with <strong>no evidence</strong> — observe <code>min-evidence-per-node</code> fail.</li>
 </ol>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>courses/labs/lab-08-*/verify_lab-08.py
-</code></pre></div>
-
-<h3 id="verification-criteria-checklist">Verification Criteria Checklist</h3>
+<p><strong>Verification checklist</strong></p>
 <ul>
-<li>[ ] Schema matches <code>@asd/core</code> v2026.1 specification.</li>
-<li>[ ] Every assertion cites a valid SHA-256 hash registered in SQLite.</li>
-<li>[ ] Critic review gate passed with 0 unresolved veto logs.</li>
-<li>[ ] Deterministic SVG visualizer compiles without geometry overlap or clipping.</li>
+<li><input disabled="" type="checkbox"> Every node has <code>metric</code>, a real <code>tier</code>, and ≥1 evidence id</li>
+<li><input disabled="" type="checkbox"> Every operational/experience node is the <code>from</code> of at least one edge; the tree has a financial root</li>
+<li><input disabled="" type="checkbox"> Baseline and target present on each node (financial linkage is provable)</li>
+<li><input disabled="" type="checkbox"> SVG render opens and matches the JSON structure</li>
 </ul>
-<hr />
-<h2 id="key-takeaways-next-steps">🚀 Key Takeaways &amp; Next Steps</h2>
+<hr>
+<h2 id="key-takeaways">🚀 Key Takeaways</h2>
 <ul>
-<li>✅ <strong>Tier 1 (Strategic Outcomes): Revenue growth, retention, enterprise NPS, cost-to-serve.</strong></li>
-<li>✅ <strong>Tier 2 (Operational Velocity): Cycle time, first-contact resolution, straight-through processing.</strong></li>
-<li>✅ <strong>Tier 3 (Diagnostic Indicators): Step drop-off rates, sentiment delta, escalation frequency.</strong></li>
-<li>✅ <strong>Connect Tier 3 mechanics directly to Tier 1 business outcomes with mathematical linkages.</strong></li>
+<li>Lead indicators (operational) drive experience KPIs, which roll up to lagging financial outcomes; time-lagged causality means flat scoreboards hide the mechanism.</li>
+<li><code>kpi-tree-design</code> enforces structure (tiered, no placeholders, ≥4 nodes, needs a blueprint/journey input); <code>three-tier-measurement</code> enforces evidence (≥1 data point per node).</li>
+<li>The closed kind schema requires <code>metric</code> per node; edges are <code>{id, from, to, relation, fields}</code>.</li>
+<li>A KPI without a parent outcome is a vanity metric — the critic gate exists to reject it.</li>
 </ul>
-<hr />
+<hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
-  <span>← [Previous: 08.1 Grönroos Quality Management & The Five Service Gaps](./01-gronroos-quality-five-gaps.md) · [Next: 08.3 The 15 Principles of Good Services: Theory & Scoring Rubric](./03-fifteen-principles-good-services-audit.md) →</span>
-  <span><a href="../README.md">Back to Course Overview ↑</a></span>
+  <span>← [Previous: 08.1 Grönroos & the Five Gaps](./01-gronroos-quality-five-gaps.md)</span>
+  <span>[Next: 08.3 Downe's 15 Principles as a Machine Audit](./03-fifteen-principles-good-services-audit.md) →</span>
 </div>
 
-      <div class="lesson-nav-footer">
-        <a href="./01-gronroos-quality-five-gaps.html" class="btn-ghost">← 08.1 Grönroos Quality Management & The Five Service Gaps</a>
-        <a href="./03-fifteen-principles-good-services-audit.html" class="btn-ink">08.3 The 15 Principles of Good Services: Theory & Scoring Rubric →</a>
-      </div>
+
+      <div class="module-nav"><span>← <a href="./01-gronroos-quality-five-gaps.html">Module 08.1: Grönroos Quality Management &amp; The Five Service Gaps</a></span><span><a href="./03-fifteen-principles-good-services-audit.html">Module 08.3: Lou Downe's 15 Principles — Decoded into a Machine-Auditable Scorecard</a> →</span></div>
     </article>
-  </main>
-
-  <footer class="footer">
-    <span>Sam Mozaffari — The Agentic Service Designer. Academy &amp; Practice.</span>
-    <span><a href="../../courses.html">All Courses</a> · <a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a></span>
-  </footer>
-
-  <script>
-    mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
-  </script>
+  </div>
+  <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
 </body>
 </html>

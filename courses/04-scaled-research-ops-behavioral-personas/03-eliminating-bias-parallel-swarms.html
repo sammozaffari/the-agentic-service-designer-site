@@ -1,439 +1,235 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Module 04.3: Eliminating Bias & Hallucinations via Parallel Extraction Swarms | Scaled Research Ops, Mining & Behavioral Personas — The Agentic Service Designer</title>
-  <link rel="stylesheet" href="../../assets/style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-  <style>
-    .lesson-layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      max-width: 1380px;
-      margin: 0 auto;
-      gap: 48px;
-      padding: 32px var(--pad-d) 80px;
-    }
-    .lesson-sidebar {
-      position: sticky;
-      top: 24px;
-      height: calc(100vh - 48px);
-      overflow-y: auto;
-      border-right: 1px solid var(--line);
-      padding-right: 24px;
-    }
-    .sidebar-course-title {
-      font-size: 13px;
-      font-family: var(--mono);
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 8px;
-    }
-    .sidebar-heading {
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1.3;
-      margin: 0 0 20px;
-    }
-    .syllabus-list {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 24px;
-    }
-    .syllabus-list li {
-      margin-bottom: 8px;
-      font-size: 13.5px;
-      line-height: 1.4;
-    }
-    .syllabus-list li a {
-      display: block;
-      padding: 8px 12px;
-      border-radius: var(--radius-sm);
-      color: var(--ink-soft);
-      text-decoration: none;
-      transition: background 0.15s, color 0.15s;
-    }
-    .syllabus-list li a:hover {
-      background: var(--paper-tint);
-      color: var(--ink);
-    }
-    .syllabus-list li.active a {
-      background: var(--dark);
-      color: #ffffff;
-      font-weight: 600;
-    }
-    .syllabus-list .mod-num {
-      font-family: var(--mono);
-      font-size: 11px;
-      opacity: 0.8;
-      display: block;
-      margin-bottom: 2px;
-    }
-    .lesson-content {
-      max-width: 880px;
-      font-size: 16.5px;
-      line-height: 1.7;
-    }
-    .lesson-breadcrumb {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 16px;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .lesson-breadcrumb a {
-      color: var(--muted);
-      text-decoration: none;
-    }
-    .lesson-breadcrumb a:hover {
-      text-decoration: underline;
-    }
-    .lesson-content h1 {
-      font-size: clamp(28px, 4vw, 42px);
-      line-height: 1.15;
-      letter-spacing: -0.025em;
-      margin: 0 0 20px;
-      font-weight: 700;
-    }
-    .lesson-content h2 {
-      font-size: 24px;
-      margin: 48px 0 16px;
-      border-top: 1px solid var(--line);
-      padding-top: 28px;
-    }
-    .lesson-content h3 {
-      font-size: 18px;
-      margin: 28px 0 12px;
-    }
-    .lesson-content pre {
-      background: var(--dark);
-      color: #f8f8f5;
-      padding: 20px;
-      border-radius: var(--radius-card);
-      overflow-x: auto;
-      font-family: var(--mono);
-      font-size: 13px;
-      line-height: 1.5;
-      margin: 20px 0;
-    }
-    .lesson-content code {
-      font-family: var(--mono);
-      font-size: 0.9em;
-      background: var(--paper-tint);
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid var(--line);
-    }
-    .lesson-content pre code {
-      background: transparent;
-      padding: 0;
-      border: 0;
-      color: inherit;
-    }
-    .lesson-content table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 24px 0;
-      font-size: 14.5px;
-    }
-    .lesson-content th, .lesson-content td {
-      padding: 12px 14px;
-      border: 1px solid var(--line);
-      text-align: left;
-    }
-    .lesson-content th {
-      background: var(--paper-tint);
-      font-weight: 600;
-    }
-    .lesson-content blockquote {
-      margin: 24px 0;
-      padding: 16px 20px;
-      background: var(--paper-tint);
-      border-left: 4px solid var(--ink);
-      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-      font-style: italic;
-    }
-    .lesson-nav-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
-      margin-top: 56px;
-      padding-top: 28px;
-      border-top: 1px solid var(--line);
-    }
-    @media (max-width: 900px) {
-      .lesson-layout {
-        grid-template-columns: 1fr;
-      }
-      .lesson-sidebar {
-        display: none;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Module 04.3: Eliminating Bias with Structured Parallelism — Agreement Without Swarms — Scaled Research Ops, Mining &amp; Behavioral Personas | The Agentic Service Designer">
+<title>Module 04.3: Eliminating Bias with Structured Parallelism — Agreement Without Swarms | Scaled Research Ops, Mining &amp; Behavioral Personas</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  :root { color-scheme: light; }
+  body.module-page { background: var(--paper-tint); }
+  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
+  .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
+  .module-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  .module-body th, .module-body td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
+  .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
+  .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
+  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
+  });
+</script>
 </head>
-<body>
-  <header class="site-head">
-    <a class="brand" href="../../index.html">
-      <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
-      <div class="brand-sub">Sam Mozaffari</div>
-    </a>
-    <nav class="main-nav">
-      <a href="../../index.html">Index</a>
-      <a href="../../courses.html" class="on">Courses</a>
-      <a href="../../harness.html">Harness</a>
-      <a href="../../docs/index.html">Docs</a>
-      <a href="../../about.html">About</a>
-      <a href="../../cv.html">CV</a>
-    </nav>
-  </header>
+<body class="module-page">
+  <div class="module-wrap">
+    <nav class="module-crumb"><a href="../../04-scaled-research-ops-behavioral-personas.html">← Scaled Research Ops, Mining &amp; Behavioral Personas</a></nav>
+    <article class="module-body">
 
-  <main class="lesson-layout">
-    <aside class="lesson-sidebar">
-      <div class="sidebar-course-title">Course 04 · Intermediate</div>
-      <div class="sidebar-heading"><a href="../04-scaled-research-ops-behavioral-personas.html" style="color:inherit; text-decoration:none;">Scaled Research Ops, Mining & Behavioral Personas</a></div>
-      <ul class="syllabus-list">
-        <li><a href="./01-scaled-qualitative-ingestion.html"><span class="mod-num">04.1</span> <span class="mod-name">Scaled Qualitative Ingestion: Processing 200+ Transcripts</span></a></li>
-<li><a href="./02-automated-coding-quote-provenance.html"><span class="mod-num">04.2</span> <span class="mod-name">Automated Coding & Verbatim Quote Provenance</span></a></li>
-<li class="active"><a href="./03-eliminating-bias-parallel-swarms.html"><span class="mod-num">04.3</span> <span class="mod-name">Eliminating Bias & Hallucinations via Parallel Extraction Swarms</span></a></li>
-<li><a href="./04-demographic-fallacy-behavioral-signatures.html"><span class="mod-num">04.4</span> <span class="mod-name">The Demographic Fallacy & Calculating Behavioral Signatures</span></a></li>
-<li><a href="./05-fusing-telemetry-with-qualitative-data.html"><span class="mod-num">04.5</span> <span class="mod-name">Fusing Quantitative Telemetry with Qualitative Need Clusters</span></a></li>
-<li><a href="./06-machine-checkable-personas-sd-persona.html"><span class="mod-num">04.6</span> <span class="mod-name">Hands-On: Compiling Machine-Checkable Personas with `sd_persona`</span></a></li>
-      </ul>
-      <div style="padding-top: 16px; border-top: 1px solid var(--line);">
-        <a href="../04-scaled-research-ops-behavioral-personas.html" class="btn-outline" style="width:100%; text-align:center; font-size:12px; padding:8px 12px; display:block;">Course Deck &amp; Lab ↑</a>
-      </div>
-    </aside>
-
-    <article class="lesson-content">
-      <div class="lesson-breadcrumb">
-        <a href="../../courses.html">Courses</a>
-        <span>/</span>
-        <a href="../04-scaled-research-ops-behavioral-personas.html">Course 04</a>
-        <span>/</span>
-        <span>Module 04.3</span>
-      </div>
-
-      <h1 id="module-043-eliminating-bias-hallucinations-via-parallel-extraction-swarms">Module 04.3: Eliminating Bias &amp; Hallucinations via Parallel Extraction Swarms</h1>
+<h1 id="module-043-eliminating-bias-with-structured-parallelism-agreement-without-swarms">Module 04.3: Eliminating Bias with Structured Parallelism — Agreement Without Swarms</h1>
 <blockquote>
-<p><strong>Course</strong>: <a href="../README.md">Scaled Research Ops, Mining &amp; Behavioral Personas</a> · <strong>Level</strong>: Intermediate · <strong>Duration</strong>: 50 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
+<p><strong>Course</strong>: <a href="./README.md">Scaled Research Ops, Mining &amp; Behavioral Personas</a> · <strong>Level</strong>: Intermediate · <strong>Duration</strong>: 50 min · <strong>Format</strong>: Theory, Architecture, Code &amp; Hands-on Lab</p>
 </blockquote>
-<hr />
+<hr>
 <h2 id="learning-objectives">🎯 Learning Objectives</h2>
-<p>By completing this module, you will master:
-1. <strong>Theoretical Foundations</strong>: Understand the literature and empirical rationale behind <code>Eliminating Bias &amp; Hallucinations via Parallel Extraction Swarms</code>.
-2. <strong>Agent Topology &amp; Contracts</strong>: Master the exact role contracts, handoff schemas, and tool execution boundaries (Researcher, Critic).
-3. <strong>Architecture &amp; Schemas</strong>: Review production TypeScript schemas, JSON payloads, and mathematical scoring functions.
-4. <strong>Case Study Execution</strong>: Examine real-world implementation logs and receipts from <strong>Triangulated Coding Benchmark (Article 03)</strong>.
-5. <strong>Adversarial Verification</strong>: Enforce Critic review gates and fact-checking checks.
-6. <strong>Hands-on Practice</strong>: Run executable code and verify your implementation with automated test suites.</p>
-<hr />
-<h2 id="1-theoretical-grounding-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
-<h3 id="academic-practice-foundations">Academic &amp; Practice Foundations</h3>
-<p>In traditional service design, methods have often been treated as informal, transient workshop exercises. However, rigorous academic literature—from <strong>Vargo &amp; Lusch</strong> (<em>Service-Dominant Logic</em>), <strong>Christian Grönroos</strong> (<em>Service Quality Management</em>), <strong>Mary Jo Bitner &amp; Lynn Shostack</strong> (<em>Service Blueprinting</em>), to <strong>Lou Downe</strong> (<em>Good Services</em>) and <strong>Jim Kalbach</strong> (<em>Mapping Experiences</em>)—has long demanded that services be treated as complex, adaptive, socio-technical systems.</p>
-<p>When we augment service design with autonomous AI agents, we do not invent a new discipline from scratch; rather, we provide the computational infrastructure necessary to execute these canonical theories at scale.</p>
-<div class="codehilite"><pre><span></span><code><span class="nx">flowchart</span><span class="w"> </span><span class="nx">TD</span>
-<span class="w">    </span><span class="nx">subgraph</span><span class="w"> </span><span class="nx">Inputs</span><span class="p">[</span><span class="s">&quot;Evidence Ingestion &amp; Provenance&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">Q1</span><span class="p">[</span><span class="s">&quot;Verbatim Transcripts (n=200+)&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">S1</span><span class="p">[</span><span class="s">&quot;Semantic Chunking&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">T1</span><span class="p">[</span><span class="s">&quot;Quantitative Telemetry&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">S1</span>
-<span class="w">        </span><span class="nx">P1</span><span class="p">[</span><span class="s">&quot;Policy &amp; Regulatory Constraints&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">S1</span>
-<span class="w">        </span><span class="nx">S1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">E_DB</span><span class="p">[(</span><span class="s">&quot;Immutable SQLite Evidence Register (SHA-256)&quot;</span><span class="p">)]</span>
-<span class="w">    </span><span class="nx">end</span>
-
-<span class="w">    </span><span class="nx">subgraph</span><span class="w"> </span><span class="nx">Agents</span><span class="p">[</span><span class="s">&quot;Agent Production Layer (SOPs-as-Code)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">E_DB</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">A1</span><span class="p">[</span><span class="s">&quot;Researcher (Kind 01)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">A1</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">A2</span><span class="p">[</span><span class="s">&quot;Synthesizer (Kind 05)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">A2</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">A3</span><span class="p">[</span><span class="s">&quot;Mapper (Kind 12)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">A3</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">A4</span><span class="p">[</span><span class="s">&quot;Ideator / Prototyper (Kind 20/24)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">A4</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">A5</span><span class="p">[</span><span class="s">&quot;Measurer (Kind 30)&quot;</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">end</span>
-
-<span class="w">    </span><span class="nx">subgraph</span><span class="w"> </span><span class="nx">Governance</span><span class="p">[</span><span class="s">&quot;Adversarial Review &amp; Deterministic Compilation&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">A5</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">CR</span><span class="p">[</span><span class="s">&quot;Critic Agent (Kind 38)&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">CR</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="o">|</span><span class="nx">Issues</span><span class="w"> </span><span class="nx">Veto</span><span class="w"> </span><span class="nx">Log</span><span class="o">|</span><span class="w"> </span><span class="nx">A2</span>
-<span class="w">        </span><span class="nx">CR</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="o">|</span><span class="nx">Approved</span><span class="w"> </span><span class="nx">Verdict</span><span class="o">|</span><span class="w"> </span><span class="nx">COMP</span><span class="p">[</span><span class="s">&quot;@asd/render Pure Compiler&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">COMP</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">OUT1</span><span class="p">[</span><span class="s">&quot;Deterministic SVG Diagrams&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">COMP</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">OUT2</span><span class="p">[</span><span class="s">&quot;Interactive Web Portals&quot;</span><span class="p">]</span>
-<span class="w">        </span><span class="nx">COMP</span><span class="w"> </span><span class="o">--</span><span class="p">&gt;</span><span class="w"> </span><span class="nx">OUT3</span><span class="p">[</span><span class="s">&quot;CI/CD Gate Compliance&quot;</span><span class="p">]</span>
-<span class="w">    </span><span class="nx">end</span>
-
-<span class="w">    </span><span class="nx">classDef</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">f8f9fa</span><span class="p">,</span><span class="nx">stroke</span><span class="p">:</span><span class="err">#</span><span class="mi">4</span><span class="nx">a5568</span><span class="p">,</span><span class="nx">stroke</span><span class="o">-</span><span class="nx">width</span><span class="p">:</span><span class="m m-Double">1.5</span><span class="nx">px</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">classDef</span><span class="w"> </span><span class="nx">ag</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">ebf8ff</span><span class="p">,</span><span class="nx">stroke</span><span class="p">:</span><span class="err">#</span><span class="mi">2</span><span class="nx">b6cb0</span><span class="p">,</span><span class="nx">stroke</span><span class="o">-</span><span class="nx">width</span><span class="p">:</span><span class="m m-Double">1.5</span><span class="nx">px</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">classDef</span><span class="w"> </span><span class="nx">gv</span><span class="w"> </span><span class="nx">fill</span><span class="p">:</span><span class="err">#</span><span class="nx">faf5ff</span><span class="p">,</span><span class="nx">stroke</span><span class="p">:</span><span class="err">#</span><span class="mi">6</span><span class="nx">b46c1</span><span class="p">,</span><span class="nx">stroke</span><span class="o">-</span><span class="nx">width</span><span class="p">:</span><span class="m m-Double">1.5</span><span class="nx">px</span><span class="p">;</span>
-<span class="w">    </span><span class="kd">class</span><span class="w"> </span><span class="nx">Q1</span><span class="p">,</span><span class="nx">T1</span><span class="p">,</span><span class="nx">P1</span><span class="p">,</span><span class="nx">S1</span><span class="p">,</span><span class="nx">E_DB</span><span class="w"> </span><span class="k">in</span><span class="p">;</span>
-<span class="w">    </span><span class="kd">class</span><span class="w"> </span><span class="nx">A1</span><span class="p">,</span><span class="nx">A2</span><span class="p">,</span><span class="nx">A3</span><span class="p">,</span><span class="nx">A4</span><span class="p">,</span><span class="nx">A5</span><span class="w"> </span><span class="nx">ag</span><span class="p">;</span>
-<span class="w">    </span><span class="kd">class</span><span class="w"> </span><span class="nx">CR</span><span class="p">,</span><span class="nx">COMP</span><span class="p">,</span><span class="nx">OUT1</span><span class="p">,</span><span class="nx">OUT2</span><span class="p">,</span><span class="nx">OUT3</span><span class="w"> </span><span class="nx">gv</span><span class="p">;</span>
-</code></pre></div>
-
-<h3 id="core-methodological-invariants">Core Methodological Invariants</h3>
+<ol>
+<li><strong>Theoretical Foundations</strong>: Name the biases that corrupt qualitative synthesis (confirmation, single-coder, selection) and the classic countermeasure — independent coders with explicit agreement checking.</li>
+<li><strong>Agent Topology &amp; Contracts</strong>: Express inter-coder agreement honestly in this toolchain — as <strong>critic review rows</strong> and method-step gate conditions, with no claims of swarms, host-agent spawning, or distributed extractors.</li>
+<li><strong>Architecture &amp; Schemas</strong>: Use the <code>review-veto-log</code> artifact and the <code>sd_review</code> row schema as the machine-checkable record of coder disagreement.</li>
+<li><strong>Case Study Execution</strong>: Apply the Halcyon Logistics service-profit-chain program (Article 05) as the multi-analyst lens.</li>
+<li><strong>Adversarial Verification</strong>: Run a veto/remediation cycle and read the persisted veto log.</li>
+<li><strong>Hands-on Practice</strong>: Drive two independent method runs over one evidence store and reconcile them through review rows.</li>
+</ol>
+<hr>
+<h2 id="1-theoretical-grounding-amp-literature-synthesis">📖 1. Theoretical Grounding &amp; Literature Synthesis</h2>
+<h3 id="the-bias-problem-in-qualitative-synthesis">The bias problem in qualitative synthesis</h3>
+<p>Coding is interpretation, and interpretation is biased by construction. The canonical threats:</p>
 <ul>
-<li><strong>Referential Integrity</strong>: Every claim made in downstream deliverables must resolve to an immutable cryptographic SHA-256 hash in <code>.asd/evidence.db</code>.</li>
-<li><strong>Typing Over Chat Memory</strong>: No critical design handoffs occur in conversational context windows. All state is serialized to structured JSON on disk.</li>
-<li><strong>Adversarial Falsification</strong>: The Critic agent sits on the write path and actively attempts to disprove design assertions before client presentation.</li>
+<li><strong>Confirmation bias</strong> — the coder finds the theme they expected. In scaled corpora this compounds: one early hypothesis quietly organizes 200 transcripts of &quot;evidence&quot;.</li>
+<li><strong>Single-coder idiosyncrasy</strong> — one analyst&#39;s clustering is unreproducible by another. Classic qualitative methodology answers this with <strong>inter-coder agreement</strong>: two analysts code the same corpus independently, then disagreements are surfaced, adjudicated, and <em>recorded</em>. The value is not the agreement statistic; it is the disagreements made visible.</li>
+<li><strong>Selection/availability bias</strong> — vivid or recent quotes dominate clusters. Verbatim-first coding (module 04.2) mitigates this structurally, but only if every cluster must cite multiple independent sources.</li>
 </ul>
-<hr />
-<h2 id="2-multi-agent-topology-role-contracts">🤖 2. Multi-Agent Topology &amp; Role Contracts</h2>
-<p>This module directly engages the following specialized agent roles within the 10-role Eve architecture:</p>
+<p>Martin &amp; Hanington (vol. 18, ch. 5) frame the corrective as method discipline: affinity clusters named by need and built from more than one source are the unit of trustworthy synthesis. Grönroos&#39;s service-quality tradition (vol. 19) adds the organizational version: perceptions of quality diverge across roles, so structured comparison — not seniority — must adjudicate.</p>
+<h3 id="how-this-toolchain-expresses-agreement-honestly">How this toolchain expresses agreement — honestly</h3>
+<p><strong>There is no swarm.</strong> No host-agent spawning, no parallel sub-agent extraction grid, no swarm-extraction tooling anywhere in the verified 29 tools, and this course does not pretend otherwise. What the runtime actually provides is stronger than a swarm claim, because it is checkable:</p>
+<ol>
+<li><strong>Independent method runs over one content-addressed store.</strong> Two analysts (human or agent) run <code>aeiou-coding</code> and <code>affinity-diagramming</code> independently against the same project. Because evidence ids are SHA-256 content hashes, both runs cite into the same immutable register — citations are comparable byte-for-byte.</li>
+<li><strong>Agreement and disagreement recorded as review rows.</strong> The critic gate is where independent codings meet. Each <code>sd_review</code> row is a typed record: <code>rowKind: proposal | defect</code>, <code>severity: critical | high | medium | low</code>, <code>message</code>, optional <code>rule</code>, optional <code>fix</code>, optional <code>evidenceId</code>. A disagreement is a <strong>defect row with a fix</strong>; a corroboration is a <strong>proposal row citing the evidence id</strong>. Nothing is decided in chat.</li>
+<li><strong>Vetoes persist as artifacts.</strong> A veto verdict writes a <code>review-veto-log</code> artifact into the project — the permanent, queryable record of what was contested and how it was fixed.</li>
+<li><strong>Idempotent artifacts.</strong> Re-running a method and rewriting an artifact with the same <code>artifactId</code> is a defined operation (that is how veto remediation works), and phase gates take <code>--idempotencyKey</code> so retries cannot double-fire. Parallelism is safe because the store, not the conversation, holds state.</li>
+</ol>
+<p><strong>The NUF check as a review idiom.</strong> <em>New, Useful, Feasible</em> is the registered <code>nuf-triple-lens-filter</code> method — an <strong>ideation-phase</strong> filter that consumes a <code>concept-set</code>, so it belongs downstream of this course&#39;s artifacts, not inside research ops. But its three lenses are a good <em>review-row checklist</em> for challenging synthesis claims: is this insight actually new (or a restated brief), useful (does it change a decision), and feasible to act on? Teach it as a critic-row discipline here, and as a runnable method in the ideation course.</p>
+<h3 id="diagram-1-concept-where-bias-enters-and-where-the-gates-sit">Diagram 1 — Concept: where bias enters and where the gates sit</h3>
+<div class="diagram"><pre class="mermaid">flowchart TD
+    CORPUS[&quot;200-transcript corpus&quot;] --&gt; C1{&quot;Coder 1 hypotheses&quot;}
+    CORPUS --&gt; C2{&quot;Coder 2 hypotheses&quot;}
+    C1 -.-&gt;|&quot;confirmation bias: finds expected theme&quot;| B1[&quot;Biased cluster set&quot;]
+    C2 -.-&gt;|&quot;availability bias: vivid quotes dominate&quot;| B1
+    C1 --&gt;|&quot;verbatim-first coding, ≥2 sources per cluster&quot;| IND1[&quot;Independent coding A (aeiou-coding)&quot;]
+    C2 --&gt;|&quot;verbatim-first coding, ≥2 sources per cluster&quot;| IND2[&quot;Independent coding B (affinity-diagramming)&quot;]
+    IND1 --&gt; CMP[&quot;Critic gate — rows as the agreement record&quot;]
+    IND2 --&gt; CMP
+    CMP --&gt;|&quot;proposal rows cite corroborating evidenceIds&quot;| KEEP[&quot;Corroborated clusters&quot;]
+    CMP --&gt;|&quot;defect rows with fix, veto persists as artifact&quot;| FIX[&quot;Contested clusters → remediate&quot;]
+    FIX --&gt; IND1
+
+    classDef paper fill:#f8f9fa,stroke:#4a5568,stroke-width:1.5px,color:#1a202c;
+    classDef blue  fill:#ebf8ff,stroke:#3182ce,stroke-width:1.5px,color:#2b6cb0;
+    classDef purple fill:#faf5ff,stroke:#805ad5,stroke-width:1.5px,color:#553c9e;
+    classDef gold  fill:#fffbeb,stroke:#b7791f,stroke-width:1.5px,color:#744210;
+    classDef bad   fill:#fff5f5,stroke:#c53030,stroke-width:1.5px,color:#742a2a;
+    class CORPUS paper;
+    class C1,C2 blue;
+    class B1 bad;
+    class IND1,IND2 blue;
+    class CMP purple;
+    class KEEP gold;
+    class FIX bad;</pre></div>
+<hr>
+<h2 id="2-agentic-topology-amp-role-contracts">🤖 2. Agentic Topology &amp; Role Contracts</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Role</th>
-<th style="text-align: center;">Contract Kind</th>
-<th style="text-align: left;">Specific Responsibility in this Module</th>
-<th style="text-align: left;">Bound Tools</th>
+<th align="left">Role</th>
+<th align="left">Contract surface</th>
+<th align="left">Specific responsibility in this module</th>
+<th align="left">Tools</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Researcher</strong></td>
-<td style="text-align: center;"><code>role:researcher</code></td>
-<td style="text-align: left;">Executes specialized SOPs for Eliminating Bias &amp; Hallucinations via Parallel Extraction Swarms</td>
-<td style="text-align: left;"><code>sd_swarm_extract</code>, <code>sd_inter_coder_agreement</code></td>
+<tbody><tr>
+<td align="left"><strong>Synthesizer</strong></td>
+<td align="left"><code>owner</code> of <code>aeiou-coding</code>, <code>affinity-diagramming</code>, <code>evidence-register-build</code></td>
+<td align="left">Produces one independent coding pass; tags confidence honestly (<code>evidence-register-build</code> forbids `confidence: assumed</td>
+<td align="left">guessed` — verified in its acceptance rules).</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Critic</strong></td>
-<td style="text-align: center;"><code>role:critic</code></td>
-<td style="text-align: left;">Executes specialized SOPs for Eliminating Bias &amp; Hallucinations via Parallel Extraction Swarms</td>
-<td style="text-align: left;"><code>sd_swarm_extract</code>, <code>sd_inter_coder_agreement</code></td>
+<td align="left"><strong>Researcher</strong></td>
+<td align="left">step role inside the same methods</td>
+<td align="left">Runs the second independent pass from the raw notes upward.</td>
+<td align="left"><code>sd_method_run</code>, <code>sd_artifact_write</code></td>
 </tr>
-</tbody>
-</table>
-<h3 id="the-invariant-contract">The Invariant Contract</h3>
+<tr>
+<td align="left"><strong>Critic</strong></td>
+<td align="left"><code>reviewGate</code> on every method</td>
+<td align="left">Adjudicates: proposal rows record corroboration (with <code>evidenceId</code>), defect rows record disagreement (each with a <code>fix</code>); veto requires ≥1 defect and every defect needs a fix — the verdict cannot be vague.</td>
+<td align="left"><code>sd_review</code>, <code>sd_review_list</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Human designer</strong></td>
+<td align="left"><code>humanCheckpoints[].authority</code></td>
+<td align="left">Approves handoff only after reading the veto log; phase advance requires a signed approval receipt.</td>
+<td align="left"><code>sd_phase_advance</code></td>
+</tr>
+</tbody></table>
+<p>The invariant: <strong>agreement is a filesystem record</strong> (<code>review-veto-log.&lt;…&gt;.json</code> inside <code>artifacts/</code>), not a meeting outcome.</p>
+<hr>
+<h2 id="3-schemas-amp-verified-execution">💻 3. Schemas &amp; Verified Execution</h2>
+<h3 id="the-review-row-sd-review">The review row (<code>sd_review</code>)</h3>
+<pre><code class="language-typescript">// asd review --rows &#39;&lt;json&gt;&#39; — the inter-coder agreement record
+type ReviewRow = {
+  rowKind: &#39;proposal&#39; | &#39;defect&#39;
+  severity: &#39;critical&#39; | &#39;high&#39; | &#39;medium&#39; | &#39;low&#39;
+  message: string
+  rule?: string        // the acceptance/contract rule implicated
+  fix?: string         // REQUIRED on every defect row when verdict is veto
+  evidenceId?: string  // ties the row to the evidence store
+}
+// pass: needs ≥1 evidence-cited row and no defects → status &quot;final&quot;
+// veto: needs ≥1 defect row, every defect row needs &quot;fix&quot; → stays draft
+</code></pre>
+<h3 id="verified-live-vetoremediation-cycle-run-today">Verified live veto/remediation cycle (run today)</h3>
+<p>First pass of the AEIOU cluster set (<code>a6472880e8a8410c9d236c12506f4880</code>) was vetoed — one cluster mixed two populations:</p>
+<pre><code class="language-bash">$CLI review --projectId fernwood-repairs-research-ops-b0254f32 \
+  --artifactId a6472880e8a8410c9d236c12506f4880 --verdict veto --rows &#39;[
+  {&quot;rowKind&quot;:&quot;defect&quot;,&quot;severity&quot;:&quot;high&quot;,
+   &quot;message&quot;:&quot;cl-users mixes two distinct excluded populations (language access vs mobility access); split before handoff.&quot;,
+   &quot;fix&quot;:&quot;Split cl-users into cl-users-language and cl-users-mobility, each citing its own two sources.&quot;,
+   &quot;evidenceId&quot;:&quot;d68a2f48838cfce0a4a28a940bf117994abd757d7e166122a833bcdd79cb5521&quot;}]&#39;
+</code></pre>
+<p>Real response head — note the veto is a <em>verdict on a retained draft</em>, and it persists:</p>
+<pre><code class="language-json">{&quot;status&quot;: &quot;draft&quot;, &quot;verdict&quot;: &quot;veto&quot;,
+ &quot;artifact&quot;: {&quot;id&quot;: &quot;a6472880e8a8410c9d236c12506f4880&quot;, &quot;kind&quot;: &quot;affinity-cluster-set&quot;, …}}
+</code></pre>
+<p>On disk after the run, the artifacts directory held both veto logs as first-class artifacts:</p>
+<pre><code>artifacts/review-veto-log.review-fernwood-aeiou-clusters-v2.c197aef7.json
+artifacts/review-veto-log.review-fernwood-behavioural-personas-v1.fd18bc3f.json
+</code></pre>
+<p>Remediation rewrote the artifact <strong>with the same <code>artifactId</code></strong> (<code>cl-users</code> split into <code>cl-users-language</code> and <code>cl-users-mobility</code>, two cited sources each), and the follow-up pass row recorded the corroboration:</p>
+<pre><code class="language-bash">$CLI review --projectId … --artifactId a6472880e8a8410c9d236c12506f4880 --verdict pass --rows &#39;[
+  {&quot;rowKind&quot;:&quot;proposal&quot;,&quot;severity&quot;:&quot;medium&quot;,
+   &quot;message&quot;:&quot;Veto fix applied: cl-users split into language and mobility clusters, each with two cited sources; no cluster rests on a single source.&quot;,
+   &quot;rule&quot;:&quot;min-evidence-per-node&quot;,
+   &quot;evidenceId&quot;:&quot;d68a2f48838cfce0a4a28a940bf117994abd757d7e166122a833bcdd79cb5521&quot;}]&#39;
+# → {&quot;status&quot;: &quot;final&quot;, &quot;verdict&quot;: &quot;pass&quot;, …}
+</code></pre>
+<p><code>asd review-list --projectId …</code> then shows the full board — every artifact&#39;s <code>status</code>, <code>verdict</code>, and <code>logArtifactId</code> — which is how a lead designer audits agreement across parallel passes without reading chat logs.</p>
+<h3 id="diagram-2-agentic-workflow-two-independent-passes-one-agreement-record">Diagram 2 — Agentic workflow: two independent passes, one agreement record</h3>
+<p></p>
+<h3 id="diagram-3-sequence-the-vetoremediation-handshake">Diagram 3 — Sequence: the veto/remediation handshake</h3>
+<p></p>
+<hr>
+<h2 id="4-case-study-lens-halcyon-logistics-service-profit-chain-article-05">📊 4. Case Study Lens: Halcyon Logistics Service Profit Chain (Article 05)</h2>
 <blockquote>
-<p><em>"Handoffs between agents are typed filesystem artifacts, never conversational memory."</em></p>
+<p><strong>Synthetic illustration — not a production log.</strong> Article 05 is a fictional composite; receipt ids above come from the verified live session.</p>
 </blockquote>
-<p>Every role is bounded by explicit system prompts and constrained tool registries, preventing scope creep and maintaining deep analytical rigor.</p>
-<hr />
-<h2 id="3-production-schemas-code-cli-execution">💻 3. Production Schemas, Code &amp; CLI Execution</h2>
-<h3 id="typescript-schema-definition-asdcore">TypeScript Schema Definition (<code>@asd/core</code>)</h3>
-<p>The artifact produced or verified in this module adheres strictly to the following canonical TypeScript interface:</p>
-<div class="codehilite"><pre><span></span><code><span class="cm">/**</span>
-<span class="cm"> * Canonical Interface for Eliminating Bias &amp; Hallucinations via Parallel Extraction Swarms</span>
-<span class="cm"> * Package: @asd/core (v2026.1)</span>
-<span class="cm"> */</span>
-<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="mo">03</span><span class="nx">EliminatingBiasParallelSwarmsArtifact</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nx">schemaVersion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2026.1&quot;</span><span class="p">;</span>
-<span class="w">  </span><span class="nx">artifactId</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;art-04-3-&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">  </span><span class="nx">kind</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;03-eliminating-bias-parallel-swarms&quot;</span><span class="p">;</span>
-<span class="w">  </span><span class="nx">metadata</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">courseId</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;04&quot;</span><span class="p">;</span>
-<span class="w">    </span><span class="kr">module</span><span class="nx">Id</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;04.3&quot;</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">authorRole</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Researcher&quot;</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">createdAt</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span><span class="w"> </span><span class="c1">// ISO 8601 UTC</span>
-<span class="w">    </span><span class="nx">evidenceCitations</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">[];</span><span class="w"> </span><span class="c1">// Array of SHA-256 hashes</span>
-<span class="w">    </span><span class="nx">confidenceScore</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span><span class="w"> </span><span class="c1">// 0.00 to 1.00</span>
-<span class="w">  </span><span class="p">};</span>
-<span class="w">  </span><span class="nx">payload</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">context</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">keyNodes</span><span class="o">:</span><span class="w"> </span><span class="kt">Array</span><span class="o">&lt;</span><span class="p">{</span>
-<span class="w">      </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">      </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">      </span><span class="nx">evidenceHash</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">      </span><span class="nx">metricTarget?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span><span class="o">&gt;</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">reviewStatus</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;draft&quot;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s2">&quot;under_review&quot;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s2">&quot;approved&quot;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s2">&quot;vetoed&quot;</span><span class="p">;</span>
-<span class="w">  </span><span class="p">};</span>
-<span class="w">  </span><span class="nx">criticVerdict</span><span class="o">?:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">reviewedBy</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Critic&quot;</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">approved</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">vetoLog?</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">[];</span>
-<span class="w">    </span><span class="nx">timestamp</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-<span class="w">  </span><span class="p">};</span>
-<span class="p">}</span>
-</code></pre></div>
+<p>Halcyon Logistics (fictional 3PL, ~4,200 B2B accounts) believed its 87.4% SLA attainment meant satisfied shippers while churn ran at 11.8%. The engagement instrumented all five Service Profit Chain links with <strong>unit-level data from independent vantage points</strong> — account managers, warehouse telemetry, and shipper interviews — and the disagreements between those codings were the finding: dashboards said &quot;acceptable&quot; while shippers were exiting.</p>
+<p>That is inter-coder disagreement doing its job. In this toolchain the same dynamic is enforced rather than hoped for: each vantage point is an independent method run over one store, and the critic gate forces disagreements into defect rows with fixes. Halcyon&#39;s redesigned weekly service review ritual is the organizational analogue of <code>sd_review_list</code> — a standing board where contested interpretations stay visible until resolved.</p>
+<hr>
+<h2 id="5-hands-on-lab">🔬 5. Hands-On Lab</h2>
+<pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab-04c
+CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
+# Reuse a project with ≥5 evidence records (module 04.1 lab), then run two passes:
+$CLI artifact-write --projectId $PID --methodId aeiou-coding        --title &quot;Pass A&quot; --nodes &#39;&lt;…&gt;&#39;
+$CLI artifact-write --projectId $PID --methodId affinity-diagramming --title &quot;Pass B&quot; --nodes &#39;&lt;…&gt;&#39;
 
-<h3 id="cli-command-execution">CLI Command Execution</h3>
-<p>Execute this step in your terminal using the <code>@asd/runtime</code> CLI tools:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># 1. Initialize and inspect project environment</span>
-asd<span class="w"> </span>status<span class="w"> </span>--project-dir<span class="w"> </span>.
-
-<span class="c1"># 2. Execute the role tool for this module</span>
-asd<span class="w"> </span>run<span class="w"> </span>--tool<span class="w"> </span>sd_swarm_extract<span class="w"> </span>--input<span class="w"> </span>./data/input.json<span class="w"> </span>--output<span class="w"> </span>./artifacts/03-eliminating-bias-parallel-swarms.json
-
-<span class="c1"># 3. Perform deterministic fact-checking</span>
-asd<span class="w"> </span>factcheck<span class="w"> </span>./artifacts/03-eliminating-bias-parallel-swarms.json<span class="w"> </span>--evidence-db<span class="w"> </span>.asd/evidence.db<span class="w"> </span>--strict
-
-<span class="c1"># 4. Compile deterministic SVG visualizations</span>
-asd<span class="w"> </span>render<span class="w"> </span>./artifacts/03-eliminating-bias-parallel-swarms.json<span class="w"> </span>--out<span class="w"> </span>./renders/03-eliminating-bias-parallel-swarms.svg
-</code></pre></div>
-
-<hr />
-<h2 id="4-real-world-case-study-runlog-triangulated-coding-benchmark-article-03">📊 4. Real-World Case Study Runlog: Triangulated Coding Benchmark (Article 03)</h2>
-<h3 id="empirical-context">Empirical Context</h3>
-<p>In the <strong>Triangulated Coding Benchmark (Article 03)</strong> engagement, this exact module was executed under production constraints:
-- <strong>Input Corpus</strong>: Ingested 45 qualitative interview transcripts, 1,200 telemetry error events, and 12 policy mandates.
-- <strong>Execution Runlog</strong>:
-  1. The <code>Researcher</code> ingested raw sources and generated 142 discrete content-addressed evidence rows.
-  2. The initial artifact draft was submitted to the <strong>Critic agent</strong>, which returned a <code>review-veto-log</code> flagging 3 uncorroborated assertions.
-  3. The team remediated the citations by extracting supporting quotes from user session transcripts.
-  4. The second validation pass cleared the gate with a confidence score of <strong>0.96</strong>.</p>
-<div class="codehilite"><pre><span></span><code><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;auditLog&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;case&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Triangulated Coding Benchmark (Article 03)&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;step&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;04.3&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;initialAssertions&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">18</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;criticVetoes&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;remediatedWithHashes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">      </span><span class="s2">&quot;e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855&quot;</span><span class="p">,</span>
-<span class="w">      </span><span class="s2">&quot;8f4e2a1b9c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f&quot;</span>
-<span class="w">    </span><span class="p">],</span>
-<span class="w">    </span><span class="nt">&quot;finalStatus&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;APPROVED_BY_GATE&quot;</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-
-<hr />
-<h2 id="5-hands-on-practical-lab-exercise">🔬 5. Hands-On Practical Lab Exercise</h2>
-<h3 id="lab-instructions">Lab Instructions</h3>
-<ol>
-<li>Open terminal in <code>courses/labs/lab-04-*/</code>.</li>
-<li>Inspect the raw fixture data in <code>courses/research/fixtures/</code>.</li>
-<li>Author the artifact payload according to the schema above, ensuring all nodes reference valid SHA-256 evidence hashes.</li>
-<li>Run the automated evaluation test script:</li>
-</ol>
-<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>courses/labs/lab-04-*/verify_lab-04.py
-</code></pre></div>
-
-<h3 id="verification-criteria-checklist">Verification Criteria Checklist</h3>
+# Adjudicate: veto one cluster, then remediate and pass
+$CLI review --projectId $PID --artifactId &lt;aid&gt; --verdict veto \
+  --rows &#39;[{&quot;rowKind&quot;:&quot;defect&quot;,&quot;severity&quot;:&quot;medium&quot;,&quot;message&quot;:&quot;&lt;disagreement&gt;&quot;,&quot;fix&quot;:&quot;&lt;concrete fix&gt;&quot;,&quot;evidenceId&quot;:&quot;&lt;id&gt;&quot;}]&#39;
+$CLI artifact-write --projectId $PID --methodId aeiou-coding --title &quot;Pass A v2&quot; --artifactId &lt;aid&gt; --nodes &#39;&lt;fixed&gt;&#39;
+$CLI review --projectId $PID --artifactId &lt;aid&gt; --verdict pass \
+  --rows &#39;[{&quot;rowKind&quot;:&quot;proposal&quot;,&quot;severity&quot;:&quot;low&quot;,&quot;message&quot;:&quot;&lt;corroboration&gt;&quot;,&quot;evidenceId&quot;:&quot;&lt;id&gt;&quot;}]&#39;
+$CLI review-list --projectId $PID    # the agreement board
+</code></pre>
+<h3 id="verification-checklist">Verification checklist</h3>
 <ul>
-<li>[ ] Schema matches <code>@asd/core</code> v2026.1 specification.</li>
-<li>[ ] Every assertion cites a valid SHA-256 hash registered in SQLite.</li>
-<li>[ ] Critic review gate passed with 0 unresolved veto logs.</li>
-<li>[ ] Deterministic SVG visualizer compiles without geometry overlap or clipping.</li>
+<li><input disabled="" type="checkbox"> A veto with a defect row missing <code>fix</code> is rejected (try it) — vague disagreement cannot be recorded.</li>
+<li><input disabled="" type="checkbox"> The veto persists as a <code>review-veto-log.*.json</code> artifact inside <code>artifacts/</code>.</li>
+<li><input disabled="" type="checkbox"> Remediation reuses the same <code>artifactId</code>; <code>review-list</code> shows the final verdict and its <code>logArtifactId</code>.</li>
+<li><input disabled="" type="checkbox"> No claim anywhere in your working notes requires a swarm, host-agent spawning, or a tool that is not in the verified 29.</li>
 </ul>
-<hr />
-<h2 id="key-takeaways-next-steps">🚀 Key Takeaways &amp; Next Steps</h2>
+<hr>
+<h2 id="key-takeaways">🚀 Key Takeaways</h2>
 <ul>
-<li>✅ <strong>Run 3 parallel extraction swarms with varying temperature and perspective prompts.</strong></li>
-<li>✅ <strong>Calculate Krippendorff's alpha and inter-coder agreement mathematically.</strong></li>
-<li>✅ <strong>Discard uncorroborated outlier codes to prevent hallucinations.</strong></li>
+<li>✅ <strong>Inter-coder agreement = critic review rows</strong>, corroboration as evidence-cited proposals, disagreement as defects with mandatory fixes. No swarm claims; the filesystem is the record.</li>
+<li>✅ <strong>Parallelism means independent method runs over one content-addressed store</strong>, made safe by idempotent rewrites and idempotency keys — not by spawning agents.</li>
+<li>✅ <strong>Vetoes are artifacts.</strong> The <code>review-veto-log</code> is persisted, listed by <code>sd_review_list</code>, and read by the human before handoff approval.</li>
+<li>✅ <strong>NUF is a review idiom here, a method downstream.</strong> <code>nuf-triple-lens-filter</code> is an ideation-phase filter over a <code>concept-set</code>; in research ops its lenses guide critic rows.</li>
 </ul>
-<hr />
+<hr>
 <div class="module-nav" style="display:flex; justify-content:space-between; margin-top:32px;">
-  <span>← [Previous: 04.2 Automated Coding & Verbatim Quote Provenance](./02-automated-coding-quote-provenance.md) · [Next: 04.4 The Demographic Fallacy & Calculating Behavioral Signatures](./04-demographic-fallacy-behavioral-signatures.md) →</span>
-  <span><a href="../README.md">Back to Course Overview ↑</a></span>
+  <span>← [Previous: 04.2 Coding at Scale with Verbatim Provenance](./02-automated-coding-quote-provenance.md)</span>
+  <span>[Next: 04.4 The Demographic Fallacy & Behavioral Signatures](./04-demographic-fallacy-behavioral-signatures.md) →</span>
 </div>
 
-      <div class="lesson-nav-footer">
-        <a href="./02-automated-coding-quote-provenance.html" class="btn-ghost">← 04.2 Automated Coding & Verbatim Quote Provenance</a>
-        <a href="./04-demographic-fallacy-behavioral-signatures.html" class="btn-ink">04.4 The Demographic Fallacy & Calculating Behavioral Signatures →</a>
-      </div>
+
+      <div class="module-nav"><span>← <a href="./02-automated-coding-quote-provenance.html">Module 04.2: Coding at Scale — Open/Axial Coding with Verbatim Provenance</a></span><span><a href="./04-demographic-fallacy-behavioral-signatures.html">Module 04.4: The Demographic Fallacy &amp; Behavioral Signatures</a> →</span></div>
     </article>
-  </main>
-
-  <footer class="footer">
-    <span>Sam Mozaffari — The Agentic Service Designer. Academy &amp; Practice.</span>
-    <span><a href="../../courses.html">All Courses</a> · <a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a></span>
-  </footer>
-
-  <script>
-    mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
-  </script>
+  </div>
+  <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
 </body>
 </html>

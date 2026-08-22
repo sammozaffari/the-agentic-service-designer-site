@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Module 02.2: One Runtime, Two Live Surfaces — CLI and MCP (DSH Studio as a Deferred Integration) — The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh) | The Agentic Service Designer">
+<title>Module 02.2: One Runtime, Two Live Surfaces — CLI and MCP (DSH Studio as a Deferred Integration) | The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  :root { color-scheme: light; }
+  body.module-page { background: var(--paper-tint); }
+  .module-wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; }
+  .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 5vw, 64px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 27px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
+  .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
+  .module-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  .module-body th, .module-body td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
+  .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
+  .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .diagram { margin: 26px 0; padding: 20px 12px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: 480px; }
+  .module-foot { max-width: 880px; margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    if (window.mermaid) mermaid.initialize({ startOnLoad: true, securityLevel: 'loose' });
+  });
+</script>
+</head>
+<body class="module-page">
+  <div class="module-wrap">
+    <nav class="module-crumb"><a href="../../02-asd-platform-toolchain-deepseek-harness.html">← The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a></nav>
+    <article class="module-body">
+
+<h1 id="module-022-one-runtime-two-live-surfaces-cli-and-mcp-dsh-studio-as-a-deferred-integration">Module 02.2: One Runtime, Two Live Surfaces — CLI and MCP (DSH Studio as a Deferred Integration)</h1>
+<blockquote>
+<p><strong>Course</strong>: <a href="./README.md">The ASD Platform, Toolchain &amp; DeepSeek Harness (dsh)</a> · <strong>Level</strong>: Foundation · <strong>Duration</strong>: 55 min · <strong>Format</strong>: Theory, Technical Runlog &amp; Hands-on Lab</p>
+</blockquote>
+<hr>
+<h2 id="learning-objectives">🎯 Learning Objectives</h2>
+<p>By completing this module, you will be able to:</p>
+<ol>
+<li><strong>Explain surface parity</strong>: why the <code>asd</code> CLI and the <code>asd-mcp</code> stdio server expose the <em>same</em> 29 tools with the same behavior, and how to verify that claim yourself.</li>
+<li><strong>Operate both surfaces</strong> over one shared workspace: act via CLI, observe via MCP, and watch the state converge.</li>
+<li><strong>Read the DSH Studio integration honestly</strong>: what the pack contains (<code>@asd/ui</code> profile, six host slots, loopback RPC boundary), what is verified (pack structure), and what remains deferred (live Studio as a student environment).</li>
+<li><strong>Distinguish transport from behavior</strong>: transports differ; the registry, schemas, and fail-closed gates do not.</li>
+<li><strong>Complete the hands-on lab</strong> driving the same project through CLI and MCP in alternation.</li>
+</ol>
+<hr>
+<h2 id="1-foundational-theory-amp-literature-grounding">📖 1. Foundational Theory &amp; Literature Grounding</h2>
+<h3 id="services-are-delivered-through-channels-design-tools-are-too">Services are delivered through channels; design tools are too</h3>
+<p><em>Orchestrating Experiences</em> (Hazard &amp; Resmini, <code>books/08-orchestrating-experiences/01-why-orchestration</code>) argues that a service is never a single touchpoint — it is the <em>coherence across channels</em> that users experience as one service. A council repairs service that is excellent by phone and broken online is, to the resident, a broken service. The same principle applies to the design toolchain itself: if the CLI behaves one way and the MCP server another, the practitioner experiences a broken platform, and — worse — artifacts produced on one surface cannot be trusted on the other.</p>
+<p><em>The User&#39;s Journey</em> (Lichaw, <code>books/10-the-users-journey/03-touchpoints-and-channels</code>) gives the design rule: channels may differ in <em>affordance</em> (a terminal streams text; a protocol speaks JSON-RPC) but must converge on <em>state and story</em>. In SDAP terms: transports differ; the registry, the schemas, the evidence store, and the gates are shared.</p>
+<p>This module&#39;s core claim is therefore architectural, not cosmetic: <strong>CLI and MCP are two projections of one <code>@asd/engine</code> registry over one workspace store</strong>, and you can prove it by driving both against the same project. The DSH Studio surface, when its live integration lands, will be a third projection of the same registry — which is exactly why it can be deferred without weakening anything you learn here.</p>
+<h3 id="concept-diagram-two-live-surfaces-one-store">Concept diagram — two live surfaces, one store</h3>
+<div class="diagram"><pre class="mermaid">flowchart LR
+    subgraph Surfaces[&quot;Live surfaces (verified today)&quot;]
+        CLI[&quot;asd CLI (cli.mjs)&quot;]
+        MCP[&quot;asd-mcp stdio (mcp.mjs)&quot;]
+    end
+    subgraph Deferred[&quot;Deferred surface (pack verified, live use not claimed)&quot;]
+        STUDIO[&quot;DSH Studio via @asd/ui profile&quot;]
+    end
+    subgraph Shared[&quot;Shared state + behavior&quot;]
+        REG[&quot;@asd/engine registry: 29 sd_* tools&quot;]
+        WS[(&quot;ASD_WORKSPACE store: project.json, evidence/index.json, artifacts/, renders/&quot;)]
+    end
+
+    CLI --&gt;|&quot;asd &lt;kebab-name&gt;&quot;| REG
+    MCP --&gt;|&quot;tools/call sd_*&quot;| REG
+    STUDIO -.-&gt;|&quot;loopback RPC -&gt; canonical-tool-registry (deferred)&quot;| REG
+    REG --&gt; WS
+
+    classDef paper fill:#f8f9fa,stroke:#4a5568,stroke-width:1.5px,color:#1a202c;
+    classDef blue  fill:#ebf8ff,stroke:#3182ce,stroke-width:1.5px,color:#2b6cb0;
+    classDef purple fill:#faf5ff,stroke:#805ad5,stroke-width:1.5px,color:#553c9e;
+    classDef gold  fill:#fffbeb,stroke:#b7791f,stroke-width:1.5px,color:#744210;
+    classDef bad   fill:#fff5f5,stroke:#c53030,stroke-width:1.5px,color:#742a2a;
+    class CLI,MCP blue;
+    class STUDIO bad;
+    class REG purple;
+    class WS gold;</pre></div>
+<h3 id="key-principles">Key principles</h3>
+<ul>
+<li><strong>Parity is a test, not a slogan</strong>: call <code>sd_factcheck</code> from CLI and from MCP against the same project; the JSON must agree.</li>
+<li><strong>State lives in the workspace, not the surface</strong>: close the CLI, open MCP, the project is exactly where you left it.</li>
+<li><strong>Deferred means deferred</strong>: DSH Studio is taught here as an <em>integration surface with its own acceptance evidence</em>, never as the student environment.</li>
+</ul>
+<hr>
+<h2 id="2-agent-topology-amp-role-contracts">🤖 2. Agent Topology &amp; Role Contracts</h2>
+<p>Surface parity matters most to the roles that <em>coordinate</em>:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Role</th>
+<th align="left">Why parity matters to them</th>
+<th align="left">Tools they use on either surface</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Orchestrator</strong></td>
+<td align="left">Plans and dispatches across surfaces; a plan step must not change meaning because it ran over MCP instead of CLI</td>
+<td align="left"><code>sd_orchestration_plan</code>, <code>sd_orchestration_dispatch</code>, <code>sd_orchestration_status</code>, <code>sd_orchestration_handoff</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Librarian</strong></td>
+<td align="left">Corpus lookups must return the same canon regardless of who asks</td>
+<td align="left"><code>sd_knowledge</code> (query/phase/source/resourceQuery/resource)</td>
+</tr>
+<tr>
+<td align="left"><strong>Measurer</strong></td>
+<td align="left">Fact-check results are the gate metric; they must be identical on every surface</td>
+<td align="left"><code>sd_factcheck</code>, <code>sd_review_list</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Presenter</strong></td>
+<td align="left">Exports must be byte-deterministic no matter which surface triggered them</td>
+<td align="left"><code>sd_export_report</code>, <code>sd_export_artifact</code></td>
+</tr>
+</tbody></table>
+<h3 id="agentic-workflow-diagram-orchestrator-dispatching-across-surfaces">Agentic workflow diagram — orchestrator dispatching across surfaces</h3>
+<p></p>
+<hr>
+<h2 id="3-schemas-tools-amp-verified-execution">💻 3. Schemas, Tools &amp; Verified Execution</h2>
+<h3 id="the-parity-claim-tested-live">The parity claim, tested live</h3>
+<p>Same workspace, same project, two surfaces. First the CLI writes; then MCP reads. (Session verified 2026-08-22 against <code>suite/packages/runtime/lib/</code>.)</p>
+<pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-c02-1787398523
+CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
+
+# CLI surface: what projects exist?
+$CLI project-list
+# → lists fernwood-repairs-sprint-6b4b0c26 (phase now &quot;define&quot; after the receipted
+#   phase-advance from module 02.1&#39;s run) and fail-demo-218ef129
+</code></pre>
+<pre><code class="language-bash"># MCP surface: the same store, over JSON-RPC stdio (newline-delimited; one message per line)
+{
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;initialize&quot;,&quot;params&quot;:{&quot;protocolVersion&quot;:&quot;2025-06-18&quot;,&quot;capabilities&quot;:{},&quot;clientInfo&quot;:{&quot;name&quot;:&quot;parity-check&quot;,&quot;version&quot;:&quot;1.0.0&quot;}}}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;method&quot;:&quot;notifications/initialized&quot;}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:2,&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{&quot;name&quot;:&quot;sd_factcheck&quot;,&quot;arguments&quot;:{&quot;projectId&quot;:&quot;fernwood-repairs-sprint-6b4b0c26&quot;}}}&#39;
+  sleep 2   # keep stdin open: the server aborts in-flight calls on stdin close
+} | node suite/packages/runtime/lib/mcp.mjs
+# → id 2 result content: &quot;## Factcheck&quot; + the same JSON the CLI prints:
+#   {&quot;pass&quot;:true,&quot;rows&quot;:[{&quot;artifactId&quot;:&quot;5b43c26c...&quot;,&quot;status&quot;:&quot;final&quot;,
+#    &quot;integrity&quot;:{&quot;pass&quot;:true},&quot;schema&quot;:{&quot;pass&quot;:true},&quot;acceptance&quot;:{&quot;pass&quot;:true},
+#    &quot;review&quot;:{&quot;pass&quot;:true,&quot;gate&quot;:&quot;critic&quot;,&quot;verdict&quot;:&quot;pass&quot;}}, ...]}
+</code></pre>
+<p>Same project, same verdicts, same artifact ids. The MCP response embeds the CLI&#39;s human-readable rendering (<code>## Factcheck</code> + fenced JSON) inside a JSON-RPC <code>result.content[0].text</code> envelope — transport differs, payload does not.</p>
+<h3 id="operational-detail-worth-memorizing-stdin-lifetime">Operational detail worth memorizing: stdin lifetime</h3>
+<p>The stdio server processes each line as one JSON-RPC message, and on <strong>stdin close it aborts every in-flight tool call</strong> (cooperative cancellation — tool bodies run in-process, so this is a polite abort, not a kill). Consequence you will hit in practice: piping a finite batch of requests into <code>mcp.mjs</code> and closing stdin immediately can lose <code>tools/call</code> responses. Long-lived clients (editors, hosts) hold the pipe open by design; shell demos need the <code>sleep 2</code> idiom above, or a proper client.</p>
+<h3 id="sequence-diagram-one-project-two-surfaces-converging-state">Sequence diagram — one project, two surfaces, converging state</h3>
+<p></p>
+<h3 id="the-dsh-studio-integration-surface-deferred-honesty-boundary">The DSH Studio integration surface (deferred — honesty boundary)</h3>
+<p>What exists and is verified <strong>as pack structure</strong> (<code>platform/packs/dsh</code>):</p>
+<ul>
+<li>Capability profile <code>exact-dsh-rc.5</code>, targeting DeepSeek Harness 0.1.0-rc.5 with the <code>@asd/ui</code> 0.5.0 package.</li>
+<li>Declared execution mode <code>canonical-tool-registry</code>: Studio RPC resolves into the same 29 tool definitions — no forked behavior.</li>
+<li>Declared boundary behavior: <code>hostAgentSpawn: &quot;bounded-subagent-provider&quot;</code> and <code>unsupportedBehavior: &quot;return-structured-error&quot;</code> — anything Studio cannot honor must fail as a structured error, never as a silent approximation.</li>
+<li>A capability projection over the shared contract (<code>suite/packages/core/data/capability-contract.json</code>), with support labels (<code>supported</code> / <code>unverified</code> / <code>unsupported</code>) per capability id.</li>
+</ul>
+<p>What is <strong>not claimed</strong> (per the course honesty contract): DSH Studio and BUZZ as live student environments. Host execution across all packs is recorded <code>liveHostExecution: &quot;unverified&quot;</code> unless a host receipt says otherwise. When you read Article 36 (<code>articles/36</code>) below, notice how its §0 splits evidence into two lanes — a current integration receipt for the pack, and bounded prior workflow evidence for the case — instead of blending them. That is the standard this course holds every surface to.</p>
+<hr>
+<h2 id="4-enterprise-case-study-lens">🏢 4. Enterprise Case Study Lens</h2>
+<h3 id="article-36-running-a-service-design-engagement-inside-the-harness-wattle-grove-community-care-articles36">Article 36 — <em>Running a Service Design Engagement Inside the Harness: Wattle Grove Community Care</em> (<code>articles/36</code>)</h3>
+<blockquote>
+<p><strong>Synthetic illustration — not a production log.</strong> Wattle Grove is a fictional composite; its eight evidence records were authored for the article.</p>
+</blockquote>
+<p>Wattle Grove is the right lens for this module precisely because it is the <em>most careful</em> article in the corpus about surface claims. Its §0 states plainly what this module teaches: the DSH receipt verifies the <strong>profile composition</strong> (<code>@deepseek-ai/dsh-base</code> + <code>@asd/ui</code> + <code>@deepseek-ai/dsh-web-app</code>, six host slots, official add/update/remove/reinstall lifecycle, clean smoke/accessibility/portability checks) — and the care-scheduling artifacts are <strong>bounded prior workflow evidence</strong>, not a claim that the current host dispatched providers end to end.</p>
+<p>The engagement itself — continuity-of-care scheduling for an aged-care provider — also illustrates why surface parity is an <em>ethical</em> property in high-stakes domains: a care plan drafted on one surface and reviewed on another must be the <em>same object</em>, with the same evidence citations, or families are being quoted different truths. The <code>review-veto-log</code> you saw minted in module 02.1 (<code>09b1dc29d9424fbfab24ab1991422384</code>) is the mechanism: verdicts are artifacts in the shared store, so every surface reads the same gate history.</p>
+<hr>
+<h2 id="5-critic-gate-amp-review-veto-rules-surface-parity-edition">⚖️ 5. Critic Gate &amp; Review Veto Rules (surface-parity edition)</h2>
+<blockquote>
+<p>[!IMPORTANT]</p>
+<ol>
+<li>A review verdict recorded via CLI is visible to MCP <code>tools/call sd_review_list</code> identically — the verdict log is workspace state.</li>
+<li>A <code>veto</code> on either surface keeps the artifact <code>draft</code> on <strong>both</strong> surfaces; there is no surface-local override.</li>
+<li><code>sd_factcheck</code> must return the same <code>pass</code> value on both surfaces for the same store state; if it ever disagrees, that is a platform bug, not a surface feature.</li>
+<li>Studio RPC, when live, inherits all of the above — its declared <code>canonical-tool-registry</code> execution mode is what makes that a verifiable claim rather than an aspiration.</li>
+</ol>
+</blockquote>
+<hr>
+<h2 id="6-hands-on-lab-assignment">🧪 6. Hands-On Lab Assignment</h2>
+<h3 id="objective">Objective</h3>
+<p>Drive one project through both live surfaces and prove state convergence.</p>
+<h3 id="steps">Steps</h3>
+<pre><code class="language-bash">cd ~/Documents/github/agentic-service-designer
+export ASD_WORKSPACE=/tmp/asd-lab-02-2
+CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
+
+# 1. CLI: create + feed
+$CLI project-create --name &quot;Lab 02.2 Parity&quot; --client &quot;&lt;client&gt;&quot; --sector government --service &quot;&lt;service&gt;&quot;
+$CLI evidence-add --projectId &lt;pid&gt; --source int-01 --kind quote --body &quot;&lt;verbatim 1&gt;&quot;
+$CLI evidence-add --projectId &lt;pid&gt; --source int-02 --kind quote --body &quot;&lt;verbatim 2&gt;&quot;
+$CLI evidence-add --projectId &lt;pid&gt; --source tel-01 --kind telemetry --body &quot;&lt;metric&gt;&quot;
+
+# 2. MCP: ask for the method contract over stdio (hold stdin open)
+{
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;initialize&quot;,&quot;params&quot;:{&quot;protocolVersion&quot;:&quot;2025-06-18&quot;,&quot;capabilities&quot;:{},&quot;clientInfo&quot;:{&quot;name&quot;:&quot;lab-02-2&quot;,&quot;version&quot;:&quot;1.0.0&quot;}}}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;method&quot;:&quot;notifications/initialized&quot;}&#39;
+  printf &#39;%s\n&#39; &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:2,&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{&quot;name&quot;:&quot;sd_method_run&quot;,&quot;arguments&quot;:{&quot;projectId&quot;:&quot;&lt;pid&gt;&quot;,&quot;methodId&quot;:&quot;journey-from-transcripts&quot;}}}&#39;
+  sleep 2
+} | node suite/packages/runtime/lib/mcp.mjs
+# expect: &quot;## Method contract&quot; with &quot;availableEvidence&quot;: 3
+
+# 3. CLI: write + review; 4. MCP: factcheck — compare with CLI factcheck byte for byte
+$CLI artifact-write --projectId &lt;pid&gt; --methodId journey-from-transcripts --title &quot;&lt;title&gt;&quot; --nodes &#39;&lt;json&gt;&#39;
+$CLI review --projectId &lt;pid&gt; --artifactId &lt;aid&gt; --verdict pass --rows &#39;&lt;json with one evidence-cited row&gt;&#39;
+$CLI factcheck --projectId &lt;pid&gt; &gt; /tmp/cli-factcheck.txt
+# repeat factcheck via MCP tools/call; extract result.content[0].text; diff against /tmp/cli-factcheck.txt
+</code></pre>
+<h3 id="verification-checklist">Verification checklist</h3>
+<ul>
+<li><input disabled="" type="checkbox"> MCP <code>sd_method_run</code> reports <code>availableEvidence</code> matching your CLI <code>evidence-add</code> count</li>
+<li><input disabled="" type="checkbox"> CLI factcheck text and MCP factcheck text are identical for the same store state</li>
+<li><input disabled="" type="checkbox"> Closing stdin without a delay drops an in-flight <code>tools/call</code> (observe it; now you know why)</li>
+<li><input disabled="" type="checkbox"> You can state, in one sentence, what the DSH pack verifies and what it does not claim</li>
+</ul>
+<hr>
+<h2 id="7-summary-amp-reference-anchors">📚 7. Summary &amp; Reference Anchors</h2>
+<h3 id="key-takeaways">Key takeaways</h3>
+<ul>
+<li><strong>Parity is architecture</strong>: one registry, one store, two live transports. You verified convergence with your own diff.</li>
+<li><strong>Stdio is a session, not a batch</strong>: stdin close aborts in-flight calls — hold the pipe open.</li>
+<li><strong>DSH Studio is a deferred integration surface</strong>: pack structure verified, live Studio use not claimed, boundary behavior declared (<code>return-structured-error</code>).</li>
+</ul>
+<h3 id="references">References</h3>
+<ul>
+<li><strong>Books</strong>: <code>books/08-orchestrating-experiences/01-why-orchestration</code>; <code>books/10-the-users-journey/03-touchpoints-and-channels</code></li>
+<li><strong>Case study</strong>: <code>articles/36</code> (synthetic illustration; two-lane evidence discipline)</li>
+<li><strong>Code</strong>: <code>suite/packages/runtime/lib/mcp.mjs</code> (stdio loop, cooperative cancellation); <code>platform/packs/dsh/capabilities.json</code></li>
+</ul>
+<hr>
+<p><a href="./01-sdap-runtime-architecture.md">← Module 02.1</a> · <a href="./README.md">Course Overview</a> · <a href="./03-asd-mcp-server-resources.md">Next: Module 02.3 →</a></p>
+
+
+      <div class="module-nav"><span>← <a href="./01-sdap-runtime-architecture.html">Module 02.1: The Unified SDAP Runtime Stack — Core, Engine, Knowledge, Render, Report, Runtime</a></span><span><a href="./03-asd-mcp-server-resources.html">Module 02.3: The asd-mcp Server — 29 Tools, 216 Corpus Resources, 10 Role Prompts over stdio</a> →</span></div>
+    </article>
+  </div>
+  <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+</body>
+</html>

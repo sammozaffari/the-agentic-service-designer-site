@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Master Service Blueprinting: 5-Lane Architecture to 6th-Lane Swarms — The Executable Industry Standard for Service Architecture, Autonomous Lanes & Human Escalation Paths. Online course from The Agentic Service Designer.">
-  <title>Course 06: Master Service Blueprinting: 5-Lane Architecture to 6th-Lane Swarms | The Agentic Service Designer</title>
+  <meta name="description" content="Master Service Blueprinting: 5 Lanes + the Orchestration Lane — The Executable Industry Standard for Service Architecture, Autonomous Lanes & Human Escalation Paths. Online course from The Agentic Service Designer.">
+  <title>Course 06: Master Service Blueprinting: 5 Lanes + the Orchestration Lane | The Agentic Service Designer</title>
   <link rel="stylesheet" href="../assets/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
   <style>
@@ -68,7 +68,9 @@
       border: 1px solid #2d2e2b;
       border-radius: 8px;
       min-height: 440px;
-      padding: 48px;
+      aspect-ratio: 16 / 9;
+      max-height: 78vh;
+      padding: clamp(28px, 4vw, 48px);
       position: relative;
       box-shadow: 0 12px 36px rgba(0,0,0,0.35);
       display: flex;
@@ -79,28 +81,50 @@
       display: none;
       flex-direction: column;
       height: 100%;
-      animation: fadeIn 200ms ease;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #3d3e3a transparent;
+      animation: slideIn 220ms ease;
     }
     .slide-card.active {
       display: flex;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to { opacity: 1; transform: translateX(0); }
     }
     .slide-header {
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
       font-family: var(--mono);
       font-size: 12px;
-      color: #e4be5c;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    .slide-kicker {
+      color: #e4be5c;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+    }
+    .slide-kicker::before {
+      content: "";
+      width: 18px;
+      height: 2px;
+      background: #e4be5c;
+      display: inline-block;
+    }
+    .slide-page-num {
+      color: #83847c;
+      letter-spacing: 0.12em;
     }
     .slide-title {
-      font-size: clamp(26px, 3vw, 38px);
+      font-size: clamp(24px, 2.8vw, 38px);
       letter-spacing: -0.025em;
+      line-height: 1.12;
       color: #ffffff;
       margin: 0 0 24px;
       font-weight: 700;
@@ -111,10 +135,20 @@
       margin: 0 0 24px;
       display: flex;
       flex-direction: column;
-      gap: 14px;
-      font-size: 16.5px;
-      line-height: 1.6;
+      gap: 12px;
+      font-size: clamp(15px, 1.35vw, 17px);
+      line-height: 1.55;
       color: #d6d6ce;
+    }
+    .slide-bullets code {
+      font-family: var(--mono);
+      font-size: 0.86em;
+      color: #f0d489;
+      background: rgba(228,190,92,0.09);
+      border: 1px solid rgba(228,190,92,0.18);
+      padding: 1px 5px;
+      border-radius: 3px;
+      white-space: nowrap;
     }
     .slide-bullets li {
       position: relative;
@@ -131,22 +165,26 @@
     .slide-quote {
       border-left: 3px solid #e4be5c;
       padding-left: 16px;
-      margin: 20px 0 0;
+      margin: auto 0 0;
+      padding-top: 16px;
       font-style: italic;
       color: #a8a89f;
-      font-size: 14.5px;
+      font-size: clamp(13px, 1.1vw, 14.5px);
+      line-height: 1.5;
     }
-    
+
     .deck-diagram {
       display: flex;
       align-items: center;
-      gap: 12px;
+      flex-wrap: wrap;
+      gap: 10px 12px;
       background: #212220;
       padding: 16px;
       border-radius: 6px;
       margin: 16px 0;
       font-family: var(--mono);
-      font-size: 13px;
+      font-size: 12.5px;
+      line-height: 1.45;
       overflow-x: auto;
     }
     .d-box {
@@ -159,6 +197,107 @@
     .d-good { border-color: #38a169; color: #68d391; }
     .d-bad { border-color: #e53e3e; color: #fc8181; }
     .d-arrow { color: #e4be5c; font-weight: 700; }
+
+    /* Diagram pattern: pipeline — numbered stages chained with arrows */
+    .d-pipe { counter-reset: dstage; }
+    .d-stage {
+      position: relative;
+      padding-left: 34px;
+    }
+    .d-stage::before {
+      content: counter(dstage, decimal-leading-zero);
+      counter-increment: dstage;
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #e4be5c;
+    }
+
+    /* Diagram pattern: lane-row — stacked labeled lanes for blueprints & journeys */
+    .d-lanes {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .d-lane {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .d-lane-label {
+      flex: 0 0 132px;
+      text-align: right;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #9a9b93;
+    }
+    .d-lane-items {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-left: 2px solid #3d3e3a;
+    }
+    .d-lane-items--line { border-left-color: #e4be5c; }
+
+    /* Diagram pattern: gate — decision box with pass/veto branches */
+    .d-gate-wrap {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 12px;
+    }
+    .d-gate-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .d-gate {
+      border-color: #e4be5c;
+      color: #f0d489;
+      background: rgba(228,190,92,0.07);
+    }
+    .d-branches {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .d-branch {
+      flex: 1 1 200px;
+      border: 1px solid #3d3e3a;
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: normal;
+    }
+    .d-branch b {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .d-pass { border-color: #38a169; color: #9ae6b4; background: rgba(56,161,105,0.08); }
+    .d-veto { border-color: #c53030; color: #feb2b2; background: rgba(197,48,48,0.08); }
+
+    @media (max-width: 720px) {
+      .slide-viewport { aspect-ratio: auto; max-height: none; }
+      .d-lane { flex-direction: column; align-items: stretch; gap: 4px; }
+      .d-lane-label { flex: none; text-align: left; }
+      .d-lane-items { border-left: none; border-top: 2px solid #3d3e3a; }
+    }
 
     /* Deck Navigation Footer */
     .deck-nav-bar {
@@ -195,11 +334,19 @@
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: #3a3b37;
+      background: transparent;
+      border: 1px solid #565750;
       cursor: pointer;
+      transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+    }
+    .dot:hover {
+      border-color: #b9bab0;
+      transform: scale(1.15);
     }
     .dot.active {
       background: #e4be5c;
+      border-color: #e4be5c;
+      transform: scale(1.3);
     }
 
     /* Modules Grid Section */
@@ -295,54 +442,6 @@
       font-size: 14px;
     }
     .lab-btn:hover { opacity: 0.9; }
-  
-/* course spec tiles */
-.metrics-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.metrics-row > div {
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-card);
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.metrics-row dt {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 0;
-}
-.metrics-row dd {
-  margin: 0;
-  font-size: 14.5px;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.3;
-}
-.status-available {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.status-available::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #2f9e5f;
-  box-shadow: 0 0 0 3px rgba(47, 158, 95, 0.18);
-}
-
   </style>
 </head>
 <body>
@@ -366,9 +465,9 @@
       <div class="course-page-hero-inner">
         <a class="back-link" href="../courses.html">← All Courses</a>
         <div><span class="badge badge-intermediate">Intermediate</span></div>
-        <h1 class="course-page-title">Course 06: Master Service Blueprinting: 5-Lane Architecture to 6th-Lane Swarms</h1>
+        <h1 class="course-page-title">Course 06: Master Service Blueprinting: 5 Lanes + the Orchestration Lane</h1>
         <p class="course-page-sub">The Executable Industry Standard for Service Architecture, Autonomous Lanes & Human Escalation Paths</p>
-        <p style="max-width:760px; line-height:1.6; color:var(--ink-soft);">The flagship course on the foundational artifact of service delivery. Master the 5 canonical lanes (Customer Actions, Physical Evidence, Frontstage Staff, Backstage Operations, Support Systems) and lines of demarcation (Visibility, Interaction, Penetration). Then pioneer the 6th Lane: modeling autonomous AI agents, tool invocations, confidence thresholds, and human-in-the-loop escalation paths.</p>
+        <p style="max-width:760px; line-height:1.6; color:var(--ink-soft);">The flagship course on the foundational artifact of service delivery. Master the 5 canonical lanes (Customer Actions, Physical Evidence, Frontstage Staff, Backstage Operations, Support Systems) and lines of demarcation (Visibility, Interaction, Penetration). Then extend the model with the real orchestration lane: sd_orchestration_plan/status/dispatch/handoff for agent-executed steps with idempotency keys, retry semantics, and human-gated escalation — no fantasy swarms.</p>
         <dl class="metrics-row" style="margin-top:24px;">
           <div><dt>Modules</dt><dd>7</dd></div>
           <div><dt>Duration</dt><dd>≈5h 30m</dd></div>
@@ -390,40 +489,199 @@
           
         <div class="slide-card active" data-slide-index="0">
           <div class="slide-header">
-            <span class="slide-kicker">Service Architecture</span>
-            <span class="slide-page-num">01 / 02</span>
+            <span class="slide-kicker">Paradigm Shift</span>
+            <span class="slide-page-num">01 / 11</span>
           </div>
-          <h2 class="slide-title">Why Blueprints Are Service Architecture</h2>
+          <h2 class="slide-title">The Blueprint Is the Architecture</h2>
           <ul class="slide-bullets">
-            <li>Service blueprints translate customer experience into operational specifications.</li><li>Demarcate the 5 canonical lanes: Physical Evidence, Customer Actions, Frontstage, Backstage, Support.</li><li>Establish clear lines of Visibility, Interaction, and Internal Penetration.</li>
+            <li>A service without a blueprint is a promise without a mechanism.</li><li>Blueprints translate experience into operational specification — the contract between frontstage and backstage.</li><li>In the ASD runtime the blueprint is a typed artifact, not a poster: validated, gated, rendered.</li><li>AI-native delivery adds a sixth lane: autonomous agent decisions modeled with confidence thresholds.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Customer Actions</span>
-  <span class="d-arrow">--- Visibility ---</span>
-  <span class="d-box">Frontstage Staff</span>
-  <span class="d-arrow">--- Penetration ---</span>
-  <span class="d-box d-good">Backstage & Support</span>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">Customer</span><div class="d-lane-items"><span class="d-box">Actions</span><span class="d-box">Physical evidence</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Frontstage</span><div class="d-lane-items"><span class="d-box">Human interactions</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Backstage</span><div class="d-lane-items d-lane-items--line"><span class="d-box">Internal actions</span><span class="d-box">Support processes</span></div></div>
 </div>
-          <blockquote class="slide-quote">"If a service experience is not blueprint-grounded, it is merely wishful thinking."</blockquote>
+          <blockquote class="slide-quote">"If a service experience is not blueprint-grounded, it is wishful thinking."</blockquote>
         </div>
         
         <div class="slide-card " data-slide-index="1">
           <div class="slide-header">
-            <span class="slide-kicker">AI Extension</span>
-            <span class="slide-page-num">02 / 02</span>
+            <span class="slide-kicker">The Executable Spine</span>
+            <span class="slide-page-num">02 / 11</span>
           </div>
-          <h2 class="slide-title">The Sixth Lane: Autonomous Agent Swarms</h2>
+          <h2 class="slide-title">One Canonical Loop Behind All 8 Courses</h2>
           <ul class="slide-bullets">
-            <li>Traditional 5-lane blueprints fail when autonomous AI agents act as active decision-makers.</li><li>Lane 6 models agent swarms, LLM prompts, tool invocations, and probabilistic confidence thresholds.</li><li>Explicit fallback escalation routes to Frontstage Human staff when confidence drops.</li>
+            <li>Every module runs the same verified loop: project → evidence → method contract → artifact draft → critic gate → factcheck → export → human-gated phase advance.</li><li>This course owns the develop-phase artifacts: blueprints authored, diagnosed, and rendered as code.</li><li><code>sd_method_run</code> fails closed below the method's evidence minimum — no evidence, no artifact.</li><li><code>sd_phase_advance</code> refuses to run without a human approval receipt JSON.</li>
           </ul>
-          <div class="deck-diagram">
-  <span class="d-box">Customer Input</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box">Lane 6: Agent Decision (Conf ≥ 0.90)</span>
-  <span class="d-arrow">➔</span>
-  <span class="d-box d-good">Auto-Execute or Escalate to Human</span>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">sd_project_create</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_evidence_add</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_method_run</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_artifact_write</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">sd_review</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_factcheck</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">sd_export_report</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">sd_phase_advance</span>
 </div>
-          <blockquote class="slide-quote">"Modeling probabilistic AI decisions in blueprints prevents catastrophic silent failovers."</blockquote>
+          <blockquote class="slide-quote">"Agents prepare and verify with receipts; human leaders decide with accountability."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="2">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 06.1</span>
+            <span class="slide-page-num">03 / 11</span>
+          </div>
+          <h2 class="slide-title">Why Blueprints Are the Architecture of Service Delivery</h2>
+          <ul class="slide-bullets">
+            <li>Blueprints specify what must be true operationally for an experience to exist.</li><li>They bind customer actions to the staff actions, systems, and processes that deliver them.</li><li>service-blueprinting and evidence-gated-blueprint produce service-blueprint artifacts.</li><li>An unblueprinted service cannot be audited, staffed, or automated responsibly.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Experience intent</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">service-blueprint artifact</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Operational spec</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Deliverable service</span>
+</div>
+          <blockquote class="slide-quote">"A service without a blueprint is a promise without a mechanism."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="3">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 06.2</span>
+            <span class="slide-page-num">04 / 11</span>
+          </div>
+          <h2 class="slide-title">The Five Canonical Lanes and Operational Demarcations</h2>
+          <ul class="slide-bullets">
+            <li>Five canonical lanes, each with rigid schema boundaries.</li><li>Physical evidence and customer actions sit above the line of interaction.</li><li>Frontstage, backstage, and support sit below — the delivery machine.</li><li>Lane discipline is what makes a blueprint testable rather than decorative.</li>
+          </ul>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">Lane 1–2</span><div class="d-lane-items"><span class="d-box">Physical evidence</span><span class="d-box">Customer actions</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Lane 3</span><div class="d-lane-items"><span class="d-box">Frontstage interactions</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Lane 4–5</span><div class="d-lane-items d-lane-items--line"><span class="d-box">Backstage actions</span><span class="d-box">Support processes</span></div></div>
+</div>
+          <blockquote class="slide-quote">"Lane discipline is what makes a blueprint testable."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="4">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 06.3</span>
+            <span class="slide-page-num">05 / 11</span>
+          </div>
+          <h2 class="slide-title">Lines of Visibility, Interaction, and System Penetration</h2>
+          <ul class="slide-bullets">
+            <li>Line of interaction: where the customer touches the organization.</li><li>Line of visibility: what the customer can see versus what stays backstage.</li><li>Line of internal penetration: where deep support infrastructure takes over.</li><li>Every line crossed in the model is a real handoff survived in the world.</li>
+          </ul>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">Customer</span><div class="d-lane-items"><span class="d-box">Visible experience</span><span class="d-box">— line of interaction —</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Frontstage</span><div class="d-lane-items"><span class="d-box">Staff actions</span><span class="d-box">— line of visibility —</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Backstage</span><div class="d-lane-items d-lane-items--line"><span class="d-box">Hidden actions</span><span class="d-box">— line of internal penetration —</span></div></div>
+</div>
+          <blockquote class="slide-quote">"Every line crossed in the model is a handoff survived in the world."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="5">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 06.4</span>
+            <span class="slide-page-num">06 / 11</span>
+          </div>
+          <h2 class="slide-title">The Sixth Lane: Modeling AI Agent Swarms, LLM Decisions & Tool Calls</h2>
+          <ul class="slide-bullets">
+            <li>Five lanes collapse when autonomous agents act as decision-makers in delivery.</li><li>Lane 6 models agent swarms: prompts, tool invocations, state, and confidence scores.</li><li>Agent actions obey the same evidence law — no unaccountable automation on the blueprint.</li><li>Escalation routes to frontstage humans are drawn explicitly, never implied.</li>
+          </ul>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">Lanes 1–5</span><div class="d-lane-items"><span class="d-box">Classic service architecture</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Lane 6</span><div class="d-lane-items d-lane-items--line"><span class="d-box d-gate">Agent decisions</span><span class="d-box d-gate">Tool calls</span><span class="d-box d-gate">Confidence thresholds</span></div></div>
+</div>
+          <blockquote class="slide-quote">"If agents act in delivery, agents belong on the blueprint."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="6">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 06.5</span>
+            <span class="slide-page-num">07 / 11</span>
+          </div>
+          <h2 class="slide-title">Confidence Thresholds, Error Cascades & Human-in-the-Loop Escalation Paths</h2>
+          <ul class="slide-bullets">
+            <li>Every agent decision carries a confidence score and an explicit threshold.</li><li>Above threshold: auto-execute inside the blueprint. Below: escalate to a frontstage human with full context.</li><li>Error cascades are designed out with deterministic fallback loops — no silent failovers.</li><li>Escalation is a first-class blueprint edge, not an operational surprise.</li>
+          </ul>
+          <div class="deck-diagram d-gate-wrap">
+  <div class="d-gate-row"><span class="d-box">Agent decision</span><span class="d-arrow">→</span><span class="d-box d-gate">confidence ≥ threshold?</span></div>
+  <div class="d-branches">
+    <div class="d-branch d-pass"><b>Above</b>Auto-execute within the blueprint, logged</div>
+    <div class="d-branch d-veto"><b>Below</b>Escalate to frontstage human with full context</div>
+  </div>
+</div>
+          <blockquote class="slide-quote">"Confidence below threshold is not a failure; silence about it is."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="7">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 06.6</span>
+            <span class="slide-page-num">08 / 11</span>
+          </div>
+          <h2 class="slide-title">Blueprints-as-Code: Authoring & Compiling with the Blueprint Pipeline</h2>
+          <ul class="slide-bullets">
+            <li>Author lanes and steps as typed JSON via <code>sd_artifact_write</code> against the service-blueprint schema.</li><li><code>sd_canvas_add/list/remove</code> manage working canvases while the blueprint matures.</li><li>Cross-lane alignment is validated by schema and acceptance rules, then rendered to SVG.</li><li>The diagram is a view; the artifact is the truth.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Typed lanes JSON</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Schema + acceptance</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">Critic gate</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Deterministic SVG</span>
+</div>
+          <blockquote class="slide-quote">"Blueprints-as-code: the diagram is a view; the artifact is the truth."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="8">
+          <div class="slide-header">
+            <span class="slide-kicker">Module 06.7</span>
+            <span class="slide-page-num">09 / 11</span>
+          </div>
+          <h2 class="slide-title">Automated Blueprint Diagnostics, Validation & Bottleneck Audits</h2>
+          <ul class="slide-bullets">
+            <li>Critic and measurer roles audit blueprints for bottlenecks, orphaned dependencies, and failure modes.</li><li>operations-queue-analysis quantifies queue pressure across backstage steps.</li><li><code>sd_factcheck</code> integrity checks catch dangling cross-lane references deterministically.</li><li>Diagnostics land as severity-ranked review rows with fixes, not observations.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Blueprint draft</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Diagnostics + queue analysis</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">Defect rows + fixes</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Audited blueprint</span>
+</div>
+          <blockquote class="slide-quote">"A blueprint that cannot be audited is a hypothesis."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="9">
+          <div class="slide-header">
+            <span class="slide-kicker">Dogfooding the Runtime</span>
+            <span class="slide-page-num">10 / 11</span>
+          </div>
+          <h2 class="slide-title">The Verified Toolchain Behind This Course</h2>
+          <ul class="slide-bullets">
+            <li>Methods: service-blueprinting, evidence-gated-blueprint, future-state-blueprinting, operations-queue-analysis.</li><li>Author &amp; canvas: <code>sd_artifact_write</code>, <code>sd_canvas_add</code>, <code>sd_canvas_list</code>, <code>sd_canvas_remove</code>.</li><li>Assure &amp; render: <code>sd_review</code>, <code>sd_factcheck</code>, <code>sd_export_artifact</code>.</li><li>All four methods are in the registered 74; find them with <code>sd_method_list</code>.</li>
+          </ul>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">Methods</span><div class="d-lane-items"><span class="d-box">service-blueprinting</span><span class="d-box">evidence-gated-blueprint</span><span class="d-box">operations-queue-analysis</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Canvas</span><div class="d-lane-items"><span class="d-box">sd_canvas_add</span><span class="d-box">sd_canvas_list</span><span class="d-box">sd_canvas_remove</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">Gate</span><div class="d-lane-items d-lane-items--line"><span class="d-box">sd_review</span><span class="d-box">sd_factcheck</span><span class="d-box d-good">sd_export_artifact</span></div></div>
+</div>
+          <blockquote class="slide-quote">"Six lanes, four methods, one gate."</blockquote>
+        </div>
+        
+        <div class="slide-card " data-slide-index="10">
+          <div class="slide-header">
+            <span class="slide-kicker">Capstone</span>
+            <span class="slide-page-num">11 / 11</span>
+          </div>
+          <h2 class="slide-title">Compile a Six-Lane Blueprint That Passes Audit</h2>
+          <ul class="slide-bullets">
+            <li>Compile a full 6-lane blueprint from a journey map handoff.</li><li>Pass schema + acceptance + critic with zero dangling cross-lane references.</li><li>Render the blueprint SVG deterministically and diff two runs to prove stability.</li><li>Present the confidence-threshold escalation design to a human gate for sign-off.</li>
+          </ul>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Journey handoff</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">6-lane blueprint</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-gate">Diagnostics passed</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage d-good">Signed-off render</span>
+</div>
+          <blockquote class="slide-quote">"Ship the blueprint a critic already approved."</blockquote>
         </div>
         
         </div>
@@ -431,7 +689,7 @@
         <div class="deck-nav-bar">
           <button class="deck-btn" id="prevBtn" onclick="changeSlide(-1)">◄ Previous Slide</button>
           <div class="slide-dots" id="slideDots">
-            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div>
+            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div><div class="dot " onclick="goToSlide(3)"></div><div class="dot " onclick="goToSlide(4)"></div><div class="dot " onclick="goToSlide(5)"></div><div class="dot " onclick="goToSlide(6)"></div><div class="dot " onclick="goToSlide(7)"></div><div class="dot " onclick="goToSlide(8)"></div><div class="dot " onclick="goToSlide(9)"></div><div class="dot " onclick="goToSlide(10)"></div>
           </div>
           <button class="deck-btn" id="nextBtn" onclick="changeSlide(1)">Next Slide ►</button>
         </div>
@@ -455,7 +713,7 @@
             <span class="mod-time">⏱️ 45 min</span>
           </div>
           <h3 class="mod-card-title"><a href="./06-master-service-blueprinting-5-lane-to-6th-lane/01-why-blueprints-are-service-architecture.html" style="color:inherit; text-decoration:none;">Why Blueprints Are the Architecture of Service Delivery</a></h3>
-          <p class="mod-card-desc">How service blueprints translate customer experience into operational specifications, organizational contracts, and technological requirements.</p>
+          <p class="mod-card-desc">Shostack 1982/1984 and Bitner/Ostrom/Morgan 2008: why a blueprint is an operational specification, not an infographic, and why it is distinct from a journey map.</p>
           <a class="mod-card-link" href="./06-master-service-blueprinting-5-lane-to-6th-lane/01-why-blueprints-are-service-architecture.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -464,8 +722,8 @@
             <span class="mod-badge">06.2</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./06-master-service-blueprinting-5-lane-to-6th-lane/02-five-canonical-lanes-boundaries.html" style="color:inherit; text-decoration:none;">The Five Canonical Lanes and Operational Demarcations</a></h3>
-          <p class="mod-card-desc">Defining the rigid schema boundaries of Physical Evidence, Customer Actions, Frontstage Interactions, Backstage Actions, and Support Processes.</p>
+          <h3 class="mod-card-title"><a href="./06-master-service-blueprinting-5-lane-to-6th-lane/02-five-canonical-lanes-boundaries.html" style="color:inherit; text-decoration:none;">The Five Canonical Lanes & Demarcation Boundaries</a></h3>
+          <p class="mod-card-desc">The five-lane vocabulary as required schema data, plus a verified repairs-service swimlane blueprint authored in the runtime.</p>
           <a class="mod-card-link" href="./06-master-service-blueprinting-5-lane-to-6th-lane/02-five-canonical-lanes-boundaries.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -474,8 +732,8 @@
             <span class="mod-badge">06.3</span>
             <span class="mod-time">⏱️ 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./06-master-service-blueprinting-5-lane-to-6th-lane/03-lines-of-visibility-interaction-penetration.html" style="color:inherit; text-decoration:none;">Lines of Visibility, Interaction, and System Penetration</a></h3>
-          <p class="mod-card-desc">Mapping the three critical lines that govern what the customer experiences, where human frontline touch occurs, and where deep infrastructure takes over.</p>
+          <h3 class="mod-card-title"><a href="./06-master-service-blueprinting-5-lane-to-6th-lane/03-lines-of-visibility-interaction-penetration.html" style="color:inherit; text-decoration:none;">Lines of Visibility, Interaction & Internal Penetration</a></h3>
+          <p class="mod-card-desc">The three governing lines as data on edge crossings, not pixels on a canvas, and the governance consequences of each boundary.</p>
           <a class="mod-card-link" href="./06-master-service-blueprinting-5-lane-to-6th-lane/03-lines-of-visibility-interaction-penetration.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -484,8 +742,8 @@
             <span class="mod-badge">06.4</span>
             <span class="mod-time">⏱️ 55 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./06-master-service-blueprinting-5-lane-to-6th-lane/04-sixth-lane-agentic-autonomous-swarms.html" style="color:inherit; text-decoration:none;">The Sixth Lane: Modeling AI Agent Swarms, LLM Decisions & Tool Calls</a></h3>
-          <p class="mod-card-desc">Why traditional 5-lane blueprints collapse in AI-native organizations: introducing Lane 6 to model autonomous agent decisions, tool execution, and state.</p>
+          <h3 class="mod-card-title"><a href="./06-master-service-blueprinting-5-lane-to-6th-lane/04-sixth-lane-agentic-autonomous-swarms.html" style="color:inherit; text-decoration:none;">The Sixth Lane Done Right: Orchestration Plans & Human Gates</a></h3>
+          <p class="mod-card-desc">The real sixth lane: `sd_orchestration_plan/status/dispatch/handoff`, retry policy, typed handoffs, and explicit human gates — not autonomous swarms.</p>
           <a class="mod-card-link" href="./06-master-service-blueprinting-5-lane-to-6th-lane/04-sixth-lane-agentic-autonomous-swarms.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -494,8 +752,8 @@
             <span class="mod-badge">06.5</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./06-master-service-blueprinting-5-lane-to-6th-lane/05-confidence-thresholds-escalation-paths.html" style="color:inherit; text-decoration:none;">Confidence Thresholds, Error Cascades & Human-in-the-Loop Escalation Paths</a></h3>
-          <p class="mod-card-desc">Engineering deterministic fallback loops, automated failovers, and graceful human handoffs when LLM confidence drops below threshold.</p>
+          <h3 class="mod-card-title"><a href="./06-master-service-blueprinting-5-lane-to-6th-lane/05-confidence-thresholds-escalation-paths.html" style="color:inherit; text-decoration:none;">Confidence Thresholds, Error Handling & Human Escalation Paths</a></h3>
+          <p class="mod-card-desc">Why escalation is implemented as review gates, veto logs, retryable failures, and signed phase approvals rather than a fake confidence router.</p>
           <a class="mod-card-link" href="./06-master-service-blueprinting-5-lane-to-6th-lane/05-confidence-thresholds-escalation-paths.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -504,8 +762,8 @@
             <span class="mod-badge">06.6</span>
             <span class="mod-time">⏱️ 50 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./06-master-service-blueprinting-5-lane-to-6th-lane/06-authoring-blueprints-as-code-sd-blueprint.html" style="color:inherit; text-decoration:none;">Blueprints-as-Code: Authoring & Compiling with sd_blueprint</a></h3>
-          <p class="mod-card-desc">Hands-on authoring of full typed blueprints, running schema verification, generating SVG visual layouts, and validating cross-lane alignments.</p>
+          <h3 class="mod-card-title"><a href="./06-master-service-blueprinting-5-lane-to-6th-lane/06-authoring-blueprints-as-code-sd-blueprint.html" style="color:inherit; text-decoration:none;">Blueprints-as-Code: The Full Authoring Session</a></h3>
+          <p class="mod-card-desc">A complete live session: evidence → journey map → blueprint with provenance → review → factcheck → export → backlog contract.</p>
           <a class="mod-card-link" href="./06-master-service-blueprinting-5-lane-to-6th-lane/06-authoring-blueprints-as-code-sd-blueprint.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -515,7 +773,7 @@
             <span class="mod-time">⏱️ 35 min</span>
           </div>
           <h3 class="mod-card-title"><a href="./06-master-service-blueprinting-5-lane-to-6th-lane/07-automated-blueprint-diagnostics-validation.html" style="color:inherit; text-decoration:none;">Automated Blueprint Diagnostics, Validation & Bottleneck Audits</a></h3>
-          <p class="mod-card-desc">Using the Critic and Measurer agents to perform automated bottleneck detection, orphaned system dependencies, and failure mode analysis on blueprints.</p>
+          <p class="mod-card-desc">`sd_factcheck` and `sd_review` as complementary validators, with live failure receipts for `min-nodes`, `min-evidence-per-node`, empty lane, placeholder lane, and dangling evidence.</p>
           <a class="mod-card-link" href="./06-master-service-blueprinting-5-lane-to-6th-lane/07-automated-blueprint-diagnostics-validation.html">Read full module &amp; code lab →</a>
         </div>
         
@@ -523,7 +781,7 @@
 
         <div class="lab-box">
           <div>
-            <h3 style="margin:0 0 8px;">🧪 Hands-on Lab: Master Service Blueprinting: 5-Lane Architecture to 6th-Lane Swarms</h3>
+            <h3 style="margin:0 0 8px;">🧪 Hands-on Lab: Master Service Blueprinting: 5 Lanes + the Orchestration Lane</h3>
             <p style="margin:0; color:var(--ink-soft); font-size:14px;">Complete the verified lab exercise on your terminal using the <code>@asd</code> CLI and test scripts.</p>
           </div>
           <a class="lab-btn" href="../../courses/labs/lab-06-fundamentals/README.md">Open Lab Guide ↗</a>
@@ -548,7 +806,7 @@
 
   <script>
     var currentSlide = 0;
-    var totalSlides = 2;
+    var totalSlides = 11;
 
     function showSlide(index) {
       if (index < 0) index = 0;
