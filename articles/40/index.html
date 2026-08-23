@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Copperline 2000 Retrospective: One Brief, Three Agent Stacks — the bridge piece comparing the BUZZ channel, terminal CLI and DSH plugin lanes of a fictional multi-agent service design engagement: what held, what differed, what broke, and how to choose. By Sam Mozaffari.">
+<title>40. Copperline 2000 Retrospective: One Brief, Three Agent Stacks — The Agentic Service Designer</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
+
+</head><body>
+<header class="site-head">
+  <a class="brand" href="../../index.html">
+    <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
+    <div class="brand-sub">Sam Mozaffari</div>
+  </a>
+  <nav class="main-nav">
+    <a href="../../index.html" class="on">Index</a>
+    <a href="../../articles.html" class="">Articles</a>
+    <a href="../../courses.html" class="">Courses</a>
+    <a href="../../book.html" class="">Book</a>
+    <a href="../../harness.html" class="">Harness</a>
+    <a href="../../docs/index.html" class="">Docs</a>
+    <a href="../../about.html" class="">About</a>
+    <a href="../../cv.html" class="">CV</a>
+  </nav>
+</header>
+<main class="art">
+  <div class="art-progress"><div class="art-progress-bar" id="progress"></div></div>
+  <div class="art-hero">
+    <div class="art-meta">
+      <span class="chip">Foundations &amp; Process</span>
+      <span class="sep">·</span><span class="chip">Fast-food operations (fictional composite)</span>
+      <span class="sep">·</span><span class="chip">6-week field study (simulated) × three lanes</span>
+      <span class="sep">·</span><span class="chip">13 min read</span>
+    </div>
+    <h1>Copperline 2000 Retrospective: One Brief, Three Agent Stacks</h1>
+    <p class="deck">Fictional composite engagement. Every person, quote, figure and outcome is synthetic; no real company, store, or person is described. All three lanes are simulations — a channel log, terminal run logs and a harness session — sharing one fictional evidence base; no relay was contacted and no runtime state was mutated.</p>
+    <div class="art-stats"><span><b>3</b> lanes</span><span><b>~2.9k</b> words</span><span><b>1</b> evidence base</span><span><b>N001–N560</b> shared</span></div>
+    <div class="author-block">
+      <div class="author-id">
+        <div class="author-avatar">SM</div>
+        <div><b>Sam Mozaffari</b><span>Service designer · AI-first &amp; agentic practice</span></div>
+      </div>
+      <p class="author-note">I ran the Copperline 2000 engagement three times to learn which parts of an agentic service design practice live in the tools and which live in the contract: once as a BUZZ channel, once from a terminal of coding-agent CLIs, and once inside a plugin-native harness. This retrospective is where the three lanes answer to each other. It was written last and slotted into the number the series skipped; the client is fictional, the comparisons are honest.</p>
+    </div>
+  </div><div class="art-layout"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-provenance">Provenance</a></li><li><a href="#sec-1-why-a-retrospective">Why a retrospective</a></li><li><a href="#sec-2-the-three-lanes-at-a-glance">The three lanes at a glance</a></li><li><a href="#sec-3-what-was-identical">What was identical</a></li><li><a href="#sec-4-what-differed">What differed</a></li><li><a href="#sec-5-choosing-a-lane">Choosing a lane</a></li><li><a href="#sec-6-what-broke-in-each-lane">What broke in each lane</a></li><li><a href="#sec-7-the-numbering-gap-confession">The numbering-gap confession</a></li><li><a href="#sec-8-deterministic-fact-check">Deterministic fact-check</a></li><li><a href="#sec-9-lessons">Lessons</a></li><li><a href="#sec-10-evidence-ledger">Evidence ledger</a></li><li><a href="#sec-11-references">References</a></li></ol></nav></aside><article class="art-body"><h1 id="40-copperline-2000-retrospective-one-brief-three-agent-stacks">40 — Copperline 2000 Retrospective: One Brief, Three Agent Stacks</h1>
+<p>One brief, three agent stacks, one question: when you change everything about
+how a multi-agent engagement is run — the collaboration surface, the dispatch
+mechanism, the gates, the audit trail — how much of the deliverable actually
+moves? This is the bridge piece of the Copperline 2000 series. Article 41 ran
+the engagement as a BUZZ channel with role runtimes replying under their own
+identities; article 42 ran it from the terminal with four coding-agent CLIs
+and our OMP plugin library; article 43 ran it inside DeepSeek Harness, where
+the workflow itself shipped as plugins. Here the three lanes sit in one frame,
+compared honestly, defects included.</p>
+<section class="art-sec sec-0"><span class="sec-kicker">00 · Provenance</span><h2 id="sec-0-provenance">Provenance</h2>
+<p>Copperline Chicken — 2,000 charcoal-grill stores, 41,300 crew, a support
+centre in Port Meridian — is a fictional composite. Every person, quote,
+figure, store and outcome in this series is synthetic. No real company, store,
+or person is described. That boundary is stated first in all fourteen
+artifacts, and restated here because a retrospective multiplies the surfaces a
+reader might mistake for evidence.</p>
+<p>The second boundary concerns the lanes. Lane 1's BUZZ transcript is a
+simulated channel log following real relay conventions; lane 2's terminal
+sessions are simulated run logs following each CLI's real command conventions;
+lane 3's harness session is simulated, its five UI panels illustrative
+renderings, not captures. Not simulated: the
+<a href="../41/artifacts/canon.md">project canon</a> every lane read, and the
+fourteen artifacts all three lanes share, byte for byte. This article adds no
+new artifacts.</p>
+<p>Third, a note about numbers. The engagement-level facts — store counts,
+metric baselines, note bands, gate timestamps, critic verdicts — are
+canon-bound and checked in section 08. The comparative estimates (owner hours,
+setup effort) are synthetic judgments, marked as estimates everywhere they
+appear: no invented number gets to wear the costume of a measured one.</p>
+</section><section class="art-sec sec-1"><span class="sec-kicker">01 · Why a retrospective</span><h2 id="sec-1-why-a-retrospective">Why a retrospective</h2>
+<p>The three lanes were published back to back, each written from inside its own
+substrate: article 41 argues the channel case, article 42 the terminal case,
+article 43 the harness case. A reader could finish all three and still not
+know what to do on Monday. A retrospective exists to fix that — to move from
+three advocacy documents to one decision document.</p>
+<p>The method is the standard retrospective discipline, and this replay is
+unusually clean: all three lanes consumed the same canon and produced the same
+fourteen artifacts, so variance between them isolates almost perfectly to the
+substrate — a control most retrospectives never get. Every difference in
+coordination, gating, audit and effort is attributable to the stack, not the
+work.</p>
+<p>One framing note. The lanes are not three competing recommendations; they are
+three points on a graph whose axes are visibility, reproducibility and
+enforcement. Making those axes explicit turns the choice conditional — pick a
+lane for a reason, not a tool for a loyalty.</p>
+</section><section class="art-sec sec-2"><span class="sec-kicker">02 · Three lanes</span><h2 id="sec-2-the-three-lanes-at-a-glance">The three lanes at a glance</h2>
+<p>One six-week engagement, one brief, one canon, one 14-artifact contract — run
+across three substrates:</p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Lane 1 — BUZZ channel (41)</th>
+<th>Lane 2 — terminal CLIs (42)</th>
+<th>Lane 3 — DSH plugins (43)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Coordination</td>
+<td>One private channel, <code>sd/copperline-2000</code> on the <code>tm</code> relay; threaded, visible to every member</td>
+<td>Five owner-typed terminal sessions; no conversation surface at all</td>
+<td>Six harness sessions routed to role agents; sessions list for cross-visibility</td>
+</tr>
+<tr>
+<td>Dispatch</td>
+<td>Owner-posted scoped mentions (<code>@role</code> + bounded instruction + named artifact target)</td>
+<td>Shell invocations per artifact; AGY pipelines chain artifact-to-artifact dependencies</td>
+<td><code>asd-roles</code> plugin routes <code>@role</code> dispatch inside sessions</td>
+</tr>
+<tr>
+<td>Gates</td>
+<td>Human receipts posted in-channel, recorded in the store; runtimes trusted not to advance phases</td>
+<td>Manual — the owner reads output and types the next command; shell history is the only trace</td>
+<td><code>gatekeeper</code> plugin holds the phase lock; no agent path can advance a phase</td>
+</tr>
+<tr>
+<td>Audit trail</td>
+<td>Relay event IDs, channel receipts, Canvas index over durable records</td>
+<td>Run logs, <code>git diff</code> on artifacts, exit codes, sealed ledger hash</td>
+<td>Write-gates in code; ledger, reviews and receipts are enforceable records</td>
+</tr>
+<tr>
+<td>Artifact fidelity</td>
+<td>14/14 against the template catalog; blueprint PASS after 2 revisions</td>
+<td>Identical files — same 14 artifacts, same note bands, verified by a fail-closed exit-code gate</td>
+<td>Identical files; note-ID drift rejected at write time before review</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>Shared visibility, multi-party gating, sponsor-watchable work</td>
+<td>Batch-shaped work, reproducible pipelines, CI and quarterly re-baselines</td>
+<td>Repeat engagement shapes, enforceable workflow, versioned governance</td>
+</tr>
+</tbody></table>
+<p>Read column by column and the table says something quietly radical: the
+deliverable row barely changes. Coordination, dispatch, gates and audit are
+substrate decisions; the artifact contract is not. That observation is the
+spine of everything below.</p>
+</section><section class="art-sec sec-3"><span class="sec-kicker">03 · What held</span><h2 id="sec-3-what-was-identical">What was identical</h2>
+<p>Holding the deliverable constant was the design of the exercise, and it held.
+Four things were identical across all three lanes:</p>
+<ol>
+<li><strong>The canon.</strong> All three lanes read the same
+<a href="../41/artifacts/canon.md">canon.md</a> first — the 8.1 KB single
+source of truth fixing the client (2,000 stores, 41,300 crew, 2,140 salaried
+managers), the five store formats (68 flagship · 1,214 standard · 389
+food-court · 251 drive-thru express · 78 travel-hub kiosk), the seven named
+systems from CopperPOS v7 to Route56, and the metric baselines every artifact
+reports against. Canon over artifact, artifact over chat, in every lane.</li>
+<li><strong>The note ledger.</strong> One continuous sequence, N001–N560, 560
+numbered notes, never renumbered. The blueprint owns N001–N220; research owns
+N221–N320; synthesis and delivery artifacts hold N321–N500; the brief
+N501–N540; the channel log N541–N560. A citation made in week 4 resolves
+identically in all three lanes at delivery.</li>
+<li><strong>The 14 artifacts.</strong> Same files, same sizes, same kinds: brief (01),
+research pack (03/04), stakeholder map (05), ecosystem map (06), insight
+register (07), persona set (09), journey map (11), the full-operation service
+blueprint (12), analysis report (28+32), ten proposals (31), 16-slide deck
+(33), channel transcript (26). Lanes 2 and 3 linked rather than forked — the
+DSH lane's version control is the session log, not a second artifact set.</li>
+<li><strong>The critic record.</strong> 13 verdicts, 3 revision verdicts carrying 4
+defect rows, 0 unresolved at close (N560). The same two blueprint defects —
+the unnamed crew→courier handover lane and the uncited 246s drive-thru figure
+— surfaced in lanes 1 and 3 verbatim, and lane 2's critique pass caught two
+visual-contract defects in the same artifact. Findings replicated across
+substrates; the substrate did not steer the work.</li>
+</ol>
+<p>Underneath, the research base is equally shared: 8 flagship interviews (412
+minutes, 148 verbatims), surveys of 412 managers and 1,893 crew, five channel
+extracts on one 90-day window — 214 evidence IDs (62 interview + 58 survey +
+94 channel). The MCP surface was one surface throughout: six ASD bundles, 29
+<code>sd_*</code> tools, 225 resources, 10 prompts — consumed by channel runtimes, by
+CLIs from the shell, and by the harness through a bridge plugin.</p>
+</section><section class="art-sec sec-4"><span class="sec-kicker">04 · What differed</span><h2 id="sec-4-what-differed">What differed</h2>
+<p>Everything else moved. The honest deltas, with estimates marked synthetic:</p>
+<table>
+<thead>
+<tr>
+<th>Delta</th>
+<th>Lane 1 (channel)</th>
+<th>Lane 2 (terminal)</th>
+<th>Lane 3 (harness)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Setup effort</td>
+<td>Low — create channel, add runtimes (est. ~2h, synthetic)</td>
+<td>Moderate — plugins, <code>.mcp.json</code>, pipeline YAML (est. ~6h, synthetic)</td>
+<td>Highest — harness, six-plugin suite, profile composition (est. ~14h incl. suite work, synthetic)</td>
+</tr>
+<tr>
+<td>Owner time over six weeks</td>
+<td>Highest — reading, mention-scoping, gate rationales (est. ~26h, synthetic)</td>
+<td>Lowest — five sessions, typed commands (est. ~13h, synthetic)</td>
+<td>Middle — sessions plus permission approvals (est. ~19h, synthetic)</td>
+</tr>
+<tr>
+<td>Where defects were caught</td>
+<td>Critic verdict before each gate (N548, N552, N556)</td>
+<td>ZAI critique pass after generation; exit-code gate at close</td>
+<td>Evidence-ledger write-gates at write time, before review</td>
+</tr>
+<tr>
+<td>Defect character</td>
+<td>Evidence and ownership gaps (unnamed lane, uncited metric)</td>
+<td>Visual-contract failures (missing hatched wait marker, solid instead of dashed handoff)</td>
+<td>Draft note-ID drift, rejected pre-review; otherwise lane-1 defects reproduced</td>
+</tr>
+<tr>
+<td>Reproducibility</td>
+<td>Re-run means re-staging a channel</td>
+<td>Re-run means <code>agy run</code> on a revised canon; pipeline wall clock 41 min (illustrative)</td>
+<td>Re-run means booting the profile; workflow versioned next to the code</td>
+</tr>
+<tr>
+<td>Stakeholder visibility</td>
+<td>High — work is watchable as it happens</td>
+<td>None — stakeholders see artifacts, not process</td>
+<td>A window — live artifact preview inside the web UI</td>
+</tr>
+</tbody></table>
+<p>Two observations. First, defect <em>character</em> followed the substrate: the
+channel lane surfaced evidence-discipline defects, the terminal lane surfaced
+visual-contract defects the generators were blind to, and the harness lane
+moved enforcement left of review entirely. Second, no lane dominated the
+effort columns — setup cost ran inversely to per-run owner time, which is the
+actual economic trade the three stacks offer.</p>
+<p>One drift to disclose rather than smooth over: the lane-2 session log's band
+table records the analysis report at N421–N460 and proposals at N461–N500,
+while the artifact set's own ledger carries analysis at N421–N455 and
+proposals at N456–N490, the deck owning N491–N500. Both close the same
+560-note ledger with zero collisions. Per the canon rule — artifact over chat
+— the artifact set is authoritative, and the disagreement is itself evidence
+that shell history is not a receipt.</p>
+</section><section class="art-sec sec-5"><span class="sec-kicker">05 · Decision guide</span><h2 id="sec-5-choosing-a-lane">Choosing a lane</h2>
+<p>The decision guide that falls out of the three runs, expressed as conditions
+rather than preferences:</p>
+<ul>
+<li><strong>Run the channel lane (41)</strong> when the engagement has an audience — a
+sponsor like Priya Nair and functional heads who need to watch the thinking,
+not just receive the deck — or when gating is multi-party and receipts need to
+be posts, not files. Visibility is the product.</li>
+<li><strong>Run the terminal lane (42)</strong> when the work is batch-shaped, already
+specified, or destined for repetition — the quarterly re-baseline in proposal
+10 is exactly this: nobody needs to watch, everybody needs it identical.</li>
+<li><strong>Run the harness lane (43)</strong> when you will run the same engagement
+<em>shape</em> more than once and want the workflow itself — roles, evidence rules,
+renderers, gates — versioned and enforced rather than remembered. Pay the
+setup once, compound it every rerun.</li>
+</ul>
+<p>Three conditions cut across the choice. If gates must be unforgeable, the
+harness's phase lock is the only in-code guarantee; the channel's receipts are
+strong but conventional, the terminal's manual. If CI matters, only the
+terminal lane hangs off a nightly job without ceremony. If the engagement is a
+one-off with two people involved, the channel wins on setup alone — building a
+plugin suite for a single run is buying a factory to bake one loaf.</p>
+<p>And the honest anti-guide: if you cannot say which of visibility,
+reproducibility or enforcement you need, you are not ready to choose — you
+will judge the lane you picked by the axis you did not need.</p>
+</section><section class="art-sec sec-6"><span class="sec-kicker">06 · What broke</span><h2 id="sec-6-what-broke-in-each-lane">What broke in each lane</h2>
+<p>Each lane earned its lessons by failing in a characteristic way.</p>
+<p><strong>Lane 1 — the channel.</strong> The simulated transcript's shorthand drifted from
+the artifact set at least four times — 26 vs 24 insights, 18 vs 16 slides, 5
+vs 6 personas, 4 vs 2 journeys — and every drift was resolved by the
+artifacts-win rule, not by the channel's own memory. Mention scoping was real
+coordination overhead: a bounded instruction plus a named artifact target
+every time, or replies arrive as essays. And the surveys' weighting defect
+(flagship over-represented 7.3% vs 3.4% of the store base, N548) survived to
+critic review — the channel catches drift at the gate, not at the write.</p>
+<p><strong>Lane 2 — the terminal.</strong> The gates. Manual session boundaries left the
+owner's phase decisions in shell history — if you need gated governance, this
+lane quietly doesn't have it unless you script receipts. The two blueprint
+defects were visual-contract failures (a wait node missing its hatched-gray
+marker; the Route56 handoff drawn solid where canon §6.3 requires dashed),
+both proving the lane's own rule: generators do not notice this class of
+error in their own output. Sequential pipelines also under-used the hardware
+— steps ran concurrent only where note bands allowed.</p>
+<p><strong>Lane 3 — the harness.</strong> The substrate churned: two plugin updates
+mid-lane changed registry APIs, because DSH is a developer preview with
+announced compatibility-breaking changes — a plugin suite is a maintenance
+commitment, not an install. Permission prompts interrupted long research
+dispatches badly enough that approval fatigue became a failure mode, resolved
+only by pre-authorizing read-only tool classes. An early draft renumbered two
+adjacent blueprint annotations and was rejected at write time. And the critic
+carried no per-role memory between sessions.</p>
+<p>The pattern across lanes: nothing broke in the artifacts. Everything that
+broke, broke in the coordination layer — the retrospective's summary finding
+about where the risk actually lives.</p>
+</section><section class="art-sec sec-7"><span class="sec-kicker">07 · The confession</span><h2 id="sec-7-the-numbering-gap-confession">The numbering-gap confession</h2>
+<p>A numbering confession, because a series that audits note IDs should audit
+its own sequence. The Copperline series was planned as three lanes published
+as articles 41, 42 and 43 — and the comparative piece, the one that should
+logically sit before all three, was never assigned a number. Article 40 was
+simply skipped: the gap between 39 (the live BUZZ tutorial) and 41 (the first
+Copperline lane) stayed empty, and the site's own test suite grew a comment
+explaining that "deliberate numbering gaps (e.g. the skipped 40 between 39 and
+41)" are valid archive structure. The infrastructure politely documented the
+omission.</p>
+<p>This slot is the natural occupant. A retrospective is written last and read
+as the bridge — it presumes all three lanes exist, and exists to connect them
+— so it belongs exactly where the gap was: after the tutorial that proved the
+pattern live, before the lane that scaled it. Nothing was renumbered to make
+room. Articles keep their published identities, the same way note IDs do, and
+the gap closes the only way a never-renumber sequence can: by filling the
+empty slot, not by shifting the filled ones.</p>
+<p>The lesson generalizes: in a series, a ledger or a note sequence, gaps you
+leave "temporarily" become structure, and others build around them. Fill them
+deliberately or document them loudly.</p>
+</section><section class="art-sec sec-8"><span class="sec-kicker">08 · Verification</span><h2 id="sec-8-deterministic-fact-check">Deterministic fact-check</h2>
+<p>Eight rows, each a claim this retrospective makes, bound to canon metrics and
+note IDs in the shared artifact set:</p>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Evidence (source · note IDs)</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2,000 stores · 41,300 crew · 2,140 salaried managers across five formats</td>
+<td><a href="../41/artifacts/brief.html">brief.html</a> N501–N540 · canon §1</td>
+<td>✓ resolves</td>
+</tr>
+<tr>
+<td>Blueprint: kind 12 · 6 lanes · 220 notes N001–N220 · PASS after 2 revisions</td>
+<td><a href="../41/artifacts/service-blueprint.html">service-blueprint.html</a> · transcript N551–N553</td>
+<td>✓ resolves</td>
+</tr>
+<tr>
+<td>Critic record: 13 verdicts · 3 revision verdicts · 4 defect rows · 0 unresolved</td>
+<td><a href="../41/artifacts/buzz-transcript.html">buzz-transcript.html</a> N560</td>
+<td>✓ resolves</td>
+</tr>
+<tr>
+<td>214 evidence IDs: 62 interview + 58 survey + 94 channel</td>
+<td>research pack N221–N320 · transcript N549</td>
+<td>✓ resolves</td>
+</tr>
+<tr>
+<td>Crew turnover 94% annualised vs industry median 78%</td>
+<td><a href="../41/artifacts/insight-register.html">insight-register.html</a> INS-01 (N244, N278)</td>
+<td>✓ resolves</td>
+</tr>
+<tr>
+<td>Drive-thru window median 246s against a 180s target</td>
+<td>service-blueprint.html · N111, N215</td>
+<td>✓ resolves</td>
+</tr>
+<tr>
+<td>Three human gates by <code>mehran</code>; gate 3 synthesis→delivery at 2026-08-21T14:05:00Z</td>
+<td>transcript phase-gate records N545, N550, N557</td>
+<td>✓ resolves</td>
+</tr>
+<tr>
+<td>Same 14 artifacts and N001–N560 ledger shared by all three lanes</td>
+<td>41 evidence ledger · 42 §08 table · 43 §08 table</td>
+<td>✓ resolves</td>
+</tr>
+</tbody></table>
+<p>The comparative estimates in section 04 are deliberately absent from this
+table: they are synthetic judgments, not ledger facts, and the fact-check's
+integrity depends on it staying that way.</p>
+</section><section class="art-sec sec-9"><span class="sec-kicker">09 · Lessons learned</span><h2 id="sec-9-lessons">Lessons</h2>
+<ul>
+<li><strong>The contract is the practice; the substrate is a setting.</strong> Change the
+channel for a shell for a harness and the deliverable set does not move,
+because the canon, the note bands and the template kinds did the
+load-bearing. Choose substrates for tempo, not identity.</li>
+<li><strong>Defect classes migrate with enforcement point.</strong> At the gate (lane 1),
+evidence gaps; after generation (lane 2), visual-contract failures; at write
+time (lane 3), numbering drift. Every step left you move enforcement, you buy
+earlier, cheaper catches — and a new class of false alarm to tune out.</li>
+<li><strong>Gates are only as strong as their weakest receipt.</strong> A channel receipt
+is a post; a terminal gate is shell history; a plugin phase lock is code.
+Match the receipt's durability to the governance you promised the sponsor.</li>
+<li><strong>Estimates must wear labels.</strong> A retrospective's tempting failure mode is
+letting hours and judgments impersonate ledger numbers. This article's
+estimates are marked synthetic on every appearance — the fact-check refuses
+them, by design.</li>
+<li><strong>Chat is not the record — in any lane.</strong> The channel transcript drifted
+from the artifacts; the terminal log's band table disagreed with the ledger;
+the harness session log is itself a reconstruction. The artifact set is where
+the engagement is true.</li>
+<li><strong>Setup cost and run cost trade inversely.</strong> The channel was cheapest to
+start and heaviest to run; the harness the reverse; the terminal cheapest to
+rerun. Price the reruns before you price the pilot.</li>
+<li><strong>Variance between lanes is a quality signal.</strong> When the same defects
+surface under three substrates, the substrate is not steering the work — and
+that replication is the strongest evidence the method survives its tools.</li>
+</ul>
+</section><section class="art-sec sec-10"><span class="sec-kicker">10 · Evidence</span><h2 id="sec-10-evidence-ledger">Evidence ledger</h2>
+<table>
+<thead>
+<tr>
+<th>Evidence item</th>
+<th>Status</th>
+<th>Receipt</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Project canon — single source of truth for all lanes</td>
+<td>ON DISK, SHARED</td>
+<td><a href="../41/artifacts/canon.md">../41/artifacts/canon.md</a> · 8.1 KB · 10 sections</td>
+</tr>
+<tr>
+<td>14 shared artifacts, N001–N560, 214 evidence IDs</td>
+<td>ON DISK, SHARED</td>
+<td><a href="../41/artifacts/service-blueprint.html">../41/artifacts/</a> · sealed by lane 2's exit-code gate</td>
+</tr>
+<tr>
+<td>Lane 1 channel log (simulated, relay conventions)</td>
+<td>SIMULATED</td>
+<td><a href="../41/artifacts/buzz-transcript.html">buzz-transcript.html</a> N541–N560</td>
+</tr>
+<tr>
+<td>Lane 2 terminal run logs (simulated, CLI conventions)</td>
+<td>SIMULATED</td>
+<td>article 42 §04, session blocks S1–S5</td>
+</tr>
+<tr>
+<td>Lane 3 harness session + five UI panels</td>
+<td>SIMULATED; PANELS ARE RENDERINGS</td>
+<td>article 43 §05, figures F1–F5</td>
+</tr>
+<tr>
+<td>Engagement metrics cited in §08</td>
+<td>CANON-BOUND</td>
+<td>canon §4 · shared artifacts</td>
+</tr>
+<tr>
+<td>Comparative estimates in §02–§05</td>
+<td>SYNTHETIC ESTIMATES, MARKED</td>
+<td>not receipted; excluded from §08 by design</td>
+</tr>
+<tr>
+<td>Numbering-gap account in §07</td>
+<td>REPO-VERIFIABLE</td>
+<td>archive sequence 39 → 41; site test comment on skipped 40</td>
+</tr>
+</tbody></table>
+</section><section class="art-sec sec-11"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2>
+<ul>
+<li><a href="../39/index.html">Article 39</a> — Aster Grove Makerspace: the live
+BUZZ tutorial that proved the pattern</li>
+<li><a href="../41/index.html">Article 41</a> — Copperline Chicken in BUZZ: lane 1,
+the channel engagement</li>
+<li><a href="../42/index.html">Article 42</a> — The same engagement from the
+terminal: lane 2, CLIs + OMP</li>
+<li><a href="../43/index.html">Article 43</a> — Copperline in the DeepSeek Harness:
+lane 3, plugins + gates</li>
+<li><a href="../41/artifacts/canon.md">Copperline 2000 project canon</a> — the
+single source of truth all three lanes read first</li>
+<li>Shared artifacts: <a href="../41/artifacts/brief.html">brief</a> ·
+<a href="../41/artifacts/service-blueprint.html">blueprint</a> ·
+<a href="../41/artifacts/insight-register.html">insights</a> ·
+<a href="../41/artifacts/analysis-report.html">analysis</a> ·
+<a href="../41/artifacts/proposals.html">proposals</a> ·
+<a href="../41/artifacts/buzz-transcript.html">transcript</a></li>
+<li><code>01/07</code> — This Is Service Design Doing, ch. 7 (blueprinting) ·
+<code>09/05</code> — Mapping Experiences (blueprint anatomy) · <code>05/02</code> — Good
+Services (the fifteen principles as audit lens) · <code>20/05</code> — The Service
+Profit Chain (which metric leads, which follows)</li>
+</ul>
+</section></article></div>
+    <div class="cross-links"><a class="xlink" href="../39/index.html"><span class="lbl">← Previous case</span><span class="ttl">39. Aster Grove Makerspace: A Live Multi-Agent Service Design Tutorial in BUZZ</span><span class="rt">16 min read</span></a><a class="xlink" href="../41/index.html"><span class="lbl">Next case →</span><span class="ttl">41. Copperline Chicken: Blueprinting a 2,000-Store Operation in BUZZ</span><span class="rt">17 min read</span></a></div>
+    <div class="art-foot">
+    <span>3 lanes · ~2.9k words · 1 evidence base · N001–N560 shared across all three.</span>
+    · <a href="../../index.html">Back to the archive</a>
+    </div>
+    <button class="backtop" id="backtop" type="button">Back to top</button></main>
+<footer class="footer">
+  <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
+  <span><a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
+</footer>
+<script src="../../assets/site.js"></script>
+
+</body></html>
