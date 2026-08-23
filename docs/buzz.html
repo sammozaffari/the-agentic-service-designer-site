@@ -15,6 +15,7 @@
   <nav class="main-nav">
     <a href="../index.html" class="">Index</a>
     <a href="../courses.html" class="">Courses</a>
+    <a href="../book.html" class="">Book</a>
     <a href="../harness.html" class="">Harness</a>
     <a href="../docs/index.html" class="on">Docs</a>
     <a href="../about.html" class="">About</a>
@@ -29,7 +30,7 @@
     <h1>BUZZ integration</h1>
     <p class="lede">How the keyless ASD Persona Pack, identity-backed BUZZ runtimes, pack-local MCP server and human-gated Service Design workflow fit together.</p>
   </section>
-  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Surfaces</b><ol><li><a href="./plugin-claude-code.html">The Claude Code plugin</a></li><li><a href="./plugin-hosts.html">Host packs and the compiler</a></li><li><a href="./mcp.html">The MCP server</a></li><li><a href="./cli.html">The CLI</a></li><li><a href="./dsh-workbench.html">The DeepSeek Harness workbench</a></li><li><a href="./buzz.html" class="on">BUZZ integration</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#what-ships-in-the-persona-pack">What ships in the Persona Pack</a></li><li><a href="#the-ten-roles-and-their-handoff-responsibilities">The ten roles and their handoff responsibilities</a></li><li><a href="#definition-identity-versus-runtime-identity">Definition identity versus runtime identity</a></li><li><a href="#safe-install-and-audit-sequence">Safe install and audit sequence</a></li><li><a href="#mention-routing-and-collaboration">Mention routing and collaboration</a></li><li><a href="#the-pack-local-mcp-boundary">The pack-local MCP boundary</a></li><li><a href="#the-observed-article-37-slice">The observed Article 37 slice</a></li><li><a href="#recommended-project-operating-model">Recommended project operating model</a></li><li><a href="#evidence-and-troubleshooting">Evidence and troubleshooting</a></li></ol></nav></aside><article class="art-body"><h1 id="buzz-integration">BUZZ integration</h1>
+  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Surfaces</b><ol><li><a href="./plugin-claude-code.html">The Claude Code plugin</a></li><li><a href="./plugin-hosts.html">Host packs and the compiler</a></li><li><a href="./mcp.html">The MCP server</a></li><li><a href="./cli.html">The CLI</a></li><li><a href="./dsh-workbench.html">The DeepSeek Harness workbench</a></li><li><a href="./buzz.html" class="on">BUZZ integration</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#what-ships-in-the-persona-pack">What ships in the Persona Pack</a></li><li><a href="#the-ten-roles-and-their-handoff-responsibilities">The ten roles and their handoff responsibilities</a></li><li><a href="#definition-identity-versus-runtime-identity">Definition identity versus runtime identity</a></li><li><a href="#safe-install-and-audit-sequence">Safe install and audit sequence</a></li><li><a href="#mention-routing-and-collaboration">Mention routing and collaboration</a></li><li><a href="#build-the-channel-canvas-index">Build the channel Canvas index</a></li><li><a href="#the-pack-local-mcp-boundary">The pack-local MCP boundary</a></li><li><a href="#the-observed-article-37-slice">The observed Article 37 slice</a></li><li><a href="#recommended-project-operating-model">Recommended project operating model</a></li><li><a href="#evidence-and-troubleshooting">Evidence and troubleshooting</a></li></ol></nav></aside><article class="art-body"><h1 id="buzz-integration">BUZZ integration</h1>
 <p>BUZZ is the collaboration surface for the Agentic Service Designer team: a
 private channel where a human designer can coordinate role personas, inspect
 handoffs and keep a visible project index in Canvas. The ASD pack does not turn
@@ -89,7 +90,7 @@ manifest.</p>
 </tr>
 <tr>
 <td>Pack-local MCP resources</td>
-<td align="right">225 when the corpus roots are available</td>
+<td align="right">226 when the corpus roots are available</td>
 </tr>
 <tr>
 <td>Pack-local MCP prompts</td>
@@ -210,11 +211,58 @@ sent state, recipient attribution, response and handoff.</li>
 <li>Match the reply to the audited runtime public key, not only to a display name
 or persona card.</li>
 <li>If the workflow writes ASD records through MCP/CLI, record the resulting
-project/evidence/artifact/review IDs separately and link them from Canvas.</li>
+project/evidence/artifact/review IDs separately and index them from Canvas
+with the generator below.</li>
 <li>Stop at the human phase gate; the human designer authorizes progression.</li>
 </ol>
 <p>An unaddressed message, a working indicator, a seeded transcript or a reply
 from an ambiguous runtime is not an end-to-end acceptance result.</p>
+<h2 id="build-the-channel-canvas-index">Build the channel Canvas index</h2>
+<p>The channel Canvas is the visible project index for an engagement: one page
+that navigates every service-design artifact the team has persisted for that
+channel. <code>scripts/buzz-canvas-index.mjs</code> renders it deterministically from
+persisted ASD records — it never invents a row and never contacts a relay.</p>
+<p>The generated document carries the twelve sections of the Canvas contract
+(charter and data boundary, phase and human-gate state, participant roster,
+evidence register, artifact register with kind/ID/status/owner/evidence
+coverage, critic findings and remediation, typed handoff queue, decisions/
+assumptions/risks, prototypes and tests, KPI ownership, final report and
+recovery playbook, and index integrity with a round-trip content hash).</p>
+<p>Render it from a live ASD workspace project directory:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>node scripts/buzz-canvas-index.mjs render \
+  --project-dir ~/.asd/projects/&lt;project-id&gt; \
+  --channel sd/&lt;engagement&gt; --fictional \
+  --planned research-plan --planned prototype-plan \
+  --out ./canvas
+</code></pre></div>
+<p>or from a checked-in artifact portfolio plus its verified run receipt, the
+mode used for the <a href="../articles/37/index.html">Article 37</a> Metrovale canvas:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>node scripts/buzz-canvas-index.mjs render \
+  --portfolio articles/37/artifacts \
+  --receipt docs/reports/buzz-case-study-disposable-receipt.json \
+  --channel sd/metrovale-one-recovery --fictional \
+  --out articles/37/canvas
+</code></pre></div>
+<p>The generator is fail-closed: every evidence, artifact, review-log and
+handoff ID that would appear in the document must resolve in the source
+records, <code>planned</code> rows must name registered artifact kinds that do not yet
+exist, and any dangling reference aborts the render with a problem report
+instead of writing a stale link. Statuses are the ASD gate substrate&#39;s own
+(<code>final</code>/<code>draft</code>), never aspirational.</p>
+<p>Setting the Canvas on a channel stays an owner-driven live action. The
+manifest records the exact commands; run them only against an authorized
+channel with credentials kept shell-only:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>node scripts/buzz-canvas-index.mjs verify --canvas-dir ./canvas \
+  --portfolio articles/37/artifacts \
+  --receipt docs/reports/buzz-case-study-disposable-receipt.json
+</code></pre></div>
+<p><code>verify</code> recomputes the content hash, checks all twelve sections, resolves
+every ID token in the document against the manifest inventory (the offline
+stale-link check), and — when the source is supplied — proves the committed
+document still matches a fresh render. After the owner runs
+<code>buzz canvas set --channel &lt;uuid&gt; --content -</code> with the document on stdin, a
+retrieved copy from <code>buzz canvas get --channel &lt;uuid&gt;</code> can be checked with
+<code>--retrieved &lt;file&gt;</code> to prove the round trip survived the relay.</p>
 <h2 id="the-pack-local-mcp-boundary">The pack-local MCP boundary</h2>
 <p><code>.mcp.json</code> is deliberately relative to the installed pack:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
@@ -227,7 +275,7 @@ from an ambiguous runtime is not an end-to-end acceptance result.</p>
 }
 </code></pre></div>
 <p>The server exposes the canonical 29 tools and, when its corpus is available,
-225 resources and 10 prompts. Its workspace is controlled by the same
+226 resources and 10 prompts. Its workspace is controlled by the same
 <code>ASD_WORKSPACE</code> boundary as the other runtime surfaces and defaults to
 <code>~/.asd/projects</code>. Keep a BUZZ channel&#39;s messages and Canvas separate from this
 workspace unless an explicitly verified host integration writes and reads the
@@ -322,7 +370,17 @@ unverifiable evidence. When a capability is absent, keep the Canvas row
 <tr>
 <td>Canvas link points to a planned artifact</td>
 <td>Index is honest; artifact is not complete.</td>
-<td>Keep the human gate blocked until the ASD artifact and review receipt exist.</td>
+<td>Keep the human gate blocked until the ASD artifact and review receipt exist; regenerate with <code>buzz-canvas-index.mjs render</code> once records persist.</td>
+</tr>
+<tr>
+<td>Committed canvas disagrees with current records</td>
+<td>The document drifted from its source.</td>
+<td><code>buzz-canvas-index.mjs verify</code> with <code>--project-dir</code> or <code>--portfolio</code> re-renders and fails the drift check until regenerated.</td>
+</tr>
+<tr>
+<td>Retrieved canvas differs after <code>buzz canvas set</code></td>
+<td>Round trip may have normalized content.</td>
+<td>Run <code>verify --retrieved &lt;file&gt;</code>; treat anything other than a hash or trailing-whitespace match as a failed round trip.</td>
 </tr>
 </tbody></table>
 <p>See the <a href="./dsh-workbench.html">DSH workbench</a> for the separate profile-composed

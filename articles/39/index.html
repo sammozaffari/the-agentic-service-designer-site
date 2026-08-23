@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Aster Grove Makerspace: A Live Multi-Agent Service Design Tutorial in BUZZ — Public libraries and community making. By Sam Mozaffari. AI-first service design case study.">
+<title>39. Aster Grove Makerspace: A Live Multi-Agent Service Design Tutorial in BUZZ — The Agentic Service Designer</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
+
+</head><body>
+<header class="site-head">
+  <a class="brand" href="../../index.html">
+    <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
+    <div class="brand-sub">Sam Mozaffari</div>
+  </a>
+  <nav class="main-nav">
+    <a href="../../index.html" class="on">Index</a>
+    <a href="../../courses.html" class="">Courses</a>
+    <a href="../../book.html" class="">Book</a>
+    <a href="../../harness.html" class="">Harness</a>
+    <a href="../../docs/index.html" class="">Docs</a>
+    <a href="../../about.html" class="">About</a>
+    <a href="../../cv.html" class="">CV</a>
+  </nav>
+</header>
+<main class="art">
+  <div class="art-progress"><div class="art-progress-bar" id="progress"></div></div>
+  <div class="art-hero">
+    <div class="art-meta">
+      <span class="chip">Foundations &amp; Process</span>
+      <span class="sep">·</span><span class="chip">Public libraries and community making</span>
+      <span class="sep">·</span><span class="chip">One live session (tutorial run)</span>
+      <span class="sep">·</span><span class="chip">16 min read</span>
+    </div>
+    <h1>Aster Grove Makerspace: A Live Multi-Agent Service Design Tutorial in BUZZ</h1>
+    <p class="deck">Fictional composite client. All people, quotes, figures, and outcomes are synthetic. The BUZZ channel, runtime replies, and Canvas round trip are live evidence; the service itself is imaginary.</p>
+    <div class="art-stats"><span><b>3</b> figures</span><span><b>~3.7k</b> words</span><span><b>4</b> tools of record</span><span><b>critic-reviewed</b> every gate</span></div>
+    <div class="author-block">
+      <div class="author-id">
+        <div class="author-avatar">SM</div>
+        <div><b>Sam Mozaffari</b><span>Service designer · AI-first &amp; agentic practice</span></div>
+      </div>
+      <p class="author-note">I ran this tutorial live on 2026-08-23 to show exactly how the ASD Persona Pack, the pack-local MCP store, and a private BUZZ channel work together for a multi-agent Service Design engagement. The engagement is fictional; the BUZZ session, agent replies, and Canvas round trip are real and receipted.</p>
+    </div>
+  </div><div class="art-layout"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</a></li><li><a href="#sec-1-executive-summary">Executive summary</a></li><li><a href="#sec-2-the-three-boundaries-and-why-the-tutorial-keeps-them">The three boundaries (and why the tutorial keeps them)</a></li><li><a href="#sec-3-prerequisites">Prerequisites</a></li><li><a href="#sec-4-step-by-step-tutorial">Step-by-step tutorial</a></li><li><a href="#sec-5-the-canvas-document">The Canvas document</a></li><li><a href="#sec-6-multi-agent-working-patterns">Multi-agent working patterns</a></li><li><a href="#sec-7-artifact-portfolio-summary">Artifact portfolio (summary)</a></li><li><a href="#sec-8-deterministic-fact-check">Deterministic fact-check</a></li><li><a href="#sec-9-ai-tool-playbook">AI tool playbook</a></li><li><a href="#sec-10-lessons-and-pitfalls">Lessons and pitfalls</a></li><li><a href="#sec-11-evidence-ledger">Evidence ledger</a></li><li><a href="#sec-12-references">References</a></li></ol></nav></aside><article class="art-body"><h1 id="39-aster-grove-makerspace-a-live-multi-agent-service-design-tutorial-in-buzz">39 — Aster Grove Makerspace: A Live Multi-Agent Service Design Tutorial in BUZZ</h1>
+<section class="art-sec sec-0"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</h2>
+<p>Aster Grove City Libraries is a fictional composite. The librarian, patron,
+front-desk, and programme quotes are synthetic sentences written for practice.
+No real person, branch, or budget is described.</p>
+<p>Unlike earlier platform case studies, this article&#39;s BUZZ lane is <strong>live</strong>. On
+2026-08-23 a private channel <code>sd/aster-grove-makerspace</code> was created on the
+<code>tm</code> community relay; the ten ASD role runtimes and two coding-agent advisors
+were added as members; the owner posted scoped mentions; five role runtimes
+replied with their own identities; and the channel Canvas index was set and
+retrieved back with a verified content hash. Every claim below is bound to the
+receipts in <code>receipts/</code> and the screenshot set in <code>images/</code>.</p>
+<p>What remains honest boundary, not gap-filling: the roles that were never
+dispatched (synthesizer, prototyper, measurer, presenter) and the two
+coding-agent advisors did not post, and no reply is invented for them; the
+in-app Canvas panel screenshot was not captured (opening the panel needs a UI
+click the session could not perform); reload/recovery and cleanup were not
+exercised. One persisted artifact (an <code>insight-set</code> draft) appeared during the
+Define window without a binding channel reply; its authorship stays
+unresolved in the ledger rather than being attributed after the fact.</p>
+</section><section class="art-sec sec-1"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2>
+<p>This tutorial shows the whole loop, once, end to end: create an isolated ASD
+workspace; register synthetic evidence; write artifacts through the review
+gate including a deliberate veto and same-ID remediation; open a private BUZZ
+channel; add the audited runtime roster; post an owner kickoff; mention the
+orchestrator with its public key; let the orchestrator delegate to the
+researcher and mapper; verify every agent citation against the store; record
+the human phase gate in the ASD store and announce it in-channel; ask the
+critic to verify the review record; and finally generate the channel Canvas
+index from the workspace, set it on the channel, and prove the round trip
+with a content hash.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Aster Grove Makerspace</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Aster Grove City Libraries, fictional</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>Makerspace equipment lending and workshop programming</td>
+</tr>
+<tr>
+<td>Channel</td>
+<td><code>sd/aster-grove-makerspace</code>, private, live</td>
+</tr>
+<tr>
+<td>Roster</td>
+<td>Owner + 10 ASD runtimes + 2 coding-agent advisors (13 members)</td>
+</tr>
+<tr>
+<td>Live runtime replies</td>
+<td>orchestrator (Maya), researcher (Liam), mapper (Kai), critic (Marcus), librarian (Nadia), ideator (Rowan) — 13 agent messages</td>
+</tr>
+<tr>
+<td>ASD project</td>
+<td><code>aster-grove-makerspace-6a8498ef</code> (isolated workspace)</td>
+</tr>
+<tr>
+<td>Evidence / artifacts</td>
+<td>10 synthetic records; 11 artifacts (10 final with critic pass, 1 draft insight-set of unbound authorship)</td>
+</tr>
+<tr>
+<td>Human gate</td>
+<td>Discover → define, receipt <code>ag-gate-001</code>, factcheck passing</td>
+</tr>
+<tr>
+<td>Canvas</td>
+<td>Generated, set live, round-trip hash verified</td>
+</tr>
+</tbody></table>
+<p>You will learn how to run this yourself: the identity and mention contract,
+the evidence-ID discipline that makes agent replies checkable, the review-gate
+mechanics, and the Canvas index workflow that keeps the channel navigable
+without becoming a second database.</p>
+</section><section class="art-sec sec-2"><span class="sec-kicker">02 · The brief</span><h2 id="sec-2-the-three-boundaries-and-why-the-tutorial-keeps-them">The three boundaries (and why the tutorial keeps them)</h2>
+<p>The session separates three proof surfaces. BUZZ proves conversation and
+membership. The ASD workspace (CLI/MCP) proves persistence. ACP stays
+record-only.</p>
+<table>
+<thead>
+<tr>
+<th>Boundary</th>
+<th>Responsibility</th>
+<th>Evidence in this run</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BUZZ</td>
+<td>Channel, roster, mentions, runtime replies, Canvas document</td>
+<td>Relay event IDs + screenshots; replies matched to audited member pubkeys</td>
+</tr>
+<tr>
+<td>ASD CLI/MCP</td>
+<td>Project, evidence, artifacts, reviews, handoff, phase gate, factcheck</td>
+<td>Workspace files + <code>receipts/asd-workflow-receipt.json</code></td>
+</tr>
+<tr>
+<td>ACP</td>
+<td>Typed handoff records only; no external spawn</td>
+<td>Handoff recorded via <code>sd_orchestration_handoff</code>; <code>host-agent-spawn</code> unsupported by design</td>
+</tr>
+</tbody></table>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 888 72" role="img" aria-hidden="true"><defs><marker id="arr-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 125.19999999999999,46.5 151.2,46.5 177.2,46.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="157.2" y="41.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">scoped mention with pubkey</text><path d="M 292.4,31.686602870813395 318.4,25 344.4,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="324.4" y="20" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">runtime replies</text><path d="M 467.19999999999993,25 493.2,25 519.1999999999999,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="499.2" y="20" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">evidence IDs cited</text><path d="M 687.6,25 713.6,25 742.3209302325581,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="719.6" y="20" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">canvas index render</text><path d="M 742.3209302325581,61.5 713.6,68 603.4,68 493.2,68 405.79999999999995,68 318.4,68 292.4,61.313397129186605" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><text x="499.2" y="63" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">buzz canvas set</text><rect x="10" y="31.5" width="115.19999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="67.6" y="50.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Owner mehran</text><rect x="177.2" y="31.5" width="115.19999999999999" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="234.79999999999998" y="50.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">BUZZ channel</text><rect x="344.4" y="10" width="122.8" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="405.79999999999995" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Role runtimes</text><rect x="519.1999999999999" y="10" width="168.4" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="603.4" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">ASD workspace store</text><rect x="739.6" y="31.5" width="138" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="808.6" y="50.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Canvas document</text></svg><figcaption><span class="fignum">Figure 1</span><span class="figcap">The three boundaries (and why the tutorial keeps them)</span></figcaption></figure>
+<p>The tutorial&#39;s central discipline: <strong>an agent reply is only accepted when its
+citations resolve in the store.</strong> Every runtime reply below was checked this
+way, and every cited ID matched.</p>
+</section><section class="art-sec sec-3"><span class="sec-kicker">03 · Approach</span><h2 id="sec-3-prerequisites">Prerequisites</h2>
+<ol>
+<li><strong>The Persona Pack</strong> installed and its runtimes materialized in the BUZZ
+desktop app (this session used the ten canonical roles plus the
+<code>claude-code-opus</code> and <code>codex-sol-high</code> advisors that were already on the
+owner&#39;s roster). A persona definition is not a runtime: mention routing
+needs the identity-backed public key of a running member.</li>
+<li><strong>The <code>asd</code> CLI</strong> (<code>platform/packs/cli/asd</code>) and an isolated workspace:
+<code>ASD_WORKSPACE</code> pointed at a dedicated directory so the tutorial cannot
+touch real projects.</li>
+<li><strong>The <code>buzz</code> CLI</strong> (<code>/Applications/Buzz.app/Contents/MacOS/buzz</code>) with the
+owner identity supplied through <code>BUZZ_PRIVATE_KEY</code> in the environment.
+Credentials stay shell-only: never pasted into messages, screenshots,
+receipts, or commits. The desktop app holds its identity in the macOS
+keychain; this session loaded that same owner identity into the CLI
+environment without displaying it.</li>
+<li><strong>The Canvas index generator</strong> (<code>scripts/buzz-canvas-index.mjs</code>) from the
+platform repository.</li>
+<li><strong>The read-only identity audit</strong> before any mention:
+<code>scripts/buzz-live-identity-audit.mjs</code>, plus <code>buzz channels members</code> and
+<code>buzz users get --pubkey</code> to join display names to member public keys.</li>
+</ol>
+</section><section class="art-sec sec-4"><span class="sec-kicker">04 · The work, phase by phase</span><h2 id="sec-4-step-by-step-tutorial">Step-by-step tutorial</h2>
+<h3 id="step-1-create-the-isolated-project">Step 1 — Create the isolated project</h3>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>export ASD_WORKSPACE=&quot;$PWD/tmp/buzz39/projects&quot;
+asd project-create --name &quot;Aster Grove Makerspace&quot; \
+  --client &quot;Fictional composite — Aster Grove City Libraries&quot; \
+  --sector &quot;public libraries and community making&quot; \
+  --service &quot;makerspace equipment lending and workshop programming&quot;
+</code></pre></div>
+<p>The project id <code>aster-grove-makerspace-6a8498ef</code> becomes the join key for
+everything that follows: channel messages cite it, the runtimes read it, and
+the Canvas indexes it.</p>
+<h3 id="step-2-register-synthetic-evidence">Step 2 — Register synthetic evidence</h3>
+<p>Ten records — quotes from a librarian, patrons, front desk, facilities, an
+accessibility lead and a programme lead; utilization telemetry; two documents:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd evidence-add --projectId aster-grove-makerspace-6a8498ef \
+  --source librarian-01 --kind quote \
+  --body &quot;Members ask what they can make before they ask what they can borrow.&quot;
+</code></pre></div>
+<p>Evidence ids are content-addressed sha256 values. Three of them, for reference:
+<code>ce65c266fe6a0b05…</code> (librarian-01), <code>5589914387f2a33f…</code> (patron-02),
+<code>ab4e46f7114488672…</code> (teen-patron-03). Keep the id list at hand — it is the
+mention contract you will hand to the agents.</p>
+<h3 id="step-3-write-artifacts-through-the-review-gate">Step 3 — Write artifacts through the review gate</h3>
+<p>The stakeholder map, current journey, KPI tree, and change plan were written
+with <code>sd_artifact_write</code> and promoted by <code>sd_review</code> passes. The service
+blueprint deliberately exercised the failure path first:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd artifact-write --projectId aster-grove-makerspace-6a8498ef \
+  --methodId evidence-gated-blueprint \
+  --title &quot;Aster Grove makerspace service blueprint&quot; \
+  --nodes &#39;&lt;five nodes; the backstage node carries lane: &quot;&quot; …&gt;&#39;
+# persisted as draft: acceptance fails field-non-empty on lane
+
+asd review --projectId aster-grove-makerspace-6a8498ef \
+  --artifactId &lt;BLUEPRINT_ID&gt; --verdict veto \
+  --rows &#39;[{&quot;rowKind&quot;:&quot;defect&quot;,&quot;severity&quot;:&quot;high&quot;,&quot;rule&quot;:&quot;field-non-empty&quot;,
+  &quot;message&quot;:&quot;The backstage consumables lane is unnamed, so restocking ownership cannot be reviewed&quot;,
+  &quot;fix&quot;:&quot;Name the consumables and maintenance support process, then re-run acceptance&quot;,
+  &quot;evidenceId&quot;:&quot;058ca7b0d1fdca70…&quot;}]&#39;
+</code></pre></div>
+<p>The remediation rewrote <strong>the same artifact id</strong> with the lane named
+(<code>eeaa4f91d9a844a4b…</code>), and an evidence-cited pass promoted it. A typed
+handoff recorded critic → orchestrator, and <code>sd_factcheck</code> closed the loop.</p>
+<h3 id="step-4-create-the-private-channel-and-roster">Step 4 — Create the private channel and roster</h3>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>buzz channels create --name sd/aster-grove-makerspace \
+  --type stream --visibility private \
+  --description &quot;Fictional Service Design case study … synthetic …&quot;
+buzz channels add-member --channel 361023a9-31cb-4b40-845f-19d64f7827ee \
+  --pubkey &lt;runtime-pubkey&gt;   # ×12, from the audited roster
+</code></pre></div>
+<p>The owner&#39;s existing roster was reused: the same runtime public keys that
+appear in the Article 37 channel. Each added member was resolved with
+<code>buzz users get --pubkey</code> so every mention below targets a known identity.</p>
+<p><img src="images/01-channel-created.png" alt="The private channel created on the live relay with the 13-member roster"></p>
+<h3 id="step-5-post-the-owner-kickoff">Step 5 — Post the owner kickoff</h3>
+<p>The kickoff states the fictional boundary, the project id, the workspace
+state, and human authority. It mentions no one yet.</p>
+<p><img src="images/02-kickoff-posted.png" alt="Owner kickoff post"></p>
+<h3 id="step-6-mention-the-orchestrator-by-public-key">Step 6 — Mention the orchestrator by public key</h3>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>buzz messages send --channel 361023a9-31cb-4b40-845f-19d64f7827ee \
+  --mention 1b0d61df9076688c3b84d9c8f5c7fe4b07342f4ca81f0b053c108a11bed63075 \
+  --content &quot;@Maya Start Discover coordination … use only these evidence IDs …
+  stop for my framing decision before Define.&quot;
+</code></pre></div>
+<p>Two details matter. First, the mention carries the runtime&#39;s public key, not
+its display name — name-only mentions do not notify. Second, the request is
+scoped: outcome, evidence boundary, prohibitions, stop condition.</p>
+<p>Maya replied (event <code>b47e889a…</code>) with a coordination plan that delegated to
+Liam and Kai in parallel, kept the evidence boundary, and stopped at the
+human gate with two open questions for the owner.</p>
+<p><img src="images/03-orchestrator-reply.png" alt="Runtime-authored orchestrator reply"></p>
+<h3 id="step-7-parallel-specialist-mentions-and-store-verified-replies">Step 7 — Parallel specialist mentions and store-verified replies</h3>
+<p>The owner sent Liam (provenance) and Kai (failure demand) their own scoped
+mentions.</p>
+<p><img src="images/04-role-mentions.png" alt="Scoped mentions to researcher and mapper"></p>
+<p>Liam&#39;s reply contained a provenance table citing the exact sha256 evidence
+ids. <strong>Verification step:</strong> every cited id was checked against the workspace
+receipt — <code>ce65c266…</code>, <code>55899143…</code>, <code>49f602a3…</code>, <code>c96c59d1…</code>,
+<code>ab4e46f7…</code> all resolved to real records. Kai&#39;s reply mapped four
+evidence-bounded failure-demand moments (waiver rework on <code>front-desk-04</code>,
+induction access format on <code>accessibility-lead-06</code>, VR booking conflict on
+<code>teen-patron-03</code>, first-session support gap on <code>patron-02</code>). Maya reconciled
+both into a gate report addressed to the owner.</p>
+<p><img src="images/05-specialist-replies.png" alt="Specialist replies with evidence citations"></p>
+<figure class="fig fig-fallback"><pre class="fig-pre">sequenceDiagram
+  participant O as Owner
+  participant M as Maya orchestrator
+  participant L as Liam researcher
+  participant K as Kai mapper
+  O-&gt;&gt;M: scoped Discover coordination
+  M-&gt;&gt;L: provenance check (10 ids)
+  M-&gt;&gt;K: failure-demand mapping
+  L--&gt;&gt;M: provenance PASS table
+  K--&gt;&gt;M: 4 failure-demand moments
+  M--&gt;&gt;O: reconciliation gate report</pre><figcaption><span class="fignum">Figure</span><span class="figcap">Step 7 — Parallel specialist mentions and store-verified replies</span></figcaption></figure>
+<h3 id="step-8-the-human-gate-recorded-then-announced">Step 8 — The human gate, recorded then announced</h3>
+<p>The gate lives in the ASD store first; the channel message is notification:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>asd phase-advance --projectId aster-grove-makerspace-6a8498ef \
+  --toPhase define --idempotencyKey astergrove-gate-discover-01 \
+  --approvalReceipt &#39;{&quot;receiptId&quot;:&quot;ag-gate-001&quot;,&quot;approvedBy&quot;:&quot;mehran&quot;,
+  &quot;decision&quot;:&quot;approve&quot;,&quot;rationale&quot;:&quot;…framing question selected…&quot;,
+  &quot;approvedAt&quot;:&quot;2026-08-23T07:40:00.000Z&quot;}&#39;
+</code></pre></div>
+<p>The store evaluated the gate (factcheck passing, no veto artifacts) and
+advanced the phase. Only then did the owner post the decision in-channel:
+the framing question — <em>how might the makerspace make every member&#39;s first
+independent making session succeed without repeated staff explanation?</em> —
+plus the accepted inputs and the receipt reference.</p>
+<p><img src="images/06-human-gate-decision.png" alt="Owner human-gate decision post"></p>
+<h3 id="step-9-ask-the-critic-to-verify-the-store">Step 9 — Ask the critic to verify the store</h3>
+<p>The owner asked Marcus to confirm the blueprint review record from the
+persisted store. His reply (event <code>171fd4d3…</code>) verified all three legs and
+cited the review-veto-log <code>0224aa6c…</code>, row <code>r1</code>, evidence <code>058ca7b0…</code>
+(resolving to <code>facilities-05</code>), and the same-ID remediation on artifact
+<code>eeaa4f91…</code> — every id checked out against the workspace.</p>
+<p><img src="images/07-critic-verification.png" alt="Critic verification of the persisted review loop"></p>
+<figure class="fig fig-fallback"><pre class="fig-pre">stateDiagram-v2
+  [*] --&gt; draft : artifact-write (lane empty)
+  draft --&gt; veto : critic review cites evidence
+  veto --&gt; remediated : same-id rewrite
+  remediated --&gt; final : evidence-cited pass
+  final --&gt; [*] : factcheck + human gate</pre><figcaption><span class="fignum">Figure</span><span class="figcap">Step 9 — Ask the critic to verify the store</span></figcaption></figure>
+<h3 id="step-10-generate-the-canvas-index">Step 10 — Generate the Canvas index</h3>
+<p>The Canvas is generated from the workspace, not hand-written:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>node scripts/buzz-canvas-index.mjs render \
+  --project-dir tmp/buzz39/projects/aster-grove-makerspace-6a8498ef \
+  --channel sd/aster-grove-makerspace \
+  --channel-id 361023a9-31cb-4b40-845f-19d64f7827ee \
+  --fictional \
+  --planned research-plan --planned interview-guide --planned opportunity-matrix \
+  --planned hmw-set --planned concept-set --planned prototype-plan \
+  --planned walkthrough-script --planned storyboard --planned test-report \
+  --planned recovery-playbook \
+  --out articles/39/canvas
+</code></pre></div>
+<p>The generator is fail-closed: it refuses to emit a document whose evidence,
+artifact, review-log, or handoff ids do not resolve in the source records,
+and its <code>planned</code> rows must name registered kinds that do not yet exist. The
+rendered document carries the twelve contract sections (charter and boundary,
+phase and gate, roster, evidence register, artifact register, critic findings
+and remediation, handoff queue, decisions/assumptions/risks, prototypes,
+KPI ownership, delivery artifacts, integrity) with content hash
+<code>512a51c6f9ecdbca…</code>.</p>
+<h3 id="step-11-set-the-canvas-live-and-prove-the-round-trip">Step 11 — Set the Canvas live and prove the round trip</h3>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>buzz canvas set --channel 361023a9-31cb-4b40-845f-19d64f7827ee --content - \
+  &lt; articles/39/canvas/aster-grove-makerspace.md
+
+buzz canvas get --channel 361023a9-31cb-4b40-845f-19d64f7827ee \
+  &gt; retrieved-canvas.md
+
+node scripts/buzz-canvas-index.mjs verify \
+  --canvas-dir articles/39/canvas \
+  --project-dir tmp/buzz39/projects/aster-grove-makerspace-6a8498ef \
+  --retrieved retrieved-canvas.md --fictional
+</code></pre></div>
+<p>The set was accepted (event <code>195133a0…</code>), the retrieved document matched the
+generated one modulo one trailing newline, and <code>verify</code> passed all five
+checks: content hash, twelve sections, stale-link resolution, round trip, and
+drift against a fresh render. The Canvas is now the channel&#39;s front door:
+anyone opening the channel can navigate from it to every persisted artifact,
+its status, its owner role, and its review state — while the store remains
+the only system of record.</p>
+<p><img src="images/08-canvas-set.png" alt="Channel state after the Canvas index was set live"></p>
+<figure class="fig fig-fallback"><pre class="fig-pre">sequenceDiagram
+  participant W as ASD workspace
+  participant G as canvas generator
+  participant B as BUZZ relay
+  W-&gt;&gt;G: project, evidence, artifacts, gates
+  G-&gt;&gt;G: fail-closed render + sha256
+  G-&gt;&gt;B: buzz canvas set (stdin)
+  B--&gt;&gt;G: accepted 195133a0
+  G-&gt;&gt;B: buzz canvas get
+  B--&gt;&gt;G: document
+  G-&gt;&gt;G: verify ok (hash, sections, links, round trip, drift)</pre><figcaption><span class="fignum">Figure</span><span class="figcap">Step 11 — Set the Canvas live and prove the round trip</span></figcaption></figure>
+<h3 id="step-12-let-the-loop-continue-freeze-the-end-state">Step 12 — Let the loop continue; freeze the end state</h3>
+<p>Maya opened Define under the owner receipt and delegated a method-registry
+check to Nadia. Her reply resolved the 14 synthesis-phase methods against the
+live project store — she even reported the project&#39;s phase as <code>define</code> with
+10 evidence records, matching the store exactly — and mutated nothing.</p>
+<p>Maya then dispatched the Define synthesis work. What happened next is the
+tutorial&#39;s most important lesson. <strong>Rowan (ideator) refused to fabricate.</strong>
+His session could see the registry and the Canvas index, but not the
+authoritative workspace. He said so explicitly — the Canvas is
+navigation-only, it does not carry the evidence bodies the method runner
+requires, and he would not reconstruct evidence — and he mutated nothing.
+Maya escalated a clean blocker report to the owner and paused Define rather
+than papering over the gap. Separately, an <code>insight-set</code> draft
+(<code>8bb259c4…</code>, method <code>affinity-diagramming</code>, four evidence-cited clusters)
+appeared in the store during this window; no channel reply binds it to a
+runtime, so the ledger records its authorship as unresolved instead of
+guessing.</p>
+<p>Because the workspace had changed, the Canvas was regenerated (11 artifacts,
+1 draft, roster participation updated), re-set on the channel (event
+<code>fd0ef08f…</code>), and the round trip re-verified against the new content hash
+<code>fae1e45f…</code>. The regenerate → set → verify cycle is cheap enough to run
+after every workspace change; that is the whole point.</p>
+<p><img src="images/11-librarian-reply.png" alt="Librarian registry check against the live store"></p>
+<p><img src="images/12-define-blocker-and-artifact.png" alt="Define continuation: registry dispatch, the ideator&#39;s evidence refusal, and the orchestrator&#39;s blocker report"></p>
+<p><img src="images/09-final-channel-state.png" alt="Final captured channel state"></p>
+</section><section class="art-sec sec-5"><span class="sec-kicker">05 · Artifact portfolio</span><h2 id="sec-5-the-canvas-document">The Canvas document</h2>
+<p>The committed artifact is <a href="canvas/aster-grove-makerspace.md"><code>canvas/aster-grove-makerspace.md</code></a>
+with its <a href="canvas/manifest.json">manifest</a>. Its current counts: 10 evidence
+rows, 11 artifacts (5 of them review-veto logs, 1 draft insight-set), 1 typed
+handoff, and 10 planned kinds. The roster section derives participation from
+durable records only — orchestrator, researcher, mapper, measurer (KPI tree),
+and critic own or carry records; synthesizer, ideator, prototyper, presenter,
+and librarian are marked <code>definition only</code> until a record cites them. Section
+2 records the human gate decision with the approval receipt; section 6
+reproduces the veto defect row with its evidence citation; section 8 lists
+the unreviewed draft as a derived risk; section 12 carries the round-trip
+content hash <code>fae1e45f…</code>.</p>
+<p>The Canvas index is regenerated whenever the workspace changes and re-set
+with the same two commands; the verify step catches both a drifted document
+and a failed relay round trip.</p>
+</section><section class="art-sec sec-6"><span class="sec-kicker">06 · Use cases</span><h2 id="sec-6-multi-agent-working-patterns">Multi-agent working patterns</h2>
+<p>What made five runtimes productive in one session:</p>
+<ol>
+<li><strong>Mention by public key, scope by evidence ids.</strong> Every request named its
+addressee&#39;s key, the exact evidence or artifact ids it may touch, the
+prohibitions, and a stop condition.</li>
+<li><strong>The orchestrator delegates; the owner decides.</strong> Maya split work across
+Liam and Kai, reconciled their outputs, and stopped at the gate with
+explicit questions. The owner answered them in one decision post backed by
+a store receipt.</li>
+<li><strong>Replies are claims until their ids resolve.</strong> Liam&#39;s table, Kai&#39;s
+moments, Marcus&#39;s verification, and Nadia&#39;s registry report were each
+checked against the workspace before being treated as evidence.</li>
+<li><strong>The channel is the surface; the store is the record.</strong> No artifact was
+created or mutated from chat; every mutation went through the CLI/MCP and
+was then indexed on the Canvas.</li>
+<li><strong>Silence is a state, not a failure.</strong> The roles that were never dispatched
+(synthesizer, prototyper, measurer, presenter) and both advisors never
+posted. The Canvas roster shows them as definitions rather than pretending
+participation.</li>
+<li><strong>Agents refuse to fabricate when the store is absent.</strong> Rowan could see
+the Canvas but not the workspace, said exactly that, and did nothing
+rather than reconstructing evidence. The boundary held under pressure —
+which is the strongest evidence this tutorial produced.</li>
+</ol>
+</section><section class="art-sec sec-7"><span class="sec-kicker">07 · SOPs for AI</span><h2 id="sec-7-artifact-portfolio-summary">Artifact portfolio (summary)</h2>
+<p>The full typed records are in the workspace and indexed on the Canvas; the
+portfolio here is the tutorial-level summary.</p>
+<p>Current journey (four evidence-cited steps):</p>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 812 50" role="img" aria-hidden="true"><defs><marker id="arr-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 193.6,25 219.6,25 245.59999999999997,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-2)"/><path d="M 391.2,25 417.2,25 443.2,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-2)"/><path d="M 573.5999999999999,25 599.5999999999999,25 625.5999999999999,25" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-2)"/><rect x="10" y="10" width="183.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="101.8" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Hear about makerspace</text><rect x="245.59999999999997" y="10" width="145.6" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="318.4" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Attend induction</text><rect x="443.2" y="10" width="130.39999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="508.4" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Book equipment</text><rect x="625.5999999999999" y="10" width="176" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="713.5999999999999" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">First making session</text></svg><figcaption><span class="fignum">Figure 2</span><span class="figcap">Artifact portfolio (summary)</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Moment</th>
+<th>Emotion</th>
+<th>Failure demand and evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Discover</td>
+<td>curious</td>
+<td>awareness depends on branch signage (annual-review)</td>
+</tr>
+<tr>
+<td>Induct</td>
+<td>unsure</td>
+<td>45-minute standing format excludes some members (accessibility-lead-06)</td>
+</tr>
+<tr>
+<td>Book</td>
+<td>frustrated</td>
+<td>VR kit blocked by school hours (teen-patron-03)</td>
+</tr>
+<tr>
+<td>First make</td>
+<td>anxious</td>
+<td>no starter support for a first print (patron-02)</td>
+</tr>
+</tbody></table>
+<p>Future blueprint (five lanes, remediated): physical evidence (booking kiosk
+and waiver), member actions, frontstage (seated induction), backstage (named
+consumables and maintenance desk — the remediated lane), support processes
+(workshop scheduling).</p>
+<p>KPI tree:</p>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">22.5</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">45</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">67.5</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">90</text><line x1="44" y1="304" x2="730" y2="304" stroke="#DEDEDA" stroke-width="1"/><text x="129.75" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Activemembers</text><text x="301.25" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Booking-to-first-print</text><text x="472.75" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Inductionrating</text><text x="644.25" y="324" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Restockdays</text><rect x="588" y="7" width="14" height="10" rx="2" fill="#4A7FA8"/><text x="610" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">bar</text><rect x="446" y="7" width="14" height="10" rx="2" fill="#171817"/><text x="468" y="15" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">bar</text><rect x="112.75" y="185.55555555555554" width="34" height="118.44444444444446" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="129.75" y="179.55555555555554" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">41</text><rect x="284.25" y="96" width="34" height="208" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="301.25" y="90" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">72</text><rect x="455.75" y="294.75555555555553" width="34" height="9.244444444444468" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="472.75" y="288.75555555555553" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">3</text><rect x="627.25" y="278" width="34" height="26" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="644.25" y="272" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">9</text><rect x="112.75" y="116.22222222222223" width="34" height="187.77777777777777" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="129.75" y="110.22222222222223" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">65</text><rect x="284.25" y="234.66666666666669" width="34" height="69.33333333333331" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="301.25" y="228.66666666666669" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">24</text><rect x="455.75" y="291.5777777777778" width="34" height="12.422222222222217" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="472.75" y="285.5777777777778" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">4</text><rect x="627.25" y="295.3333333333333" width="34" height="8.666666666666686" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="644.25" y="289.3333333333333" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">3</text></svg><figcaption><span class="fignum">Figure 3</span><span class="figcap">Aster Grove makerspace targets</span></figcaption></figure>
+<p>Change plan (pilot actions): seated induction path (accessibility lead),
+named consumables owner and schedule (facilities), first-booking starter
+session (front desk).</p>
+</section><section class="art-sec sec-8"><span class="sec-kicker">08 · Value & measurement</span><h2 id="sec-8-deterministic-fact-check">Deterministic fact-check</h2>
+<p>The final machine gate replayed integrity, schema, acceptance, and review
+state for every artifact:</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
+  &quot;pass&quot;: true,
+  &quot;rows&quot;: [
+    {
+      &quot;artifactId&quot;: &quot;791717f177ab47368398a75105857b08&quot;,
+      &quot;kind&quot;: &quot;change-plan&quot;,
+      &quot;status&quot;: &quot;final&quot;,
+      &quot;integrity&quot;: { &quot;pass&quot;: true, &quot;dangling&quot;: [] },
+      &quot;review&quot;: { &quot;pass&quot;: true, &quot;gate&quot;: &quot;critic&quot;, &quot;verdict&quot;: &quot;pass&quot; }
+    }
+  ]
+}
+</code></pre></div>
+<p>All 10 rows passed; the phase-gate evaluation recorded <code>factcheckPass: true</code>
+with no veto artifacts outstanding. The full receipt is
+<code>receipts/asd-workflow-receipt.json</code>.</p>
+</section><section class="art-sec sec-9"><span class="sec-kicker">09 · AI tool playbook</span><h2 id="sec-9-ai-tool-playbook">AI tool playbook</h2>
+<h3 id="buzz">BUZZ</h3>
+<p>The collaboration surface: private channel, roster of audited runtime
+identities, pubkey-verified mentions, and the Canvas index. Strengths:
+visible multi-agent work, threading, membership control. Boundary: a message
+is conversation, not persistence — and the Canvas is navigation, not the
+store.</p>
+<h3 id="asd-cli-asd-mcp">ASD CLI / ASD MCP</h3>
+<p>The record: project, evidence, artifacts, reviews, handoffs, phase gates,
+factcheck. The runtimes demonstrated live MCP reads (Liam, Marcus, and Nadia
+cited exact store ids). The 29 <code>sd_*</code> tools including <code>sd_artifact_write</code> and
+<code>sd_factcheck</code> are the same contract on every host surface.</p>
+<h3 id="acp">ACP</h3>
+<p>Record-only by design: the typed handoff exists as a store record; no
+external process spawn is claimed or supported.</p>
+<h3 id="canvas-index-generator">Canvas index generator</h3>
+<p><code>scripts/buzz-canvas-index.mjs</code> renders the channel index from workspace
+records (fail-closed), and <code>verify</code> proves content hash, contract sections,
+stale-link resolution, live round trip, and drift — the tutorial&#39;s Step 10
+and 11.</p>
+</section><section class="art-sec sec-10"><span class="sec-kicker">10 · Lessons learned</span><h2 id="sec-10-lessons-and-pitfalls">Lessons and pitfalls</h2>
+<ul>
+<li>A name-only @mention does not notify; the runtime&#39;s public key must ride the message.</li>
+<li>An agent reply without resolvable ids is an anecdote; with them, it is evidence.</li>
+<li>A persisted artifact without a binding reply is a record, not an attribution — the insight-set stayed unauthored in the ledger.</li>
+<li>An agent that declines to fabricate when its store is missing is the system working, not failing.</li>
+<li>The deliberate veto is the cheapest test that the review gate actually gates.</li>
+<li>Announce the human gate in-channel, but record it in the store first.</li>
+<li>Regenerating and re-verifying the Canvas after every workspace change keeps the index honest.</li>
+<li>Keychain-loaded identities still follow the shell-only rule: never displayed, never written.</li>
+</ul>
+</section><section class="art-sec sec-11"><span class="sec-kicker">11 · References</span><h2 id="sec-11-evidence-ledger">Evidence ledger</h2>
+<table>
+<thead>
+<tr>
+<th>Evidence item</th>
+<th>Status</th>
+<th>Receipt</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Channel creation and roster</td>
+<td>LIVE</td>
+<td><code>receipts/buzz-live-session-receipt.json</code>; s01</td>
+</tr>
+<tr>
+<td>Owner kickoff and scoped mentions</td>
+<td>LIVE</td>
+<td>transcript events <code>37b25af6…</code>, <code>8a846816…</code>, <code>6386dc64…</code>, <code>ac3310e5…</code></td>
+</tr>
+<tr>
+<td>Orchestrator coordination replies</td>
+<td>LIVE</td>
+<td>events <code>b47e889a…</code>, <code>78456ea6…</code>, <code>1e018c52…</code>, <code>6e10afd0…</code>; s03</td>
+</tr>
+<tr>
+<td>Researcher provenance table</td>
+<td>LIVE, store-verified</td>
+<td>event <code>c9bbe1d1…</code>; s05</td>
+</tr>
+<tr>
+<td>Mapper failure-demand moments</td>
+<td>LIVE, store-verified</td>
+<td>event <code>59a47dc4…</code>; s05</td>
+</tr>
+<tr>
+<td>Critic store verification</td>
+<td>LIVE, store-verified</td>
+<td>event <code>171fd4d3…</code>; s07</td>
+</tr>
+<tr>
+<td>Librarian registry check</td>
+<td>LIVE, store-verified</td>
+<td>event <code>ee90d2ae…</code>; s11</td>
+</tr>
+<tr>
+<td>Ideator evidence refusal + orchestrator blocker escalation</td>
+<td>LIVE</td>
+<td>events <code>0288dbc4…</code>, <code>f0dfafbed…</code>, <code>f54ac49c…</code>, <code>402617de…</code>; s12</td>
+</tr>
+<tr>
+<td>Insight-set draft in store during Define window</td>
+<td>PERSISTED, AUTHORSHIP UNRESOLVED</td>
+<td>artifact <code>8bb259c4…</code> cites real evidence; no binding reply exists</td>
+</tr>
+<tr>
+<td>Human phase gate</td>
+<td>LIVE</td>
+<td>store receipt <code>ag-gate-001</code>; s06</td>
+</tr>
+<tr>
+<td>Canvas set and round trip (first)</td>
+<td>LIVE</td>
+<td>event <code>195133a0…</code>; hash <code>512a51c6…</code></td>
+</tr>
+<tr>
+<td>Canvas re-set and round trip (after Define changes)</td>
+<td>LIVE</td>
+<td>event <code>fd0ef08f…</code>; hash <code>fae1e45f…</code></td>
+</tr>
+<tr>
+<td>ASD workflow (evidence, artifacts, veto, pass, handoff, factcheck)</td>
+<td>VERIFIED (isolated workspace)</td>
+<td><code>receipts/asd-workflow-receipt.json</code></td>
+</tr>
+<tr>
+<td>In-app Canvas panel screenshot</td>
+<td>NOT CAPTURED</td>
+<td>panel requires a UI click the session could not perform; round trip is machine-verified</td>
+</tr>
+<tr>
+<td>Reload, recovery, cleanup</td>
+<td>NOT EXERCISED</td>
+<td>future session</td>
+</tr>
+<tr>
+<td>Undispatched roles (synthesizer, prototyper, measurer, presenter) and advisors</td>
+<td>NOT DISPATCHED</td>
+<td>no replies claimed</td>
+</tr>
+</tbody></table>
+</section><section class="art-sec sec-12"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-references">References</h2>
+<ul>
+<li><code>books/01-this-is-service-design-doing/03-the-service-design-process.md</code></li>
+<li><code>books/01-this-is-service-design-doing/04-research-methods.md</code></li>
+<li><code>books/02-this-is-service-design-thinking/04-the-methods-toolbox.md</code></li>
+<li><code>books/03-service-design-from-insight-to-implementation/06-prototyping-services.md</code></li>
+<li><code>books/05-good-services/02-the-fifteen-principles.md</code></li>
+<li><code>books/08-orchestrating-experiences/03-the-orchestration-canvas.md</code></li>
+<li><code>books/09-mapping-experiences/04-customer-journey-maps.md</code></li>
+<li><code>books/09-mapping-experiences/05-service-blueprints.md</code></li>
+<li><code>books/20-the-service-profit-chain/05-measuring-the-chain.md</code></li>
+<li><code>../37/README.md</code> — the earlier BUZZ case study and its pending-live ledger</li>
+<li><code>../../docs/site/buzz.md</code> — the BUZZ integration guide, including the Canvas index workflow</li>
+</ul>
+</section></article></div>
+    <div class="cross-links"><a class="xlink" href="../37/index.html"><span class="lbl">← Previous case</span><span class="ttl">37. OneRecovery: A Service Design Project Orchestrated in BUZZ</span><span class="rt">36 min read</span></a><a class="xlink empty" href="#"><span class="lbl">—</span></a></div>
+    <div class="art-foot">
+    <span>3 figures · ~3.7k words · evidence-cited · reviewed by an adversarial AI critic.</span>
+    · <a href="../../index.html">Back to the archive</a>
+    </div>
+    <button class="backtop" id="backtop" type="button">Back to top</button></main>
+<footer class="footer">
+  <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
+  <span><a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
+</footer>
+<script src="../../assets/site.js"></script>
+
+</body></html>

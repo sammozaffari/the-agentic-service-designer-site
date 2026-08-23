@@ -15,6 +15,7 @@
   <nav class="main-nav">
     <a href="../index.html" class="">Index</a>
     <a href="../courses.html" class="">Courses</a>
+    <a href="../book.html" class="">Book</a>
     <a href="../harness.html" class="">Harness</a>
     <a href="../docs/index.html" class="on">Docs</a>
     <a href="../about.html" class="">About</a>
@@ -36,10 +37,18 @@ plugin shape, adds <code>/asd</code>, and wires the same self-contained MCP serv
 the plugin root. The pack is generated; edit <code>platform/agents</code>,
 <code>platform/skills</code>, or the emitter rather than an emitted agent file.</p>
 <h2 id="install-as-a-native-plugin">Install as a native plugin</h2>
-<p>From a checkout or a published repository containing <code>platform/packs</code>:</p>
+<p>The plugin is published as a standalone distribution repository. This is the
+fastest path and needs no source checkout:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>claude plugin marketplace add imehr/asd-plugin
+claude plugin install asd@asd-platform
+</code></pre></div>
+<p>From a source checkout, the same plugin installs from the local packs tree:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>claude plugin marketplace add &lt;repo&gt;/platform/packs
 claude plugin install asd@asd-platform
 </code></pre></div>
+<p>The distribution repository is regenerated from this monorepo by
+<code>scripts/publish-distribution-repos.mjs</code>; its <code>provenance.json</code> records the
+source commit it was synced from.</p>
 <p>The marketplace manifest is <code>platform/packs/.claude-plugin/marketplace.json</code>;
 the plugin manifest is <code>claude-code/.claude-plugin/plugin.json</code>. Claude loads the
 plugin-root <code>.mcp.json</code> automatically:</p>
@@ -183,7 +192,7 @@ prompt itself cannot bypass those runtime gates.</p>
 </tr>
 </tbody></table>
 <h2 id="current-boundaries">Current boundaries</h2>
-<p>The pack&#39;s MCP bundle advertises 29 tools, 225 resources, and 10 prompts when
+<p>The pack&#39;s MCP bundle advertises 29 tools, 226 resources, and 10 prompts when
 its corpus roots are available. Six emitted MCP bundles have fresh disposable
 stdio evidence; this Claude pack is one of them. That receipt does not prove
 native host execution in every Claude environment. ACP is <code>asd-acp/1</code>
