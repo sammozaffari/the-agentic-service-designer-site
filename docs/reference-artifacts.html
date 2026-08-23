@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="The artifact data model, the 38-row practice vocabulary, the 32 registered runtime contracts, six authored templates, and the review-veto-log boundary.">
+<meta name="description" content="The artifact data model, the 39-row practice vocabulary, the 38 registered runtime contracts, seven authored templates, and the review-veto-log boundary.">
 <title>Artifact kind reference — The Agentic Service Designer</title>
 <link rel="stylesheet" href="../assets/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
@@ -28,23 +28,23 @@
   <section class="page-hero">
     <span class="kicker">Docs · Reference</span>
     <h1>Artifact kind reference</h1>
-    <p class="lede">The artifact data model, the 38-row practice vocabulary, the 32 registered runtime contracts, six authored templates, and the review-veto-log boundary.</p>
+    <p class="lede">The artifact data model, the 39-row practice vocabulary, the 38 registered runtime contracts, seven authored templates, and the review-veto-log boundary.</p>
   </section>
-  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Reference</b><ol><li><a href="./reference-tools.html">Engine tool reference</a></li><li><a href="./reference-agents.html">Agent role reference</a></li><li><a href="./reference-skills.html">Skills reference</a></li><li><a href="./reference-artifacts.html" class="on">Artifact kind reference</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#two-catalogs-stated-plainly">Two catalogs, stated plainly</a></li><li><a href="#the-32-registered-artifact-kind-contracts">The 32 registered artifact-kind contracts</a></li><li><a href="#renderers">Renderers</a></li><li><a href="#fillable-templates">Fillable templates</a></li><li><a href="#anatomy-of-a-review-veto-log">Anatomy of a review-veto-log</a></li></ol></nav></aside><article class="art-body"><h1 id="artifact-kind-reference">Artifact kind reference</h1>
+  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Reference</b><ol><li><a href="./reference-tools.html">Engine tool reference</a></li><li><a href="./reference-agents.html">Agent role reference</a></li><li><a href="./reference-skills.html">Skills reference</a></li><li><a href="./reference-artifacts.html" class="on">Artifact kind reference</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#two-catalogs-stated-plainly">Two catalogs, stated plainly</a></li><li><a href="#the-38-registered-artifact-kind-contracts">The 38 registered artifact-kind contracts</a></li><li><a href="#renderers">Renderers</a></li><li><a href="#fillable-templates">Fillable templates</a></li><li><a href="#anatomy-of-a-review-veto-log">Anatomy of a review-veto-log</a></li></ol></nav></aside><article class="art-body"><h1 id="artifact-kind-reference">Artifact kind reference</h1>
 <p>An artifact is the platform&#39;s unit of work: a typed JSON document in the project&#39;s <code>artifacts/</code> directory. Every artifact carries <code>id</code>, <code>kind</code>, <code>projectId</code>, <code>title</code>, <code>schemaVersion</code>, <code>sources</code> (book/article provenance), <code>nodes</code>, timestamps, and <code>status</code> (<code>draft</code> or <code>final</code>); artifacts written through a method also record <code>methodId</code>, and gate outcomes attach as <code>check</code> (acceptance failures) and <code>review</code> (the verdict and its log). Each node is <code>{ id, label, evidence: [{ evidenceId, quote? }], fields }</code> — the <code>fields</code> object holds the kind-specific columns (a journey map&#39;s <code>emotion</code> and <code>touchpoint</code>, a KPI tree&#39;s baselines), while <code>evidence</code> links the node to the project register.</p>
 <p>Kind ids are strings (<code>journey-map</code>, <code>insight-set</code>, <code>review-veto-log</code>), never numbers; the catalog numbers below are a human index, not part of the id.</p>
 <h2 id="two-catalogs-stated-plainly">Two catalogs, stated plainly</h2>
 <p>There are two related layers and they are not interchangeable:</p>
 <ul>
-<li><strong>The practice vocabulary</strong> — <code>platform/templates/catalog.md</code> contains a <strong>38-row practice vocabulary</strong>: 17 canonical labels, 13 aliases, and 8 pending concepts. A row is a practice-facing name and design intent; it is not proof of a live runtime kind, authored template, renderer, skill, or per-kind typed schema.</li>
-<li><strong>The runtime registry</strong> — <code>suite/packages/knowledge/data/artifact-kinds/*.json</code> contains <strong>32 registered artifact-kind contracts</strong>. This is the runtime set used by artifact persistence, export, and metadata lookup. Registry presence must not be inflated to 38 by counting aliases or pending vocabulary rows.</li>
+<li><strong>The practice vocabulary</strong> — <code>platform/templates/catalog.md</code> contains a <strong>39-row practice vocabulary</strong>: 18 canonical labels, 13 aliases, and 8 pending concepts. A row is a practice-facing name and design intent; it is not proof of a live runtime kind, authored template, renderer, skill, or per-kind typed schema.</li>
+<li><strong>The runtime registry</strong> — <code>suite/packages/knowledge/data/artifact-kinds/*.json</code> contains <strong>38 registered artifact-kind contracts</strong>. This is the runtime set used by artifact persistence, export, and metadata lookup. Registry presence must not be inflated to 39 by counting aliases or pending vocabulary rows.</li>
 </ul>
-<p>The six authored fillable templates are separately declared in <code>suite/packages/knowledge/data/templates/*.json</code> and point to the Markdown sources under <code>platform/templates/</code>. The catalog&#39;s per-kind typed runtime schema expansion is a <strong>Phase 2</strong> boundary; the current documentation must not describe the 38-row vocabulary as 38 live typed schemas/templates.</p>
-<p>There are <strong>five registry-only kinds</strong>, deliberately outside the 38-row catalog promise: <code>change-plan</code>, <code>raci-matrix</code>, <code>roadmap</code>, <code>service-profit-chain</code>, and <code>walkthrough-script</code>. They have runtime registry metadata and producing support, but no authored template claim.</p>
-<p><code>review-veto-log</code> is a separate administrative control record produced by <code>sd_review</code>, not a user-facing authored template or method output. It records Critic verdict rows and remains part of the 32-kind runtime registry.</p>
+<p>The seven authored fillable templates are separately declared in <code>suite/packages/knowledge/data/templates/*.json</code> and point to the Markdown sources under <code>platform/templates/</code>. The catalog&#39;s per-kind typed runtime schema expansion is a <strong>Phase 2</strong> boundary; the current documentation must not describe the 39-row vocabulary as 39 live typed schemas/templates.</p>
+<p>There are <strong>ten registry-only kinds</strong>, deliberately outside the 39-row catalog promise: <code>actor-network-map</code>, <code>change-plan</code>, <code>day-in-the-life</code>, <code>expectation-map</code>, <code>raci-matrix</code>, <code>roadmap</code>, <code>service-profit-chain</code>, <code>service-scenario</code>, <code>touchpoint-inventory</code>, and <code>walkthrough-script</code>. They have runtime registry metadata and producing support, but no authored template claim.</p>
+<p><code>review-veto-log</code> is a separate administrative control record produced by <code>sd_review</code>, not a user-facing authored template or method output. It records Critic verdict rows and remains part of the 38-kind runtime registry.</p>
 <p>The eight pending, non-executable vocabulary rows are <code>design-brief</code>, <code>reframe-register</code>, <code>co-design-plan</code>, <code>evaluation-framework</code>, <code>executive-report</code>, <code>presentation-deck</code>, <code>orchestration-plan</code>, and <code>phase-gate-decision</code>. They are practice concepts only until their future registry/template/renderer/skill gates are met.</p>
 <p>Aliases preserve useful practice language without creating extra runtime kinds: for example, <code>insight-register</code> maps to <code>insight-set</code>, <code>standards-audit</code> maps to <code>service-standard-set</code>, and <code>storyboard-walkthrough</code> maps to the shipped <code>storyboard</code> view.</p>
-<h2 id="the-32-registered-artifact-kind-contracts">The 32 registered artifact-kind contracts</h2>
+<h2 id="the-38-registered-artifact-kind-contracts">The 38 registered artifact-kind contracts</h2>
 <p>Generated from the registry; <code>nodeLabel</code> is what one row of the artifact is called.</p>
 <table>
 <thead>
@@ -55,6 +55,11 @@
 </tr>
 </thead>
 <tbody><tr>
+<td><code>actor-network-map</code></td>
+<td>Actor Network Map</td>
+<td>actor</td>
+</tr>
+<tr>
 <td><code>affinity-cluster-set</code></td>
 <td>Affinity Cluster Set</td>
 <td>cluster</td>
@@ -75,6 +80,11 @@
 <td>concept</td>
 </tr>
 <tr>
+<td><code>day-in-the-life</code></td>
+<td>Day-in-the-Life Map</td>
+<td>moment</td>
+</tr>
+<tr>
 <td><code>decision-matrix</code></td>
 <td>Decision Matrix</td>
 <td>decision</td>
@@ -88,6 +98,11 @@
 <td><code>empathy-map</code></td>
 <td>Empathy Map</td>
 <td>quadrant</td>
+</tr>
+<tr>
+<td><code>expectation-map</code></td>
+<td>Expectation Map</td>
+<td>expectation</td>
 </tr>
 <tr>
 <td><code>experience-audit</code></td>
@@ -108,6 +123,11 @@
 <td><code>interview-guide</code></td>
 <td>Interview Guide</td>
 <td>question</td>
+</tr>
+<tr>
+<td><code>jobs-to-be-done</code></td>
+<td>Jobs-to-be-Done Map</td>
+<td>job</td>
 </tr>
 <tr>
 <td><code>journey-map</code></td>
@@ -180,6 +200,11 @@
 <td>link</td>
 </tr>
 <tr>
+<td><code>service-scenario</code></td>
+<td>Service Scenario</td>
+<td>beat</td>
+</tr>
+<tr>
 <td><code>service-standard-set</code></td>
 <td>Service Standard Set</td>
 <td>standard</td>
@@ -205,6 +230,11 @@
 <td>finding</td>
 </tr>
 <tr>
+<td><code>touchpoint-inventory</code></td>
+<td>Touchpoint Inventory</td>
+<td>touchpoint</td>
+</tr>
+<tr>
 <td><code>value-proposition-canvas</code></td>
 <td>Value Proposition Canvas</td>
 <td>fit</td>
@@ -216,9 +246,9 @@
 </tr>
 </tbody></table>
 <h2 id="renderers">Renderers</h2>
-<p>The 32 registered kinds have deterministic renderer coverage in <code>suite/packages/render/src/</code>, dispatched on <code>artifact.kind</code>; an unregistered kind falls back to a legible node listing rather than throwing. The model writes contract-shaped JSON and the renderers produce all diagram markup — hand-written diagram syntax by a model is a rejected pattern. Renders land in the project&#39;s <code>renders/</code> directory: derived data, rebuildable from the store at any time via <code>sd_export_artifact</code> (SVG) or folded into the HTML reports from <code>sd_export_report</code>. This renderer coverage does not turn pending catalog rows into executable kinds.</p>
+<p>The 38 registered kinds have deterministic renderer coverage in <code>suite/packages/render/src/</code>, dispatched on <code>artifact.kind</code>; an unregistered kind falls back to a legible node listing rather than throwing. The model writes contract-shaped JSON and the renderers produce all diagram markup — hand-written diagram syntax by a model is a rejected pattern. Renders land in the project&#39;s <code>renders/</code> directory: derived data, rebuildable from the store at any time via <code>sd_export_artifact</code> (SVG) or folded into the HTML reports from <code>sd_export_report</code>. This renderer coverage does not turn pending catalog rows into executable kinds.</p>
 <h2 id="fillable-templates">Fillable templates</h2>
-<p>Six kinds have authored, human-fillable templates — the flagship set named in the catalog. Download the Markdown form, fill it by hand or with a team, and use the runtime contract/acceptance rules to turn the result into an evidence-cited artifact; a template is not a promise that every catalog row has its own typed runtime schema:</p>
+<p>Seven kinds have authored, human-fillable templates — the flagship set named in the catalog. Download the Markdown form, fill it by hand or with a team, and use the runtime contract/acceptance rules to turn the result into an evidence-cited artifact; a template is not a promise that every catalog row has its own typed runtime schema:</p>
 <ul>
 <li><a href="../templates/05-stakeholder-map-template.md">Stakeholder map</a></li>
 <li><a href="../templates/06-ecosystem-map-template.md">Ecosystem map</a></li>
@@ -226,6 +256,7 @@
 <li><a href="../templates/09-persona-set-template.md">Persona set</a></li>
 <li><a href="../templates/11-journey-map-template.md">Journey map</a></li>
 <li><a href="../templates/12-service-blueprint-template.md">Service blueprint</a></li>
+<li><a href="../templates/39-jobs-to-be-done-template.md">Jobs-to-be-done map</a></li>
 </ul>
 <p>The full catalog with per-kind fields and references is on the <a href="../templates.html">templates page</a>.</p>
 <h2 id="anatomy-of-a-review-veto-log">Anatomy of a review-veto-log</h2>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="BUZZ for Agentic Service Design — Run a receipted multi-agent engagement on a private team relay — ten role runtimes, fail-closed evidence handshakes, human phase gates. Online course from The Agentic Service Designer.">
+  <meta name="description" content="BUZZ for Agentic Service Design — The platform stack, a complete receipted multi-agent engagement, and two live case studies — private team relay, ten role runtimes, fail-closed evidence handshakes, human phase gates. Online course from The Agentic Service Designer.">
   <title>Course 09: BUZZ for Agentic Service Design | The Agentic Service Designer</title>
   <link rel="stylesheet" href="../assets/style.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
@@ -89,6 +89,49 @@
     .slide-card.active {
       display: flex;
     }
+    .slide-card.has-media.active {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+      gap: clamp(18px, 3vw, 42px);
+      align-items: center;
+      overflow: hidden;
+    }
+    .slide-card.has-media.active .slide-text {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-width: 0;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #3d3e3a transparent;
+      padding-right: 4px;
+    }
+    .slide-shot {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+      align-self: stretch;
+      justify-content: center;
+    }
+    .slide-shot img {
+      width: 100%;
+      max-height: 54vh;
+      object-fit: contain;
+      border: 1px solid #3d3e3a;
+      border-radius: 6px;
+      background: #0c0d0c;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .slide-shot figcaption {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #83847c;
+      letter-spacing: 0.05em;
+      line-height: 1.5;
+    }
+    .slide-shot figcaption b { color: #b9bab0; }
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(10px); }
       to { opacity: 1; transform: translateX(0); }
@@ -292,6 +335,10 @@
     .d-pass { border-color: #38a169; color: #9ae6b4; background: rgba(56,161,105,0.08); }
     .d-veto { border-color: #c53030; color: #feb2b2; background: rgba(197,48,48,0.08); }
 
+    @media (max-width: 860px) {
+      .slide-card.has-media.active { grid-template-columns: 1fr; overflow-y: auto; }
+      .slide-shot img { max-height: 32vh; }
+    }
     @media (max-width: 720px) {
       .slide-viewport { aspect-ratio: auto; max-height: none; }
       .d-lane { flex-direction: column; align-items: stretch; gap: 4px; }
@@ -470,11 +517,11 @@
         <a class="back-link" href="../courses.html">← All Courses</a>
         <div><span class="badge badge-intermediate">Intermediate</span></div>
         <h1 class="course-page-title">Course 09: BUZZ for Agentic Service Design</h1>
-        <p class="course-page-sub">Run a receipted multi-agent engagement on a private team relay — ten role runtimes, fail-closed evidence handshakes, human phase gates</p>
-        <p style="max-width:760px; line-height:1.6; color:var(--ink-soft);">A complete, receipted BUZZ session: create the private engagement channel, install the ASD persona pack, dispatch scoped mentions to role runtimes, survive the fail-closed evidence handshake (mapper blocks, researcher audits and refuses to fabricate), verify sha256 store handoffs, close Discover through the Critic and a human approval receipt, and publish a hash-verified Canvas artifact index. Companion to Articles 37 and 39.</p>
+        <p class="course-page-sub">The platform stack, a complete receipted multi-agent engagement, and two live case studies — private team relay, ten role runtimes, fail-closed evidence handshakes, human phase gates</p>
+        <p style="max-width:760px; line-height:1.6; color:var(--ink-soft);">The platform stack and a complete, receipted BUZZ engagement in one course: the BUZZ relay and its proof boundaries, the ASD stack behind it (ten role agents, the pack-local MCP server, record-only ACP, the host integrations), then the live Aster Grove session end to end — scoped mentions, the fail-closed evidence handshake (the ideator refuses to fabricate), the deliberate veto and same-id remediation, the human approval receipt, and a hash-verified Canvas index. Closes with the Article 38 case study: the ASD Studio in the DeepSeek Harness and two live journeys. Companion to Articles 37, 38, and 39.</p>
         <dl class="metrics-row" style="margin-top:24px;">
-          <div><dt>Modules</dt><dd>6</dd></div>
-          <div><dt>Duration</dt><dd>≈3h 30m</dd></div>
+          <div><dt>Modules</dt><dd>8</dd></div>
+          <div><dt>Duration</dt><dd>≈5h 30m</dd></div>
           <div><dt>Format</dt><dd>Interactive Deck + Labs</dd></div>
           <div><dt>Status</dt><dd class="status-available">Available</dd></div>
         </dl>
@@ -491,82 +538,267 @@
         
         <div class="slide-viewport" id="slideViewport">
           
-        <div class="slide-card active" data-slide-index="0">
+        <div class="slide-card active " data-slide-index="0">
           <div class="slide-header">
             <span class="slide-kicker">The Collaboration Layer</span>
-            <span class="slide-page-num">01 / 06</span>
+            <span class="slide-page-num">01 / 14</span>
           </div>
           <h2 class="slide-title">BUZZ: a private relay for your SD team</h2>
           <ul class="slide-bullets">
-            <li>Identities are keypairs — role runtimes sign events as first-class members, not as your puppet.</li><li>One private channel per engagement: mentions route on pubkeys, Canvas carries the artifact index.</li><li>Every message and canvas set is a receipted event you can cite later.</li>
+            <li>Identities are keypairs — role runtimes sign events as first-class members, not as your puppet.</li><li>One private channel per engagement: mentions route on pubkeys, Canvas carries the artifact index.</li><li>Every message and canvas set is a receipted event you can cite later — event IDs are citation formats.</li>
           </ul>
-          
-          <blockquote class="slide-quote">""</blockquote>
+          <div class="deck-diagram">
+  <span class="d-box">Relay <code>tm.communities.buzz.xyz</code></span><span class="d-arrow">→</span>
+  <span class="d-box">Channels <code>sd/&lt;project&gt;</code></span><span class="d-arrow">→</span>
+  <span class="d-box">Keypair members</span><span class="d-arrow">→</span>
+  <span class="d-box">Canvas index</span>
+</div>
+          <blockquote class="slide-quote">"A BUZZ message can be a real collaboration event and still not be an ASD evidence row."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="1">
           <div class="slide-header">
-            <span class="slide-kicker">The Roster</span>
-            <span class="slide-page-num">02 / 06</span>
+            <span class="slide-kicker">Boundaries</span>
+            <span class="slide-page-num">02 / 14</span>
           </div>
-          <h2 class="slide-title">Ten role runtimes, two coding-agent advisors</h2>
+          <h2 class="slide-title">Three proof surfaces, kept apart</h2>
           <ul class="slide-bullets">
-            <li>The ASD persona pack installs through the desktop UI with a pack-local MCP config.</li><li>Mention by pubkey for automation; name-only mentions are presentation.</li><li>Only mentioned roles act — silent roles are an honest outcome, not a gap.</li>
+            <li>Conversation is provable; persistence is claimed only by the store.</li><li>The Canvas points; the store proves. A row is navigation, not proof.</li><li>ACP records typed handoffs only — no external spawn, by design.</li>
           </ul>
-          
-          <blockquote class="slide-quote">""</blockquote>
+          <div class="deck-diagram d-lanes">
+  <div class="d-lane"><span class="d-lane-label">BUZZ proves</span><div class="d-lane-items d-lane-items--line"><span class="d-box d-good">channel</span><span class="d-box d-good">roster</span><span class="d-box d-good">mentions</span><span class="d-box d-good">runtime replies</span><span class="d-box d-good">canvas doc</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">ASD store proves</span><div class="d-lane-items d-lane-items--line"><span class="d-box d-good">evidence</span><span class="d-box d-good">artifacts</span><span class="d-box d-good">reviews</span><span class="d-box d-good">phase gates</span><span class="d-box d-good">factcheck</span></div></div>
+  <div class="d-lane"><span class="d-lane-label">ACP records</span><div class="d-lane-items"><span class="d-box">typed handoffs only</span><span class="d-box d-bad">no external spawn</span><span class="d-box d-bad">fail-closed</span></div></div>
+</div>
+          <blockquote class="slide-quote">"The pack and the protocols fail closed when the missing binding is not proven."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="2">
           <div class="slide-header">
-            <span class="slide-kicker">Live Session</span>
-            <span class="slide-page-num">03 / 06</span>
+            <span class="slide-kicker">The Stack · Module 09.2</span>
+            <span class="slide-page-num">03 / 14</span>
           </div>
-          <h2 class="slide-title">Kickoff: sd/northfield-followup-care</h2>
+          <h2 class="slide-title">Agents, MCP, ACP — one governed door</h2>
           <ul class="slide-bullets">
-            <li>The brief bounds scope, states signals as signals, and names human authority at every gate.</li><li>The orchestrator replies runtime-authored: signed by her key, referencing artifacts by path.</li>
+            <li>Same door on every host: BUZZ, Claude Code, Codex, Kimi, OpenCode, standalone MCP — and the DSH Studio.</li><li><code>ASD_WORKSPACE</code> bounds what a runtime can even see — module 05's refusal is this boundary holding.</li><li>ACP is record-only by design: handoffs are store rows; announcements are chat messages.</li>
           </ul>
-          
-          <blockquote class="slide-quote">""</blockquote>
+          <div class="deck-diagram d-pipe">
+  <span class="d-box d-stage">Persona pack (keyless, 10 roles)</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">Runtimes (identity-backed pubkeys)</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">MCP server · 29 <code>sd_*</code> tools</span><span class="d-arrow">→</span>
+  <span class="d-box d-stage">ASD workspace store</span>
+</div>
+          <blockquote class="slide-quote">"Hosts come and go; the store and its door stay the same."</blockquote>
+        
         </div>
         
-        <div class="slide-card " data-slide-index="3">
-          <div class="slide-header">
-            <span class="slide-kicker">Fail-Closed</span>
-            <span class="slide-page-num">04 / 06</span>
+        <div class="slide-card has-media" data-slide-index="3">
+          <div class="slide-text">
+            <div class="slide-header">
+              <span class="slide-kicker">The Roster · Module 09.3</span>
+              <span class="slide-page-num">04 / 14</span>
+            </div>
+            <h2 class="slide-title">Ten role runtimes, two advisors</h2>
+            <ul class="slide-bullets">
+              <li>The ASD persona pack installs through the desktop UI with a pack-local MCP config.</li><li>Mention by pubkey for automation; name-only mentions are presentation.</li><li>Six of twelve non-owner members posted in the live session — five with work, one with a refusal.</li>
+            </ul>
+            <blockquote class="slide-quote">"Only mentioned roles act — silence is a state, not a failure."</blockquote>
           </div>
-          <h2 class="slide-title">The evidence handshake</h2>
-          <ul class="slide-bullets">
-            <li>Mapper blocks rather than inventing pain points; researcher audits access and refuses to fabricate.</li><li>Owner posts store path + evidence ids; researcher reproduces every sha256 id from the store.</li><li>One round trip buys an engagement where every artifact names its hashed evidence.</li>
-          </ul>
-          
-          <blockquote class="slide-quote">""</blockquote>
+          <figure class="slide-shot">
+            <img src="./09-buzz-agentic-service-design/images/39-01-channel-created.png" alt="The private channel sd/aster-grove-makerspace on the live relay with the 13-member roster in the BUZZ desktop app." loading="lazy">
+            <figcaption><b>Live capture s01</b> — the private channel and its 13-member roster: one human, ten ASD roles, two coding-agent advisors, every row a keypair.</figcaption>
+          </figure>
+        
         </div>
         
-        <div class="slide-card " data-slide-index="4">
-          <div class="slide-header">
-            <span class="slide-kicker">Close Discover</span>
-            <span class="slide-page-num">05 / 06</span>
+        <div class="slide-card has-media" data-slide-index="4">
+          <div class="slide-text">
+            <div class="slide-header">
+              <span class="slide-kicker">Case Study I · Modules 09.4–09.7</span>
+              <span class="slide-page-num">05 / 14</span>
+            </div>
+            <h2 class="slide-title">Aster Grove Makerspace — live, end to end</h2>
+            <ul class="slide-bullets">
+              <li>Fictional client, real session: private channel <code>sd/aster-grove-makerspace</code>, 13 members, run 2026-08-23.</li><li>10 synthetic evidence records; 11 artifacts; a deliberate veto remediated on the same id.</li><li>Human gate <code>ag-gate-001</code>: Discover → define, factcheck passing.</li><li>Canvas set, retrieved, and hash-verified — twice.</li>
+            </ul>
+            <blockquote class="slide-quote">"Fictional client, real session — every claim bound to a receipt."</blockquote>
           </div>
-          <h2 class="slide-title">Store artifacts and the human receipt</h2>
-          <ul class="slide-bullets">
-            <li>AEIOU synthesis final via Critic pass; factcheck exits 0 only when everything is final and resolvable.</li><li>The phase gate demands a full approval receipt — named human, timestamp, rationale.</li>
-          </ul>
-          
-          <blockquote class="slide-quote">""</blockquote>
+          <figure class="slide-shot">
+            <img src="./09-buzz-agentic-service-design/images/39-02-kickoff-posted.png" alt="The owner kickoff post: fictional-data boundary, project ID, workspace state, and human-authority statement." loading="lazy">
+            <figcaption><b>Live capture s02</b> — the owner kickoff: boundary, join key, state, authority. A charter, not a dataset.</figcaption>
+          </figure>
+        
         </div>
         
-        <div class="slide-card " data-slide-index="5">
+        <div class="slide-card has-media" data-slide-index="5">
+          <div class="slide-text">
+            <div class="slide-header">
+              <span class="slide-kicker">Live Session · Module 09.4</span>
+              <span class="slide-page-num">06 / 14</span>
+            </div>
+            <h2 class="slide-title">Scoped mentions, runtime-authored replies</h2>
+            <ul class="slide-bullets">
+              <li>Every ask: pubkey + deliverable + evidence boundary + prohibitions + stop condition.</li><li>Maya's reply (event <code>b47e889a…</code>) delegates to Liam and Kai in parallel and stops at the gate with questions.</li><li>One mention per ask — replies stay auditable against requests.</li>
+            </ul>
+            <blockquote class="slide-quote">"The orchestrator delegates; the owner decides."</blockquote>
+          </div>
+          <figure class="slide-shot">
+            <img src="./09-buzz-agentic-service-design/images/39-04-role-mentions.png" alt="Scoped owner mentions to the researcher and mapper: exact evidence IDs, allowed actions, and stop conditions." loading="lazy">
+            <figcaption><b>Live capture s04</b> — scoped mentions to researcher and mapper: exact evidence IDs, allowed actions, stop conditions. No open-ended "look into it".</figcaption>
+          </figure>
+        
+        </div>
+        
+        <div class="slide-card has-media" data-slide-index="6">
+          <div class="slide-text">
+            <div class="slide-header">
+              <span class="slide-kicker">Fail-Closed · Module 09.5</span>
+              <span class="slide-page-num">07 / 14</span>
+            </div>
+            <h2 class="slide-title">Replies are claims until their ids resolve</h2>
+            <ul class="slide-bullets">
+              <li>Liam's provenance table cites sha256 ids — every one reproduced against the store.</li><li>Kai maps four failure-demand moments, each pinned to one evidence record.</li><li>The verification step is the module: check every id before treating a reply as evidence.</li>
+            </ul>
+            <blockquote class="slide-quote">"An agent reply without resolvable ids is an anecdote; with them, it is evidence."</blockquote>
+          </div>
+          <figure class="slide-shot">
+            <img src="./09-buzz-agentic-service-design/images/39-05-specialist-replies.png" alt="Specialist replies: provenance table citing real sha256 evidence IDs, failure-demand moments, and the orchestrator's reconciliation." loading="lazy">
+            <figcaption><b>Live capture s05</b> — specialist replies with store-resolvable evidence citations, reconciled by the orchestrator into a gate report.</figcaption>
+          </figure>
+        
+        </div>
+        
+        <div class="slide-card has-media" data-slide-index="7">
+          <div class="slide-text">
+            <div class="slide-header">
+              <span class="slide-kicker">Close Discover · Module 09.6</span>
+              <span class="slide-page-num">08 / 14</span>
+            </div>
+            <h2 class="slide-title">Deliberate veto → same-id pass → human receipt</h2>
+            <ul class="slide-bullets">
+              <li>The blueprint was written to fail (empty lane) — vetoed with an evidence-cited defect row.</li><li>Remediation rewrote the same artifact id; the verdict history accumulates in the veto log.</li><li>Marcus verified the whole loop from the persisted store — and his citations were checked too.</li>
+            </ul>
+            <blockquote class="slide-quote">"The cheapest test that the review gate actually gates."</blockquote>
+          </div>
+          <figure class="slide-shot">
+            <img src="./09-buzz-agentic-service-design/images/39-07-critic-verification.png" alt="Critic verification reply confirming the veto evidence, same-ID remediation, and pass record from the persisted store." loading="lazy">
+            <figcaption><b>Live capture s07</b> — the critic's store verification: veto evidence, same-id remediation, pass record. The gate is only credible if the gate itself is verifiable.</figcaption>
+          </figure>
+        
+        </div>
+        
+        <div class="slide-card has-media" data-slide-index="8">
+          <div class="slide-text">
+            <div class="slide-header">
+              <span class="slide-kicker">Canvas · Module 09.7</span>
+              <span class="slide-page-num">09 / 14</span>
+            </div>
+            <h2 class="slide-title">Render → set → get → verify</h2>
+            <ul class="slide-bullets">
+              <li>Generated from the store, never hand-written; fail-closed on any dangling id.</li><li>Twelve contract sections, from charter and gate state to roster participation and integrity hash.</li><li>Five verify checks: content hash, sections, stale links, round trip, drift.</li><li>Regenerated and re-verified after every workspace change — hashes <code>512a51c6…</code> then <code>fae1e45f…</code>.</li>
+            </ul>
+            <blockquote class="slide-quote">"The Canvas points; the store proves."</blockquote>
+          </div>
+          <figure class="slide-shot">
+            <img src="./09-buzz-agentic-service-design/images/39-08-canvas-set.png" alt="Channel state after the Canvas index was set live: Define-phase messages visible; the Canvas document is attached to the channel." loading="lazy">
+            <figcaption><b>Live capture s08</b> — after <code>buzz canvas set</code> (event <code>195133a0…</code>): the Canvas attached to the live channel, machine-verified by round trip.</figcaption>
+          </figure>
+        
+        </div>
+        
+        <div class="slide-card has-media" data-slide-index="9">
+          <div class="slide-text">
+            <div class="slide-header">
+              <span class="slide-kicker">The Refusal · Module 09.5</span>
+              <span class="slide-page-num">10 / 14</span>
+            </div>
+            <h2 class="slide-title">“I will not reconstruct evidence”</h2>
+            <ul class="slide-bullets">
+              <li>Rowan (ideator) could see the Canvas and the registry — but not the authoritative workspace.</li><li>He said so explicitly, mutated nothing, and refused to fabricate.</li><li>Maya escalated a clean blocker and paused Define rather than papering over the gap.</li><li>The boundary held under pressure — the strongest evidence the session produced.</li>
+            </ul>
+            <blockquote class="slide-quote">"An agent that declines to fabricate is the system working, not failing."</blockquote>
+          </div>
+          <figure class="slide-shot">
+            <img src="./09-buzz-agentic-service-design/images/39-12-define-blocker-and-artifact.png" alt="Define continuation: registry dispatch, the ideator's evidence refusal, and the orchestrator's blocker report." loading="lazy">
+            <figcaption><b>Live capture s12</b> — the ideator's refusal and the orchestrator's blocker escalation.</figcaption>
+          </figure>
+        
+        </div>
+        
+        <div class="slide-card has-media" data-slide-index="10">
+          <div class="slide-text">
+            <div class="slide-header">
+              <span class="slide-kicker">Case Study II · Module 09.8</span>
+              <span class="slide-page-num">11 / 14</span>
+            </div>
+            <h2 class="slide-title">The Studio in the DeepSeek Harness</h2>
+            <ul class="slide-bullets">
+              <li>A full workbench lived in a 320-pixel sidebar — registered correctly, never activated.</li><li>The fix: additive center tab through the host's <code>conversation.view</code> seam; sidebar stays the fallback.</li><li>Activation, not registration, is where integration seams bite — twice in one article.</li>
+            </ul>
+            <blockquote class="slide-quote">"The Studio was never mis-registered — it was never asked to appear."</blockquote>
+          </div>
+          <figure class="slide-shot">
+            <img src="./09-buzz-agentic-service-design/images/38-11-button-opens-center-tab.png" alt="The sidebar Service Design button activating the Agentic SD Studio center tab; the projects grid renders full-width and the composer stays visible below." loading="lazy">
+            <figcaption><b>Live capture (Article 38)</b> — the button now activates the center tab: full-width workbench above, resident composer below. A shift of the eyes, not a change of window.</figcaption>
+          </figure>
+        
+        </div>
+        
+        <div class="slide-card has-media" data-slide-index="11">
+          <div class="slide-text">
+            <div class="slide-header">
+              <span class="slide-kicker">Case Study II · Module 09.8</span>
+              <span class="slide-page-num">12 / 14</span>
+            </div>
+            <h2 class="slide-title">Two live journeys, real tokens</h2>
+            <ul class="slide-bullets">
+              <li><strong>Aurelia</strong> (payments): 8m19s, 36 steps, 96% cache hit, 3.1M in / 24K out tokens — 4 critic-passed artifacts, gate left to the human.</li><li><strong>Meridian</strong> (oncology): 26 artifacts, 15 evidence; exact reload after browser reload <em>and</em> server restart.</li><li>Three refusals surfaced: closed schema, dangling evidence id, empty gate approval.</li>
+            </ul>
+            <blockquote class="slide-quote">"Three refusals surfaced, zero swallowed."</blockquote>
+          </div>
+          <figure class="slide-shot">
+            <img src="./09-buzz-agentic-service-design/images/38-02-gate-report.png" alt="The Discover-phase gate report in the live conversation: artifact table with critic verdicts, evidence register, findings, and the un-advanced human gate." loading="lazy">
+            <figcaption><b>Live capture (Article 38)</b> — the Aurelia gate report: artifact table, evidence register, findings — then the contract sentence asking for explicit human approval. The gate was not advanced.</figcaption>
+          </figure>
+        
+        </div>
+        
+        <div class="slide-card has-media" data-slide-index="12">
+          <div class="slide-text">
+            <div class="slide-header">
+              <span class="slide-kicker">Case Study II · Module 09.8</span>
+              <span class="slide-page-num">13 / 14</span>
+            </div>
+            <h2 class="slide-title">Studio v2: a board, a library, a canvas</h2>
+            <ul class="slide-bullets">
+              <li>Kanban with a real lifecycle — <code>sd_project_status_set</code>, the 30th canonical tool, enforced on the write path.</li><li>Library: the 227-resource corpus as a human surface, with provenance-cited “Use in project”.</li><li>Canvas workspace with an evidence spotlight rail; composer chip that reads the engagement.</li><li>Kind registry 32 → 38, including jobs-to-be-done with a seventh guided template.</li>
+            </ul>
+            <blockquote class="slide-quote">"Drag and keyboard moves execute the capability mutation — never a direct write."</blockquote>
+          </div>
+          <figure class="slide-shot">
+            <img src="./09-buzz-agentic-service-design/images/38-20-02-kanban-board.webp" alt="The Kanban section: five lifecycle columns with counts, a WIP budget on Active, project cards with phase and draft badges." loading="lazy">
+            <figcaption><b>Live capture (studio v2)</b> — the Kanban board: five lifecycle columns, a WIP budget on Active, drag and keyboard moves that execute the status capability.</figcaption>
+          </figure>
+        
+        </div>
+        
+        <div class="slide-card " data-slide-index="13">
           <div class="slide-header">
             <span class="slide-kicker">Boundaries</span>
-            <span class="slide-page-num">06 / 06</span>
+            <span class="slide-page-num">14 / 14</span>
           </div>
-          <h2 class="slide-title">Canvas is navigation, not proof</h2>
+          <h2 class="slide-title">What this course proves — and what it does not</h2>
           <ul class="slide-bullets">
-            <li>Render → set → get → verify: the content hash is the round-trip proof.</li><li>BUZZ proves collaboration; the ASD store proves state; ACP stays record-only.</li>
+            <li>BUZZ proves collaboration; the ASD store proves state; ACP stays record-only.</li><li>Proven, receipted: channel + roster, runtime replies, fail-closed handshake, human gate, canvas round trip.</li><li>Not claimed: ACP spawn across hosts, reload/recovery (future session), replies for undispatched roles.</li>
           </ul>
-          
-          <blockquote class="slide-quote">""</blockquote>
+          <div class="deck-diagram d-gate-wrap">
+  <div class="d-gate-row"><span class="d-box d-gate">Proven, receipted</span><span class="d-arrow">→</span><span class="d-box d-good">channel + roster</span><span class="d-box d-good">runtime replies</span><span class="d-box d-good">fail-closed handshake</span><span class="d-box d-good">human gate</span><span class="d-box d-good">canvas round trip</span></div>
+  <div class="d-gate-row"><span class="d-box d-gate">Not claimed</span><span class="d-arrow">→</span><span class="d-box d-bad">ACP spawn across hosts</span><span class="d-box d-bad">reload / recovery (future session)</span><span class="d-box d-bad">replies for undispatched roles</span></div>
+</div>
+          <blockquote class="slide-quote">"Publish exactly what your receipts show; label reconstructions as reconstructions; leave silent roles silent."</blockquote>
+        
         </div>
         
         </div>
@@ -574,7 +806,7 @@
         <div class="deck-nav-bar">
           <button class="deck-btn" id="prevBtn" onclick="changeSlide(-1)">◄ Previous Slide</button>
           <div class="slide-dots" id="slideDots">
-            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div><div class="dot " onclick="goToSlide(3)"></div><div class="dot " onclick="goToSlide(4)"></div><div class="dot " onclick="goToSlide(5)"></div>
+            <div class="dot active" onclick="goToSlide(0)"></div><div class="dot " onclick="goToSlide(1)"></div><div class="dot " onclick="goToSlide(2)"></div><div class="dot " onclick="goToSlide(3)"></div><div class="dot " onclick="goToSlide(4)"></div><div class="dot " onclick="goToSlide(5)"></div><div class="dot " onclick="goToSlide(6)"></div><div class="dot " onclick="goToSlide(7)"></div><div class="dot " onclick="goToSlide(8)"></div><div class="dot " onclick="goToSlide(9)"></div><div class="dot " onclick="goToSlide(10)"></div><div class="dot " onclick="goToSlide(11)"></div><div class="dot " onclick="goToSlide(12)"></div><div class="dot " onclick="goToSlide(13)"></div>
           </div>
           <button class="deck-btn" id="nextBtn" onclick="changeSlide(1)">Next Slide ►</button>
         </div>
@@ -586,7 +818,7 @@
       <div class="modules-container">
         <div class="band-head">
           <span class="kicker">Syllabus &amp; Lessons</span>
-          <h2>All 6 Modules in this Course</h2>
+          <h2>All 8 Modules in this Course</h2>
           <p>Read the in-depth lesson guides, technical runlogs, TypeScript schemas, and reproducible CLI commands.</p>
         </div>
 
@@ -595,61 +827,81 @@
         <div class="module-card">
           <div class="mod-card-top">
             <span class="mod-badge">09.1</span>
-            <span class="mod-time"><i data-lucide="timer" class="pill-ic"></i> 30 min</span>
+            <span class="mod-time"><i data-lucide="timer" class="pill-ic"></i> 35 min</span>
           </div>
           <h3 class="mod-card-title"><a href="./09-buzz-agentic-service-design/01-the-buzz-platform-for-service-design-teams.html" style="color:inherit; text-decoration:none;">The BUZZ Platform for Service Design Teams</a></h3>
-          <p class="mod-card-desc">Relay, identities, channels, mentions, Canvas: why chat-native role separation beats bot-bolted-on assistance.</p>
+          <p class="mod-card-desc">The relay, keypair identities, channels, pubkey mentions, and Canvas — receipts as citation formats, why chat-native beats bot-bolted-on, and the three proof boundaries.</p>
           <a class="mod-card-link" href="./09-buzz-agentic-service-design/01-the-buzz-platform-for-service-design-teams.html">Read full module &amp; code lab →</a>
         </div>
         
         <div class="module-card">
           <div class="mod-card-top">
             <span class="mod-badge">09.2</span>
-            <span class="mod-time"><i data-lucide="timer" class="pill-ic"></i> 25 min</span>
+            <span class="mod-time"><i data-lucide="timer" class="pill-ic"></i> 40 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./09-buzz-agentic-service-design/02-the-asd-persona-pack-and-roster.html" style="color:inherit; text-decoration:none;">The ASD Persona Pack and the Roster</a></h3>
-          <p class="mod-card-desc">Identity vs runtime, installing the pack, the pubkey mention contract, and the thirteen-member roster.</p>
-          <a class="mod-card-link" href="./09-buzz-agentic-service-design/02-the-asd-persona-pack-and-roster.html">Read full module &amp; code lab →</a>
+          <h3 class="mod-card-title"><a href="./09-buzz-agentic-service-design/02-agents-mcp-acp-and-integrations.html" style="color:inherit; text-decoration:none;">Agents, MCP, ACP, and the Integration Landscape</a></h3>
+          <p class="mod-card-desc">The full platform stack: ten role agents and two advisors, the pack-local MCP server, record-only ACP, the six MCP bundles, and the DSH Studio integration.</p>
+          <a class="mod-card-link" href="./09-buzz-agentic-service-design/02-agents-mcp-acp-and-integrations.html">Read full module &amp; code lab →</a>
         </div>
         
         <div class="module-card">
           <div class="mod-card-top">
             <span class="mod-badge">09.3</span>
-            <span class="mod-time"><i data-lucide="timer" class="pill-ic"></i> 40 min</span>
+            <span class="mod-time"><i data-lucide="timer" class="pill-ic"></i> 30 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./09-buzz-agentic-service-design/03-a-live-engagement-kickoff.html" style="color:inherit; text-decoration:none;">A Live Engagement Kickoff</a></h3>
-          <p class="mod-card-desc">Create sd/northfield-followup-care, brief the team, dispatch scoped mentions, read the orchestrator's runtime-authored workplan.</p>
-          <a class="mod-card-link" href="./09-buzz-agentic-service-design/03-a-live-engagement-kickoff.html">Read full module &amp; code lab →</a>
+          <h3 class="mod-card-title"><a href="./09-buzz-agentic-service-design/03-the-asd-persona-pack-and-roster.html" style="color:inherit; text-decoration:none;">The ASD Persona Pack and the Roster</a></h3>
+          <p class="mod-card-desc">Pack inventory, identity vs runtime, the pubkey mention contract, the thirteen-member roster — and silence as a state, not a failure.</p>
+          <a class="mod-card-link" href="./09-buzz-agentic-service-design/03-the-asd-persona-pack-and-roster.html">Read full module &amp; code lab →</a>
         </div>
         
         <div class="module-card">
           <div class="mod-card-top">
             <span class="mod-badge">09.4</span>
-            <span class="mod-time"><i data-lucide="timer" class="pill-ic"></i> 40 min</span>
+            <span class="mod-time"><i data-lucide="timer" class="pill-ic"></i> 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./09-buzz-agentic-service-design/04-fail-closed-evidence-handshake.html" style="color:inherit; text-decoration:none;">The Fail-Closed Evidence Handshake</a></h3>
-          <p class="mod-card-desc">Mapper blocks, researcher audits access and refuses to fabricate; the owner posts the store handoff and every hash verifies.</p>
-          <a class="mod-card-link" href="./09-buzz-agentic-service-design/04-fail-closed-evidence-handshake.html">Read full module &amp; code lab →</a>
+          <h3 class="mod-card-title"><a href="./09-buzz-agentic-service-design/04-a-live-engagement-kickoff.html" style="color:inherit; text-decoration:none;">A Live Engagement Kickoff: Aster Grove Makerspace</a></h3>
+          <p class="mod-card-desc">Isolated workspace, synthetic evidence, private channel and roster, the kickoff as charter, scoped mentions with stop conditions.</p>
+          <a class="mod-card-link" href="./09-buzz-agentic-service-design/04-a-live-engagement-kickoff.html">Read full module &amp; code lab →</a>
         </div>
         
         <div class="module-card">
           <div class="mod-card-top">
             <span class="mod-badge">09.5</span>
-            <span class="mod-time"><i data-lucide="timer" class="pill-ic"></i> 40 min</span>
+            <span class="mod-time"><i data-lucide="timer" class="pill-ic"></i> 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./09-buzz-agentic-service-design/05-closing-discover-with-gates.html" style="color:inherit; text-decoration:none;">Closing Discover: Store Artifacts and the Human Gate</a></h3>
-          <p class="mod-card-desc">Evidence records, AEIOU synthesis final via Critic pass, factcheck exit 0, and the approval-receipt gate to Define.</p>
-          <a class="mod-card-link" href="./09-buzz-agentic-service-design/05-closing-discover-with-gates.html">Read full module &amp; code lab →</a>
+          <h3 class="mod-card-title"><a href="./09-buzz-agentic-service-design/05-fail-closed-evidence-handshake.html" style="color:inherit; text-decoration:none;">The Fail-Closed Evidence Handshake</a></h3>
+          <p class="mod-card-desc">Store-verified replies, the ideator's refusal to fabricate, and the block → audit → handoff → verify → resume loop.</p>
+          <a class="mod-card-link" href="./09-buzz-agentic-service-design/05-fail-closed-evidence-handshake.html">Read full module &amp; code lab →</a>
         </div>
         
         <div class="module-card">
           <div class="mod-card-top">
             <span class="mod-badge">09.6</span>
-            <span class="mod-time"><i data-lucide="timer" class="pill-ic"></i> 35 min</span>
+            <span class="mod-time"><i data-lucide="timer" class="pill-ic"></i> 45 min</span>
           </div>
-          <h3 class="mod-card-title"><a href="./09-buzz-agentic-service-design/06-canvas-index-and-boundaries.html" style="color:inherit; text-decoration:none;">The Canvas Index and Honest Boundaries</a></h3>
-          <p class="mod-card-desc">Render/set/get/verify the Canvas index by content hash; what BUZZ proves vs what the store proves vs record-only ACP.</p>
-          <a class="mod-card-link" href="./09-buzz-agentic-service-design/06-canvas-index-and-boundaries.html">Read full module &amp; code lab →</a>
+          <h3 class="mod-card-title"><a href="./09-buzz-agentic-service-design/06-closing-discover-with-gates.html" style="color:inherit; text-decoration:none;">Closing Discover: Store Artifacts, Critic, and the Human Gate</a></h3>
+          <p class="mod-card-desc">Gated writes, the deliberate veto and same-id remediation, the critic's store verification, the approval-receipt gate, factcheck replay.</p>
+          <a class="mod-card-link" href="./09-buzz-agentic-service-design/06-closing-discover-with-gates.html">Read full module &amp; code lab →</a>
+        </div>
+        
+        <div class="module-card">
+          <div class="mod-card-top">
+            <span class="mod-badge">09.7</span>
+            <span class="mod-time"><i data-lucide="timer" class="pill-ic"></i> 40 min</span>
+          </div>
+          <h3 class="mod-card-title"><a href="./09-buzz-agentic-service-design/07-canvas-index-and-boundaries.html" style="color:inherit; text-decoration:none;">The Canvas Index and Honest Boundaries</a></h3>
+          <p class="mod-card-desc">Render/set/get/verify by content hash, the twelve-section contract, regeneration discipline, and the honest boundary ledger.</p>
+          <a class="mod-card-link" href="./09-buzz-agentic-service-design/07-canvas-index-and-boundaries.html">Read full module &amp; code lab →</a>
+        </div>
+        
+        <div class="module-card">
+          <div class="mod-card-top">
+            <span class="mod-badge">09.8</span>
+            <span class="mod-time"><i data-lucide="timer" class="pill-ic"></i> 50 min</span>
+          </div>
+          <h3 class="mod-card-title"><a href="./09-buzz-agentic-service-design/08-case-study-asd-studio-in-the-deepseek-harness.html" style="color:inherit; text-decoration:none;">Case Study: The ASD Studio in the DeepSeek Harness</a></h3>
+          <p class="mod-card-desc">Article 38 as course content: the center-tab fix, two live journeys with real tokens, the interview loop, and studio v2.</p>
+          <a class="mod-card-link" href="./09-buzz-agentic-service-design/08-case-study-asd-studio-in-the-deepseek-harness.html">Read full module &amp; code lab →</a>
         </div>
         
         </div>
@@ -681,7 +933,7 @@
 
   <script>
     var currentSlide = 0;
-    var totalSlides = 6;
+    var totalSlides = 14;
 
     function showSlide(index) {
       if (index < 0) index = 0;

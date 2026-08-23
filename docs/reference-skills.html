@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="How the skill library works — manifest to SKILL.md generation, flagship vs generated tiers, the six phases — plus the complete 74-skill catalog.">
+<meta name="description" content="How the skill library works — manifest to SKILL.md generation, flagship vs generated tiers, the six phases — plus the complete 80-skill catalog.">
 <title>Skills reference — The Agentic Service Designer</title>
 <link rel="stylesheet" href="../assets/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
@@ -28,7 +28,7 @@
   <section class="page-hero">
     <span class="kicker">Docs · Reference</span>
     <h1>Skills reference</h1>
-    <p class="lede">How the skill library works — manifest to SKILL.md generation, flagship vs generated tiers, the six phases — plus the complete 74-skill catalog.</p>
+    <p class="lede">How the skill library works — manifest to SKILL.md generation, flagship vs generated tiers, the six phases — plus the complete 80-skill catalog.</p>
   </section>
   <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Reference</b><ol><li><a href="./reference-tools.html">Engine tool reference</a></li><li><a href="./reference-agents.html">Agent role reference</a></li><li><a href="./reference-skills.html" class="on">Skills reference</a></li><li><a href="./reference-artifacts.html">Artifact kind reference</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#the-pipeline-manifest-to-skillmd">The pipeline: manifest to SKILL.md</a></li><li><a href="#flagship-vs-generated">Flagship vs generated</a></li><li><a href="#every-skill-is-executable">Every skill is executable</a></li><li><a href="#how-skills-collaborate-with-roles-and-tools">How skills collaborate with roles and tools</a></li><li><a href="#phases">Phases</a></li><li><a href="#the-twelve-skill-canon">The twelve-skill canon</a></li><li><a href="#the-complete-catalog">The complete catalog</a></li></ol></nav></aside><article class="art-body"><h1 id="skills-reference">Skills reference</h1>
 <p>A skill is the portable, prose form of a method; a method manifest is its machine form. The platform keeps both, generated in one direction only: the manifest is the source of truth, the SKILL.md is its deterministic rendering, and the engine gates artifacts against the manifest — never against the prose.</p>
@@ -47,10 +47,10 @@ review_gate: &quot;critic&quot;
 <p>The authorship rule for every skill, generated or authored: <strong>no source, no entry</strong> — provenance is mandatory and prose-only acceptance criteria do not exist.</p>
 <h2 id="flagship-vs-generated">Flagship vs generated</h2>
 <p><code>platform/skills/flagship/</code> holds hand-authored, prose-deep skills for methods that need judgment guidance beyond the manifest — the pattern for future authored skills. The tier currently contains one skill, <code>service-blueprinting</code>, whose <code>description</code> runs to a full when-to-use / when-not-to-use paragraph where the generated twin carries one sentence.</p>
-<p>The two tiers coexist by a <strong>flagship-wins</strong> rule: the compiler walks <code>flagship/</code> before <code>generated/</code> and takes first-write-wins per skill id, so a hand-authored flagship replaces its generated twin in every emitted pack. The pack manifest keeps the two counts distinctly named so neither can be misread as the other: <code>skillSources: 75</code> (every SKILL.md on disk: 74 generated + 1 flagship) against <code>skillsShipped: 74</code> (what actually lands in a pack after the substitution).</p>
+<p>The two tiers coexist by a <strong>flagship-wins</strong> rule: the compiler walks <code>flagship/</code> before <code>generated/</code> and takes first-write-wins per skill id, so a hand-authored flagship replaces its generated twin in every emitted pack. The pack manifest keeps the two counts distinctly named so neither can be misread as the other: <code>skillSources: 81</code> (every SKILL.md on disk: 80 generated + 1 flagship) against <code>skillsShipped: 80</code> (what actually lands in a pack after the substitution).</p>
 <p>A third source feeds the library over time: SOPs mined from the article corpus (article 29 alone yielded 31 candidates, 26 accepted) become candidate skills that the Librarian files through the registry path.</p>
 <h2 id="every-skill-is-executable">Every skill is executable</h2>
-<p>These are not prompt fragments. All 74 manifests are registered in the engine and executable via <code>sd_method_run</code>, which returns the steps, acceptance rules, output kind, and current evidence count; the resulting artifact is written through <code>sd_artifact_write</code> and checked against the manifest&#39;s acceptance rules. Verified against the registry: all 74 manifests declare non-empty acceptance rules and <code>reviewGate: &quot;critic&quot;</code> — every artifact any skill produces is draft until the Critic passes it.</p>
+<p>These are not prompt fragments. All 80 manifests are registered in the engine and executable via <code>sd_method_run</code>, which returns the steps, acceptance rules, output kind, and current evidence count; the resulting artifact is written through <code>sd_artifact_write</code> and checked against the manifest&#39;s acceptance rules. Verified against the registry: all 80 manifests declare non-empty acceptance rules and <code>reviewGate: &quot;critic&quot;</code> — every artifact any skill produces is draft until the Critic passes it.</p>
 <h2 id="how-skills-collaborate-with-roles-and-tools">How skills collaborate with roles and tools</h2>
 <p>The manifest&#39;s <code>steps</code> are the collaboration contract. Each step names the
 responsible role, its instruction, and whether it is a gate. A host can ask the
@@ -69,7 +69,7 @@ phase gate.</li>
 <p>The 29-tool runtime also exposes templates, schemas, canvas links, exports, and
 phase records. These are shared by the CLI, MCP, and DSH surfaces. ACP is
 <code>asd-acp/1</code> record-only/fail-closed; a skill or role prompt never implies that
-the host spawned another agent. Host packs carry the same 74 skills in native
+the host spawned another agent. Host packs carry the same 80 skills in native
 layouts, but host loading is separately evidenced per target.</p>
 <h2 id="phases">Phases</h2>
 <p>The six lifecycle phases and their skill counts (computed from the manifests):</p>
@@ -82,15 +82,15 @@ layouts, but host loading is separately evidenced per target.</p>
 </thead>
 <tbody><tr>
 <td>research</td>
-<td>15</td>
+<td>19</td>
 </tr>
 <tr>
 <td>synthesis</td>
-<td>14</td>
+<td>15</td>
 </tr>
 <tr>
 <td>ideation</td>
-<td>12</td>
+<td>13</td>
 </tr>
 <tr>
 <td>prototyping</td>
@@ -106,11 +106,11 @@ layouts, but host loading is separately evidenced per target.</p>
 </tr>
 </tbody></table>
 <h2 id="the-twelve-skill-canon">The twelve-skill canon</h2>
-<p>The article series exercises a twelve-method canon as its gated spine — the methods whose contracts the engagements pull with <code>sd_method_run</code> and whose acceptance rules the engine re-checks on every write (article 31 §3.3). The engine&#39;s registry gates writes for all 74; these twelve are the canon the diary leans on:</p>
+<p>The article series exercises a twelve-method canon as its gated spine — the methods whose contracts the engagements pull with <code>sd_method_run</code> and whose acceptance rules the engine re-checks on every write (article 31 §3.3). The engine&#39;s registry gates writes for all 80; these twelve are the canon the diary leans on:</p>
 <p><code>contextual-inquiry</code>, <code>stakeholder-mapping</code>, <code>transcript-mining</code> (research); <code>affinity-diagramming</code>, <code>behavioural-personas</code>, <code>journey-from-transcripts</code>, <code>mental-model-alignment</code>, <code>ecosystem-value-mapping</code>, <code>service-blueprinting</code> (synthesis); <code>orchestration-canvas</code> (ideation); <code>evidence-gated-blueprint</code> (delivery); <code>good-services-audit</code> (measurement).</p>
-<p>The remaining 62 skills are full SOPs with the same generated shape and the same gates; several appear in the articles&#39; phase logs.</p>
+<p>The remaining 68 skills are full SOPs with the same generated shape and the same gates; several appear in the articles&#39; phase logs.</p>
 <h2 id="the-complete-catalog">The complete catalog</h2>
-<p>All 74 skills, generated from the method manifests (sorted by phase, then id). Source refs count the book/article citations each manifest carries.</p>
+<p>All 80 skills, generated from the method manifests (sorted by phase, then id). Source refs count the book/article citations each manifest carries.</p>
 <table>
 <thead>
 <tr>
@@ -123,6 +123,14 @@ layouts, but host loading is separately evidenced per target.</p>
 </tr>
 </thead>
 <tbody><tr>
+<td><code>actor-network-mapping</code></td>
+<td>Actor Network Mapping</td>
+<td>research</td>
+<td><code>actor-network-map</code></td>
+<td>critic</td>
+<td>2</td>
+</tr>
+<tr>
 <td><code>contextual-inquiry</code></td>
 <td>Contextual Inquiry</td>
 <td>research</td>
@@ -155,6 +163,14 @@ layouts, but host loading is separately evidenced per target.</p>
 <td>2</td>
 </tr>
 <tr>
+<td><code>day-in-the-life-mapping</code></td>
+<td>Day-in-the-Life Mapping</td>
+<td>research</td>
+<td><code>day-in-the-life</code></td>
+<td>critic</td>
+<td>2</td>
+</tr>
+<tr>
 <td><code>diary-study</code></td>
 <td>Diary Study</td>
 <td>research</td>
@@ -167,6 +183,14 @@ layouts, but host loading is separately evidenced per target.</p>
 <td>Discussion / Interview Guide Design</td>
 <td>research</td>
 <td><code>interview-guide</code></td>
+<td>critic</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>expectation-mapping</code></td>
+<td>Expectation Mapping</td>
+<td>research</td>
+<td><code>expectation-map</code></td>
 <td>critic</td>
 <td>2</td>
 </tr>
@@ -231,6 +255,14 @@ layouts, but host loading is separately evidenced per target.</p>
 <td>Stakeholder Mapping</td>
 <td>research</td>
 <td><code>stakeholder-map</code></td>
+<td>critic</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>touchpoint-inventory-audit</code></td>
+<td>Touchpoint Inventory Audit</td>
+<td>research</td>
+<td><code>touchpoint-inventory</code></td>
 <td>critic</td>
 <td>2</td>
 </tr>
@@ -311,6 +343,14 @@ layouts, but host loading is separately evidenced per target.</p>
 <td>Jobs-to-be-Done Statement Construction</td>
 <td>synthesis</td>
 <td><code>insight-set</code></td>
+<td>critic</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>jtbd-map-authoring</code></td>
+<td>Jobs-to-be-Done Map Authoring</td>
+<td>synthesis</td>
+<td><code>jobs-to-be-done</code></td>
 <td>critic</td>
 <td>2</td>
 </tr>
@@ -425,6 +465,14 @@ layouts, but host loading is separately evidenced per target.</p>
 <td><code>ecosystem-map</code></td>
 <td>critic</td>
 <td>3</td>
+</tr>
+<tr>
+<td><code>service-scenario-authoring</code></td>
+<td>Service Scenario Authoring</td>
+<td>ideation</td>
+<td><code>service-scenario</code></td>
+<td>critic</td>
+<td>2</td>
 </tr>
 <tr>
 <td><code>speed-dating-concepts</code></td>

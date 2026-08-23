@@ -89,6 +89,49 @@
     .slide-card.active {
       display: flex;
     }
+    .slide-card.has-media.active {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+      gap: clamp(18px, 3vw, 42px);
+      align-items: center;
+      overflow: hidden;
+    }
+    .slide-card.has-media.active .slide-text {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-width: 0;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #3d3e3a transparent;
+      padding-right: 4px;
+    }
+    .slide-shot {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+      align-self: stretch;
+      justify-content: center;
+    }
+    .slide-shot img {
+      width: 100%;
+      max-height: 54vh;
+      object-fit: contain;
+      border: 1px solid #3d3e3a;
+      border-radius: 6px;
+      background: #0c0d0c;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .slide-shot figcaption {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #83847c;
+      letter-spacing: 0.05em;
+      line-height: 1.5;
+    }
+    .slide-shot figcaption b { color: #b9bab0; }
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(10px); }
       to { opacity: 1; transform: translateX(0); }
@@ -292,6 +335,10 @@
     .d-pass { border-color: #38a169; color: #9ae6b4; background: rgba(56,161,105,0.08); }
     .d-veto { border-color: #c53030; color: #feb2b2; background: rgba(197,48,48,0.08); }
 
+    @media (max-width: 860px) {
+      .slide-card.has-media.active { grid-template-columns: 1fr; overflow-y: auto; }
+      .slide-shot img { max-height: 32vh; }
+    }
     @media (max-width: 720px) {
       .slide-viewport { aspect-ratio: auto; max-height: none; }
       .d-lane { flex-direction: column; align-items: stretch; gap: 4px; }
@@ -491,7 +538,7 @@
         
         <div class="slide-viewport" id="slideViewport">
           
-        <div class="slide-card active" data-slide-index="0">
+        <div class="slide-card active " data-slide-index="0">
           <div class="slide-header">
             <span class="slide-kicker">Paradigm Shift</span>
             <span class="slide-page-num">01 / 10</span>
@@ -507,6 +554,7 @@
   <span class="d-box d-stage d-good">Cited synthesis</span>
 </div>
           <blockquote class="slide-quote">"Scale the corpus, keep the receipt."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="1">
@@ -529,6 +577,7 @@
   <span class="d-box d-stage d-good">sd_phase_advance</span>
 </div>
           <blockquote class="slide-quote">"Agents prepare and verify with receipts; human leaders decide with accountability."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="2">
@@ -547,6 +596,7 @@
   <span class="d-box d-stage d-good">Method-ready evidence-set</span>
 </div>
           <blockquote class="slide-quote">"Ingest everything; address everything; trust nothing unaddressed."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="3">
@@ -565,6 +615,7 @@
   <span class="d-box d-stage d-good">insight-set (cited)</span>
 </div>
           <blockquote class="slide-quote">"Coding is a contract; provenance is the clause that matters."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="4">
@@ -584,6 +635,7 @@
   </div>
 </div>
           <blockquote class="slide-quote">"Contradiction preserved is insight found."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="5">
@@ -602,6 +654,7 @@
   <span class="d-box d-stage d-good">persona-set (cited)</span>
 </div>
           <blockquote class="slide-quote">"A persona is a query result over evidence, not a poster on a wall."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="6">
@@ -619,6 +672,7 @@
   <div class="d-lane"><span class="d-lane-label">Fused</span><div class="d-lane-items d-lane-items--line"><span class="d-box d-good">Validated friction clusters</span><span class="d-box d-good">empathy-map</span></div></div>
 </div>
           <blockquote class="slide-quote">"Pain you can triangulate is pain you can prioritize."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="7">
@@ -638,6 +692,7 @@
   </div>
 </div>
           <blockquote class="slide-quote">"If the persona cannot pass its own acceptance rules, it is fiction."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="8">
@@ -655,6 +710,7 @@
   <div class="d-lane"><span class="d-lane-label">Assure</span><div class="d-lane-items d-lane-items--line"><span class="d-box">sd_artifact_write</span><span class="d-box">sd_review</span><span class="d-box d-gate">sd_factcheck</span></div></div>
 </div>
           <blockquote class="slide-quote">"Every method here runs through the same contract you verified in Course 02."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="9">
@@ -674,6 +730,7 @@
   <span class="d-box d-stage d-good">Defensible research</span>
 </div>
           <blockquote class="slide-quote">"Research ops you can defend, hash by hash."</blockquote>
+        
         </div>
         
         </div>

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="All 29 sd_* engine tools — arguments, return payloads, failure modes, and exit-code / JSON-RPC behavior — with current release boundaries.">
+<meta name="description" content="All 30 sd_* engine tools — arguments, return payloads, failure modes, and exit-code / JSON-RPC behavior — with current release boundaries.">
 <title>Engine tool reference — The Agentic Service Designer</title>
 <link rel="stylesheet" href="../assets/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
@@ -28,10 +28,10 @@
   <section class="page-hero">
     <span class="kicker">Docs · Reference</span>
     <h1>Engine tool reference</h1>
-    <p class="lede">All 29 sd_* engine tools — arguments, return payloads, failure modes, and exit-code / JSON-RPC behavior — with current release boundaries.</p>
+    <p class="lede">All 30 sd_* engine tools — arguments, return payloads, failure modes, and exit-code / JSON-RPC behavior — with current release boundaries.</p>
   </section>
   <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Reference</b><ol><li><a href="./reference-tools.html" class="on">Engine tool reference</a></li><li><a href="./reference-agents.html">Agent role reference</a></li><li><a href="./reference-skills.html">Skills reference</a></li><li><a href="./reference-artifacts.html">Artifact kind reference</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#conventions">Conventions</a></li><li><a href="#project-tools">Project tools</a></li><li><a href="#evidence-tools">Evidence tools</a></li><li><a href="#artifact-tools">Artifact tools</a></li><li><a href="#method-tools">Method tools</a></li><li><a href="#review-tools">Review tools</a></li><li><a href="#export-tools">Export tools</a></li><li><a href="#metadata-tools">Metadata tools</a></li><li><a href="#canvas-tools">Canvas tools</a></li><li><a href="#orchestration-tools">Orchestration tools</a></li><li><a href="#phase-gate">Phase gate</a></li><li><a href="#knowledge-tool">Knowledge tool</a></li><li><a href="#fact-check-gate">Fact-check gate</a></li><li><a href="#the-write-path-end-to-end">The write path, end to end</a></li></ol></nav></aside><article class="art-body"><h1 id="engine-tool-reference">Engine tool reference</h1>
-<p>The engine exposes exactly <strong>29 tools</strong>, named <code>sd_*</code>. One definition set serves every surface: the <code>asd</code> CLI parses its flags from the same JSON schemas, the MCP server advertises the same schemas over <code>tools/list</code>, and the DeepSeek Harness suite registers the same builders. The CLI surface cannot drift from the tool definitions because it is generated from them.</p>
+<p>The engine exposes exactly <strong>30 tools</strong>, named <code>sd_*</code>. One definition set serves every surface: the <code>asd</code> CLI parses its flags from the same JSON schemas, the MCP server advertises the same schemas over <code>tools/list</code>, and the DeepSeek Harness suite registers the same builders. The CLI surface cannot drift from the tool definitions because it is generated from them.</p>
 <p>The tools group into twelve families: project, evidence, artifact, method, review, export, knowledge, templates/schema, canvas, orchestration, phase, and the fact-check gate. Every JSON excerpt below is real captured output or a schema-derived contract, trimmed with <code>[…]</code> where nodes or rows repeat.</p>
 <h2 id="conventions">Conventions</h2>
 <ul>
@@ -112,6 +112,33 @@
 </tr>
 </tbody></table>
 <p>Failure mode: an unknown id errors with <code>project not found: &lt;id&gt;</code>, exit 1.</p>
+<h3 id="sd-project-status-set">sd_project_status_set</h3>
+<p>Sets an engagement&#39;s lifecycle status — the Kanban column — independently of the design phase. Legal transitions: <code>briefed → active → gated → blocked → archived</code>, <code>archived</code> from any state, and <code>blocked ↔ active</code>. Same-status calls are no-ops unless a note accompanies them.</p>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>projectId</code></td>
+<td>string, required</td>
+<td>Project id, from <code>sd_project_list</code></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>enum, required</td>
+<td>One of <code>briefed</code>, <code>active</code>, <code>gated</code>, <code>blocked</code>, <code>archived</code></td>
+</tr>
+<tr>
+<td><code>statusNote</code></td>
+<td>string, optional</td>
+<td>Why the status changed; recorded on the project</td>
+</tr>
+</tbody></table>
+<p>Returns the updated <code>{ &quot;project&quot;: {…} }</code>. Failure modes: unknown id (<code>project not found: &lt;id&gt;</code>), illegal transition naming the legal targets, or a non-enum status at the schema boundary, exit 1.</p>
 <h2 id="evidence-tools">Evidence tools</h2>
 <p>Evidence is the register every artifact cites. There are exactly three kinds — <code>quote</code>, <code>telemetry</code>, <code>document</code> — and no others; <code>--kind observation</code> is rejected at argument validation:</p>
 <div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>asd sd_evidence_add: invalid arguments: &quot;kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]

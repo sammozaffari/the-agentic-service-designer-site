@@ -89,6 +89,49 @@
     .slide-card.active {
       display: flex;
     }
+    .slide-card.has-media.active {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+      gap: clamp(18px, 3vw, 42px);
+      align-items: center;
+      overflow: hidden;
+    }
+    .slide-card.has-media.active .slide-text {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-width: 0;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #3d3e3a transparent;
+      padding-right: 4px;
+    }
+    .slide-shot {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+      align-self: stretch;
+      justify-content: center;
+    }
+    .slide-shot img {
+      width: 100%;
+      max-height: 54vh;
+      object-fit: contain;
+      border: 1px solid #3d3e3a;
+      border-radius: 6px;
+      background: #0c0d0c;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .slide-shot figcaption {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #83847c;
+      letter-spacing: 0.05em;
+      line-height: 1.5;
+    }
+    .slide-shot figcaption b { color: #b9bab0; }
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(10px); }
       to { opacity: 1; transform: translateX(0); }
@@ -292,6 +335,10 @@
     .d-pass { border-color: #38a169; color: #9ae6b4; background: rgba(56,161,105,0.08); }
     .d-veto { border-color: #c53030; color: #feb2b2; background: rgba(197,48,48,0.08); }
 
+    @media (max-width: 860px) {
+      .slide-card.has-media.active { grid-template-columns: 1fr; overflow-y: auto; }
+      .slide-shot img { max-height: 32vh; }
+    }
     @media (max-width: 720px) {
       .slide-viewport { aspect-ratio: auto; max-height: none; }
       .d-lane { flex-direction: column; align-items: stretch; gap: 4px; }
@@ -491,7 +538,7 @@
         
         <div class="slide-viewport" id="slideViewport">
           
-        <div class="slide-card active" data-slide-index="0">
+        <div class="slide-card active " data-slide-index="0">
           <div class="slide-header">
             <span class="slide-kicker">Zero to Working</span>
             <span class="slide-page-num">01 / 05</span>
@@ -502,6 +549,7 @@
           </ul>
           
           <blockquote class="slide-quote">""</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="1">
@@ -515,6 +563,7 @@
           </ul>
           
           <blockquote class="slide-quote">""</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="2">
@@ -528,6 +577,7 @@
           </ul>
           
           <blockquote class="slide-quote">""</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="3">
@@ -541,6 +591,7 @@
           </ul>
           
           <blockquote class="slide-quote">""</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="4">
@@ -554,6 +605,7 @@
           </ul>
           
           <blockquote class="slide-quote">""</blockquote>
+        
         </div>
         
         </div>

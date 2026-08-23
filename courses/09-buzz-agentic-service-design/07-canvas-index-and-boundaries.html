@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The Canvas index and honest boundaries — Course 09 — BUZZ for Agentic Service Design | The Agentic Service Designer">
+<title>The Canvas index and honest boundaries | Course 09 — BUZZ for Agentic Service Design</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  :root { color-scheme: light; }
+  body.module-page { background: var(--paper-tint); }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
+  .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+  .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
+  .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
+  .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
+  .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
+  .module-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  .module-body th, .module-body td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
+  .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
+  .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
+</head>
+<body class="module-page">
+  <div class="module-wrap">
+    <nav class="module-crumb"><a href="../09-buzz-agentic-service-design.html"><i data-lucide="arrow-left"></i>Course 09 — BUZZ for Agentic Service Design</a></nav>
+    <article class="module-body">
+
+<h1 id="the-canvas-index-and-honest-boundaries">The Canvas index and honest boundaries</h1>
+<p>The engagement&#39;s last BUZZ-side act is the <strong>Canvas</strong>: one channel-scoped
+document that indexes the whole portfolio — charter, phase and gate state,
+roster participation, evidence register, artifact register, critic findings,
+handoffs, decisions, and the planned-but-unpersisted kinds. It is generated
+from the store, never typed by hand, and verified by content hash both ways.
+This module covers the workflow, the regeneration habit, and the honest
+boundary ledger every engagement should end with.</p>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
+<ul>
+<li>Render, set, retrieve, and verify a channel Canvas — and know what each of the five verify checks proves.</li>
+<li>Explain fail-closed generation: why the renderer refuses dangling references.</li>
+<li>Adopt the regenerate-after-every-change habit and the twelve-section contract.</li>
+<li>Write an honest boundary ledger: what the session proved, and what it did not.</li>
+</ul>
+<h2 id="render-the-index-from-the-store"><i data-lucide="file-pen" class="ic"></i> Render — the index from the store</h2>
+<pre><code class="language-bash">node scripts/buzz-canvas-index.mjs render \
+  --project-dir tmp/buzz39/projects/aster-grove-makerspace-6a8498ef \
+  --channel sd/aster-grove-makerspace \
+  --channel-id 361023a9-31cb-4b40-845f-19d64f7827ee \
+  --fictional \
+  --planned research-plan --planned interview-guide --planned opportunity-matrix \
+  --planned hmw-set --planned concept-set --planned prototype-plan \
+  --planned walkthrough-script --planned storyboard --planned test-report \
+  --planned recovery-playbook \
+  --out articles/39/canvas
+</code></pre>
+<p>The generator is <strong>fail-closed</strong>: it refuses to emit a document whose
+evidence, artifact, review-log, or handoff ids do not resolve in the source
+records, and its <code>planned</code> rows must name registered kinds that do not yet
+exist. Any dangling reference aborts the render with a problem report
+instead of writing a stale link. Statuses are the gate substrate&#39;s own
+(<code>final</code>/<code>draft</code>), never aspirational.</p>
+<p>The rendered document carries the <strong>twelve contract sections</strong>: charter and
+boundary; phase and gate; roster; evidence register; artifact register (kind,
+id, status, owner role, evidence coverage); critic findings and remediation;
+handoff queue; decisions, assumptions, risks; prototypes and tests; KPI
+ownership; delivery artifacts; and index integrity with a round-trip content
+hash. The first render&#39;s hash: <code>512a51c6f9ecdbca…</code>.</p>
+<h2 id="set-get-verify"><i data-lucide="refresh-cw" class="ic"></i> Set → get → verify</h2>
+<pre><code class="language-bash"># set it on the channel
+buzz canvas set --channel 361023a9-31cb-4b40-845f-19d64f7827ee --content - \
+  &lt; articles/39/canvas/aster-grove-makerspace.md
+
+# read it back
+buzz canvas get --channel 361023a9-31cb-4b40-845f-19d64f7827ee \
+  &gt; retrieved-canvas.md
+
+# prove the round trip
+node scripts/buzz-canvas-index.mjs verify \
+  --canvas-dir articles/39/canvas \
+  --project-dir tmp/buzz39/projects/aster-grove-makerspace-6a8498ef \
+  --retrieved retrieved-canvas.md --fictional
+</code></pre>
+<p>The set was accepted (event <code>195133a0…</code>), the retrieved document matched the
+generated one modulo one trailing newline, and <code>verify</code> passed all five
+checks: <strong>content hash</strong>, <strong>twelve sections</strong>, <strong>stale-link resolution</strong>
+(every id token in the document resolves against the manifest inventory),
+<strong>round trip</strong> (retrieved equals rendered), and <strong>drift</strong> (the committed
+document still matches a fresh render of the current records).</p>
+<p><img src="images/39-08-canvas-set.png" alt="Channel state after the Canvas index was set live: Define-phase messages visible; the Canvas document is attached to the channel and machine-verified by round trip."></p>
+<p><em>Live capture s08 — channel state after <code>buzz canvas set</code>: Define-phase messages visible, the Canvas document attached to the channel. The round trip is machine-verified — the panel is navigation, the hash is the proof.</em></p>
+<p>The Canvas is now the channel&#39;s front door: anyone opening the channel can
+navigate from it to every persisted artifact, its status, its owner role, and
+its review state — while the store remains the only system of record. Note
+what the Canvas says about itself, in its own boundary section: <em>this Canvas
+is a navigation index over persisted ASD records; a row here is navigation,
+not proof.</em> The Canvas points; the store proves.</p>
+<h2 id="the-librarian39s-registry-check"><i data-lucide="library" class="ic"></i> The librarian&#39;s registry check</h2>
+<p>Under the owner&#39;s Define receipt, Maya delegated a method-registry check to
+Nadia. Her reply resolved the fourteen synthesis-phase methods against the
+live project store — she even reported the project&#39;s phase as <code>define</code> with
+10 evidence records, matching the store exactly — and mutated nothing.</p>
+<p><img src="images/39-11-librarian-reply.png" alt="Librarian reply: method-registry check resolved against the live project store (phase define, 10 evidence records), with no artifacts mutated."></p>
+<p><em>Live capture s11 — the librarian&#39;s registry check: fourteen methods resolved against the live store, phase and evidence count matching exactly, nothing mutated. A read-only reply is still a reply worth verifying — and hers checked out.</em></p>
+<h2 id="regenerate-after-every-change"><i data-lucide="refresh-cw" class="ic"></i> Regenerate after every change</h2>
+<p>The Define window changed the workspace — the ideator&#39;s refusal (module 05),
+the unresolved insight-set draft, updated roster participation. Because the
+workspace had changed, the Canvas was <strong>regenerated</strong> (11 artifacts, 1
+draft, roster participation updated), re-set on the channel (event
+<code>fd0ef08f…</code>), and the round trip re-verified against the new content hash
+<code>fae1e45f…</code>. The regenerate → set → verify cycle is cheap enough to run
+after every workspace change; that is the whole point. A Canvas that lags
+its store is worse than no Canvas — it is a confident stale index.</p>
+<p>The committed document&#39;s final counts: 10 evidence rows; 11 artifacts (5 of
+them review-veto logs, 1 draft insight-set); 1 typed handoff; 10 planned
+kinds. The roster section derives participation from durable records only —
+orchestrator, researcher, mapper, measurer (KPI tree), and critic own or
+carry records; synthesizer, ideator, prototyper, presenter, and librarian
+are marked <code>definition only</code> until a record cites them. Section 2 records
+the human gate decision with the approval receipt; section 6 reproduces the
+veto defect row with its evidence citation; section 8 lists the unreviewed
+draft as a derived risk; section 12 carries the round-trip hash.</p>
+<p><img src="images/39-09-final-channel-state.png" alt="Final captured channel state for the tutorial: human gate recorded, critic verified, Canvas set."></p>
+<p><em>Live capture s09 — the frozen end state of the tutorial run: human gate recorded, critic verified, Canvas set. The session&#39;s receipts — every event id, every hash — are the difference between this and a story about a session.</em></p>
+<h2 id="a-note-on-reconstructed-frames"><i data-lucide="folder-open" class="ic"></i> A note on reconstructed frames</h2>
+<p>The course&#39;s earlier Northfield run illustrated its Canvas step with a
+re-render of live receipt data rather than a native-app capture — the panel
+needed a UI click the scripted session could not perform:</p>
+<p><img src="images/08-canvas-index.png" alt="Reconstructed frame: the Northfield engagement&#39;s Canvas artifact index, rendered from live receipt data."></p>
+<p><em>Reconstructed frame (Northfield run) — the Canvas index as a re-render of receipt data, labeled as a reconstruction. The discipline it demonstrates generalizes: publish exactly what your receipts show, and label everything else as what it is.</em></p>
+<p>The Aster Grove session hit the same wall honestly — the in-app Canvas
+panel screenshot was <em>not captured</em>, and the evidence ledger says so plainly,
+because the round trip is machine-verified instead. Compare the two stances:
+one run reconstructed the pixels and labeled them; the other declined the
+pixels and kept the hash. Both are honest. Silent substitution of either
+kind is not.</p>
+<h2 id="the-honest-boundary-ledger"><i data-lucide="clipboard-list" class="ic"></i> The honest boundary ledger</h2>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Status in the Aster Grove session</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Private channel with 13-member roster</td>
+<td>live, receipted (create + membership events; capture s01)</td>
+</tr>
+<tr>
+<td>Runtime-authored replies from mentioned roles</td>
+<td>live, signed by role pubkeys (s03, s05, s07, s11, s12)</td>
+</tr>
+<tr>
+<td>Store-verified evidence citations in replies</td>
+<td>live — every cited id resolved</td>
+</tr>
+<tr>
+<td>Deliberate veto and same-id remediation</td>
+<td>live, receipted (veto log <code>0224aa6c…</code>)</td>
+</tr>
+<tr>
+<td>Human phase gate with approval receipt</td>
+<td>live (<code>ag-gate-001</code>, discover → define; s06)</td>
+</tr>
+<tr>
+<td>Canvas set/get round trip — twice</td>
+<td>live, hash-verified (<code>512a51c6…</code>, <code>fae1e45f…</code>)</td>
+</tr>
+<tr>
+<td>Ideator refusal under missing store</td>
+<td>live (s12) — the boundary held under pressure</td>
+</tr>
+<tr>
+<td>Insight-set draft authorship</td>
+<td>persisted, unresolved — recorded as such, not attributed</td>
+</tr>
+<tr>
+<td>Undispatched roles and both advisors</td>
+<td>not dispatched — no replies claimed</td>
+</tr>
+<tr>
+<td>In-app Canvas panel pixels</td>
+<td>not captured — round trip machine-verified instead</td>
+</tr>
+<tr>
+<td>Reload, recovery, cleanup</td>
+<td>not exercised — future session</td>
+</tr>
+<tr>
+<td>ACP agent spawning across hosts</td>
+<td>record-only / fail-closed; not claimed</td>
+</tr>
+</tbody></table>
+<p>The discipline generalizes: publish exactly what your receipts show, label
+reconstructions as reconstructions, and leave silent roles silent.</p>
+<h2 id="hands-on-lab"><i data-lucide="microscope" class="ic"></i> Hands-on lab</h2>
+<ol>
+<li>Render the Canvas for your scratch project with two <code>--planned</code> kinds. Open the document and find all twelve sections; find the integrity hash.</li>
+<li>Break it on purpose: hand-edit the rendered document to cite a non-existent artifact id, then run <code>verify</code> and read the stale-link failure. Restore the clean render.</li>
+<li>Set the Canvas on a scratch channel, get it back, and run <code>verify --retrieved</code>. Then add one evidence record to the project, re-render, and observe the drift check fail until you re-set the Canvas.</li>
+<li>Write the boundary ledger for your own session — every row either &quot;receipted, here is the receipt&quot; or &quot;not exercised.&quot;</li>
+</ol>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
+<ul>
+<li>The Canvas is generated, fail-closed, and hash-verified; hand-writing it defeats its purpose.</li>
+<li>Five verify checks: content hash, twelve sections, stale links, round trip, drift.</li>
+<li>Regenerate → set → verify after every workspace change — a stale index is a liability.</li>
+<li>Participation is derived from records, not vibes: <code>definition only</code> until a record cites the role.</li>
+<li>End every engagement with an honest ledger: proven, not exercised, not claimed.</li>
+</ul>
+
+
+      <div class="module-nav"><span>← <a href="./06-closing-discover-with-gates.html">Closing Discover: store artifacts, critic, and the human gate</a></span><span><a href="./08-case-study-asd-studio-in-the-deepseek-harness.html">Case study: the ASD Studio in the DeepSeek Harness</a> →</span></div>
+    </article>
+  </div>
+  <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=0</script>
+</body>
+</html>

@@ -89,6 +89,49 @@
     .slide-card.active {
       display: flex;
     }
+    .slide-card.has-media.active {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+      gap: clamp(18px, 3vw, 42px);
+      align-items: center;
+      overflow: hidden;
+    }
+    .slide-card.has-media.active .slide-text {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-width: 0;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #3d3e3a transparent;
+      padding-right: 4px;
+    }
+    .slide-shot {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+      align-self: stretch;
+      justify-content: center;
+    }
+    .slide-shot img {
+      width: 100%;
+      max-height: 54vh;
+      object-fit: contain;
+      border: 1px solid #3d3e3a;
+      border-radius: 6px;
+      background: #0c0d0c;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .slide-shot figcaption {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #83847c;
+      letter-spacing: 0.05em;
+      line-height: 1.5;
+    }
+    .slide-shot figcaption b { color: #b9bab0; }
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(10px); }
       to { opacity: 1; transform: translateX(0); }
@@ -292,6 +335,10 @@
     .d-pass { border-color: #38a169; color: #9ae6b4; background: rgba(56,161,105,0.08); }
     .d-veto { border-color: #c53030; color: #feb2b2; background: rgba(197,48,48,0.08); }
 
+    @media (max-width: 860px) {
+      .slide-card.has-media.active { grid-template-columns: 1fr; overflow-y: auto; }
+      .slide-shot img { max-height: 32vh; }
+    }
     @media (max-width: 720px) {
       .slide-viewport { aspect-ratio: auto; max-height: none; }
       .d-lane { flex-direction: column; align-items: stretch; gap: 4px; }
@@ -491,7 +538,7 @@
         
         <div class="slide-viewport" id="slideViewport">
           
-        <div class="slide-card active" data-slide-index="0">
+        <div class="slide-card active " data-slide-index="0">
           <div class="slide-header">
             <span class="slide-kicker">Paradigm Shift</span>
             <span class="slide-page-num">01 / 10</span>
@@ -508,6 +555,7 @@
   </div>
 </div>
           <blockquote class="slide-quote">"In an agentic practice, the burden of proof is architectural."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="1">
@@ -530,6 +578,7 @@
   <span class="d-box d-stage d-good">sd_phase_advance</span>
 </div>
           <blockquote class="slide-quote">"Agents prepare and verify with receipts; human leaders decide with accountability."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="2">
@@ -549,6 +598,7 @@
   </div>
 </div>
           <blockquote class="slide-quote">"Chat handoffs summarize; artifacts preserve."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="3">
@@ -567,6 +617,7 @@
   <span class="d-box d-stage d-good">Cited by artifact nodes</span>
 </div>
           <blockquote class="slide-quote">"Provenance you cannot forge is provenance you can build on."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="4">
@@ -584,6 +635,7 @@
   <div class="d-lane"><span class="d-lane-label">document</span><div class="d-lane-items d-lane-items--line"><span class="d-box">Policy &amp; regulation</span><span class="d-box">Institutional constraint</span></div></div>
 </div>
           <blockquote class="slide-quote">"Three kinds of evidence, one law: nothing enters the store unaddressed."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="5">
@@ -603,6 +655,7 @@
   </div>
 </div>
           <blockquote class="slide-quote">"A veto with a mandatory fix is quality assurance; a veto without one is just noise."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="6">
@@ -622,6 +675,7 @@
   </div>
 </div>
           <blockquote class="slide-quote">"If the build is green, every citation resolves — that is the whole promise."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="7">
@@ -639,6 +693,7 @@
   <div class="d-lane"><span class="d-lane-label">Assurance</span><div class="d-lane-items d-lane-items--line"><span class="d-box">sd_review</span><span class="d-box">sd_review_list</span><span class="d-box d-gate">sd_factcheck</span></div></div>
 </div>
           <blockquote class="slide-quote">"The store is the source of truth; the tools are its enforcement arm."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="8">
@@ -658,6 +713,7 @@
   </div>
 </div>
           <blockquote class="slide-quote">"A gate you have never seen refuse is a gate you do not understand."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="9">
@@ -677,6 +733,7 @@
   <span class="d-box d-stage d-good">Dossier exported</span>
 </div>
           <blockquote class="slide-quote">"Exit 0 is the sound of evidence holding."</blockquote>
+        
         </div>
         
         </div>

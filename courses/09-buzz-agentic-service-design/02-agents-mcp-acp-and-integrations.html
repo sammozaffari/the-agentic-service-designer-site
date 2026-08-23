@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Agents, MCP, ACP, and the integration landscape — Course 09 — BUZZ for Agentic Service Design | The Agentic Service Designer">
+<title>Agents, MCP, ACP, and the integration landscape | Course 09 — BUZZ for Agentic Service Design</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  :root { color-scheme: light; }
+  body.module-page { background: var(--paper-tint); }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
+  .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+  .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
+  .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
+  .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
+  .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
+  .module-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  .module-body th, .module-body td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
+  .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
+  .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
+</head>
+<body class="module-page">
+  <div class="module-wrap">
+    <nav class="module-crumb"><a href="../09-buzz-agentic-service-design.html"><i data-lucide="arrow-left"></i>Course 09 — BUZZ for Agentic Service Design</a></nav>
+    <article class="module-body">
+
+<h1 id="agents-mcp-acp-and-the-integration-landscape">Agents, MCP, ACP, and the integration landscape</h1>
+<p>Module 01 placed BUZZ in the picture. This module places everything else:
+where the ten role agents come from, how they reach the ASD store through MCP,
+what ACP is allowed to do (and not do), and which hosts the platform already
+integrates with — from the BUZZ desktop app to the DeepSeek Harness shell that
+Article 38 drove end to end. By the end you should be able to draw the whole
+stack on a napkin and defend every arrow on it.</p>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
+<ul>
+<li>Describe the ASD platform stack: persona pack → materialized runtimes → pack-local MCP server → ASD workspace store.</li>
+<li>Say what MCP contributes (29 canonical tools, corpus resources, prompts) and what the <code>ASD_WORKSPACE</code> boundary protects.</li>
+<li>State the ACP contract precisely: record-only, fail-closed, no external spawn.</li>
+<li>Map the integration landscape: the six emitted MCP bundles and the DeepSeek Harness Studio.</li>
+</ul>
+<h2 id="the-stack-on-one-diagram"><i data-lucide="globe" class="ic"></i> The stack on one diagram</h2>
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart TB
+  P[&quot;ASD Persona Pack (keyless definitions)&quot;] -- owner materializes --&gt; R[&quot;Role runtimes (identity-backed pubkeys)&quot;]
+  R -- &quot;MCP stdio (pack-local .mcp.json)&quot; --&gt; M[&quot;ASD MCP server · 29 sd_* tools · resources · prompts&quot;]
+  M -- &quot;ASD_WORKSPACE boundary&quot; --&gt; W[&quot;ASD workspace store · projects · evidence · artifacts · reviews · gates&quot;]
+  R -- &quot;typed record only (fail-closed)&quot; --&gt; A[&quot;ACP envelope asd-acp/1&quot;]
+  H[&quot;Hosts: BUZZ · Claude Code · Codex · Kimi · OpenCode · DSH Studio&quot;] -.-&gt; R</pre>
+</div>
+<p>Read it bottom-up for the ownership story: the store owns state; the MCP
+server is the single governed door to it; runtimes are the only things
+allowed through that door; hosts are where runtimes live. No arrow lets a
+chat message write a store record directly, and no arrow lets one host&#39;s
+runtime mutate another host&#39;s process space — the two failure modes this
+architecture exists to prevent.</p>
+<h2 id="the-ten-role-agents-and-two-advisors"><i data-lucide="bot" class="ic"></i> The ten role agents — and two advisors</h2>
+<p>The ten canonical roles ship as personas in the ASD persona pack. Every
+persona receives the same evidence, review, and human-gate contract; what
+differs is ownership:</p>
+<table>
+<thead>
+<tr>
+<th>Role · handle</th>
+<th>Primary responsibility</th>
+<th>Typical outputs or handoff</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Orchestrator · <code>sd-orchestrator</code></td>
+<td>Plan the engagement, sequence methods, coordinate handoffs, surface phase-gate decisions</td>
+<td>Orchestration records and human handoffs</td>
+</tr>
+<tr>
+<td>Researcher · <code>sd-researcher</code></td>
+<td>Gather verbatim evidence, provenance and context</td>
+<td>Evidence register, research plan, stakeholder/context inputs</td>
+</tr>
+<tr>
+<td>Synthesizer · <code>sd-synthesizer</code></td>
+<td>Cluster evidence and form insights, personas, first-pass journeys</td>
+<td>Insight, affinity, persona and synthesis artifacts</td>
+</tr>
+<tr>
+<td>Mapper · <code>sd-mapper</code></td>
+<td>Build deterministic journey maps, blueprints, mental models, ecosystem maps</td>
+<td>Evidence-linked map nodes; no hand-authored diagrams</td>
+</tr>
+<tr>
+<td>Ideator · <code>sd-ideator</code></td>
+<td>Frame HMWs and concepts from the evidence-backed insight set</td>
+<td>HMW, concept, story and value-proposition artifacts</td>
+</tr>
+<tr>
+<td>Prototyper · <code>sd-prototyper</code></td>
+<td>Design and test prototypes; separate test evidence from assumptions</td>
+<td>Prototype/test artifacts and evidence requests</td>
+</tr>
+<tr>
+<td>Measurer · <code>sd-measurer</code></td>
+<td>Connect service quality, KPIs and outcomes through a causal chain</td>
+<td>KPI trees, audits, opportunities and roadmaps</td>
+</tr>
+<tr>
+<td>Critic · <code>sd-critic</code></td>
+<td>Challenge evidence sufficiency; record defect/proposal rows</td>
+<td>Evidence-cited review-veto-log; a veto keeps the artifact in draft</td>
+</tr>
+<tr>
+<td>Presenter · <code>sd-presenter</code></td>
+<td>Assemble reports from final artifacts without inventing content</td>
+<td>Report and export requests</td>
+</tr>
+<tr>
+<td>Librarian · <code>sd-librarian</code></td>
+<td>Maintain corpus provenance, method/skill drift, template references</td>
+<td>Knowledge lookups and drift reports</td>
+</tr>
+</tbody></table>
+<p>Two <strong>coding-agent advisors</strong> (<code>claude-code-opus</code> and <code>codex-sol-high</code> in the
+course&#39;s session) round out the roster as general-purpose build agents. They
+are members like anyone else — mention them with a pubkey and they act; do
+not, and they stay silent. In the Aster Grove session nobody dispatched a
+build task, so neither advisor posted, and the honest ledger records exactly
+that.</p>
+<h2 id="mcp-the-governed-door-to-the-store"><i data-lucide="link-2" class="ic"></i> MCP: the governed door to the store</h2>
+<p>The persona pack ships a <strong>pack-local MCP configuration</strong> — deliberately
+relative to the installed pack, so every host that loads the pack gets the
+same server without central configuration:</p>
+<pre><code class="language-json">{
+  &quot;mcpServers&quot;: {
+    &quot;asd&quot;: {
+      &quot;command&quot;: &quot;node&quot;,
+      &quot;args&quot;: [&quot;mcp/bin/server.mjs&quot;]
+    }
+  }
+}
+</code></pre>
+<p>That server exposes the canonical surface of the platform:</p>
+<table>
+<thead>
+<tr>
+<th>MCP surface</th>
+<th>Count</th>
+<th>What it gives a runtime</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Canonical tools</td>
+<td>29 <code>sd_*</code></td>
+<td><code>sd_artifact_write</code>, <code>sd_review</code>, <code>sd_factcheck</code>, phase-advance, orchestration records — the same contract on every host</td>
+</tr>
+<tr>
+<td>Resources</td>
+<td>226 (with corpus roots)</td>
+<td>The corpus the model reads: books, articles, templates, methods</td>
+</tr>
+<tr>
+<td>Prompts</td>
+<td>10 role prompts</td>
+<td>Role-shaped entry points for each persona</td>
+</tr>
+</tbody></table>
+<p>Two properties of this door matter for everything that follows in this
+course. First, it is <strong>the same door everywhere</strong>: the runtimes that replied
+in BUZZ, the Studio that ran inside the DeepSeek Harness in module 08, and the
+standalone CLI all go through one tool contract — which is why an artifact id
+written by one surface is meaningful to all the others. Second, the server&#39;s
+workspace is bounded by <code>ASD_WORKSPACE</code>, defaulting to <code>~/.asd/projects</code>: a
+runtime can only touch the projects its environment points it at. In the
+Aster Grove session that boundary was load-bearing — it is the reason the
+ideator in module 05 <em>could not</em> see the workspace and had to refuse rather
+than fabricate.</p>
+<p>Live MCP reads were demonstrated in the session itself: Liam, Marcus, and
+Nadia all cited exact store ids in their replies (evidence ids, review-log
+rows, the method registry), which is only possible if their sessions were
+actually talking to the store through MCP. An agent that guesses ids fails
+the module 05 verification step; an agent that reads them passes it.</p>
+<h2 id="acp-record-only-by-design"><i data-lucide="settings" class="ic"></i> ACP: record-only by design</h2>
+<p>ACP (Agent Communication Protocol) shows up in the ASD platform as a typed
+envelope, <code>asd-acp/1</code>, that records a handoff from one role to another. What
+it does <em>not</em> do is spawn or reach into another host&#39;s agents:</p>
+<ul>
+<li><code>host-agent-spawn</code> is <strong>unsupported</strong> for the emitted pack. A request to spawn an agent in another host returns a structured unsupported result — fail-closed, not fake success.</li>
+<li>The durable artifact of a handoff is a store record made through <code>sd_orchestration_handoff</code> — in the Aster Grove session, the critic → orchestrator handoff after blueprint remediation is exactly such a row.</li>
+<li>A BUZZ message may <em>announce</em> a handoff; the record id is the handoff. Announcements drift; records don&#39;t.</li>
+</ul>
+<p>This boundary is easy to present as a limitation. It is better understood as
+scope control: cross-host process spawning is a security surface with no
+evidence payoff, so the platform records intent and leaves execution to
+verified host integrations. When a capability is absent, the honest row in
+the Canvas stays <code>planned</code> or <code>blocked</code> — never silently upgraded.</p>
+<h2 id="the-integration-landscape"><i data-lucide="puzzle" class="ic"></i> The integration landscape</h2>
+<p>Because the door is MCP-over-stdio, integrating a host means loading the pack
+and staying out of the way. Six MCP bundles are emitted with fresh disposable
+stdio evidence — <strong>BUZZ, Claude Code, Codex, Kimi, the standalone MCP target,
+and OpenCode</strong> — proving initialize, discovery, and representative ASD tool
+workflows in isolated environments for each. (Pack-local evidence is candid
+about its own limits: it does not prove that every host has executed every
+tool.)</p>
+<p>The deepest host integration to date is the one Article 38 documented: the
+<strong>Agentic SD Studio as a center tab inside the DeepSeek Harness (DSH)
+shell</strong>. The host owns sessions, model configuration, and layout; the Studio
+registers surfaces through the host&#39;s <code>conversation.view</code> seam and reads and
+writes the same store through the same MCP tool contract. Two captures from
+that integration, both live:</p>
+<p><img src="images/38-03-center-tab-studio.png" alt="The Agentic SD Studio as a top tab in the DeepSeek Harness center column, beside Chat and Trajectory, with the Studio workbench at full width."></p>
+<p><em>Live capture (Article 38) — the Agentic SD Studio as a top tab in the DSH center column: Chat, Trajectory, Agentic SD Studio, with the tabbed workbench (Projects, Artifacts, Evidence, Canvas, Templates, Methods, Review, Reports) at full width. The composer stays resident underneath, so moving from looking at the work to instructing the model is a shift of the eyes, not a change of window.</em></p>
+<p><img src="images/38-20-04-library-search.webp" alt="The Studio Library section in the v2 build: source tabs and a search box; results for blueprint grouped by source with content snippets and Use-in-project actions."></p>
+<p><em>Live capture (Article 38, studio v2) — the Studio Library: the corpus the model reads (227 resources) as a human surface. Searching &quot;blueprint&quot; returns 50 grouped hits with snippets, and every hit has a Use-in-project action that drafts a provenance-cited librarian instruction into the composer.</em></p>
+<p>Module 08 turns that integration into a full case study — two live
+service-design journeys, a placement failure and fix, and the studio v2
+surfaces. For this module the point is architectural: hosts come and go, the
+store and its door stay the same.</p>
+<h2 id="definition-identity-vs-runtime-identity"><i data-lucide="brain" class="ic"></i> Definition identity vs runtime identity</h2>
+<p>The persona pack is intentionally <strong>keyless</strong>. A definition has a stable
+slug, display name, model metadata, and prompt. A running runtime has a
+separate, identity-backed public key. The safe relationship is a chain, and
+every link is owner-verified:</p>
+<p></p>
+<p>Do not use a persona slug as a public key; do not treat a keyless definition
+and its runtime as duplicates; do not infer from a green persona card that
+the runtime is reachable in your channel. Before the first mention, run the
+read-only identity audit:</p>
+<pre><code class="language-bash">node scripts/buzz-live-identity-audit.mjs \
+  --input ./audit.json \
+  --channel-id &lt;channel-uuid&gt; \
+  --output ./identity-audit.json
+</code></pre>
+<p>The audit joins definitions, runtimes, public keys, membership, and mention
+candidates. It never loads credentials and deliberately has no <code>--apply</code> or
+<code>--confirm</code> mode — an audit that can mutate the thing it audits is not an
+audit.</p>
+<h2 id="the-operating-model-in-one-table"><i data-lucide="clipboard-list" class="ic"></i> The operating model in one table</h2>
+<table>
+<thead>
+<tr>
+<th>Concern</th>
+<th>System of record</th>
+<th>BUZZ role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Team discussion and human decisions</td>
+<td>BUZZ private channel</td>
+<td>Conversation, mentions, visible gate discussion</td>
+</tr>
+<tr>
+<td>Research/evidence/artifacts/reviews</td>
+<td>ASD workspace via CLI/MCP/verified host</td>
+<td>Link ids and summaries; never duplicate records in prose</td>
+</tr>
+<tr>
+<td>Role SOPs and provenance</td>
+<td>Corpus + persona pack prompts</td>
+<td>Ask the persona to apply the method, then cite the record</td>
+</tr>
+<tr>
+<td>Phase authorization</td>
+<td>Human designer + ASD phase gate</td>
+<td>Canvas may index the decision; it does not authorize it</td>
+</tr>
+<tr>
+<td>Cross-tool handoff</td>
+<td>Typed ASD/ACP record</td>
+<td>Message may announce it; the record id is the durable handoff</td>
+</tr>
+</tbody></table>
+<h2 id="hands-on-lab"><i data-lucide="microscope" class="ic"></i> Hands-on lab</h2>
+<ol>
+<li>Install (or locate) the persona pack in your BUZZ desktop app and open its directory: find <code>.plugin/plugin.json</code>, <code>instructions.md</code>, <code>.mcp.json</code>, <code>agents/</code>, and <code>skills/</code>. Count the agent definitions — you should find ten.</li>
+<li>Read <code>.mcp.json</code> and confirm the MCP command is pack-relative. Start the server by hand (<code>node mcp/bin/server.mjs</code>) in a terminal and issue an initialize + tools/list request — you should see the canonical <code>sd_*</code> tools.</li>
+<li>Set <code>ASD_WORKSPACE</code> to an empty scratch directory before you start the server, then confirm a tools/list + one read tool sees only that workspace. You have just verified the boundary that module 05&#39;s refusal depends on.</li>
+<li>Run the read-only identity audit against a channel you own and read the join report: definitions → runtimes → pubkeys → membership.</li>
+</ol>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
+<ul>
+<li>State lives in the ASD store; MCP is its single governed door (29 tools, corpus resources, prompts) — identical on every host.</li>
+<li><code>ASD_WORKSPACE</code> is a security boundary, not a convenience flag; refusals in module 05 are it working.</li>
+<li>ACP is record-only and fail-closed: handoffs are store rows, announcements are chat messages, and spawning across hosts is unsupported by design.</li>
+<li>Six MCP bundles plus the DSH Studio integration all sit on the same contract — hosts change, the door doesn&#39;t.</li>
+<li>Persona definitions are keyless; only owner-verified runtime pubkeys are mention targets.</li>
+</ul>
+
+
+      <div class="module-nav"><span>← <a href="./01-the-buzz-platform-for-service-design-teams.html">The BUZZ platform for service design teams</a></span><span><a href="./03-the-asd-persona-pack-and-roster.html">The ASD persona pack and the roster</a> →</span></div>
+    </article>
+  </div>
+  <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=2</script>
+</body>
+</html>

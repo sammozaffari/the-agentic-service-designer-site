@@ -123,6 +123,148 @@
     });
   });
 
+  // ---------- About page: interactive dot portrait ----------
+  ready(function () {
+    var canvas = document.getElementById('portrait');
+    if (!canvas) return;
+    var dataEl = document.getElementById('portrait-data');
+    if (!dataEl || dataEl.textContent.trim() === 'null') return;
+    var grid = JSON.parse(dataEl.textContent);
+    var stage = canvas.parentElement;
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var COLS = grid.cols, ROWS = grid.rows;
+    var lum = new Uint8Array(grid.lum);
+    var N = COLS * ROWS;
+
+    // spring state per cell (x displacement in cell units, y, vx, vy)
+    var dx = new Float32Array(N), dy = new Float32Array(N);
+    var vx = new Float32Array(N), vy = new Float32Array(N);
+    var heat = new Float32Array(N); // 0..1 hover heat
+    var accentIdx = 0;
+    var ACCENTS = [
+      [232, 222, 250], // lavender
+      [232, 238, 229], // sage
+      [255, 242, 187], // butter
+      [233, 241, 247], // powder blue
+    ];
+    var INK = [23, 24, 23];
+    var GREY = [190, 189, 184];
+
+    var mouse = { x: -1000, y: -1000, inside: false, gridX: -1, gridY: -1 };
+    var R = 26; // hover radius in cell units
+
+    function resize() {
+      var w = stage.clientWidth, h = stage.clientHeight;
+      var dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      var ctx = canvas.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return { w: w, h: h, cw: w / COLS, ch: h / ROWS };
+    }
+
+    var dim = resize();
+    window.addEventListener('resize', function () { dim = resize(); draw(); });
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function mix(c1, c2, t) { return [lerp(c1[0], c2[0], t) | 0, lerp(c1[1], c2[1], t) | 0, lerp(c1[2], c2[2], t) | 0]; }
+
+    var springK = 0.05, damp = 0.78;
+    var running = false;
+
+    function step() {
+      var i, gx, gy, x, y, d, f;
+      var energy = 0;
+      for (gy = 0; gy < ROWS; gy++) {
+        for (gx = 0; gx < COLS; gx++) {
+          i = gy * COLS + gx;
+          if (!lum[i]) { dx[i] = dy[i] = vx[i] = vy[i] = 0; continue; }
+          // repulsion impulse from cursor
+          d = Math.max(0.001, Math.hypot(mouse.gridX - gx, mouse.gridY - gy));
+          if (mouse.inside && d < R) {
+            f = (1 - d / R) * 0.24;
+            vx[i] += ((gx - mouse.gridX) / d) * f + (Math.random() - 0.5) * 0.06;
+            vy[i] += ((gy - mouse.gridY) / d) * f + (Math.random() - 0.5) * 0.06;
+            heat[i] = Math.min(1, heat[i] + 0.35);
+          } else {
+            heat[i] = Math.max(0, heat[i] - 0.08);
+          }
+          vx[i] -= springK * dx[i]; vy[i] -= springK * dy[i];
+          vx[i] *= damp; vy[i] *= damp;
+          dx[i] += vx[i]; dy[i] += vy[i];
+          dx[i] *= 0.985; dy[i] *= 0.985;
+          energy += Math.abs(vx[i]) + Math.abs(vy[i]) + heat[i];
+        }
+      }
+      if (energy > 60) { draw(); requestAnimationFrame(step); }
+      else { running = false; draw(); }
+    }
+
+    function kick() {
+      if (reduceMotion) return;
+      if (!running) { running = true; requestAnimationFrame(step); }
+    }
+
+    function draw() {
+      var ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, dim.w, dim.h);
+      var accent = ACCENTS[accentIdx];
+      var cellH = dim.ch, cellW = dim.cw;
+      var shade;
+      var i, gx, gy, px, py, s, r, g, b;
+      for (gy = 0; gy < ROWS; gy++) {
+        for (gx = 0; gx < COLS; gx++) {
+          i = gy * COLS + gx;
+          if (!lum[i]) continue;
+          s = lum[i] / 9; // 0..1 darkness weight (higher = darker)
+          px = (gx + dx[i]) * cellW;
+          py = (gy + dy[i]) * cellH;
+          var size = cellW * (0.42 + s * 0.5);
+          if (heat[i] > 0.02) {
+            var h = heat[i];
+            var base = mix(accent, INK, s * 0.85);
+            ctx.fillStyle = 'rgba(' + base[0] + ',' + base[1] + ',' + base[2] + ',' + (0.55 + h * 0.45).toFixed(2) + ')';
+          } else {
+            var g = 175 + s * 60;
+            ctx.fillStyle = 'rgba(' + g + ',' + g + ',' + (g - 4) + ',0.92)';
+          }
+          ctx.fillRect(px, py, Math.max(1.2, size), Math.max(1.6, cellH * (0.62 + s * 0.38)));
+        }
+      }
+    }
+
+    function toGrid(ev) {
+      var rect = canvas.getBoundingClientRect();
+      mouse.gridX = ((ev.clientX - rect.left) / rect.width) * COLS;
+      mouse.gridY = ((ev.clientY - rect.top) / rect.height) * ROWS;
+    }
+    canvas.addEventListener('mousemove', function (ev) {
+      mouse.inside = true;
+      toGrid(ev);
+      kick();
+    });
+    canvas.addEventListener('mouseleave', function () {
+      mouse.inside = false;
+      mouse.gridX = mouse.gridY = -1000;
+      kick();
+    });
+    canvas.addEventListener('click', function (ev) {
+      toGrid(ev);
+      accentIdx = (accentIdx + 1) % ACCENTS.length;
+      kick();
+    });
+
+    draw();
+    if (reduceMotion) return;
+    // gentle idle shimmer
+    setInterval(function () {
+      if (!running && mouse.inside === false && Math.random() < 0.3) kick();
+    }, 1400);
+  });
+
   // ---------- smooth scroll for anchors ----------
   ready(function () {
     document.querySelectorAll('a[href^="#"]').forEach(function (a) {

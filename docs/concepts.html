@@ -72,7 +72,7 @@ running `asd help` shows usage
   &quot;fields&quot;: { &quot;emotion&quot;: &quot;1&quot;, &quot;touchpoint&quot;: &quot;transfer&quot; }
 }
 </code></pre></div>
-<p>A dangling evidence ref — an id not in the register — is a hard error at write time; integrity is structural, not advisory. The runtime currently registers 32 artifact-kind contracts. The practice-facing catalog is a separate <strong>38-row vocabulary</strong>: aliases such as <code>insight-register</code> do not create another runtime kind, five support kinds are registry-only, and eight rows remain pending and non-executable. <code>review-veto-log</code> is the administrative Critic control record. The catalog&#39;s per-kind typed runtime schema expansion remains a Phase 2 boundary; see the <a href="./reference-artifacts.html">artifact reference</a> for the exact split and lists.</p>
+<p>A dangling evidence ref — an id not in the register — is a hard error at write time; integrity is structural, not advisory. The runtime currently registers 38 artifact-kind contracts. The practice-facing catalog is a separate <strong>39-row vocabulary</strong>: aliases such as <code>insight-register</code> do not create another runtime kind, ten support kinds are registry-only, and eight rows remain pending and non-executable. <code>review-veto-log</code> is the administrative Critic control record. The catalog&#39;s per-kind typed runtime schema expansion remains a Phase 2 boundary; see the <a href="./reference-artifacts.html">artifact reference</a> for the exact split and lists.</p>
 <h2 id="the-acceptance-gate-and-the-draftfinal-lifecycle">The acceptance gate and the draft/final lifecycle</h2>
 <p>Every <code>sd_artifact_write</code> runs the producing method&#39;s acceptance rules before the artifact&#39;s status is decided. The vocabulary is small and declarative:</p>
 <ul>
@@ -181,7 +181,7 @@ running `asd help` shows usage
 </code></pre></div>
 <p>The six report kinds are engagement, executive-summary, research-findings, artifact-dossier, traceability-matrix, and method-log. Where the Studio profile is available, its Reports tab offers the same six kinds; this page does not claim a live workbench host run.</p>
 <h2 id="method-manifests-as-data">Method manifests as data</h2>
-<p>The knowledge layer is not prose the model improvises from; it is 74 method manifests as JSON, every one executable via <code>sd_method_run</code>, which returns the method&#39;s machine contract. A representative contract shape, matching the engine&#39;s method manifest:</p>
+<p>The knowledge layer is not prose the model improvises from; it is 80 method manifests as JSON, every one executable via <code>sd_method_run</code>, which returns the method&#39;s machine contract. A representative contract shape, matching the engine&#39;s method manifest:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{
   &quot;method&quot;: {
     &quot;id&quot;: &quot;good-services-audit&quot;,
@@ -208,13 +208,13 @@ running `asd help` shows usage
   &quot;availableEvidence&quot;: 3
 }
 </code></pre></div>
-<p>Read it as the whole platform in one object: role-assigned steps with a gated Critic step, the acceptance rules the write will face, the artifact kind the method produces, and the provenance every method cites (books and articles of the series, resolvable to real chapters). <code>sd_method_list</code> enumerates the manifests by phase or output kind; <code>sd_knowledge</code> searches them by keyword and returns matching methods and kinds together; the <a href="./reference-skills.html">skills reference</a> lists the 74 SKILL.md SOPs generated one-per-manifest.</p>
+<p>Read it as the whole platform in one object: role-assigned steps with a gated Critic step, the acceptance rules the write will face, the artifact kind the method produces, and the provenance every method cites (books and articles of the series, resolvable to real chapters). <code>sd_method_list</code> enumerates the manifests by phase or output kind; <code>sd_knowledge</code> searches them by keyword and returns matching methods and kinds together; the <a href="./reference-skills.html">skills reference</a> lists the 80 SKILL.md SOPs generated one-per-manifest.</p>
 <h2 id="what-stays-human">What stays human</h2>
 <p>The engine enforces evidence, structure, and status. It does not decide. Phase gates are the human designer&#39;s call — pass, redirect, or kill — made on the review board with the fact-check as the machine&#39;s testimony; there is intentionally no <code>phase-gate-decision</code> artifact to hide that call behind. Which insights survive synthesis, whether a finding is politically feasible, what ships in the report: the platform holds the evidence and the traceability, and the call stays with the designer.</p>
 <h2 id="where-next">Where next</h2>
 <ul>
 <li><a href="./reference-tools.html">Tool reference</a> — all 29 <code>sd_*</code> tools, flags and payloads.</li>
-<li><a href="./reference-skills.html">Skills reference</a> — the 74 method skills.</li>
+<li><a href="./reference-skills.html">Skills reference</a> — the 80 method skills.</li>
 <li><a href="./reference-artifacts.html">Artifact reference</a> — the 32 machine-checked kinds and their schemas.</li>
 <li><a href="./tutorials.html">Tutorials</a> — the lifecycle executed end to end, three ways.</li>
 </ul>

@@ -89,6 +89,49 @@
     .slide-card.active {
       display: flex;
     }
+    .slide-card.has-media.active {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+      gap: clamp(18px, 3vw, 42px);
+      align-items: center;
+      overflow: hidden;
+    }
+    .slide-card.has-media.active .slide-text {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-width: 0;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #3d3e3a transparent;
+      padding-right: 4px;
+    }
+    .slide-shot {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+      align-self: stretch;
+      justify-content: center;
+    }
+    .slide-shot img {
+      width: 100%;
+      max-height: 54vh;
+      object-fit: contain;
+      border: 1px solid #3d3e3a;
+      border-radius: 6px;
+      background: #0c0d0c;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .slide-shot figcaption {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #83847c;
+      letter-spacing: 0.05em;
+      line-height: 1.5;
+    }
+    .slide-shot figcaption b { color: #b9bab0; }
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(10px); }
       to { opacity: 1; transform: translateX(0); }
@@ -292,6 +335,10 @@
     .d-pass { border-color: #38a169; color: #9ae6b4; background: rgba(56,161,105,0.08); }
     .d-veto { border-color: #c53030; color: #feb2b2; background: rgba(197,48,48,0.08); }
 
+    @media (max-width: 860px) {
+      .slide-card.has-media.active { grid-template-columns: 1fr; overflow-y: auto; }
+      .slide-shot img { max-height: 32vh; }
+    }
     @media (max-width: 720px) {
       .slide-viewport { aspect-ratio: auto; max-height: none; }
       .d-lane { flex-direction: column; align-items: stretch; gap: 4px; }
@@ -491,7 +538,7 @@
         
         <div class="slide-viewport" id="slideViewport">
           
-        <div class="slide-card active" data-slide-index="0">
+        <div class="slide-card active " data-slide-index="0">
           <div class="slide-header">
             <span class="slide-kicker">Paradigm Shift</span>
             <span class="slide-page-num">01 / 10</span>
@@ -507,6 +554,7 @@
   <span class="d-box d-stage d-good">@asd/runtime (CLI · MCP stdio)</span>
 </div>
           <blockquote class="slide-quote">"One engine, one contract — the same practice wherever a designer actually works."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="1">
@@ -529,6 +577,7 @@
   <span class="d-box d-stage d-good">sd_phase_advance</span>
 </div>
           <blockquote class="slide-quote">"Agents prepare and verify with receipts; human leaders decide with accountability."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="2">
@@ -546,6 +595,7 @@
   <div class="d-lane"><span class="d-lane-label">runtime</span><div class="d-lane-items d-lane-items--line"><span class="d-box">asd CLI</span><span class="d-box">asd-mcp stdio</span><span class="d-box">@asd/render SVG/HTML</span></div></div>
 </div>
           <blockquote class="slide-quote">"Schemas at the core mean every surface inherits the same truth."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="3">
@@ -565,6 +615,7 @@
   </div>
 </div>
           <blockquote class="slide-quote">"Integration surfaces earn their place with acceptance evidence; the runtime is what you learn on."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="4">
@@ -581,6 +632,7 @@
   <div class="d-lane"><span class="d-lane-label">asd-mcp</span><div class="d-lane-items d-lane-items--line"><span class="d-box">29 tools</span><span class="d-box">216 resources</span><span class="d-box">10 role prompts</span></div></div>
 </div>
           <blockquote class="slide-quote">"One stdio server turns any MCP client into a service design workstation."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="5">
@@ -599,6 +651,7 @@
   <span class="d-box d-stage d-good">exit 0 / fail-closed exit 1</span>
 </div>
           <blockquote class="slide-quote">"Twenty-nine verbs is the whole grammar; memorize the loop, not the manual."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="6">
@@ -617,6 +670,7 @@
   <span class="d-box d-stage d-good">HTML artifact-dossier</span>
 </div>
           <blockquote class="slide-quote">"A renderer that cannot hallucinate is a renderer you can ship."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="7">
@@ -634,6 +688,7 @@
   <div class="d-lane"><span class="d-lane-label">opencode</span><div class="d-lane-items d-lane-items--line"><span class="d-box">vendored server</span><span class="d-box d-good">tools/list = 29</span></div></div>
 </div>
           <blockquote class="slide-quote">"The host changes; the 29 tools do not."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="8">
@@ -650,6 +705,7 @@
   <div class="d-lane"><span class="d-lane-label">Project phases</span><div class="d-lane-items d-lane-items--line"><span class="d-box d-gate">discover</span><span class="d-arrow">→</span><span class="d-box d-gate">define</span><span class="d-arrow">→</span><span class="d-box d-gate">develop</span><span class="d-arrow">→</span><span class="d-box d-gate">deliver</span></div></div>
 </div>
           <blockquote class="slide-quote">"Introspect everything: if the runtime cannot describe it, it does not exist."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="9">
@@ -669,6 +725,7 @@
   </div>
 </div>
           <blockquote class="slide-quote">"You now run the same engine this course was built with."</blockquote>
+        
         </div>
         
         </div>

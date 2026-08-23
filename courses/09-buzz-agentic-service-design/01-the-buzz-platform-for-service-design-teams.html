@@ -58,52 +58,108 @@
     <article class="module-body">
 
 <h1 id="the-buzz-platform-for-service-design-teams">The BUZZ platform for service design teams</h1>
-<p>BUZZ is a private team-communication relay built on Nostr event kinds. To a
-service designer it is the missing collaboration layer: instead of pasting
-artifacts into a chat with a single assistant, BUZZ gives your practice a
-<strong>place</strong> — a channel — where a whole role team lives as first-class members
+<p>BUZZ is a private team-communication relay built on signed, Nostr-style event
+kinds. To a service designer it is the missing collaboration layer: instead of
+pasting artifacts into a chat with a single assistant, BUZZ gives your practice
+a <strong>place</strong> — a channel — where a whole role team lives as first-class members
 with their own identities, and where the artifacts of the engagement are
 addressable by the same tools that manage the work.</p>
-<h2 id="the-moving-parts">The moving parts</h2>
+<p>Everything in this course was run for real on 2026-08-23 against a live relay
+(<code>tm.communities.buzz.xyz</code>): a private channel was created, thirteen members
+were added, role runtimes replied under their own identities, and the channel
+Canvas was set and retrieved back with a verified content hash. The
+screenshots in these modules are live captures from that session — the
+engagement itself (Aster Grove Makerspace) is a fictional composite, and the
+course keeps those two facts cleanly separated, exactly the way the platform
+does.</p>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <ul>
-<li><strong>Relay.</strong> A community relay (for example <code>tm.communities.buzz.xyz</code>) stores
-signed events: messages, membership changes, canvas documents, reactions.
-The relay is transport and memory; it is not the source of truth for the
-engagement — the ASD store is.</li>
-<li><strong>Identities.</strong> Every member is a keypair. Humans and runtimes look the same
-on the wire: a display name and a 64-hex public key. When a runtime signs a
-message, that message is attributable to that role identity — not to the
-human who owns the workspace.</li>
-<li><strong>Channels.</strong> Named spaces (<code>sd/your-project</code>) with type (<code>stream</code> or
-<code>forum</code>), visibility (<code>open</code> or <code>private</code>), optional purpose and topic, and
-an explicit member list. A private stream per engagement is the ASD
-convention.</li>
-<li><strong>Mentions.</strong> A message can mention members by pubkey. Uniquely resolved
-<code>@Name</code> text also notifies, but the contract that matters for automation is
-the explicit <code>--mention &lt;pubkey&gt;</code>: it is unambiguous, and runtimes route on
-it.</li>
-<li><strong>Canvas.</strong> One persistent document per channel — the engagement&#39;s index.
-The ASD convention sets a generated artifact index there and verifies the
-round trip by content hash.</li>
-<li><strong>Workflows and reactions.</strong> Lighter primitives (triggers, emoji votes) that
-matter less for ASD engagements; this course uses mentions, messages, and
-Canvas only.</li>
+<li>Name the six platform primitives — relay, identities, channels, mentions, Canvas, workflows — and say what each one is <em>for</em>.</li>
+<li>Read a channel-create receipt and explain why every message is a citable event.</li>
+<li>Explain why chat-native role separation beats bot-bolted-on assistance for service design work.</li>
+<li>Hold the three proof boundaries apart: what BUZZ proves, what the ASD store proves, and what ACP records.</li>
 </ul>
-<h2 id="why-chat-native-beats-bot-bolted-on">Why chat-native beats bot-bolted-on</h2>
+<h2 id="the-moving-parts"><i data-lucide="code" class="ic"></i> The moving parts</h2>
+<ul>
+<li><strong>Relay.</strong> A community relay (for example <code>tm.communities.buzz.xyz</code>) stores signed events: messages, membership changes, canvas documents, reactions. The relay is transport and memory; it is <strong>not</strong> the source of truth for the engagement — the ASD store is. If the relay loses an event you lose a conversation row, not an artifact.</li>
+<li><strong>Identities.</strong> Every member is a keypair. Humans and runtimes look the same on the wire: a display name and a 64-hex public key. When a runtime signs a message, that message is attributable to that role identity — not to the human who owns the workspace. This one property is what makes &quot;the researcher asked for evidence&quot; and &quot;the critic vetoed the blueprint&quot; meaningful statements rather than costume.</li>
+<li><strong>Channels.</strong> Named spaces (<code>sd/your-project</code>) with a type (<code>stream</code> or <code>forum</code>), visibility (<code>open</code> or <code>private</code>), optional purpose and topic, and an explicit member list. A private stream per engagement is the ASD convention — one channel, one client, one Canvas.</li>
+<li><strong>Mentions.</strong> A message can mention members by pubkey. Uniquely resolved <code>@Name</code> text also notifies, but the contract that matters for automation is the explicit <code>--mention &lt;pubkey&gt;</code>: unambiguous, and the runtimes route on it. Module 03 turns this into a hard rule.</li>
+<li><strong>Canvas.</strong> One persistent document per channel — the engagement&#39;s index. The ASD convention renders the Canvas deterministically from the workspace, sets it on the channel, and proves the round trip by content hash (module 07).</li>
+<li><strong>Workflows and reactions.</strong> Lighter primitives (triggers, emoji votes) that matter less for ASD engagements; this course uses mentions, messages, and Canvas only.</li>
+</ul>
+<h2 id="what-a-receipt-looks-like"><i data-lucide="file-pen" class="ic"></i> What a receipt looks like</h2>
+<p>Creating the course&#39;s engagement channel returned two identifiers — the
+channel UUID that later commands address, and the signed creation event that
+proves the channel existed at that moment on that relay:</p>
+<pre><code class="language-bash">buzz channels create --name sd/aster-grove-makerspace \
+  --type stream --visibility private \
+  --description &quot;Fictional Service Design case study — synthetic evidence, live relay session.&quot;
+</code></pre>
+<pre><code class="language-json">{&quot;accepted&quot;: true,
+ &quot;channel&quot;: {&quot;id&quot;: &quot;361023a9-31cb-4b40-845f-19d64f7827ee&quot;,
+             &quot;name&quot;: &quot;sd/aster-grove-makerspace&quot;},
+ &quot;createdEventId&quot;: &quot;e5a52dfc72a9ecb75871948ba5c197ee126f0c2f887f1ba35f52165da7b3255e&quot;}
+</code></pre>
+<p>Every subsequent action — each member added, each message sent, each canvas
+set — returns its own event id. By the end of the session the receipt file
+held dozens of them, which is what let the article behind this course write
+sentences like &quot;the orchestrator replied (event <code>b47e889a…</code>)&quot; without
+hand-waving. An event id is a citation format. Use it.</p>
+<p><img src="images/39-01-channel-created.png" alt="The private channel sd/aster-grove-makerspace created on the live relay, opened in the BUZZ desktop app after the 13-member roster was added."></p>
+<p><em>Live capture s01 — the private channel on the live relay with its 13-member roster. Every name in that member list resolves to a public key the owner audited before the first mention.</em></p>
+<h2 id="why-chat-native-beats-bot-bolted-on"><i data-lucide="message-square" class="ic"></i> Why chat-native beats bot-bolted-on</h2>
 <p>A single-assistant chat collapses the practice into one voice. BUZZ preserves
 the structure a service design team actually has:</p>
 <ol>
-<li><strong>Role separation.</strong> The researcher&#39;s evidence ask and the critic&#39;s gate
-posture arrive from different identities with different authority.</li>
-<li><strong>Visible handoffs.</strong> When the mapper waits on the researcher, the block is
-a message everyone can audit — not a stack trace in one terminal.</li>
-<li><strong>Human authority as membership.</strong> The designer is a member with the only
-phase-gate authority; runtimes cannot promote a phase because the approval
-receipt is a store artifact signed through the gate flow, not a chat vote.</li>
-<li><strong>Receipts.</strong> Every message and canvas set is an event with an ID. A live
-session produces a receipt trail you can cite later.</li>
+<li><strong>Role separation.</strong> The researcher&#39;s evidence ask and the critic&#39;s gate posture arrive from different identities with different authority. When the critic vetoes, the veto is <em>his</em> — it carries his key, and the review-veto-log row in the store carries the citation. A single assistant would have made the same statement about itself.</li>
+<li><strong>Visible handoffs.</strong> When the mapper waits on the researcher, the block is a message everyone in the channel can audit — not a stack trace in one terminal. Module 05 shows this paying off: two runtimes blocked in public, and the unblock was a message everyone could read.</li>
+<li><strong>Human authority as membership.</strong> The designer is a member with the only phase-gate authority; runtimes cannot promote a phase because the approval receipt is a store artifact signed through the gate flow, not a chat vote. The channel can <em>announce</em> a gate decision; it can never <em>be</em> one.</li>
+<li><strong>Receipts.</strong> Every message and canvas set is an event with an ID. A live session produces a receipt trail you can cite later — in a readout, in an audit, or in the next course module.</li>
 </ol>
-<h2 id="the-engagement-topology-this-course-uses">The engagement topology this course uses</h2>
+<h2 id="the-three-proof-boundaries"><i data-lucide="settings" class="ic"></i> The three proof boundaries</h2>
+<p>BUZZ is one of three surfaces in the ASD platform, and the discipline that
+makes the whole system trustworthy is keeping their proofs separate:</p>
+<table>
+<thead>
+<tr>
+<th>Boundary</th>
+<th>Responsibility</th>
+<th>Evidence in the live run</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BUZZ</td>
+<td>Channel, roster, mentions, runtime replies, Canvas document</td>
+<td>Relay event IDs + screenshots; replies matched to audited member pubkeys</td>
+</tr>
+<tr>
+<td>ASD store (CLI/MCP)</td>
+<td>Project, evidence, artifacts, reviews, handoffs, phase gate, factcheck</td>
+<td>Workspace files + <code>receipts/asd-workflow-receipt.json</code></td>
+</tr>
+<tr>
+<td>ACP</td>
+<td>Typed handoff records only; no external spawn</td>
+<td>Handoff recorded via <code>sd_orchestration_handoff</code>; <code>host-agent-spawn</code> unsupported by design</td>
+</tr>
+</tbody></table>
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">flowchart LR
+  O[Owner mehran] -- scoped mention with pubkey --&gt; B[BUZZ channel]
+  B -- runtime replies --&gt; R[Role runtimes]
+  R -- evidence IDs cited --&gt; W[ASD workspace store]
+  W -- canvas index render --&gt; C[Canvas document]
+  C -- buzz canvas set --&gt; B</pre>
+</div>
+<p>The rule the whole course keeps repeating lives in this diagram: a BUZZ
+message can be a real collaboration event and still not be an ASD evidence
+row. A Canvas link can be a useful index and still not prove that the linked
+artifact persisted. The pack and the protocols <strong>fail closed</strong> when the
+missing binding is not proven — which is a feature you will learn to
+demonstrate on purpose in module 05.</p>
+<h2 id="the-engagement-topology-this-course-uses"><i data-lucide="globe" class="ic"></i> The engagement topology this course uses</h2>
 <p>One private channel per engagement, thirteen members:</p>
 <table>
 <thead>
@@ -128,18 +184,30 @@ session produces a receipt trail you can cite later.</li>
 <p>The ten roles mirror the canonical ASD role contract (see Course 01, module
 03). The two advisors are optional; they stayed silent in this session because
 no build task was addressed to them — and that is the honest outcome to
-expect when you do not mention them.</p>
-<h2 id="hands-on-lab">Hands-on lab</h2>
+expect when you do not mention them. Module 03 covers the full roster with
+public keys.</p>
+<h2 id="hands-on-lab"><i data-lucide="microscope" class="ic"></i> Hands-on lab</h2>
 <p>Inspect the relay you already have: run <code>buzz channels list</code> with your owner
 identity and find the ASD channels that exist. For each, note the naming
-convention (<code>sd/...</code>), the visibility, and how many members it has. You will
-create your own channel in module 03.</p>
+convention (<code>sd/...</code>), the visibility, and how many members it has. Then open
+one channel in the desktop app and pick any message: find its event id and its
+author&#39;s display name, and resolve that name to a pubkey with
+<code>buzz users get --name &lt;name&gt;</code>. You have just done the minimal version of the
+identity audit that module 02 formalizes. You will create your own channel in
+module 04.</p>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
+<ul>
+<li>BUZZ is a signed-event relay, not a database: conversation and membership are provable, persistence is not claimed.</li>
+<li>Identities are keypairs; runtime replies are attributable to roles, not to the workspace owner.</li>
+<li>Event IDs are citation formats — collect them as you go.</li>
+<li>Keep the three boundaries separate: BUZZ proves collaboration, the ASD store proves state, ACP only records handoffs.</li>
+</ul>
 
 
-      <div class="module-nav"><span><a href="./02-the-asd-persona-pack-and-roster.html">The ASD persona pack and the roster</a> →</span></div>
+      <div class="module-nav"><span><a href="./02-agents-mcp-acp-and-integrations.html">Agents, MCP, ACP, and the integration landscape</a> →</span></div>
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
-  <script>window.__DIAGRAMS__=0</script>
+  <script>window.__DIAGRAMS__=1</script>
 </body>
 </html>

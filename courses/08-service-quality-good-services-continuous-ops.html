@@ -89,6 +89,49 @@
     .slide-card.active {
       display: flex;
     }
+    .slide-card.has-media.active {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+      gap: clamp(18px, 3vw, 42px);
+      align-items: center;
+      overflow: hidden;
+    }
+    .slide-card.has-media.active .slide-text {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-width: 0;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #3d3e3a transparent;
+      padding-right: 4px;
+    }
+    .slide-shot {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+      align-self: stretch;
+      justify-content: center;
+    }
+    .slide-shot img {
+      width: 100%;
+      max-height: 54vh;
+      object-fit: contain;
+      border: 1px solid #3d3e3a;
+      border-radius: 6px;
+      background: #0c0d0c;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    .slide-shot figcaption {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #83847c;
+      letter-spacing: 0.05em;
+      line-height: 1.5;
+    }
+    .slide-shot figcaption b { color: #b9bab0; }
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(10px); }
       to { opacity: 1; transform: translateX(0); }
@@ -292,6 +335,10 @@
     .d-pass { border-color: #38a169; color: #9ae6b4; background: rgba(56,161,105,0.08); }
     .d-veto { border-color: #c53030; color: #feb2b2; background: rgba(197,48,48,0.08); }
 
+    @media (max-width: 860px) {
+      .slide-card.has-media.active { grid-template-columns: 1fr; overflow-y: auto; }
+      .slide-shot img { max-height: 32vh; }
+    }
     @media (max-width: 720px) {
       .slide-viewport { aspect-ratio: auto; max-height: none; }
       .d-lane { flex-direction: column; align-items: stretch; gap: 4px; }
@@ -491,7 +538,7 @@
         
         <div class="slide-viewport" id="slideViewport">
           
-        <div class="slide-card active" data-slide-index="0">
+        <div class="slide-card active " data-slide-index="0">
           <div class="slide-header">
             <span class="slide-kicker">Paradigm Shift</span>
             <span class="slide-page-num">01 / 10</span>
@@ -507,6 +554,7 @@
   <span class="d-box d-stage d-good">Living blueprint sync</span>
 </div>
           <blockquote class="slide-quote">"The series ends where continuous operations begin."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="1">
@@ -529,6 +577,7 @@
   <span class="d-box d-stage d-good">sd_phase_advance</span>
 </div>
           <blockquote class="slide-quote">"Agents prepare and verify with receipts; human leaders decide with accountability."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="2">
@@ -547,6 +596,7 @@
   <span class="d-box d-stage d-gate">Perception — measure each gap</span>
 </div>
           <blockquote class="slide-quote">"What you delivered and how you delivered it fail independently; measure both."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="3">
@@ -564,6 +614,7 @@
   <div class="d-lane"><span class="d-lane-label">Tier 3</span><div class="d-lane-items d-lane-items--line"><span class="d-box d-good">Financial: retention, LTV, cost-to-serve</span></div></div>
 </div>
           <blockquote class="slide-quote">"A KPI without a tier is a number without a job."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="4">
@@ -582,6 +633,7 @@
   <span class="d-box d-stage d-good">Auditable standard</span>
 </div>
           <blockquote class="slide-quote">"A principle that cannot be checked is a poster; decoded, it becomes a gate."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="5">
@@ -601,6 +653,7 @@
   </div>
 </div>
           <blockquote class="slide-quote">"An audit that produces tickets, not adjectives."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="6">
@@ -619,6 +672,7 @@
   <span class="d-box d-stage d-good">Advocacy (paradox)</span>
 </div>
           <blockquote class="slide-quote">"Recover well and the failure becomes the story the customer tells in your favor."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="7">
@@ -638,6 +692,7 @@
   <span class="d-box d-stage d-good">Self-healing loop</span>
 </div>
           <blockquote class="slide-quote">"The blueprint lives because the telemetry feeds it."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="8">
@@ -655,6 +710,7 @@
   <div class="d-lane"><span class="d-lane-label">Recover</span><div class="d-lane-items d-lane-items--line"><span class="d-box">service-recovery-design</span><span class="d-box">sd_review</span><span class="d-box d-gate">sd_factcheck</span></div></div>
 </div>
           <blockquote class="slide-quote">"Measure, audit, recover, report — the operational quartet."</blockquote>
+        
         </div>
         
         <div class="slide-card " data-slide-index="9">
@@ -674,6 +730,7 @@
   <span class="d-box d-stage d-good">Continuous operations</span>
 </div>
           <blockquote class="slide-quote">"Design is a hypothesis; operations is the experiment; evidence is the referee."</blockquote>
+        
         </div>
         
         </div>

@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Closing Discover: store artifacts, critic, and the human gate — Course 09 — BUZZ for Agentic Service Design | The Agentic Service Designer">
+<title>Closing Discover: store artifacts, critic, and the human gate | Course 09 — BUZZ for Agentic Service Design</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  :root { color-scheme: light; }
+  body.module-page { background: var(--paper-tint); }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
+  .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+  .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
+  .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
+  .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
+  .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
+  .module-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  .module-body th, .module-body td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
+  .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
+  .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
+</head>
+<body class="module-page">
+  <div class="module-wrap">
+    <nav class="module-crumb"><a href="../09-buzz-agentic-service-design.html"><i data-lucide="arrow-left"></i>Course 09 — BUZZ for Agentic Service Design</a></nav>
+    <article class="module-body">
+
+<h1 id="closing-discover-store-artifacts-critic-and-the-human-gate">Closing Discover: store artifacts, critic, and the human gate</h1>
+<p>The BUZZ channel coordinates; the ASD store is where the engagement actually
+lives. This module is the store side of the same session — the gated write
+path, a deliberate veto and its same-id remediation, the critic&#39;s
+verification of the whole loop, and the human phase gate that ends Discover.
+Everything shown here ran against the isolated workspace with the standalone
+CLI pack (Course 10 covers installation).</p>
+<h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
+<ul>
+<li>Write evidence and artifacts through the gated path and read the acceptance contract that comes back.</li>
+<li>Stage a deliberate veto and remediate on the same artifact id.</li>
+<li>Ask the critic to verify the persisted review loop — and check its citations.</li>
+<li>Record the human gate in the store first, then announce it in-channel.</li>
+</ul>
+<h2 id="evidence-first-content-addressed-records"><i data-lucide="bar-chart-3" class="ic"></i> Evidence first — content-addressed records</h2>
+<pre><code class="language-bash">asd evidence-add --projectId aster-grove-makerspace-6a8498ef \
+  --kind quote --source librarian-01 \
+  --body &quot;Members ask what they can make before they ask what they borrow.&quot;
+</code></pre>
+<p>Each record returns a sha256 id — <code>ce65c266fe6a0b05…</code> and nine siblings.
+Those ids are the only currency later stages accept. The hash is computed
+over the record content at capture time, which is what let Liam &quot;reproduce
+every id as SHA-256 over [source, kind, body, null]&quot; in module 05: the store
+is checkable by construction, not by trust.</p>
+<h2 id="method-sops-with-acceptance-rules"><i data-lucide="file-pen" class="ic"></i> Method SOPs with acceptance rules</h2>
+<p>Artifacts are written by executing a method, and methods are manifests with
+teeth:</p>
+<pre><code class="language-bash">asd method-run --projectId aster-grove-makerspace-6a8498ef \
+  --methodId aeiou-coding
+</code></pre>
+<p>The contract that comes back names the owner role (<code>synthesizer</code>), the
+corpus provenance, the output kind (<code>affinity-cluster-set</code>), and acceptance
+rules: minimum three nodes, minimum two evidence refs per node, non-empty
+<code>theme</code> field. These are not documentation — the write path enforces them.
+In the Northfield run the same path produced the AEIOU artifact
+(<code>a202338b11c64b8b</code>) as three clusters, each citing two hashed records —
+<em>Post-op silence</em>, <em>Repeated data entry</em>, <em>Confirmation chase</em> — promoted to
+final by an evidence-cited critic pass.</p>
+<h2 id="the-deliberate-veto"><i data-lucide="circle-x" class="ic"></i> The deliberate veto</h2>
+<p>The Aster Grove service blueprint was written to exercise the failure path
+on purpose — a backstage node carrying an empty <code>lane</code> field:</p>
+<pre><code class="language-bash">asd artifact-write --projectId aster-grove-makerspace-6a8498ef \
+  --methodId evidence-gated-blueprint \
+  --title &quot;Aster Grove makerspace service blueprint&quot; \
+  --nodes &#39;&lt;five nodes; the backstage node carries lane: &quot;&quot; …&gt;&#39;
+# persisted as draft: acceptance fails field-non-empty on lane
+</code></pre>
+<p>The write persisted as a <strong>draft</strong> — an auditable &quot;no&quot;, never a silent one —
+and then the critic recorded the veto with a defect row that itself cites
+evidence:</p>
+<pre><code class="language-bash">asd review --projectId aster-grove-makerspace-6a8498ef \
+  --artifactId &lt;BLUEPRINT_ID&gt; --verdict veto \
+  --rows &#39;[{&quot;rowKind&quot;:&quot;defect&quot;,&quot;severity&quot;:&quot;high&quot;,&quot;rule&quot;:&quot;field-non-empty&quot;,
+  &quot;message&quot;:&quot;The backstage consumables lane is unnamed, so restocking ownership cannot be reviewed&quot;,
+  &quot;fix&quot;:&quot;Name the consumables and maintenance support process, then re-run acceptance&quot;,
+  &quot;evidenceId&quot;:&quot;058ca7b0d1fdca70…&quot;}]&#39;
+</code></pre>
+<p>Three rules worth memorizing about reviews:</p>
+<ol>
+<li>A <strong>pass</strong> requires at least one evidence-cited row and cannot carry defect rows.</li>
+<li>A <strong>veto</strong> requires defect rows, each with a fix and, here, an evidence citation naming the real-world consequence.</li>
+<li>Remediation is <strong>same-id</strong>: the veto does not fork the artifact; the rewrite lands on the same artifact id, and the verdict history accumulates in the review-veto log.</li>
+</ol>
+<p>The remediation rewrote the same artifact id with the lane named
+(<code>eeaa4f91d9a844a4b…</code>), an evidence-cited pass promoted it, a typed
+handoff recorded critic → orchestrator through <code>sd_orchestration_handoff</code>
+(module 02&#39;s ACP-boundary record), and <code>sd_factcheck</code> closed the loop.</p>
+<div class="diagram" id="diagram-0">
+<button class="diagram-expand" type="button" data-target="diagram-0" aria-label="Expand diagram fullscreen"><i data-lucide="maximize-2"></i></button>
+<pre class="mermaid">stateDiagram-v2
+  [*] --&gt; draft : artifact-write (lane empty)
+  draft --&gt; veto : critic review cites evidence
+  veto --&gt; remediated : same-id rewrite
+  remediated --&gt; final : evidence-cited pass
+  final --&gt; [*] : factcheck + human gate</pre>
+</div>
+<p>Why stage the veto at all? Because it is the cheapest test that the review
+gate actually gates. A pipeline whose critic has never said no in public is a
+pipeline whose critic you cannot trust to say no when it matters.</p>
+<h2 id="ask-the-critic-to-verify-the-store"><i data-lucide="circle-check" class="ic"></i> Ask the critic to verify the store</h2>
+<p>Back on the channel, the owner asked Marcus to confirm the blueprint review
+record <em>from the persisted store</em> — not from memory of the conversation. His
+reply (event <code>171fd4d3…</code>) verified all three legs and cited the
+review-veto-log <code>0224aa6c…</code>, row <code>r1</code>, evidence <code>058ca7b0…</code> (resolving to
+<code>facilities-05</code>), and the same-id remediation on artifact <code>eeaa4f91…</code>.</p>
+<p><img src="images/39-07-critic-verification.png" alt="Critic verification reply confirming the veto evidence, same-ID remediation, and pass record from the persisted store."></p>
+<p><em>Live capture s07 — the critic&#39;s store verification: veto evidence, same-id remediation, and the pass record — every id checked out against the workspace. The critic&#39;s authority comes from the store, which is exactly why his verification is worth asking for.</em></p>
+<p>Apply module 05&#39;s discipline one more time: every id in Marcus&#39;s reply was
+checked against the workspace. It is tempting to exempt the critic — don&#39;t.
+The gate is only credible if the gate itself is verifiable.</p>
+<h2 id="the-human-gate-recorded-then-announced"><i data-lucide="users" class="ic"></i> The human gate — recorded, then announced</h2>
+<p>The gate lives in the ASD store first; the channel message is notification.
+The order is the whole point:</p>
+<pre><code class="language-bash">asd phase-advance --projectId aster-grove-makerspace-6a8498ef \
+  --toPhase define --idempotencyKey astergrove-gate-discover-01 \
+  --approvalReceipt &#39;{&quot;receiptId&quot;:&quot;ag-gate-001&quot;,&quot;approvedBy&quot;:&quot;mehran&quot;,
+  &quot;decision&quot;:&quot;approve&quot;,&quot;rationale&quot;:&quot;…framing question selected…&quot;,
+  &quot;approvedAt&quot;:&quot;2026-08-23T07:40:00.000Z&quot;}&#39;
+</code></pre>
+<p>The store evaluated the gate — factcheck passing, no veto artifacts
+outstanding — and advanced the phase. Only then did the owner post the
+decision in-channel: the framing question — <em>how might the makerspace make
+every member&#39;s first independent making session succeed without repeated
+staff explanation?</em> — plus the accepted inputs and the receipt reference.</p>
+<p><img src="images/39-06-human-gate-decision.png" alt="The owner&#39;s human-gate decision post: framing question, accepted inputs, and the persisted approval receipt reference."></p>
+<p><em>Live capture s06 — the human-gate decision post: framing question, accepted inputs, and the store receipt reference. The message announces a decision the store already recorded — authority flows store → channel, never the reverse.</em></p>
+<p>The gate rejects sloppiness from its own operator, and the receipts prove
+it. In the Article 38 acceptance run (module 08), an approval attempted with
+an empty <code>approvedBy</code> was rejected — <em>approvalReceipt.approvedBy must be a
+non-empty string</em> — and the rejection itself was recorded as a gate audit.
+The gate holds even against its owner.</p>
+<h2 id="factcheck-the-machine-closes-the-loop"><i data-lucide="circle-check" class="ic"></i> Factcheck — the machine closes the loop</h2>
+<p>The final gate replays integrity, schema, acceptance, and review state for
+every artifact without the model in the loop:</p>
+<pre><code class="language-json">{
+  &quot;pass&quot;: true,
+  &quot;rows&quot;: [
+    {
+      &quot;artifactId&quot;: &quot;791717f177ab47368398a75105857b08&quot;,
+      &quot;kind&quot;: &quot;change-plan&quot;,
+      &quot;status&quot;: &quot;final&quot;,
+      &quot;integrity&quot;: { &quot;pass&quot;: true, &quot;dangling&quot;: [] },
+      &quot;review&quot;: { &quot;pass&quot;: true, &quot;gate&quot;: &quot;critic&quot;, &quot;verdict&quot;: &quot;pass&quot; }
+    }
+  ]
+}
+</code></pre>
+<p>All ten rows passed; the phase-gate evaluation recorded <code>factcheckPass: true</code>
+with no veto artifacts outstanding. The full receipt is
+<code>receipts/asd-workflow-receipt.json</code> in the article this course follows.</p>
+<h2 id="hands-on-lab"><i data-lucide="microscope" class="ic"></i> Hands-on lab</h2>
+<ol>
+<li>Register three evidence records in your scratch project; run a method and read the acceptance contract it returns.</li>
+<li>Write an artifact that violates one acceptance rule on purpose. Confirm it persists as a draft with the failure attached, then record a veto with a defect row citing real evidence.</li>
+<li>Remediate on the same artifact id and promote with an evidence-cited pass. Run <code>asd factcheck</code> and read every row.</li>
+<li>Advance the phase twice: once with a proper approval receipt, once with an empty <code>approvedBy</code>. Keep both receipts — the rejection is the demo.</li>
+</ol>
+<h2 id="key-takeaways"><i data-lucide="rocket" class="ic"></i> Key Takeaways</h2>
+<ul>
+<li>Acceptance rules are enforced on the write path; violations persist as drafts with failures attached — auditable &quot;no&quot;s.</li>
+<li>Reviews are same-id and evidence-cited; the veto log is a deliverable, not an embarrassment.</li>
+<li>Stage a deliberate veto once per engagement — it is the cheapest proof the gate gates.</li>
+<li>The human gate is a store record first and a channel announcement second; empty approvals are rejected and audited.</li>
+<li><code>sd_factcheck</code> replays the whole chain without the model — trust the replay, not the retelling.</li>
+</ul>
+
+
+      <div class="module-nav"><span>← <a href="./05-fail-closed-evidence-handshake.html">The fail-closed evidence handshake</a></span><span><a href="./07-canvas-index-and-boundaries.html">The Canvas index and honest boundaries</a> →</span></div>
+    </article>
+  </div>
+  <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=1</script>
+</body>
+</html>
