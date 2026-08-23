@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="asd-mcp is a self-contained MCP stdio server exposing 29 tools, 226 corpus resources, and 10 role prompts when its corpus roots are present.">
+<meta name="description" content="asd-mcp is a self-contained MCP stdio server exposing 29 tools, 232 corpus resources, and 10 role prompts when its corpus roots are present.">
 <title>The MCP server — The Agentic Service Designer</title>
 <link rel="stylesheet" href="../assets/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
@@ -29,9 +29,9 @@
   <section class="page-hero">
     <span class="kicker">Docs · Surfaces</span>
     <h1>The MCP server</h1>
-    <p class="lede">asd-mcp is a self-contained MCP stdio server exposing 29 tools, 226 corpus resources, and 10 role prompts when its corpus roots are present.</p>
+    <p class="lede">asd-mcp is a self-contained MCP stdio server exposing 29 tools, 232 corpus resources, and 10 role prompts when its corpus roots are present.</p>
   </section>
-  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Surfaces</b><ol><li><a href="./plugin-claude-code.html">The Claude Code plugin</a></li><li><a href="./plugin-hosts.html">Host packs and the compiler</a></li><li><a href="./mcp.html" class="on">The MCP server</a></li><li><a href="./cli.html">The CLI</a></li><li><a href="./dsh-workbench.html">The DeepSeek Harness workbench</a></li><li><a href="./buzz.html">BUZZ integration</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#start-the-server">Start the server</a></li><li><a href="#client-configuration">Client configuration</a></li><li><a href="#protocol-lifecycle">Protocol lifecycle</a></li><li><a href="#tool-surface-29-tools">Tool surface: 29 tools</a></li><li><a href="#resources-226-when-corpus-roots-are-present">Resources: 226 when corpus roots are present</a></li><li><a href="#prompts-ten-roles">Prompts: ten roles</a></li><li><a href="#errors">Errors</a></li><li><a href="#acp-and-agent-execution-boundary">ACP and agent execution boundary</a></li><li><a href="#disposable-verification">Disposable verification</a></li><li><a href="#format-pin">Format pin</a></li></ol></nav></aside><article class="art-body"><h1 id="the-mcp-server">The MCP server</h1>
+  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Surfaces</b><ol><li><a href="./plugin-claude-code.html">The Claude Code plugin</a></li><li><a href="./plugin-hosts.html">Host packs and the compiler</a></li><li><a href="./mcp.html" class="on">The MCP server</a></li><li><a href="./cli.html">The CLI</a></li><li><a href="./dsh-workbench.html">The DeepSeek Harness workbench</a></li><li><a href="./buzz.html">BUZZ integration</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#start-the-server">Start the server</a></li><li><a href="#client-configuration">Client configuration</a></li><li><a href="#protocol-lifecycle">Protocol lifecycle</a></li><li><a href="#tool-surface-29-tools">Tool surface: 29 tools</a></li><li><a href="#resources-232-when-corpus-roots-are-present">Resources: 232 when corpus roots are present</a></li><li><a href="#prompts-ten-roles">Prompts: ten roles</a></li><li><a href="#errors">Errors</a></li><li><a href="#acp-and-agent-execution-boundary">ACP and agent execution boundary</a></li><li><a href="#disposable-verification">Disposable verification</a></li><li><a href="#format-pin">Format pin</a></li></ol></nav></aside><article class="art-body"><h1 id="the-mcp-server">The MCP server</h1>
 <p><code>asd-mcp</code> exposes the same runtime as the CLI and DSH Studio: the canonical 29
 <code>sd_*</code> tools, method and artifact metadata, canvas/orchestration records, and
 fact-checking. It speaks newline-delimited JSON-RPC 2.0 over stdio. The emitted
@@ -167,14 +167,14 @@ validates the same schema used by the CLI. Evidence is limited to <code>quote</c
 <code>telemetry</code>, and <code>document</code>; artifact writes persist failed acceptance as draft
 records, while dangling evidence pointers fail closed. A pass review must have
 an evidence-cited proposal row and a veto must include a defect with a fix.</p>
-<h2 id="resources-226-when-corpus-roots-are-present">Resources: 226 when corpus roots are present</h2>
+<h2 id="resources-232-when-corpus-roots-are-present">Resources: 232 when corpus roots are present</h2>
 <p><code>resources/list</code> exposes the pack&#39;s discovered books, chapters, articles, and
 metadata using <code>asd://</code> URIs. It is cursor-paginated with a page size of 100:</p>
 <div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>asd://books/&lt;book&gt;
 asd://books/&lt;book&gt;/&lt;chapter&gt;
 asd://articles/&lt;NN&gt;
 </code></pre></div>
-<p>The current receipt counts 226 resources, but a copied runtime without the
+<p>The current receipt counts 232 resources, but a copied runtime without the
 repository corpus returns an empty list by design. This does not affect the 29
 runtime tools. <code>resources/read</code> returns the exact UTF-8 payload, MIME type,
 version, size, and logical provenance, never an absolute local filesystem path.</p>
@@ -240,7 +240,7 @@ their own live acceptance evidence.</p>
 <ul>
 <li>initialize and clean stderr;</li>
 <li>29 tools;</li>
-<li>226 paginated resources;</li>
+<li>232 paginated resources;</li>
 <li>10 prompts;</li>
 <li>project → evidence → artifact → evidence-cited review → factcheck;</li>
 <li>no invocation of an ambient/global executable.</li>
