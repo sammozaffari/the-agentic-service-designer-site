@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecosystem Map — Copperline 2000 · The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --phys:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#1e293b; --mut:#64748b; --bg:#f8fafc; --line:#e2e8f0; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55}
+  .wrap{max-width:1140px;margin:0 auto;padding:20px 22px 60px}
+  .provenance{background:#fffbeb;border:1px solid #f59e0b;border-left:6px solid #d97706;
+    border-radius:8px;padding:12px 16px;margin:14px 0 26px;font-size:13.5px;color:#78350f}
+  .provenance strong{color:#92400e}
+  .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:0 0 6px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px}
+  .sub{color:var(--mut);margin:0 0 14px;font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mut)}
+  .chip.kind{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
+  nav.sibs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px;font-size:12.5px}
+  nav.sibs a{text-decoration:none;color:#334155;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  nav.sibs a.here{background:#1e293b;color:#fff;border-color:#1e293b}
+  h2{font-size:20px;margin:34px 0 10px;padding-top:10px;border-top:2px solid var(--line)}
+  p{margin:8px 0}
+  .legend{position:sticky;top:0;z-index:20;background:rgba(248,250,252,.96);backdrop-filter:blur(3px);
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-wrap:wrap;gap:14px;
+    font-size:12px;color:#334155;margin:0 0 18px}
+  .legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  .f-money{background:var(--back)} .f-goods{background:var(--front)} .f-data{background:var(--data)}
+  .f-labour{background:var(--cust)} .f-brand{background:var(--sup)}
+  .ring{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+  .ring h3{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut)}
+  .ring ul{margin:0;padding-left:16px;font-size:13px}
+  .ring li{margin:2px 0}
+  .ecomap{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:12px;margin:14px 0}
+  .layer-label{grid-column:1/-1;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#94a3b8;margin-top:6px}
+  .core{grid-column:2;grid-row:2/5;background:#fffbeb;border:2px solid var(--back);border-radius:10px;padding:14px;display:flex;flex-direction:column;justify-content:center}
+  .core h3{font-size:17px;margin:0 0 4px;color:#92400e}
+  .core .tagline{font-size:12.5px;color:#78350f;margin:0 0 10px}
+  .core ul{margin:0;padding-left:16px;font-size:12.5px}
+  .core li{margin:2px 0}
+  .sys{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:#0e7490}
+  .r-risk{border-color:var(--fail);box-shadow:0 0 0 2px rgba(220,38,38,.15)}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:13px}
+  th{background:#f1f5f9;text-align:left;padding:8px 9px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#475569;border-bottom:2px solid var(--line)}
+  td{padding:8px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#f8fafc}
+  .pill{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap;color:#fff}
+  .riskflag{display:inline-block;font-size:10.5px;font-weight:700;color:var(--fail);border:2px solid var(--fail);border-radius:999px;padding:0 7px;white-space:nowrap;background:#fff}
+  .note{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:#0e7490;white-space:nowrap}
+  .note-desc{font-size:12.5px;color:#475569}
+  .drgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin:12px 0}
+  .dr{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:13px}
+  .dr b{color:#991b1b}
+  .dr .tag{display:inline-block;border:2px solid var(--fail);border-radius:999px;font-size:10px;font-weight:700;color:var(--fail);padding:0 7px;margin-bottom:4px}
+  footer{margin-top:40px;padding-top:14px;border-top:2px solid var(--line);font-size:12.5px;color:var(--mut)}
+  @media (max-width:860px){.ecomap{grid-template-columns:1fr}.core{grid-column:1;grid-row:auto}}
+  @media print{
+    body{background:#fff;font-size:11px}
+    .wrap{max-width:none;padding:0}
+    .legend{position:static;backdrop-filter:none}
+    nav.sibs{display:none}
+    tr,.ring,.dr{break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+    h2{break-after:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="provenance"><strong>Data boundary.</strong> Fictional composite engagement. Every person, quote, figure and outcome is synthetic. No real company, store, or person is described.</p>
+
+  <p class="kicker">Copperline 2000 · Full-Operation Service Blueprint &amp; Field Study · Artifact 06</p>
+  <h1>Ecosystem Map</h1>
+  <p class="sub">The Copperline Chicken value ecosystem in one layered map — the core operation at centre, the actors around it, and the 18 value flows (money, goods, data, labour, brand) that keep 2,000 stores running. Flows carry a reliance rating; fragile ones are ringed red.</p>
+
+  <div class="chips">
+    <span class="chip kind">Template kind 06 · ecosystem-map</span>
+    <span class="chip">Book refs 12/04 · 09/06 · 08/05</span>
+    <span class="chip">Phase: Research (field weeks 1–3)</span>
+    <span class="chip">Evidence notes N346–N365</span>
+    <span class="chip">Canon: canon.md §1, §2, §4</span>
+  </div>
+
+  <nav class="sibs">
+    <a href="brief.html">Brief</a><a href="research/interviews.html">Interviews</a><a href="research/surveys.html">Surveys</a><a href="research/channels.html">Channels</a><a href="stakeholder-map.html">Stakeholder Map</a><a href="insight-register.html">Insight Register</a><a href="persona-set.html">Personas</a><a href="journey-map.html">Journey Map</a><a href="service-blueprint.html">Service Blueprint</a><a href="analysis-report.html">Analysis</a><a href="slide-deck.html">Deck</a><a href="proposals.html">Proposals</a><a href="buzz-transcript.html">Buzz Log</a>
+  </nav>
+
+  <div class="legend">
+    <span><span class="sw f-money"></span>Money</span>
+    <span><span class="sw f-goods"></span>Goods</span>
+    <span><span class="sw f-data"></span>Data</span>
+    <span><span class="sw f-labour"></span>Labour</span>
+    <span><span class="sw f-brand"></span>Brand</span>
+    <span style="margin-left:auto"><span class="riskflag">DR-n</span>&nbsp;dependency risk (see §4)</span>
+  </div>
+
+  <h2>1. Layered ecosystem map</h2>
+  <p>Layers read upstream → core → downstream, with context actors (regulators, landlords, labour market) on the flanks. Arrows are deliberately not drawn in CSS — the flow register in §2 is the authoritative description of who sends what to whom.</p>
+
+  <div class="ecomap">
+    <div class="layer-label">Upstream — supply</div>
+
+    <div class="ring" style="grid-column:1;grid-row:2">
+      <h3>Suppliers</h3>
+      <ul>
+        <li>Chicken processing partners (fresh + frozen lines)</li>
+        <li>Packaging supplier</li>
+        <li>Produce &amp; dry-goods suppliers</li>
+      </ul>
+    </div>
+
+    <div class="ring r-risk" style="grid-column:1;grid-row:3">
+      <h3>Distribution — 4 regional DCs <span class="riskflag">DR1</span></h3>
+      <ul>
+        <li><b>Northline</b> DC (Oscar Villanueva, inbound)</li>
+        <li><b>Eastcliff</b> DC</li>
+        <li><b>Harbourgate</b> DC — sole source for the Harbourgate region</li>
+        <li><b>Southmere</b> DC</li>
+      </ul>
+    </div>
+
+    <div class="ring" style="grid-column:1;grid-row:4">
+      <h3>Maintenance contractor</h3>
+      <ul>
+        <li>Grill &amp; refrigeration service network, all 2,000 stores</li>
+      </ul>
+    </div>
+
+    <div class="core">
+      <h3>Copperline Chicken</h3>
+      <p class="tagline">Charcoal-grilled chicken · 2,000 stores · 41,300 crew · 2,140 salaried managers · Port Meridian Support Centre (340 staff)</p>
+      <ul>
+        <li>1,220 company-owned + 780 franchised stores (62 partners)</li>
+        <li>Formats: 68 flagship grill-house · 1,214 standard · 389 food-court · 251 drive-thru express · 78 travel-hub kiosk</li>
+        <li>Systems: <span class="sys">CopperPOS v7 · ShiftOrbit · StockBeak · Q-Pulse · VoiceBoard · Flamebook · Route56</span></li>
+        <li>Revenue mix: dine-in 36% · drive-thru 38% · app + aggregators 26%</li>
+      </ul>
+    </div>
+
+    <div class="layer-label">Downstream — demand</div>
+
+    <div class="ring" style="grid-column:3;grid-row:2">
+      <h3>Delivery aggregators <span class="riskflag" style="border-color:#d97706;color:#92400e">DR2</span></h3>
+      <ul>
+        <li><b>Dashly</b> — largest share of aggregator volume</li>
+        <li><b>Wheelio</b> — second; own handover ritual</li>
+        <li><b>Pedalr</b> — smallest; cycle couriers, mall-friendly</li>
+      </ul>
+    </div>
+
+    <div class="ring" style="grid-column:3;grid-row:3">
+      <h3>Franchise partners</h3>
+      <ul>
+        <li>62 partners operating 780 stores</li>
+        <li>Franchise Council (elected body)</li>
+        <li>Flamebook intranet — manuals, LTO launches, notices</li>
+      </ul>
+    </div>
+
+    <div class="ring" style="grid-column:3;grid-row:4">
+      <h3>Customers</h3>
+      <ul>
+        <li>Dine-in (36%) — flagship + food-court</li>
+        <li>Drive-thru (38%) — commuters, families</li>
+        <li>App + aggregator (26%) — office + home delivery</li>
+      </ul>
+    </div>
+
+    <div class="layer-label">Context — labour, regulation, place</div>
+
+    <div class="ring" style="grid-column:1;grid-row:6">
+      <h3>Crew labour market <span class="riskflag" style="border-color:#d97706;color:#92400e">DR4</span></h3>
+      <ul>
+        <li>Local hourly labour pools around every store</li>
+        <li>Union representation (Wren Talbot)</li>
+        <li>Turnover 94% annualised vs industry median 78%</li>
+      </ul>
+    </div>
+
+    <div class="ring" style="grid-column:2;grid-row:6">
+      <h3>Regulators &amp; auditors</h3>
+      <ul>
+        <li>Food-safety authority — temperature logs, closure audits</li>
+        <li>Employment standards — breaks, roster notice</li>
+      </ul>
+    </div>
+
+    <div class="ring" style="grid-column:3;grid-row:6">
+      <h3>Landlords &amp; place partners</h3>
+      <ul>
+        <li>Mall operators (389 food-court stores)</li>
+        <li>Travel-hub operators (78 kiosks)</li>
+        <li>Standalone-site landlords</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. Value flow register (18 flows)</h2>
+  <table>
+    <thead>
+      <tr><th>ID</th><th>From → To</th><th>Flow</th><th>What moves</th><th>Measure (canon)</th><th>Reliance &amp; risk</th><th>Note</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="note">F01</td><td>Suppliers → DCs</td><td><span class="pill f-goods">Goods</span></td><td>Fresh + frozen chicken, packaging, produce into the 4 regional DCs</td><td>Daily inbound across Northline, Eastcliff, Harbourgate, Southmere</td><td>LTO launch spikes overrun supplier lead time <span class="riskflag">DR3</span></td><td class="note">N346</td></tr>
+      <tr><td class="note">F02</td><td>Copperline → Suppliers</td><td><span class="pill f-money">Money</span></td><td>Purchase orders and payment on supplier terms</td><td>—</td><td>Steady; price indexed to chicken commodity</td><td class="note">N347</td></tr>
+      <tr><td class="note">F03</td><td>DCs → Stores</td><td><span class="pill f-goods">Goods</span></td><td>Auto-replenishment proposals from StockBeak, fulfilled regionally</td><td>4 DCs serving 2,000 stores</td><td><b>Single-DC reliance for the Harbourgate region</b> — one DC outage stalls every store it serves <span class="riskflag">DR1</span></td><td class="note">N348</td></tr>
+      <tr><td class="note">F04</td><td>Stores → Copperline</td><td><span class="pill f-money">Money</span></td><td>Company-store sales revenue; consolidated POS reporting</td><td>Format averages: flagship 1,850 · standard 720 · food-court 940 · drive-thru 1,310 · travel-hub 610 avg daily orders</td><td>Steady</td><td class="note">N349</td></tr>
+      <tr><td class="note">F05</td><td>Franchisees → Copperline</td><td><span class="pill f-money">Money</span></td><td>Royalties and franchise fees from 780 stores</td><td>62 franchise partners</td><td>Healthy, but royalty tension rises when playbook drift raises their costs</td><td class="note">N350</td></tr>
+      <tr><td class="note">F06</td><td>Copperline → Franchisees</td><td><span class="pill f-brand">Brand</span> <span class="pill f-data">Data</span></td><td>Ops manuals, LTO launches, compliance notices via Flamebook</td><td>—</td><td>Version drift: partners running superseded playbooks <span class="riskflag">DR5</span></td><td class="note">N351</td></tr>
+      <tr><td class="note">F07</td><td>Customers → Stores</td><td><span class="pill f-money">Money</span></td><td>Order payment at POS, kiosk, lane screen, app</td><td>Revenue mix: dine-in 36% · drive-thru 38% · app + aggregators 26%</td><td>Steady</td><td class="note">N352</td></tr>
+      <tr><td class="note">F08</td><td>Stores → Customers</td><td><span class="pill f-goods">Goods</span></td><td>Charcoal-grilled chicken meals across five formats</td><td>Peak windows 11:30–13:30 and 17:30–19:30 carry 62% of daily volume</td><td>Peak concentration strains every format at once <span class="riskflag" style="border-color:#d97706;color:#92400e">DR4</span></td><td class="note">N353</td></tr>
+      <tr><td class="note">F09</td><td>Customers → VoiceBoard</td><td><span class="pill f-data">Data</span></td><td>App reviews, receipt-QR feedback, aggregator ratings ingest</td><td>90-day extract analysed in field study</td><td>Feedback skews to extremes; silent middle unrepresented</td><td class="note">N354</td></tr>
+      <tr><td class="note">F10</td><td>Aggregators → Stores</td><td><span class="pill f-data">Data</span></td><td>Incoming orders via Route56 (integration layer for Dashly, Wheelio, Pedalr)</td><td>26% of revenue is app + aggregator</td><td>Route56 is the single integration layer — one config error silences all three <span class="riskflag">DR2</span></td><td class="note">N355</td></tr>
+      <tr><td class="note">F11</td><td>Copperline → Aggregators</td><td><span class="pill f-money">Money</span></td><td>Commission on aggregator orders</td><td>In-app rating 4.3/5 across aggregator exports</td><td>Commission rises annually; contract terms differ per aggregator</td><td class="note">N356</td></tr>
+      <tr><td class="note">F12</td><td>Aggregators ↔ Customers</td><td><span class="pill f-data">Data</span></td><td>App experience, delivery tracking, ratings flowing back to aggregator platforms</td><td>3 aggregator rating exports in study sample</td><td>Ratings sit on aggregator platforms, not Copperline's — reputation is rented <span class="riskflag">DR2</span></td><td class="note">N357</td></tr>
+      <tr><td class="note">F13</td><td>Stores ↔ Couriers</td><td><span class="pill f-labour">Labour</span></td><td>Aggregator couriers collect at counter; handover is crew→courier</td><td>Breakage in crew→courier handoffs: 0.7% of delivery orders</td><td>Each aggregator has a different pick-up ritual; no shared standard <span class="riskflag">DR6</span></td><td class="note">N358</td></tr>
+      <tr><td class="note">F14</td><td>Labour market → Stores</td><td><span class="pill f-labour">Labour</span></td><td>Hourly crew hiring into all formats</td><td>Crew turnover 94% annualised (industry median 78%)</td><td>Churn outpaces hiring; experience never accumulates <span class="riskflag">DR4</span></td><td class="note">N359</td></tr>
+      <tr><td class="note">F15</td><td>Copperline → Crew</td><td><span class="pill f-money">Money</span> <span class="pill f-data">Data</span></td><td>Wages; rosters, swaps and time-and-attendance via ShiftOrbit</td><td>11 swap requests/store/week, 31% needing manager rework; rosters &lt;72h before week start in 41% of stores</td><td>Roster instability feeds the turnover flywheel</td><td class="note">N360</td></tr>
+      <tr><td class="note">F16</td><td>Copperline ↔ Regulators</td><td><span class="pill f-data">Data</span></td><td>Q-Pulse temperature logs and closure audits to food-safety authority</td><td>96.2% of checks done, but 22% logged "in bulk at close" (falsified timing)</td><td>Compliance data integrity is a regulatory exposure, not just a hygiene metric <span class="riskflag">DR7</span></td><td class="note">N361</td></tr>
+      <tr><td class="note">F17</td><td>Landlords ↔ Copperline</td><td><span class="pill f-money">Money</span> <span class="pill f-brand">Brand</span></td><td>Lease payments; footfall, placement and fit-out constraints in return</td><td>389 food-court + 78 travel-hub stores sit in landlord-controlled spaces</td><td>Kiosk remediation (P8) needs landlord sign-off on hardware changes</td><td class="note">N362</td></tr>
+      <tr><td class="note">F18</td><td>Maintenance contractor ↔ Stores</td><td><span class="pill f-labour">Labour</span> <span class="pill f-goods">Goods</span></td><td>Grill and refrigeration service visits and parts</td><td>—</td><td>Grill downtime during peak silently kills drive-thru window time <span class="riskflag" style="border-color:#d97706;color:#92400e">DR4</span></td><td class="note">N363</td></tr>
+    </tbody>
+  </table>
+
+  <h2>3. Dependency risks</h2>
+  <div class="drgrid">
+    <div class="dr"><span class="tag">DR1</span><b>Single-DC reliance, Harbourgate region.</b> Every Harbourgate-region store is served by exactly one DC (F03). A one-day outage removes replenishment for the whole region with no reroute protocol. Proposal link: contingency annex of the blueprint (service-blueprint.html).</div>
+    <div class="dr"><span class="tag">DR2</span><b>Aggregator concentration + single integration layer.</b> Dashly, Wheelio and Pedalr together carry the full 26% app + aggregator mix, and all three ride one Route56 layer (F10, F12). Ratings live on their platforms, so brand reputation is partly rented.</div>
+    <div class="dr"><span class="tag">DR3</span><b>LTO supply spikes.</b> Limited-time-offer launches spike demand past supplier lead time (F01), driving the stockout/waste whiplash recorded in channel data. Proposal link: P5 Waste-to-Order Forecasting.</div>
+    <div class="dr"><span class="tag">DR4</span><b>Labour flywheel + peak concentration.</b> 94% annualised crew turnover (F14) meets 62% of volume in two peak windows (F08); grill downtime (F18) compounds both. This is the ecosystem's engine of instability. Proposal link: P1, P4.</div>
+    <div class="dr"><span class="tag">DR5</span><b>Franchise playbook drift.</b> Flamebook versioning lets partners run superseded playbooks (F06), so 780 stores diverge silently from the 1,220 company standard. Proposal link: P7 Franchise Ops Bridge.</div>
+    <div class="dr"><span class="tag">DR6</span><b>No shared courier handover standard.</b> Three aggregators impose three pick-up rituals (F13); the 0.7% breakage rate is the visible cost of the missing standard. Proposal link: P3 One Copperline Handover.</div>
+    <div class="dr"><span class="tag">DR7</span><b>Compliance data integrity.</b> 22% of Q-Pulse checks logged in bulk at close (F16) means the regulator-facing record misstates when food-safety checks actually happened. Proposal link: P6 Q-Pulse Honest Logging.</div>
+  </div>
+
+  <h2>4. Evidence notes N346–N365</h2>
+  <table>
+    <thead><tr><th>Note</th><th>Content</th></tr></thead>
+    <tbody>
+      <tr><td class="note">N346</td><td class="note-desc">Supplier inbound observation — Northline DC receiving bay, half day; LTO spike behaviour on record. Log: research/interviews.html</td></tr>
+      <tr><td class="note">N347</td><td class="note-desc">Procurement document review — supplier terms and commodity-index clause. Log: research/channels.html</td></tr>
+      <tr><td class="note">N348</td><td class="note-desc">DC outbound interview — Oscar Villanueva + StockBeak replenishment proposal sample (14 days). Log: research/interviews.html</td></tr>
+      <tr><td class="note">N349</td><td class="note-desc">POS sample — 120 stores, order volumes by format; figures match canon format table. Log: research/channels.html</td></tr>
+      <tr><td class="note">N350</td><td class="note-desc">Franchise royalty review — Daniel Okafor; royalty flow summary across 62 partners. Log: research/channels.html</td></tr>
+      <tr><td class="note">N351</td><td class="note-desc">Flamebook version audit — 12 partner stores; superseded-playbook incidence documented. Log: research/channels.html</td></tr>
+      <tr><td class="note">N352</td><td class="note-desc">Revenue-mix extract — POS + Route56 channel split (36/38/26). Log: research/channels.html</td></tr>
+      <tr><td class="note">N353</td><td class="note-desc">Peak-window analysis — POS sample; 62% of daily volume in 11:30–13:30 and 17:30–19:30. Log: research/channels.html</td></tr>
+      <tr><td class="note">N354</td><td class="note-desc">VoiceBoard 90-day extract — volume, sentiment and channel provenance of feedback. Log: research/channels.html</td></tr>
+      <tr><td class="note">N355</td><td class="note-desc">Route56 architecture walkthrough — Hana Kim; single-layer dependency confirmed. Log: research/interviews.html</td></tr>
+      <tr><td class="note">N356</td><td class="note-desc">Aggregator commission review — contract summaries for Dashly, Wheelio, Pedalr. Log: research/channels.html</td></tr>
+      <tr><td class="note">N357</td><td class="note-desc">Aggregator rating exports — 3 exports; 4.3/5 in-app rating average. Log: research/channels.html</td></tr>
+      <tr><td class="note">N358</td><td class="note-desc">Courier run shadowing — Jack Doyle, 3 runs; handover rituals per aggregator compared. Log: research/interviews.html</td></tr>
+      <tr><td class="note">N359</td><td class="note-desc">Crew hiring-funnel review — HR analytics pack; 94% annualised turnover vs 78% industry median. Log: research/surveys.html</td></tr>
+      <tr><td class="note">N360</td><td class="note-desc">ShiftOrbit exports — swap volume (11/store/week), rework rate (31%), late-roster incidence (41% of stores). Log: research/channels.html</td></tr>
+      <tr><td class="note">N361</td><td class="note-desc">Q-Pulse compliance extract — 96.2% completion, 22% bulk-at-close timing anomaly. Log: research/channels.html</td></tr>
+      <tr><td class="note">N362</td><td class="note-desc">Lease-terms review — mall and travel-hub fit-out constraint clauses. Log: research/channels.html</td></tr>
+      <tr><td class="note">N363</td><td class="note-desc">Maintenance SLA review — grill/refrigeration response times vs peak windows. Log: research/channels.html</td></tr>
+      <tr><td class="note">N364</td><td class="note-desc">Dependency-risk workshop — Mapper + Synthesizer pass over the 18 flows; DR1–DR7 rated by severity × likelihood. Method note for §3.</td></tr>
+      <tr><td class="note">N365</td><td class="note-desc">Map construction method — layered-layout convention (upstream/core/downstream/context); flows described in register rather than CSS arrows, per house rendering rules. Method note for §1.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. Reading notes</h2>
+  <p><b>The centre is heavier than it looks.</b> The Copperline core owns all seven named systems; every flow of data in the ecosystem terminates in one of them. That concentration is why Blueprint-as-Living-Document (P10) treats the systems layer as the re-baseline point.</p>
+  <p><b>Money flows in, labour flows out.</b> Seven flows carry money toward or within the core; only F13–F15 describe what the ecosystem asks of people. The asymmetry — 3 labour flows against 7 money flows — is the map-level version of the crew voice gap.</p>
+
+  <footer>
+    <p>Copperline 2000 · Artifact 06 (ecosystem-map) · Template catalog kind 06, refs 12/04, 09/06, 08/05 · Evidence notes N346–N365, each used once in this artifact · Canon source: <a href="canon.md">canon.md</a> (single source of truth; canon wins on conflict).</p>
+    <p>Companion artifacts: <a href="stakeholder-map.html">stakeholder-map.html</a> · <a href="insight-register.html">insight-register.html</a> · <a href="persona-set.html">persona-set.html</a> · <a href="journey-map.html">journey-map.html</a> · <a href="service-blueprint.html">service-blueprint.html</a> · <a href="proposals.html">proposals.html</a></p>
+  </footer>
+</div>
+</body>
+</html>

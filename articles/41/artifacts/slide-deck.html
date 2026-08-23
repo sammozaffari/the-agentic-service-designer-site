@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copperline 2000 — Current State of the Service (Deck) — The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --ev:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#0f172a; --mut:#64748b; --line:#e2e8f0;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-snap-type:y mandatory; scroll-behavior:smooth; }
+  body{
+    margin:0; background:#0b1220; color:#0f172a;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px; line-height:1.55;
+  }
+  .slide{
+    min-height:100vh; scroll-snap-align:start; position:relative;
+    background:#f8fafc; padding:56px 72px 96px; display:flex; flex-direction:column;
+    border-bottom:6px solid #0f172a; overflow:hidden;
+  }
+  .slide.dark{ background:#0f172a; color:#f8fafc; }
+  .snum{
+    position:absolute; top:22px; right:30px; font-family:ui-monospace,Menlo,monospace;
+    font-size:12px; color:var(--mut); letter-spacing:.12em; font-weight:700;
+  }
+  .dark .snum{ color:#94a3b8; }
+  .kick{ font-size:12px; letter-spacing:.16em; text-transform:uppercase; font-weight:800; margin-bottom:10px; }
+  h1{ font-size:44px; line-height:1.12; margin:0 0 12px; letter-spacing:-.015em; max-width:22ch; }
+  .slide h2{ font-size:34px; line-height:1.15; margin:0 0 18px; letter-spacing:-.012em; max-width:30ch; }
+  .lede{ font-size:16px; color:#334155; max-width:70ch; margin:0 0 18px; }
+  .dark .lede{ color:#cbd5e1; }
+  ul.b{ margin:0 0 14px; padding-left:22px; max-width:78ch; }
+  ul.b li{ margin:0 0 10px; font-size:16.5px; }
+  ul.b li b{ color:#0f172a; }
+  .snote{
+    font-size:12px; color:var(--mut); max-width:86ch; margin-top:auto;
+    border-top:1px solid var(--line); padding-top:10px;
+  }
+  .dark .snote{ color:#94a3b8; border-top-color:#1e293b; }
+  .snote b{ color:#475569; letter-spacing:.08em; font-size:10.5px; text-transform:uppercase; }
+  .dark .snote b{ color:#cbd5e1; }
+  .fn{ position:absolute; bottom:20px; left:72px; right:72px; font-family:ui-monospace,Menlo,monospace; font-size:10.5px; color:var(--mut); }
+  .dark .fn{ color:#64748b; }
+  .fn a{ color:inherit; text-decoration:none; border-bottom:1px dotted var(--mut); }
+  .prov{
+    background:#fffbeb; border:1px solid #fcd34d; border-left:4px solid #d97706;
+    padding:10px 14px; font-size:12.5px; color:#78350f; border-radius:4px; max-width:76ch; margin:6px 0 0;
+  }
+
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:26px; align-items:start; }
+  .statrow{ display:flex; flex-wrap:wrap; gap:12px; margin:8px 0 14px; }
+  .stat{ border:1px solid var(--line); border-left:4px solid var(--data); background:#fff; border-radius:8px; padding:10px 16px; min-width:150px; }
+  .stat .v{ font-size:26px; font-weight:800; letter-spacing:-.01em; }
+  .stat .k{ font-size:11px; color:var(--mut); text-transform:uppercase; letter-spacing:.08em; }
+
+  /* charts */
+  .chart{ background:#fff; border:1px solid var(--line); border-radius:10px; padding:18px 20px 12px; }
+  .chart h4{ margin:0 0 12px; font-size:12px; color:#475569; text-transform:uppercase; letter-spacing:.1em; }
+  .bars{ display:flex; align-items:flex-end; gap:18px; height:230px; padding:0 6px; }
+  .bcol{ flex:1; display:flex; flex-direction:column; justify-content:flex-end; height:100%; text-align:center; }
+  .bval{ font-size:13px; font-weight:800; margin-bottom:4px; }
+  .bar{ width:100%; border-radius:5px 5px 0 0; min-height:5px; }
+  .blab{ font-size:11px; color:#475569; margin-top:7px; line-height:1.3; }
+  .hbar-row{ display:flex; align-items:center; gap:10px; margin:0 0 12px; }
+  .hbar-lab{ width:210px; font-size:12px; color:#334155; text-align:right; flex:none; }
+  .hbar-track{ flex:1; background:#f1f5f9; border-radius:5px; height:26px; position:relative; overflow:hidden; }
+  .hbar-fill{ height:100%; border-radius:5px; display:flex; align-items:center; padding-left:9px; color:#fff; font-size:12px; font-weight:700; white-space:nowrap; }
+  .stack{ display:flex; height:34px; border-radius:6px; overflow:hidden; margin:6px 0 8px; }
+  .stack div{ display:flex; align-items:center; justify-content:center; color:#fff; font-size:12px; font-weight:700; }
+  .legendline{ font-size:11px; color:var(--mut); font-family:ui-monospace,Menlo,monospace; }
+
+  .pnum{ font-family:ui-monospace,Menlo,monospace; font-weight:700; font-size:12px; }
+  table.dir{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  table.dir td{ padding:6px 10px 6px 0; border-bottom:1px solid var(--line); vertical-align:top; }
+  table.dir td:first-child{ width:44px; font-family:ui-monospace,Menlo,monospace; font-weight:700; color:var(--data); }
+
+  @media (max-width:820px){
+    .slide{ padding:40px 26px 90px; }
+    h1{ font-size:32px; } .slide h2{ font-size:26px; }
+    .grid2{ grid-template-columns:1fr; }
+    .hbar-lab{ width:120px; }
+  }
+  @media print{
+    html{ scroll-snap-type:none; }
+    body{ background:#fff; }
+    .slide{ min-height:auto; page-break-after:always; border-bottom:none; padding:28px 34px 60px; }
+    .fn{ position:static; margin-top:12px; }
+    .snote{ margin-top:16px; }
+    a{ color:inherit; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ SLIDE 1 ============ -->
+<section class="slide dark" id="s1">
+  <div class="snum">01 / 16</div>
+  <div class="kick" style="color:#fbbf24">Copperline 2000 · Current-state deck</div>
+  <h1>Copperline 2000 — Current State of the Service</h1>
+  <p class="lede">What a full-operation blueprint of 2,000 stores, 41,300 crew and seven named systems actually shows — presented for the engagement's sponsor, Priya Nair (COO), and her operations leadership.</p>
+  <div class="statrow">
+    <div class="stat" style="background:#111c33; border-color:#1e293b; border-left-color:#fbbf24"><div class="v" style="color:#f8fafc">2,000</div><div class="k" style="color:#94a3b8">stores · 5 formats</div></div>
+    <div class="stat" style="background:#111c33; border-color:#1e293b; border-left-color:#fbbf24"><div class="v" style="color:#f8fafc">41,300</div><div class="k" style="color:#94a3b8">crew · 2,140 managers</div></div>
+    <div class="stat" style="background:#111c33; border-color:#1e293b; border-left-color:#fbbf24"><div class="v" style="color:#f8fafc">6 weeks</div><div class="k" style="color:#94a3b8">field study + reporting</div></div>
+    <div class="stat" style="background:#111c33; border-color:#1e293b; border-left-color:#fbbf24"><div class="v" style="color:#f8fafc">N+31</div><div class="k" style="color:#94a3b8">customer NPS (vs crew eNPS −8)</div></div>
+  </div>
+  <div class="prov"><strong>Data boundary — read first.</strong> Fictional composite engagement. Every person, quote, figure and outcome is synthetic. No real company, store, or person is described. Deck annotations N491–N500; all evidence cited by note ID to the artifact set.</div>
+  <p class="snote"><b>Speaker notes</b> — Open here: the engagement's promise to Priya was one sentence — "we will describe the service as it is, including the parts no customer sees." Sixteen slides, all current state. The response to this deck lives in a separate document: ten proposals, sequenced. This deck deliberately contains no recommendations except the last slide's signpost.</p>
+  <div class="fn">Companions: <a href="service-blueprint.html">service-blueprint.html</a> · <a href="analysis-report.html">analysis-report.html</a> · <a href="proposals.html">proposals.html</a></div>
+</section>
+
+<!-- ============ SLIDE 2 ============ -->
+<section class="slide" id="s2">
+  <div class="snum">02 / 16</div>
+  <div class="kick" style="color:var(--back)">Why the full operation</div>
+  <h2>"We fix the customer's hour. We have never studied the machine that makes it."</h2>
+  <p class="lede">The sponsor's framing: Copperline has run journey projects, menu projects, app projects. It has never run a blueprint across all six lanes of all 2,000 stores at once.</p>
+  <ul class="b">
+    <li><b>The customer hour is carried by the whole machine.</b> A recommendation story — "the line moved" — is process reliability, traceable from roster to grill to handover; every backstage lane is customer-facing in effect.</li>
+    <li><b>The metrics disagree with each other.</b> Customer NPS +31 while crew eNPS is −8 and turnover runs at 94% annualised; the asymmetry is the engagement's central question.</li>
+    <li><b>Improvements decay.</b> Past programmes faded within a quarter of the final report; nobody owned the metric after handover day — so this engagement ends in a living-document proposal, not a binder.</li>
+    <li><b>The seams are unowned.</b> Seven systems, 19 point-to-point interfaces, several ownerless — the GM's summary of her own store: "The system is me."</li>
+  </ul>
+  <p class="snote"><b>Speaker notes</b> — This slide sets the mandate. Priya's phrase (paraphrased in the headline, synthetic like all quotes here) reframes the study from "customer experience audit" to "operational truth-telling". Land the asymmetry early: the brand is loved and the machine is leaking — both facts are true, and only a full-operation view can hold them together.</p>
+  <div class="fn">Evidence: N055 · N227 · N218 · INS-24 (register) · <a href="brief.html">brief.html</a></div>
+</section>
+
+<!-- ============ SLIDE 3 ============ -->
+<section class="slide" id="s3">
+  <div class="snum">03 / 16</div>
+  <div class="kick" style="color:var(--data)">Method &amp; evidence base</div>
+  <h2>Two flagships in depth. Two thousand stores in data.</h2>
+  <p class="lede">Six-week field study; claims graded High only when two independent methods agree (the insight register's triangulation rule). <span style="font-family:ui-monospace,Menlo,monospace; font-size:11px; background:#f1f5f9; border:1px solid var(--line); border-radius:4px; padding:1px 6px;">N491</span></p>
+  <div class="statrow">
+    <div class="stat"><div class="v">8</div><div class="k">flagship interviews</div></div>
+    <div class="stat"><div class="v">412</div><div class="k">manager surveys (of 2,000)</div></div>
+    <div class="stat"><div class="v">1,893</div><div class="k">crew surveys (of 41,300)</div></div>
+    <div class="stat"><div class="v">5</div><div class="k">channel datasets</div></div>
+    <div class="stat"><div class="v">120</div><div class="k">stores in POS sample</div></div>
+  </div>
+  <ul class="b">
+    <li><b>Interviews:</b> census of named roles at Harbourgate Flagship #14 plus purposive picks — franchisee (6 stores), courier, customer, call-centre lead, DC inbound supervisor.</li>
+    <li><b>Channels:</b> 90-day VoiceBoard extract (31,960 submissions) · 3.41M POS orders (2 Mar–30 May) · 60 mystery-shopper reports · 3 aggregator rating exports · 2 weeks of call-centre logs (3,206 calls).</li>
+    <li><b>Honesty rule:</b> minority evidence kept, never smoothed; over-claiming was downgraded by the Critic pass — 9 defect rows on register v0.3.</li>
+  </ul>
+  <p class="snote"><b>Speaker notes</b> — Credibility slide. The sample is deliberately two-sided: flagship depth (where the standard is visible) and estate breadth (where the averages hide). If asked "why only 8 interviews": the interviews generate hypotheses; the 5 channel datasets test them — triangulation, not volume, is the design.</p>
+  <div class="fn">Evidence: N221 · N270 · N301 · N305 · N309 · N317 · register method N366–N385 · <a href="research/interviews.html">interviews</a> · <a href="research/surveys.html">surveys</a> · <a href="research/channels.html">channels</a></div>
+</section>
+
+<!-- ============ SLIDE 4 ============ -->
+<section class="slide" id="s4">
+  <div class="snum">04 / 16</div>
+  <div class="kick" style="color:var(--sup)">The blueprint on one slide</div>
+  <h2>Six lanes, 220 notes, one metronome</h2>
+  <p class="lede">The full blueprint maps five journey phases across six lanes. Every claim in this deck resolves to a note ID. <span style="font-family:ui-monospace,Menlo,monospace; font-size:11px; background:#f1f5f9; border:1px solid var(--line); border-radius:4px; padding:1px 6px;">N492</span></p>
+  <table class="t dir" style="max-width:900px">
+    <tr><td style="color:var(--cust)">Lane</td><td><b style="color:var(--cust)">Customer actions</b> — arrive, choose channel, order, pay, wait, verify, recover. Channel choice made before any evidence is seen; waits felt, not clocked.</td></tr>
+    <tr><td style="color:var(--front)">Lane</td><td><b style="color:var(--front)">Frontstage</b> — greeters, scripts, the pass, the window, the delivery shelf. Scripts degrade deterministically at peak; the expeditor is load-bearing.</td></tr>
+    <tr><td style="color:var(--back)">Lane</td><td><b style="color:var(--back)">Backstage</b> — roster, swaps, grill cadence, holds, prep, close-down. Fragility is social (phone trees, Excel shadows); the grill sets the beat.</td></tr>
+    <tr><td style="color:var(--sup)">Lane</td><td><b style="color:var(--sup)">Support</b> — 4 DCs, replenishment, maintenance, franchise spine, hiring. Manual steps are the integrations; the calendar ignores the field.</td></tr>
+    <tr><td style="color:var(--data)">Lane</td><td><b style="color:var(--data)">Data &amp; systems</b> — 7 systems, 19 interfaces, 3 ownerless. Truth exists in exports; rubrics score completion, not honesty.</td></tr>
+    <tr><td style="color:var(--ev)">Lane</td><td><b style="color:var(--ev)">Physical evidence</b> — fascia, receipt, buzzer, seal, badge, voucher. Evidence betrays gaps: fading paper, improvised vouchers, badges fed by falsified timing.</td></tr>
+  </table>
+  <p class="snote"><b>Speaker notes</b> — Do not walk the blueprint grid here; point at lanes as a cast list for slides 5–15. The one takeaway: waits, risks and handoffs concentrate where lanes meet — every High-risk handoff in the analysis sits at a lane boundary.</p>
+  <div class="fn">Evidence: lane ranges N001–N020 (evidence) · N021–N055 (customer) · N056–N100 (frontstage) · N101–N145 (backstage) · N146–N185 (support) · N186–N220 (data) · <a href="service-blueprint.html">service-blueprint.html</a></div>
+</section>
+
+<!-- ============ SLIDE 5 ============ -->
+<section class="slide" id="s5">
+  <div class="snum">05 / 16</div>
+  <div class="kick" style="color:var(--back)">How 2,000 stores actually run</div>
+  <h2>Five formats, five different physics</h2>
+  <p class="lede">One brand, one blueprint — but the crew-to-volume equation changes by an order of magnitude across formats.</p>
+  <div class="grid2">
+    <div class="chart">
+      <h4>Stores by format</h4>
+      <div class="bars">
+        <div class="bcol"><div class="bval">68</div><div class="bar" style="height:7%; background:var(--back)"></div><div class="blab">Flagship<br>1,850 orders/day · 18 crew</div></div>
+        <div class="bcol"><div class="bval">1,214</div><div class="bar" style="height:100%; background:var(--cust)"></div><div class="blab">Standard<br>720 · 9 crew</div></div>
+        <div class="bcol"><div class="bval">389</div><div class="bar" style="height:32%; background:var(--front)"></div><div class="blab">Food-court<br>940 · 7 crew</div></div>
+        <div class="bcol"><div class="bval">251</div><div class="bar" style="height:21%; background:var(--data)"></div><div class="blab">Drive-thru express<br>1,310 · 8 crew</div></div>
+        <div class="bcol"><div class="bval">78</div><div class="bar" style="height:8%; background:var(--sup)"></div><div class="blab">Travel-hub<br>610 · 4 crew</div></div>
+      </div>
+    </div>
+    <ul class="b">
+      <li><b>Ownership:</b> 1,220 company-owned; 780 franchised across 62 partners — the average partner runs 12.6 stores.</li>
+      <li><b>The tightest ratio is food-court</b> — 940 orders on 7 peak crew — while <b>growth capital favours drive-thru express</b> (1,310 on 8), the format carrying the 246 s problem hardest.</li>
+      <li><b>Four DCs</b> (Northline, Eastcliff, Harbourgate, Southmere) serve all five formats on 2–3 drops a week — travel-hub kiosks run the thinnest buffer: one missed drop empties them inside a day.</li>
+      <li><b>Implication:</b> any single "store standard" is false at three of five formats; the blueprint carries format-specific physics throughout.</li>
+    </ul>
+  </div>
+  <p class="snote"><b>Speaker notes</b> — The bar chart is deliberately count-based, not revenue-based: strategy conversations usually see the revenue view. The crew-per-order inversion between flagship and food-court is the slide's punchline — the same brand promise, delivered with a quarter of the hands.</p>
+  <div class="fn">Evidence: N101 · N149 · N171 · N151 · <a href="analysis-report.html">analysis-report.html</a> §09</div>
+</section>
+
+<!-- ============ SLIDE 6 ============ -->
+<section class="slide" id="s6">
+  <div class="snum">06 / 16</div>
+  <div class="kick" style="color:var(--cust)">Customer channels today</div>
+  <h2>36 walk in. 38 drive. 26 order by thumb.</h2>
+  <p class="lede">Revenue mix: dine-in 36% · drive-thru 38% · app + delivery aggregators 26%. Three channels, three different failure modes. <span style="font-family:ui-monospace,Menlo,monospace; font-size:11px; background:#f1f5f9; border:1px solid var(--line); border-radius:4px; padding:1px 6px;">N493</span></p>
+  <div class="grid2">
+    <div class="chart">
+      <h4>Revenue mix by channel</h4>
+      <div class="bars" style="height:200px">
+        <div class="bcol"><div class="bval">36%</div><div class="bar" style="height:95%; background:var(--cust)"></div><div class="blab">Dine-in<br>perceived wait = grill visibility</div></div>
+        <div class="bcol"><div class="bval">38%</div><div class="bar" style="height:100%; background:var(--front)"></div><div class="blab">Drive-thru<br>speaker mis-hears lead errors</div></div>
+        <div class="bcol"><div class="bval">26%</div><div class="bar" style="height:68%; background:var(--data)"></div><div class="blab">App + aggregators<br>0.7% handover breakage</div></div>
+      </div>
+      <div class="legendline">Weather flips 6–9 points between walk and drive on any given day</div>
+    </div>
+    <ul class="b">
+      <li><b>Channel choice precedes evidence</b> — decided by transport mode, before the fascia or the app is seen; the app functions as a menu memory (71 s sessions, 9% pre-order), not an ordering tool.</li>
+      <li><b>Each channel fails differently:</b> dine-in on perceived wait, drive-thru on accuracy at the speaker, delivery on the handover seam.</li>
+      <li><b>The blended 4.3/5 aggregator rating hides per-platform spread</b> — and the feedback funnel under-samples drive-thru cash customers entirely (37% get paper only).</li>
+    </ul>
+  </div>
+  <p class="snote"><b>Speaker notes</b> — Resist the "digital is the future" reading: the thumb channel is a quarter of revenue and nearly two-thirds of contact-centre failure demand. The mix is stable, weather-driven, and decided before Copperline speaks — so the service must be good at all three, not excellent at one.</p>
+  <div class="fn">Evidence: N021 · N022 · N024 · N032 · N085 · N207 · N313 · N020 · <a href="research/channels.html">research/channels.html</a></div>
+</section>
+
+<!-- ============ SLIDE 7 ============ -->
+<section class="slide" id="s7">
+  <div class="snum">07 / 16</div>
+  <div class="kick" style="color:var(--fail)">Peak reality</div>
+  <h2>62% of the day lands in four hours</h2>
+  <p class="lede">Two windows — 11:30–13:30 and 17:30–19:30 — carry 62% of daily volume. The estate runs one capacity model against a double-humped day. <span style="font-family:ui-monospace,Menlo,monospace; font-size:11px; background:#f1f5f9; border:1px solid var(--line); border-radius:4px; padding:1px 6px;">N494</span></p>
+  <div class="grid2">
+    <div class="chart">
+      <h4>Share of daily volume by window (est. split; 62% peak share measured)</h4>
+      <div class="bars" style="height:190px">
+        <div class="bcol"><div class="bval">~5%</div><div class="bar" style="height:16%; background:var(--wait)"></div><div class="blab">10:00–11:30</div></div>
+        <div class="bcol"><div class="bval">31%</div><div class="bar" style="height:100%; background:var(--fail)"></div><div class="blab"><b>11:30–13:30 PEAK</b></div></div>
+        <div class="bcol"><div class="bval">~20%</div><div class="bar" style="height:64%; background:var(--wait)"></div><div class="blab">13:30–17:30</div></div>
+        <div class="bcol"><div class="bval">31%</div><div class="bar" style="height:100%; background:var(--fail)"></div><div class="blab"><b>17:30–19:30 PEAK</b></div></div>
+        <div class="bcol"><div class="bval">~13%</div><div class="bar" style="height:42%; background:var(--wait)"></div><div class="blab">19:30–22:00</div></div>
+      </div>
+      <div class="legendline">Peak windows staffed at 1.9× off-peak crew vs 2.7× off-peak order rate</div>
+    </div>
+    <ul class="b">
+      <li><b>The labour curve is flatter than the load curve</b> — every peak runs a structural deficit; 58% of observed failures happen inside the two windows.</li>
+      <li><b>Everything else in this deck peaks too:</b> script fidelity collapse, break compression, bulk-logging temptation, courier stacking, re-fires — failure is not uniformly distributed, it is scheduled.</li>
+      <li><b>Forecasting sees it late:</b> weather and event signals arrive with 36-hour latency — fine for 12-hour brine, useless for day-of labour.</li>
+    </ul>
+  </div>
+  <p class="snote"><b>Speaker notes</b> — The 1.9× vs 2.7× divergence is the slide to slow down on: it is the arithmetic behind nearly every frontline finding that follows. Note the honest marker: the within-day split shown is an estimate; the 62% headline is measured.</p>
+  <div class="fn">Evidence: N307 · N126 · N164 · N182 · N311 · N119</div>
+</section>
+
+<!-- ============ SLIDE 8 ============ -->
+<section class="slide" id="s8">
+  <div class="snum">08 / 16</div>
+  <div class="kick" style="color:var(--back)">The roster flywheel</div>
+  <h2>94% turnover is a scheduling outcome, not a hiring one</h2>
+  <p class="lede">The register's single High-confidence causal loop: instability → attrition → instability. <span style="font-family:ui-monospace,Menlo,monospace; font-size:11px; background:#f1f5f9; border:1px solid var(--line); border-radius:4px; padding:1px 6px;">N495</span></p>
+  <div class="grid2">
+    <div class="chart">
+      <h4>Crew turnover, annualised</h4>
+      <div class="bars" style="height:150px">
+        <div class="bcol"><div class="bval">94%</div><div class="bar" style="height:100%; background:var(--fail)"></div><div class="blab">Copperline crew</div></div>
+        <div class="bcol"><div class="bval">78%</div><div class="bar" style="height:83%; background:var(--wait)"></div><div class="blab">Industry median</div></div>
+      </div>
+      <h4 style="margin-top:14px">The loop's measured dials</h4>
+      <div class="hbar-row"><div class="hbar-lab">Rosters published &lt;72h ahead</div><div class="hbar-track"><div class="hbar-fill" style="width:41%; background:var(--back)">41% of stores</div></div></div>
+      <div class="hbar-row"><div class="hbar-lab">Swaps needing manager rework</div><div class="hbar-track"><div class="hbar-fill" style="width:31%; background:var(--fail)">31% of 11/week</div></div></div>
+      <div class="hbar-row"><div class="hbar-lab">Swap approvals same-day</div><div class="hbar-track"><div class="hbar-fill" style="width:22%; background:var(--front)">only 22%</div></div></div>
+    </div>
+    <ul class="b">
+      <li><b>Median tenure 8 months</b> — the shorthand's teachers are perpetually 8 months in; the network re-hires its entire workforce every ~12.8 months.</li>
+      <li><b>Swaps happen by chat, die in a ledger</b> — the "ghost swap" conflict state sends GMs to Excel: 47% keep shadow spreadsheets; the system of record is not the system of use.</li>
+      <li><b>Crew who give up on swaps take absence instead</b> — 15% abandon; 61% of those then log unplanned absence. Swaps and absence are one system.</li>
+      <li><b>Exit interviews name notice, not pay</b> — a supermarket's two-weeks-ahead roster is the leaving comparison.</li>
+    </ul>
+  </div>
+  <p class="snote"><b>Speaker notes</b> — This is the deck's centre of gravity. If the audience remembers one mechanism: hiring faster does not break the loop, it feeds it — the loop's exit stage is the new hire. The only upstream dial is roster stability, which is why it is Proposal 1.</p>
+  <div class="fn">Evidence: N194 · N118 · N195 · N197 · N117 · N156 · N289 · N295 · N239 · INS-01–03 · <a href="proposals.html#p1">proposals.html P1</a></div>
+</section>
+
+<!-- ============ SLIDE 9 ============ -->
+<section class="slide" id="s9">
+  <div class="snum">09 / 16</div>
+  <div class="kick" style="color:var(--front)">Drive-thru physics</div>
+  <h2>246 seconds against a 180 target — and the tail is the story</h2>
+  <p class="lede">Median window time 246 s vs 180 s target — a 37% miss at the median. The best decile already beats target: the gap is load- and process-shaped, not capability-shaped. <span style="font-family:ui-monospace,Menlo,monospace; font-size:11px; background:#f1f5f9; border:1px solid var(--line); border-radius:4px; padding:1px 6px;">N496</span></p>
+  <div class="grid2">
+    <div class="chart">
+      <h4>Window time distribution (POS sample, 120 stores)</h4>
+      <div class="bars" style="height:190px">
+        <div class="bcol"><div class="bval">168 s</div><div class="bar" style="height:41%; background:var(--front)"></div><div class="blab">P10 — beats target already</div></div>
+        <div class="bcol"><div class="bval">180 s</div><div class="bar" style="height:44%; background:var(--wait); border:2px dashed #0f172a; border-bottom:none"></div><div class="blab"><b>TARGET</b></div></div>
+        <div class="bcol"><div class="bval">246 s</div><div class="bar" style="height:60%; background:var(--back)"></div><div class="blab">Median</div></div>
+        <div class="bcol"><div class="bval">411 s</div><div class="bar" style="height:100%; background:var(--fail)"></div><div class="blab">P90 — where reviews are made</div></div>
+      </div>
+      <div class="legendline">9% of measured windows carry a timer pause</div>
+    </div>
+    <ul class="b">
+      <li><b>Grill wait dominates the 66-second gap</b> — not the customer transaction; the fix is kitchen physics, not faster pleasantries.</li>
+      <li><b>The speaker is the accuracy leak</b> — audio errors in 1 of 8 orders; full repeat-back cuts mis-hears 44% but is truncated under window pressure.</li>
+      <li><b>The target hides its assumptions</b> — 58% of managers say 180 s is unachievable at current staffing; the validated store ran eleven crew, most run eight.</li>
+      <li><b>A pauseable metric will be paused</b> — 9% of windows carry a "legitimate exception" pause; the beacon's blind spot is cultural, not technical.</li>
+    </ul>
+  </div>
+  <p class="snote"><b>Speaker notes</b> — Pre-empt the room's instinct ("tell crews to hurry"): P10 beats target today, so capability exists. The decomposition (grill wait dominant) and the staffing confession (11 vs 8) together redirect the fix to process design and honest staffing — Proposal 2.</p>
+  <div class="fn">Evidence: N111 · N215 · N306 · N378 · N032 · N070 · N093 · N280 · N282 · N243 · <a href="proposals.html#p2">proposals.html P2</a></div>
+</section>
+
+<!-- ============ SLIDE 10 ============ -->
+<section class="slide" id="s10">
+  <div class="snum">10 / 16</div>
+  <div class="kick" style="color:var(--data)">The handover seam</div>
+  <h2>One counter, three rituals, 0.7% breakage</h2>
+  <p class="lede">Route56 integrates the aggregators' data; nothing integrates their physical pickup rituals at the shelf — the last metre of a 26%-of-revenue channel. <span style="font-family:ui-monospace,Menlo,monospace; font-size:11px; background:#f1f5f9; border:1px solid var(--line); border-radius:4px; padding:1px 6px;">N497</span></p>
+  <div class="grid2">
+    <div class="chart">
+      <h4>Courier wait at counter (minutes)</h4>
+      <div class="bars" style="height:170px">
+        <div class="bcol"><div class="bval">3.8</div><div class="bar" style="height:34%; background:var(--front)"></div><div class="blab">Stores with labelled shelf + owner (9 of 22)</div></div>
+        <div class="bcol"><div class="bval">6.4</div><div class="bar" style="height:57%; background:var(--back)"></div><div class="blab">All-store median</div></div>
+        <div class="bcol"><div class="bval">8.0</div><div class="bar" style="height:71%; background:var(--fail)"></div><div class="blab">Stores without discipline</div></div>
+        <div class="bcol"><div class="bval">11.2</div><div class="bar" style="height:100%; background:#7f1d1d"></div><div class="blab">P90</div></div>
+      </div>
+      <div class="legendline">0.7% of delivery orders break at handover ≈ 1 per store per week</div>
+    </div>
+    <ul class="b">
+      <li><b>The failure mechanism is structural, not individual</b> — "two identical bags, one calls a name, the wrong person says yeah… the handover is just vibes."</li>
+      <li><b>The scan meant to protect everyone runs at 93%</b> — skipped when couriers stack; each skip makes the later dispute unresolvable.</li>
+      <li><b>Discipline is a person, not a role</b> — shelf ownership by a named veteran is the strongest single predictor of a clean handover; four such stores in one district.</li>
+      <li><b>Everyone is graded on the same six minutes</b> — courier rating, store rating, aggregator SLA and call-centre cost key off one unstandardised moment: "one handover, four scorecards."</li>
+    </ul>
+  </div>
+  <p class="snote"><b>Speaker notes</b> — The 3.8 vs 8.0 contrast is the proof that this is a design problem with a known answer already operating in the field. Proposal 3 standardises the positive deviance rather than inventing from HQ.</p>
+  <div class="fn">Evidence: N316 · N315 · N249 · N250 · N251 · N081 · N115 · N012 · N085 · <a href="proposals.html#p3">proposals.html P3</a></div>
+</section>
+
+<!-- ============ SLIDE 11 ============ -->
+<section class="slide" id="s11">
+  <div class="snum">11 / 16</div>
+  <div class="kick" style="color:var(--sup)">Compliance theatre</div>
+  <h2>96.2% of checks done. 22% of timestamps fiction.</h2>
+  <p class="lede">Q-Pulse's completion rate is real; the timing of a fifth of entries is not — the estate's most normalised falsification, and the data to see it has existed for years. <span style="font-family:ui-monospace,Menlo,monospace; font-size:11px; background:#f1f5f9; border:1px solid var(--line); border-radius:4px; padding:1px 6px;">N498</span></p>
+  <div class="grid2">
+    <div class="chart">
+      <h4>What the check telemetry actually shows</h4>
+      <div class="stack">
+        <div style="width:74.2%; background:var(--front)">74.2% logged in-window</div>
+        <div style="width:22%; background:var(--back)">22% bulk-at-close</div>
+        <div style="width:3.8%; background:var(--fail); font-size:10px;">3.8%</div>
+      </div>
+      <div class="legendline">green = honest timing · amber = falsified timing · red = not done</div>
+      <h4 style="margin-top:16px">Manager Q-Pulse time</h4>
+      <div class="hbar-row"><div class="hbar-lab">Mean time per store, per day</div><div class="hbar-track"><div class="hbar-fill" style="width:82%; background:var(--data)">41 minutes</div></div></div>
+      <div class="hbar-row"><div class="hbar-lab">Managers: 40+ min daily</div><div class="hbar-track"><div class="hbar-fill" style="width:48%; background:var(--sup)">48%</div></div></div>
+    </div>
+    <ul class="b">
+      <li><b>The GM's summary is the diagnosis</b> — "ask me to log in the moment with the crew I have? Or ask me to be green by close? Pick one."</li>
+      <li><b>A 14-hour day appearing in a 4-minute entry window</b> — queryable for years; the audit rubric scores completion, so the report card cannot fail what the export plainly shows.</li>
+      <li><b>Crew corroborate from below</b> — 12% asked to sign at close for checks done earlier "often/always"; a kiosk manager logs breaks she did not take.</li>
+      <li><b>The pattern rhymes upstream</b> — DC supervisors report the same physics at the chilled bay; enforcement without usable logging just relocates the fiction.</li>
+    </ul>
+  </div>
+  <p class="snote"><b>Speaker notes</b> — Handle with the register's agreed framing: falsified timing is a system-design outcome, never individual dishonesty — the amnesty-and-enforce design in Proposal 6 exists because the confession was given freely by managers proud of their 98%.</p>
+  <div class="fn">Evidence: N121 · N203 · N204 · N014 · N224 · N244 · N273 · N274 · N292 · N286 · N265 · <a href="proposals.html#p6">proposals.html P6</a></div>
+</section>
+
+<!-- ============ SLIDE 12 ============ -->
+<section class="slide" id="s12">
+  <div class="snum">12 / 16</div>
+  <div class="kick" style="color:var(--back)">Waste &amp; the forecast gap</div>
+  <h2>3.8% waste — a forecasting artefact, not carelessness</h2>
+  <p class="lede">Chicken waste runs at 3.8% of weight against a 2.5% target, and it correlates with forecast error, not portioning error. <span style="font-family:ui-monospace,Menlo,monospace; font-size:11px; background:#f1f5f9; border:1px solid var(--line); border-radius:4px; padding:1px 6px;">N499</span></p>
+  <div class="grid2">
+    <div class="chart">
+      <h4>Chicken waste, % of weight</h4>
+      <div class="bars" style="height:170px">
+        <div class="bcol"><div class="bval">3.8%</div><div class="bar" style="height:100%; background:var(--fail)"></div><div class="blab">Today (measured)</div></div>
+        <div class="bcol"><div class="bval">2.8%</div><div class="bar" style="height:74%; background:var(--back)"></div><div class="blab">P5 pilot target (estimate)</div></div>
+        <div class="bcol"><div class="bval">2.5%</div><div class="bar" style="height:66%; background:var(--front)"></div><div class="blab">Long target</div></div>
+      </div>
+      <h4 style="margin-top:14px">Why the gap exists</h4>
+      <div class="hbar-row"><div class="hbar-lab">Cook-plan forecast residual</div><div class="hbar-track"><div class="hbar-fill" style="width:60%; background:var(--back)">±12%</div></div></div>
+      <div class="hbar-row"><div class="hbar-lab">Waste entries logged "other"</div><div class="hbar-track"><div class="hbar-fill" style="width:31%; background:var(--fail)">31% of entries</div></div></div>
+    </div>
+    <ul class="b">
+      <li><b>The mechanism is documented end-to-end:</b> LTO lift curves attach manually (missed for 2 of the last 5 LTOs) → launch spike anchors re-orders → week-two overstock → 20-minute holds expire → waste ledger.</li>
+      <li><b>The ledger starts partly fictional</b> — reason code 7 "other" absorbs 31% of entries; waste is also estimated under pressure ("I typed 0.9 kilos. I didn't weigh anything.").</li>
+      <li><b>The loop never returns:</b> no store has ever received a StockBeak insight about its own waste; the data goes up and never comes back down.</li>
+      <li><b>Managers overrule the curves routinely</b> — trust, not technology, is the adoption question; overrides will be scored, not banned, in Proposal 5.</li>
+    </ul>
+  </div>
+  <p class="snote"><b>Speaker notes</b> — Mark the honest estimate: 2.8% is the pilot maths from the proposals, not a measured outcome. The strategic point: waste is the estate's most traceable money leak and its fix is upstream of the kitchen — in a spreadsheet attachment step nobody owns.</p>
+  <div class="fn">Evidence: N104 · N126 · N148 · N226 · N238 · N267 · N105 · N199 · INS-10–11 · <a href="proposals.html#p5">proposals.html P5</a></div>
+</section>
+
+<!-- ============ SLIDE 13 ============ -->
+<section class="slide" id="s13">
+  <div class="snum">13 / 16</div>
+  <div class="kick" style="color:var(--sup)">Franchise drift</div>
+  <h2>780 stores run on yesterday's truth</h2>
+  <p class="lede">Flamebook carries 214 live documents with independent version numbers and no view of the current whole. Safety-relevant parameters change silently.</p>
+  <ul class="b">
+    <li><b>Version truth is fragmented</b> — "the ops manual is 9.2, but the travel-hub addendum is 9.0, and the grill section was reissued as 9.3"; one kiosk store followed a superseded allergen wipe-down for five weeks — no alert, no attestation.</li>
+    <li><b>Confidence is low where it matters</b> — only 31% of franchise managers are confident they always run the current version; acknowledgement of compliance notices runs 71% franchised vs 89% company, clustered on Friday-afternoon notices nobody sees.</li>
+    <li><b>QBRs review a stranger</b> — partners meet their own business via a deck that arrives 24 hours before the meeting.</li>
+    <li><b>The strongest survey ask is a person</b> — "franchisees do not want another portal; they want scheduled access to Daniel's team."</li>
+    <li><b>Blended reporting hides the drift</b> — company and franchise cuts must be separated "or 780 stores end up invisible."</li>
+  </ul>
+  <p class="snote"><b>Speaker notes</b> — Franchise is 39% of the estate and effectively a second estate operating the same brand on older truth. Note the register's minority flag: two long-tenure partners run the oldest POS hardware under renewal leverage — the drift has a commercial root, not just a content one. Proposal 7 answers with playbooks plus office hours, not a platform.</p>
+  <div class="fn">Evidence: N152 · N211 · N225 · N240 · N241 · N242 · N154 · N155 · N245 · N280 · N283 · INS-12–13 · <a href="proposals.html#p7">proposals.html P7</a></div>
+</section>
+
+<!-- ============ SLIDE 14 ============ -->
+<section class="slide" id="s14">
+  <div class="snum">14 / 16</div>
+  <div class="kick" style="color:var(--front)">Voice of crew</div>
+  <h2>eNPS −8 — and the middle is not angry, it is resigned</h2>
+  <p class="lede">Promoters 12% · passives 68% · detractors 20%. The dominant pattern is resignation — and the churn is manufactured in one tenure band.</p>
+  <div class="grid2">
+    <div class="chart">
+      <h4>eNPS by tenure band</h4>
+      <div class="hbar-row"><div class="hbar-lab">0–6 months</div><div class="hbar-track"><div class="hbar-fill" style="width:100%; background:var(--fail)">−14</div></div></div>
+      <div class="hbar-row"><div class="hbar-lab">6–18 months — the churn crux</div><div class="hbar-track"><div class="hbar-fill" style="width:79%; background:var(--fail)">−11</div></div></div>
+      <div class="hbar-row"><div class="hbar-lab">18 months–3 years</div><div class="hbar-track"><div class="hbar-fill" style="width:29%; background:var(--back)">−4</div></div></div>
+      <div class="hbar-row"><div class="hbar-lab">3 years+</div><div class="hbar-track"><div class="hbar-fill" style="width:43%; background:var(--front)">+6</div></div></div>
+      <div class="legendline">"Survivors like it; the estate burns people before they can."</div>
+      <h4 style="margin-top:16px">Break reality (peak shifts)</h4>
+      <div class="hbar-row"><div class="hbar-lab">Full 30-min break always/usually</div><div class="hbar-track"><div class="hbar-fill" style="width:56%; background:var(--front)">56%</div></div></div>
+      <div class="hbar-row"><div class="hbar-lab">Rate break area good/very good</div><div class="hbar-track"><div class="hbar-fill" style="width:31%; background:var(--back)">31%</div></div></div>
+    </div>
+    <ul class="b">
+      <li><b>The break is an abstract idea on the roster</b> — "the floor has nine people, not ten, so the break is what gives"; 49% of managers agree breaks are not covered without shorting service.</li>
+      <li><b>The crew's own top asks are operational:</b> earlier schedules (20.3% of mentions), peak cover (17.3%), real breaks (14.4%), simpler StockBeak (10.5%), fairer hours (9.3%).</li>
+      <li><b>The break room is evidence too</b> — "fourteen chairs for eighteen of us and it's next to the chiller… the only room that's ours is the worst room in the building."</li>
+      <li><b>Training cannot land on this ground</b> — the 11-shift shadow ladder runs at a median 6; "solo by week two, still asking where things are."</li>
+    </ul>
+  </div>
+  <p class="snote"><b>Speaker notes</b> — The tenure curve is the flywheel made visible: sentiment recovers exactly when the survivors' option value appears — after the band where most have already left. The pulse's own 54% response rate skews engaged; the people this slide describes did not answer it. Proposal 4 exists to change who answers.</p>
+  <div class="fn">Evidence: N213 · N294 · N295 · N296–N300 · N290 · N279 · N231 · N237 · N132 · INS-18, INS-22 · <a href="proposals.html#p4">proposals.html P4</a></div>
+</section>
+
+<!-- ============ SLIDE 15 ============ -->
+<section class="slide" id="s15">
+  <div class="snum">15 / 16</div>
+  <div class="kick" style="color:var(--front)">What's working — don't break it</div>
+  <h2>The product is loved. The flagship is the proof of concept.</h2>
+  <p class="lede">This engagement's findings do not add up to "fix everything" — several assets are load-bearing and must be protected while the rest is rebuilt around them.</p>
+  <div class="statrow">
+    <div class="stat" style="border-left-color:var(--front)"><div class="v">+31</div><div class="k">customer NPS</div></div>
+    <div class="stat" style="border-left-color:var(--front)"><div class="v">91.4%</div><div class="k">order accuracy</div></div>
+    <div class="stat" style="border-left-color:var(--front)"><div class="v">4.3/5</div><div class="k">aggregator rating</div></div>
+    <div class="stat" style="border-left-color:var(--front)"><div class="v">19 min</div><div class="k">median dwell — "char crisp at minute ten"</div></div>
+  </div>
+  <ul class="b">
+    <li><b>The grill theatre is wait-management</b> — visible from 78% of counters; walled-in stores lost 22% perceived-wait tolerance. Never trade sightlines for capacity.</li>
+    <li><b>The flagship standard exists</b> — 18 crew at peak, Aisha Rahman's team inventing (and holding) accommodations like peak perimeter tables; the reference experience is real, just not yet scalable.</li>
+    <li><b>Trusted instruments exist:</b> flash P&amp;L ("the rare report stores and HQ both trust") and Route56 ("the quiet success story of the stack").</li>
+    <li><b>Recovery works when it is fast</b> — on-the-spot recovery within 2 minutes converts complainers at a rate the call path never matches; voucher redeemers out-repeat baseline 61% vs 47%.</li>
+  </ul>
+  <p class="snote"><b>Speaker notes</b> — End the diagnosis on protection, not despair: the estate's best features are cheap (sightlines, scripts, a two-minute recovery) and its worst are structural. That asymmetry is good news — it means the fix list is mostly design and governance, not capital.</p>
+  <div class="fn">Evidence: N044 · N308 · N313 · N013 · N043 · N170 · N208 · N075 · N052 · <a href="analysis-report.html">analysis-report.html §09</a></div>
+</section>
+
+<!-- ============ SLIDE 16 ============ -->
+<section class="slide dark" id="s16">
+  <div class="snum">16 / 16</div>
+  <div class="kick" style="color:#fbbf24">The response</div>
+  <h2>Ten directions — sequenced, evidenced, killable</h2>
+  <p class="lede" style="color:#cbd5e1">Full problem statements, KPI hypotheses and 30-day experiments in <a href="proposals.html" style="color:#7dd3fc">proposals.html</a>. Prototyping has not been executed — every experiment is the next step, not a result. <span style="font-family:ui-monospace,Menlo,monospace; font-size:11px; background:#1e293b; border:1px solid #334155; border-radius:4px; padding:1px 6px;">N500</span></p>
+  <table class="dir" style="max-width:880px">
+    <tr><td>P1</td><td><b style="color:#f8fafc">Roster Stability Program</b> — rosters ≥7 days ahead; ShiftOrbit swap marketplace. <span style="color:#94a3b8">Wave 2 · experiment Wave 1 · rework 31%→&lt;15% (est.) · turnover 94%→85% (est.)</span></td></tr>
+    <tr><td>P2</td><td><b style="color:#f8fafc">Drive-Thru 180</b> — kitchen-to-window redesign toward the 180 s median. <span style="color:#94a3b8">Wave 3 · 246→210 s (est.)</span></td></tr>
+    <tr><td>P3</td><td><b style="color:#f8fafc">One Copperline Handover</b> — one crew→courier standard across aggregators. <span style="color:#94a3b8">Wave 1 · breakage 0.7%→&lt;0.3% (est.)</span></td></tr>
+    <tr><td>P4</td><td><b style="color:#f8fafc">Crew Voice Loop</b> — weekly 2-minute pulse wired to roster metrics. <span style="color:#94a3b8">Wave 1 · eNPS −8→−2 (est.)</span></td></tr>
+    <tr><td>P5</td><td><b style="color:#f8fafc">Waste-to-Order Forecasting</b> — StockBeak LTO-aware demand curves. <span style="color:#94a3b8">Wave 3 · waste 3.8%→2.8% (est.)</span></td></tr>
+    <tr><td>P6</td><td><b style="color:#f8fafc">Q-Pulse Honest Logging</b> — timestamp enforcement; kill bulk-at-close. <span style="color:#94a3b8">Wave 1 · 22%→&lt;5% (est.)</span></td></tr>
+    <tr><td>P7</td><td><b style="color:#f8fafc">Franchise Ops Bridge</b> — Flamebook playbooks + office hours. <span style="color:#94a3b8">Wave 2 · version confidence 31%→80% (est.)</span></td></tr>
+    <tr><td>P8</td><td><b style="color:#f8fafc">Kiosk Accessibility Pass</b> — WCAG 2.2 AA on 467 kiosks. <span style="color:#94a3b8">Wave 2</span></td></tr>
+    <tr><td>P9</td><td><b style="color:#f8fafc">Recovery Ladder</b> — one band set at POS, courier and call-centre. <span style="color:#94a3b8">Wave 2 · Band X 4%→&lt;1% (est.)</span></td></tr>
+    <tr><td>P10</td><td><b style="color:#f8fafc">Blueprint-as-Living-Document</b> — quarterly re-baseline via the same agent pipeline. <span style="color:#94a3b8">Wave 3</span></td></tr>
+  </table>
+  <p class="snote"><b>Speaker notes</b> — Close on sequencing logic in one breath: truth and trust first (P6, P3, P4), structure second (P1, P9, P7, P8), physics and feedback last (P2, P5, P10). Every number on this slide marked "est." is a hypothesis with a designed 30-day test — the first decision requested of this room is only Wave 1.</p>
+  <div class="fn"><a href="proposals.html">proposals.html (N456–N490)</a> · <a href="analysis-report.html">analysis-report.html (N421–N455)</a> · <a href="service-blueprint.html">service-blueprint.html (N001–N220)</a> · <a href="insight-register.html">insight-register.html (N366–N385)</a></div>
+</section>
+
+<!-- ============ DECK NOTE PANEL (source of N491–N500) ============ -->
+<section class="slide" id="deck-notes" style="background:#fff">
+  <div class="snum">Notes</div>
+  <div class="kick" style="color:var(--back)">Deck annotations</div>
+  <h2 style="font-size:26px">N491–N500 — slide footnotes and annotations</h2>
+  <p class="lede">Each annotation is anchored to the slide that carries it; IDs are used once and never renumbered. Full note ranges across the artifact set: N001–N220 blueprint · N221–N320 research · N366–N385 insight register · N421–N455 analysis · N456–N490 proposals.</p>
+  <div style="max-width:960px">
+    <div class="note" style="display:flex; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:12.5px; color:#334155;"><span style="font-family:ui-monospace,Menlo,monospace; font-weight:700; width:44px; flex:none;">N491</span><span>(Slide 3) Evidence-base composition — 8 flagship interviews (Harbourgate #14 + Northline #3), 412 manager and 1,893 crew surveys, and 5 channel datasets (VoiceBoard 90 days / 31,960 submissions; POS 120 stores / 3.41M orders; 60 mystery-shopper reports; 3 aggregator exports; call-centre 2 weeks / 3,206 calls). Deck states sample sizes; the notes panel of each research artifact holds the method.</span></div>
+    <div class="note" style="display:flex; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:12.5px; color:#334155;"><span style="font-family:ui-monospace,Menlo,monospace; font-weight:700; width:44px; flex:none;">N492</span><span>(Slide 4) Lane-summary rule — each lane line on the one-slide blueprint compresses its lane's note range (N001–N020 evidence; N021–N055 customer; N056–N100 frontstage; N101–N145 backstage; N146–N185 support; N186–N220 data) to its single most decision-relevant sentence; the deck never introduces a claim absent from the blueprint.</span></div>
+    <div class="note" style="display:flex; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:12.5px; color:#334155;"><span style="font-family:ui-monospace,Menlo,monospace; font-weight:700; width:44px; flex:none;">N493</span><span>(Slide 6) Channel-mix annotation — 36/38/26 is the canon revenue mix verbatim; the weather-flip figure (6–9 points walk↔drive) is field observation from the customer-lane notes; the 71-second app session and 9% pre-order rate reframe the app as menu-memory, not ordering tool.</span></div>
+    <div class="note" style="display:flex; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:12.5px; color:#334155;"><span style="font-family:ui-monospace,Menlo,monospace; font-weight:700; width:44px; flex:none;">N494</span><span>(Slide 7) Peak annotation — the 62%-in-four-hours figure is measured (POS sample); the within-day split shown in columns is an estimate for illustration and labelled as such; the 1.9×-crew vs 2.7×-order divergence is the slide's load-bearing measured fact.</span></div>
+    <div class="note" style="display:flex; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:12.5px; color:#334155;"><span style="font-family:ui-monospace,Menlo,monospace; font-weight:700; width:44px; flex:none;">N495</span><span>(Slide 8) Flywheel annotation — 94% turnover (industry median 78%), 41% of rosters inside 72 h, 11 swaps/store/week with 31% rework are canon verbatim; 12.8-month full-workforce re-hire cycle and 8-month median tenure are ledger-derived; the loop's arrows are each evidence-cited in analysis-report.html §02–03.</span></div>
+    <div class="note" style="display:flex; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:12.5px; color:#334155;"><span style="font-family:ui-monospace,Menlo,monospace; font-weight:700; width:44px; flex:none;">N496</span><span>(Slide 9) Drive-thru annotation — 246 s median vs 180 s target with P90 411 s and P10 168 s are the POS sample's distribution; the decomposition (grill wait dominant in the 66 s gap) is the insight register's time-budget split; the staffing confession (validated at eleven crew, most run eight) is interview evidence.</span></div>
+    <div class="note" style="display:flex; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:12.5px; color:#334155;"><span style="font-family:ui-monospace,Menlo,monospace; font-weight:700; width:44px; flex:none;">N497</span><span>(Slide 10) Handover annotation — 0.7% breakage ≈ 1/store/week is the three-way reconciliation; courier waits (6.4 median, 3.8 disciplined vs 8.0 not, P90 11.2) are trained-observer logs; the 93% scan rate and named-veteran ownership pattern are field observation.</span></div>
+    <div class="note" style="display:flex; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:12.5px; color:#334155;"><span style="font-family:ui-monospace,Menlo,monospace; font-weight:700; width:44px; flex:none;">N498</span><span>(Slide 11) Compliance annotation — 96.2% completion with 22% bulk-at-close is canon verbatim; the 74.2/22/3.8 stack is this deck's arithmetic on those two figures; manager self-report (18%) running four points below telemetry is the survey's honesty gap, quoted from the surveys artifact.</span></div>
+    <div class="note" style="display:flex; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:12.5px; color:#334155;"><span style="font-family:ui-monospace,Menlo,monospace; font-weight:700; width:44px; flex:none;">N499</span><span>(Slide 12) Waste annotation — 3.8% vs 2.5% target is canon verbatim; 2.8% is the proposals' pilot estimate, shown as estimate on-slide; the ±12% cook-plan residual and 31% "other" reason-code share are ledger figures; the mechanism chain (manual lift attachment → spike-anchored re-orders → hold expiry) is DC + store evidence.</span></div>
+    <div class="note" style="display:flex; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:12.5px; color:#334155;"><span style="font-family:ui-monospace,Menlo,monospace; font-weight:700; width:44px; flex:none;">N500</span><span>(Slide 16) Directions annotation — ten titles verbatim from the canon; every "est." on the slide is a hypothesis carried in proposals.html with a baseline source and a 30-day experiment; wave assignments and kill criteria are the proposals document's, restated one-line here. The deck's boundary sentence is the engagement's: reports and proposals delivered; prototyping not executed.</span></div>
+  </div>
+  <p class="snote"><b>How to use this deck</b> — 16 slides, one scroll-snap section each; print exports one slide per page. Speaker notes are the gray paragraphs; evidence footnotes cite note IDs resolvable in the linked artifacts. Deck is current-state only by design — the response lives in proposals.html.</p>
+  <div class="fn"><a href="proposals.html">proposals.html</a> · <a href="analysis-report.html">analysis-report.html</a> · <a href="service-blueprint.html">service-blueprint.html</a> · <a href="insight-register.html">insight-register.html</a> · <a href="brief.html">brief.html</a></div>
+</section>
+
+</body>
+</html>

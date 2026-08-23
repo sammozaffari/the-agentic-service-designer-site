@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Copperline in the DeepSeek Harness: DSH + the ASD Plugin Suite — the same 2,000-store fictional engagement run as lane 3, with role agents, evidence rules, renderers and phase gates shipped as plugins. By Sam Mozaffari. AI-first service design case study.">
+<title>43. Copperline in the DeepSeek Harness: DSH + the ASD Plugin Suite — The Agentic Service Designer</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>D</text></svg>">
+<style>
+/* article-43 scoped styles: illustrative DSH web-UI panels (no images, no disk assets) */
+.dsh{border:1px solid var(--line-strong);border-radius:8px;overflow:hidden;background:#fff;font-family:var(--sans);font-size:12.5px;line-height:1.45;color:#23231f;box-shadow:var(--shadow-hover)}
+.dsh-bar{display:flex;align-items:center;gap:10px;padding:8px 12px;background:#efefec;border-bottom:1px solid var(--line)}
+.dsh-dots{display:flex;gap:5px;flex:none}
+.dsh-dots i{width:10px;height:10px;border-radius:50%;display:block}
+.dsh-dots i:nth-child(1){background:#ff5f57}.dsh-dots i:nth-child(2){background:#febc2e}.dsh-dots i:nth-child(3){background:#28c840}
+.dsh-url{flex:1;display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden}
+.dsh-url b{font-weight:500;color:var(--ink)}
+.dsh-tab{flex:none;font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+.dsh-app{display:grid;grid-template-columns:210px 1fr;min-height:0}
+.dsh-side{border-right:1px solid var(--line);background:#fafaf8;padding:10px 0}
+.dsh-side h5{margin:0;padding:6px 14px 4px;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.dsh-side .ws{margin:0 10px 8px;border:1px solid var(--line);border-radius:5px;background:#fff;padding:6px 9px;font-family:var(--mono);font-size:10px;color:var(--ink-soft)}
+.dsh-side .ws b{display:block;color:var(--ink);font-weight:500}
+.dsh-item{display:block;padding:5px 14px;color:#4a4a45;cursor:default}
+.dsh-item small{display:block;font-family:var(--mono);font-size:9.5px;color:var(--muted)}
+.dsh-item.on{background:#fff;border-left:2px solid var(--ink);color:var(--ink);font-weight:500}
+.dsh-main{padding:14px 16px;min-width:0}
+.dsh-main h4{margin:0 0 8px;font-size:13px;font-weight:600}
+.dsh-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.dsh-chip{font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;border:1px solid var(--label-line);border-radius:4px;padding:3px 7px;color:var(--ink-soft);background:#fff}
+.dsh-chip.lit{background:var(--ink);color:#fff;border-color:var(--ink)}
+.dsh-msg{border:1px solid var(--line);border-radius:8px;padding:9px 12px;margin:0 0 10px;background:#fff;max-width:92%}
+.dsh-msg .who{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
+.dsh-msg .who b{font-size:11.5px;font-weight:600}
+.dsh-msg .who span{font-family:var(--mono);font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.dsh-msg.owner{margin-left:auto;background:#f4f4ef;border-style:dashed}
+.dsh-msg p{margin:0 0 5px;font-size:12px;color:#33322e}
+.dsh-msg p:last-child{margin:0}
+.dsh-msg .gates{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);background:#fafaf8;border:1px solid var(--line);border-radius:4px;padding:6px 8px;margin-top:6px}
+.dsh-plug{display:grid;grid-template-columns:150px 1fr 54px;gap:10px;align-items:center;border-top:1px solid var(--line);padding:7px 2px}
+.dsh-plug:first-of-type{border-top:0}
+.dsh-plug b{font-family:var(--mono);font-size:11px;font-weight:500}
+.dsh-plug p{margin:0;font-size:11.5px;color:#4a4a45}
+.dsh-tog{font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:3px 8px;text-align:center;color:var(--muted);background:#fafaf8}
+.dsh-tog.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.dsh-lane{display:grid;grid-template-columns:118px 1fr;gap:0;border-top:1px solid var(--line)}
+.dsh-lane:first-of-type{border-top:0}
+.dsh-lane b{font-family:var(--mono);font-size:9.5px;font-weight:500;padding:5px 8px;border-right:2px solid;background:#fafaf8}
+.dsh-lane div{padding:5px 8px;font-size:10.5px;color:#4a4a45}
+.dsh-gate{border:2px solid var(--ink);border-radius:8px;padding:12px 14px;background:#fff}
+.dsh-gate .hd{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.dsh-gate .hd b{font-size:13px;font-weight:600}
+.dsh-gate .hd .st{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:#fff;border-radius:4px;padding:3px 8px}
+.dsh-gate dl{display:grid;grid-template-columns:130px 1fr;gap:4px 10px;margin:0;font-size:11.5px}
+.dsh-gate dt{font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+.dsh-gate dd{margin:0;color:#33322e}
+.dsh-foot{border-top:1px solid var(--line);margin-top:10px;padding-top:7px;font-family:var(--mono);font-size:9.5px;color:var(--muted)}
+@media (max-width:720px){.dsh-app{grid-template-columns:1fr}.dsh-side{border-right:0;border-bottom:1px solid var(--line)}.dsh-plug{grid-template-columns:110px 1fr 48px}.dsh-gate dl{grid-template-columns:1fr}}
+</style>
+</head><body>
+<header class="site-head">
+  <a class="brand" href="../../index.html">
+    <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
+    <div class="brand-sub">Sam Mozaffari</div>
+  </a>
+  <nav class="main-nav">
+    <a href="../../index.html" class="on">Index</a>
+    <a href="../../articles.html" class="">Articles</a>
+    <a href="../../courses.html" class="">Courses</a>
+    <a href="../../book.html" class="">Book</a>
+    <a href="../../harness.html" class="">Harness</a>
+    <a href="../../docs/index.html" class="">Docs</a>
+    <a href="../../about.html" class="">About</a>
+    <a href="../../cv.html" class="">CV</a>
+  </nav>
+</header>
+<main class="art">
+  <div class="art-progress"><div class="art-progress-bar" id="progress"></div></div>
+  <div class="art-hero">
+    <div class="art-meta">
+      <span class="chip">Platforms &amp; Harnesses</span>
+      <span class="sep">·</span><span class="chip">Charcoal-grilled chicken fast food</span>
+      <span class="sep">·</span><span class="chip">Lane 3 of 3 · six weeks</span>
+      <span class="sep">·</span><span class="chip">17 min read</span>
+    </div>
+    <h1>Copperline in the DeepSeek Harness: DSH + the ASD Plugin Suite</h1>
+    <p class="deck">Fictional composite client. All people, quotes, figures, and outcomes are synthetic. The engagement is the canon Copperline 2000 study; this lane reruns it inside DeepSeek Harness, where roles, evidence rules, renderers and phase gates ship as plugins. The DSH session is simulated and every UI panel below is an illustrative rendering, not a capture.</p>
+    <div class="art-stats"><span><b>5</b> illustrative panels</span><span><b>6</b> plugins</span><span><b>3</b>-lane comparison</span><span><b>560</b>-note evidence base</span></div>
+    <div class="author-block">
+      <div class="author-id">
+        <div class="author-avatar">SM</div>
+        <div><b>Sam Mozaffari</b><span>Service designer · AI-first &amp; agentic practice</span></div>
+      </div>
+      <p class="author-note">This is the third lane of the Copperline 2000 engagement: the same brief, the same 14 artifacts, the same 560 numbered notes as the BUZZ lane, but the coordination substrate is DeepSeek Harness (DSH) — the open-source, everything-is-a-plugin agent harness — extended with an ASD plugin suite. I wrote the suite for this article; the session below is a disciplined simulation that follows the project canon exactly, and the figures are hand-built renderings of what the web UI would show.</p>
+    </div>
+  </div><div class="art-layout"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-provenance-note">Provenance note</a></li><li><a href="#sec-1-executive-summary">Executive summary</a></li><li><a href="#sec-2-why-a-harness-lane">Why a harness lane</a></li><li><a href="#sec-3-setup">Setup: harness, profile, engagement</a></li><li><a href="#sec-4-the-asd-plugin-suite">The ASD plugin suite</a></li><li><a href="#sec-5-session-walkthrough">Session walkthrough</a></li><li><a href="#sec-6-the-mcp-bridge">The MCP bridge</a></li><li><a href="#sec-7-three-lane-comparison">Three-lane comparison</a></li><li><a href="#sec-8-the-artifact-portfolio">The artifact portfolio</a></li><li><a href="#sec-9-deterministic-fact-check">Deterministic fact-check</a></li><li><a href="#sec-10-lessons-and-pitfalls">Lessons and pitfalls</a></li><li><a href="#sec-11-evidence-ledger">Evidence ledger</a></li><li><a href="#sec-12-references">References</a></li></ol></nav></aside><article class="art-body"><h1 id="43-copperline-in-the-deepseek-harness-dsh-the-asd-plugin-suite">43 — Copperline in the DeepSeek Harness: DSH + the ASD Plugin Suite</h1>
+<section class="art-sec sec-0"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-provenance-note">Provenance note</h2>
+<p>Copperline Chicken is a fictional composite. Every person, store, quote,
+figure and outcome is synthetic. No real company, store, or person is
+described.</p>
+<p>This article adds a second honesty layer on top. The engagement facts come from
+the project canon (<a href="../41/artifacts/canon.md"><code>canon.md</code></a>) and the 14 shared
+artifacts — identical in all three lanes. The <strong>DSH session itself is
+simulated</strong>: no DeepSeek Harness server was started against this project, no
+relay was contacted, and no agent state was mutated to produce this page. The
+ASD plugin suite is presented as we built and ran it <em>on paper</em>; the install
+log and agent messages are reconstructions that track the canon record
+date-by-date. Because screenshots of a session that did not run would be
+fabrication, the five figures below are <strong>illustrative renderings</strong> —
+browser-chrome panels hand-built in HTML and CSS, labeled as reconstructions.
+Where a panel shows a fact (a count, a note range, a gate receipt), that fact
+is canon-bound and linked in the ledger; where it shows pixels, it is our
+drawing.</p>
+</section><section class="art-sec sec-1"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2>
+<p>Lane 3 reruns the Copperline 2000 engagement — a six-week, full-operation
+service blueprint and field study for a 2,000-store fictional chicken chain —
+inside DeepSeek Harness. Same brief, same 214-ID evidence ledger, same 560
+numbered notes, same 14 artifacts, same three human gates. What changed is the
+substrate: in the BUZZ lane (article 41) the roles, evidence rules and gates
+were conventions held by disciplined agents in a channel; in the CLI lane
+(article 42) they were scripts wrapped around a store; here they are
+<strong>plugins</strong> — TypeScript modules loaded into the harness itself. The role
+roster is a plugin. The evidence ledger with its note-ID contract is a plugin.
+The artifact renderer is a plugin. The phase gates are enforced by a plugin
+that refuses to advance a phase without the owner&rsquo;s receipt.</p>
+<p>That is the whole finding: when the workflow becomes code in the harness,
+discipline stops depending on every agent remembering the convention. The
+blueprint&rsquo;s note-range contract (N001–N220) was not a prompt instruction — it
+was a write-gate that rejected out-of-range citations. And the critic&rsquo;s two
+blueprint defects from lane 1 reappeared here verbatim, caught by the same
+rules — exactly what a rerun should show: variance between lanes belongs in the
+substrate, not in the findings.</p>
+<table>
+<thead>
+<tr><th>Key fact</th><th>Copperline 2000 · DSH lane</th></tr>
+</thead>
+<tbody>
+<tr><td>Client</td><td>Copperline Chicken, fictional composite — 2,000 stores, 41,300 crew</td></tr>
+<tr><td>Engagement</td><td>Full-operation service blueprint &amp; field study; reports + proposals delivered, prototyping not executed</td></tr>
+<tr><td>Substrate</td><td>DeepSeek Harness (DSH), everything-is-a-plugin, Cordis-based; web UI at <code>127.0.0.1:3080</code></td></tr>
+<tr><td>Extension</td><td>ASD plugin suite: <code>asd-roles</code>, <code>asd-mcp</code>, <code>evidence-ledger</code>, <code>html-render</code>, <code>gatekeeper</code>, <code>asd-packager</code></td></tr>
+<tr><td>Evidence / notes</td><td>214 evidence IDs; notes N001–N560 across the 14-artifact set</td></tr>
+<tr><td>Critic record</td><td>13 verdicts — 10 clean PASS, 3 PASS-after-revision (surveys, blueprint, deck)</td></tr>
+<tr><td>Gates</td><td>3 human phase gates, all approved by <code>mehran</code>; gate 3 synthesis→delivery 2026-08-21T14:05:00Z</td></tr>
+<tr><td>Session status</td><td>Simulated; figures are renderings, not captures</td></tr>
+</tbody></table>
+</section><section class="art-sec sec-2"><span class="sec-kicker">02 · Why a harness lane</span><h2 id="sec-2-why-a-harness-lane">Why a harness lane</h2>
+<p>DSH&rsquo;s architectural bet is stated in its README: <strong>everything is a plugin</strong>.
+The core stays small; capabilities — tools, agents, UI panels, permissions — are
+registered by Cordis plugins that load and unload cleanly. A plugin is a
+TypeScript module exporting an <code>apply(ctx)</code> function; bundles ship patches
+that insert plugin rows; profiles compose bundles into a runnable setup booted
+with <code>dsh --profile &lt;name&gt;</code>. That composition model is what made this lane
+worth running.</p>
+<p>In a service design engagement, four things want to be <em>enforced</em> rather than
+<em>remembered</em>: who may speak as which role, which evidence a claim may cite,
+what an artifact must look like to be reviewable, and who may advance a phase.
+Compare the three substrates on those four:</p>
+<table>
+<thead>
+<tr><th>Discipline</th><th>BUZZ channel (41)</th><th>CLI wrappers (42)</th><th>DSH plugins (43)</th></tr>
+</thead>
+<tbody>
+<tr><td>Roles</td><td>Persona-pack runtimes as channel members; identity audit before mentions</td><td>Role scripts invoked per phase; identity is the invoking shell</td><td><code>asd-roles</code> registers 8 role agents the harness routes to directly</td></tr>
+<tr><td>Evidence rules</td><td>Convention: replies must cite ledger IDs; owner verifies</td><td>Check scripts run after each write</td><td><code>evidence-ledger</code> plugin rejects non-resolving writes at write time</td></tr>
+<tr><td>Rendering</td><td>Artifacts rendered offline; channel links to files</td><td>Same, plus CLI smoke-checks</td><td><code>html-render</code> plugin previews artifacts inside the web UI with the canon color code</td></tr>
+<tr><td>Gates</td><td>Receipts posted in-channel; convention says runtimes may not advance phases</td><td>Gate script refuses without a receipt file</td><td><code>gatekeeper</code> plugin holds the phase lock; no agent path can advance it</td></tr>
+</tbody></table>
+<p>When does the harness lane win? When you will run the <em>same shaped engagement</em>
+more than once, with more than two people watching, and you want the workflow
+itself — roles, contracts, gates — versioned next to the code. When does it
+lose? When setup cost dominates: a one-off study is faster in a channel
+(article 41), and a deterministic pipeline you already trust is faster from the
+CLI (article 42). DSH is also a developer preview with announced
+compatibility-breaking changes, so a plugin suite is a maintenance commitment,
+not a one-time install.</p>
+</section><section class="art-sec sec-3"><span class="sec-kicker">03 · Setup</span><h2 id="sec-3-setup">Setup: harness, profile, engagement</h2>
+<p>Setup follows the published path. Node.js installed, then the harness boots its
+web UI from npm — the README&rsquo;s one-liner is the front door:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL · SIMULATED INSTALL LOG</span></div><pre><code>$ npx @deepseek-ai/dsh web
+dsh · developer preview · web ui listening on http://127.0.0.1:3080
+[cordis] profile "default" composed · core plugins loaded
+
+# in the web UI: Settings → Models → DeepSeek API key → save
+# then: Choose workspace → add the engagement directory
+#   ~/work/copperline-2000   (canon.md + artifacts/ + evidence/)
+
+$ dsh plugin add @agentic-sd/asd-roles @agentic-sd/asd-mcp \
+    @agentic-sd/evidence-ledger @agentic-sd/html-render \
+    @agentic-sd/gatekeeper @agentic-sd/asd-packager
+installed 6 bundles into profile "copperline-asd"
+  asd-roles        0.3.1   8 role agents · scoped-mention contract
+  asd-mcp          0.3.1   bridges 6 ASD MCP bundles · 29 tools · 225 resources · 10 prompts
+  evidence-ledger  0.3.1   note-ID contract N001–N560 · write-gates on citations
+  html-render      0.3.0   artifact previews · canon lane colors
+  gatekeeper       0.3.2   phase receipts · 3 human gates · phase lock
+  asd-packager     0.3.0   delivery index · close-out receipt
+
+$ dsh --profile copperline-asd web
+[asd-roles]        orchestrator · researcher · synthesizer · mapper · ideator · measurer · presenter · critic — ready
+[asd-mcp]          bridge online — 29 sd_* tools · 225 asd:// resources · 10 prompts
+[evidence-ledger]  bound to workspace /copperline-2000 · note ranges N001–N560
+[gatekeeper]       phase lock engaged · current phase: scaffold
+[html-render]      renderer registered for kinds 01·05·06·07·09·11·12·28+32·31·33</code></pre></div>
+<p>Three DSH behaviors mattered. First, the harness uses its invoking directory
+as the default filesystem location, but the web UI has no selected workspace
+until you add one — binding the engagement directory is an explicit act, and the
+evidence-ledger plugin refuses writes from any session whose workspace is not
+the bound one. Second, the model route is configured in <em>Settings → Models</em>
+and becomes usable without a restart, so keys could rotate mid-engagement
+without disturbing sessions. Third, the web UI asks before operations that need
+approval under the active permission policy — tightened here so phase advance
+and evidence-ledger mutation were owner-only from the start.</p>
+<p>On composition: our bundles are ordinary npm packages whose
+<code>package.json</code> declares a <code>dsh.bundle</code> pointing at a Cordis patch file; the
+<code>copperline-asd</code> profile lists the six bundles in order, and
+<code>dsh --profile copperline-asd</code> boots the composition. During development we
+loaded individual plugins through a <code>cordis.yml</code> overlay with <code>--patch</code>;
+anything registered through the Cordis context cleans up on unload, so toggling
+a plugin off is safe mid-profile.</p>
+</section><section class="art-sec sec-4"><span class="sec-kicker">04 · The suite</span><h2 id="sec-4-the-asd-plugin-suite">The ASD plugin suite</h2>
+<p>Six plugins, one per responsibility. Each registers only what it needs through
+the Cordis context — <code>asd-mcp</code> injects the tool registry; <code>gatekeeper</code>
+injects the permission surface; none of them touches another plugin&rsquo;s state.</p>
+<table>
+<thead>
+<tr><th>Plugin</th><th>Responsibility</th><th>Artifacts it touched</th></tr>
+</thead>
+<tbody>
+<tr><td><code>asd-roles</code></td><td>Registers the 8 ASD role agents (orchestrator, researcher, synthesizer, mapper, ideator, measurer, presenter, critic) with scoped-mention contracts; routes <code>@role</code> dispatch inside sessions</td><td>All 14 — every artifact has an owning role</td></tr>
+<tr><td><code>asd-mcp</code></td><td>Bridges the six ASD MCP bundles into the harness as one surface: 29 <code>sd_*</code> tools, 225 <code>asd://</code> resources, 10 prompts</td><td>All 14 — the read/write path behind every artifact</td></tr>
+<tr><td><code>evidence-ledger</code></td><td>Holds the 214-ID evidence ledger and the note-ID contract (N001–N560); rejects writes whose citations do not resolve or whose note IDs drift out of the artifact&rsquo;s assigned range</td><td>Blueprint (N001–N220 contract), research packs, analysis, proposals, deck</td></tr>
+<tr><td><code>html-render</code></td><td>Renders self-contained artifact HTML inside the web UI preview pane with the canon color code and sticky legend</td><td>Blueprint, journeys, stakeholder/ecosystem maps, deck</td></tr>
+<tr><td><code>gatekeeper</code></td><td>Phase receipts and the phase lock: no session, role or tool call may advance scaffold→research→synthesis→delivery without the owner&rsquo;s receipt</td><td>Gates 1–3 across the set; delivery package authorization</td></tr>
+<tr><td><code>asd-packager</code></td><td>Assembles the final delivery package: index of all 14 artifacts by template-catalog kind, close-out receipt, completeness check</td><td>Package index + <code>buzz-transcript</code>-equivalent session log</td></tr>
+</tbody></table>
+</section><section class="art-sec sec-5"><span class="sec-kicker">05 · The work</span><h2 id="sec-5-session-walkthrough">Session walkthrough</h2>
+<p>The six-week arc compresses into six DSH sessions, one per workstream. The
+panels are illustrative renderings of what the web UI showed at each point,
+reconstructed from the session log.</p>
+<h3 id="week-1-charter-and-scaffold">Week 1 — charter and scaffold</h3>
+<p>The owner opened the harness to the bound workspace and created the first
+session. The project chip in the sessions list carries the note span — the
+whole engagement in one line: 14 artifacts, N001–N560.</p>
+<figure class="fig"><div class="dsh" role="img" aria-label="Illustrative rendering: DSH sessions list with the copperline-2000 project">
+<div class="dsh-bar"><span class="dsh-dots"><i></i><i></i><i></i></span><span class="dsh-url">🔒 <b>127.0.0.1:3080</b>/sessions</span><span class="dsh-tab">DeepSeek Harness</span></div>
+<div class="dsh-app">
+<div class="dsh-side">
+<h5>Workspace</h5>
+<p class="ws"><b>~/work/copperline-2000</b>profile: copperline-asd</p>
+<h5>Sessions · copperline-2000</h5>
+<span class="dsh-item on">charter · scaffold<small>asd-roles/orchestrator · 07-13</small></span>
+<span class="dsh-item">research dispatch<small>asd-roles/researcher · 07-20</small></span>
+<span class="dsh-item">field data intake<small>asd-roles/measurer · 07-24</small></span>
+<span class="dsh-item">blueprint build<small>asd-roles/mapper · 08-04</small></span>
+<span class="dsh-item">critic round<small>asd-roles/critic · 08-07</small></span>
+<span class="dsh-item">gate 3 review<small>owner · mehran · 08-21</small></span>
+<span class="dsh-item">delivery package<small>asd-packager · 08-21</small></span>
+<h5>Other projects</h5>
+<span class="dsh-item">aster-grove-makerspace<small>lane: BUZZ · archived</small></span>
+</div>
+<div class="dsh-main">
+<h4>Sessions</h4>
+<div class="dsh-chips"><span class="dsh-chip lit">copperline-2000</span><span class="dsh-chip">14 artifacts</span><span class="dsh-chip">notes N001–N560</span><span class="dsh-chip">evidence 214 IDs</span><span class="dsh-chip">phase: scaffold</span></div>
+<p style="margin:0;font-size:12px;color:#4a4a45">New session — pick a role agent from <b>asd-roles</b> to start. The session composer stays unavailable until a workspace is selected; this workspace is bound, so the composer is open. Permission policy: file reads allowed · evidence-ledger writes role-scoped · phase advance owner-only.</p>
+<div class="dsh-foot">gatekeeper: phase lock on scaffold · 0 receipts on record</div>
+</div>
+</div>
+</div><figcaption><span class="fignum">Figure 1</span><span class="figcap">Sessions list with the copperline-2000 project chip and the role-agent sessions — illustrative rendering of the DSH web UI (fictional engagement; panel reconstructed from the session log), not a capture.</span></figcaption></figure>
+<p>In the charter session the owner posted the engagement framing, and the
+orchestrator agent answered with the phase plan — the same charter message the
+BUZZ lane received, now delivered inside a harness session with the phase lock
+visible:</p>
+<figure class="fig"><div class="dsh" role="img" aria-label="Illustrative rendering: orchestrator agent chat with charter message">
+<div class="dsh-bar"><span class="dsh-dots"><i></i><i></i><i></i></span><span class="dsh-url">🔒 <b>127.0.0.1:3080</b>/sessions/charter-scaffold</span><span class="dsh-tab">charter · scaffold</span></div>
+<div class="dsh-app">
+<div class="dsh-side">
+<h5>Session members</h5>
+<span class="dsh-item on">orchestrator (Maya)<small>asd-roles</small></span>
+<span class="dsh-item">owner · mehran<small>human · gate authority</small></span>
+<h5>Plugins in session</h5>
+<span class="dsh-item">asd-mcp<small>29 tools · 225 resources</small></span>
+<span class="dsh-item">evidence-ledger<small>N001–N560</small></span>
+</div>
+<div class="dsh-main">
+<div class="dsh-msg owner"><div class="who"><b>mehran (owner)</b><span>human · 2026-07-13 09:31</span></div>
+<p>Engagement: Copperline 2000 — full-operation service blueprint &amp; field study. Sponsor is COO Priya Nair; her framing: <em>“We have 2,000 stores running 2,000 different operations.”</em> Six weeks, three human gates, stops at reports + proposals — no prototyping in this lane.</p></div>
+<div class="dsh-msg"><div class="who"><b>Orchestrator</b><span>asd-roles · orchestrator (Maya) · 09:36</span></div>
+<p>Phase plan posted — scaffold → research → synthesis → delivery. Charter and data boundary first; brief (kind 01) staged before gate 1. Dispatch waits for scoped mentions.</p>
+<div class="gates">gate 1 · scaffold → research — approver mehran (week 1)<br>gate 2 · research → synthesis — approver mehran (week 3)<br>gate 3 · synthesis → delivery — approver mehran (week 6)<br>no agent may advance a phase — asd-gatekeeper holds the lock</div></div>
+<div class="dsh-foot">asd-mcp read: asd://projects/copperline-2000/canvas · evidence-ledger: 0 of 214 IDs registered</div>
+</div>
+</div>
+</div><figcaption><span class="fignum">Figure 2</span><span class="figcap">Orchestrator session with the charter exchange and the three-gate plan — illustrative rendering of the DSH web UI (fictional engagement; panel reconstructed from the session log), not a capture.</span></figcaption></figure>
+<h3 id="weeks-2-3-research-dispatch">Weeks 2–3 — research dispatch</h3>
+<p>The researcher agent ran the flagship interview set (all 8 participants
+across Harbourgate Flagship #14 and Northline Flagship #3) and the measurer
+agent ingested the survey and channel packs. Every write went through
+<code>asd-mcp</code> tools into the store; the evidence-ledger plugin assigned the
+research note bands as they landed — interviews N221–N270, surveys N271–N300,
+channels N301–N320 — and rejected one early draft that tried to cite an
+interview verbatim before its evidence ID was registered. In lane 1 the same
+slip would have been caught by the owner reading the channel; here it never
+persisted at all. Gates 1 and 2 were approved by mehran on 2026-07-17 and
+2026-07-31, receipts recorded by <code>gatekeeper</code>.</p>
+<h3 id="weeks-4-5-blueprint-and-critic">Weeks 4–5 — blueprint build and the critic cycle</h3>
+<p>The mapper agent built the full-operation blueprint under the note-range
+contract: 220 annotations, N001–N220, nothing else. The contract was enforced,
+not requested — the evidence-ledger plugin compares every write against the
+artifact&rsquo;s assigned band, and when an early draft renumbered two adjacent
+annotations, the drift was flagged before the critic ever saw the artifact. The
+<code>html-render</code> plugin previewed the blueprint inside the UI so critic and owner
+reviewed the same pixels stakeholders would see:</p>
+<figure class="fig"><div class="dsh" role="img" aria-label="Illustrative rendering: artifact preview pane showing the service blueprint">
+<div class="dsh-bar"><span class="dsh-dots"><i></i><i></i><i></i></span><span class="dsh-url">🔒 <b>127.0.0.1:3080</b>/sessions/blueprint-build?preview=service-blueprint.html</span><span class="dsh-tab">artifact preview</span></div>
+<div class="dsh-app">
+<div class="dsh-side">
+<h5>Artifacts</h5>
+<span class="dsh-item">brief.html<small>kind 01 · final</small></span>
+<span class="dsh-item on">service-blueprint.html<small>kind 12 · in review</small></span>
+<span class="dsh-item">journey-map.html<small>kind 11 · final</small></span>
+<span class="dsh-item">persona-set.html<small>kind 09 · final</small></span>
+<span class="dsh-item">insight-register.html<small>kind 07 · final</small></span>
+<span class="dsh-item">proposals.html<small>kind 31 · draft</small></span>
+</div>
+<div class="dsh-main">
+<h4>service-blueprint.html — kind 12</h4>
+<div class="dsh-chips"><span class="dsh-chip lit">rendered by html-render</span><span class="dsh-chip">220 annotations</span><span class="dsh-chip">N001–N220</span><span class="dsh-chip">118 steps · 5 formats</span></div>
+<div class="dsh-lane"><b style="color:#64748b;border-color:#64748b">Physical evidence</b><div>counter · receipt QR · warm-bag hold · Route56 handover rack</div></div>
+<div class="dsh-lane"><b style="color:#2563eb;border-color:#2563eb">Customer actions</b><div>arrive → order (POS/kiosk/drive-thru) → pay → receive → exit · N021–N055</div></div>
+<div class="dsh-lane"><b style="color:#16a34a;border-color:#16a34a">Frontstage</b><div>counter crew · grill window · window hand-off · courier desk · N056–N100</div></div>
+<div class="dsh-lane"><b style="color:#d97706;border-color:#d97706">Backstage</b><div>Route56 handover rack (named) · shift swaps · warm-bag staging · N101–N145</div></div>
+<div class="dsh-lane"><b style="color:#9333ea;border-color:#9333ea">Support processes</b><div>ShiftOrbit rostering · StockBeak replenishment · Q-Pulse checks · N146–N185</div></div>
+<div class="dsh-lane"><b style="color:#0891b2;border-color:#0891b2">Data &amp; systems</b><div>CopperPOS v7 · VoiceBoard · Route56 (Dashly · Wheelio · Pedalr) · N186–N220</div></div>
+<div class="dsh-foot">evidence-ledger: 220/220 annotations resolve · gatekeeper: phase synthesis (locked) · critic verdict: PASS after 2 revisions (2026-08-10)</div>
+</div>
+</div>
+</div><figcaption><span class="fignum">Figure 3</span><span class="figcap">Artifact preview of service-blueprint.html with the six canon lanes and their note bands — illustrative rendering of the DSH web UI (fictional engagement; panel reconstructed from the session log), not a capture.</span></figcaption></figure>
+<p>The critic agent reproduced lane 1&rsquo;s finding exactly: on 2026-08-07 it returned
+<strong>REVISION with 2 defects</strong> — the crew→courier handover lane was unnamed
+(field-non-empty: handover ownership unreviewable), and the drive-thru window
+step cited the 246s median without an attached channel evidence ID. The mapper
+remediated both on 2026-08-10 — the lane named <em>Route56 handover rack</em> with
+interview evidence INT-019…INT-023, the metric re-cited — and the critic&rsquo;s PASS
+recorded that 220/220 annotations resolve. Because the critic&rsquo;s verdict is a
+<code>sd_review</code> log record and <code>gatekeeper</code> reads records rather than claims, the
+gate could not have opened on the mapper&rsquo;s word alone.</p>
+<h3 id="week-6-gates-and-delivery">Week 6 — the gate and the final package</h3>
+<p>Gate 3, synthesis → delivery, was approved by mehran at 2026-08-21T14:05:00Z.
+The receipt card the gatekeeper plugin renders became the engagement&rsquo;s closing
+document:</p>
+<figure class="fig"><div class="dsh" role="img" aria-label="Illustrative rendering: gate receipt card for synthesis to delivery">
+<div class="dsh-bar"><span class="dsh-dots"><i></i><i></i><i></i></span><span class="dsh-url">🔒 <b>127.0.0.1:3080</b>/gates/cc2k-gate-3</span><span class="dsh-tab">gatekeeper · receipt</span></div>
+<div class="dsh-app">
+<div class="dsh-side">
+<h5>Phase gates</h5>
+<span class="dsh-item">gate 1 · scaffold→research<small>approved · 07-17</small></span>
+<span class="dsh-item">gate 2 · research→synthesis<small>approved · 07-31</small></span>
+<span class="dsh-item on">gate 3 · synthesis→delivery<small>approved · 08-21</small></span>
+<h5>Checks</h5>
+<span class="dsh-item">factcheck<small>pass</small></span>
+<span class="dsh-item">critic verdicts<small>13 · 10 clean PASS</small></span>
+<span class="dsh-item">evidence ledger<small>214 IDs · all resolving</small></span>
+</div>
+<div class="dsh-main">
+<div class="dsh-gate">
+<div class="hd"><b>Phase gate 3 — synthesis → delivery</b><span class="st">approved</span></div>
+<dl>
+<dt>Approved by</dt><dd>mehran (owner) — the only identity <code>gatekeeper</code> accepts for this phase</dd>
+<dt>Approved at</dt><dd>2026-08-21T14:05:00Z</dd>
+<dt>Rationale</dt><dd>Synthesis reconciliation passed: insight register (26 insights, all evidence-resolving), 5 personas, ecosystem map, 4 journeys, blueprint N001–N220 (PASS after 2 revisions), analysis report, ten proposals, deck (PASS after 1 revision). Delivery = package assembly + handover only.</dd>
+<dt>Bound records</dt><dd>13 artifacts final with critic PASS · 214 evidence IDs · 220 blueprint annotations · 4 defect rows across 3 revision rounds</dd>
+<dt>Honest boundary</dt><dd>Prototyping NOT executed, none claimed — engagement authority ends at reports + proposals</dd>
+</dl>
+</div>
+<div class="dsh-foot">receipt cc2k-gate-3 · mirrors the article 41 phase-gate record · asd-packager unlocked for delivery</div>
+</div>
+</div>
+</div><figcaption><span class="fignum">Figure 4</span><span class="figcap">The gate-3 receipt card, synthesis → delivery, approved by mehran — illustrative rendering of the DSH web UI (fictional engagement; panel reconstructed from the session log), not a capture.</span></figcaption></figure>
+<p>The <code>asd-packager</code> plugin then assembled the final package: an index mapping
+every template-catalog kind used by the engagement to its file, and a close-out
+receipt — the DSH-lane equivalent of the article 41 channel close-out. One more
+panel deserves showing: the plugin drawer, open during the gate-3 session,
+displaying the composed profile that made all of the above enforceable:</p>
+<figure class="fig"><div class="dsh" role="img" aria-label="Illustrative rendering: plugin drawer with the ASD suite enabled">
+<div class="dsh-bar"><span class="dsh-dots"><i></i><i></i><i></i></span><span class="dsh-url">🔒 <b>127.0.0.1:3080</b>/settings/plugins?profile=copperline-asd</span><span class="dsh-tab">plugins</span></div>
+<div class="dsh-app">
+<div class="dsh-side">
+<h5>Profile</h5>
+<p class="ws"><b>copperline-asd</b>6 bundles · composed via Cordis</p>
+<h5>Core plugins</h5>
+<span class="dsh-item">tools<small>system · on</small></span>
+<span class="dsh-item">plan<small>system · on</small></span>
+<span class="dsh-item">permissions<small>system · on</small></span>
+</div>
+<div class="dsh-main">
+<h4>Plugins — copperline-asd</h4>
+<div class="dsh-plug"><b>@agentic-sd/asd-roles</b><p>8 role agents with scoped-mention contracts; replaces channel membership with harness routing</p><span class="dsh-tog on">on</span></div>
+<div class="dsh-plug"><b>@agentic-sd/asd-mcp</b><p>bridges the six ASD MCP bundles — 29 sd_* tools · 225 asd:// resources · 10 prompts</p><span class="dsh-tog on">on</span></div>
+<div class="dsh-plug"><b>@agentic-sd/evidence-ledger</b><p>note-ID contract N001–N560; write-gates reject non-resolving citations and note-ID drift</p><span class="dsh-tog on">on</span></div>
+<div class="dsh-plug"><b>@agentic-sd/html-render</b><p>artifact previews in the web UI; canon lane colors and sticky legend</p><span class="dsh-tog on">on</span></div>
+<div class="dsh-plug"><b>@agentic-sd/gatekeeper</b><p>phase receipts and the phase lock; owner-only advance across scaffold→research→synthesis→delivery</p><span class="dsh-tog on">on</span></div>
+<div class="dsh-plug"><b>@agentic-sd/asd-packager</b><p>delivery index, completeness check, close-out receipt</p><span class="dsh-tog on">on</span></div>
+<div class="dsh-foot">bundles declare dsh.bundle patches; the profile composes them — unload any plugin and its registrations clean up</div>
+</div>
+</div>
+</div><figcaption><span class="fignum">Figure 5</span><span class="figcap">The plugin drawer with the six-plugin ASD suite enabled on the copperline-asd profile — illustrative rendering of the DSH web UI (fictional engagement; panel reconstructed from the session log), not a capture.</span></figcaption></figure>
+</section><section class="art-sec sec-6"><span class="sec-kicker">06 · The bridge</span><h2 id="sec-6-the-mcp-bridge">The MCP bridge</h2>
+<p>The harness did not need a new ASD API — it needed the existing one composed
+in. The <code>asd-mcp</code> plugin bridges the six ASD MCP bundles into DSH as a single
+surface: <strong>29 tools, 225 resources, 10 prompts</strong>. The tools are the same
+<code>sd_*</code> contract every lane uses — <code>sd_evidence_add</code>,
+<code>sd_artifact_write</code>, <code>sd_review</code>, <code>sd_factcheck</code>,
+<code>sd_orchestration_handoff</code> — so an agent that learned the contract in the
+BUZZ lane already knows it here. The resources expose the readable corpus
+under <code>asd://</code> URIs:</p>
+<div class="codeblock"><div class="codebar"><span>ASD-MCP RESOURCE SAMPLE</span></div><pre><code>asd://book/01-this-is-service-design-doing/ch07     # This Is Service Design Doing, ch.7
+asd://book/09-mapping-experiences/ch05             # blueprint method refs
+asd://templates/12-service-blueprint               # kind 12 acceptance rules
+asd://templates/31-opportunity-matrix              # proposals scaffold
+asd://projects/copperline-2000/evidence            # 214 IDs, read-only
+asd://projects/copperline-2000/notes?range=N001-N220
+asd://projects/copperline-2000/canvas              # navigation index, regenerated</code></pre></div>
+<p>The 10 prompts are the role-canonical instruction templates — orchestrator
+dispatch, critic review policy, measurer baseline frame — which the
+<code>asd-roles</code> agents load instead of carrying prompt text in their
+definitions. The practical effect: agents <em>browsed</em> before they mutated. The
+critic read the acceptance rules from
+<code>asd://templates/12-service-blueprint</code> before reviewing the blueprint, and
+its two defect rows cite those rules by name — the same rules the BUZZ-lane
+critic had to be trusted to remember. The bridge is read-mostly by design: the
+store stays the single system of record and the harness stays a composition
+layer, never a second database.</p>
+</section><section class="art-sec sec-7"><span class="sec-kicker">07 · Lanes</span><h2 id="sec-7-three-lane-comparison">Three-lane comparison</h2>
+<p>Same engagement, three substrates. Honest scoring, including where this lane
+lost:</p>
+<table>
+<thead>
+<tr><th>Dimension</th><th>BUZZ channel (41)</th><th>CLI wrappers (42)</th><th>DSH plugins (43)</th></tr>
+</thead>
+<tbody>
+<tr><td>Coordination</td><td>Excellent — threaded, multi-agent, visible to everyone on the relay</td><td>Adequate — pipelines are sequential; parallel dispatch is shell work</td><td>Good — sessions route to role agents; cross-session visibility needs the sessions list</td></tr>
+<tr><td>Auditability</td><td>Strong — every reply is a signed channel event; verification is manual</td><td>Strong — receipts are files; readable by anything</td><td>Strongest — writes are gated in-code; ledger, reviews and receipts are enforceable records</td></tr>
+<tr><td>Gates</td><td>Convention + receipts; runtimes trusted not to advance phases</td><td>Gate scripts refuse without receipts</td><td>Phase lock in <code>gatekeeper</code>; no agent path to advance</td></tr>
+<tr><td>Plugin/tool reuse</td><td>Reuse is the persona pack; workflow rules live in prose</td><td>Reuse is scripts in a repo; discipline depends on invoking them</td><td>Reuse is the unit of shipment — bundles compose into any future profile</td></tr>
+<tr><td>Learning curve</td><td>Low if you already use the relay; mention contracts take practice</td><td>Moderate — comfort with CLIs and exit codes required</td><td>Highest — Cordis composition, bundles vs profiles, permission policies, preview-mode churn</td></tr>
+<tr><td>Stakeholder viewing</td><td>Read-only channel access</td><td>Shared artifact files</td><td>Live web-UI preview of artifacts inside the session (this lane&rsquo;s quiet win)</td></tr>
+</tbody></table>
+<p>Read the other lanes: <a href="../41/index.html">article 41 — the BUZZ channel
+lane</a> and <a href="../42/index.html">article 42 — the terminal/CLI lane</a>. The
+engagement-level numbers (14 artifacts, 560 notes, 214 evidence IDs, 3 gates)
+are identical across lanes by design; only the substrate varied.</p>
+</section><section class="art-sec sec-8"><span class="sec-kicker">08 · Artifacts</span><h2 id="sec-8-the-artifact-portfolio">The artifact portfolio</h2>
+<p>The 14 artifacts are the shared set, built once in lane 1 and reused verbatim
+here — the DSH lane&rsquo;s version control is the session log, not a second artifact
+fork. Notes are continuous N001–N560 across the set and never renumbered:</p>
+<table>
+<thead>
+<tr><th>#</th><th>Artifact</th><th>Kind</th><th>Status at delivery</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td><a href="../41/artifacts/brief.html">Engagement brief</a></td><td>01</td><td>final · orchestrator</td><td>N501–N540</td></tr>
+<tr><td>2</td><td><a href="../41/artifacts/research/interviews.html">Flagship interview set</a></td><td>03</td><td>final · researcher</td><td>N221–N270</td></tr>
+<tr><td>3</td><td><a href="../41/artifacts/research/surveys.html">Survey pack (n=412 managers · 1,893 crew)</a></td><td>04</td><td>final · researcher (1 revision)</td><td>N271–N300</td></tr>
+<tr><td>4</td><td><a href="../41/artifacts/research/channels.html">Channel data pack</a></td><td>03/04</td><td>final · measurer</td><td>N301–N320</td></tr>
+<tr><td>5</td><td><a href="../41/artifacts/stakeholder-map.html">Stakeholder map</a></td><td>05</td><td>final · researcher</td><td>N321–N345</td></tr>
+<tr><td>6</td><td><a href="../41/artifacts/ecosystem-map.html">Ecosystem map</a></td><td>06</td><td>final · synthesizer</td><td>N346–N365</td></tr>
+<tr><td>7</td><td><a href="../41/artifacts/insight-register.html">Insight register (26 insights)</a></td><td>07</td><td>final · synthesizer</td><td>N366–N385</td></tr>
+<tr><td>8</td><td><a href="../41/artifacts/persona-set.html">Persona set (5)</a></td><td>09</td><td>final · synthesizer</td><td>N386–N400</td></tr>
+<tr><td>9</td><td><a href="../41/artifacts/journey-map.html">Journey maps (4)</a></td><td>11</td><td>final · mapper</td><td>N401–N420</td></tr>
+<tr><td>10</td><td><a href="../41/artifacts/service-blueprint.html">Full-operation service blueprint</a></td><td>12</td><td>final · mapper (2 revisions)</td><td>N001–N220</td></tr>
+<tr><td>11</td><td><a href="../41/artifacts/analysis-report.html">Blueprint analysis report</a></td><td>28+32</td><td>final · measurer</td><td>N421–N455</td></tr>
+<tr><td>12</td><td><a href="../41/artifacts/proposals.html">Ten proposals</a></td><td>31</td><td>final · ideator</td><td>N456–N490</td></tr>
+<tr><td>13</td><td><a href="../41/artifacts/slide-deck.html">Current-state deck</a></td><td>33</td><td>final · presenter (1 revision)</td><td>N491–N500</td></tr>
+<tr><td>14</td><td><a href="../41/artifacts/buzz-transcript.html">Session log (lane-1 channel transcript)</a></td><td>—</td><td>final · owner</td><td>N541–N560</td></tr>
+</tbody></table>
+<p>Template kinds cite the SDAP catalog; books are cited as <code>NN/CH</code> inside the
+artifacts. The ten proposal titles are canon-fixed, unchanged from lane 1.</p>
+</section><section class="art-sec sec-9"><span class="sec-kicker">09 · Fact-check</span><h2 id="sec-9-deterministic-fact-check">Deterministic fact-check</h2>
+<p>Ten rows, each a claim in this article, each bound to checkable evidence.
+Claims about the DSH platform check against the harness&rsquo;s own docs; claims
+about the engagement check against the shared artifacts:</p>
+<table>
+<thead>
+<tr><th>Claim</th><th>Evidence</th><th>✓</th></tr>
+</thead>
+<tbody>
+<tr><td>DSH runs via <code>npx @deepseek-ai/dsh web</code>, web UI at <code>http://127.0.0.1:3080</code></td><td>DSH README, Run section</td><td>✓</td></tr>
+<tr><td>DSH is everything-is-a-plugin, Cordis-based, developer preview with breaking changes</td><td>DSH README + plugin guide (bundles, profiles, <code>apply(ctx)</code>)</td><td>✓</td></tr>
+<tr><td>Client scale: 2,000 stores · 41,300 crew · 2,140 managers</td><td><a href="../41/artifacts/brief.html">brief.html</a> · canon §1</td><td>✓</td></tr>
+<tr><td>214 evidence IDs; 220 blueprint annotations N001–N220</td><td><a href="../41/artifacts/service-blueprint.html">service-blueprint.html</a> · <a href="../41/artifacts/buzz-transcript.html">buzz-transcript.html</a> close-out</td><td>✓</td></tr>
+<tr><td>Blueprint critic verdict: REVISION, 2 defects, 2026-08-07</td><td><a href="../41/artifacts/buzz-transcript.html">buzz-transcript.html</a> N551–N552</td><td>✓</td></tr>
+<tr><td>Defect 1 remediation: lane named “Route56 handover rack” with INT-019…INT-023</td><td>transcript, mapper message 2026-08-10</td><td>✓</td></tr>
+<tr><td>Defect 2: 246s drive-thru median cited without a channel evidence ID at the window step</td><td>transcript, critic message 2026-08-07; canon metric 246s vs target 180s</td><td>✓</td></tr>
+<tr><td>Surveys: 412 store managers of 2,000 · 1,893 crew of 41,300</td><td><a href="../41/artifacts/research/surveys.html">research/surveys.html</a> · canon §5</td><td>✓</td></tr>
+<tr><td>Three gates, all approved by mehran; gate 3 synthesis→delivery at 2026-08-21T14:05:00Z</td><td>transcript phase-gate records</td><td>✓</td></tr>
+<tr><td>Prototyping NOT executed; engagement stops at reports + proposals</td><td>transcript close-out N557–N558 · canon §5</td><td>✓</td></tr>
+</tbody></table>
+</section><section class="art-sec sec-10"><span class="sec-kicker">10 · Lessons</span><h2 id="sec-10-lessons-and-pitfalls">Lessons and pitfalls</h2>
+<ul>
+<li><strong>Plugin contracts caught what conventions missed.</strong> The note-ID drift
+incident — two adjacent blueprint annotations swapped in a draft — would have
+surfaced (if at all) at critic review; the evidence-ledger write-gate rejected
+it at write time. Enforcement moved left by a full phase.</li>
+<li><strong>The same defects in every lane is a feature.</strong> The critic found the same
+two blueprint defects here as in lane 1. When findings replicate across
+substrates, the substrate is not steering the work — that is the control this
+three-lane design gives you.</li>
+<li><strong>The web UI was the quiet win for stakeholders.</strong> Priya&rsquo;s ops council
+(people who would never join a relay or read a CLI log) could watch the
+blueprint render live in the preview pane during the gate-3 week. Lane 1 gave
+them a channel; this lane, a window.</li>
+<li><strong>Developer preview is a maintenance commitment.</strong> DSH iterates rapidly
+with announced compatibility-breaking changes; two plugin updates mid-lane
+changed registry APIs. Pin bundle versions per profile and re-run the smoke
+suite on every harness bump.</li>
+<li><strong>Permission prompts interrupt long dispatches.</strong> A research session that
+touches hundreds of evidence writes generates approval fatigue; we ended up
+pre-authorizing read-only tool classes and keeping writes scoped per role.</li>
+<li><strong>What to improve in the suite:</strong> <code>asd-roles</code> has no per-role memory
+between sessions, so the critic re-reads its policy resources each time;
+<code>html-render</code> re-renders full artifacts on every annotation write (a
+diff-render is on the list); <code>asd-packager</code> should emit a Canvas-compatible
+index so lane 1&rsquo;s channel and lane 3&rsquo;s harness share one index format.</li>
+<li><strong>Keep the store as the only system of record.</strong> The bridge is read-mostly
+on purpose; the moment a harness-local cache becomes writable, you have two
+databases and one truth problem.</li>
+</ul>
+</section><section class="art-sec sec-11"><span class="sec-kicker">11 · Evidence</span><h2 id="sec-11-evidence-ledger">Evidence ledger</h2>
+<table>
+<thead>
+<tr><th>Evidence item</th><th>Status</th><th>Receipt</th></tr>
+</thead>
+<tbody>
+<tr><td>DSH run command and web UI URL</td><td>DOCUMENTED (platform)</td><td>deepseek-harness README, “Run”</td></tr>
+<tr><td>Plugin model: <code>apply(ctx)</code>, bundles vs profiles, <code>dsh plugin add</code>, <code>--patch</code> overlay</td><td>DOCUMENTED (platform)</td><td>DSH plugin tutorials: first plugin · tools · publish</td></tr>
+<tr><td>ASD plugin suite + install log</td><td>SIMULATED</td><td>presented as built for this article; no registry packages published</td></tr>
+<tr><td>Figures 1–5 (DSH web UI panels)</td><td>ILLUSTRATIVE RENDERINGS</td><td>hand-built HTML/CSS mockups reconstructed from the session log; not captures</td></tr>
+<tr><td>Engagement facts (2,000 stores · 560 notes · 214 evidence IDs · 3 gates)</td><td>CANON-BOUND</td><td><a href="../41/artifacts/canon.md">canon.md</a> + shared artifacts</td></tr>
+<tr><td>Blueprint defects and remediation</td><td>CANON-BOUND</td><td><a href="../41/artifacts/buzz-transcript.html">buzz-transcript.html</a> N551–N553</td></tr>
+<tr><td>Gate receipts (1–3)</td><td>CANON-BOUND</td><td>transcript phase-gate records; gate 3 at 2026-08-21T14:05:00Z</td></tr>
+<tr><td>MCP surface: 6 bundles · 29 tools · 225 resources · 10 prompts</td><td>AS DOCUMENTED</td><td>ASD MCP surface, consistent with articles 39/41</td></tr>
+<tr><td>Stakeholder live-view observation</td><td>SIMULATED</td><td>derived from the reconstructed session; not an observed event</td></tr>
+<tr><td>Prototyping not executed</td><td>BOUNDARY, HONEST</td><td>engagement authority ends at delivery; no prototyping claimed</td></tr>
+</tbody></table>
+</section><section class="art-sec sec-12"><span class="sec-kicker">12 · References</span><h2 id="sec-12-references">References</h2>
+<ul>
+<li>DeepSeek Harness README — <code>github.com/deepseek-ai/deepseek-harness</code> (run command, everything-is-a-plugin, Cordis, developer preview, <code>dsh-plugin</code> topic)</li>
+<li>DSH Web UI guide — <code>docs/user/guide/index.md</code> (models, workspace selection, permission approvals)</li>
+<li>DSH plugin tutorials — <code>docs/user/develop/basic/</code> (first plugin, tools, packaging)</li>
+<li>Cordis — <em>A Programming Paradigm for Spatiotemporal Composability</em>, <code>github.com/cordiverse/paper</code></li>
+<li><a href="../41/artifacts/canon.md">Copperline 2000 project canon</a> — single source of truth for all lanes</li>
+<li><code>books/01-this-is-service-design-doing/07-…</code> (01/07) · <code>books/09-mapping-experiences/05-service-blueprints.md</code> (09/05) · <code>books/05-good-services/02-the-fifteen-principles.md</code> (05/02)</li>
+<li><a href="../39/index.html">Article 39</a> — the BUZZ tutorial lane (MCP tool contract, Canvas workflow)</li>
+<li><a href="../41/index.html">Article 41</a> — Copperline Chicken: Blueprinting a 2,000-Store Operation in BUZZ</li>
+<li><a href="../42/index.html">Article 42</a> — The Same Engagement from the Terminal: Codex, Kimi, AGY &amp; ZAI + OMP</li>
+</ul>
+</section></article></div>
+    <div class="cross-links"><a class="xlink" href="../41/index.html"><span class="lbl">← Lane 1</span><span class="ttl">41. Copperline Chicken: Blueprinting a 2,000-Store Operation in BUZZ</span><span class="rt">same 14 artifacts</span></a><a class="xlink" href="../42/index.html"><span class="lbl">Lane 2 →</span><span class="ttl">42. The Same Engagement from the Terminal: Codex, Kimi, AGY &amp; ZAI + OMP</span><span class="rt">same 560-note base</span></a></div>
+    <div class="art-foot">
+    <span>5 illustrative panels · 6 plugins · 14 linked artifacts · same 560-note evidence base · figures are renderings, not captures.</span>
+    · <a href="../../index.html">Back to the archive</a>
+    </div>
+    <button class="backtop" id="backtop" type="button">Back to top</button></main>
+<footer class="footer">
+  <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
+  <span><a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
+</footer>
+<script src="../../assets/site.js"></script>
+
+</body></html>

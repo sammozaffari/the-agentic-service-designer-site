@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stakeholder Map — Copperline 2000 · The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --phys:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#1e293b; --mut:#64748b; --bg:#f8fafc; --line:#e2e8f0; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55}
+  .wrap{max-width:1140px;margin:0 auto;padding:20px 22px 60px}
+  .provenance{background:#fffbeb;border:1px solid #f59e0b;border-left:6px solid #d97706;
+    border-radius:8px;padding:12px 16px;margin:14px 0 26px;font-size:13.5px;color:#78350f}
+  .provenance strong{color:#92400e}
+  .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:0 0 6px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px}
+  .sub{color:var(--mut);margin:0 0 14px;font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mut)}
+  .chip.kind{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
+  nav.sibs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px;font-size:12.5px}
+  nav.sibs a{text-decoration:none;color:#334155;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  nav.sibs a.here{background:#1e293b;color:#fff;border-color:#1e293b}
+  h2{font-size:20px;margin:34px 0 10px;padding-top:10px;border-top:2px solid var(--line)}
+  h3{font-size:15.5px;margin:20px 0 8px}
+  p{margin:8px 0}
+  .legend{position:sticky;top:0;z-index:20;background:rgba(248,250,252,.96);backdrop-filter:blur(3px);
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-wrap:wrap;gap:14px;
+    font-size:12px;color:#334155;margin:0 0 18px}
+  .legend .sw{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+  .gridwrap{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px}
+  .pi-grid{position:relative;width:100%;aspect-ratio:1.25/1;border:1px solid var(--line);border-radius:8px;
+    background:
+      linear-gradient(to right, transparent 49.8%, #cbd5e1 49.8%, #cbd5e1 50.2%, transparent 50.2%),
+      linear-gradient(to bottom, transparent 49.8%, #cbd5e1 49.8%, #cbd5e1 50.2%, transparent 50.2%),
+      linear-gradient(to bottom right, #f8fafc 0 50%, #f1f5f9 50% 100%)}
+  .qlabel{position:absolute;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#94a3b8}
+  .q-tl{top:6px;left:10px}.q-tr{top:6px;right:10px}.q-bl{bottom:6px;left:10px}.q-br{bottom:6px;right:10px}
+  .ax{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.08em}
+  .ax-x{text-align:center;margin-top:8px}
+  .ax-y{position:absolute;left:-13px;top:50%;transform:rotate(-90deg) translateX(50%);transform-origin:left center}
+  .pi-grid .inner{position:absolute;inset:22px 12px 34px 34px}
+  .dot{position:absolute;width:26px;height:26px;border-radius:50%;transform:translate(-50%,-50%);
+    display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;
+    text-decoration:none;border:2px solid #fff;box-shadow:0 1px 4px rgba(15,23,42,.35)}
+  .dot:hover{outline:3px solid rgba(37,99,235,.35)}
+  .cat-exec{background:var(--cust)} .cat-field{background:var(--front)} .cat-crew{background:var(--back)}
+  .cat-partner{background:var(--sup)} .cat-market{background:var(--data)} .cat-gov{background:var(--phys)}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:13px}
+  th{background:#f1f5f9;text-align:left;padding:8px 9px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#475569;border-bottom:2px solid var(--line)}
+  td{padding:8px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#f8fafc}
+  .num{font-weight:700;color:#334155}
+  .pill{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:999px;white-space:nowrap}
+  .p-hi{background:#fee2e2;color:#991b1b}.p-md{background:#fef3c7;color:#92400e}.p-lo{background:#e0f2fe;color:#075985}
+  .st-mc{background:#dcfce7;color:#14532d}.st-ks{background:#ede9fe;color:#4c1d95}.st-ki{background:#dbeafe;color:#1e3a8a}.st-mo{background:#f1f5f9;color:#334155}
+  .note{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:#0e7490;white-space:nowrap}
+  .note-desc{font-size:12.5px;color:#475569}
+  .quad-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:14px 0}
+  .qcard{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--wait);border-radius:8px;padding:10px 12px;font-size:13px}
+  .qcard b{display:block;margin-bottom:4px;font-size:13.5px}
+  footer{margin-top:40px;padding-top:14px;border-top:2px solid var(--line);font-size:12.5px;color:var(--mut)}
+  @media (max-width:760px){.pi-grid{aspect-ratio:1/1}}
+  @media print{
+    body{background:#fff;font-size:11px}
+    .wrap{max-width:none;padding:0}
+    .legend{position:static;backdrop-filter:none}
+    nav.sibs{display:none}
+    tr,.qcard,.gridwrap{break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+    h2{break-after:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="provenance"><strong>Data boundary.</strong> Fictional composite engagement. Every person, quote, figure and outcome is synthetic. No real company, store, or person is described.</p>
+
+  <p class="kicker">Copperline 2000 · Full-Operation Service Blueprint &amp; Field Study · Artifact 05</p>
+  <h1>Stakeholder Map</h1>
+  <p class="sub">Power/interest grid of the 25 named stakeholders in the Copperline Chicken engagement — who can move the operation, who cares, and how the engagement keeps each of them engaged.</p>
+
+  <div class="chips">
+    <span class="chip kind">Template kind 05 · stakeholder-map</span>
+    <span class="chip">Book refs 01/04 · 17/03</span>
+    <span class="chip">Phase: Research (field weeks 1–3)</span>
+    <span class="chip">Evidence notes N321–N345</span>
+    <span class="chip">Canon: canon.md §3, §5</span>
+  </div>
+
+  <nav class="sibs">
+    <a href="brief.html">Brief</a><a href="research/interviews.html">Interviews</a><a href="research/surveys.html">Surveys</a><a href="research/channels.html">Channels</a><a href="ecosystem-map.html">Ecosystem Map</a><a href="insight-register.html">Insight Register</a><a href="persona-set.html">Personas</a><a href="journey-map.html">Journey Map</a><a href="service-blueprint.html">Service Blueprint</a><a href="analysis-report.html">Analysis</a><a href="slide-deck.html">Deck</a><a href="proposals.html">Proposals</a><a href="buzz-transcript.html">Buzz Log</a>
+  </nav>
+
+  <div class="legend">
+    <span><span class="sw cat-exec"></span>Executive &amp; HQ</span>
+    <span><span class="sw cat-field"></span>Field operations</span>
+    <span><span class="sw cat-crew"></span>Crew &amp; labour</span>
+    <span><span class="sw cat-partner"></span>Partners &amp; supply</span>
+    <span><span class="sw cat-market"></span>Market &amp; customers</span>
+    <span><span class="sw cat-gov"></span>Governance &amp; control</span>
+    <span style="margin-left:auto;color:#64748b">Grid: power ↑ · interest → · dot numbers match table rows</span>
+  </div>
+
+  <h2>1. Power / interest grid</h2>
+  <div class="gridwrap">
+    <div class="pi-grid">
+      <span class="qlabel q-tl">Keep satisfied</span>
+      <span class="qlabel q-tr">Manage closely</span>
+      <span class="qlabel q-bl">Monitor</span>
+      <span class="qlabel q-br">Keep informed</span>
+      <span class="ax ax-y">Power (low → high)</span>
+      <div class="inner">
+        <a class="dot cat-exec"  style="left:86%;top:6%"  href="#s1"  title="1 · Priya Nair — COO (sponsor)">1</a>
+        <a class="dot cat-exec"  style="left:80%;top:14%" href="#s2"  title="2 · Marcus Adeyemi — VP Store Operations">2</a>
+        <a class="dot cat-exec"  style="left:74%;top:18%" href="#s3"  title="3 · Sofia Reyes — Director, Labour &amp; Rostering">3</a>
+        <a class="dot cat-exec"  style="left:68%;top:22%" href="#s4"  title="4 · Daniel Okafor — Head of Franchise Relations">4</a>
+        <a class="dot cat-exec"  style="left:72%;top:28%" href="#s5"  title="5 · Hana Kim — Head of Digital &amp; Delivery">5</a>
+        <a class="dot cat-exec"  style="left:56%;top:26%" href="#s6"  title="6 · Marketing — LTO calendar owner">6</a>
+        <a class="dot cat-exec"  style="left:62%;top:40%" href="#s7"  title="7 · Tom Whelan — Regional Manager, Northline">7</a>
+        <a class="dot cat-field" style="left:70%;top:48%" href="#s8"  title="8 · Aisha Rahman — Flagship GM, Harbourgate #14">8</a>
+        <a class="dot cat-field" style="left:66%;top:66%" href="#s9"  title="9 · Bo Chen — Shift leader">9</a>
+        <a class="dot cat-field" style="left:38%;top:56%" href="#s10" title="10 · Oscar Villanueva — DC inbound supervisor">10</a>
+        <a class="dot cat-field" style="left:30%;top:52%" href="#s11" title="11 · DC supervisors — Eastcliff/Harbourgate/Southmere">11</a>
+        <a class="dot cat-field" style="left:52%;top:68%" href="#s12" title="12 · Raj Patel — Call-centre team lead">12</a>
+        <a class="dot cat-crew"  style="left:64%;top:76%" href="#s13" title="13 · Grace Mwangi — Crew, 8 months">13</a>
+        <a class="dot cat-crew"  style="left:58%;top:70%" href="#s14" title="14 · Crew representative panel">14</a>
+        <a class="dot cat-crew"  style="left:44%;top:44%" href="#s15" title="15 · Wren Talbot — Union representative">15</a>
+        <a class="dot cat-crew"  style="left:60%;top:82%" href="#s16" title="16 · Jack Doyle — Aggregator courier">16</a>
+        <a class="dot cat-partner" style="left:78%;top:42%" href="#s17" title="17 · Elena Petrova — Franchisee, 6 stores">17</a>
+        <a class="dot cat-partner" style="left:54%;top:30%" href="#s18" title="18 · Franchise Council — 62 partners">18</a>
+        <a class="dot cat-partner" style="left:26%;top:48%" href="#s19" title="19 · Maintenance contractor network">19</a>
+        <a class="dot cat-market" style="left:60%;top:34%" href="#s20" title="20 · Dashly — aggregator">20</a>
+        <a class="dot cat-market" style="left:46%;top:54%" href="#s21" title="21 · Wheelio — aggregator">21</a>
+        <a class="dot cat-market" style="left:36%;top:62%" href="#s22" title="22 · Pedalr — aggregator">22</a>
+        <a class="dot cat-market" style="left:68%;top:72%" href="#s23" title="23 · Customer segment representatives">23</a>
+        <a class="dot cat-gov"    style="left:34%;top:24%" href="#s24" title="24 · Finance — P&amp;L and waste cost">24</a>
+        <a class="dot cat-gov"    style="left:28%;top:32%" href="#s25" title="25 · Legal &amp; Compliance — food safety">25</a>
+      </div>
+    </div>
+    <div class="ax ax-x">Interest (low → high)</div>
+  </div>
+
+  <div class="quad-summary">
+    <div class="qcard" style="border-top-color:#2563eb"><b>Manage closely (11)</b>Priya, Marcus, Sofia, Daniel, Hana, Marketing, Tom, Aisha, Elena, Franchise Council, Dashly — this quadrant holds every decision right the ten proposals need.</div>
+    <div class="qcard" style="border-top-color:#9333ea"><b>Keep satisfied (4)</b>Wren Talbot, Maintenance contractor, Finance, Legal &amp; Compliance — low day-to-day interest, high blocking power.</div>
+    <div class="qcard" style="border-top-color:#0891b2"><b>Keep informed (6)</b>Bo Chen, Raj Patel, Grace Mwangi, Crew rep panel, Jack Doyle, Customer segment reps — low formal power, high lived interest.</div>
+    <div class="qcard" style="border-top-color:#64748b"><b>Monitor (4)</b>Oscar Villanueva, DC supervisors (3 remaining), Wheelio, Pedalr — watch for drift toward the centre as proposals land.</div>
+  </div>
+
+  <h2>2. Stakeholder register</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Stakeholder</th><th>Role / remit</th><th>Power</th><th>Interest</th><th>Strategy</th><th>Engagement approach</th><th>Evidence note</th></tr>
+    </thead>
+    <tbody>
+      <tr id="s1"><td class="num">1</td><td><b>Priya Nair</b></td><td>Chief Operating Officer — engagement sponsor; owns success criteria and final decision rights</td><td><span class="pill p-hi">High</span></td><td><span class="pill p-hi">High</span></td><td><span class="pill st-mc">Manage closely</span></td><td>Weekly 30-min sponsor review; pre-read the day before; no surprises at the gate</td><td class="note">N321</td></tr>
+      <tr id="s2"><td class="num">2</td><td><b>Marcus Adeyemi</b></td><td>VP Store Operations — owns store P&amp;L, window-time and accuracy programmes</td><td><span class="pill p-hi">High</span></td><td><span class="pill p-hi">High</span></td><td><span class="pill st-mc">Manage closely</span></td><td>Fortnightly working session; co-owns Drive-Thru 180 (P2) and Recovery Ladder (P9)</td><td class="note">N322</td></tr>
+      <tr id="s3"><td class="num">3</td><td><b>Sofia Reyes</b></td><td>Director of Labour &amp; Rostering — owns ShiftOrbit, roster publication policy</td><td><span class="pill p-hi">High</span></td><td><span class="pill p-hi">High</span></td><td><span class="pill st-mc">Manage closely</span></td><td>Deep-dive owner for Roster Stability Program (P1); shares ShiftOrbit exports weekly</td><td class="note">N323</td></tr>
+      <tr id="s4"><td class="num">4</td><td><b>Daniel Okafor</b></td><td>Head of Franchise Relations — 62 partners, Flamebook governance</td><td><span class="pill p-hi">High</span></td><td><span class="pill p-hi">High</span></td><td><span class="pill st-mc">Manage closely</span></td><td>Fortnightly check-in; primary owner of Franchise Ops Bridge (P7) office hours</td><td class="note">N324</td></tr>
+      <tr id="s5"><td class="num">5</td><td><b>Hana Kim</b></td><td>Head of Digital &amp; Delivery — Route56, aggregator contracts, kiosks, app</td><td><span class="pill p-hi">High</span></td><td><span class="pill p-hi">High</span></td><td><span class="pill st-mc">Manage closely</span></td><td>Weekly sync; owns One Copperline Handover (P3) and Kiosk Accessibility Pass (P8)</td><td class="note">N325</td></tr>
+      <tr id="s6"><td class="num">6</td><td><b>Marketing (LTO calendar owner)</b></td><td>Head-office marketing — limited-time-offer calendar and launch collateral</td><td><span class="pill p-md">Med</span></td><td><span class="pill p-md">Med</span></td><td><span class="pill st-mc">Manage closely</span></td><td>Invite into Waste-to-Order Forecasting (P5); LTO dates locked with ops 6 weeks out</td><td class="note">N341</td></tr>
+      <tr id="s7"><td class="num">7</td><td><b>Tom Whelan</b></td><td>Regional Manager, Northline — 14 years tenure; credible field voice</td><td><span class="pill p-md">Med</span></td><td><span class="pill p-hi">High</span></td><td><span class="pill st-mc">Manage closely</span></td><td>Ride-along host; acts as field sponsor for proposals; quotes carry weight with GMs</td><td class="note">N326</td></tr>
+      <tr id="s8"><td class="num">8</td><td><b>Aisha Rahman</b></td><td>Flagship GM, Harbourgate Flagship #14 — 1,850 avg daily orders, 18 crew peak</td><td><span class="pill p-md">Med</span></td><td><span class="pill p-hi">High</span></td><td><span class="pill st-mc">Manage closely</span></td><td>Interview + weekly diary during field study; flagship pilot candidate for P1/P4</td><td class="note">N327</td></tr>
+      <tr id="s9"><td class="num">9</td><td><b>Bo Chen</b></td><td>Shift leader, Harbourgate Flagship #14 — runs line checks and shift handovers</td><td><span class="pill p-lo">Low</span></td><td><span class="pill p-hi">High</span></td><td><span class="pill st-ki">Keep informed</span></td><td>Interview + observation; co-design reviewer for handover standards (P3)</td><td class="note">N328</td></tr>
+      <tr id="s10"><td class="num">10</td><td><b>Oscar Villanueva</b></td><td>DC inbound supervisor, Northline distribution centre</td><td><span class="pill p-md">Med</span></td><td><span class="pill p-lo">Low</span></td><td><span class="pill st-mo">Monitor</span></td><td>Structured interview; input to supply flows and LTO spike risks in the ecosystem map</td><td class="note">N337</td></tr>
+      <tr id="s11"><td class="num">11</td><td><b>DC supervisors (Eastcliff, Harbourgate, Southmere)</b></td><td>Inbound/outbound supervisors at the three remaining regional DCs</td><td><span class="pill p-md">Med</span></td><td><span class="pill p-lo">Low</span></td><td><span class="pill st-mo">Monitor</span></td><td>Short pulse calls; watch single-DC reliance risk for the Harbourgate region</td><td class="note">N338</td></tr>
+      <tr id="s12"><td class="num">12</td><td><b>Raj Patel</b></td><td>Call-centre team lead — escalations, refunds, aggregator complaints</td><td><span class="pill p-lo">Low</span></td><td><span class="pill p-hi">High</span></td><td><span class="pill st-ki">Keep informed</span></td><td>Interview + 2-week log sample; co-designs Recovery Ladder bands (P9)</td><td class="note">N344</td></tr>
+      <tr id="s13"><td class="num">13</td><td><b>Grace Mwangi</b></td><td>Crew member, 8 months tenure, Harbourgate Flagship #14</td><td><span class="pill p-lo">Low</span></td><td><span class="pill p-hi">High</span></td><td><span class="pill st-ki">Keep informed</span></td><td>Interview + shift shadowing; her Tuesday close is the crew journey (see journey-map.html)</td><td class="note">N329</td></tr>
+      <tr id="s14"><td class="num">14</td><td><b>Crew representative panel</b></td><td>Volunteer reps from the 1,893-crew survey cohort across formats</td><td><span class="pill p-lo">Low</span></td><td><span class="pill p-hi">High</span></td><td><span class="pill st-ki">Keep informed</span></td><td>Monthly 45-min panel; standing seat in Crew Voice Loop (P4) design reviews</td><td class="note">N330</td></tr>
+      <tr id="s15"><td class="num">15</td><td><b>Wren Talbot</b></td><td>Union representative — crew conditions, breaks, roster notice</td><td><span class="pill p-md">Med</span></td><td><span class="pill p-md">Med</span></td><td><span class="pill st-ks">Keep satisfied</span></td><td>Introductory meeting + early sight of P1 roster-notice commitments (≥7 days)</td><td class="note">N339</td></tr>
+      <tr id="s16"><td class="num">16</td><td><b>Jack Doyle</b></td><td>Aggregator courier — three delivery runs shadowed</td><td><span class="pill p-lo">Low</span></td><td><span class="pill p-hi">High</span></td><td><span class="pill st-ki">Keep informed</span></td><td>Run-along shadowing; witness to the 0.7% handover breakage problem (P3)</td><td class="note">N336</td></tr>
+      <tr id="s17"><td class="num">17</td><td><b>Elena Petrova</b></td><td>Franchisee — 6 stores (2 standard, 2 food-court, 1 drive-thru, 1 travel-hub)</td><td><span class="pill p-md">Med</span></td><td><span class="pill p-hi">High</span></td><td><span class="pill st-mc">Manage closely</span></td><td>Interview + persona (see persona-set.html); first franchise pilot host for P7</td><td class="note">N331</td></tr>
+      <tr id="s18"><td class="num">18</td><td><b>Franchise Council</b></td><td>Elected body of the 62 franchise partners; advises on playbook changes</td><td><span class="pill p-hi">High</span></td><td><span class="pill p-md">Med</span></td><td><span class="pill st-mc">Manage closely</span></td><td>Observer seat at 3 council meetings; P7 versioning rules need council sign-off</td><td class="note">N332</td></tr>
+      <tr id="s19"><td class="num">19</td><td><b>Maintenance contractor network</b></td><td>Grill and refrigeration service partner across all 2,000 stores</td><td><span class="pill p-md">Med</span></td><td><span class="pill p-lo">Low</span></td><td><span class="pill st-ks">Keep satisfied</span></td><td>SLA review only; grill uptime is a hidden dependency of Drive-Thru 180 (P2)</td><td class="note">N340</td></tr>
+      <tr id="s20"><td class="num">20</td><td><b>Dashly</b></td><td>Delivery aggregator — largest share of the app + aggregator mix</td><td><span class="pill p-hi">High</span></td><td><span class="pill p-md">Med</span></td><td><span class="pill st-mc">Manage closely</span></td><td>Quarterly business review attended; rating exports (4.3/5 in-app) feed VoiceBoard</td><td class="note">N333</td></tr>
+      <tr id="s21"><td class="num">21</td><td><b>Wheelio</b></td><td>Delivery aggregator — second by volume; different handover ritual</td><td><span class="pill p-md">Med</span></td><td><span class="pill p-md">Med</span></td><td><span class="pill st-ks">Keep satisfied</span></td><td>Partner-manager call; handover spec differences documented for P3</td><td class="note">N334</td></tr>
+      <tr id="s22"><td class="num">22</td><td><b>Pedalr</b></td><td>Delivery aggregator — smallest, cycle-courier biased, mall-friendly</td><td><span class="pill p-lo">Low</span></td><td><span class="pill p-md">Med</span></td><td><span class="pill st-mo">Monitor</span></td><td>Partner-manager call; food-court pick-up point prototype partner for P3</td><td class="note">N335</td></tr>
+      <tr id="s23"><td class="num">23</td><td><b>Customer segment representatives</b></td><td>Three reps: lunch-peak office (Mei Lin), drive-thru commuter, delivery-first</td><td><span class="pill p-lo">Low</span></td><td><span class="pill p-hi">High</span></td><td><span class="pill st-ki">Keep informed</span></td><td>Segment workshops; reps anchor the customer personas and Devon's drive-thru journey</td><td class="note">N345</td></tr>
+      <tr id="s24"><td class="num">24</td><td><b>Finance</b></td><td>P&amp;L owners — waste cost line, crew cost, proposal business cases</td><td><span class="pill p-hi">High</span></td><td><span class="pill p-md">Med</span></td><td><span class="pill st-ks">Keep satisfied</span></td><td>Business-case reviews at weeks 3 and 6; waste at 3.8% of chicken weight is their number</td><td class="note">N342</td></tr>
+      <tr id="s25"><td class="num">25</td><td><b>Legal &amp; Compliance</b></td><td>Food-safety exposure, aggregator contracts, employment law</td><td><span class="pill p-hi">High</span></td><td><span class="pill p-md">Med</span></td><td><span class="pill st-ks">Keep satisfied</span></td><td>Consulted on Q-Pulse Honest Logging (P6): 22% bulk-at-close logging is a legal risk, not just a data one</td><td class="note">N343</td></tr>
+    </tbody>
+  </table>
+
+  <h2>3. Evidence notes N321–N345</h2>
+  <table>
+    <thead><tr><th>Note</th><th>Content</th></tr></thead>
+    <tbody>
+      <tr><td class="note">N321</td><td class="note-desc">Sponsor interview — Priya Nair, 50 min, Port Meridian Support Centre. Success criteria, decision rights, escalation path. Log: research/interviews.html</td></tr>
+      <tr><td class="note">N322</td><td class="note-desc">Operations working session — Marcus Adeyemi, plus window-time metric pack (median 246s vs 180s target). Log: research/channels.html</td></tr>
+      <tr><td class="note">N323</td><td class="note-desc">Labour &amp; rostering deep-dive — Sofia Reyes, with ShiftOrbit exports (11 swap requests/store/week; 31% manager rework). Log: research/interviews.html</td></tr>
+      <tr><td class="note">N324</td><td class="note-desc">Franchise relations interview — Daniel Okafor; Flamebook version audit sample of 12 partner stores. Log: research/interviews.html</td></tr>
+      <tr><td class="note">N325</td><td class="note-desc">Digital &amp; delivery interview — Hana Kim; Route56 config and 3 aggregator rating exports. Log: research/interviews.html</td></tr>
+      <tr><td class="note">N326</td><td class="note-desc">Regional ride-along — Tom Whelan, 2 Northline stores (1 standard, 1 drive-thru express), full day. Log: research/interviews.html</td></tr>
+      <tr><td class="note">N327</td><td class="note-desc">Flagship GM interview — Aisha Rahman, Harbourgate Flagship #14, 70 min + weekly ops diary. Log: research/interviews.html</td></tr>
+      <tr><td class="note">N328</td><td class="note-desc">Shift-leader interview — Bo Chen, incl. observed line check and shift handover. Log: research/interviews.html</td></tr>
+      <tr><td class="note">N329</td><td class="note-desc">Crew interview — Grace Mwangi, 8 months tenure, 45 min + one shadowed close shift. Log: research/interviews.html</td></tr>
+      <tr><td class="note">N330</td><td class="note-desc">Crew representative panel formation — 9 volunteers from the 1,893-crew survey (eNPS −8 cohort). Log: research/surveys.html</td></tr>
+      <tr><td class="note">N331</td><td class="note-desc">Franchisee interview — Elena Petrova, 6 stores, 60 min. Log: research/interviews.html</td></tr>
+      <tr><td class="note">N332</td><td class="note-desc">Franchise Council observation — 3 meetings attended as observer; minutes excerpted. Log: research/channels.html</td></tr>
+      <tr><td class="note">N333</td><td class="note-desc">Dashly quarterly business review — attended; rating and timing exports (in-app 4.3/5). Log: research/channels.html</td></tr>
+      <tr><td class="note">N334</td><td class="note-desc">Wheelio partner-manager call — 40 min; handover specification differences vs Dashly documented. Log: research/channels.html</td></tr>
+      <tr><td class="note">N335</td><td class="note-desc">Pedalr partner-manager call — 35 min; cycle-courier and mall pick-up constraints. Log: research/channels.html</td></tr>
+      <tr><td class="note">N336</td><td class="note-desc">Courier shadowing — Jack Doyle, 3 delivery runs incl. one flagged handover (breakage 0.7% of delivery orders). Log: research/interviews.html</td></tr>
+      <tr><td class="note">N337</td><td class="note-desc">DC supervisor interview — Oscar Villanueva, Northline inbound, 45 min. Log: research/interviews.html</td></tr>
+      <tr><td class="note">N338</td><td class="note-desc">DC supervisor pulse — 20-min calls with Eastcliff, Harbourgate, Southmere supervisors. Log: research/interviews.html</td></tr>
+      <tr><td class="note">N339</td><td class="note-desc">Union introductory meeting — Wren Talbot, 40 min; roster-notice and break topics raised. Log: research/interviews.html</td></tr>
+      <tr><td class="note">N340</td><td class="note-desc">Maintenance contract review — grill/refrigeration SLA documentation walkthrough with facilities. Log: research/channels.html</td></tr>
+      <tr><td class="note">N341</td><td class="note-desc">Marketing walkthrough — LTO calendar and launch-collateral process, 45 min. Log: research/interviews.html</td></tr>
+      <tr><td class="note">N342</td><td class="note-desc">Finance P&amp;L review — waste cost line (3.8% of chicken weight vs 2.5% target). Log: research/channels.html</td></tr>
+      <tr><td class="note">N343</td><td class="note-desc">Legal &amp; compliance consultation — food-safety logging exposure; 60 min. Log: research/interviews.html</td></tr>
+      <tr><td class="note">N344</td><td class="note-desc">Call-centre interview — Raj Patel + 2-week escalation log sample. Log: research/interviews.html</td></tr>
+      <tr><td class="note">N345</td><td class="note-desc">Customer segment workshops — 3 reps × 90 min (lunch-peak office incl. Mei Lin, drive-thru commuter, delivery-first). Log: research/interviews.html</td></tr>
+    </tbody>
+  </table>
+
+  <h2>4. Reading notes</h2>
+  <p><b>Quadrant counts.</b> Manage closely: 11 (rows 1–8, 17, 18, 20). Keep satisfied: 4 (15, 19, 24, 25). Keep informed: 6 (9, 12, 13, 14, 16, 23). Monitor: 4 (10, 11, 21, 22). Total: 25 stakeholders.</p>
+  <p><b>Why the union sits left of centre.</b> Wren Talbot currently holds medium interest (roster notice is a live topic) but can move to high power fast if roster stability slips again — the map is re-baselined when proposals land, per Blueprint-as-Living-Document (P10).</p>
+  <p><b>Aggregators are three stakeholders, not one.</b> Dashly, Wheelio and Pedalr are plotted separately because One Copperline Handover (P3) has to clear three different contract positions — treating "aggregators" as one block was the failure mode in earlier programmes.</p>
+
+  <footer>
+    <p>Copperline 2000 · Artifact 05 (stakeholder-map) · Template catalog kind 05, refs 01/04, 17/03 · Evidence notes N321–N345, each used once in this artifact · Canon source: <a href="canon.md">canon.md</a> (single source of truth; canon wins on conflict).</p>
+    <p>Companion artifacts: <a href="ecosystem-map.html">ecosystem-map.html</a> · <a href="insight-register.html">insight-register.html</a> · <a href="persona-set.html">persona-set.html</a> · <a href="journey-map.html">journey-map.html</a> · <a href="service-blueprint.html">service-blueprint.html</a> · <a href="proposals.html">proposals.html</a></p>
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposals — Ten Directions for Copperline 2000 — The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --ev:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#0f172a; --mut:#64748b; --line:#e2e8f0; --paperbg:#eef2f7;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:var(--paperbg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; font-size:15px; line-height:1.55; }
+  .doc{ max-width:1120px; margin:0 auto; background:#fff; box-shadow:0 1px 3px rgba(15,23,42,.12); }
+  header.art-head{ padding:34px 40px 22px; border-bottom:3px solid #0f172a; }
+  .kicker{ font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#b45309; font-weight:700; }
+  h1{ font-size:30px; line-height:1.2; margin:10px 0 6px; letter-spacing:-.01em; }
+  .sub{ color:#334155; font-size:15px; max-width:78ch; margin:0 0 16px; }
+  .prov{ background:#fffbeb; border:1px solid #fcd34d; border-left:4px solid #d97706;
+    padding:10px 14px; font-size:13px; color:#78350f; border-radius:4px; max-width:88ch; }
+  .chips{ margin-top:16px; display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{ display:inline-block; font-size:11.5px; font-weight:600; color:#334155; background:#f1f5f9; border:1px solid var(--line); border-radius:999px; padding:4px 11px; }
+  .chip.dark{ background:#0f172a; color:#f8fafc; border-color:#0f172a; }
+
+  .sec{ padding:30px 40px 6px; }
+  .sec-kicker{ font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#b45309; font-weight:700; margin-bottom:4px; }
+  .sec h2{ font-size:21px; margin:0 0 4px; letter-spacing:-.01em; }
+  .sec .lede{ color:#475569; font-size:13.5px; max-width:90ch; margin:4px 0 14px; }
+  .secbody{ padding-bottom:24px; }
+
+  .toc{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:10px; margin-top:8px; }
+  .toc a{ display:block; border:1px solid var(--line); border-left:4px solid var(--data); border-radius:6px; padding:9px 12px; text-decoration:none; background:#fff; }
+  .toc a:hover{ background:#ecfeff; }
+  .toc .pn{ font-family:ui-monospace,Menlo,monospace; font-size:10.5px; color:var(--mut); font-weight:700; }
+  .toc b{ display:block; font-size:13px; color:#0f172a; }
+
+  article.prop{ border:1px solid var(--line); border-radius:8px; margin:0 0 26px; background:#fff; overflow:hidden; }
+  .prop-head{ padding:14px 18px 12px; color:#fff; }
+  .prop-head .pn{ font-family:ui-monospace,Menlo,monospace; font-size:11px; letter-spacing:.1em; opacity:.85; }
+  .prop-head h3{ margin:2px 0 4px; font-size:18px; }
+  .prop-head .mech{ font-size:12.5px; opacity:.92; }
+  .prop-body{ padding:14px 18px 8px; }
+  .block{ margin:0 0 14px; }
+  .block h4{ font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--mut); margin:0 0 6px; }
+  .block p{ margin:0 0 8px; font-size:13.5px; color:#1e293b; max-width:96ch; }
+  .ev{ font-family:ui-monospace,Menlo,monospace; font-size:10.5px; color:var(--mut); }
+  .ev a{ color:inherit; text-decoration:none; border-bottom:1px dotted var(--mut); }
+  .notechip{ display:inline-block; font-family:ui-monospace,Menlo,monospace; font-size:10px; font-weight:700; background:#f1f5f9; border:1px solid var(--line); border-radius:4px; padding:1px 6px; color:#334155; vertical-align:middle; }
+
+  table.t{ width:100%; border-collapse:collapse; font-size:12.5px; margin:8px 0 4px; }
+  table.t th{ background:#0f172a; color:#f8fafc; text-align:left; padding:7px 9px; font-size:11px; letter-spacing:.04em; }
+  table.t td{ border-bottom:1px solid var(--line); padding:7px 9px; vertical-align:top; color:#1e293b; }
+  table.t tr:nth-child(even) td{ background:#f8fafc; }
+  .est{ font-style:italic; color:var(--mut); }
+
+  .meta-row{ display:flex; flex-wrap:wrap; gap:8px; margin:4px 0 12px; }
+  .meta{ font-size:11.5px; border:1px solid var(--line); border-radius:999px; padding:3px 11px; background:#f8fafc; color:#334155; }
+  .meta b{ color:#0f172a; }
+  .p-hi{ color:#b91c1c; } .p-md{ color:#b45309; }
+
+  .exp{ border:1px dashed #0f172a; border-radius:6px; padding:10px 14px; background:#f8fafc; font-size:13px; color:#1e293b; margin-top:8px; }
+  .exp b{ font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#334155; display:block; margin-bottom:3px; }
+
+  .risk{ border-left:3px solid var(--fail); background:#fef2f2; border-radius:6px; padding:9px 13px; font-size:12.5px; color:#7f1d1d; }
+  .callout{ border:1px solid var(--line); border-left:4px solid var(--data); background:#ecfeff; border-radius:6px; padding:12px 16px; font-size:13.5px; margin:12px 0; max-width:96ch; }
+  .callout.warn{ border-left-color:var(--fail); background:#fef2f2; color:#7f1d1d; }
+
+  .wave{ border:1px solid var(--line); border-top:4px solid var(--data); border-radius:8px; padding:14px 16px; margin-bottom:14px; background:#fff; }
+  .wave h3{ margin:0 0 6px; font-size:15px; }
+  .wave .wt{ font-family:ui-monospace,Menlo,monospace; font-size:10.5px; color:var(--mut); }
+  .wave p{ font-size:13px; color:#334155; margin:4px 0 6px; }
+
+  .notlist{ counter-reset:np; list-style:none; margin:8px 0; padding:0; }
+  .notlist li{ counter-increment:np; border:1px solid var(--line); border-radius:6px; padding:10px 14px; margin-bottom:8px; font-size:13.5px; color:#1e293b; position:relative; padding-left:44px; }
+  .notlist li::before{ content:counter(np); position:absolute; left:12px; top:10px; width:20px; height:20px; border-radius:50%; background:#0f172a; color:#fff; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+
+  .note{ display:flex; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:12.5px; color:#334155; max-width:100ch; }
+  .note .nid{ font-family:ui-monospace,Menlo,monospace; font-weight:700; color:#0f172a; flex:none; width:44px; }
+  .notes-panel{ border-top:3px solid #0f172a; }
+
+  footer.art-foot{ padding:26px 40px 34px; border-top:3px solid #0f172a; margin-top:20px; }
+  .xl{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .xl a{ font-size:12px; color:#1d4ed8; text-decoration:none; border:1px solid var(--line); background:#f8fafc; border-radius:999px; padding:4px 11px; }
+  .xl a:hover{ background:#eff6ff; }
+
+  @media print{
+    body{ background:#fff; font-size:11px; }
+    .doc{ box-shadow:none; max-width:100%; }
+    .sec{ padding:16px 20px 2px; }
+    header.art-head, footer.art-foot{ padding:16px 20px; }
+    a{ color:inherit; text-decoration:none; }
+    article.prop{ break-inside:avoid-page; }
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+<header class="art-head">
+  <div class="kicker">Copperline 2000 · Artifact 10 · Directions</div>
+  <h1>Ten Directions — the Copperline 2000 Opportunity Matrix</h1>
+  <p class="sub">Ten proposals (SDAP kind 31, opportunity-matrix), each derived from the graded insight register and carried on the evidence ledger of <a href="service-blueprint.html">service-blueprint.html</a> and the research set. Sequenced into three waves, with named owners, KPI hypotheses, first experiments and explicit risks. Companion to <a href="analysis-report.html">analysis-report.html</a> and <a href="slide-deck.html">slide-deck.html</a>.</p>
+  <div class="prov"><strong>Data boundary — read first.</strong> Fictional composite engagement. Every person, quote, figure and outcome is synthetic. No real company, store, or person is described. Every benefit figure below is an <em>estimate</em> (marked as such); canon baselines are quoted verbatim. Prototyping was <strong>not</strong> executed in this engagement — every "first 30-day experiment" is a designed next step, not a completed one.</div>
+  <div class="chips">
+    <span class="chip dark">Template kind 31 · opportunity-matrix</span>
+    <span class="chip">Notes N456–N490 (this artifact)</span>
+    <span class="chip">Builds on insight-register.html (INS-01–INS-24, method N366–N385)</span>
+    <span class="chip">Cites blueprint N001–N220 · research N221–N320</span>
+  </div>
+</header>
+
+<section class="sec" id="method">
+  <div class="sec-kicker">Method</div>
+  <h2>How these ten were chosen</h2>
+  <p class="lede">The canon fixed the ten titles; this artifact earns them. Each direction is bound to insight-register rows (per the register's own proposal-mapping rule, N372), quantified against canon metrics, and scored on the impact × effort model of <a href="analysis-report.html#matrix">analysis-report.html §08</a>. <span class="notechip">N456</span> <span class="notechip">N484</span></p>
+  <div class="secbody">
+    <div class="toc">
+      <a href="#p1"><span class="pn">P1 · WAVE 2 (experiment in W1)</span><b>Roster Stability Program</b></a>
+      <a href="#p2"><span class="pn">P2 · WAVE 3</span><b>Drive-Thru 180</b></a>
+      <a href="#p3"><span class="pn">P3 · WAVE 1</span><b>One Copperline Handover</b></a>
+      <a href="#p4"><span class="pn">P4 · WAVE 1</span><b>Crew Voice Loop</b></a>
+      <a href="#p5"><span class="pn">P5 · WAVE 3</span><b>Waste-to-Order Forecasting</b></a>
+      <a href="#p6"><span class="pn">P6 · WAVE 1</span><b>Q-Pulse Honest Logging</b></a>
+      <a href="#p7"><span class="pn">P7 · WAVE 2</span><b>Franchise Ops Bridge</b></a>
+      <a href="#p8"><span class="pn">P8 · WAVE 2</span><b>Kiosk Accessibility Pass</b></a>
+      <a href="#p9"><span class="pn">P9 · WAVE 2</span><b>Recovery Ladder</b></a>
+      <a href="#p10"><span class="pn">P10 · WAVE 3</span><b>Blueprint-as-Living-Document</b></a>
+    </div>
+    <div class="callout"><span class="notechip">N477</span> <b>Rating model.</b> Impact (1–5) = breadth × depth of harm removed, from the analysis report's issue matrix; effort (1–5) = technology + process + change load combined. <span class="notechip">N478</span> <b>Dependency spine.</b> P1 is upstream of nearly everything (peak staffing feeds window physics, waste curves and crew voice alike); P6 is upstream of P5 (honest data before better forecasting); P3 and P9 are independent and deliberately front-loaded to bank trust while the structural work runs.</div>
+  </div>
+</section>
+
+<!-- ================= P1 ================= -->
+<article class="prop" id="p1">
+<div class="prop-head" style="background:var(--back)">
+  <div class="pn">P1 · INS-01, INS-02, INS-03, INS-22</div>
+  <h3>Roster Stability Program</h3>
+  <div class="mech">Publish rosters ≥7 days ahead; standing swap marketplace in ShiftOrbit. Owner: Sofia Reyes (Director of Labour &amp; Rostering), sponsored by Priya Nair.</div>
+</div>
+<div class="prop-body">
+  <div class="meta-row"><span class="meta"><b>Impact</b> 5 / 5</span><span class="meta"><b>Effort</b> 3 / 5</span><span class="meta"><b>Wave</b> 2 (experiment Wave 1)</span><span class="meta"><b>Kind</b> process + system</span></div>
+  <div class="block"><h4>Problem (evidence)</h4><p>41% of stores publish rosters less than 72 hours before week start; crew request swaps at 11 per store per week and 31% need manager rework; turnover runs at 94% annualised against an industry median of 78%. The register grades the flywheel — instability → attrition → instability — as its single High-confidence causal loop, verified across three independent data cuts. The GM's own words: the roster is late because the forecast changes Thursday, the swaps land Friday, and the week starts Monday.</p><p class="ev">N194 · N118 · N117 · N222 · N223 · N230 · N234 · N235 · N281 · N285 · N289 · INS-01–03</p></div>
+  <div class="block"><h4>Proposal</h4><p><strong>Publish at T−7, by decree and by mechanism.</strong> The decree: Sofia Reyes sets the roster lock at seven days and makes the timestamp the single reported number in Tom Whelan's regional reviews — objective, comparable, and already measured by ShiftOrbit. The mechanism: move the forecast inputs earlier (LTO lift curves and campaign flight dates feed the demand model automatically instead of living in other teams' calendars), because a lock without earlier inputs just moves the panic to Wednesday.</p><p><strong>Rebuild the swap marketplace where the swaps actually happen.</strong> Today swaps occur by chat message and die in a ledger that can show two active versions of the same swap ("the ghost swap"), which is why 47% of GMs keep shadow spreadsheets. The proposal adds standing swap offers — crew pre-declare exchangeable shifts within hard constraints ShiftOrbit already knows but doesn't enforce: certifications, hours caps, break rules. The GM's role collapses from phone-tree broker to exception-approver, and the 15% of crew who currently abandon swaps (61% of whom then log an unplanned absence) get an answer inside a day instead of 3.1.</p><p><strong>Give last night's reality a system field.</strong> The closing manager's paper prep-handover sheet becomes a ShiftOrbit structure read aloud at the morning roster check — the smallest change in this proposal and the one GMs ask for first.</p></div>
+  <div class="block"><h4>Expected benefit (estimates) <span class="notechip">N457</span></h4><p>Swap rework falls from <b>31% to under 15%</b> of requests as constraints are enforced pre-match rather than repaired post-hoc (estimate; the 15-min rework job mostly disappears, returning ≈25 min/store/week to GMs). Roster notice: from 59% of stores at ≥72 h to <b>90% at ≥7 days</b> by end of year one (estimate). Turnover: from <b>94% annualised toward 85%</b> over four quarters (estimate) — grounded in the exit pattern that names schedule visibility, not pay, as the leaving reason. Secondary estimates: swap volume itself drops 11 → ~8 per store per week; manager admin drops ~2 of its 9.5 weekly hours; crew eNPS moves first and furthest in the 6–18-month tenure band where the churn is manufactured.</p>
+    <table class="t">
+      <tr><th style="width:34%">Metric</th><th style="width:20%">Baseline (verbatim)</th><th style="width:22%">Target (estimate)</th><th>Source</th></tr>
+      <tr><td>Rosters published ≥7 days ahead</td><td>— (59% meet ≥72 h)</td><td>90% of stores</td><td class="ev">ShiftOrbit publish timestamps (N194)</td></tr>
+      <tr><td>Swap requests needing rework</td><td><b>31%</b> of 11/store/week</td><td>&lt;15%</td><td class="ev">ShiftOrbit swap ledger (N118, N272)</td></tr>
+      <tr><td>Crew turnover, annualised</td><td><b>94%</b> (median 78%)</td><td>85% within 4 quarters</td><td class="ev">HR leaver data (N156, N295)</td></tr>
+      <tr><td>Swap abandonment → absence conversion</td><td>15% give up; 61% of those absent</td><td>&lt;5% give up</td><td class="ev">Crew survey N289</td></tr>
+      <tr><td>GM weekly admin hours</td><td>median 9.5 h</td><td>−2 h</td><td class="ev">Manager survey N278</td></tr>
+    </table>
+  </div>
+  <div class="exp"><b>First 30-day experiment (NOT yet executed — next step)</b> <span class="notechip">N458</span><br>Pick 40 stores (stratified across the five formats, split company/franchise). Publish at T−7 for four consecutive weeks with the current tooling — no marketplace yet, pure notice. Measure against 40 matched controls: swap volume, rework rate, call-ins, eNPS pulse response and till-level error rate. Success gate: rework below 24% and call-ins down ≥15% relative to control. If notice alone doesn't move rework, the marketplace (not the decree) is the lever and Wave 2 is re-scoped before build.</div>
+  <div class="block"><h4>Dependencies &amp; risks</h4><p><b>Dependencies:</b> marketing's LTO calendar and campaign flight dates piped into demand forecasts (feeds P5 too); ShiftOrbit constraint model; P4's pulse as the feedback instrument. <b>Risks:</b> rosters published early and then rewritten are worse than late ones (re-write counter must be published alongside the timestamp); GMs may meet the lock by publishing skeleton rosters and patching by swap (guard: swap-rework metric is the co-primary); franchise participation is voluntary in year one (see N489).</p><div class="risk" style="margin-top:8px;"><b>Risk watch:</b> the ghost-swap ledger conflict (N195) must be fixed before the marketplace launches, or rework migrates from phones into the system and trust falls twice as fast.</div></div>
+</div>
+</article>
+
+<!-- ================= P2 ================= -->
+<article class="prop" id="p2">
+<div class="prop-head" style="background:var(--front)">
+  <div class="pn">P2 · INS-04, INS-05, INS-19</div>
+  <h3>Drive-Thru 180</h3>
+  <div class="mech">Kitchen-to-window sub-process redesign targeting a 180 s median. Owner: Marcus Adeyemi (VP Store Operations).</div>
+</div>
+<div class="prop-body">
+  <div class="meta-row"><span class="meta"><b>Impact</b> 4 / 5</span><span class="meta"><b>Effort</b> 4 / 5</span><span class="meta"><b>Wave</b> 3</span><span class="meta"><b>Kind</b> process + kitchen system</span></div>
+  <div class="block"><h4>Problem (evidence)</h4><p>Window time medians 246 s against a 180 s target — a 37% miss at the median, with a heavy tail (P90 411 s) and a best-decile that already beats target (P10 168 s): the gap is load- and process-shaped, not capability-shaped. The register's time-budget decomposition puts grill wait, not customer transaction, as the dominant share of the 66-second gap. And the target itself is contested honestly: 58% of drive-thru managers say 180 s is not achievable at current staffing; the validated store ran it with eleven crew, most run eight.</p><p class="ev">N111 · N215 · N306 · N378 · N280 · N282 · N243 · N073 · INS-04–05</p></div>
+  <div class="block"><h4>Proposal</h4><p><strong>Redesign the lane as a physics problem, honestly staffed.</strong> First, publish the target's assumptions: 180 s is achievable with the validated crew model or with a re-designed flow — never by pausing the beacon (9% of measured windows carry a pause; the pause button becomes an audited exception, not a tool). Second, attack the decomposition: grill wait dominates, so the pre-peak cook plan gets a launch-style curve per daypart, the KDS gains the half-cadence mode it lacks (today one grill down means tickets still arrive at full rate), and grill calibration drift gets a daily automated read.</p><p><strong>Recover the seconds the interface throws away.</strong> The confirm display's 5-second auto-dismiss becomes 10 seconds (customers need 7–9 s to verify a basket); the item repeat-back that cuts mis-hears by 44% is re-sequenced into the grill wait rather than added onto it; the second-window decision rule (open at 5+ stack) becomes explicit with a 90-second setup choreography; and the missing-item re-fire decision gets a standard — remake-in-place under 90 s of remaining wait, send-and-re-deliver beyond it — replacing the ad-hoc judgement that currently produces two very different customer outcomes.</p><p><strong>Then, and only then, staff to the honest number.</strong> Where the redesigned flow still misses 180 s at peak with eight crew, the proposal says so with data and either funds the ninth hand at the formats that can carry it or re-baselines the format's promise. Moving the target by fiat is explicitly out of scope (see §Honesty).</p></div>
+  <div class="block"><h4>Expected benefit (estimates) <span class="notechip">N459</span></h4><p>Median window time <b>246 s → 210 s</b> within two quarters of Wave 3 start, <b>→ 180 s</b> at the formats that adopt the full crew model (estimates; sequencing reflects grill-wait dominance). P90 411 s → ~330 s (estimate) — the tail carries the walk-aways and reviews. Speaker mis-hears, the drive-thru's leading accuracy leak, fall materially as repeat-back lands inside the flow (44% reduction is measured; adoption estimate 60%+). Beacon pause rate 9% → &lt;2% (estimate) once pauses are audited.</p>
+    <table class="t">
+      <tr><th style="width:34%">Metric</th><th style="width:20%">Baseline (verbatim)</th><th style="width:22%">Target (estimate)</th><th>Source</th></tr>
+      <tr><td>Drive-thru window, median</td><td><b>246 s</b> vs 180 s target</td><td>210 s → 180 s</td><td class="ev">Timing beacon (N111, N215)</td></tr>
+      <tr><td>Window P90</td><td>411 s</td><td>~330 s</td><td class="ev">POS sample (N306)</td></tr>
+      <tr><td>Beacon pause rate</td><td>9% of windows</td><td>&lt;2%</td><td class="ev">Beacon telemetry (N111)</td></tr>
+      <tr><td>Drive-thru order accuracy</td><td>89.2% (format spread)</td><td>92%+</td><td class="ev">POS reconciliation (N308)</td></tr>
+      <tr><td>Managers calling target achievable</td><td>18% confident</td><td>60%+ at redesigned stores</td><td class="ev">Manager survey Q10 (N280)</td></tr>
+    </table>
+  </div>
+  <div class="exp"><b>First 30-day experiment (NOT yet executed — next step)</b> <span class="notechip">N460</span><br>Two paired lanes per region: one runs the interface quick wins only (10-second confirm displays, repeat-back-in-flow script, pause audit on); the other adds the cook-curve change. Four weeks, beacon data plus mystery-shopper visits. Success gate: median −20 s in arm one, −35 s in arm two, pause rate &lt;3% both arms, accuracy not degraded. The experiment deliberately does not add crew — it measures flow first so the staffing conversation starts from physics, not folklore.</div>
+  <div class="block"><h4>Dependencies &amp; risks</h4><p><b>Dependencies:</b> P1 (a stable roster is the precondition — the expeditor cannot run a redesigned lane while covering a grill hand); P5's cook curves; KDS routing change (N192). <b>Risks:</b> window-time gains cannibalised by delivery SLA pressure (queue-jacking) unless P3 lands first; beacon-gaming simply migrates to earlier unmeasured stages (mitigate: measure lane-entry to exit, already instrumented); capital cost of second-window fit-outs at formats that never open it.</p><div class="risk" style="margin-top:8px;"><b>Risk watch:</b> a watched metric that can be paused will be paused — the pause audit goes live the same day as any incentive attached to window time.</div></div>
+</div>
+</article>
+
+<!-- ================= P3 ================= -->
+<article class="prop" id="p3">
+<div class="prop-head" style="background:var(--data)">
+  <div class="pn">P3 · INS-06, INS-07</div>
+  <h3>One Copperline Handover</h3>
+  <div class="mech">A single crew→courier handover standard across aggregators. Owners: Hana Kim (Head of Digital &amp; Delivery) + Marcus Adeyemi.</div>
+</div>
+<div class="prop-body">
+  <div class="meta-row"><span class="meta"><b>Impact</b> 4 / 5</span><span class="meta"><b>Effort</b> 2 / 5</span><span class="meta"><b>Wave</b> 1</span><span class="meta"><b>Kind</b> process + workspace</span></div>
+  <div class="block"><h4>Problem (evidence)</h4><p>Breakage in crew→courier handoffs runs at 0.7% of delivery orders — about one broken handover per store per week, each costing a re-make, a re-dispatch and typically a 4.3→2-star rating swing. Three aggregators impose three pickup rituals on one physical counter; courier wait-at-counter medians 6.4 minutes; the pickup verification scan runs at 93% because scans are skipped when couriers stack; and the shelf's discipline correlates perfectly with whether one named veteran owns it. Couriers are queued in customer lobbies at 88% of stores, generating complaints about "loitering men with stacks of bags" — a design failure displaced onto people.</p><p class="ev">N085 · N316 · N249 · N250 · N251 · N246 · N247 · N248 · N080 · N081 · N082 · N115 · N012 · N086 · N315 · INS-06–07</p></div>
+  <div class="block"><h4>Proposal</h4><p><strong>One ritual, one shelf, one owner.</strong> The standard: sealed bag, name-facing label, scan-at-handover, staged in customer view — identical whether the tablet says Dashly, Wheelio or Pedalr. The printed shelf kit from Flamebook replaces hand-taped initials at every site; a named shelf owner is rostered at peak (the field's own positive deviance — "the good stores have one human whose whole job at peak is the shelf" — becomes a role, not an accident). The aggregator tablet moves from the till to the shelf so the "ready" acknowledgement stops lagging the bag by 90 seconds.</p><p><strong>Negotiate the variance away.</strong> Hana Kim's team takes the unified standard to the weekly incident calls per aggregator and pushes the divergent proof-of-pickup rituals toward the common denominator; what cannot be harmonised commercially gets harmonised physically — the courier sees one counter regardless of whose app pinged. A marked courier waiting area (12% of stores have any) rolls out to the top-quartile delivery-volume sites, taking couriers out of the diner's lobby and the diner's complaint log.</p><p><strong>Make the scan trustworthy again.</strong> Scan-at-handover returns to 100% target with a shelf-side prompt and a dispute-resolution payoff: every skipped scan is exactly what makes later missing-item disputes unresolvable. The courier's 92–140-second navigation from check-in to shelf is cut by signage that assumes a first-time visitor, not district memory.</p></div>
+  <div class="block"><h4>Expected benefit (estimates) <span class="notechip">N461</span></h4><p>Breakage <b>0.7% → under 0.3%</b> of delivery orders (estimate; the 9-of-22 disciplined stores already wait 3.8 vs 8.0 minutes, so the practice gap is measured). Courier wait-at-counter <b>6.4 → ~4.0 minutes</b> median estate-wide (estimate, from the labelled-shelf cohort). Pickup scan 93% → 99%+ (estimate). "Was my bag opened?" mentions (41 in 90 days) fall below 10 as seal application moves on-stage everywhere (estimate). Refund-code calls attributable to handover failure fall correspondingly (~1/store/week → under 1 per fortnight, estimate).</p>
+    <table class="t">
+      <tr><th style="width:34%">Metric</th><th style="width:20%">Baseline (verbatim)</th><th style="width:22%">Target (estimate)</th><th>Source</th></tr>
+      <tr><td>Crew→courier breakage</td><td><b>0.7%</b> of delivery orders</td><td>&lt;0.3%</td><td class="ev">POS–Route56–aggregator reconciliation (N316)</td></tr>
+      <tr><td>Courier wait-at-counter, median</td><td><b>6.4 min</b> (P90 11.2)</td><td>~4.0 min</td><td class="ev">Observer logs (N315)</td></tr>
+      <tr><td>Pickup verification scan rate</td><td>93% observed</td><td>99%+</td><td class="ev">Field observation (N081)</td></tr>
+      <tr><td>"Ready" ack lag after shelf</td><td>90 s median</td><td>&lt;30 s</td><td class="ev">Aggregator tablet telemetry (N082)</td></tr>
+      <tr><td>Aggregator blended rating</td><td><b>4.3/5</b></td><td>4.4+ (est.)</td><td class="ev">Route56 rating exports (N313)</td></tr>
+    </table>
+  </div>
+  <div class="exp"><b>First 30-day experiment (NOT yet executed — next step)</b> <span class="notechip">N462</span><br>Twenty stores (the 9 already-disciplined plus 11 without), one week baseline, three weeks intervention: printed labels, name-facing rule, tablet at shelf, shelf owner rostered at peak. Measure breakage, courier wait, scan rate and lobby complaints. Success gate: wait ≤4.5 min and zero wrong-bag events at intervention stores. Publish the run-chart to the courier weekly incident calls — the couriers themselves are the audit.</div>
+  <div class="block"><h4>Dependencies &amp; risks</h4><p><b>Dependencies:</b> none structural — chosen deliberately as a trust-banking first move; benefits P2 (removes delivery pressure from the lane) and P9 (fewer disputes to band). <b>Risks:</b> aggregator refusal to accept a common ritual (mitigate: harmonise physically first, contractually later); shelf-owner role competing for the same thin peak roster until P1 lands (interim: the role is 90 minutes, not a shift); tablet relocation needs a power/data point some food-court sites lack.</p><div class="risk" style="margin-top:8px;"><b>Risk watch:</b> without P1, "shelf owner at peak" becomes one more thing the expeditor is also doing — the failure mode the analysis report's flywheel predicts.</div></div>
+</div>
+</article>
+
+<!-- ================= P4 ================= -->
+<article class="prop" id="p4">
+<div class="prop-head" style="background:var(--front)">
+  <div class="pn">P4 · INS-18, INS-22</div>
+  <h3>Crew Voice Loop</h3>
+  <div class="mech">A weekly 2-minute crew pulse wired to Roster Stability metrics. Owners: Sofia Reyes + Marcus Adeyemi.</div>
+</div>
+<div class="prop-body">
+  <div class="meta-row"><span class="meta"><b>Impact</b> 3 / 5</span><span class="meta"><b>Effort</b> 1 / 5</span><span class="meta"><b>Wave</b> 1</span><span class="meta"><b>Kind</b> instrument</span></div>
+  <div class="block"><h4>Problem (evidence)</h4><p>Crew eNPS is −8 while customer NPS is +31 — the engagement's defining asymmetry. The quarterly pulse reaches a 54% response rate skewed to the engaged; the disengaged median crew member (8 months tenure) does not answer the survey that would describe their exit. Crew concerns surface in exit interviews but never in a standing channel anyone answers; the strongest stated condition for feedback participation is visible response — "close the loop. Show me 'you said, we changed'."</p><p class="ev">N213 · N233 · N257 · N270 · N294 · N295 · N296–N300 · INS-18, INS-22</p></div>
+  <div class="block"><h4>Proposal</h4><p><strong>Two minutes, weekly, in the tool crew already open.</strong> The pulse lives in the ShiftOrbit crew app beside the roster: three fixed questions (notice adequacy, break reality, one free word) plus a rotating item. Fixed questions are chosen because they wire directly to P1's metrics — the loop can show crew that roster stability is moving <em>because</em> they said it mattered, which is the mechanism the quarterly survey lacks entirely.</p><p><strong>Cut by tenure band, answered in public.</strong> The 6–18-month band (where eNPS runs −11 and intent-to-stay dips) gets its own read-out, because the estate's churn is manufactured there. Each week one "you said, we changed" item posts to the same app — small, true, verifiable. The 12% of crew who admit logging checks that didn't happen and the 24% who skip breaks are telling the truth into a survey; the pulse gives that truth somewhere to land before it becomes a leaver interview.</p></div>
+  <div class="block"><h4>Expected benefit (estimates) <span class="notechip">N463</span></h4><p>Pulse response 54% (quarterly) → <b>75%+ weekly</b> (estimate) once loop-closure is visible. eNPS −8 → <b>−2 within three quarters</b> (estimate), moving first in the 6–18-month band; the pulse itself becomes the early-warning instrument for P1 (roster notice perceived adequacy leading the publish-timestamp by a week). The crew's own top-five asks — earlier schedules, peak cover, real breaks, simpler StockBeak, fairer hours — become a tracked backlog, not a survey annex.</p>
+    <table class="t">
+      <tr><th style="width:34%">Metric</th><th style="width:20%">Baseline (verbatim)</th><th style="width:22%">Target (estimate)</th><th>Source</th></tr>
+      <tr><td>Crew eNPS</td><td><b>−8</b></td><td>−2 in 3 quarters</td><td class="ev">Quarterly pulse (N213, N294)</td></tr>
+      <tr><td>eNPS, 6–18m tenure band</td><td>−11</td><td>−4</td><td class="ev">Tenure cut (N294, N295)</td></tr>
+      <tr><td>Pulse response rate</td><td>54% (quarterly)</td><td>75%+ weekly</td><td class="ev">Pulse instrument (new)</td></tr>
+      <tr><td>Breaks received in full, peak</td><td>56% always/usually</td><td>80%</td><td class="ev">Crew survey (N290, N279)</td></tr>
+    </table>
+  </div>
+  <div class="exp"><b>First 30-day experiment (NOT yet executed — next step)</b> <span class="notechip">N464</span><br>One region (Tom Whelan's Northline), four weekly pulses, three questions, one published response per week — starting with the cheapest visible fix the crew named (break-area basics appear in the top two environment codes). Success gate: 60% response by week four and zero missed "we changed" posts. If loop-closure slips one week, the instrument is dead on arrival — the experiment tests the promise, not the questionnaire.</div>
+  <div class="block"><h4>Dependencies &amp; risks</h4><p><b>Dependencies:</b> ShiftOrbit crew app notification path; P1 to give the fixed questions something true to report. <b>Risks:</b> survey fatigue (three questions is the ceiling — this is a pulse, not a census); pulse data weaponised in GM scorecards (rule: store-level pulse is never ranked, only band-level); franchise opt-out suppresses estate coverage (paired with P7's office hours to reach franchise crew).</p><div class="risk" style="margin-top:8px;"><b>Risk watch:</b> an unanswered pulse is worse than no pulse — it converts resignation into confirmed cynicism. Kill criteria apply (N488).</div></div>
+</div>
+</article>
+
+<!-- ================= P5 ================= -->
+<article class="prop" id="p5">
+<div class="prop-head" style="background:var(--back)">
+  <div class="pn">P5 · INS-10, INS-11, INS-23</div>
+  <h3>Waste-to-Order Forecasting</h3>
+  <div class="mech">StockBeak LTO-aware demand curves to cut chicken waste to 2.8%. Owners: Marcus Adeyemi + Oscar Villanueva (DC inbound, Northline) supply-side.</div>
+</div>
+<div class="prop-body">
+  <div class="meta-row"><span class="meta"><b>Impact</b> 4 / 5</span><span class="meta"><b>Effort</b> 3 / 5</span><span class="meta"><b>Wave</b> 3</span><span class="meta"><b>Kind</b> data + process</span></div>
+  <div class="block"><h4>Problem (evidence)</h4><p>Chicken waste runs at 3.8% of chicken weight against a 2.5% target, and it correlates with forecast error, not portioning error. The mechanism is documented end-to-end: auto-replenishment ignores LTO promo lift until marketing manually attaches a curve (missed for two of the last five LTOs); week-two overstock then anchors re-orders to the launch spike while demand has already decayed; the cook plan's ±12% residual maps directly onto hold-time waste in the last 20 minutes of every peak; and reason code 7 "other" absorbs 31% of waste entries, so the analytics start from partly-fictional categories. Managers trust their eyes over the curves and override routinely.</p><p class="ev">N104 · N105 · N126 · N148 · N200 · N226 · N238 · N267 · N268 · N199 · N193 · N217 · INS-10–11, INS-23</p></div>
+  <div class="block"><h4>Proposal</h4><p><strong>Model the launch, not just the baseline.</strong> LTO-aware demand curves — promo lift, day-of-launch decay, cannibalisation per item — feed both replenishment proposals and cook plans from one engine in StockBeak, replacing the manual lift-attachment step that currently is the integration between marketing and supply. The curve's forecast window aligns to the physical clock that actually binds the estate: the 12-hour brine means Wednesday's peak was decided Tuesday at 23:30.</p><p><strong>Close the loop downward.</strong> Stores have never received a StockBeak insight about their own waste; the proposal makes the curve two-way — the store's hold-expiry and run-out data re-trains its own next-week curves, and waste reason codes are rebuilt so "other" collapses from 31% toward irrelevance (estimate: under 10%). Recipe-master staleness (23 recipes, 19 quietly wrong) is fixed first, because depletion math downstream of a stale recipe is fiction with decimals.</p><p><strong>Keep the human override, but log it against outcomes.</strong> The register is explicit that managers overrule the system; the proposal's answer is not to remove the override but to score it — every override is paired with the week's actual, so the curves and the GMs converge on evidence instead of standing on dignity.</p></div>
+  <div class="block"><h4>Expected benefit (estimates) <span class="notechip">N465</span></h4><p>Chicken waste <b>3.8% → 2.8%</b> (the proposal's pilot maths; 2.5% remains the long target) — driven mostly by the last-20-minutes-of-peak hold waste, so the curve's accuracy is the binding constraint. Cook-plan residual ±12% → <b>±7%</b> (estimate). LTO week-one stockouts: two of the last five LTOs → <b>zero of the next five</b> (estimate). Reason-code "other" 31% → under 10% (estimate). At flagship volume (1,850 orders/day) a one-point waste reduction is material weekly chicken weight; estate-scale value is deliberately not claimed here beyond direction (see cost envelope, N486).</p>
+    <table class="t">
+      <tr><th style="width:34%">Metric</th><th style="width:20%">Baseline (verbatim)</th><th style="width:22%">Target (estimate)</th><th>Source</th></tr>
+      <tr><td>Chicken waste, % of weight</td><td><b>3.8%</b> (target 2.5%)</td><td>2.8% pilot → 2.5%</td><td class="ev">StockBeak waste ledger (N104, N105)</td></tr>
+      <tr><td>Cook-plan forecast residual</td><td>±12%</td><td>±7%</td><td class="ev">Pre-peak cook plan (N126, N201)</td></tr>
+      <tr><td>LTO week-one stockouts</td><td>2 of last 5 LTOs</td><td>0 of next 5</td><td class="ev">LTO calendar + stockouts (N127, N148)</td></tr>
+      <tr><td>Waste logged as reason "other"</td><td>31% of entries</td><td>&lt;10%</td><td class="ev">StockBeak reason codes (N105)</td></tr>
+      <tr><td>Theoretical-vs-counted depletion gap</td><td>1.9%</td><td>≤1.2%</td><td class="ev">StockBeak reconciliation (N113, N193)</td></tr>
+    </table>
+  </div>
+  <div class="exp"><b>First 30-day experiment (NOT yet executed — next step)</b> <span class="notechip">N466</span><br>Next LTO on the calendar, 60 stores: 30 on LTO-aware curves (lift attached automatically, decay modelled), 30 control on the manual process. Track day-one to day-fourteen: stockouts, hold-expiry waste, reason-code mix, GM override rate. Success gate: zero day-1-to-3 stockouts and waste within 0.3 points of control by day 14. A pre-experiment precondition: recipe-master refresh, or the pilot measures noise.</div>
+  <div class="block"><h4>Dependencies &amp; risks</h4><p><b>Dependencies:</b> P6 (honest waste timestamps before curve-fitting — a curve trained on estimated entries inherits the estimates); marketing calendar integration (shared with P1); master-data ownership restored (N217's vacant half-FTE). <b>Risks:</b> model vs GM trust war (mitigate: override scoring, not removal); LTO calendar set two quarters ahead limits pilot timing to the next launch window; cannibalisation modelling on only six LTOs of history is thin — confidence intervals stay honest.</p><div class="risk" style="margin-top:8px;"><b>Risk watch:</b> if P6 hasn't landed, this proposal optimises numbers that are partly fiction — sequencing is not decorative here.</div></div>
+</div>
+</article>
+
+<!-- ================= P6 ================= -->
+<article class="prop" id="p6">
+<div class="prop-head" style="background:var(--sup)">
+  <div class="pn">P6 · INS-08, INS-09</div>
+  <h3>Q-Pulse Honest Logging</h3>
+  <div class="mech">Timestamp-enforced checklists; kill "bulk-at-close". Owners: Priya Nair (sponsor) + Tom Whelan (regional enforcement), DC scope with Oscar Villanueva.</div>
+</div>
+<div class="prop-body">
+  <div class="meta-row"><span class="meta"><b>Impact</b> 3 / 5</span><span class="meta"><b>Effort</b> 1 / 5</span><span class="meta"><b>Wave</b> 1</span><span class="meta"><b>Kind</b> system setting + culture</span></div>
+  <div class="block"><h4>Problem (evidence)</h4><p>96.2% of required checks are done, but 22% are logged in bulk at close — timestamps synthetic even when readings are real; the estate's most normalised falsification. The telemetry to see it has existed for years ("a 14-hour day appearing within a 4-minute entry window"), but the audit rubric scores completion, not honesty of timing, and nobody at HQ wanted the answer enough to query it. Managers frame it honestly: "ask me to log in the moment with the crew I have? Or ask me to be green by close? Pick one." The DC tier reports the same pattern isomorphically.</p><p class="ev">N121 · N202 · N203 · N204 · N014 · N125 · N224 · N244 · N265 · N266 · N273 · N274 · N292 · INS-08–09</p></div>
+  <div class="block"><h4>Proposal</h4><p><strong>Turn on the enforcement that already exists, with a justice window.</strong> The Q-Pulse engine supports timestamp enforcement — a check cannot be entered outside its window — today, off by default. The proposal: enable it estate-wide, announce it two weeks ahead, and run a one-month amnesty in which bulk-logged history is forgiven and re-baselined. No retroactive discipline; the target is the system's honesty, not the crew's record. Wording follows the register's agreed rule: falsified timing is a system-design outcome, never individual dishonesty.</p><p><strong>Re-score what the audit scores.</strong> The closure-audit rubric gains a timing-honesty dimension (the export already preserves entry timestamps; the report card merely could not fail what the export plainly shows). Stores that cannot honestly complete checks inside their window are flagged for a labour conversation, not a compliance one — the kiosk manager who logs breaks she did not take is telling the truth about staffing, and the report card will now agree with her.</p><p><strong>Extend honesty to the sibling processes and the DC.</strong> The log-before-bin rule in waste staging and the DC's chilled-bay tablet UX are in scope: enforcement without usable logging surfaces just relocates the fiction. Mid-shift line checks — the one loop crews run honestly because it protects them — become the template: timing windows sized to the real shift, entry where the work happens.</p></div>
+  <div class="block"><h4>Expected benefit (estimates) <span class="notechip">N467</span></h4><p>Bulk-at-close <b>22% → under 5%</b> of checks within one quarter of enforcement (estimate; the 4-minute-entry-window signature becomes an audited anomaly). Audit packs stop carrying synthetic timestamps (immediate, by construction). Near-miss incident capture, currently ~30% captured, is estimated to <b>double toward 60%</b> as the amnesty establishes that logging truth is safe — the report's failure-demand analysis prices today's honesty debt at ~9 min/store/day of trust-repair work. Manager Q-Pulse time (mean 41 min/day) is expected to fall ~10% as in-the-moment entry replaces end-of-day reconstruction (estimate).</p>
+    <table class="t">
+      <tr><th style="width:34%">Metric</th><th style="width:20%">Baseline (verbatim)</th><th style="width:22%">Target (estimate)</th><th>Source</th></tr>
+      <tr><td>Checks logged in bulk at close</td><td><b>22%</b> (96.2% completion)</td><td>&lt;5%</td><td class="ev">Q-Pulse entry timestamps (N121, N203)</td></tr>
+      <tr><td>Audit packs with synthetic timing</td><td>22% carry the signature</td><td>0% (by construction)</td><td class="ev">Closure audit export (N204)</td></tr>
+      <tr><td>Near-miss incidents captured</td><td>~30% (estimated today)</td><td>~60%</td><td class="ev">Incident form usage (N134)</td></tr>
+      <tr><td>Manager Q-Pulse time</td><td>mean 41 min/day</td><td>−10%</td><td class="ev">Manager survey (N273)</td></tr>
+      <tr><td>DC-side bulk logging</td><td>"I'd bet my pension it rhymes"</td><td>measured within 60 days</td><td class="ev">DC supervisor interview (N265, N266)</td></tr>
+    </table>
+  </div>
+  <div class="exp"><b>First 30-day experiment (NOT yet executed — next step)</b> <span class="notechip">N468</span><br>One region (Northline, 14 clusters): announce, amnesty, enable enforcement; run the timing-honesty query that has existed for years and publish the un-flattering baseline in Tom Whelan's own monthly review — the region that already knows which GMs' numbers to read closely. Success gate: bulk-share visible in telemetry by week 2, under 10% by week 4, zero disciplinary actions arising from amnesty-period data. The experiment is as much a governance proof (HQ can look) as a technical one.</div>
+  <div class="block"><h4>Dependencies &amp; risks</h4><p><b>Dependencies:</b> none technical ("a one-line change"); everything cultural. Pairs with P4 (the pulse's psychological contract: truth lands safely) and enables P5. <b>Risks:</b> enforcement without the amnesty reads as a trap and drives checking-theatre to a deeper layer (written-then-entered); labour conversations must actually follow where honest windows are impossible (the kiosk-format confession is the test case); DC scope depends on supervisor buy-in already verbally pledged.</p><div class="risk" style="margin-top:8px;"><b>Risk watch:</b> "a one-line change and a culture war" — the change must be announced by Priya, not by the system, or it will be read as an audit sneak-attack and lose the crew the engagement most needs to keep.</div></div>
+</div>
+</article>
+
+<!-- ================= P7 ================= -->
+<article class="prop" id="p7">
+<div class="prop-head" style="background:var(--sup)">
+  <div class="pn">P7 · INS-12, INS-13</div>
+  <h3>Franchise Ops Bridge</h3>
+  <div class="mech">Flamebook playbook versioning + Daniel Okafor's team office hours. Owner: Daniel Okafor (Head of Franchise Relations).</div>
+</div>
+<div class="prop-body">
+  <div class="meta-row"><span class="meta"><b>Impact</b> 3 / 5</span><span class="meta"><b>Effort</b> 2 / 5</span><span class="meta"><b>Wave</b> 2</span><span class="meta"><b>Kind</b> content model + cadence</span></div>
+  <div class="block"><h4>Problem (evidence)</h4><p>Flamebook runs 214 live documents with independent version numbers and no "current state of the whole" view; safety-relevant parameters change silently (a marinade hold-time change arrived with no flag on the old version; one franchisee's kiosk store followed a superseded allergen wipe-down for five weeks — no alert, no attestation). Only 31% of franchise managers are confident they always operate from the current version. Compliance-notice acknowledgement runs 89% company vs 71% franchised. And the strongest survey request from partners is not another portal — it is scheduled access to a person.</p><p class="ev">N152 · N211 · N225 · N240 · N241 · N242 · N154 · N245 · N280 · INS-12–13</p></div>
+  <div class="block"><h4>Proposal</h4><p><strong>Change the unit of content: pages → playbooks.</strong> Flamebook's task-spans-five-documents problem is structural; the Ops Bridge assembles versioned playbooks — one shelf standard, one LTO launch, one allergen change — where a change to any component bumps the playbook version and the reader sees one number. Supersession becomes loud: a read-attestation loop on safety-relevant changes, with the attestation list visible in the next QBR (Elena Petrova's "deck 24 hours before the meeting" problem is fixed by the same mechanism — partners review from a live playbook, not a freshly-met document).</p><p><strong>Office hours, because the ask was a person.</strong> Daniel's team runs standing weekly office hours by format cluster (multi-unit partners run 12.6 stores on average; the onboarding assumes a hands-on single-store owner, so half gets skipped informally). Friday-afternoon compliance notices are banned by policy — the unacknowledged 29% cluster there, below the weekend crush, genuinely never seen.</p><p><strong>Stratify the reporting.</strong> Company and franchise cuts are separated in every ops scorecard (the franchisee asked for exactly this: "which is how 780 stores end up invisible"), so the bridge's effect is measurable in its own right.</p></div>
+  <div class="block"><h4>Expected benefit (estimates) <span class="notechip">N469</span></h4><p>Version currency confidence <b>31% → 80%</b> of franchise managers within two quarters (estimate). Compliance acknowledgement 71% → <b>85%+</b> (estimate) with the Friday ban plus attestation loop. Superseded-version dwell (today median 17 days on allergen cards) → <b>under 3 days</b> on safety-relevant items (estimate). 214 documents consolidate to an estimated <b>40–50 playbooks</b> (estimate). Silent-supersession incidents of the five-week-allergen class: target zero per quarter (estimate).</p>
+    <table class="t">
+      <tr><th style="width:34%">Metric</th><th style="width:20%">Baseline (verbatim)</th><th style="width:22%">Target (estimate)</th><th>Source</th></tr>
+      <tr><td>Franchise managers on current version</td><td>31% confident</td><td>80%</td><td class="ev">Franchise survey Q12 (N280)</td></tr>
+      <tr><td>Compliance notice acknowledgement</td><td>71% franchised (89% company)</td><td>85%+</td><td class="ev">Flamebook ack telemetry (N154)</td></tr>
+      <tr><td>Superseded allergen-card dwell</td><td>median 17 days</td><td>&lt;3 days</td><td class="ev">Matrix version control (N016)</td></tr>
+      <tr><td>Live documents / playbooks</td><td>214 documents</td><td>40–50 playbooks</td><td class="ev">Flamebook audit (N152, N211)</td></tr>
+    </table>
+  </div>
+  <div class="exp"><b>First 30-day experiment (NOT yet executed — next step)</b> <span class="notechip">N470</span><br>Build one playbook — the LTO launch, the field's most painful cross-document task — and run the next launch through it with 12 volunteer partners (Elena Petrova's six stores first: she has collected four "final" versions of one card and will say exactly whether the fix is real). Success gate: zero version-confusion escalations at the 12 partners during launch week, and kit-arrival lateness (median 11% of stores) separately tracked. One playbook is deliberately enough: the content model gets proven before the migration is funded.</div>
+  <div class="block"><h4>Dependencies &amp; risks</h4><p><b>Dependencies:</b> none external; P1's calendar integration makes LTO playbooks honest about timing. <b>Risks:</b> content migration stalls at 60% and creates a third version-truth (mitigate: playbooks supersede documents at component level, not by big-bang); office hours under-attended until they demonstrably fix something (seed with the LTO experiment); renewal-year partners (9 of 62) may treat attestation as negotiation leverage.</p><div class="risk" style="margin-top:8px;"><b>Risk watch:</b> this proposal is cheap because it is content-model work, not platform work — resist the temptation to buy a platform; the register is explicit that partners asked for a person, not a portal.</div></div>
+</div>
+</article>
+
+<!-- ================= P8 ================= -->
+<article class="prop" id="p8">
+<div class="prop-head" style="background:var(--data)">
+  <div class="pn">P8 · INS-14, INS-15</div>
+  <h3>Kiosk Accessibility Pass</h3>
+  <div class="mech">Travel-hub + food-court kiosk WCAG 2.2 AA remediation (467 kiosks). Owner: Hana Kim (Head of Digital &amp; Delivery).</div>
+</div>
+<div class="prop-body">
+  <div class="meta-row"><span class="meta"><b>Impact</b> 2 / 5 (direct) · high per affected user</span><span class="meta"><b>Effort</b> 2 / 5</span><span class="meta"><b>Wave</b> 2</span><span class="meta"><b>Kind</b> hardware + software</span></div>
+  <div class="block"><h4>Problem (evidence)</h4><p>467 kiosks (78 travel-hub + 389 food-court) fail WCAG 2.2 AA basics: reach-height card readers, contrast on sun-struck outdoor units, 90-second timeout resets, no audio path. In the travel-hub sample, 7 of 12 shopper reports noted at least one barrier; a wheelchair user completed an order only with a standing companion's help — recorded by the system as a normal 96-second session, i.e. the failure is invisible to every metric. Kiosk abandonment clusters at payment in food courts, where a restart is socially expensive; luggage pushes travel-hub sessions from 96 s to 141 s and nobody has redesigned the flow for a suitcase.</p><p class="ev">N190 · N312 · N025 · N031 · INS-14–15</p></div>
+  <div class="block"><h4>Proposal</h4><p><strong>Remediate in three passes: software now, hardware next, flow last.</strong> Pass one is configuration and firmware: timeout extension and timeout-warning, contrast themes for outdoor units, screen-reader path on the audio jack. Pass two is the hardware cycle: reachable card readers and operable-height controls as units are refurbished (the estate already refurbishes on a cycle; the pass rides it rather than accelerating capex). Pass three is flow: a luggage-aware travel-hub sequence (fewer confirmations, one-hand operable) and a restart-resume that makes an abandoned food-court session recoverable without shame.</p><p><strong>Instrument the invisibility.</strong> Every remediated kiosk logs assisted-session and restart telemetry the current estate cannot see — the wheelchair user's 96-second "normal" session is the design brief for what to measure. Success is defined per affected user, not only at estate average: the proposal's impact score is low on breadth and deliberately high on depth.</p></div>
+  <div class="block"><h4>Expected benefit (estimates) <span class="notechip">N471</span></h4><p>All 467 kiosks at <b>WCAG 2.2 AA</b> within two hardware cycles (estimate: software pass in weeks, hardware pass ~12 months). Travel-hub sessions with luggage <b>141 s → ~110 s</b> (estimate). Food-court payment-step abandonment (currently clustering, unmeasured) becomes measured and is estimated to <b>halve</b> with restart-resume. Barrier observations in mystery-shopper kiosk reports (7 of 12) → <b>0–1 of 12</b> (estimate). Legal-exposure reduction is noted qualitatively, not claimed numerically.</p>
+    <table class="t">
+      <tr><th style="width:34%">Metric</th><th style="width:20%">Baseline (verbatim)</th><th style="width:22%">Target (estimate)</th><th>Source</th></tr>
+      <tr><td>Kiosks at WCAG 2.2 AA</td><td>0 of 467</td><td>467 within 2 cycles</td><td class="ev">Accessibility lens audit (N190, N312)</td></tr>
+      <tr><td>Travel-hub session, with luggage</td><td>141 s median</td><td>~110 s</td><td class="ev">Field timing (N025)</td></tr>
+      <tr><td>Kiosk reports with ≥1 barrier</td><td>7 of 12</td><td>0–1 of 12</td><td class="ev">Mystery-shopper side-observations (N312)</td></tr>
+      <tr><td>Payment-step restarts (food-court)</td><td>clustered, unmeasured</td><td>measured; −50%</td><td class="ev">Kiosk telemetry (new, N190 adjacency)</td></tr>
+    </table>
+  </div>
+  <div class="exp"><b>First 30-day experiment (NOT yet executed — next step)</b> <span class="notechip">N472</span><br>Five travel-hub kiosks, software pass only (timeout + contrast + audio path), one fortnight. Recruit (synthetically, per protocol) six disabled users across mobility, visual and dexterity ranges — the wheelchair user's scenario is the acceptance test. Success gate: independent completion at ≥5 of 6 scenarios, zero sessions lost to timeout, and the assisted-session telemetry showing a non-zero count for the first time (that number existing at all is the point).</div>
+  <div class="block"><h4>Dependencies &amp; risks</h4><p><b>Dependencies:</b> CopperPOS v7 kiosk firmware slot (the oldest ticket in digital's backlog is 14 months old — this proposal names it to Hana's sprint, not behind it); refurbishment cycle schedule. <b>Risks:</b> hardware pass slips with vendor cycles (software pass delivers the user-visible half first, deliberately); WCAG conformance claimed on paper while real sessions stay excluded — hence per-user acceptance tests, not conformance checklists alone.</p><div class="risk" style="margin-top:8px;"><b>Risk watch:</b> the estate currently records exclusion as normal performance (96 s, no assist flag). Until the telemetry exists, every conformance claim is unauditable — instrument first.</div></div>
+</div>
+</article>
+
+<!-- ================= P9 ================= -->
+<article class="prop" id="p9">
+<div class="prop-head" style="background:var(--cust)">
+  <div class="pn">P9 · INS-16, INS-17, INS-21</div>
+  <h3>Recovery Ladder</h3>
+  <div class="mech">Standardised service-recovery bands at POS, courier and call-centre. Owners: Hana Kim + Raj Patel (call-centre team lead), Marcus Adeyemi store-side.</div>
+</div>
+<div class="prop-body">
+  <div class="meta-row"><span class="meta"><b>Impact</b> 3 / 5</span><span class="meta"><b>Effort</b> 2 / 5</span><span class="meta"><b>Wave</b> 2</span><span class="meta"><b>Kind</b> policy + tooling</span></div>
+  <div class="block"><h4>Problem (evidence)</h4><p>Service recovery is three different ladders: POS crews refund ad hoc within a real-but-capped authority; couriers follow each aggregator's policy; call-centre agents apply their own bands up to £6 with £11 held by a supervisor — and identical failures recover at Band-C rates of 24% / 9% / 17% by platform. The customer experiences the seams directly: "nineteen hours and one human for a small side. The refund was fine. The pilgrimage was the insult." Agents under-recover to protect QA scores; 4% of cases (Band X, ~128 customers in two weeks) fall through the policy map entirely; escalations run 12% of which 7 points are authority-band edges — policy artefacts, not severity.</p><p class="ev">N019 · N075 · N098 · N169 · N256 · N258 · N260 · N261 · N262 · N263 · N317–N320 · N049 · N052 · INS-16–17, INS-21</p></div>
+  <div class="block"><h4>Proposal</h4><p><strong>One ladder, four rungs, every door.</strong> The £2 / £6 / £11 bands already exist in the tills and roughly in the contact centre; the proposal unifies them across POS, courier-dispatch and call-centre, adds the fourth rung explicitly (today's Band X becomes a named "recovery desk" outcome with a 24-hour clock), and gives every rung a no-questions script. Full £11 authority moves to front-line agents with post-hoc sampling instead of pre-approval — the QA rule that punishes free-text justification is redesigned so that under-recovery is scored as a defect alongside over-recovery.</p><p><strong>Make the customer's path one path.</strong> Today the app help flow is circular for 61% of callers and the store phone rings out at peak; the ladder gets a single entry point that routes to whichever tier can close it fastest, with the aggregator portal re-keying (median 96 s of handle time on 69% of refund calls) automated behind Route56 rather than performed by agents. The recovery voucher's physical failure mode is fixed in the same stroke: printable/digital vouchers that reconcile in the POS recovery code, ending the 31% improvisation rate.</p><p><strong>Wire recovery to learning.</strong> Every banded recovery posts its root cause to the store's VoiceBoard view the same day — recovery data currently flows to refund codes, not to the Tuesday huddle; "my calls are VoiceBoard with a pulse" is the integration the operators themselves asked for.</p></div>
+  <div class="block"><h4>Expected benefit (estimates) <span class="notechip">N473</span></h4><p>Band X <b>4% → under 1%</b> of contacts (estimate). AHT <b>4m51s → ~4m05s</b> (estimate) as portal re-keying automates; structural escalation 12% → <b>~5%</b> (estimate) as authority edges disappear; first-contact resolution 61% → <b>~75%</b> (estimate). Platform Band-C divergence (24/9/17) converges to a single policy band within tolerance (estimate). Recovery-to-repeat economics improve as on-the-spot execution (already proven to convert complainers at a rate the call path never matches) becomes the default path: redeemers already out-repeat baseline 61% vs 47% — the estimate is that unified bands raise the share of recoveries executed within 2 minutes from today's minority to a majority.</p>
+    <table class="t">
+      <tr><th style="width:34%">Metric</th><th style="width:20%">Baseline (verbatim)</th><th style="width:22%">Target (estimate)</th><th>Source</th></tr>
+      <tr><td>Band X (policy-map fall-through)</td><td>4% of contacts (~128/2 wks)</td><td>&lt;1%</td><td class="ev">Contact-centre bands (N320)</td></tr>
+      <tr><td>Call AHT</td><td>4m51s (target 4m30s)</td><td>~4m05s</td><td class="ev">Contact-centre ops (N319)</td></tr>
+      <tr><td>Escalation rate (structural share)</td><td>12% (7 pts structural)</td><td>~5%</td><td class="ev">Wrap-note coding (N319, N260)</td></tr>
+      <tr><td>First-contact resolution</td><td>61%</td><td>~75%</td><td class="ev">Contact-centre ops (N319)</td></tr>
+      <tr><td>Voucher improvisation</td><td>31% of managers</td><td>&lt;5%</td><td class="ev">Manager survey + POS codes (N019)</td></tr>
+      <tr><td>Recovery-band consistency by platform</td><td>Band-C: 24% / 9% / 17%</td><td>single band ±5 pts</td><td class="ev">Band application telemetry (N320)</td></tr>
+    </table>
+  </div>
+  <div class="exp"><b>First 30-day experiment (NOT yet executed — next step)</b> <span class="notechip">N474</span><br>Two-week pilot in Raj Patel's team: full £11 authority with post-hoc sampling, recovery desk for Band X, root-cause post to VoiceBoard on every banded case. Success gate: Band X &lt;1.5%, AHT below 4m30s, agent QA scores not degraded (the under-recovery reflex is the thing being unlearned — measure it). Store-side POS authority runs unchanged in the pilot; the unification contract conversation with aggregators starts in parallel but is not on the experiment's critical path.</div>
+  <div class="block"><h4>Dependencies &amp; risks</h4><p><b>Dependencies:</b> Route56 refund automation (technical, Hana's team); P3 reduces the inflow (broken handovers are a top refund source); P4's trust contract helps crew use authority without fear. <b>Risks:</b> aggregator contracts resist unified bands (the 25-minute SLA negotiation is adjacent); giving £11 authority before QA redesign produces a burst of over-recovery (the sampling regime goes live first); voucher digitalisation touches POS recovery codes (change-managed with finance, not snuck in).</p><div class="risk" style="margin-top:8px;"><b>Risk watch:</b> the ladder already works when executed (58% redemption, 61% repeat) — this proposal's failure mode is complexity, not mechanism. If the unified script exceeds one page, it will not be read at the till.</div></div>
+</div>
+</article>
+
+<!-- ================= P10 ================= -->
+<article class="prop" id="p10">
+<div class="prop-head" style="background:var(--ev)">
+  <div class="pn">P10 · INS-24 · closes the loop the canon opened</div>
+  <h3>Blueprint-as-Living-Document</h3>
+  <div class="mech">Quarterly re-baseline of the Copperline 2000 blueprint via the same agent pipeline. Owner: Priya Nair, run by the Orchestrator role.</div>
+</div>
+<div class="prop-body">
+  <div class="meta-row"><span class="meta"><b>Impact</b> 2 / 5 direct · multiplies all others</span><span class="meta"><b>Effort</b> 1 / 5</span><span class="meta"><b>Wave</b> 3 (design in Wave 1)</span><span class="meta"><b>Kind</b> governance instrument</span></div>
+  <div class="block"><h4>Problem (evidence)</h4><p>Past improvement programmes decayed within a quarter of the final report; nobody owns the metric after handover day. The blueprint's 220 notes encode a snapshot that begins aging the moment it is published — silently, unless re-baselined visibly. The engagement's own honesty is the pattern: the data to expose the 22% bulk-at-close existed for years; nobody wanted the answer enough to query it.</p><p class="ev">N220 · N176 · N246 · INS-24 · insight-register N375, N385</p></div>
+  <div class="block"><h4>Proposal</h4><p><strong>Re-run the pipeline quarterly, smaller.</strong> The same agent scaffold (research → synthesis → mapping → measurement) at reduced depth: a stratified refresh of the metrics that moved, a targeted re-read of the lanes touched by the wave in flight, and a diff — every note that changed, aged or died is marked, so the 220 notes age visibly instead of silently. Each re-baseline costs a fraction of the original because the artifact set is now the template.</p><p><strong>Name the sentinel indicators.</strong> The first question of every re-baseline is inherited from the blueprint's own final note: did the Excel shadow rosters grow or shrink? That single indicator says more about P1 than any dashboard. Sentinels pair one leading human signal (shadow spreadsheets, WhatsApp channels, shout-fallback frequency) with one system metric per proposal, so the living document tracks the social layer dashboards cannot see.</p><p><strong>Give it a home and a chair.</strong> The re-baseline lands in Tom Whelan's monthly regional review structure and Priya's quarterly ops review, chaired rotationally by the wave owners — the decay mechanism (nobody owns the metric after handover day) is answered by never having a handover day.</p></div>
+  <div class="block"><h4>Expected benefit (estimates) <span class="notechip">N475</span></h4><p>Programme decay (historically within a quarter, INS-24) extended past <b>four quarters</b> for wave-owned metrics (estimate — this proposal is the direct counter-measure to the register's only decay insight). Note-currency: 100% of the 220 blueprint notes carry a freshness stamp each quarter (by construction). Sentinel coverage: one leading human signal + one system indicator per proposal, ten of ten. The re-baseline also becomes the natural experiment harness — Wave 1/2/3 effects get measured against re-baselined, not stale, baselines.</p>
+    <table class="t">
+      <tr><th style="width:34%">Metric</th><th style="width:20%">Baseline (verbatim)</th><th style="width:22%">Target (estimate)</th><th>Source</th></tr>
+      <tr><td>Metric ownership after handover</td><td>decays within a quarter</td><td>&gt;4 quarters</td><td class="ev">INS-24 · register (N385)</td></tr>
+      <tr><td>Blueprint notes with freshness stamp</td><td>0% (static document)</td><td>100% quarterly</td><td class="ev">Re-baseline pipeline (N220)</td></tr>
+      <tr><td>Sentinel indicator coverage</td><td>—</td><td>10 of 10 proposals</td><td class="ev">Sentinel set (new)</td></tr>
+    </table>
+  </div>
+  <div class="exp"><b>First 30-day experiment (NOT yet executed — next step)</b> <span class="notechip">N476</span><br>Design sprint, not a re-baseline: convert this engagement's pipeline log (buzz-transcript.html) into a repeatable quarterly runbook — sample sizes, agent roles, diff format — and dry-run the diff on ten sentinel notes using existing telemetry (no new fieldwork). Success gate: a runbook another team can execute, and a ten-note diff whose production cost is under a week of agent time. The first true re-baseline lands at the end of Wave 1.</div>
+  <div class="block"><h4>Dependencies &amp; risks</h4><p><b>Dependencies:</b> P6 (honest telemetry makes re-baselines trustworthy — a living document on falsified timing is a machine for laundering fiction); wave owners' participation. <b>Risks:</b> re-baseline theatre (the diff shrinks to metrics that flatter — mitigated by sentinel indicators chosen before results exist); agent-pipeline cost creep; quarter cadence too slow for Wave-1 learning (Wave 1 pairs with P4's weekly pulse as its fast instrument).</p><div class="risk" style="margin-top:8px;"><b>Risk watch:</b> the living document must be able to embarrass its sponsors; if the diff cannot show a metric getting worse, it is a brochure.</div></div>
+</div>
+</article>
+
+<!-- ================= SEQUENCING ================= -->
+<section class="sec" id="sequencing">
+  <div class="sec-kicker">Sequencing</div>
+  <h2>Three waves, one dependency spine</h2>
+  <p class="lede">Sequenced to bank trust before structural change, and to run structural change before capital-intensive physics. P1's experiment starts in Wave 1 but its rollout is Wave 2 — notice-first, marketplace-second. <span class="notechip">N479</span> <span class="notechip">N480</span> <span class="notechip">N481</span></p>
+  <div class="secbody">
+    <div class="wave">
+      <h3>Wave 1 · Weeks 0–6 · "Truth and trust"</h3>
+      <div class="wt">P6 (honest logging) · P3 (one handover) · P4 (crew pulse) · P1's 30-day notice experiment · quick wins: confirm displays, shelf labels, voucher stock</div>
+      <p>Deliberately low-capital, high-visibility: enforcement that already exists, a handover standard the couriers will audit for free, a pulse that answers, and the roster-notice experiment that tells Wave 2 whether the decree or the marketplace is the lever. Exit criteria: bulk-at-close &lt;10% in pilot region; breakage &lt;0.5% in 20 pilot stores; pulse response ≥60%; P1 experiment read-out delivered. <span class="notechip">N485</span></p>
+    </div>
+    <div class="wave">
+      <h3>Wave 2 · Months 2–6 · "Structure"</h3>
+      <div class="wt">P1 (roster stability rollout) · P9 (recovery ladder) · P7 (ops bridge) · P8 (kiosk pass)</div>
+      <p>The change-heavy quarter: ShiftOrbit marketplace build, unified bands, playbook migration, kiosk firmware. All four ride Wave 1's trust: crew who have seen the amnesty and the pulse answer are the population being asked to change habit. Exit criteria: 50% of stores at T−7; Band X &lt;1.5%; one playbook live through a real LTO; five kiosks through disabled-user acceptance. <span class="notechip">N487</span> <span class="notechip">N489</span></p>
+    </div>
+    <div class="wave">
+      <h3>Wave 3 · Months 6–18 · "Physics and feedback"</h3>
+      <div class="wt">P2 (drive-thru 180) · P5 (waste forecasting) · P10 (living document)</div>
+      <p>The capital- and model-heavy work, sequenced last because each depends on Wave 2's stability: the redesigned lane needs a stable expeditor, the curves need honest waste timestamps and a refreshed recipe master, and the living document needs a first full cycle to re-baseline. Exit criteria: pilot lanes at 210 s median; waste 2.8% on LTO pilot; first re-baseline diff published. <span class="notechip">N482</span> <span class="notechip">N486</span></p>
+    </div>
+    <div class="callout"><span class="notechip">N488</span> <b>Kill criteria (all waves).</b> Every experiment carries a stop rule: P1 — rework not below 24% in the notice experiment re-scopes the program before build; P4 — one missed loop-closure week kills the instrument; P6 — if honest windows prove impossible at a format without labour action, the finding escalates to Priya rather than being absorbed; P2 — pause rate not below 3% voids any incentive linkage; P5 — pilot waste within 0.3 points of control or the curves answer to the GMs' actuals, not vice versa.</div>
+  </div>
+</section>
+
+<!-- ================= HONESTY ================= -->
+<section class="sec" id="honesty">
+  <div class="sec-kicker">Honesty</div>
+  <h2>What we deliberately did NOT propose</h2>
+  <p class="lede">The register's minority-flag rule applies to us: these exclusions are kept and stated, not smoothed away. <span class="notechip">N483</span></p>
+  <div class="secbody">
+    <ol class="notlist">
+      <li><b>A CopperPOS v8 rebuild.</b> Every blueprint seam is a v7 seam and the v8 roadmap is unfunded — but a platform rebuild while the roster flywheel spins would burn the change capacity Waves 1–2 need. Not proposed; named as debt.</li>
+      <li><b>Renegotiating aggregator commercial terms or dropping a platform.</b> The 25-minute SLA drives queue-jacking and the rating regimes collide — a commercial negotiation, not a service-design artifact. We propose the physical harmonisation (P3, P9) and leave the contracts to Hana Kim's baton.</li>
+      <li><b>Reducing the LTO cadence.</b> Six LTOs a year is the marketing engine; the field's "five-day ramps are too short" feedback has been ignored in three retros and that is a governance finding, not ours to overrule. P5 makes the cadence survivable instead.</li>
+      <li><b>Pay rises as the retention lever.</b> The evidence says schedule visibility outbids pay in exit comparisons — and compensation is a board decision we have no synthetic mandate to model. P1 attacks what the evidence supports.</li>
+      <li><b>A blanket crew-headcount increase.</b> Food-court and drive-thru ratios are genuinely tight, but blanket hiring feeds the flywheel it means to fix. Targeted peak staffing is tested inside P1/P2 experiments with data, not asserted here.</li>
+      <li><b>A loyalty-program rebuild.</b> The fraud-freeze loop is real and cruel, but it sits behind a 14-month-old backlog ticket in digital's roadmap; we surface it (P9's single-path routing relieves the symptom) rather than propose a program we cannot evidence.</li>
+      <li><b>New-format strategy or estate redesign.</b> Growth capital favouring drive-thru express — the tightest physics — is flagged as a finding (analysis §09); it is an investment decision above this engagement's remit.</li>
+      <li><b>Moving the 180 s target instead of meeting it.</b> The target may genuinely be infeasible at some formats' staffing — but the answer is to publish the assumptions and re-baseline honestly (P2), never to quietly stretch the number a beacon pause at a time.</li>
+    </ol>
+    <div class="callout warn"><span class="notechip">N484</span> <b>And the boundary we keep restating:</b> this engagement stopped at delivery of reports and proposals. Prototyping was not executed. No benefit figure in this document is a measured outcome; every "first 30-day experiment" is a designed next step awaiting a sponsor's go. The estimates above are hypotheses structured to be tested cheaply and killed quickly.</div>
+  </div>
+</section>
+
+<!-- ================= NOTES ================= -->
+<section class="sec notes-panel" id="notes">
+  <div class="sec-kicker">Notes panel</div>
+  <h2>N456–N490 — this artifact's own annotations</h2>
+  <p class="lede">Continuous with the artifact set: N001–N220 (blueprint), N221–N320 (research), N366–N385 (insight register), N421–N455 (analysis report), N491–N500 (deck). Never renumbered; sibling IDs are cited, not restated.</p>
+  <div class="secbody">
+    <div class="note"><span class="nid">N456</span><span>Derivation method — each proposal is bound to insight-register rows per the register's own mapping rule (N372), quantified only against canon metrics or ledger-stated figures, and placed on the analysis report's impact × effort matrix. Canon fixed the ten titles (canon §8); this artifact supplies the problem statements, mechanisms, KPI hypotheses, experiments, risks and sequencing.</span></div>
+    <div class="note"><span class="nid">N457</span><span>P1 benefit basis — swap rework 31%→&lt;15% assumes constraint enforcement pre-match (the ledger's rework causes are skills mismatch, break rules, ledger conflicts — all machine-checkable); turnover 94%→85% assumes the exit-driver evidence (schedule visibility, N239, N295) translates at the tenure-band where churn is manufactured; both are estimates with four-quarter horizons.</span></div>
+    <div class="note"><span class="nid">N458</span><span>P1 experiment design — 40 stores × 4 weeks, notice-only, matched controls; co-primary outcomes (rework + call-ins) chosen to catch the skeleton-roster-and-patch failure mode. Decision rule: decree vs marketplace is decided by this experiment, not opinion.</span></div>
+    <div class="note"><span class="nid">N459</span><span>P2 benefit basis — 246→210 s in two quarters then 180 s at full-crew formats follows the decomposition (grill wait dominant, N378) and the P10-fastest decile already beating target (P10 168 s, N306); pause-rate target follows from auditing being cheaper than compliance.</span></div>
+    <div class="note"><span class="nid">N460</span><span>P2 experiment design — two arms (interface-only vs interface+cook-curve), no added crew, so the staffing conversation starts from measured physics; pause audit live from day one because a watched, pauseable metric will be paused.</span></div>
+    <div class="note"><span class="nid">N461</span><span>P3 benefit basis — 0.7%→&lt;0.3% and 6.4→4.0 min are anchored to the already-measured disciplined-store cohort (3.8 vs 8.0 min, 9 of 22); scan-rate and ack-lag targets are configuration arithmetic; rating uplift (4.3→4.4+) is the softest number here and marked accordingly.</span></div>
+    <div class="note"><span class="nid">N462</span><span>P3 experiment design — 20 stores, 1 week baseline + 3 weeks intervention; couriers as auditors via the existing weekly incident calls; success gate includes zero wrong-bag events, the breakage subtype the reconciliation can attribute precisely.</span></div>
+    <div class="note"><span class="nid">N463</span><span>P4 benefit basis — eNPS −8→−2 assumes visible loop-closure converts the two-thirds passive middle (the dominant pattern, N294); the tenure-band lead-lag hypothesis is testable weekly, which is the pulse's whole advantage over the quarterly census it supplements, not replaces.</span></div>
+    <div class="note"><span class="nid">N464</span><span>P4 experiment design — Northline region, 4 weeks, 3 fixed questions, 1 published response per week; the tested mechanism is the promise ("you said, we changed"), not questionnaire quality — one missed week is a kill, per N488.</span></div>
+    <div class="note"><span class="nid">N465</span><span>P5 benefit basis — 3.8→2.8% is the pilot maths already named in the ledger (N201); residual ±12→±7% and "other" 31→&lt;10% assume recipe-master refresh and code redesign land first; estate-scale money is deliberately not claimed (direction only) because volume-pricing is outside the synthetic evidence base.</span></div>
+    <div class="note"><span class="nid">N466</span><span>P5 experiment design — next LTO as a natural experiment, 60 stores, 30/30 control; day-1-to-14 window chosen because LTO failure modes concentrate there; precondition (recipe master) is a gate, not an assumption.</span></div>
+    <div class="note"><span class="nid">N467</span><span>P6 benefit basis — 22→&lt;5% within a quarter assumes the feature works as built (it exists, off by default) and amnesty holds; near-miss doubling assumes the trust dividend observed in the one honestly-run loop (mid-shift line checks) generalises; both are estimates explicitly contingent on the amnesty being honoured.</span></div>
+    <div class="note"><span class="nid">N468</span><span>P6 experiment design — Northline, announce-amnesty-enable, plus publishing the unflattering telemetry in the region's own review; the governance proof (HQ can look at its own data) is treated as co-primary with the bulk-share reduction.</span></div>
+    <div class="note"><span class="nid">N469</span><span>P7 benefit basis — 31→80% version confidence and 71→85% acknowledgement assume attestation visibility plus the Friday ban (the unacknowledged 29% cluster there causally); superseded-dwell &lt;3 days follows from loud supersession on safety items specifically.</span></div>
+    <div class="note"><span class="nid">N470</span><span>P7 experiment design — one playbook (LTO launch), 12 volunteer partners, Elena Petrova first because she holds the field's complete collection of version-confusion evidence; kit-arrival lateness tracked separately to keep marketing's seam visible.</span></div>
+    <div class="note"><span class="nid">N471</span><span>P8 benefit basis — breadth is honestly low (travel-hub + food-court kiosk users) while depth per affected user is high; session-time and restart targets are configuration-level; "measured" appears as a target where the baseline is literally unmeasured (abandonment clustering) because instrumenting invisibility is half the remediation.</span></div>
+    <div class="note"><span class="nid">N472</span><span>P8 experiment design — 5 kiosks, software-only pass, 6 disabled-user acceptance scenarios; the wheelchair user's recorded-as-normal session is the acceptance test; assisted-session telemetry existing at non-zero is itself a success gate.</span></div>
+    <div class="note"><span class="nid">N473</span><span>P9 benefit basis — AHT and escalation targets follow mechanically from automating the 96-s portal re-keying (69% of refund calls) and removing authority-band edges (7 of 12 escalation points); Band X &lt;1% assumes the named fourth rung with a 24-hour clock; FCR 75% is the softest number.</span></div>
+    <div class="note"><span class="nid">N474</span><span>P9 experiment design — contact-centre-only pilot (store authority unchanged) so the agent-side unlearning (under-recovery reflex) is measured cleanly; QA-not-degraded is a gate because the reflex is what the redesign must survive.</span></div>
+    <div class="note"><span class="nid">N475</span><span>P10 benefit basis — decay-past-four-quarters is the direct counter-measure to INS-24 (decay within a quarter); note-currency 100% is by construction; the benefit that matters is unmeasurable in advance — a re-baseline that can embarrass its sponsors.</span></div>
+    <div class="note"><span class="nid">N476</span><span>P10 experiment design — a runbook sprint, not fieldwork: pipeline log → quarterly runbook + ten-note dry-run diff from existing telemetry; cost gate (under a week of agent time) is the scalability test.</span></div>
+    <div class="note"><span class="nid">N477</span><span>Rating model restated — impact = breadth × depth of harm removed; effort = technology + process + change load; identical to the analysis report's matrix so the two documents cannot drift apart on scores.</span></div>
+    <div class="note"><span class="nid">N478</span><span>Dependency spine — P1 upstream of P2/P4/P5; P6 upstream of P5 (and of P10's trustworthiness); P3/P9 independent and front-loaded for trust; no proposal depends on an unfunded platform decision (see honesty list).</span></div>
+    <div class="note"><span class="nid">N479</span><span>Wave 1 rationale — truth and trust first: enforcement that exists (P6), a standard couriers audit for free (P3), an answered pulse (P4), and P1's notice experiment; exit criteria are stated so Wave 2 is earned, not scheduled.</span></div>
+    <div class="note"><span class="nid">N480</span><span>Wave 2 rationale — structure while trust is fresh: marketplace build, band unification, playbook migration, firmware pass; all four are habit-change programs and ride Wave 1's demonstrated good faith.</span></div>
+    <div class="note"><span class="nid">N481</span><span>Wave 3 rationale — physics and feedback last: the lane redesign needs a stable expeditor, the curves need honest timestamps and refreshed masters, the living document needs one full cycle to re-baseline against.</span></div>
+    <div class="note"><span class="nid">N482</span><span>Measurement plan — every KPI table carries baseline (verbatim source), target (estimate), and instrument; quarterly re-baselines (P10) replace stale baselines; wave exit criteria are the governance cadence; no target is re-quoted without its estimate marker, per the analysis report's estimate-discipline rule (N449 there).</span></div>
+    <div class="note"><span class="nid">N483</span><span>Did-not-propose list — kept per the register's minority-flag rule (N370 there): v8 rebuild, aggregator terms, LTO cadence, pay, blanket headcount, loyalty rebuild, format strategy, and target-stretching; each exclusion is evidence-linked in the section body, not dropped silently.</span></div>
+    <div class="note"><span class="nid">N484</span><span>Prototyping boundary — restated at method and honesty sections and inherited from the canon: the engagement stopped at delivery of reports and proposals; every experiment above is a designed next step, and no benefit figure is a measured outcome.</span></div>
+    <div class="note"><span class="nid">N485</span><span>Synergy map — P1 is the spine (feeds P2 staffing stability, P4's answered questions, P5's calendar integration); P6 feeds P5 and P10; P3 feeds P9 (dispute inflow) and P2 (lane pressure); quick wins (confirm displays, shelf labels, voucher stock) are named pre-work, not separate proposals, so they carry no governance overhead.</span></div>
+    <div class="note"><span class="nid">N486</span><span>Cost envelope (qualitative, estimates) — Wave 1 is configuration-cost only; Wave 2 is dominated by change effort and kiosk hardware riding existing refurbishment cycles; Wave 3 carries the lane-fit-out and modelling costs. No synthetic currency figures are attached because the evidence base prices none; any business case built on this document must price Wave 3 before, not after, Wave 1 trust is spent.</span></div>
+    <div class="note"><span class="nid">N487</span><span>Governance and owners — P1 Sofia Reyes; P2 Marcus Adeyemi; P3 Hana Kim + Marcus Adeyemi; P4 Sofia Reyes + Marcus Adeyemi; P5 Marcus Adeyemi + Oscar Villanueva (supply side); P6 Priya Nair sponsor + Tom Whelan (regional enforcement); P7 Daniel Okafor; P8 Hana Kim; P9 Hana Kim + Raj Patel; P10 Priya Nair. Wave reviews sit in Tom Whelan's monthly structure and Priya's quarterly ops review.</span></div>
+    <div class="note"><span class="nid">N488</span><span>Kill criteria — stated per wave in the sequencing section; principle: every experiment must be killable within its own window, and a killed experiment is a finding logged to the insight register, not a failure hidden from the next re-baseline.</span></div>
+    <div class="note"><span class="nid">N489</span><span>Franchise participation — year-one participation is voluntary for the 780 franchised stores (62 partners); the Ops Bridge (P7) is the recruitment channel, stratified reporting (P7, per N246 there) is the honesty mechanism, and franchise results are reported separately everywhere per the analysis report's segmentation rule (N446 there).</span></div>
+    <div class="note"><span class="nid">N490</span><span>Closing handoff — read with analysis-report.html (N421–N455) and slide-deck.html (N491–N500); the deck carries the current-state narrative, this document the response; the first re-baseline's question set is already drafted in P10's sentinel list, beginning with the Excel shadow rosters.</span></div>
+  </div>
+</section>
+
+<footer class="art-foot">
+  <div class="kicker">Cross-links</div>
+  <div class="xl">
+    <a href="analysis-report.html">Analysis report (N421–N455)</a>
+    <a href="slide-deck.html">Slide deck (N491–N500)</a>
+    <a href="service-blueprint.html">Blueprint (N001–N220)</a>
+    <a href="research/interviews.html">Interviews (N221–N270)</a>
+    <a href="research/surveys.html">Surveys (N271–N300)</a>
+    <a href="research/channels.html">Channels (N301–N320)</a>
+    <a href="insight-register.html">Insight register (N366–N385)</a>
+    <a href="brief.html">Engagement brief</a>
+    <a href="buzz-transcript.html">Buzz channel log</a>
+  </div>
+  <p style="font-size:11.5px; color:var(--mut); margin-top:14px;">Copperline 2000 · proposals.html · SDAP kind 31 (opportunity-matrix) · notes N456–N490 · part of the article 41 artifact set of The Agentic Service Designer.</p>
+</footer>
+
+</div>
+</body>
+</html>

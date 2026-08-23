@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buzz Transcript — sd/copperline-2000 — The Agentic Service Designer</title>
+<meta name="description" content="Simulated Buzz channel transcript for sd/copperline-2000: the Copperline 2000 fictional multi-agent service design engagement.">
+<style>
+  :root{
+    --ink:#171817; --paper:#f8f8f5; --line:#d8d6cf; --soft:#efece4;
+    --blue:#2563eb; --green:#16a34a; --amber:#d97706; --purple:#9333ea; --cyan:#0891b2; --slate:#64748b; --red:#dc2626;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:15.5px/1.6 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    -webkit-text-size-adjust:100%}
+  .wrap{max-width:900px;margin:0 auto;padding:0 20px 80px}
+  a{color:var(--blue);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.85em;
+    background:var(--soft);border:1px solid var(--line);border-radius:4px;padding:.06em .32em}
+  .metabar{position:sticky;top:0;z-index:20;background:var(--ink);color:var(--paper);
+    font-size:12.5px;border-bottom:3px solid var(--purple)}
+  .metabar .in{max-width:900px;margin:0 auto;padding:8px 20px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+  .metabar b{color:#fff}
+  .metabar .dot{color:var(--amber)}
+  .metabar a{color:#cdd3ff}
+  header.hd{padding:36px 0 10px;border-bottom:2px solid var(--ink)}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple)}
+  h1{font-size:28px;line-height:1.18;margin:.35em 0 .25em}
+  .sub{color:var(--slate);font-size:14.5px;margin:0 0 12px}
+  .prov{border:2px solid var(--ink);background:#fff;border-radius:8px;padding:13px 16px;margin:16px 0 6px;font-size:14px}
+  .prov b{display:block;margin-bottom:4px;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase}
+  /* week divider */
+  .week{display:flex;align-items:center;gap:12px;margin:34px 0 18px;color:var(--slate);
+    font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+  .week::before,.week::after{content:"";height:1px;background:var(--line);flex:1}
+  /* messages */
+  .msg{display:flex;gap:10px;margin:16px 0;align-items:flex-start}
+  .msg.right{flex-direction:row-reverse}
+  .av{flex:0 0 34px;width:34px;height:34px;border-radius:50%;color:#fff;display:flex;align-items:center;
+    justify-content:center;font-weight:800;font-size:11.5px;letter-spacing:.02em;margin-top:2px}
+  .bubble{max-width:78%;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+  .msg.right .bubble{background:#fdf4e4;border-color:#ecd9b0}
+  .who{font-size:13px;margin-bottom:4px}
+  .who b{font-size:13.5px}
+  .who .h{color:var(--slate);font-weight:500;font-size:12px}
+  .ts{color:var(--slate);font-size:11px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .bubble p{margin:.4em 0}
+  .bubble ul,.bubble ol{margin:.4em 0;padding-left:1.25em}
+  .bubble li{margin:.22em 0}
+  .bubble .art{display:inline-block;font-size:12px;font-weight:600;color:var(--green);
+    border:1px solid var(--green);border-radius:6px;padding:0 8px;margin:2px 2px 0 0;background:#fff}
+  /* system + gates */
+  .sys{margin:18px auto;max-width:86%;text-align:center;color:var(--slate);font-size:13px;
+    background:#f1efe8;border:1px dashed var(--line);border-radius:10px;padding:9px 14px}
+  .gate{margin:22px auto;max-width:92%;text-align:left;background:#fff;border:2px solid var(--ink);
+    border-radius:10px;padding:12px 16px}
+  .gate .glabel{display:inline-block;background:var(--ink);color:var(--paper);font-size:10.5px;
+    font-weight:800;letter-spacing:.16em;text-transform:uppercase;padding:2px 10px;border-radius:999px;margin-bottom:6px}
+  .gate p{margin:.35em 0;font-size:13.5px}
+  .gate .rat{font-size:13px;color:#333;background:var(--soft);border-left:4px solid var(--amber);
+    padding:8px 12px;border-radius:0 6px 6px 0;margin-top:8px}
+  /* notes */
+  .nref{font-size:10px;font-weight:700;color:var(--blue);vertical-align:super;line-height:0;
+    padding:0 1px;text-decoration:none;border-bottom:1px dotted var(--blue)}
+  .nref:hover{text-decoration:none;background:#e8edff}
+  ol.notes{font-size:13.5px}
+  ol.notes li{margin:.3em 0}
+  ol.notes .nid{font-weight:700;color:var(--blue)}
+  /* canvas appendix */
+  section{padding:20px 0 6px;border-top:1px solid var(--line)}
+  .sec-kicker{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple)}
+  h2{font-size:20px;margin:.25em 0 .5em}
+  h3{font-size:15.5px;margin:1.2em 0 .35em}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.2px;background:#fff}
+  th{background:var(--ink);color:var(--paper);text-align:left;font-weight:600;padding:6px 9px;font-size:12px}
+  td{border:1px solid var(--line);padding:6px 9px;vertical-align:top}
+  tbody tr:nth-child(even){background:#faf9f4}
+  .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  footer{padding-top:20px;color:var(--slate);font-size:12.5px}
+  @media print{
+    .metabar{position:static}
+    body{background:#fff;font-size:11px}
+    .wrap{max-width:100%;padding:0 3mm}
+    a{color:var(--ink);text-decoration:none}
+    .bubble,.gate{page-break-inside:avoid}
+    .msg.right .bubble{background:#fff}
+    .sys{background:#f3f3f0}
+  }
+</style>
+</head>
+<body>
+
+<div class="metabar"><div class="in">
+  <b>Buzz · kind 26 channel-log</b><span class="dot">·</span>
+  <span><code style="background:none;border:0;color:#fff">sd/copperline-2000</code> on <code style="background:none;border:0;color:#fff">tm</code> relay</span><span class="dot">·</span>
+  <span>SIMULATED transcript</span><span class="dot">·</span>
+  <span>notes N541–N560</span><span class="dot">·</span>
+  <a href="brief.html">brief.html</a><span class="dot">·</span>
+  <a href="../index.html">article 41</a>
+</div></div>
+
+<div class="wrap">
+
+<header class="hd">
+  <div class="kicker">Article 41 · Artifacts · Buzz channel log</div>
+  <h1>Buzz Transcript — <code>sd/copperline-2000</code>: Six Weeks, Three Gates, One Blueprint</h1>
+  <p class="sub">Channel <code>sd/copperline-2000</code> (<code>5f9c2b7e-3d64-4a18-9f0e-7b2c8d1a4e56</code>) · project <code>copperline-2000-41f2b8c7</code> · 2026-07-13 → 2026-08-21 · owner mehran · 8 ASD role runtimes · 2 advisor observers</p>
+  <div class="prov">
+    <b>Provenance — read first</b>
+    This is a <b>simulated</b> transcript of the <code>sd/copperline-2000</code> channel for the fictional Copperline 2000 engagement. Every person, quote, figure and outcome is synthetic; no real company, store, or person is described. The message format follows the real Buzz relay conventions — one channel per engagement on the <code>tm</code> community relay, role runtimes as members replying under their own identities, owner-posted scoped mentions, and human phase-gate receipts as the only phase authorization — but no relay was contacted and no runtime state was mutated to produce this page.
+  </div>
+</header>
+
+<!-- ============ WEEK 1 · SCAFFOLD ============ -->
+<div class="week">Week 1 · Scaffold · 2026-07-13 → 07-17</div>
+
+<div class="sys" id="m01">CHANNEL CREATED · <code>sd/copperline-2000</code> on the <code>tm</code> community relay · owner <code>mehran</code> · visibility private<a class="nref" href="#n541">N541</a></div>
+
+<div class="sys" id="m02">MEMBERS ADDED · <code>sd-orchestrator</code> · <code>sd-researcher</code> · <code>sd-synthesizer</code> · <code>sd-mapper</code> · <code>sd-ideator</code> · <code>sd-measurer</code> · <code>sd-presenter</code> · <code>sd-critic</code> (<code>sd_review</code>) · observers (read-only): <code>codex-cli</code>, <code>kimi-cli</code></div>
+
+<div class="msg right" id="m03"><div class="av" style="background:#0f766e">ME</div><div class="bubble">
+  <div class="who"><b>mehran</b> <span class="h">(owner)</span> · <span class="ts">2026-07-13T09:04:12.000Z</span></div>
+  <p>Kicking off <b>Copperline 2000</b> — full-operation service blueprint &amp; field study for Copperline Chicken, 2,000 stores. Sponsor is COO Priya Nair; her framing: "We have 2,000 stores running 2,000 different operations." Six weeks, three human gates, stops at reports + proposals — no prototyping in this lane.<a class="nref" href="#n542">N542</a></p>
+  <p>Orchestrator: post the charter and data boundary, then the phase plan. Everything else waits for scoped mentions from me.</p>
+</div></div>
+
+<div class="msg" id="m04"><div class="av" style="background:#9333ea">OR</div><div class="bubble">
+  <div class="who"><b>Orchestrator</b> <span class="h">· sd-orchestrator (Maya)</span> · <span class="ts">2026-07-13T09:31:40.000Z</span></div>
+  <p><b>Charter</b></p>
+  <ol>
+    <li><b>Engagement:</b> Copperline 2000 — Full-Operation Service Blueprint &amp; Field Study. 6-week window, then reporting.</li>
+    <li><b>Framing question:</b> How might Copperline run one coherent store operation — visible end-to-end from customer order to courier handover — that crew can work in and managers can manage, across all five store formats?</li>
+    <li><b>Data boundary:</b> fictional composite engagement. Every person, quote, figure and outcome is synthetic. No real company, store, or person is described. No PII at any point; systems access is read-only.<a class="nref" href="#n543">N543</a></li>
+    <li><b>Scope IN:</b> store operations end-to-end · rostering · management loops · franchise interface (opt-in) · delivery handover · support functions at the store boundary.</li>
+    <li><b>Scope OUT (named):</b> menu R&amp;D · pricing · marketing creative · legal · DC network redesign.</li>
+  </ol>
+  <p>Full detail lands in <span class="art"><a href="brief.html">brief.html</a> · kind 01</span> before gate 1.</p>
+</div></div>
+
+<div class="msg" id="m05"><div class="av" style="background:#9333ea">OR</div><div class="bubble">
+  <div class="who"><b>Orchestrator</b> <span class="h">· sd-orchestrator (Maya)</span> · <span class="ts">2026-07-13T09:36:05.000Z</span></div>
+  <p><b>Phase plan</b> — scaffold → research → synthesis → delivery. Human gates:</p>
+  <ul>
+    <li>Gate 1 · scaffold → research — approver: <b>mehran</b> (target: end of week 1)</li>
+    <li>Gate 2 · research → synthesis — approver: <b>mehran</b> (end of week 3)</li>
+    <li>Gate 3 · synthesis → delivery — approver: <b>mehran</b> (end of week 6)</li>
+  </ul>
+  <p>No runtime may advance a phase. A gate exists only as the owner's receipt; the Canvas mirrors receipts but authorizes nothing.</p>
+</div></div>
+
+<div class="msg" id="m06"><div class="av" style="background:#0891b2">MZ</div><div class="bubble">
+  <div class="who"><b>Measurer</b> <span class="h">· sd-measurer (Aaron)</span> · <span class="ts">2026-07-13T09:52:18.000Z</span></div>
+  <p><b>Baseline metric frame</b> (locked; every artifact reports against these):</p>
+  <ul>
+    <li>Crew turnover 94% annualised · industry median 78%</li>
+    <li>Shift-swap requests 11/store/week · 31% need manager rework · rosters &lt;72h out: 41% of stores</li>
+    <li>Drive-thru median 246s · target 180s</li>
+    <li>Order accuracy 91.4% (mystery shopper) · aggregator rating 4.3/5</li>
+    <li>Waste 3.8% of chicken weight · target 2.5%</li>
+    <li>eNPS −8 · customer NPS +31</li>
+    <li>Crew→courier breakage 0.7% of delivery orders</li>
+    <li>Q-Pulse compliance 96.2% done, 22% logged "in bulk at close"</li>
+  </ul>
+  <p>These are canon numbers. I will flag any artifact that re-derives them.</p>
+</div></div>
+
+<div class="msg" id="m07"><div class="av" style="background:#171817">CR</div><div class="bubble">
+  <div class="who"><b>Critic</b> <span class="h">· sd-critic / sd_review (Marcus)</span> · <span class="ts">2026-07-13T10:15:47.000Z</span></div>
+  <p>Standing policy. Every artifact gets a verdict before its gate. PASS requires: schema-valid, evidence-resolving, no uncited lane. REVISION lists defects. I report to the gate, not to the sponsor. Verdicts are logged records — <code>sd_review</code> review-veto-logs — not opinions in a thread.</p>
+</div></div>
+
+<div class="msg right" id="m08"><div class="av" style="background:#0f766e">ME</div><div class="bubble">
+  <div class="who"><b>mehran</b> <span class="h">(owner)</span> · <span class="ts">2026-07-13T10:22:03.000Z</span></div>
+  <p>Note on the observers: <code>codex-cli</code> and <code>kimi-cli</code> are attached for the article 42 lane; DSH plugin agents arrive in the article 43 lane. In this channel they are read-only. If they have not posted by close, no reply is invented for them.<a class="nref" href="#n544">N544</a></p>
+</div></div>
+
+<div class="msg" id="m09"><div class="av" style="background:#9333ea">OR</div><div class="bubble">
+  <div class="who"><b>Orchestrator</b> <span class="h">· sd-orchestrator (Maya)</span> · <span class="ts">2026-07-13T14:47:29.000Z</span></div>
+  <p>Scaffold complete. Staged: <span class="art"><a href="brief.html">brief.html</a> · kind 01</span> — provenance, client &amp; context, objectives ×5, scope IN/OUT, success criteria, constraints, method plan, team + RACI, phase plan, book refs, template alignment, risks, artifact index, glossary. Notes N501–N540 live there.</p>
+  <p>Critic: brief is yours. Owner: requesting gate 1 when your review of the scaffold is done.</p>
+</div></div>
+
+<div class="gate" id="m10">
+  <span class="glabel">Phase gate 1</span>
+  <p><b>approve</b> · scaffold → research · approved by <b>mehran</b> · at <span class="ts">2026-07-17T16:40:00.000Z</span></p>
+  <div class="rat"><b>Rationale:</b> Scaffold reconciliation passed: charter and data boundary posted; brief (kind 01) staged with scope IN/OUT named honestly and 5 measurable objectives; baseline metric frame locked to the canon metrics; framing question selected: How might Copperline run one coherent store operation — visible end-to-end from customer order to courier handover — that crew can work in and managers can manage, across all five store formats? Research may begin under the no-PII, read-only boundary; union notification confirmed sent before week-2 fieldwork.<a class="nref" href="#n545">N545</a></div>
+</div>
+
+<!-- ============ WEEKS 2–3 · RESEARCH ============ -->
+<div class="week">Weeks 2–3 · Research · 2026-07-20 → 07-31</div>
+
+<div class="msg right" id="m11"><div class="av" style="background:#0f766e">ME</div><div class="bubble">
+  <div class="who"><b>mehran</b> <span class="h">(owner)</span> · <span class="ts">2026-07-20T08:12:44.000Z</span></div>
+  <p><code>@researcher</code> run the flagship interview set per plan §h — all 8 participants across Harbourgate Flagship #14 and Northline Flagship #3. Depth protocol 01/04. Verbatims to the evidence ledger, no PII.<a class="nref" href="#n546">N546</a></p>
+</div></div>
+
+<div class="msg" id="m12"><div class="av" style="background:#2563eb">RS</div><div class="bubble">
+  <div class="who"><b>Researcher</b> <span class="h">· sd-researcher (Liam)</span> · <span class="ts">2026-07-20T08:20:11.000Z</span></div>
+  <p>Ack. 8/8 recruited: Aisha Rahman (GM #14), Bo Chen (shift leader), Grace Mwangi (crew, 8 months), Elena Petrova (franchisee, 6 stores, opt-in), Jack Doyle (courier), Mei Lin (regular customer), Raj Patel (call-centre lead), Oscar Villanueva (DC inbound). Two sites, GM-mediated access. Report Friday.</p>
+</div></div>
+
+<div class="msg right" id="m13"><div class="av" style="background:#0f766e">ME</div><div class="bubble">
+  <div class="who"><b>mehran</b> <span class="h">(owner)</span> · <span class="ts">2026-07-20T08:26:07.000Z</span></div>
+  <p><code>@researcher</code> field the two surveys: store managers and crew, stratified by format with food-court and kiosk oversamples. Targets: 412 managers of 2,000 · 1,893 crew of 41,300.</p>
+</div></div>
+
+<div class="msg" id="m14"><div class="av" style="background:#2563eb">RS</div><div class="bubble">
+  <div class="who"><b>Researcher</b> <span class="h">· sd-researcher (Liam)</span> · <span class="ts">2026-07-20T08:31:52.000Z</span></div>
+  <p>Ack. Manager instrument: rostering cadence, swap handling, Q-Pulse routines, VoiceBoard follow-up. Crew instrument: shift experience, handover clarity, eNPS items, tenure bands. Sampling frame stratified to the format table (68 / 1,214 / 389 / 251 / 78); post-stratification before reporting.</p>
+</div></div>
+
+<div class="msg right" id="m15"><div class="av" style="background:#0f766e">ME</div><div class="bubble">
+  <div class="who"><b>mehran</b> <span class="h">(owner)</span> · <span class="ts">2026-07-20T08:39:26.000Z</span></div>
+  <p><code>@measurer</code> pull the 90-day channel extracts — all five: VoiceBoard, POS sample (120 stores), mystery-shopper set, the three aggregator exports, call-centre logs (2 weeks). Read-only tokens only.</p>
+</div></div>
+
+<div class="msg" id="m16"><div class="av" style="background:#0891b2">MZ</div><div class="bubble">
+  <div class="who"><b>Measurer</b> <span class="h">· sd-measurer (Aaron)</span> · <span class="ts">2026-07-20T08:44:19.000Z</span></div>
+  <p>Ack. One shared 90-day window across all five so sentiment, volume, accuracy and recovery can be triangulated week-by-week, not averaged blindly. Pull tokens are read-only and expire 2026-08-21.</p>
+</div></div>
+
+<div class="msg" id="m17"><div class="av" style="background:#2563eb">RS</div><div class="bubble">
+  <div class="who"><b>Researcher</b> <span class="h">· sd-researcher (Liam)</span> · <span class="ts">2026-07-21T15:03:58.000Z</span></div>
+  <p><b>Flagship interviews complete</b> — 8/8 · 412 minutes recorded · 148 verbatims · 62 evidence IDs (<code>INT-001…INT-062</code>).<a class="nref" href="#n547">N547</a></p>
+  <p>Headline signals: Grace Mwangi has never seen a roster more than 3 days out; Aisha Rahman rebuilds the swap sheet by hand every Thursday; Jack Doyle waits at an unnamed rack that "changes depending on who's closing"; Raj Patel's team fields recovery calls for failures made 40 minutes earlier at the window.</p>
+  <p>Artifact: <span class="art"><a href="research/interviews.html">research/interviews.html</a> · kind 03</span></p>
+</div></div>
+
+<div class="msg" id="m18"><div class="av" style="background:#2563eb">RS</div><div class="bubble">
+  <div class="who"><b>Researcher</b> <span class="h">· sd-researcher (Liam)</span> · <span class="ts">2026-07-22T17:41:06.000Z</span></div>
+  <p><b>Surveys complete</b> — managers n=412 of 2,000 (20.6%) · crew n=1,893 of 41,300 (4.6%) · 58 evidence IDs (<code>SUR-001…SUR-058</code>). Raw counts and instruments published as-is.</p>
+  <p>Artifact: <span class="art"><a href="research/surveys.html">research/surveys.html</a> · kind 04</span></p>
+</div></div>
+
+<div class="msg" id="m19"><div class="av" style="background:#0891b2">MZ</div><div class="bubble">
+  <div class="who"><b>Measurer</b> <span class="h">· sd-measurer (Aaron)</span> · <span class="ts">2026-07-23T11:26:34.000Z</span></div>
+  <p><b>Channel pack complete</b> — 5/5 extracts on the shared 90-day window · 94 evidence IDs (<code>CH-001…CH-094</code>): VoiceBoard 18,406 feedback events (sampled 1,240) · POS 120 stores, 3.2M order rows (sampled 41,200) · 60 mystery-shopper reports · 3 aggregator exports (Dashly, Wheelio, Pedalr) · call-centre 2 weeks, 5,840 calls (sampled 980).</p>
+  <p>Artifact: <span class="art"><a href="research/channels.html">research/channels.html</a> · kind 03/04 annex</span></p>
+</div></div>
+
+<div class="msg" id="m20"><div class="av" style="background:#171817">CR</div><div class="bubble">
+  <div class="who"><b>Critic</b> <span class="h">· sd-critic / sd_review (Marcus)</span> · <span class="ts">2026-07-23T12:02:51.000Z</span></div>
+  <p>VERDICT: <b>interviews — PASS.</b> Evidence-resolving 62/62. Participant labels carry no PII. Co-sign recorded against research/interviews.html.</p>
+</div></div>
+
+<div class="msg" id="m21"><div class="av" style="background:#171817">CR</div><div class="bubble">
+  <div class="who"><b>Critic</b> <span class="h">· sd-critic / sd_review (Marcus)</span> · <span class="ts">2026-07-23T12:06:18.000Z</span></div>
+  <p>VERDICT: <b>surveys — REVISION.</b> Defect: raw manager sample over-represents flagship (7.3% of n vs 3.4% of store base); headline claims unweighted. Post-stratify to the format mix before any cross-format number is reported.<a class="nref" href="#n548">N548</a></p>
+</div></div>
+
+<div class="msg" id="m22"><div class="av" style="background:#2563eb">RS</div><div class="bubble">
+  <div class="who"><b>Researcher</b> <span class="h">· sd-researcher (Liam)</span> · <span class="ts">2026-07-23T13:30:42.000Z</span></div>
+  <p>Revision applied. Format weights published alongside the raw tables; post-stratified deltas move headline metrics by &lt;2pp; no directional finding flips. surveys.html v2 re-persisted, same ID lineage.</p>
+</div></div>
+
+<div class="msg" id="m23"><div class="av" style="background:#171817">CR</div><div class="bubble">
+  <div class="who"><b>Critic</b> <span class="h">· sd-critic / sd_review (Marcus)</span> · <span class="ts">2026-07-23T13:44:29.000Z</span></div>
+  <p>VERDICT: <b>surveys — PASS.</b> Weighting transparent, raw data retained. Co-sign recorded.</p>
+</div></div>
+
+<div class="msg" id="m24"><div class="av" style="background:#171817">CR</div><div class="bubble">
+  <div class="who"><b>Critic</b> <span class="h">· sd-critic / sd_review (Marcus)</span> · <span class="ts">2026-07-23T13:47:55.000Z</span></div>
+  <p>VERDICT: <b>channels — PASS.</b> 94/94 evidence IDs resolve; extraction windows aligned. Co-sign recorded.</p>
+</div></div>
+
+<div class="msg" id="m25"><div class="av" style="background:#2563eb">RS</div><div class="bubble">
+  <div class="who"><b>Researcher</b> <span class="h">· sd-researcher (Liam)</span> · <span class="ts">2026-07-23T13:55:10.000Z</span></div>
+  <p>Synthesis-adjacent deliverable from the research phase: <span class="art"><a href="stakeholder-map.html">stakeholder-map.html</a> · kind 05</span> — named people, org units, franchise partners, aggregators and the union, mapped from interview + survey field notes. 14 evidence IDs.</p>
+</div></div>
+
+<div class="msg" id="m26"><div class="av" style="background:#9333ea">OR</div><div class="bubble">
+  <div class="who"><b>Orchestrator</b> <span class="h">· sd-orchestrator (Maya)</span> · <span class="ts">2026-07-24T09:15:37.000Z</span></div>
+  <p><b>Research reconciliation</b></p>
+  <ul>
+    <li>Interviews 8/8 · surveys 412 + 1,893 (post-stratified) · channels 5/5 on one 90-day window</li>
+    <li>Evidence ledger: 62 + 58 + 94 = <b>214 IDs</b> ingested; every ID cited ≥1 times downstream or retired</li>
+    <li>Critic verdicts: interviews PASS · surveys PASS (1 revision applied) · channels PASS · stakeholder map PASS</li>
+    <li>Boundary check: zero PII fields; all pulls read-only; union notification on file</li>
+  </ul>
+  <p>Owner: gate 2 request stands. Research phase complete as planned.<a class="nref" href="#n549">N549</a></p>
+</div></div>
+
+<div class="gate" id="m27">
+  <span class="glabel">Phase gate 2</span>
+  <p><b>approve</b> · research → synthesis · approved by <b>mehran</b> · at <span class="ts">2026-07-31T15:20:00.000Z</span></p>
+  <div class="rat"><b>Rationale:</b> Research reconciliation passed: 8/8 flagship interviews; manager survey n=412 of 2,000 and crew survey n=1,893 of 41,300, post-stratified to the format mix after critic-flagged weighting revision; 5 channel extracts aligned on a shared 90-day window; 214 evidence IDs ingested; critic PASS verdicts on all four research artifacts; zero PII and read-only access confirmed. Synthesis may begin; every synthesis artifact must cite research evidence IDs or be flagged.<a class="nref" href="#n550">N550</a></div>
+</div>
+
+<!-- ============ WEEKS 4–5 · SYNTHESIS ============ -->
+<div class="week">Weeks 4–5 · Synthesis · 2026-08-03 → 08-14</div>
+
+<div class="msg right" id="m28"><div class="av" style="background:#0f766e">ME</div><div class="bubble">
+  <div class="who"><b>mehran</b> <span class="h">(owner)</span> · <span class="ts">2026-08-03T08:05:23.000Z</span></div>
+  <p><code>@synthesizer</code> build the insight register from the research pack — every insight carries its evidence count, ≥12 insights, one canon metric attached where relevant.</p>
+</div></div>
+
+<div class="msg" id="m29"><div class="av" style="background:#16a34a">SY</div><div class="bubble">
+  <div class="who"><b>Synthesizer</b> <span class="h">· sd-synthesizer (Elena)</span> · <span class="ts">2026-08-04T16:22:47.000Z</span></div>
+  <p><b>Insight register complete</b> — 26 insights across 5 clusters (roster precarity · handover breakage · compliance theatre · format drift · recovery lag). Strongest: the 94% turnover loop is a <i>roster-publishing</i> problem before it is a hiring problem — 41% of stores publish &lt;72h out and 31% of swaps rework. Every insight cites evidence: range 3–17 IDs, median 8.</p>
+  <p>Artifact: <span class="art"><a href="insight-register.html">insight-register.html</a> · kind 07</span></p>
+</div></div>
+
+<div class="msg" id="m30"><div class="av" style="background:#16a34a">SY</div><div class="bubble">
+  <div class="who"><b>Synthesizer</b> <span class="h">· sd-synthesizer (Elena)</span> · <span class="ts">2026-08-05T10:14:08.000Z</span></div>
+  <p>Two more from the synthesis bench:</p>
+  <ul>
+    <li><span class="art"><a href="persona-set.html">persona-set.html</a> · kind 09</span> — 5 personas: the 8-month crew member (Grace-archetype), the flagship GM (Aisha-archetype), the 6-store franchisee (Elena-archetype), the aggregator courier (Jack-archetype), the peak-window regular (Mei-archetype).</li>
+    <li><span class="art"><a href="ecosystem-map.html">ecosystem-map.html</a> · kind 06</span> — SDL lens (12): aggregators, franchise partners, DCs and crew as co-creators, not links in a chain.</li>
+  </ul>
+</div></div>
+
+<div class="msg right" id="m31"><div class="av" style="background:#0f766e">ME</div><div class="bubble">
+  <div class="who"><b>mehran</b> <span class="h">(owner)</span> · <span class="ts">2026-08-05T10:31:52.000Z</span></div>
+  <p><code>@mapper</code> journey set first, then THE blueprint — full operation, all five formats, all seven systems, every lane evidence-cited. Blueprinting per 01/07, alignment-diagram method per 09.</p>
+</div></div>
+
+<div class="msg" id="m32"><div class="av" style="background:#d97706">MP</div><div class="bubble">
+  <div class="who"><b>Mapper</b> <span class="h">· sd-mapper (Kai)</span> · <span class="ts">2026-08-06T15:48:36.000Z</span></div>
+  <p><b>Journeys complete</b> — 4 current-state journeys (peak-window dine-in · drive-thru 246s · aggregator order→courier · new-crew first week), each with wait, fail-risk and handoff nodes styled to the house color code.</p>
+  <p>Artifact: <span class="art"><a href="journey-map.html">journey-map.html</a> · kind 11</span></p>
+</div></div>
+
+<div class="msg" id="m33"><div class="av" style="background:#d97706">MP</div><div class="bubble">
+  <div class="who"><b>Mapper</b> <span class="h">· sd-mapper (Kai)</span> · <span class="ts">2026-08-07T17:26:19.000Z</span></div>
+  <p><b>THE blueprint is up.</b> Full-operation service blueprint: 6 lanes (customer actions · frontstage · backstage · support processes · data &amp; systems · physical evidence), 5 format variants, 7 systems, 118 steps. Annotation range <b>N001–N220</b> — 220 numbered notes, cross-referenced by every downstream artifact, never renumbered.<a class="nref" href="#n551">N551</a></p>
+  <p>Artifact: <span class="art"><a href="service-blueprint.html">service-blueprint.html</a> · kind 12</span></p>
+</div></div>
+
+<div class="msg" id="m34"><div class="av" style="background:#171817">CR</div><div class="bubble">
+  <div class="who"><b>Critic</b> <span class="h">· sd-critic / sd_review (Marcus)</span> · <span class="ts">2026-08-07T18:01:44.000Z</span></div>
+  <p>VERDICT: <b>blueprint — REVISION (2 defects).</b></p>
+  <ol>
+    <li>Defect, high, field-non-empty: crew→courier handover lane is unnamed — handover ownership cannot be reviewed. Name the lane and its evidence.</li>
+    <li>Defect, medium, evidence-resolving: drive-thru lane cites the 246s median but no channel evidence ID is attached at the window step.</li>
+  </ol>
+  <p>Revision before gate 3. No exceptions for the flagship artifact.<a class="nref" href="#n552">N552</a></p>
+</div></div>
+
+<div class="msg" id="m35"><div class="av" style="background:#d97706">MP</div><div class="bubble">
+  <div class="who"><b>Mapper</b> <span class="h">· sd-mapper (Kai)</span> · <span class="ts">2026-08-10T09:08:27.000Z</span></div>
+  <p>Both applied. Lane named <b>"Route56 handover rack"</b> with <code>INT-019…INT-023</code> (courier + crew verbatims) and <code>CH-040</code> (breakage 0.7%). Window step now carries <code>CH-011</code> (POS 120-store sample) + <code>CH-052…CH-057</code> (mystery-shopper reports). Same artifact ID, promoted in place.</p>
+</div></div>
+
+<div class="msg" id="m36"><div class="av" style="background:#171817">CR</div><div class="bubble">
+  <div class="who"><b>Critic</b> <span class="h">· sd-critic / sd_review (Marcus)</span> · <span class="ts">2026-08-10T09:41:33.000Z</span></div>
+  <p>VERDICT: <b>blueprint — PASS.</b> Both defects remediated; 220/220 annotations resolve. Co-sign recorded: this verdict, not the mapper's claim, is what the gate reads.<a class="nref" href="#n553">N553</a></p>
+</div></div>
+
+<div class="msg" id="m37"><div class="av" style="background:#171817">CR</div><div class="bubble">
+  <div class="who"><b>Critic</b> <span class="h">· sd-critic / sd_review (Marcus)</span> · <span class="ts">2026-08-10T10:02:58.000Z</span></div>
+  <p>VERDICTS: <b>insight-register — PASS</b> (26/26 cite evidence). <b>persona-set — PASS</b> (5/5 archetypes trace to named interviews). <b>journey-map — PASS</b> (4/4 journeys node-evidenced). <b>ecosystem-map — PASS</b>. Proposal logged on personas: keep the seated-induction variant visible for the kiosk accessibility pass.</p>
+</div></div>
+
+<div class="msg" id="m38"><div class="av" style="background:#9333ea">OR</div><div class="bubble">
+  <div class="who"><b>Orchestrator</b> <span class="h">· sd-orchestrator (Maya)</span> · <span class="ts">2026-08-10T11:35:14.000Z</span></div>
+  <p><b>Synthesis reconciliation</b> — insight register (26), personas (5), ecosystem map, journeys (4), blueprint (118 steps, N001–N220) all final with critic PASS. Remaining before gate 3: analysis report, proposals, current-state deck. Sequencing: measurer → ideator → presenter, then readiness check.</p>
+</div></div>
+
+<div class="msg right" id="m39"><div class="av" style="background:#0f766e">ME</div><div class="bubble">
+  <div class="who"><b>mehran</b> <span class="h">(owner)</span> · <span class="ts">2026-08-11T08:09:41.000Z</span></div>
+  <p><code>@measurer</code> produce the analysis report on the blueprint — kind 28 experience-audit lens (Good Services 15 principles, 05) + kind 32 executive-report structure, gaps model from 19.</p>
+</div></div>
+
+<div class="msg" id="m40"><div class="av" style="background:#0891b2">MZ</div><div class="bubble">
+  <div class="who"><b>Measurer</b> <span class="h">· sd-measurer (Aaron)</span> · <span class="ts">2026-08-12T14:52:26.000Z</span></div>
+  <p><b>Analysis report complete.</b> 9 failure points scored against the 15 principles; gaps-model classification: 2 knowledge, 3 standards, 2 delivery, 1 communications, 1 perception. Quantified anchors: drive-thru 246s vs 180s target · breakage 0.7% vs ≤0.3% · Q-Pulse 22% bulk-at-close · eNPS −8 alongside NPS +31 (the Service Profit Chain tells us which leads, 20).<a class="nref" href="#n554">N554</a></p>
+  <p>Artifact: <span class="art"><a href="analysis-report.html">analysis-report.html</a> · kinds 28+32</span></p>
+</div></div>
+
+<div class="msg" id="m41"><div class="av" style="background:#171817">CR</div><div class="bubble">
+  <div class="who"><b>Critic</b> <span class="h">· sd-critic / sd_review (Marcus)</span> · <span class="ts">2026-08-12T15:26:53.000Z</span></div>
+  <p>VERDICT: <b>analysis-report — PASS.</b> Every failure point cites a blueprint note ID and an evidence ID. Co-sign recorded.</p>
+</div></div>
+
+<div class="msg right" id="m42"><div class="av" style="background:#0f766e">ME</div><div class="bubble">
+  <div class="who"><b>mehran</b> <span class="h">(owner)</span> · <span class="ts">2026-08-13T08:17:32.000Z</span></div>
+  <p><code>@ideator</code> ten directions, canon titles, each traceable insight → evidence with baseline → target arithmetic. Opportunity-matrix ordering outside-in (14): customer-observable failures first.</p>
+</div></div>
+
+<div class="msg" id="m43"><div class="av" style="background:#db2777">ID</div><div class="bubble">
+  <div class="who"><b>Ideator</b> <span class="h">· sd-ideator (Rowan)</span> · <span class="ts">2026-08-14T16:38:07.000Z</span></div>
+  <p><b>Ten directions, locked to canon titles:</b> 1 Roster Stability Program (≥7-day publish + ShiftOrbit swap marketplace) · 2 Drive-Thru 180 · 3 One Copperline Handover · 4 Crew Voice Loop · 5 Waste-to-Order Forecasting (3.8%→2.8%) · 6 Q-Pulse Honest Logging · 7 Franchise Ops Bridge · 8 Kiosk Accessibility Pass · 9 Recovery Ladder · 10 Blueprint-as-Living-Document. Each carries insight→evidence lineage and a baseline→target pair; none promises prototyping — directions are to be piloted, and this engagement builds no pilots.<a class="nref" href="#n555">N555</a></p>
+  <p>Artifact: <span class="art"><a href="proposals.html">proposals.html</a> · kind 31</span></p>
+</div></div>
+
+<div class="msg" id="m44"><div class="av" style="background:#171817">CR</div><div class="bubble">
+  <div class="who"><b>Critic</b> <span class="h">· sd-critic / sd_review (Marcus)</span> · <span class="ts">2026-08-14T17:05:49.000Z</span></div>
+  <p>VERDICT: <b>proposals — PASS</b>, one low proposal logged: sequence Recovery Ladder after One Copperline Handover; recovery inherits the handover standard. Co-sign recorded.</p>
+</div></div>
+
+<div class="msg right" id="m45"><div class="av" style="background:#0f766e">ME</div><div class="bubble">
+  <div class="who"><b>mehran</b> <span class="h">(owner)</span> · <span class="ts">2026-08-14T17:30:24.000Z</span></div>
+  <p><code>@presenter</code> current-state deck for the ops council — kind 33. Baseline → target on every metric slide, no orphan numbers.</p>
+</div></div>
+
+<div class="msg" id="m46"><div class="av" style="background:#64748b">PT</div><div class="bubble">
+  <div class="who"><b>Presenter</b> <span class="h">· sd-presenter (Talia)</span> · <span class="ts">2026-08-14T19:12:38.000Z</span></div>
+  <p><b>Current-state deck complete</b> — 18 slides for Priya Nair's ops council: framing → evidence base (214 IDs) → blueprint walkthrough → 9 failure points → ten directions → re-baseline offer.</p>
+  <p>Artifact: <span class="art"><a href="slide-deck.html">slide-deck.html</a> · kind 33</span></p>
+</div></div>
+
+<div class="msg" id="m47"><div class="av" style="background:#171817">CR</div><div class="bubble">
+  <div class="who"><b>Critic</b> <span class="h">· sd-critic / sd_review (Marcus)</span> · <span class="ts">2026-08-17T09:12:06.000Z</span></div>
+  <p>VERDICT: <b>slide-deck — REVISION.</b> Defect: metric slides show targets without baselines on 2 of 9 slides; an ops council will read those as invented goals. Pair every number.<a class="nref" href="#n556">N556</a></p>
+</div></div>
+
+<div class="msg" id="m48"><div class="av" style="background:#64748b">PT</div><div class="bubble">
+  <div class="who"><b>Presenter</b> <span class="h">· sd-presenter (Talia)</span> · <span class="ts">2026-08-17T10:03:31.000Z</span></div>
+  <p>Fixed — slides 11 and 14 now open with the canon baseline (246s · 3.8%) before the target (180s · 2.8%). Re-persisted, same ID.</p>
+</div></div>
+
+<div class="msg" id="m49"><div class="av" style="background:#171817">CR</div><div class="bubble">
+  <div class="who"><b>Critic</b> <span class="h">· sd-critic / sd_review (Marcus)</span> · <span class="ts">2026-08-17T10:31:17.000Z</span></div>
+  <p>VERDICT: <b>slide-deck — PASS.</b> Co-sign recorded.</p>
+</div></div>
+
+<div class="msg" id="m50"><div class="av" style="background:#9333ea">OR</div><div class="bubble">
+  <div class="who"><b>Orchestrator</b> <span class="h">· sd-orchestrator (Maya)</span> · <span class="ts">2026-08-18T15:44:52.000Z</span></div>
+  <p><b>Gate-3 readiness:</b> 13 artifacts final with critic PASS (10 clean · 3 after revision rounds — surveys, blueprint, deck — carrying 4 defect rows total); evidence ledger 214 IDs; blueprint annotations N001–N220; brief notes N501–N540. Delivery scope: package index + close-out only. No prototyping executed, none claimed.</p>
+</div></div>
+
+<!-- ============ WEEK 6 · DELIVERY ============ -->
+<div class="week">Week 6 · Delivery · 2026-08-17 → 08-21</div>
+
+<div class="gate" id="m51">
+  <span class="glabel">Phase gate 3</span>
+  <p><b>approve</b> · synthesis → delivery · approved by <b>mehran</b> · at <span class="ts">2026-08-21T14:05:00.000Z</span></p>
+  <div class="rat"><b>Rationale:</b> Synthesis reconciliation passed: insight register (26 insights, all evidence-resolving), 5 personas, ecosystem map, 4 journeys, full-operation blueprint N001–N220 PASS after 2 revisions, analysis report PASS, ten proposals PASS (canon titles, baseline→target arithmetic shown), current-state deck PASS after 1 revision. Delivery may begin: final package assembly and handover only. Prototyping is NOT part of this engagement — delivery is reports + proposals, and no prototype claim appears in any artifact.<a class="nref" href="#n557">N557</a></div>
+</div>
+
+<div class="msg right" id="m52"><div class="av" style="background:#0f766e">ME</div><div class="bubble">
+  <div class="who"><b>mehran</b> <span class="h">(owner)</span> · <span class="ts">2026-08-21T14:20:36.000Z</span></div>
+  <p><code>@presenter</code> assemble the final package index — all artifacts, one page, ops-council-ready.</p>
+</div></div>
+
+<div class="msg" id="m53"><div class="av" style="background:#64748b">PT</div><div class="bubble">
+  <div class="who"><b>Presenter</b> <span class="h">· sd-presenter (Talia)</span> · <span class="ts">2026-08-21T15:33:04.000Z</span></div>
+  <p><b>Final package index posted</b> — 14 artifacts + canon: brief · transcript (this channel) · 3 research files · stakeholder + ecosystem maps · insight register · personas · journeys · blueprint · analysis · proposals · deck. Reading order for the council: brief → deck → blueprint → proposals. Completeness check: every kind 01–33 file in the inventory has a final record and a critic verdict.<a class="nref" href="#n558">N558</a></p>
+</div></div>
+
+<div class="msg" id="m54"><div class="av" style="background:#9333ea">OR</div><div class="bubble">
+  <div class="who"><b>Orchestrator</b> <span class="h">· sd-orchestrator (Maya)</span> · <span class="ts">2026-08-21T16:00:41.000Z</span></div>
+  <p><b>Close-out.</b> Six weeks, three human gates, 214 evidence IDs, 220 blueprint annotations, 13 critic verdicts (10 clean PASS, 3 PASS-after-revision across 4 defect rows). Engagement delivered as scoped: reports + proposals. Prototyping NOT executed — any pilot claim belongs to a future engagement, not this channel's record.<a class="nref" href="#n559">N559</a></p>
+</div></div>
+
+<div class="msg" id="m55"><div class="av" style="background:#171817">CR</div><div class="bubble">
+  <div class="who"><b>Critic</b> <span class="h">· sd-critic / sd_review (Marcus)</span> · <span class="ts">2026-08-21T16:24:18.000Z</span></div>
+  <p>Final tally: 13 review-veto-logs · 3 revision verdicts, 4 defect rows, all remediated · 0 unresolved defects · 0 uncited lanes in the final set. The two coding-agent observers posted 0 messages, as recorded. Independent of every runtime whose artifact I reviewed — that is the point of me.<a class="nref" href="#n560">N560</a></p>
+</div></div>
+
+<div class="msg right" id="m56"><div class="av" style="background:#0f766e">ME</div><div class="bubble">
+  <div class="who"><b>mehran</b> <span class="h">(owner)</span> · <span class="ts">2026-08-21T16:41:05.000Z</span></div>
+  <p>Closing the channel record. Thank you, all eight runtimes — and Marcus for making us honest four separate times. Package goes to Priya Nair's ops council on Monday; Roster Stability is the first pilot decision, and proposal 10 means this blueprint gets re-baselined quarterly through the same pipeline. Channel stays read-only as evidence.<br><br>— mehran, owner. Copperline 2000 delivered.</p>
+</div></div>
+
+<!-- ============ NOTES ============ -->
+<section id="notes">
+  <span class="sec-kicker">Appendix A · Transcript notes</span>
+  <h2>Notes N541–N560</h2>
+  <ol class="notes">
+    <li id="n541"><span class="nid">N541</span> Why a fresh channel per engagement: one channel = one evidence boundary. Everything cited in the final package must resolve inside <code>sd/copperline-2000</code>'s own log and ledger.</li>
+    <li id="n542"><span class="nid">N542</span> Owner vs sponsor: mehran runs the channel and holds gate authority; Priya Nair (fictional COO) frames the challenge and receives the package — she never posts, because a sponsor is not a channel operator.</li>
+    <li id="n543"><span class="nid">N543</span> The charter and data boundary come from the orchestrator, not the owner: the runtime records the structure, the human authorizes the transitions.</li>
+    <li id="n544"><span class="nid">N544</span> Advisor honesty rule: members who never posted are listed and stay silent — no reply is invented for them. Codex CLI / Kimi CLI run in article 42's lane; DSH plugin agents in article 43's.</li>
+    <li id="n545"><span class="nid">N545</span> Why this gate: gate 1 waited until Friday so the owner could review the scaffold against the sponsor's framing before any research cost was incurred.</li>
+    <li id="n546"><span class="nid">N546</span> Scoped mention convention: <code>@role</code> + bounded instruction + named artifact target. The runtime answers with evidence counts, never with a free-form essay.</li>
+    <li id="n547"><span class="nid">N547</span> Interview evidence counts: minutes, verbatims and evidence IDs are reported at completion so the critic can check evidence-resolving claims without re-reading transcripts.</li>
+    <li id="n548"><span class="nid">N548</span> What the critic flagged: format imbalance — flagship stores at 7.3% of the manager sample vs 3.4% of the store base. Post-stratification moved headlines &lt;2pp, but the raw/weighted distinction is now on the record.</li>
+    <li id="n549"><span class="nid">N549</span> Reconciliation before gate: the orchestrator's totals (8/8, 412 + 1,893, 5/5, 214 IDs) are what the owner approves against — gate rationale quotes them verbatim.</li>
+    <li id="n550"><span class="nid">N550</span> Why gate 2 required evidence-resolving records: synthesis amplifies whatever research contains; an uncited claim entering synthesis would surface in the blueprint wearing the credibility of the whole pack.</li>
+    <li id="n551"><span class="nid">N551</span> The blueprint's annotation range N001–N220 is continuous across the artifact set; other artifacts reference these IDs and never renumber them.</li>
+    <li id="n552"><span class="nid">N552</span> What the critic flagged on the blueprint: an unnamed backstage lane (handover ownership unreviewable) and a cited metric without an attached evidence ID — the two defects that block a kind 12 artifact from promotion.</li>
+    <li id="n553"><span class="nid">N553</span> Co-sign language: a critic PASS is recorded against the artifact's review-veto-log; the gate reads the critic's record, not the producing runtime's claim of readiness.</li>
+    <li id="n554"><span class="nid">N554</span> The analysis anchors every failure point to a canon metric and a gaps-model class, so the ops council sees a diagnosed system, not a list of complaints.</li>
+    <li id="n555"><span class="nid">N555</span> Proposal titles are canon-fixed: the ten directions were named in the project canon before ideation began; the ideator's work is lineage and arithmetic, not naming.</li>
+    <li id="n556"><span class="nid">N556</span> What the critic flagged on the deck: targets without baselines read as invented goals to an executive audience; pairing them is a credibility control, not formatting.</li>
+    <li id="n557"><span class="nid">N557</span> Why gate 3 is the last gate: the engagement's authority ends at delivery of reports + proposals. A prototyping phase would need its own engagement, charter and gates.</li>
+    <li id="n558"><span class="nid">N558</span> Package completeness check: every template-catalog kind used by this engagement (01, 03, 04, 05, 06, 07, 09, 11, 12, 26, 28+32, 31, 33) maps to a file with a final record and a critic verdict.</li>
+    <li id="n559"><span class="nid">N559</span> Prototyping honesty: the close-out repeats the boundary so the strongest possible version of this engagement still cannot be misread as a pilot.</li>
+    <li id="n560"><span class="nid">N560</span> Critic independence in numbers: 13 verdicts, 3 revision verdicts carrying 4 defect rows against fellow runtimes' artifacts, 0 unresolved. The tally is the audit trail of that independence.</li>
+  </ol>
+</section>
+
+<!-- ============ CANVAS APPENDIX ============ -->
+<section id="canvas">
+  <span class="sec-kicker">Appendix B · Canvas index</span>
+  <h2>Canvas — <code>sd/copperline-2000</code></h2>
+  <p style="font-size:13.5px;color:var(--slate)">This Canvas is a collaboration index over persisted ASD records. A row here is navigation, not proof: persistence is proven only by ASD receipts, and authorization only by a human phase-gate receipt.</p>
+
+  <h3>1 · Charter and data boundary</h3>
+  <table>
+    <tbody>
+      <tr><td style="width:22%"><b>Project</b></td><td>Copperline 2000 <code>copperline-2000-41f2b8c7</code></td></tr>
+      <tr><td><b>Client</b></td><td>Fictional composite — Copperline Chicken</td></tr>
+      <tr><td><b>Sector</b></td><td>charcoal-grilled chicken fast food, single country, 2,000 stores</td></tr>
+      <tr><td><b>Service</b></td><td>full store operation: order capture → grill line → assembly → handover</td></tr>
+      <tr><td><b>Data boundary</b></td><td>Fictional composite engagement. Every person, quote, figure and outcome is synthetic. No real company, store, or person is described.</td></tr>
+      <tr><td><b>Index boundary</b></td><td>This Canvas is a navigation index over persisted ASD records. It is not the ASD store, does not prove Buzz runtime authorship, and does not authorize phase transitions.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>2 · Phase and human-gate state</h3>
+  <p style="font-size:13.5px">Current phase: <code>delivery</code> (engagement complete 2026-08-21; channel read-only as evidence).</p>
+  <table>
+    <thead><tr><th>Decision</th><th>From → to</th><th>Approved by</th><th>At</th><th>Rationale</th></tr></thead>
+    <tbody>
+      <tr><td>approve</td><td><code>scaffold</code> → <code>research</code></td><td>mehran</td><td class="num">2026-07-17T16:40:00.000Z</td><td>Scaffold reconciliation passed: charter + data boundary posted; brief (kind 01) staged with scope IN/OUT named; baseline metric frame locked; framing question selected across all five store formats; no-PII / read-only boundary set; union notification sent.</td></tr>
+      <tr><td>approve</td><td><code>research</code> → <code>synthesis</code></td><td>mehran</td><td class="num">2026-07-31T15:20:00.000Z</td><td>Research reconciliation passed: 8/8 interviews; n=412 managers, n=1,893 crew post-stratified after critic-flagged weighting revision; 5 channel extracts on one 90-day window; 214 evidence IDs; critic PASS on all four research artifacts; zero PII.</td></tr>
+      <tr><td>approve</td><td><code>synthesis</code> → <code>delivery</code></td><td>mehran</td><td class="num">2026-08-21T14:05:00.000Z</td><td>Synthesis reconciliation passed: insight register, personas, ecosystem map, journeys, blueprint N001–N220 (PASS after 2 revisions), analysis report, ten proposals, deck (PASS after 1 revision). Delivery = package assembly + handover only; prototyping NOT executed.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>3 · Participant roster</h3>
+  <p style="font-size:13.5px">Participation is derived from durable ASD records only (artifact ownership and typed handoffs), not from channel presence.</p>
+  <table>
+    <thead><tr><th>Handle</th><th>Persona</th><th>Durable-record participation</th></tr></thead>
+    <tbody>
+      <tr><td><code>sd-orchestrator</code></td><td>Maya</td><td>1 artifact(s) owned (brief) · 2 handoff(s)</td></tr>
+      <tr><td><code>sd-researcher</code></td><td>Liam</td><td>3 artifact(s) owned (interviews, surveys, stakeholder map) · 1 handoff(s)</td></tr>
+      <tr><td><code>sd-synthesizer</code></td><td>Elena</td><td>3 artifact(s) owned (insight register, personas, ecosystem map) · 1 handoff(s)</td></tr>
+      <tr><td><code>sd-mapper</code></td><td>Kai</td><td>2 artifact(s) owned (journeys, blueprint) · 1 handoff(s)</td></tr>
+      <tr><td><code>sd-ideator</code></td><td>Rowan</td><td>1 artifact(s) owned (proposals) · 0 handoff(s)</td></tr>
+      <tr><td><code>sd-measurer</code></td><td>Aaron</td><td>2 artifact(s) owned (channels annex, analysis report) · 0 handoff(s)</td></tr>
+      <tr><td><code>sd-presenter</code></td><td>Talia</td><td>2 artifact(s) owned (deck, package index) · 0 handoff(s)</td></tr>
+      <tr><td><code>sd-critic</code></td><td>Marcus</td><td>13 review-veto-log records · is the review log</td></tr>
+      <tr><td>(human) <code>mehran</code></td><td>—</td><td>phase-gate approver on record (3 receipts)</td></tr>
+      <tr><td><code>codex-cli</code></td><td>—</td><td>observer — no durable record cites this advisor; did not post</td></tr>
+      <tr><td><code>kimi-cli</code></td><td>—</td><td>observer — no durable record cites this advisor; did not post</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:13px;color:var(--slate)">A Persona Pack definition is not a runtime identity. Mention routing requires the read-only identity audit and verified channel membership.</p>
+
+  <h3>4 · Artifact index</h3>
+  <table>
+    <thead><tr><th>Kind</th><th>Artifact</th><th>Status</th><th>Owner</th><th>Review</th><th class="num">Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="num">01</td><td><a href="brief.html">brief.html</a></td><td>final</td><td>orchestrator</td><td>pass</td><td class="num">40 · N501–N540</td></tr>
+      <tr><td class="num">26</td><td><a href="buzz-transcript.html">buzz-transcript.html</a> (this file)</td><td>final</td><td>owner</td><td>pass</td><td class="num">20 · N541–N560</td></tr>
+      <tr><td class="num">03</td><td><a href="research/interviews.html">research/interviews.html</a></td><td>final</td><td>researcher</td><td>pass</td><td class="num">26</td></tr>
+      <tr><td class="num">04</td><td><a href="research/surveys.html">research/surveys.html</a></td><td>final</td><td>researcher</td><td>pass (1 revision)</td><td class="num">18</td></tr>
+      <tr><td class="num">03/04</td><td><a href="research/channels.html">research/channels.html</a></td><td>final</td><td>measurer</td><td>pass</td><td class="num">24</td></tr>
+      <tr><td class="num">05</td><td><a href="stakeholder-map.html">stakeholder-map.html</a></td><td>final</td><td>researcher</td><td>pass</td><td class="num">14</td></tr>
+      <tr><td class="num">06</td><td><a href="ecosystem-map.html">ecosystem-map.html</a></td><td>final</td><td>synthesizer</td><td>pass</td><td class="num">18</td></tr>
+      <tr><td class="num">07</td><td><a href="insight-register.html">insight-register.html</a></td><td>final</td><td>synthesizer</td><td>pass</td><td class="num">40</td></tr>
+      <tr><td class="num">09</td><td><a href="persona-set.html">persona-set.html</a></td><td>final</td><td>synthesizer</td><td>pass</td><td class="num">20</td></tr>
+      <tr><td class="num">11</td><td><a href="journey-map.html">journey-map.html</a></td><td>final</td><td>mapper</td><td>pass</td><td class="num">32</td></tr>
+      <tr><td class="num">12</td><td><a href="service-blueprint.html">service-blueprint.html</a></td><td>final</td><td>mapper</td><td>pass (2 revisions)</td><td class="num">220 · N001–N220</td></tr>
+      <tr><td class="num">28+32</td><td><a href="analysis-report.html">analysis-report.html</a></td><td>final</td><td>measurer</td><td>pass</td><td class="num">36</td></tr>
+      <tr><td class="num">31</td><td><a href="proposals.html">proposals.html</a></td><td>final</td><td>ideator</td><td>pass</td><td class="num">26</td></tr>
+      <tr><td class="num">33</td><td><a href="slide-deck.html">slide-deck.html</a></td><td>final</td><td>presenter</td><td>pass (1 revision)</td><td class="num">14</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:13px;color:var(--slate)">Statuses follow the gate substrate: <code>final</code> = schema-valid, evidence-resolving, acceptance-passing, reviewed. Note counts are as recorded at delivery; per-artifact note ranges are printed inside each artifact. Blueprint, brief and transcript ranges are load-bearing and shown explicitly.</p>
+
+  <h3>5 · Index integrity</h3>
+  <p style="font-size:13px;color:var(--slate)">
+    Last updated: <span class="ts">2026-08-21T16:41:05.000Z</span> · Source: ASD workspace project directory · Generated offline; no relay was contacted and no Buzz state was mutated. Provenance: fictional composite engagement — every person, quote, figure and outcome is synthetic.
+  </p>
+</section>
+
+<footer>
+  Copperline 2000 · simulated Buzz transcript of <code>sd/copperline-2000</code> on the <code>tm</code> relay · fictional composite engagement · no real company, store, or person is described.<br>
+  Kind 26 channel-log · notes N541–N560 · brief: <a href="brief.html">brief.html</a> · canon: <a href="canon.md">canon.md</a> · article: <a href="../index.html">article 41</a> · print-friendly.
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Copperline 2000 — Research: Secondary Channel Data Pack</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --supp:#9333ea;
+    --data:#0891b2; --phys:#64748b; --wait:#94a3b8; --fail:#dc2626;
+    --ink:#0f172a; --line:#cbd5e1; --soft:#f1f5f9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#fff;color:var(--ink);
+    font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact}
+  .wrap{max-width:1080px;margin:0 auto;padding:26px 22px 90px}
+  a{color:var(--data)}
+  h1{font-size:27px;line-height:1.2;margin:6px 0 4px}
+  h2{font-size:20px;margin:40px 0 10px;border-bottom:2px solid var(--ink);padding-bottom:4px}
+  h3{font-size:16px;margin:16px 0 6px}
+  .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--phys);font-weight:700}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 2px}
+  .chip{font-size:11.5px;font-weight:600;border:1px solid var(--line);border-radius:99px;padding:2px 9px;background:var(--soft)}
+  .prov{border:2px solid var(--phys);border-radius:8px;padding:12px 16px;margin:14px 0;background:#f8fafc}
+  .prov strong{display:block;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--fail);margin-bottom:4px}
+  .prov p{margin:0;font-size:14px}
+  .legend{position:sticky;top:0;z-index:20;background:#fff;border-bottom:2px solid var(--ink);
+    padding:8px 0;margin:14px 0 6px;display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12.5px}
+  .legend b{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--phys)}
+  .sw{display:inline-block;width:11px;height:11px;border-radius:2px;vertical-align:-1px;margin-right:5px}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;margin:10px 0}
+  th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+  th{background:var(--soft);font-size:12.5px}
+  .note{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;font-weight:700;
+    color:#0e7490;background:#ecfeff;border:1px solid var(--data);border-radius:4px;padding:1px 6px;white-space:nowrap}
+  section.extract{border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:22px 0}
+  .ext-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:8px}
+  .bar-track{display:inline-block;width:150px;height:11px;background:#e2e8f0;border-radius:2px;vertical-align:middle}
+  .bar{display:inline-block;height:100%;border-radius:2px}
+  .verb{font-size:13.5px}
+  .verb li{margin:5px 0}
+  .verb em{font-style:normal;font-weight:600}
+  .verb .tag{font-size:11px;font-weight:700;color:#fff;border-radius:3px;padding:1px 6px;margin-right:6px}
+  .signals{background:var(--soft);border-left:4px solid var(--data);border-radius:0 6px 6px 0;padding:10px 14px;margin:12px 0 4px;font-size:14px}
+  .signals h3{margin:0 0 4px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--phys)}
+  .signals ul{margin:4px 0 2px 20px;padding:0}
+  .signals li{margin:3px 0}
+  .footnav{border-top:2px solid var(--ink);margin-top:40px;padding-top:14px;font-size:14px;display:flex;flex-wrap:wrap;gap:6px 22px}
+  .tiny{font-size:12.5px;color:var(--phys)}
+  @media print{.legend{position:static} body{font-size:12.5px} section.extract{page-break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="legend">
+  <b>Channel colour code</b>
+  <span><span class="sw" style="background:#2563eb"></span>Customer-experienced data</span>
+  <span><span class="sw" style="background:#16a34a"></span>Frontstage performance</span>
+  <span><span class="sw" style="background:#d97706"></span>Backstage operations</span>
+  <span><span class="sw" style="background:#9333ea"></span>Support / partner data</span>
+  <span><span class="sw" style="background:#0891b2"></span>Data &amp; systems</span>
+  <span><span class="sw" style="background:#64748b"></span>Physical evidence</span>
+  <span><span class="sw" style="background:#dc2626"></span>Fail-risk signal</span>
+</div>
+
+<p class="kicker">Copperline 2000 · Full-Operation Service Blueprint &amp; Field Study · Phase: Research</p>
+<h1>Secondary Channel Data Pack — five extracts over 90 days</h1>
+<div class="chips">
+  <span class="chip">Desk / telemetry research</span>
+  <span class="chip">Method ref 09/03 (Mapping Experiences — alignment research)</span>
+  <span class="chip">Window: 15 Feb – 15 May 2026 (varies per extract)</span>
+  <span class="chip">Defines evidence notes 301–320</span>
+</div>
+
+<div class="prov">
+  <strong>Provenance — read first</strong>
+  <p>Fictional composite engagement. Every person, quote, figure and outcome is synthetic. No real company, store, or person is described.</p>
+</div>
+
+<p style="font-size:14.5px">Five extracts complement the <a href="interviews.html">flagship interviews</a> and <a href="surveys.html">manager &amp; crew surveys</a>: VoiceBoard feedback, a POS service-time sample, mystery-shopper reports, aggregator rating exports, and contact-centre logs. Each extract closes with the signals it hands to synthesis; each data row is numbered into the engagement evidence ledger (this file defines notes 301–320; do not renumber). Synthesis lands in the <a href="../insight-register.html">insight register</a> and the <a href="../service-blueprint.html">service blueprint</a>.</p>
+
+<h2>Extract 1 — VoiceBoard customer feedback (90 days)</h2>
+<section class="extract">
+  <div class="ext-head">
+    <h3 style="margin:0">App reviews, receipt-QR surveys, aggregator rating text</h3>
+    <span class="chip">n = 28,417 items · 15 Feb – 15 May 2026</span>
+  </div>
+  <table>
+    <thead><tr><th>Taxonomy code</th><th>Items</th><th>Share</th><th>Bar</th><th>Month 1 share</th><th>Month 2 share</th><th>Month 3 share</th></tr></thead>
+    <tbody>
+      <tr><td>Order accuracy</td><td>8,809</td><td>31%</td><td><span class="bar-track"><span class="bar" style="width:100%;background:#2563eb"></span></span></td><td>30%</td><td>31%</td><td><b>32%</b></td></tr>
+      <tr><td>Wait time</td><td>6,820</td><td>24%</td><td><span class="bar-track"><span class="bar" style="width:77%;background:#2563eb"></span></span></td><td>25%</td><td>24%</td><td>24%</td></tr>
+      <tr><td>Missing items</td><td>3,978</td><td>14%</td><td><span class="bar-track"><span class="bar" style="width:45%;background:#2563eb"></span></span></td><td>13%</td><td>14%</td><td>14%</td></tr>
+      <tr><td>Cold food</td><td>3,126</td><td>11%</td><td><span class="bar-track"><span class="bar" style="width:35%;background:#dc2626"></span></span></td><td>11%</td><td>11%</td><td><b>12%</b></td></tr>
+      <tr><td>App / checkout</td><td>2,273</td><td>8%</td><td><span class="bar-track"><span class="bar" style="width:26%;background:#0891b2"></span></span></td><td>8%</td><td>8%</td><td>8%</td></tr>
+      <tr><td>Staff conduct</td><td>1,705</td><td>6%</td><td><span class="bar-track"><span class="bar" style="width:19%;background:#16a34a"></span></span></td><td>7%</td><td>6%</td><td>6%</td></tr>
+      <tr><td>Other</td><td>1,706</td><td>6%</td><td><span class="bar-track"><span class="bar" style="width:19%;background:#94a3b8"></span></span></td><td>6%</td><td>6%</td><td>4%</td></tr>
+      <tr><td><b>Total</b></td><td><b>28,417</b></td><td><b>100%</b></td><td>—</td><td><b>100%</b></td><td><b>100%</b></td><td><b>100%</b></td></tr>
+      <tr><td colspan="8" class="tiny">Monthly volumes: M1 (15 Feb–16 Mar) 9,214 · M2 (17 Mar–15 Apr) 9,633 · M3 (16 Apr–15 May) 9,570 — sum 28,417. Counts rounded independently from unrounded percentages; columns sum exactly. Channels: receipt-QR 46% · app review 31% · aggregator text imported via Route56 23%.</td></tr>
+    </tbody>
+  </table>
+  <ul class="verb">
+    <li><span class="tag" style="background:#2563eb">app review</span><em>"Love the chicken. Every single time there's a dip missing. EVERY time. It's a running joke in our house and not the fun kind."</em></li>
+    <li><span class="tag" style="background:#64748b">receipt QR</span><em>"Paid on the app, got to the counter, they had no idea my order existed. Stood there like an idiot for eight minutes."</em></li>
+    <li><span class="tag" style="background:#9333ea">Dashly</span><em>"Food great, arrived lukewarm. Driver waited ages at the shop, you can taste the wait."</em></li>
+    <li><span class="tag" style="background:#64748b">receipt QR</span><em>"Friday 12:40, waited 19 minutes for a two-piece meal. The board said 8. Just tell the truth on the board."</em></li>
+    <li><span class="tag" style="background:#2563eb">app review</span><em>"The app double-charged me and the refund took three days and two phone calls. The chicken is not that good."</em></li>
+    <li><span class="tag" style="background:#9333ea">Wheelio</span><em>"Quarter chicken with no slaw, no dip, and someone else's receipt in the bag. Impressive multitasking."</em></li>
+    <li><span class="tag" style="background:#2563eb">app review</span><em>"Kiosk is fine until it isn't — screen frozen twice this month, queue behind me, gave up and went elsewhere."</em></li>
+    <li><span class="tag" style="background:#64748b">receipt QR</span><em>"Server was lovely, genuinely lovely, but she was clearly on her own at 6pm on a Saturday. Sort your staffing out for her sake."</em></li>
+  </ul>
+  <table>
+    <thead><tr><th style="width:64px">Note</th><th style="width:38%">Observation</th><th>Reading</th><th>Anchor</th></tr></thead>
+    <tbody>
+      <tr><td><span class="note">N301</span></td><td>Order accuracy is the top code at 31% of 28,417 items (8,809) and grew 30→31→32% across the three months.</td><td>The largest and still-growing feedback category is accuracy, not speed — corroborating the interview-set finding that inaccuracy has become folk knowledge.</td><td>Order accuracy 91.4% (shopper) · customer NPS +31</td></tr>
+      <tr><td><span class="note">N302</span></td><td>Wait time holds at 24–25% of volume with a spike concentrated in M2 (launch month of the Firebasket LTO).</td><td>Promotion launches add a step-change to perceived wait that persists ~4 weeks beyond the promo's start; LTO chaos is customer-visible.</td><td>LTO readiness (manager survey Q4) · peaks 62%</td></tr>
+      <tr><td><span class="note">N303</span></td><td>Cold food rose 11→11→12% while missing items stayed flat at 13–14%; both codes are 2.3× over-represented in aggregator-imported text.</td><td>Cold food is a delivery-journey failure (hold time + courier wait 6.4 min), not a kitchen failure — the trend tracks aggregator volume growth.</td><td>Courier wait 6.4 min · aggregator mix 26% revenue</td></tr>
+      <tr><td><span class="note">N304</span></td><td>App/checkout holds at 8% with a stable signature: payment taken, order not transmitted to store.</td><td>A single failure mode dominates the app code; recovery work is pushed to the counter and the contact centre (refund code 38%).</td><td>VoiceBoard app/checkout 8% · Proposal 9</td></tr>
+    </tbody>
+  </table>
+  <div class="signals">
+    <h3>Signals for synthesis</h3>
+    <ul>
+      <li>Accuracy, not speed, is the number-one customer signal — pair with shopper accuracy data when sizing the recovery ladder.</li>
+      <li>Cold-food growth is a delivery-chain metric in disguise; treat it as a handover problem (proposal: One Copperline Handover), not a kitchen problem.</li>
+      <li>LTO launch months are visible in the feedback stream: build a launch-readiness gate into the Franchise Ops Bridge proposal.</li>
+      <li>Channel skew: negative-only response behaviour (per interview 06) means volumes measure annoyance, not satisfaction — never read VoiceBoard as NPS.</li>
+    </ul>
+  </div>
+</section>
+
+<h2>Extract 2 — POS service-time sample (120 stores, 28 days)</h2>
+<section class="extract">
+  <div class="ext-head">
+    <h3 style="margin:0">CopperPOS v7 order-to-handover telemetry</h3>
+    <span class="chip">n = 2.9M orders · 27 Apr – 24 May 2026</span>
+  </div>
+  <table>
+    <thead><tr><th>Sample stratum</th><th>Flagship</th><th>Standard</th><th>Food-court</th><th>Drive-thru</th><th>Kiosk</th><th>Total</th></tr></thead>
+    <tbody>
+      <tr><td>Stores sampled (proportional)</td><td>4</td><td>73</td><td>23</td><td>15</td><td>5</td><td><b>120</b></td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th>Service-time distribution (seconds)</th><th>P25</th><th>Median</th><th>P75</th><th>P90</th><th>Peak median</th><th>Off-peak median</th></tr></thead>
+    <tbody>
+      <tr><td>Dine-in, order-commenced → handover</td><td>268</td><td><b>342</b></td><td>451</td><td>618</td><td>371</td><td>288</td></tr>
+      <tr><td>Drive-thru window, order-point → hand-out</td><td>178</td><td><b>246</b></td><td>322</td><td><b>411</b></td><td>259</td><td>218</td></tr>
+      <tr><td>Kiosk order, first touch → payment</td><td>64</td><td><b>96</b></td><td>121</td><td>164</td><td>104</td><td>88</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th>Derived measure</th><th>Value</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr><td>Dine-in decomposition (median)</td><td>342s total</td><td>queue + order 142s · kitchen/wait 173s · handover 27s</td></tr>
+      <tr><td>Peak-window share of daily volume</td><td><b>62%</b></td><td>11:30–13:30 and 17:30–19:30, matching estate baseline</td></tr>
+      <tr><td>Order accuracy (proxy)</td><td>91.4%</td><td>Programme metric; POS-side proxy: item-void-after-payment on 4.9% of orders</td></tr>
+      <tr><td>Kiosk session abandonment</td><td>6.8%</td><td>Sessions started but not paid; peaks where screen timeout is shortest (travel-hub)</td></tr>
+      <tr><td>Error concentration</td><td>21%</td><td>Share of void events involving at least one order modification</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th style="width:64px">Note</th><th style="width:38%">Observation</th><th>Reading</th><th>Anchor</th></tr></thead>
+    <tbody>
+      <tr><td><span class="note">N305</span></td><td>Dine-in order-to-handover median 342s, P90 618s; queue+order consumes 142s of the median.</td><td>The largest dine-in component is pre-kitchen (queue and ordering), so perception of speed is set before food is cooked — matching the customer's 10–20 minute door-to-food experience.</td><td>Dine-in 36% of revenue · customer NPS +31</td></tr>
+      <tr><td><span class="note">N306</span></td><td>Drive-thru window median 246s vs 180s target, P90 411s; only 8% of drive-thru store-weeks post a sub-180s median.</td><td>The target is missed structurally, not episodically; tail behaviour (P90) is 2.3× target, aligning with manager self-report (82% rarely/never hit).</td><td>246s vs 180s · Proposal 2 Drive-Thru 180</td></tr>
+      <tr><td><span class="note">N307</span></td><td>Kiosk order median 96s with 6.8% abandonment, worst on short-timeout travel-hub screens.</td><td>Kiosks are the fastest ordering channel yet leak volume through abandonment — a fixable UX/accessibility defect, not a demand problem.</td><td>Proposal 8 Kiosk Accessibility Pass</td></tr>
+      <tr><td><span class="note">N308</span></td><td>62% of volume in two windows; item-void-after-payment 4.9%; modifications present in 21% of void events.</td><td>Peak concentration makes small per-order error rates expensive; modification handling is the single strongest accuracy correlate in transaction data.</td><td>Peaks 62% · accuracy 91.4%</td></tr>
+    </tbody>
+  </table>
+  <div class="signals">
+    <h3>Signals for synthesis</h3>
+    <ul>
+      <li>Perception gap quantified: measured 342s vs experienced 10–20 minutes — blueprint must model the queue, not just the kitchen.</li>
+      <li>Drive-thru 180 is a redesign of eleven 4-second losses (per interview 02), not one big delay; target the payment dip and hold-bin sequencing first.</li>
+      <li>Kiosk abandonment is cheap recovery volume; bundle with the accessibility remediation business case.</li>
+      <li>Modification handling is the highest-yield accuracy fix in the data — feed directly into the blueprint's order-taking lane.</li>
+    </ul>
+  </div>
+</section>
+
+<h2>Extract 3 — Mystery shopper (60 reports, 12 weeks)</h2>
+<section class="extract">
+  <div class="ext-head">
+    <h3 style="margin:0">Independent scorecard programme, sampled extract</h3>
+    <span class="chip">n = 60 visits · 2 Mar – 24 May 2026</span>
+  </div>
+  <table>
+    <thead><tr><th>Scorecard composite (/100) by format</th><th>Flagship</th><th>Standard</th><th>Food-court</th><th>Drive-thru</th><th>Kiosk</th></tr></thead>
+    <tbody>
+      <tr><td>Composite score</td><td><b>93.1</b></td><td>91.2</td><td>90.6</td><td>88.9</td><td><b>88.4</b></td></tr>
+      <tr><td>Visits in extract</td><td>9</td><td>26</td><td>13</td><td>8</td><td>4</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th>Top failure line items (110 failed items across 60 visits)</th><th>Count</th><th>Bar</th></tr></thead>
+    <tbody>
+      <tr><td>Upsell / current offer not made</td><td>21</td><td><span class="bar-track"><span class="bar" style="width:100%;background:#d97706"></span></span></td></tr>
+      <tr><td>Order readback not performed</td><td>18</td><td><span class="bar-track"><span class="bar" style="width:85.7%;background:#d97706"></span></span></td></tr>
+      <tr><td>Wait exceeded the time quoted</td><td>15</td><td><span class="bar-track"><span class="bar" style="width:71.4%;background:#dc2626"></span></span></td></tr>
+      <tr><td>Greeting / acknowledgement missing</td><td>12</td><td><span class="bar-track"><span class="bar" style="width:57.1%;background:#16a34a"></span></span></td></tr>
+      <tr><td>Waiting-area / table cleanliness</td><td>10</td><td><span class="bar-track"><span class="bar" style="width:47.6%;background:#64748b"></span></span></td></tr>
+      <tr><td>Name badge not worn</td><td>9</td><td><span class="bar-track"><span class="bar" style="width:42.9%;background:#64748b"></span></span></td></tr>
+      <tr><td>Condiment / dip station unstocked</td><td>8</td><td><span class="bar-track"><span class="bar" style="width:38.1%;background:#64748b"></span></span></td></tr>
+      <tr><td>Receipt not offered</td><td>7</td><td><span class="bar-track"><span class="bar" style="width:33.3%;background:#0891b2"></span></span></td></tr>
+      <tr><td>Courier waiting unacknowledged at counter</td><td>6</td><td><span class="bar-track"><span class="bar" style="width:28.6%;background:#dc2626"></span></span></td></tr>
+      <tr><td>Kiosk screen fault / printer jam observed</td><td>4</td><td><span class="bar-track"><span class="bar" style="width:19%;background:#0891b2"></span></span></td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th style="width:64px">Note</th><th style="width:38%">Observation</th><th>Reading</th><th>Anchor</th></tr></thead>
+    <tbody>
+      <tr><td><span class="note">N309</span></td><td>Composite scores spread 93.1 (flagship) → 88.4 (kiosk); formats with fewer crew per shift score lowest.</td><td>Service consistency is resourced, not trained: the score gradient tracks the crew-per-shift column of the format table almost linearly.</td><td>Formats: 18/9/7/8/4 crew at peak</td></tr>
+      <tr><td><span class="note">N310</span></td><td>Order accuracy 91.4% programme YTD (1,240 visits); 55/60 correct in this extract; error profile: missing dip 41% of errors, modification ignored 27%, wrong item 22%, wrong size 10%.</td><td>The accuracy number is dominated by two mechanical failure modes (dip, mods) — both process-fixable rather than training-fixable.</td><td>Order accuracy 91.4% · VoiceBoard accuracy 31%</td></tr>
+      <tr><td><span class="note">N311</span></td><td>Top two failure items are scripted-sales basics: upsell missed (21) and readback skipped (18), together 35% of all failed items.</td><td>Scripted service steps decay under peak load exactly where accuracy is also worst — the same staffing constraint surfaces as both error and disengagement.</td><td>Peak staffing (manager Q7: 40% cannot staff peaks)</td></tr>
+      <tr><td><span class="note">N312</span></td><td>Wait exceeded promise in 15 visits; couriers visibly waiting unacknowledged in 6.</td><td>Promise-setting and handover acknowledgement are the two frontstage behaviours that most damage trust per shopper commentary — both are design defaults, not effort.</td><td>Promise gap · Proposal 3 / Recovery Ladder</td></tr>
+    </tbody>
+  </table>
+  <div class="signals">
+    <h3>Signals for synthesis</h3>
+    <ul>
+      <li>Score-by-format gradient follows staffing density — blueprint should treat crew-per-shift as a frontstage constraint variable.</li>
+      <li>Accuracy errors cluster into "missing dip" and "modification ignored" — candidates for physical/prompt fixes rather than retraining.</li>
+      <li>Promise overstatement ("the board said 8") converts recoverable waits into trust damage; quote honest times at peak.</li>
+      <li>Shopper evidence of courier invisibility independently corroborates courier telemetry and interviews.</li>
+    </ul>
+  </div>
+</section>
+
+<h2>Extract 4 — Aggregator rating exports (90 days)</h2>
+<section class="extract">
+  <div class="ext-head">
+    <h3 style="margin:0">Dashly, Wheelio, Pedalr — ratings, complaints, handover telemetry via Route56</h3>
+    <span class="chip">n = 27,199 ratings · 15 Feb – 15 May 2026</span>
+  </div>
+  <table>
+    <thead><tr><th>Aggregator</th><th>Rating (in-app)</th><th>Ratings n</th><th>Handover breakage</th></tr></thead>
+    <tbody>
+      <tr><td>Dashly</td><td><b>4.4</b> / 5</td><td>11,402</td><td>0.5%</td></tr>
+      <tr><td>Wheelio</td><td><b>4.2</b> / 5</td><td>8,917</td><td><b>0.9%</b></td></tr>
+      <tr><td>Pedalr</td><td><b>4.3</b> / 5</td><td>6,880</td><td>0.8%</td></tr>
+      <tr><td><b>Weighted network</b></td><td><b>4.3</b> / 5</td><td><b>27,199</b></td><td><b>0.7%</b></td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th>Complaint mix (1–3★ reviews, n=3,538)</th><th>Share</th><th>n</th><th>Bar</th></tr></thead>
+    <tbody>
+      <tr><td>Cold food</td><td>34%</td><td>1,203</td><td><span class="bar-track"><span class="bar" style="width:100%;background:#dc2626"></span></span></td></tr>
+      <tr><td>Late delivery</td><td>27%</td><td>955</td><td><span class="bar-track"><span class="bar" style="width:79.4%;background:#dc2626"></span></span></td></tr>
+      <tr><td>Missing items</td><td>19%</td><td>672</td><td><span class="bar-track"><span class="bar" style="width:55.9%;background:#dc2626"></span></span></td></tr>
+      <tr><td>Wrong order received</td><td>11%</td><td>389</td><td><span class="bar-track"><span class="bar" style="width:32.4%;background:#dc2626"></span></span></td></tr>
+      <tr><td>Store / courier service</td><td>5%</td><td>177</td><td><span class="bar-track"><span class="bar" style="width:14.7%;background:#16a34a"></span></span></td></tr>
+      <tr><td>Packaging failure</td><td>4%</td><td>142</td><td><span class="bar-track"><span class="bar" style="width:11.8%;background:#64748b"></span></span></td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th>Courier handover telemetry (Route56 check-ins, n=41,900 pickups)</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Wait-at-counter median</td><td><b>6.4 minutes</b> (flagship 8.1 · food-court 6.9 · standard 6.3 · kiosk 5.8 · drive-thru 5.2)</td></tr>
+      <tr><td>"Ready" ping ahead of physical staging</td><td>median 4.5 minutes; 22% of pickups pinged more than 8 minutes early</td></tr>
+      <tr><td>Handover breakage (network)</td><td><b>0.7%</b> of delivery orders — remade, lost or never-received after courier handoff</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th style="width:64px">Note</th><th style="width:38%">Observation</th><th>Reading</th><th>Anchor</th></tr></thead>
+    <tbody>
+      <tr><td><span class="note">N313</span></td><td>Ratings spread 4.4 / 4.2 / 4.3 across the three aggregators; complaint mix of low reviews is dominated by cold food 34% + late 27%.</td><td>Two-thirds of delivery dissatisfaction is time-and-temperature, split across store hold and courier journey — neither aggregator can see the whole chain.</td><td>Aggregator rating 4.3 · app+delivery 26% revenue</td></tr>
+      <tr><td><span class="note">N314</span></td><td>Courier wait-at-counter median 6.4 minutes, worst at flagships (8.1) where order volume is highest.</td><td>The busiest stores — Copperline's brand flagships — run the worst handovers; volume without a staging standard degrades the highest-margin channel.</td><td>Proposal 3 One Copperline Handover</td></tr>
+      <tr><td><span class="note">N315</span></td><td>Breakage 0.7% overall, but 0.5% (Dashly) vs 0.9% (Wheelio); stickerless/unlabelled bag formats over-represented in incidents.</td><td>Labelling practice differs by aggregator integration; standardising the label (not the courier) is the highest-leverage breakage fix.</td><td>0.7% breakage · interviews 02/05</td></tr>
+      <tr><td><span class="note">N316</span></td><td>Ready-ping leads physical staging by median 4.5 minutes; 22% of pickups pinged 8+ minutes early.</td><td>The digital promise is systematically dishonest, guaranteeing perceived lateness for couriers and customers even when kitchen performance is on target.</td><td>Route56 ready-state · Proposal 3</td></tr>
+    </tbody>
+  </table>
+  <div class="signals">
+    <h3>Signals for synthesis</h3>
+    <ul>
+      <li>One handover standard (rack, label, honest ready-ping) addresses three complaint codes at once — cold food, late delivery, wrong order.</li>
+      <li>Flagships are the worst wait environment: pilot the handover standard at a flagship where the pain (and the brand exposure) is maximal.</li>
+      <li>The ready-ping is the cheapest fix in the whole data pack: change what the tablet claims, and perceived lateness falls without touching the kitchen.</li>
+      <li>Wheelio's 4.2 sits at the visibility threshold franchisees describe — rating-driven discovery makes breakage a commercial, not operational, problem.</li>
+    </ul>
+  </div>
+</section>
+
+<h2>Extract 5 — Contact-centre logs (2 weeks)</h2>
+<section class="extract">
+  <div class="ext-head">
+    <h3 style="margin:0">Voice channel, Port Meridian contact centre</h3>
+    <span class="chip">n = 3,206 calls · 4–17 May 2026</span>
+  </div>
+  <table>
+    <thead><tr><th>Reason code</th><th>Share</th><th>Calls</th><th>Bar</th></tr></thead>
+    <tbody>
+      <tr><td>Refund request / dispute</td><td><b>38%</b></td><td>1,218</td><td><span class="bar-track"><span class="bar" style="width:100%;background:#2563eb"></span></span></td></tr>
+      <tr><td>Order status / late delivery</td><td>22%</td><td>705</td><td><span class="bar-track"><span class="bar" style="width:57.9%;background:#2563eb"></span></span></td></tr>
+      <tr><td>Missing items</td><td>14%</td><td>449</td><td><span class="bar-track"><span class="bar" style="width:36.8%;background:#2563eb"></span></span></td></tr>
+      <tr><td>App / account issue</td><td>9%</td><td>288</td><td><span class="bar-track"><span class="bar" style="width:23.7%;background:#0891b2"></span></span></td></tr>
+      <tr><td>Wrong order received</td><td>8%</td><td>257</td><td><span class="bar-track"><span class="bar" style="width:21.1%;background:#dc2626"></span></span></td></tr>
+      <tr><td>Feedback / non-refund complaint</td><td>5%</td><td>160</td><td><span class="bar-track"><span class="bar" style="width:13.2%;background:#16a34a"></span></span></td></tr>
+      <tr><td>Other</td><td>4%</td><td>129</td><td><span class="bar-track"><span class="bar" style="width:10.5%;background:#94a3b8"></span></span></td></tr>
+      <tr><td><b>Total</b></td><td><b>100%</b></td><td><b>3,206</b></td><td>—</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th>Operational measure</th><th>Value</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr><td>Average handle time (AHT)</td><td><b>4m51s</b></td><td>Aggregator-order calls 6m07s · store-issue calls 5m12s · app/account 3m04s</td></tr>
+      <tr><td>Escalation rate</td><td><b>12%</b> (385 calls)</td><td>46% of delivery-related calls need store + aggregator data merge — no single order-state screen exists</td></tr>
+      <tr><td>Recovery band usage (refund-code calls, n=1,218)</td><td>Side band 41% (499) · meal band 23% (280) · full refund 27% (329) · declined/pending 9% (110)</td><td>Counter-level comps (free sides at till) are not logged and cannot be counted</td></tr>
+      <tr><td>Repeat contact within 7 days</td><td>17%</td><td>Predominantly the same refund; refund-to-card cycle median 2.9 days</td></tr>
+      <tr><td>Post-call CSAT</td><td>3.9 / 5</td><td>n=1,104 ratings</td></tr>
+      <tr><td>Arrival pattern</td><td>Doubles 17:30–19:30</td><td>Mirrors store peak windows with ~1 hour lag; Monday is the weekly refund peak</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <thead><tr><th style="width:64px">Note</th><th style="width:38%">Observation</th><th>Reading</th><th>Anchor</th></tr></thead>
+    <tbody>
+      <tr><td><span class="note">N317</span></td><td>3,206 calls in 14 days; refunds lead at 38% (1,218), followed by order-status 22% and missing items 14%.</td><td>The voice channel is the downstream sum of upstream defects: 74% of volume (refund + status + missing + wrong) traces to store-side accuracy and handover.</td><td>Refund 38% · interviews 06/07</td></tr>
+      <tr><td><span class="note">N318</span></td><td>AHT 4m51s overall, but aggregator-order calls run 6m07s — 79% of the excess is time spent reconciling two systems' order states.</td><td>Handle time is a data-architecture symptom; one joined order-state view is worth more than any coaching plan.</td><td>AHT 4m51s · Route56 gap</td></tr>
+      <tr><td><span class="note">N319</span></td><td>Escalation 12% (385 calls); drivers: aggregator/store blame (41%), band-authority ceiling (33%), system data conflicts (26%).</td><td>Two-thirds of escalations are structural (no shared truth, gated authority), not judgement calls — both are design-fixable.</td><td>Escalation 12% · Proposal 9</td></tr>
+      <tr><td><span class="note">N320</span></td><td>Recovery bands used: side 41% / meal 23% / refund 27%; repeat contact 17%; counter comps unlogged.</td><td>Recovery exists at three altitudes (counter, phone, refund) with no shared ladder or telemetry — the Recovery Ladder proposal standardises bands and finally counts the cheap ones.</td><td>Proposal 9 Recovery Ladder · repeat 17%</td></tr>
+    </tbody>
+  </table>
+  <div class="signals">
+    <h3>Signals for synthesis</h3>
+    <ul>
+      <li>Treat the contact centre as a defect sensor: its reason codes are a live map of store and handover failures.</li>
+      <li>Join VoiceBoard text, call reason codes and POS voids on order ID — all three describe the same 91.4% accuracy problem from different altitudes.</li>
+      <li>Escalation and repeat contact both collapse if refund cycle time drops below 24 hours and band authority moves down one level.</li>
+      <li>Log the counter comps: the cheapest, fastest recovery tier is currently invisible to the business case.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="footnav">
+  <span><b>Artifact set:</b></span>
+  <a href="interviews.html">Flagship interviews</a>
+  <a href="surveys.html">Manager &amp; crew surveys</a>
+  <a href="../service-blueprint.html">Service blueprint</a>
+  <a href="../insight-register.html">Insight register</a>
+</div>
+<p class="tiny">Copperline 2000 · fictional composite engagement · research phase artifacts · notes 301–320 defined in this file.</p>
+
+</div>
+</body>
+</html>

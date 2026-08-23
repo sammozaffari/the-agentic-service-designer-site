@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journey Map — Copperline 2000 · The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --phys:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#1e293b; --mut:#64748b; --bg:#f8fafc; --line:#e2e8f0; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 22px 60px}
+  .provenance{background:#fffbeb;border:1px solid #f59e0b;border-left:6px solid #d97706;
+    border-radius:8px;padding:12px 16px;margin:14px 0 26px;font-size:13.5px;color:#78350f}
+  .provenance strong{color:#92400e}
+  .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:0 0 6px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px}
+  .sub{color:var(--mut);margin:0 0 14px;font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mut)}
+  .chip.kind{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
+  nav.sibs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px;font-size:12.5px}
+  nav.sibs a{text-decoration:none;color:#334155;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  nav.sibs a.here{background:#1e293b;color:#fff;border-color:#1e293b}
+  h2{font-size:20px;margin:36px 0 10px;padding-top:10px;border-top:2px solid var(--line)}
+  h3{font-size:16px;margin:18px 0 6px}
+  p{margin:8px 0}
+  .legend{position:sticky;top:0;z-index:20;background:rgba(248,250,252,.96);backdrop-filter:blur(3px);
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-wrap:wrap;gap:12px;
+    font-size:11.5px;color:#334155;margin:0 0 20px}
+  .legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+  .n-wait{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px;
+    background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px)}
+  .n-fail{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid var(--fail);vertical-align:-1px;margin-right:4px}
+  .n-hand{display:inline-block;width:12px;height:12px;border:2px dashed #475569;border-radius:3px;vertical-align:-2px;margin-right:4px}
+  .n-dec{display:inline-block;width:9px;height:9px;background:#475569;transform:rotate(45deg);vertical-align:0;margin-right:6px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:12.5px;table-layout:fixed}
+  th{background:#f1f5f9;text-align:left;padding:8px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#475569;border-bottom:2px solid var(--line)}
+  th.stage{background:#1e293b;color:#fff;font-size:12px;letter-spacing:.02em;text-transform:none}
+  th.stage .t{display:block;font-size:10.5px;color:#cbd5e1;font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+  th.rowlab{width:118px}
+  td{padding:8px 8px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+  td:last-child{border-right:none}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#f8fafc}
+  td.rowlab{background:#f1f5f9;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .lane-cust td .a{color:var(--cust);font-weight:600}
+  .lane-front td .a{color:var(--front)}
+  .lane-back td .a{color:var(--back)}
+  .lane-phys td .a{color:var(--phys)}
+  .sys{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;
+    color:#0e7490;background:#ecfeff;border:1px solid #a5f3fc;border-radius:4px;padding:0 5px;margin:1px 1px}
+  .spark{display:flex;flex-direction:column;align-items:center;gap:3px}
+  .spark .bar{width:20px;border-radius:3px 3px 0 0}
+  .spark .sc{font-size:10px;font-weight:700;color:#64748b}
+  .chipnode{display:inline-block;font-size:10px;font-weight:700;border-radius:999px;padding:1px 7px;margin:1px 1px;white-space:nowrap}
+  .c-wait{background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px);color:#334155}
+  .c-fail{border:2px solid var(--fail);color:var(--fail);background:#fff}
+  .c-hand{border:2px dashed #475569;color:#334155;background:#fff}
+  .c-dec{border:1.5px solid #475569;color:#fff;background:#475569}
+  .ev{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;color:#0e7490}
+  .note{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:#0e7490;white-space:nowrap}
+  .note-desc{font-size:12.5px;color:#475569}
+  .rubric{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0;font-size:12px}
+  .rub{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px}
+  .rub .bar{width:14px;height:34px;border-radius:3px 3px 0 0;flex:0 0 auto}
+  footer{margin-top:40px;padding-top:14px;border-top:2px solid var(--line);font-size:12.5px;color:var(--mut)}
+  @media (max-width:900px){table{font-size:11px}th.rowlab{width:74px}.wrap{padding:14px}}
+  @media print{
+    body{background:#fff;font-size:10px}
+    .wrap{max-width:none;padding:0}
+    .legend{position:static;backdrop-filter:none}
+    nav.sibs{display:none}
+    tr{break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+    h2{break-after:avoid}
+    table{table-layout:auto}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="provenance"><strong>Data boundary.</strong> Fictional composite engagement. Every person, quote, figure and outcome is synthetic. No real company, store, or person is described.</p>
+
+  <p class="kicker">Copperline 2000 · Full-Operation Service Blueprint &amp; Field Study · Artifact 11</p>
+  <h1>Journey Map</h1>
+  <p class="sub">Two journeys in one frame: a customer's drive-thru run and a crew member's closing shift — because the second is the machinery of the first. Devon's Thursday and Grace's Tuesday are the same 17:30–19:30 peak seen from both sides of the counter.</p>
+
+  <div class="chips">
+    <span class="chip kind">Template kind 11 · journey-map</span>
+    <span class="chip">Book refs 09/04 · 08/04</span>
+    <span class="chip">Phase: Synthesis (week 4)</span>
+    <span class="chip">Journey notes N401–N420</span>
+    <span class="chip">Canon: canon.md §4, §6</span>
+  </div>
+
+  <nav class="sibs">
+    <a href="brief.html">Brief</a><a href="research/interviews.html">Interviews</a><a href="research/surveys.html">Surveys</a><a href="research/channels.html">Channels</a><a href="stakeholder-map.html">Stakeholder Map</a><a href="ecosystem-map.html">Ecosystem Map</a><a href="insight-register.html">Insight Register</a><a href="persona-set.html">Personas</a><a href="service-blueprint.html">Service Blueprint</a><a href="analysis-report.html">Analysis</a><a href="slide-deck.html">Deck</a><a href="proposals.html">Proposals</a><a href="buzz-transcript.html">Buzz Log</a>
+  </nav>
+
+  <div class="legend">
+    <span><span class="sw" style="background:#2563eb"></span>Journey-subject actions</span>
+    <span><span class="sw" style="background:#16a34a"></span>Frontstage</span>
+    <span><span class="sw" style="background:#d97706"></span>Backstage</span>
+    <span><span class="sw" style="background:#0891b2"></span>Systems &amp; data</span>
+    <span><span class="sw" style="background:#64748b"></span>Physical evidence</span>
+    <span><span class="n-wait"></span>Wait</span>
+    <span><span class="n-fail"></span>Fail-risk</span>
+    <span><span class="n-hand"></span>Handoff</span>
+    <span><span class="n-dec"></span>Decision</span>
+    <span style="margin-left:auto">Emotion −2 … +2 (see rubric)</span>
+  </div>
+
+  <div class="rubric">
+    <div class="rub"><span class="bar" style="height:34px;background:#16a34a"></span>+2 delighted</div>
+    <div class="rub"><span class="bar" style="height:26px;background:#16a34a;opacity:.75"></span>+1 glad</div>
+    <div class="rub"><span class="bar" style="height:18px;background:#94a3b8"></span>0 neutral</div>
+    <div class="rub"><span class="bar" style="height:12px;background:#d97706"></span>−1 irritated</div>
+    <div class="rub"><span class="bar" style="height:7px;background:#dc2626"></span>−2 failed</div>
+  </div>
+
+  <!-- ================= JOURNEY A: CUSTOMER ================= -->
+  <h2>1. Journey A — Customer: "Devon's Thursday drive-thru"</h2>
+  <p>Devon Carter (persona-set.html), Thursday 17:40, two kids in the back, one family combo, six minutes of tolerance. Evidence: drive-thru lane camera counts and timing from the 120-store POS sample and 60 mystery-shopper reports (research/channels.html); stage annotations N401–N408.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="rowlab stage" style="background:#f1f5f9;color:#475569">Stage</th>
+        <th class="stage">1. Trigger &amp; decision<span class="t">17:15 · car, school pickup</span></th>
+        <th class="stage">2. Approach &amp; lane entry<span class="t">17:38 · junction, lane</span></th>
+        <th class="stage">3. Order at speaker<span class="t">17:41 · lane speaker</span></th>
+        <th class="stage">4. Queue &amp; wait<span class="t">17:42–17:46 · lane queue</span></th>
+        <th class="stage">5. Pay &amp; pickup<span class="t">17:46 · window</span></th>
+        <th class="stage">6. Bag check<span class="t">17:47 · window</span></th>
+        <th class="stage">7. Drive &amp; eat<span class="t">17:48 → · motorway</span></th>
+        <th class="stage">8. Post-visit<span class="t">19:30 · sofa, app</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="lane-emotion">
+        <td class="rowlab">Emotion</td>
+        <td><div class="spark"><span class="bar" style="height:26px;background:#16a34a;opacity:.75"></span><span class="sc">+1</span></div></td>
+        <td><div class="spark"><span class="bar" style="height:18px;background:#94a3b8"></span><span class="sc">0</span></div></td>
+        <td><div class="spark"><span class="bar" style="height:12px;background:#d97706"></span><span class="sc">−1</span></div></td>
+        <td><div class="spark"><span class="bar" style="height:7px;background:#dc2626"></span><span class="sc">−2</span></div></td>
+        <td><div class="spark"><span class="bar" style="height:12px;background:#d97706"></span><span class="sc">−1</span></div></td>
+        <td><div class="spark"><span class="bar" style="height:7px;background:#dc2626"></span><span class="sc">−2</span></div></td>
+        <td><div class="spark"><span class="bar" style="height:26px;background:#16a34a;opacity:.75"></span><span class="sc">+1</span></div></td>
+        <td><div class="spark"><span class="bar" style="height:18px;background:#94a3b8"></span><span class="sc">0</span></div></td>
+      </tr>
+      <tr class="lane-cust">
+        <td class="rowlab">Devon's actions</td>
+        <td><span class="a">Decides on Copperline en route; app coupon screenshot ready</span></td>
+        <td><span class="a">Counts cars in lane — four is his limit tonight</span></td>
+        <td><span class="a">Orders family combo from memory over kids' noise</span></td>
+        <td><span class="a">Watches the grill through the window, checks watch, quiets the kids</span></td>
+        <td><span class="a">Pays contactless, coupon fails at window, pays full price to keep moving</span></td>
+        <td><span class="a">Quick bag-check at the shelf: missing dip and one wrong drink</span></td>
+        <td><span class="a">Hands food back over the seat; discovers the missing dip three exits later</span></td>
+        <td><span class="a">Scans receipt QR; abandons the form at page two</span></td>
+      </tr>
+      <tr class="lane-phys">
+        <td class="rowlab">Touchpoints</td>
+        <td><span class="a">App (offer screen)</span></td>
+        <td><span class="a">Lane signage, menu boards</span></td>
+        <td><span class="a">Lane speaker + order screen</span></td>
+        <td><span class="a">Queue view of kitchen, grill glow</span></td>
+        <td><span class="a">Window, card reader, cashier</span></td>
+        <td><span class="a">Bag, tray shelf, receipt</span></td>
+        <td><span class="a">Packaging, napkins, car</span></td>
+        <td><span class="a">Receipt QR, VoiceBoard form</span></td>
+      </tr>
+      <tr class="lane-front">
+        <td class="rowlab">Frontstage</td>
+        <td><span class="a">—</span></td>
+        <td><span class="a">Greeting board, lane lights</span></td>
+        <td><span class="a">Order-taker (Bo) repeats back — half-heard</span></td>
+        <td><span class="a">Visible kitchen bustle; no wait signal</span></td>
+        <td><span class="a">Window crew: payment + apology for coupon</span></td>
+        <td><span class="a">Window crew offers the missing drink "if you pull in"</span></td>
+        <td><span class="a">—</span></td>
+        <td><span class="a">— (no one is frontstage here; see fail-risk)</span></td>
+      </tr>
+      <tr class="lane-back">
+        <td class="rowlab">Backstage &amp; systems</td>
+        <td><span class="a">—</span></td>
+        <td><span class="a"><span class="sys">CopperPOS v7</span> lane screens open</span></td>
+        <td><span class="a"><span class="sys">CopperPOS v7</span> keystroke capture; no confirm display in this lane config</span></td>
+        <td><span class="a">Grill staging; <span class="sys">StockBeak</span> portion queue</span></td>
+        <td><span class="a">Coupon lookup fails against <span class="sys">CopperPOS v7</span> promo table</span></td>
+        <td><span class="a">Packer (Grace) is already on the next order</span></td>
+        <td><span class="a">—</span></td>
+        <td><span class="a"><span class="sys">VoiceBoard</span> ingest; form routes to no owner</span></td>
+      </tr>
+      <tr>
+        <td class="rowlab">Pain / risk</td>
+        <td></td>
+        <td><span class="chipnode c-wait">wait: lane count guess</span></td>
+        <td><span class="chipnode c-fail">fail-risk: misheard order (accuracy 91.4%)</span></td>
+        <td><span class="chipnode c-wait">wait: median 246s vs 180s target</span></td>
+        <td><span class="chipnode c-fail">fail-risk: coupon dead-end</span></td>
+        <td><span class="chipnode c-fail">fail-risk: incomplete bag</span> <span class="chipnode c-hand">handoff: packer → window</span></td>
+        <td><span class="chipnode c-fail">fail-risk: error found too late to fix</span></td>
+        <td><span class="chipnode c-fail">fail-risk: feedback vanishes</span></td>
+      </tr>
+      <tr>
+        <td class="rowlab">Evidence</td>
+        <td class="ev">N305, N401</td>
+        <td class="ev">N305, N402</td>
+        <td class="ev">N312, N403</td>
+        <td class="ev">N305, N312, N404</td>
+        <td class="ev">N307, N405</td>
+        <td class="ev">N312, N406</td>
+        <td class="ev">N407</td>
+        <td class="ev">N308, N408</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Reading journey A</h3>
+  <p>The curve's floor is structural, not personal: stage 4 is the 246s median window time Devon experiences as a stopped car, and stage 6 is the accuracy gap (91.4% mystery-shopper) landing in a moving vehicle where recovery is impossible. P2 attacks stages 3–5; P9 exists for stages 6–8 — today, an error found on the motorway has no recovery path at all.</p>
+
+  <!-- ================= JOURNEY B: CREW ================= -->
+  <h2>2. Journey B — Crew: "Grace's Tuesday close"</h2>
+  <p>Grace Mwangi (persona-set.html), crew member, 8 months, Harbourgate Flagship #14. The shift lifecycle from app-check to swap-request, one Tuesday. Evidence: her interview and the shadowed close shift (research/interviews.html), crew survey open-ends (research/surveys.html); stage annotations N409–N416.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="rowlab stage" style="background:#f1f5f9;color:#475569">Stage</th>
+        <th class="stage">1. Check the app<span class="t">Sun 21:00 + Tue 11:00</span></th>
+        <th class="stage">2. Arrive &amp; clock in<span class="t">15:30 · back door</span></th>
+        <th class="stage">3. Stations &amp; handover-in<span class="t">15:45 · grill line</span></th>
+        <th class="stage">4. Peak service<span class="t">17:30–19:30 · all stations</span></th>
+        <th class="stage">5. Break realities<span class="t">19:55 · 12 of 30 min</span></th>
+        <th class="stage">6. Close-down<span class="t">21:30 · grill + pack</span></th>
+        <th class="stage">7. Q-Pulse logging<span class="t">22:40 · office</span></th>
+        <th class="stage">8. Swap request<span class="t">23:05 · bus stop</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="lane-emotion">
+        <td class="rowlab">Emotion</td>
+        <td><div class="spark"><span class="bar" style="height:12px;background:#d97706"></span><span class="sc">−1</span></div></td>
+        <td><div class="spark"><span class="bar" style="height:18px;background:#94a3b8"></span><span class="sc">0</span></div></td>
+        <td><div class="spark"><span class="bar" style="height:12px;background:#d97706"></span><span class="sc">−1</span></div></td>
+        <td><div class="spark"><span class="bar" style="height:7px;background:#dc2626"></span><span class="sc">−2</span></div></td>
+        <td><div class="spark"><span class="bar" style="height:7px;background:#dc2626"></span><span class="sc">−2</span></div></td>
+        <td><div class="spark"><span class="bar" style="height:12px;background:#d97706"></span><span class="sc">−1</span></div></td>
+        <td><div class="spark"><span class="bar" style="height:12px;background:#d97706"></span><span class="sc">−1</span></div></td>
+        <td><div class="spark"><span class="bar" style="height:12px;background:#d97706"></span><span class="sc">−1</span></div></td>
+      </tr>
+      <tr class="lane-cust">
+        <td class="rowlab">Grace's actions</td>
+        <td><span class="a">Opens ShiftOrbit for Tuesday's roster; still unpublished Sunday night, guesses 15:30 start</span></td>
+        <td><span class="a">Clocks in on the crew tablet; checks the swap channel — her Saturday request has no reply yet</span></td>
+        <td><span class="a">Takes grill station from the lunch crew; receives a 90-second verbal handover between orders</span></td>
+        <td><span class="a">Runs grill + helps pack aggregator bags; learns new-starter Sam on the fly between batches</span></td>
+        <td><span class="a">Takes a 12-minute fragment of her 30-minute break at 19:55 so the pack station isn't uncovered</span></td>
+        <td><span class="a">Scrapes and cleans down the grill, logs waste into StockBeak, restocks for morning</span></td>
+        <td><span class="a">Fills in a whole shift's temperature checks in one sitting so the dashboard "goes green"</span></td>
+        <td><span class="a">On the bus home, re-sends her Saturday swap into the group chat and tags Bo</span></td>
+      </tr>
+      <tr class="lane-back">
+        <td class="rowlab">Backstage (managers)</td>
+        <td><span class="a">Aisha rebuilds the roster by hand (Thursday ritual spilling into Sunday)</span></td>
+        <td><span class="a">Aisha adjusts two late swaps on the fly</span></td>
+        <td><span class="a">Bo runs the line check; temps taken but not yet logged</span></td>
+        <td><span class="a">Aisha fire-drill-coaches Sam between orders; drive-thru timer pressure relayed to grill</span></td>
+        <td><span class="a">Coverage gap: no relief crew scheduled for the break window</span></td>
+        <td><span class="a">Manager cash-up in office; close checklist handed to Bo</span></td>
+        <td><span class="a">Nobody reviews the timing of Grace's entries — completion is the only measured thing (96.2%)</span></td>
+        <td><span class="a">Rework probability: 31% of swaps bounce back to managers</span></td>
+      </tr>
+      <tr>
+        <td class="rowlab">Systems</td>
+        <td><span class="sys">ShiftOrbit</span></td>
+        <td><span class="sys">ShiftOrbit</span> <span class="sys">CopperPOS v7</span></td>
+        <td><span class="sys">Q-Pulse</span> <span class="sys">CopperPOS v7</span></td>
+        <td><span class="sys">CopperPOS v7</span> <span class="sys">Route56</span> <span class="sys">StockBeak</span></td>
+        <td><span class="sys">ShiftOrbit</span> (break plan ignored)</td>
+        <td><span class="sys">StockBeak</span></td>
+        <td><span class="sys">Q-Pulse</span></td>
+        <td><span class="sys">ShiftOrbit</span> (swap flow unused) + group chat</td>
+      </tr>
+      <tr>
+        <td class="rowlab">Waits / risks</td>
+        <td><span class="chipnode c-wait">wait: roster &lt;72h out (41% of stores)</span></td>
+        <td></td>
+        <td><span class="chipnode c-hand">handoff: lunch crew → Grace, 90 seconds</span></td>
+        <td><span class="chipnode c-fail">fail-risk: 62% of daily volume in two windows</span></td>
+        <td><span class="chipnode c-fail">fail-risk: traded break, logged nowhere</span></td>
+        <td><span class="chipnode c-wait">wait: close checklist queues behind customers</span></td>
+        <td><span class="chipnode c-fail">fail-risk: bulk-at-close (22% of checks, falsified timing)</span></td>
+        <td><span class="chipnode c-dec">decision: manager approves or bounces swap</span> <span class="chipnode c-wait">wait: reply by group chat, unbounded</span></td>
+      </tr>
+      <tr>
+        <td class="rowlab">Evidence</td>
+        <td class="ev">N232, N281, N409</td>
+        <td class="ev">N280, N410</td>
+        <td class="ev">N233, N411</td>
+        <td class="ev">N236, N303, N412</td>
+        <td class="ev">N235, N282, N413</td>
+        <td class="ev">N266, N414</td>
+        <td class="ev">N258, N302, N415</td>
+        <td class="ev">N252, N287, N416</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Reading journey B</h3>
+  <p>Grace's Tuesday never rises above neutral — the curve is flat-negative by design of the current system, and its two floors are both canon metrics: an unstaffed peak (62% of volume in two windows) and a break system that exists on the roster but not on the floor. The final stage is the flywheel in miniature: the swap she cannot complete tonight is the same instability (11 requests/store/week, 31% rework) that will make next week's roster late, feeding the 94% annualised turnover. Stages 1 and 8 are P1's before-and-after; stage 7 is P6; stage 5 is P1+P4 (coverage-aware rosters, crew voice).</p>
+
+  <!-- ================= NOTES ================= -->
+  <h2>3. Journey annotation notes N401–N420</h2>
+  <table>
+    <thead><tr><th>Note</th><th>Content</th></tr></thead>
+    <tbody>
+      <tr><td class="note">N401</td><td class="note-desc">Stage A1 annotation — trigger timing and coupon-screenshot habit from drive-thru segment workshop; app open-rate at 17:00–17:30 corroborated in channel data.</td></tr>
+      <tr><td class="note">N402</td><td class="note-desc">Stage A2 annotation — four-car walk-away threshold from lane-camera counts at two drive-thru express stores, 14 evenings.</td></tr>
+      <tr><td class="note">N403</td><td class="note-desc">Stage A3 annotation — order-from-memory pattern in mystery-shopper transcripts; repeat-back practice observed at 3 of 8 visited lanes.</td></tr>
+      <tr><td class="note">N404</td><td class="note-desc">Stage A4 annotation — queue-time perception vs measured 246s median; the wait feels unbounded because no signal exists in the lane.</td></tr>
+      <tr><td class="note">N405</td><td class="note-desc">Stage A5 annotation — window coupon dead-end observed twice during shadowing; window crews absorb the apology without authority to fix.</td></tr>
+      <tr><td class="note">N406</td><td class="note-desc">Stage A6 annotation — bag-check duration at the shelf averages under 5 seconds; completeness failures surface post-departure in VoiceBoard complaints.</td></tr>
+      <tr><td class="note">N407</td><td class="note-desc">Stage A7 annotation — in-car discovery pattern quoted in delivery/drive-thru complaints ("three exits later"); recovery impossible once moving.</td></tr>
+      <tr><td class="note">N408</td><td class="note-desc">Stage A8 annotation — receipt-QR form abandonment at page two observed in session recordings; median completion under 40% for drive-thru receipts.</td></tr>
+      <tr><td class="note">N409</td><td class="note-desc">Stage B1 annotation — Grace's Sunday-night app check and Tuesday-morning re-check from her interview; matches the 41%-of-stores late-roster incidence.</td></tr>
+      <tr><td class="note">N410</td><td class="note-desc">Stage B2 annotation — clock-in friction and swap-channel check observed during shadowing; swap replies arrive by group chat, not ShiftOrbit.</td></tr>
+      <tr><td class="note">N411</td><td class="note-desc">Stage B3 annotation — the 90-second verbal handover timed across three shift changes; written handover does not exist at this store.</td></tr>
+      <tr><td class="note">N412</td><td class="note-desc">Stage B4 annotation — on-the-fly training of new starters during peak observed twice; consistent with 94% turnover leaving a permanently half-new floor.</td></tr>
+      <tr><td class="note">N413</td><td class="note-desc">Stage B5 annotation — 12-of-30-minute break fragment timed directly; trade agreed verbally with Bo, recorded in no system.</td></tr>
+      <tr><td class="note">N414</td><td class="note-desc">Stage B6 annotation — close-down runs ~85 minutes after last customer; waste logging into StockBeak happens between cleaning tasks.</td></tr>
+      <tr><td class="note">N415</td><td class="note-desc">Stage B7 annotation — the observed close included one bulk entry session matching the 22% bulk-at-close pattern; timestamps preceded entry by hours.</td></tr>
+      <tr><td class="note">N416</td><td class="note-desc">Stage B8 annotation — swap re-sent from the bus stop; unbounded reply wait matches the 31% manager-rework statistic from ShiftOrbit exports.</td></tr>
+      <tr><td class="note">N417</td><td class="note-desc">Method — composite construction: Devon's journey built from the drive-thru segment workshop plus lane-camera and POS timing; Grace's journey from her interview plus one fully shadowed close shift.</td></tr>
+      <tr><td class="note">N418</td><td class="note-desc">Method — emotion coding rubric: 5-point scale (−2…+2) coded from language and observed behaviour by two coders; disagreements averaged to the shown scores.</td></tr>
+      <tr><td class="note">N419</td><td class="note-desc">Method — node styles per canon §6: waits hatched gray #94a3b8, fail-risks red ring #dc2626, handoffs dashed border, decisions diamond; applied identically in both journeys and the service blueprint.</td></tr>
+      <tr><td class="note">N420</td><td class="note-desc">Validation — Grace reviewed the crew-journey draft and confirmed it ("that is my Tuesday"); Devon's thresholds re-checked against lane-camera distributions before freeze.</td></tr>
+    </tbody>
+  </table>
+
+  <footer>
+    <p>Copperline 2000 · Artifact 11 (journey-map) · Template catalog kind 11, refs 09/04, 08/04 · Journey notes N401–N420, each used once in this artifact · Canon source: <a href="canon.md">canon.md</a> (single source of truth; canon wins on conflict).</p>
+    <p>Companion artifacts: <a href="stakeholder-map.html">stakeholder-map.html</a> · <a href="ecosystem-map.html">ecosystem-map.html</a> · <a href="insight-register.html">insight-register.html</a> · <a href="persona-set.html">persona-set.html</a> · <a href="service-blueprint.html">service-blueprint.html</a> · <a href="proposals.html">proposals.html</a></p>
+  </footer>
+</div>
+</body>
+</html>

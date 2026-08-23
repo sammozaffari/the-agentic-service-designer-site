@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copperline Chicken — Full-Operation Service Blueprint (Copperline 2000) — The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --ev:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#0f172a; --mut:#64748b; --line:#e2e8f0; --paperbg:#eef2f7;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0; background:var(--paperbg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px; line-height:1.55;
+  }
+  .doc{ max-width:1360px; margin:0 auto; background:#fff; box-shadow:0 1px 3px rgba(15,23,42,.12); }
+  header.art-head{ padding:34px 40px 22px; border-bottom:3px solid #0f172a; }
+  .kicker{
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#b45309; font-weight:700;
+  }
+  h1{ font-size:30px; line-height:1.2; margin:10px 0 6px; letter-spacing:-.01em; }
+  .sub{ color:#334155; font-size:15px; max-width:70ch; margin:0 0 16px; }
+  .prov{
+    background:#fffbeb; border:1px solid #fcd34d; border-left:4px solid #d97706;
+    padding:10px 14px; font-size:13px; color:#78350f; border-radius:4px; max-width:88ch;
+  }
+  .chips{ margin-top:16px; display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{
+    display:inline-block; font-size:11.5px; font-weight:600; color:#334155;
+    background:#f1f5f9; border:1px solid var(--line); border-radius:999px; padding:4px 11px;
+  }
+  .chip.dark{ background:#0f172a; color:#f8fafc; border-color:#0f172a; }
+
+  /* ---------- sticky legend ---------- */
+  .legend{
+    position:sticky; top:0; z-index:60; background:#fff; border-bottom:2px solid #0f172a;
+    padding:10px 40px 12px; box-shadow:0 2px 8px rgba(15,23,42,.08);
+  }
+  .legend h2{ font-size:11px; letter-spacing:.12em; text-transform:uppercase; margin:0 0 8px; color:#334155; }
+  .lg-grid{ display:flex; flex-wrap:wrap; gap:14px 26px; font-size:11.5px; }
+  .lg-col{ display:flex; flex-direction:column; gap:5px; }
+  .lg-col h3{ margin:0 0 1px; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--mut); font-weight:700; }
+  .sw{ display:flex; align-items:center; gap:7px; white-space:nowrap; }
+  .swx{ width:15px; height:15px; border-radius:3px; border:1px solid rgba(0,0,0,.18); flex:none; }
+  .mono{ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:10.5px; color:var(--mut); }
+
+  /* ---------- sections ---------- */
+  .sec{ padding:30px 40px 8px; }
+  .sec-kicker{ font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#b45309; font-weight:700; margin-bottom:4px; }
+  .sec h2{ font-size:21px; margin:0 0 4px; letter-spacing:-.01em; }
+  .sec .lede{ color:#475569; font-size:13.5px; max-width:88ch; margin:4px 0 14px; }
+  .secbody{ padding-bottom:26px; }
+
+  /* ---------- blueprint grid ---------- */
+  .bpwrap{ overflow-x:auto; border:1px solid #cbd5e1; border-radius:6px; background:#f8fafc; margin:0 40px; }
+  .bp{ min-width:2060px; padding:0 0 4px; font-size:12px; }
+  .brow{
+    display:grid; grid-template-columns:176px repeat(12,minmax(150px,1fr));
+    border-bottom:1px solid var(--line); background:#fff;
+  }
+  .brow:last-child{ border-bottom:none; }
+  .ph-head{ background:#0f172a; color:#f8fafc; }
+  .ph{
+    padding:8px 9px; font-size:11px; font-weight:700; border-left:1px solid #334155;
+    line-height:1.35; color:#f8fafc;
+  }
+  .ph .pnum{ display:block; font-size:9.5px; color:#94a3b8; letter-spacing:.08em; }
+  .ph .pnote{ display:block; font-weight:400; font-size:9.5px; color:#cbd5e1; margin-top:2px; }
+  .ph-head .corner{
+    display:flex; align-items:center; font-size:10.5px; font-weight:700; color:#e2e8f0;
+    padding:8px 10px; letter-spacing:.05em; line-height:1.3;
+  }
+  .rlab{
+    position:sticky; left:0; z-index:10; background:#fff; border-right:2px solid #0f172a;
+    padding:9px 10px; font-size:11px; display:flex; flex-direction:column; justify-content:center; gap:2px;
+  }
+  .rlab .ln{ font-weight:800; font-size:11.5px; line-height:1.25; }
+  .rlab .sl{ font-weight:500; font-size:10px; color:var(--mut); line-height:1.3; }
+  .rlab .lstat{ font-size:9.5px; color:#94a3b8; font-family:ui-monospace,Menlo,monospace; }
+  .cell{
+    border-left:1px solid var(--line); padding:7px 7px 8px; min-height:54px;
+    display:flex; flex-direction:column; gap:6px; align-content:flex-start;
+  }
+  .lane-ev    .cell{ background:#f8fafc; } .lane-ev    .rlab{ border-top:3px solid var(--ev); }
+  .lane-cust  .cell{ background:#eff6ff; } .lane-cust  .rlab{ border-top:3px solid var(--cust); }
+  .lane-front .cell{ background:#f0fdf4; } .lane-front .rlab{ border-top:3px solid var(--front); }
+  .lane-back  .cell{ background:#fffbeb; } .lane-back  .rlab{ border-top:3px solid var(--back); }
+  .lane-sup   .cell{ background:#faf5ff; } .lane-sup   .rlab{ border-top:3px solid var(--sup); }
+  .lane-data  .cell{ background:#ecfeff; } .lane-data  .rlab{ border-top:3px solid var(--data); }
+
+  /* ---------- nodes ---------- */
+  .node{
+    background:#fff; border:1px solid #cbd5e1; border-left:3px solid var(--mut);
+    border-radius:6px; padding:4px 6px 4px 7px; font-size:11.5px; line-height:1.35;
+    box-shadow:0 1px 1px rgba(15,23,42,.05); position:relative;
+  }
+  .node .g{ margin-right:4px; font-size:11px; }
+  .node .l{ font-weight:650; }
+  .node .t{ display:block; font-size:9.8px; color:#475569; font-family:ui-monospace,Menlo,monospace; margin-top:1px; }
+  .node .r{ display:block; font-size:9.3px; color:var(--mut); font-family:ui-monospace,Menlo,monospace; margin-top:1px; letter-spacing:.02em; }
+  .lane-ev    .node{ border-left-color:var(--ev); }
+  .lane-cust  .node{ border-left-color:var(--cust); }
+  .lane-front .node{ border-left-color:var(--front); }
+  .lane-back  .node{ border-left-color:var(--back); }
+  .lane-sup   .node{ border-left-color:var(--sup); }
+  .lane-data  .node{ border-left-color:var(--data); }
+  .n-wait{
+    background:repeating-linear-gradient(45deg,#f8fafc,#f8fafc 5px,#e9edf3 5px,#e9edf3 9px);
+    border-left-color:var(--wait) !important; color:#475569;
+  }
+  .n-fail{ box-shadow:0 0 0 2px var(--fail); border-color:var(--fail); border-left-color:var(--fail) !important; }
+  .n-fail .l::after{ content:" ⚠"; color:var(--fail); font-weight:800; }
+  .n-hand{ border:1.5px dashed #64748b; border-left:3px dashed #64748b; border-radius:6px; }
+  .dec{
+    display:inline-block; width:10px; height:10px; transform:rotate(45deg);
+    border:1.6px solid currentColor; margin:0 6px 0 1px; flex:none;
+  }
+  .fa{ color:#94a3b8; font-weight:700; font-size:13px; align-self:center; margin-top:1px; }
+  .muted{ color:#94a3b8; font-size:10px; align-self:center; letter-spacing:.08em; }
+
+  /* ---------- divider rules ---------- */
+  .divider{
+    display:grid; grid-template-columns:176px repeat(12,minmax(150px,1fr));
+    background:#fff; border-bottom:1px solid var(--line);
+  }
+  .divider .drl{
+    position:sticky; left:0; z-index:10; background:#fff; padding:7px 10px; font-size:10px;
+    font-weight:800; letter-spacing:.06em; text-transform:uppercase; display:flex; align-items:center;
+  }
+  .divider .rule{ grid-column:2 / -1; display:flex; align-items:center; padding:0 12px; }
+  .divider .rule .rline{ flex:1; }
+  .divider .rlabel{ font-size:10px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:0 10px; white-space:nowrap; }
+  .rule-vis .rline{ border-top:2.5px solid #0f172a; }
+  .rule-vis .drl, .rule-vis .rlabel{ color:#0f172a; }
+  .rule-int .rline{ border-top:2.5px dashed #94a3b8; }
+  .rule-int .drl, .rule-int .rlabel{ color:#64748b; }
+
+  /* ---------- notes panel ---------- */
+  .ngroup{ margin:0 0 6px; }
+  .ngroup h3{
+    font-size:13px; margin:22px 0 8px; padding:7px 12px; border-radius:4px; color:#fff;
+    display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:6px;
+  }
+  .ngroup h3 .rng{ font-family:ui-monospace,Menlo,monospace; font-size:11px; font-weight:500; opacity:.85; }
+  .ng-ev    h3{ background:var(--ev); }
+  .ng-cust  h3{ background:var(--cust); }
+  .ng-front h3{ background:var(--front); }
+  .ng-back  h3{ background:var(--back); }
+  .ng-sup   h3{ background:var(--sup); }
+  .ng-data  h3{ background:var(--data); }
+  .note{
+    display:grid; grid-template-columns:58px 1fr; gap:10px; padding:6px 10px; border-bottom:1px dotted #e2e8f0;
+    font-size:13px; line-height:1.5;
+  }
+  .note:nth-child(even){ background:#fafbfd; }
+  .nid{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-weight:700; font-size:11.5px;
+    text-align:right; padding-top:1px;
+  }
+  .ng-ev .nid{ color:var(--ev); } .ng-cust .nid{ color:var(--cust); } .ng-front .nid{ color:var(--front); }
+  .ng-back .nid{ color:var(--back); } .ng-sup .nid{ color:var(--sup); } .ng-data .nid{ color:var(--data); }
+  .ntext{ color:#1e293b; }
+  .ntext b{ font-weight:700; }
+
+  /* ---------- mini grids (rostering, governance) ---------- */
+  .miniwrap{ overflow-x:auto; border:1px solid #cbd5e1; border-radius:6px; background:#f8fafc; }
+  .mini{ min-width:980px; font-size:12px; padding-bottom:2px; }
+  .mini .brow{ grid-template-columns:150px repeat(6,minmax(130px,1fr)); }
+  .mini .ph{ font-size:10.5px; }
+  .govwrap{ overflow-x:auto; border:1px solid #cbd5e1; border-radius:6px; background:#f8fafc; }
+  .gov{ min-width:980px; font-size:12px; }
+  .gov .brow{ grid-template-columns:150px repeat(4,minmax(180px,1fr)); }
+  .own{
+    display:inline-block; font-size:9.5px; font-weight:700; border-radius:999px; padding:1px 7px;
+    margin-left:5px; vertical-align:1px; color:#fff; background:#334155;
+  }
+  .own.priya{ background:#0f172a; } .own.marcus{ background:#065f46; } .own.sofia{ background:#9a3412; }
+  .own.daniel{ background:#5b21b6; } .own.hana{ background:#155e75; } .own.tom{ background:#1e3a8a; }
+
+  footer.art-foot{
+    padding:24px 40px 34px; border-top:3px solid #0f172a; color:#475569; font-size:12.5px; background:#f8fafc;
+  }
+  footer.art-foot .frow{ display:flex; flex-wrap:wrap; gap:8px 22px; margin-top:8px; }
+
+  /* ---------- print ---------- */
+  @media print{
+    body{ background:#fff; font-size:11px; }
+    .doc{ max-width:none; box-shadow:none; }
+    .legend{ position:static; box-shadow:none; }
+    .bpwrap,.miniwrap,.govwrap{ overflow:visible; border-width:1px; }
+    .bp{ min-width:0; }
+    .brow{ grid-template-columns:120px repeat(12,minmax(0,1fr)); }
+    .mini .brow{ grid-template-columns:110px repeat(6,minmax(0,1fr)); }
+    .gov .brow{ grid-template-columns:110px repeat(4,minmax(0,1fr)); }
+    .rlab{ position:static; }
+    .node,.ph,.cell{ box-shadow:none; }
+    .sec{ break-inside:avoid; }
+    .ngroup{ break-inside:avoid; }
+    *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <header class="art-head">
+    <div class="kicker">Copperline 2000 · Engagement artifact · Service blueprint</div>
+    <h1>Copperline Chicken — Full-Operation Service Blueprint</h1>
+    <p class="sub">
+      Current-state blueprint across all three service rows (dine-in 36% · drive-thru 38% · app + delivery
+      aggregators 26%), seven journey phases, and six operating lanes — from the customer's hunger cue to the
+      courier's doorstep and the payroll close two weeks later. 2,000 stores, 41,300 crew, 4 regional DCs,
+      one charcoal grill standard. Compiled from the 6-week Copperline 2000 field study; 220 numbered notes
+      (N001–N220) constitute the blueprint's evidentiary layer.
+    </p>
+    <div class="prov">
+      <b>Provenance / data boundary.</b> Fictional composite engagement. Every person, quote, figure and
+      outcome is synthetic. No real company, store, or person is described.
+    </div>
+    <div class="chips">
+      <span class="chip dark">Template kind 12 — service-blueprint · refs 09/05, 01/07, 03/06, 19/07</span>
+      <span class="chip">Engagement: Copperline 2000 — Full-Operation Service Blueprint &amp; Field Study</span>
+      <span class="chip">2,000 stores · 1,220 company-owned · 780 franchised (62 partners)</span>
+      <span class="chip">41,300 crew · 2,140 salaried managers · 340 HQ staff</span>
+      <span class="chip">6-week field study + reporting</span>
+      <span class="chip">Field base: Harbourgate Flagship #14 + Northline Flagship #3</span>
+      <span class="chip">Notes N001–N220 · continuous across the artifact set, never renumbered</span>
+    </div>
+  </header>
+
+  <div class="legend" id="legend">
+    <h2>Legend — lanes &amp; notation (scrolls with you)</h2>
+    <div class="lg-grid">
+      <div class="lg-col">
+        <h3>Lanes</h3>
+        <div class="sw"><span class="swx" style="background:#64748b"></span> Physical evidence <span class="mono">#64748b</span></div>
+        <div class="sw"><span class="swx" style="background:#2563eb"></span> Customer actions <span class="mono">#2563eb</span></div>
+        <div class="sw"><span class="swx" style="background:#16a34a"></span> Frontstage (visible crew) <span class="mono">#16a34a</span></div>
+        <div class="sw"><span class="swx" style="background:#d97706"></span> Backstage (kitchen · prep · rostering) <span class="mono">#d97706</span></div>
+      </div>
+      <div class="lg-col">
+        <h3>&nbsp;</h3>
+        <div class="sw"><span class="swx" style="background:#9333ea"></span> Support processes <span class="mono">#9333ea</span></div>
+        <div class="sw"><span class="swx" style="background:#0891b2"></span> Data &amp; systems <span class="mono">#0891b2</span></div>
+        <div class="sw"><span class="swx" style="border:2.5px solid #0f172a;background:#fff"></span> Line of visibility (customer sees nothing below)</div>
+        <div class="sw"><span class="swx" style="border:2.5px dashed #94a3b8;background:#fff"></span> Line of internal interaction (frontstage / backstage contract)</div>
+      </div>
+      <div class="lg-col">
+        <h3>Node types</h3>
+        <div class="sw"><span class="swx" style="background:#fff;border:1px solid #94a3b8;border-left:3px solid #2563eb"></span> action (solid, lane-coloured spine)</div>
+        <div class="sw"><span class="swx" style="background:repeating-linear-gradient(45deg,#f8fafc,#f8fafc 3px,#e9edf3 3px,#e9edf3 6px);border:1px solid #94a3b8"></span> wait (hatched, <span class="mono">#94a3b8</span>)</div>
+        <div class="sw"><span class="swx" style="background:#fff;border:1px solid #dc2626;box-shadow:0 0 0 1.5px #dc2626"></span> fail-risk (red ring <span class="mono">#dc2626</span> + ⚠)</div>
+      </div>
+      <div class="lg-col">
+        <h3>&nbsp;</h3>
+        <div class="sw"><span class="swx" style="background:#fff;border:1.5px dashed #64748b"></span> handoff (dashed border)</div>
+        <div class="sw"><span class="swx" style="background:#fff;transform:rotate(45deg);width:12px;height:12px;border:1.6px solid #475569"></span> decision (diamond)</div>
+        <div class="sw">→ flow to next phase &nbsp;·&nbsp; ⇢ handoff between adjacent cells &nbsp;·&nbsp; every node carries ≥1 note ID (N0xx)</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="sec" id="blueprint">
+    <div class="sec-kicker">Template kind 12 · service-blueprint</div>
+    <h2>The Copperline blueprint grid</h2>
+    <p class="lede">
+      Twelve phase columns × six lanes. Three customer sub-rows run the full width of the grid because the
+      three channels share one kitchen, one roster and one POS estate — the blueprint's central claim. Peak
+      windows 11:30–13:30 and 17:30–19:30 carry 62% of daily volume; timings quoted are medians from the
+      120-store POS sample unless flagged otherwise. Horizontal scroll is intentional; lane labels stay
+      pinned left. Note IDs resolve in the notes panel below (N001–N220).
+    </p>
+  </section>
+  <div class="secbody">
+  <div class="bpwrap">
+  <div class="bp">
+
+    <div class="brow ph-head">
+      <div class="corner">LANE ↓ · PHASE →<br><span style="font-weight:400;font-size:9px;color:#94a3b8">7 phases · 12 columns</span></div>
+      <div class="ph"><span class="pnum">PHASE 1</span>Pre-arrival<span class="pnote">habit · app · pre-order</span></div>
+      <div class="ph"><span class="pnum">PHASE 2</span>Arrival &amp; queueing<span class="pnote">door · lane · lobby</span></div>
+      <div class="ph"><span class="pnum">PHASE 3 · ORDER &amp; PAYMENT 1/2</span>Order capture<span class="pnote">counter · kiosk · speaker · app</span></div>
+      <div class="ph"><span class="pnum">PHASE 4 · ORDER &amp; PAYMENT 2/2</span>Payment<span class="pnote">tender · promo · receipt</span></div>
+      <div class="ph"><span class="pnum">PHASE 5 · PREPARATION 1/2</span>Grill &amp; cook<span class="pnote">charcoal · hold · fire</span></div>
+      <div class="ph"><span class="pnum">PHASE 6 · PREPARATION 2/2</span>Assembly &amp; pack<span class="pnote">bench · wrap · seal</span></div>
+      <div class="ph"><span class="pnum">PHASE 7 · HANDOVER 1/2</span>Handover — counter / window<span class="pnote">buzzer · tray · window</span></div>
+      <div class="ph"><span class="pnum">PHASE 8 · HANDOVER 2/2</span>Courier handover<span class="pnote">shelf · scan · seal</span></div>
+      <div class="ph"><span class="pnum">PHASE 9 · IN-STORE</span>In-store consume<span class="pnote">table · tray · recovery</span></div>
+      <div class="ph"><span class="pnum">PHASE 10 · DRIVE</span>Drive-thru exit<span class="pnote">window close · lane exit</span></div>
+      <div class="ph"><span class="pnum">PHASE 11 · DISPATCH</span>Dispatch &amp; delivery<span class="pnote">courier en route · doorstep</span></div>
+      <div class="ph"><span class="pnum">PHASE 7 · POST-VISIT</span>Post-visit &amp; recovery<span class="pnote">QR · rating · call · voucher</span></div>
+    </div>
+
+    <!-- ================= EVIDENCE ================= -->
+    <div class="brow lane-ev">
+      <div class="rlab"><span class="ln" style="color:#64748b">PHYSICAL EVIDENCE</span><span class="sl">what the customer keeps, sees or is handed</span><span class="lstat">20 notes · N001–N020</span></div>
+      <div class="cell">
+        <div class="node" title="Storefront and app storefront are the twin first evidences (N001, N002)"><span class="g">🏪</span><span class="l">Storefront + charcoal-grill signage</span><span class="t">2,000 fascias · 68 flagship</span><span class="r">N001</span></div>
+        <div class="node" title="App store listing and saved-favourites state (N002)"><span class="g">📱</span><span class="l">App icon · store listing</span><span class="t">v4.2 · 26% of orders</span><span class="r">N002</span></div>
+        <div class="node" title="LTO window posters arrive via Flamebox drops (N015)"><span class="g">🖼️</span><span class="l">LTO window posters</span><span class="t">swap kit · 10-day window</span><span class="r">N015</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Menu boards and queue layout (N003, N004)"><span class="g">🪧</span><span class="l">Menu boards (digital) · stanchions</span><span class="t">refresh 03:00 nightly</span><span class="r">N003 · N004</span></div>
+        <div class="node" title="Drive-thru pre-order board ahead of speaker (N005)"><span class="g">🚗</span><span class="l">Drive lane pre-order board</span><span class="t">251 drive-thru sites</span><span class="r">N005</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Counter menu + kiosk screen + allergen matrix card (N003, N016)"><span class="g">🧾</span><span class="l">Kiosk screen · allergen matrix card</span><span class="t">matrix v9 · 14 allergens</span><span class="r">N016</span></div>
+        <div class="node" title="Order confirmation screen at kiosk and drive speaker post (N006)"><span class="g">✅</span><span class="l">Order confirmation display</span><span class="t">5s dwell · readback</span><span class="r">N006</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Payment terminal and printed receipt with VoiceBoard QR (N007)"><span class="g">💳</span><span class="l">Terminal + receipt w/ QR</span><span class="t">QR on 100% of receipts</span><span class="r">N007</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="The visible charcoal grill is the brand's core evidence (N013)"><span class="g">🔥</span><span class="l">Open grill — "the theatre"</span><span class="t">visible from 78% of counters</span><span class="r">N013</span></div>
+        <div class="node" title="Q-Pulse hygiene badges (N014)"><span class="g">🛡️</span><span class="l">Hygiene / temp badges</span><span class="t">96.2% checks done</span><span class="r">N014</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Foil-lined bucket packaging (N009)"><span class="g">🪣</span><span class="l">Foil-lined wrap buckets</span><span class="t">3 SKUs · 1/4 · 1/2 · fam</span><span class="r">N009</span></div>
+        <div class="node" title="Tamper-sealed delivery bags (N010)"><span class="g">🔒</span><span class="l">Tamper-seal delivery bag</span><span class="t">seal on 100% delivery</span><span class="r">N010</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Buzzer or table tracker handed at payment (N008)"><span class="g">🔵</span><span class="l">Buzzer / table tracker</span><span class="t">tracker pool · 24 units/std store</span><span class="r">N008</span></div>
+        <span class="fa">⇢</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Window handover tray and courier pickup shelf (N011, N012)"><span class="g">🧺</span><span class="l">Window tray + courier shelf</span><span class="t">shelf labelled D/W/P</span><span class="r">N011 · N012</span></div>
+        <span class="fa">⇢</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Food-court order-status screen (N017)"><span class="g">📺</span><span class="l">Order-status screen (food-court)</span><span class="t">389 food-court sites</span><span class="r">N017</span></div>
+        <div class="node" title="Tray and table tent for dine-in (N009)"><span class="g">🍽️</span><span class="l">Tray + table tent</span><span class="t">tent = order number</span><span class="r">N009</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Window tray re-used at exit; lane exit signage (N011)"><span class="g">🛣️</span><span class="l">Lane exit merge signage</span><span class="t">"check your bag" sign</span><span class="r">N011</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="In-app live tracking map (N018)"><span class="g">🗺️</span><span class="l">Live tracking map in app</span><span class="t">Route56-fed · 90s refresh</span><span class="r">N018</span></div>
+        <div class="node" title="Branded courier bag at doorstep (N010)"><span class="g">🎒</span><span class="l">Courier bag at doorstep</span><span class="t">insulated · sealed</span><span class="r">N010</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Recovery voucher card at POS (N019)"><span class="g">🎟️</span><span class="l">Recovery voucher card</span><span class="t">bands: £2/£6/£11 equiv.</span><span class="r">N019</span></div>
+        <div class="node" title="E-receipt email with feedback prompt (N020)"><span class="g">📧</span><span class="l">E-receipt + feedback prompt</span><span class="t">send within 90s of close</span><span class="r">N020</span></div>
+      </div>
+    </div>
+
+    <!-- ================= CUSTOMER — DINE-IN ================= -->
+    <div class="brow lane-cust">
+      <div class="rlab"><span class="ln" style="color:#2563eb">CUSTOMER ACTIONS</span><span class="sl">Sub-row A — Dine-in (36% of orders)</span><span class="lstat">Mei Lin archetype · N021+</span></div>
+      <div class="cell">
+        <div class="node" title="Hunger cue and channel decision (N021, N024)"><span class="dec"></span><span class="l">Hunger cue → chooses channel</span><span class="t">same-day decision · 2.3 visits/mo</span><span class="r">N021 · N024</span></div>
+        <div class="node" title="Opens app, checks saved favourites and LTO banner (N022, N023)"><span class="g">📲</span><span class="l">Open app · saved favourites</span><span class="t">median session 71s</span><span class="r">N022 · N023</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-wait" title="Joins dine-in queue; peak queue cited at 7 minutes (N025, N026)"><span class="g">🚶</span><span class="l">Park/walk in → join queue</span><span class="t">peak queue 7 min · off-peak 2 min</span><span class="r">N025 · N026</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Reads board, orders at counter or kiosk (N029, N030, N031)"><span class="g">🗣️</span><span class="l">Read board → order at counter</span><span class="t">median 96s at kiosk · 54s counter</span><span class="r">N029 · N030</span></div>
+        <div class="node" title="Kiosk customisation and allergen question (N031, N039)"><span class="g">⚙️</span><span class="l">Customise at kiosk · ask allergen</span><span class="t">custom on 38% of kiosk orders</span><span class="r">N031 · N039</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Pays by card/phone/wallet (N033)"><span class="g">💳</span><span class="l">Pay — card · phone · wallet</span><span class="t">contactless 81%</span><span class="r">N033</span></div>
+        <div class="node n-fail" title="Coupon/LTO redemption friction (N035)"><span class="g">🏷️</span><span class="l">Redeem coupon / LTO offer</span><span class="t">reject rate 6.1% of attempts</span><span class="r">N035</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-wait" title="Waits with buzzer while food cooks (N036)"><span class="g">⏳</span><span class="l">Wait with buzzer</span><span class="t">median 6m10s peak · 3m20s off</span><span class="r">N036</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-wait" title="Watches the grill pass while waiting (N013, N044)"><span class="g">👀</span><span class="l">Watches grill theatre</span><span class="t">perceived wait −22% vs blind wall</span><span class="r">N013</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-hand" title="Collects at counter on buzzer (N040)"><span class="g">🔔</span><span class="l">Collect tray on buzzer</span><span class="t">collection walk 18m avg</span><span class="r">N040</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell"><span class="muted">— n/a · see window/courier sub-rows —</span></div>
+      <div class="cell">
+        <div class="node" title="Finds table, eats, checks order (N043, N044)"><span class="g">🍽️</span><span class="l">Find table → eat</span><span class="t">dwell 19 min median</span><span class="r">N043 · N044</span></div>
+        <div class="node n-fail" title="Spots an error; 8.6% of orders have one (N047)"><span class="g">❗</span><span class="l">Notice order error</span><span class="t">8.6% of orders (accuracy 91.4%)</span><span class="r">N047</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell"><span class="muted">— n/a —</span></div>
+      <div class="cell"><span class="muted">— n/a —</span></div>
+      <div class="cell">
+        <div class="node" title="Scans receipt QR into VoiceBoard (N050)"><span class="g">🔳</span><span class="l">Scan receipt QR</span><span class="t">2.9% scan rate · 90-day extract</span><span class="r">N050</span></div>
+        <div class="node" title="Loyalty accrual and repeat decision (N053, N054)"><span class="g">🔁</span><span class="l">Bank loyalty · decide to return</span><span class="t">revisit within 31d: 47%</span><span class="r">N053 · N054</span></div>
+        <div class="node" title="Voucher redemption closes the recovery loop (N052)"><span class="g">🎟️</span><span class="l">Redeem recovery voucher</span><span class="t">redeem 58% within 14d</span><span class="r">N052</span></div>
+      </div>
+    </div>
+
+    <!-- ================= CUSTOMER — DRIVE-THRU ================= -->
+    <div class="brow lane-cust">
+      <div class="rlab"><span class="ln" style="color:#2563eb">CUSTOMER ACTIONS</span><span class="sl">Sub-row B — Drive-thru (38% of orders)</span><span class="lstat">window median 246s vs 180s target</span></div>
+      <div class="cell">
+        <div class="node" title="Decides drive-thru; may pre-order via app (N024, N028)"><span class="dec"></span><span class="l">Choose drive-thru</span><span class="t">38% of mix · 251 express sites</span><span class="r">N024</span></div>
+        <div class="node" title="App pre-order to skip the order board (N028)"><span class="g">📲</span><span class="l">App pre-order</span><span class="t">9% of drive orders</span><span class="r">N028</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Enters lane, reads pre-order board (N027, N005)"><span class="g">🚗</span><span class="l">Enter lane · read board</span><span class="t">board dwell 26s median</span><span class="r">N027</span></div>
+        <div class="node n-wait" title="Cars stack ahead at speaker (N026, N037)"><span class="g">🚙</span><span class="l">Stack in lane</span><span class="t">peak 7 cars · queue to board 4 min</span><span class="r">N026</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-fail" title="Orders at speaker; audio errors are a known fail mode (N032)"><span class="g">🎙️</span><span class="l">Order at speaker post</span><span class="t">speaker order 78s median</span><span class="r">N032</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Pays at window — card dip or cash (N033, N094)"><span class="g">💳</span><span class="l">Pay at first window</span><span class="t">tender 22s median · cash 41s</span><span class="r">N033</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-wait" title="Queues between windows while food cooks (N037)"><span class="g">⏳</span><span class="l">Wait between windows</span><span class="t">gap 104s peak · 51s off-peak</span><span class="r">N037</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-wait" title="Watches bag assembly at second window (N072)"><span class="g">👀</span><span class="l">Watch bag check screen</span><span class="t">visible confirm display</span><span class="r">N072</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-hand" title="Collects at window, verifies order and sauces (N041)"><span class="g">🧍</span><span class="l">Collect at window · verify</span><span class="t">verify dwell 31s</span><span class="r">N041</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell"><span class="muted">— n/a —</span></div>
+      <div class="cell"><span class="muted">— n/a —</span></div>
+      <div class="cell">
+        <div class="node" title="Exits lane, eats while driving or parks (N045)"><span class="g">🛣️</span><span class="l">Exit · eat in car</span><span class="t">first bite 4 min post-window</span><span class="r">N045</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell"><span class="muted">— n/a —</span></div>
+      <div class="cell">
+        <div class="node" title="Rates or complains from the car via app review (N048)"><span class="g">⭐</span><span class="l">App review / rating</span><span class="t">drive NPS +31 blended</span><span class="r">N048</span></div>
+      </div>
+    </div>
+
+    <!-- ================= CUSTOMER — DELIVERY / APP ================= -->
+    <div class="brow lane-cust">
+      <div class="rlab"><span class="ln" style="color:#2563eb">CUSTOMER ACTIONS</span><span class="sl">Sub-row C — Delivery / app (26% of orders)</span><span class="lstat">aggregator rating 4.3/5 · breakage 0.7%</span></div>
+      <div class="cell">
+        <div class="node" title="Opens app or aggregator; browses (N022, N023)"><span class="g">📲</span><span class="l">Open app / aggregator</span><span class="t">Copperline app 64% · D/W/P 36%</span><span class="r">N022 · N023</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Schedules a pre-order slot for the peak window (N028)"><span class="g">📅</span><span class="l">Schedule pre-order slot</span><span class="t">12% of app orders pre-slated</span><span class="r">N028</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Builds cart, customises (N031, N023)"><span class="g">🛒</span><span class="l">Build cart · customise</span><span class="t">median 96s · basket 3.1 items</span><span class="r">N031</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="In-app payment with saved card and promo (N034, N035)"><span class="g">💳</span><span class="l">Pay in-app · saved card</span><span class="t">saved-card 72% · promo apply 94%</span><span class="r">N034 · N035</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-wait" title="Order sits unseen in the kitchen queue (N140)"><span class="g">⏳</span><span class="l">"Preparing" status (unseen queue)</span><span class="t">kitchen queue 8m40s peak</span><span class="r">N140</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell"><span class="muted">— happens off-stage · see backstage —</span></div>
+      <div class="cell"><span class="muted">— n/a · courier sub-row carries handover —</span></div>
+      <div class="cell"><span class="muted">— n/a —</span></div>
+      <div class="cell"><span class="muted">— n/a —</span></div>
+      <div class="cell"><span class="muted">— n/a —</span></div>
+      <div class="cell">
+        <div class="node" title="Follows courier on live map; 90s refresh (N038, N018)"><span class="g">🗺️</span><span class="l">Track courier live</span><span class="t">map refresh 90s · ETA drift ±7 min</span><span class="r">N038</span></div>
+        <div class="node n-hand" title="Doorstep handover to customer (N042)"><span class="g">🚪</span><span class="l">Doorstep handover</span><span class="t">door interval 38s</span><span class="r">N042</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-fail" title="Unbags at home; missing-item discovery (N046)"><span class="g">📦</span><span class="l">Unbag · discover missing item</span><span class="t">0.7% of delivery orders break</span><span class="r">N046</span></div>
+        <div class="node" title="Rates on aggregator; 4.3/5 blended (N051)"><span class="g">⭐</span><span class="l">Rate on aggregator</span><span class="t">4.3/5 across D/W/P</span><span class="r">N051</span></div>
+        <div class="node" title="Calls the call centre if unresolved (N049)"><span class="g">☎️</span><span class="l">Call call-centre</span><span class="t">AHT 6m20s · 2-week logs</span><span class="r">N049</span></div>
+      </div>
+    </div>
+    <!-- ================= LINE OF VISIBILITY ================= -->
+    <div class="divider rule-vis">
+      <div class="drl">Line of visibility</div>
+      <div class="rule"><span class="rlabel">above = customer sees it</span><span class="rline"></span><span class="rlabel">below = invisible to customer</span></div>
+    </div>
+
+    <!-- ================= FRONTSTAGE A — COUNTER / KITCHEN-FACING ================= -->
+    <div class="brow lane-front">
+      <div class="rlab"><span class="ln" style="color:#16a34a">FRONTSTAGE — CREW, VISIBLE</span><span class="sl">Sub-row A — counter &amp; kitchen-facing</span><span class="lstat">45 notes · N056–N100</span></div>
+      <div class="cell">
+        <div class="node" title="Crew prep visible through window pre-open; loyal regulars greeted (N056)"><span class="g">👋</span><span class="l">Regulars greeted by name</span><span class="t">Mei Lin archetype · 2.3 visits/mo</span><span class="r">N056</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Greeter script and queue-busting mobile POS (N056, N057)"><span class="g">🙋</span><span class="l">Greeter · queue-buster POS</span><span class="t">deployed at 7+ min queue</span><span class="r">N057</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Order-taker script with LTO upsell (N058, N059)"><span class="g">🗣️</span><span class="l">Take order · upsell script</span><span class="t">attach rate +11% w/ script</span><span class="r">N058 · N059</span></div>
+        <div class="node" title="Verbal allergen confirmation (N060)"><span class="g">⚠️</span><span class="l">Allergen confirmation</span><span class="t">matrix v9 at every till</span><span class="r">N060</span></div>
+        <div class="node n-fail" title="POS entry errors and voids need a manager key (N061)"><span class="g">⌨️</span><span class="l">POS entry · void mis-key</span><span class="t">voids 2.4% of lines · supervisor key</span><span class="r">N061</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-hand" title="Terminal passed to customer; receipt + buzzer issued (N062, N063)"><span class="g">🖨️</span><span class="l">Terminal handoff · buzzer issue</span><span class="t">terminal pass 9s</span><span class="r">N062 · N063</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Grill call-outs audible to the room (N064)"><span class="g">📣</span><span class="l">Grill call-outs "fire 3!"</span><span class="t"> audible across counter</span><span class="r">N064</span></div>
+        <div class="node" title="Visible gloves + mask hygiene standard (N091)"><span class="g">🧤</span><span class="l">Visible glove change</span><span class="t">change every 30 min / task</span><span class="r">N091</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Staging orders on the pass and calling names (N066, N067)"><span class="g">🧾</span><span class="l">Stage on pass · call name</span><span class="t">call ×2 · then buzzer re-fire</span><span class="r">N066 · N067</span></div>
+        <span class="fa">⇢</span>
+      </div>
+      <div class="cell">
+        <div class="node n-hand" title="Tray handover with sauce check (N068)"><span class="g">🍽️</span><span class="l">Tray handover · sauce check</span><span class="t">handover 14s · sauce 100% confirm</span><span class="r">N068</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell"><span class="muted">— window/courier sub-row —</span></div>
+      <div class="cell">
+        <div class="node" title="Table check and bussing loop (N087)"><span class="g">🧹</span><span class="l">Table check · bus loop</span><span class="t">sweep every 12 min dine peak</span><span class="r">N087</span></div>
+        <div class="node" title="Missing-sauce / top-up requests handled at counter (N097)"><span class="g">🥫</span><span class="l">Counter top-up requests</span><span class="r">N097</span></div>
+        <div class="node" title="Front-of-house cleaning visible to tables (N096)"><span class="g">💧</span><span class="l">Visible FOH clean</span><span class="r">N096</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell"><span class="muted">— window/courier sub-row —</span></div>
+      <div class="cell"><span class="muted">— window/courier sub-row —</span></div>
+      <div class="cell">
+        <div class="node" title="Complaint intake at counter with on-the-spot recovery (N088, N075)"><span class="g">🫱</span><span class="l">Complaint intake · on-spot recovery</span><span class="t">bands £2/£6/£11</span><span class="r">N088 · N075</span></div>
+        <div class="node" title="Manager escalation path for refunds (N092, N098)"><span class="g">🔑</span><span class="l">Manager-key refunds</span><span class="t">MOD paged · median 3 min</span><span class="r">N092 · N098</span></div>
+        <div class="node" title="Loyalty sign-up pitch and farewell standard (N099, N090)"><span class="g">💛</span><span class="l">Loyalty pitch · farewell</span><span class="t">sign-up 8% of transcripts</span><span class="r">N099 · N090</span></div>
+      </div>
+    </div>
+
+    <!-- ================= FRONTSTAGE B — WINDOW / COURIER-FACING ================= -->
+    <div class="brow lane-front">
+      <div class="rlab"><span class="ln" style="color:#16a34a">FRONTSTAGE — CREW, VISIBLE</span><span class="sl">Sub-row B — window &amp; courier-facing</span><span class="lstat">window target 180s · courier breakage 0.7%</span></div>
+      <div class="cell">
+        <div class="node" title="Pre-shift window equipment check before lane opens (N073 adjacent)"><span class="g">🧰</span><span class="l">Window kit check pre-open</span><span class="t">headset · floats · seals</span><span class="r">N073</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Lane greeter at the pre-order board during peaks (N056)"><span class="g">🚦</span><span class="l">Lane greeter (peak only)</span><span class="t">17:30–19:30 only · 62% volume</span><span class="r">N056</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-fail" title="Repeat-back confirmation to counter speaker audio errors (N093, N032)"><span class="g">🔁</span><span class="l">Repeat-back confirmation</span><span class="t">repeat-back cuts mis-hears 44%</span><span class="r">N093</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Payment at first window; cash handling exposure (N071, N094)"><span class="g">💵</span><span class="l">Take payment at window</span><span class="t">tender 22s · cash drops >£200</span><span class="r">N071 · N094</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-fail" title="Window time pressure; 246s median vs 180s target (N073)"><span class="g">⏱️</span><span class="l">Window time pressure</span><span class="t">median 246s vs target 180s</span><span class="r">N073</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Bag presentation against the check screen (N072)"><span class="g">🖥️</span><span class="l">Bag check vs confirm screen</span><span class="t">check 11s · 2-hand pass</span><span class="r">N072</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-hand" title="Window handoff script and order-name verification (N077, N078)"><span class="g">🤝</span><span class="l">Window handoff · name verify</span><span class="t">verify 100% · "check your bag"</span><span class="r">N077 · N078</span></div>
+        <div class="node n-fail" title="Missing item re-fire while car waits (N074)"><span class="g">🔁</span><span class="l">Re-fire missing item</span><span class="t">re-fire adds 190s to window</span><span class="r">N074</span></div>
+        <span class="fa">⇢</span>
+      </div>
+      <div class="cell">
+        <div class="node n-hand" title="Courier check-in and pickup verification (N080, N081)"><span class="g">📦</span><span class="l">Courier check-in · pickup scan</span><span class="t">scan 100% · shelf D/W/P</span><span class="r">N080 · N081</span></div>
+        <div class="node" title="Aggregator tablet acknowledgment (N082)"><span class="g">📲</span><span class="l">Aggregator tablet ack</span><span class="t">ack within 60s of pickup</span><span class="r">N082</span></div>
+        <div class="node" title="Tamper seal applied in customer view (N083)"><span class="g">🔒</span><span class="l">Tamper seal in view</span><span class="t">seal applied at shelf</span><span class="r">N083</span></div>
+        <div class="node n-fail" title="Crew→courier handoff breakage 0.7% of delivery orders (N085)"><span class="g">⚠️</span><span class="l">Handover breakage risk</span><span class="t">0.7% of delivery orders</span><span class="r">N085</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell"><span class="muted">— dine-in sub-row carries table service —</span></div>
+      <div class="cell">
+        <div class="node" title="Exit farewell; second-window closes lane (N090)"><span class="g">👋</span><span class="l">Exit farewell</span><span class="r">N090</span></div>
+      </div>
+      <div class="cell">
+        <div class="node n-fail" title="Dispatch delay comms when courier is late (N084)"><span class="g">📶</span><span class="l">Delay comms to customer</span><span class="t">stale >5 min → manual courier call</span><span class="r">N084</span></div>
+        <div class="node n-hand" title="Wrong-order courier resolution at doorstep (N095)"><span class="g">🔁</span><span class="l">Courier problem resolution</span><span class="t">re-make + re-dispatch median 21 min</span><span class="r">N095</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Closing visible cues — last call, doors locked (N100)"><span class="g">🌙</span><span class="l">Last-call / close cues</span><span class="t">close 22:00 std · 23:00 flagship</span><span class="r">N100</span></div>
+      </div>
+    </div>
+
+    <!-- ================= LINE OF INTERNAL INTERACTION ================= -->
+    <div class="divider rule-int">
+      <div class="drl">Line of internal interaction</div>
+      <div class="rule"><span class="rlabel">above = frontstage crew contract</span><span class="rline"></span><span class="rlabel">below = backstage / support / systems</span></div>
+    </div>
+    <!-- ================= BACKSTAGE ================= -->
+    <div class="brow lane-back">
+      <div class="rlab"><span class="ln" style="color:#d97706">BACKSTAGE</span><span class="sl">kitchen · prep · rostering — invisible to customer</span><span class="lstat">45 notes · N101–N145</span></div>
+      <div class="cell">
+        <div class="node" title="Morning prep list against par levels (N101)"><span class="g">📋</span><span class="l">Prep list vs par levels</span><span class="t">par by format · 18 crew flagship</span><span class="r">N101</span></div>
+        <div class="node" title="Thaw and marinate batches; FIFO discipline (N102, N129, N141)"><span class="g">🍗</span><span class="l">Thaw · marinate batches</span><span class="t">marinate 12h · FIFO strict</span><span class="r">N102 · N129</span></div>
+        <div class="node" title="Peak forecast prep for 62%-of-volume windows (N126)"><span class="g">📈</span><span class="l">Pre-peak cook plan</span><span class="t">62% of volume in 2 windows</span><span class="r">N126</span></div>
+        <div class="node n-fail" title="LTO ingredient availability gaps (N127)"><span class="g">🧺</span><span class="l">LTO ingredient availability</span><span class="t">stockout on 2 of last 5 LTOs</span><span class="r">N127</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Pre-shift huddle run by shift leader (N133)"><span class="g">🧍</span><span class="l">Pre-shift huddle</span><span class="t">Bo Chen · 4 min · positions + LTO</span><span class="r">N133</span></div>
+        <div class="node" title="ShiftOrbit roster morning check (N116)"><span class="g">🗓️</span><span class="l">Roster vs actuals check</span><span class="t">who's in · who's swapped</span><span class="r">N116</span></div>
+        <div class="node n-fail" title="Call-in absences against 94% turnover (N117)"><span class="g">📞</span><span class="l">Absence call-ins covered</span><span class="t">turnover 94% annualised</span><span class="r">N117</span></div>
+        <div class="node" title="Gloves/uniform stock and BOH labour allocation (N137, N131)"><span class="g">🥽</span><span class="l">PPE stock · station allocation</span><span class="r">N131 · N137</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="KDS order routing from all channels (N108)"><span class="g">🖥️</span><span class="l">KDS routing — 3 channels</span><span class="t">dine + drive + app merge on rail</span><span class="r">N108</span></div>
+        <div class="node n-fail" title="Queue-jack: app orders jump the rail (N140)"><span class="g">⚡</span><span class="l">Queue-jack app orders</span><span class="t">aggregator SLA 25 min pressures rail</span><span class="r">N140</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Mid-shift cash drop to safe (N124)"><span class="g">🔐</span><span class="l">Cash drop to safe</span><span class="t">drop >£200 · dual-sign</span><span class="r">N124</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Grill batch cadence — birds per drop (N103)"><span class="g">🔥</span><span class="l">Grill batch cadence</span><span class="t">12 birds/drop · 9 min/skewer</span><span class="r">N103</span></div>
+        <div class="node n-fail" title="Hold-time expiry pushes waste to 3.8% vs 2.5% target (N104)"><span class="g">⏲️</span><span class="l">Hold-time expiry</span><span class="t">waste 3.8% of chicken weight</span><span class="r">N104</span></div>
+        <div class="node" title="Cook-to-line vs cook-to-order decision (N128)"><span class="dec"></span><span class="l">Cook-to-line or to-order</span><span class="r">N128</span></div>
+        <div class="node" title="Grill temperature calibration check (N142)"><span class="g">🌡️</span><span class="l">Grill temp calibration</span><span class="t">2× daily · charcoal bed audit</span><span class="r">N142</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Assembly bench and packaging station (N106, N107)"><span class="g">🍱</span><span class="l">Assembly bench · pack station</span><span class="t">bench 2-crew · 40 trays/peak-hr</span><span class="r">N106 · N107</span></div>
+        <div class="node" title="Expeditor sequence and re-fire on error (N109, N110)"><span class="g">🎯</span><span class="l">Expeditor · re-fire control</span><span class="t">re-fire 3.1% of tickets</span><span class="r">N109 · N110</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Headset comms kitchen↔window (N112)"><span class="g">🎧</span><span class="l">Kitchen↔window headset</span><span class="t">channel 2 · peak chatter</span><span class="r">N112</span></div>
+        <div class="node" title="Second window open/close decision (N143)"><span class="dec"></span><span class="l">Open 2nd window?</span><span class="t">opens at 5+ car stack</span><span class="r">N143</span></div>
+        <span class="fa">⇢</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Delivery picking against aggregator promise (N114)"><span class="g">🧺</span><span class="l">Delivery picking run</span><span class="t">pick cycle every 4 min peak</span><span class="r">N114</span></div>
+        <div class="node" title="Staging shelf by aggregator D/W/P (N115)"><span class="g">🏷️</span><span class="l">Stage shelf D/W/P</span><span class="t">mis-shelf = top breakage cause</span><span class="r">N115</span></div>
+        <div class="node" title="Warm-bag staging ahead of courier arrival (N138)"><span class="g">🌡️</span><span class="l">Warm-bag staging</span><span class="t">hold ≤10 min or re-make</span><span class="r">N138</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Break rotation during shoulder hours (N119)"><span class="g">☕</span><span class="l">Break rotation</span><span class="t">staggered 12:45–14:15</span><span class="r">N119</span></div>
+        <div class="node" title="Mid-shift line check (N130)"><span class="g">🔍</span><span class="l">Mid-shift line check</span><span class="t">temp + taste + yield</span><span class="r">N130</span></div>
+        <div class="node" title="Incident logging (spills, injuries) (N134, N135)"><span class="g">🚨</span><span class="l">Incident log</span><span class="r">N134</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-fail" title="Drive-thru timing beacon drives 246s median (N111)"><span class="g">⏱️</span><span class="l">Timing beacon loop</span><span class="t">median 246s · beacon at lane + window</span><span class="r">N111</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Order batching merges drive + delivery (N139)"><span class="g">🔀</span><span class="l">Batch drive + delivery</span><span class="t">batch ≤3 · else split</span><span class="r">N139</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Waste logged into StockBeak at close (N105, N125)"><span class="g">🗑️</span><span class="l">Waste log + bin staging</span><span class="t">3.8% weight · 7 reason codes</span><span class="r">N105 · N125</span></div>
+        <div class="node n-fail" title="Q-Pulse temp checks bulk-logged at close (N121)"><span class="g">🌡️</span><span class="l">Q-Pulse temp logging</span><span class="t">22% logged in bulk at close</span><span class="r">N121</span></div>
+        <div class="node" title="Clean-down, grease filters, grill safety (N120, N122, N144)"><span class="g">🧼</span><span class="l">Clean-down · filter · charcoal safe</span><span class="t">close 75 min std · 95 flagship</span><span class="r">N120 · N144</span></div>
+        <div class="node n-fail" title="Equipment failure on the charcoal grill (N123)"><span class="g">🔧</span><span class="l">Grill failure mode</span><span class="t">4.2 faults/store/quarter</span><span class="r">N123</span></div>
+        <div class="node" title="Cash count and next-day prep handover (N124, N145)"><span class="g">🔁</span><span class="l">Cash count · next-day handover</span><span class="t">handover sheet to opener</span><span class="r">N145</span></div>
+        <div class="node" title="New-crew shadowing continues on close (N132)"><span class="g">🎓</span><span class="l">Shadow shift (new crew)</span><span class="t">Grace Mwangi · 8 months in</span><span class="r">N132</span></div>
+      </div>
+    </div>
+
+    <!-- ================= SUPPORT ================= -->
+    <div class="brow lane-sup">
+      <div class="rlab"><span class="ln" style="color:#9333ea">SUPPORT PROCESSES</span><span class="sl">DCs · franchise relations · HR · marketing · maintenance · training</span><span class="lstat">40 notes · N146–N185</span></div>
+      <div class="cell">
+        <div class="node" title="DC inbound receiving under Oscar Villanueva (N146)"><span class="g">🏭</span><span class="l">DC inbound receiving</span><span class="t">Oscar Villanueva · Northline DC</span><span class="r">N146</span></div>
+        <div class="node" title="Cold-chain temperature gates (N147)"><span class="g">❄️</span><span class="l">Cold-chain gates</span><span class="t">0–4°C · reject >6°C</span><span class="r">N147</span></div>
+        <div class="node" title="Route scheduling to 2,000 stores from 4 DCs (N149)"><span class="g">🚚</span><span class="l">Route scheduling 2,000 stores</span><span class="t">4 DCs · 2–3 drops/wk std</span><span class="r">N149</span></div>
+        <div class="node" title="Supplier quality audits (N150)"><span class="g">🧪</span><span class="l">Supplier QA audits</span><span class="t">quarterly · 11 approved suppliers</span><span class="r">N150</span></div>
+        <div class="node" title="National LTO campaign calendar (N153, N164)"><span class="g">📣</span><span class="l">LTO launch calendar</span><span class="t">6 LTOs/yr · Flamebook kits</span><span class="r">N153</span></div>
+        <div class="node" title="Menu R&D test-kitchen cycles (N173)"><span class="g">👩‍🔬</span><span class="l">Menu R&amp;D test kitchen</span><span class="r">N173</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Hiring funnel feeding 94% turnover (N156)"><span class="g">🧑‍💼</span><span class="l">Hiring funnel</span><span class="t">turnover 94% vs industry 78%</span><span class="r">N156</span></div>
+        <div class="node" title="Onboarding program and certification (N157, N158)"><span class="g">🎓</span><span class="l">Onboarding · certification</span><span class="t">day-1 to solo: 11 shifts median</span><span class="r">N157 · N158</span></div>
+        <div class="node" title="Franchise onboarding under Daniel Okafor (N151)"><span class="g">🤝</span><span class="l">Franchise onboarding</span><span class="t">Daniel Okafor · 62 partners</span><span class="r">N151</span></div>
+        <div class="node" title="Benefits and payroll admin (N160)"><span class="g">💠</span><span class="l">Benefits / payroll admin</span><span class="r">N160</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Pricing governance and price sync windows (N179)"><span class="g">💰</span><span class="l">Pricing governance</span><span class="t">price file lock T-2 days</span><span class="r">N179</span></div>
+        <div class="node" title="Allergen/nutrition data upkeep (N174)"><span class="g">🥜</span><span class="l">Allergen data upkeep</span><span class="t">matrix v9 · 14 allergens</span><span class="r">N174</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="IT network and POS estate support (N172)"><span class="g">🛰️</span><span class="l">Network / POS support</span><span class="t">helpdesk 06:00–23:00</span><span class="r">N172</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Planned maintenance contracts — grills, HVAC (N161)"><span class="g">🛠️</span><span class="l">Planned maintenance</span><span class="t">monthly grill · quarterly HVAC</span><span class="r">N161</span></div>
+        <div class="node n-fail" title="Reactive repair SLA misses during peaks (N162)"><span class="g">🚨</span><span class="l">Reactive repair SLA</span><span class="t">4h target · met 68%</span><span class="r">N162</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Sustainable packaging program (N185)"><span class="g">♻️</span><span class="l">Packaging program</span><span class="t">foil bucket · 92% recyclable</span><span class="r">N185</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Mystery shopper program fielding (N177)"><span class="g">🕵️</span><span class="l">Mystery shopper visits</span><span class="t">60 reports · accuracy 91.4%</span><span class="r">N177</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Aggregator commercial terms under Hana Kim (N167)"><span class="g">📜</span><span class="l">Aggregator terms</span><span class="t">Hana Kim · 3 contracts D/W/P</span><span class="r">N167</span></div>
+        <div class="node n-fail" title="Courier partner escalations (N184)"><span class="g">📞</span><span class="l">Courier partner escalation</span><span class="t">weekly incident call</span><span class="r">N184</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Call-centre operations under Raj Patel (N168)"><span class="g">🎧</span><span class="l">Call-centre ops</span><span class="t">Raj Patel · AHT 6m20s</span><span class="r">N168</span></div>
+        <div class="node" title="Recovery authority bands for agents (N169)"><span class="g">🎟️</span><span class="l">Agent recovery authority</span><span class="t">bands £2/£6/£11</span><span class="r">N169</span></div>
+        <div class="node" title="Local store marketing budgets (N165)"><span class="g">📍</span><span class="l">Local store marketing</span><span class="r">N165</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Regional reviews under Tom Whelan (N176)"><span class="g">📊</span><span class="l">Regional review cadence</span><span class="t">Tom Whelan · 14-yr tenure</span><span class="r">N176</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Digital product team backlog (N166)"><span class="g">📱</span><span class="l">App product backlog</span><span class="t">Hana Kim · 2-wk sprint</span><span class="r">N166</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Franchise QBRs and Flamebook versioning (N155, N152)"><span class="g">📅</span><span class="l">Franchise QBRs</span><span class="t">quarterly · 62 partners</span><span class="r">N155 · N152</span></div>
+        <div class="node" title="Compliance notices cascade (N154)"><span class="g">📌</span><span class="l">Compliance notices</span><span class="t">ack due 72h in Flamebook</span><span class="r">N154</span></div>
+        <div class="node" title="Food-safety closure audits (N175)"><span class="g">✅</span><span class="l">Closure audits</span><span class="t">96.2% checks done network</span><span class="r">N175</span></div>
+        <div class="node" title="Pest and waste services contracts (N163)"><span class="g">🐜</span><span class="l">Pest / waste services</span><span class="r">N163</span></div>
+        <div class="node" title="Contract renewals and comms cascade (N181, N180)"><span class="g">🖋️</span><span class="l">Renewals · comms cascade</span><span class="r">N180 · N181</span></div>
+        <div class="node" title="New-format real estate pipeline (N171)"><span class="g">🏗️</span><span class="l">New-format pipeline</span><span class="t">travel-hub kiosks growing</span><span class="r">N171</span></div>
+      </div>
+    </div>
+
+    <!-- ================= DATA & SYSTEMS ================= -->
+    <div class="brow lane-data">
+      <div class="rlab"><span class="ln" style="color:#0891b2">DATA &amp; SYSTEMS</span><span class="sl">CopperPOS v7 · ShiftOrbit · StockBeak · Q-Pulse · VoiceBoard · Flamebook · Route56</span><span class="lstat">35 notes · N186–N220</span></div>
+      <div class="cell">
+        <div class="node" title="Flamebook distributes LTO kits to 2,000 stores (N211)"><span class="g">📕</span><span class="l">Flamebook LTO kits</span><span class="t">versioned · ack required</span><span class="r">N211</span></div>
+        <div class="node" title="Analytics warehouse forecast feeds (N212)"><span class="g">🗄️</span><span class="l">Forecast warehouse</span><span class="t">weather + event signals</span><span class="r">N212 · N182</span></div>
+        <div class="node" title="StockBeak auto-replenishment proposals (N200)"><span class="g">📦</span><span class="l">Auto-replenish proposals</span><span class="t">GM approves by 14:00</span><span class="r">N200 · N148</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-fail" title="Roster published <72h before week start in 41% of stores (N194)"><span class="g">🗓️</span><span class="l">ShiftOrbit roster publish</span><span class="t">only 59% ≥72h · 41% late</span><span class="r">N194</span></div>
+        <div class="node" title="T&A clock-in stream (N196)"><span class="g">⏰</span><span class="l">Clock-in / T&amp;A stream</span><span class="t">face + fob · late flags</span><span class="r">N196</span></div>
+        <div class="node n-fail" title="Swap ledger conflicts push GMs to Excel (N195, N197)"><span class="g">🔀</span><span class="l">Swap ledger conflicts</span><span class="t">11 swaps/wk/store · 31% rework</span><span class="r">N195 · N197</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="CopperPOS v7 order capture across all touchpoints (N186)"><span class="g">🖥️</span><span class="l">CopperPOS v7 capture</span><span class="t">till · kiosk · lane · app in one</span><span class="r">N186</span></div>
+        <div class="node n-fail" title="Kiosk WCAG 2.2 AA gaps on travel-hub estate (N190)"><span class="g">♿</span><span class="l">Kiosk accessibility gaps</span><span class="t">78 travel-hub + 389 food-court</span><span class="r">N190</span></div>
+        <div class="node" title="Price sync / promo engine windows (N187)"><span class="g">🏷️</span><span class="l">Price &amp; promo sync</span><span class="t">reject 6.1% of coupon scans</span><span class="r">N187</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="POS↔terminal integration (N189)"><span class="g">🔌</span><span class="l">POS ↔ terminal link</span><span class="t">contactless 81%</span><span class="r">N189</span></div>
+        <div class="node" title="Void/refund audit trail (N188)"><span class="g">🔍</span><span class="l">Void / refund audit trail</span><span class="t">voids 2.4% of lines</span><span class="r">N188</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="KDS kitchen routing (N192)"><span class="g">🖥️</span><span class="l">KDS routing engine</span><span class="t">merge 3 channels · 1 rail</span><span class="r">N192</span></div>
+        <div class="node" title="Drive lane screens fed by POS (N191)"><span class="g">🚗</span><span class="l">Lane screen feed</span><span class="t">order display · 5s staleness max</span><span class="r">N191</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="POS→StockBeak depletion postings (N193)"><span class="g">📉</span><span class="l">Depletion postings</span><span class="t">theoretical vs counted gap 1.9%</span><span class="r">N193</span></div>
+        <div class="node" title="Recipe data quality issues (N217)"><span class="g">🧾</span><span class="l">Recipe master quality</span><span class="t">23 recipes w/ stale yields</span><span class="r">N217</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Drive-thru timer system measuring 246s (N215)"><span class="g">⏱️</span><span class="l">Drive-thru timer</span><span class="t">median 246s · target 180s</span><span class="r">N215</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Route56 integrates Dashly, Wheelio, Pedalr (N208)"><span class="g">🔀</span><span class="l">Route56 — 3 aggregators</span><span class="t">Dashly · Wheelio · Pedalr</span><span class="r">N208</span></div>
+        <div class="node" title="Order injection into POS queue (N210)"><span class="g">💉</span><span class="l">Order injection to POS</span><span class="t">inject median 12s</span><span class="r">N210</span></div>
+        <div class="node n-fail" title="Route56 polls every 90s; stale >5 min triggers manual courier call (N209)"><span class="g">📡</span><span class="l">Poll loop 90s · stale alert</span><span class="t">stale >5 min → manual call</span><span class="r">N209</span></div>
+        <div class="node" title="Integration debt across 7 systems (N218)"><span class="g">🧱</span><span class="l">Integration debt</span><span class="t">7 systems · 19 point-to-point</span><span class="r">N218</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="VoiceBoard ingests QR, reviews, ratings (N205)"><span class="g">🧲</span><span class="l">VoiceBoard ingestion</span><span class="t">QR 2.9% scan · app + agg reviews</span><span class="r">N205</span></div>
+        <div class="node" title="eNPS crew pulse tooling at −8 (N213)"><span class="g">📉</span><span class="l">Crew eNPS pulse</span><span class="t">eNPS −8 vs customer NPS +31</span><span class="r">N213</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Regional BI dashboards (N219)"><span class="g">📊</span><span class="l">Regional BI dashboards</span><span class="t">Tom Whelan's cluster view</span><span class="r">N219</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node" title="Courier GPS + status relayed to app map (N209, N018)"><span class="g">🛰️</span><span class="l">Courier GPS relay</span><span class="t">90s poll · ETA ±7 min</span><span class="r">N209</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-fail" title="Q-Pulse timestamps allow bulk-at-close falsification (N203)"><span class="g">⏲️</span><span class="l">Q-Pulse timestamp gaps</span><span class="t">96.2% done · 22% bulk-at-close</span><span class="r">N203</span></div>
+        <div class="node" title="Q-Pulse closure audit export (N204, N202)"><span class="g">📤</span><span class="l">Closure audit export</span><span class="r">N204</span></div>
+        <div class="node" title="ShiftOrbit→payroll weekly feed (N198)"><span class="g">💼</span><span class="l">ShiftOrbit → payroll feed</span><span class="t">errors 1.3% of lines</span><span class="r">N198</span></div>
+        <div class="node" title="Aggregator rating exports — 4.3/5 (N207)"><span class="g">⭐</span><span class="l">Rating exports 4.3/5</span><span class="t">3 exports · 90-day window</span><span class="r">N207</span></div>
+        <div class="node" title="Mystery shopper scores warehouse — 91.4% (N214)"><span class="g">🕵️</span><span class="l">Shopper scores 91.4%</span><span class="r">N214</span></div>
+        <div class="node n-fail" title="Network single-point-of-failure for POS estate (N216)"><span class="g">🔌</span><span class="l">Store network SPOF</span><span class="t">outage = offline till mode</span><span class="r">N216</span></div>
+        <div class="node" title="Quarterly blueprint re-baseline pipeline (N220)"><span class="g">🔁</span><span class="l">Blueprint re-baseline</span><span class="t">proposal 10 · same agent pipeline</span><span class="r">N220</span></div>
+      </div>
+    </div>
+
+  </div><!-- /bp -->
+  </div><!-- /bpwrap -->
+  </div><!-- /secbody -->
+  <section class="sec" id="rostering">
+    <div class="sec-kicker">Deep-dive · labour loop</div>
+    <h2>Rostering sub-blueprint — the weekly cycle behind every shift</h2>
+    <p class="lede">
+      Rostering is where Copperline's biggest numbers live: crew turnover 94% annualised (industry median
+      78%), 11 swap requests per store per week with 31% needing manager rework, and rosters published
+      less than 72 hours before week start in 41% of stores. Sofia Reyes (Director of Labour &amp;
+      Rostering) owns the loop end-to-end; Aisha Rahman (GM, Harbourgate Flagship #14), shift leader
+      Bo Chen and crew member Grace Mwangi (8 months tenure) execute it at store level. Note IDs refer
+      to the shared panel below.
+    </p>
+  </section>
+  <div class="secbody">
+  <div class="miniwrap">
+  <div class="mini">
+
+    <div class="brow ph-head">
+      <div class="corner">ROLE ↓ · STEP →<br><span style="font-weight:400;font-size:9px;color:#94a3b8">weekly cycle</span></div>
+      <div class="ph"><span class="pnum">STEP 1</span>Forecast<span class="pnote">T-21 to T-14</span></div>
+      <div class="ph"><span class="pnum">STEP 2</span>Draft<span class="pnote">T-14 to T-9</span></div>
+      <div class="ph"><span class="pnum">STEP 3</span>Publish<span class="pnote">T-9 to T-7</span></div>
+      <div class="ph"><span class="pnum">STEP 4</span>Swaps<span class="pnote">T-7 to T-0</span></div>
+      <div class="ph"><span class="pnum">STEP 5</span>Day-of adjustments<span class="pnote">shift day</span></div>
+      <div class="ph"><span class="pnum">STEP 6</span>Payroll close<span class="pnote">T+2 weeks</span></div>
+    </div>
+
+    <div class="brow lane-sup">
+      <div class="rlab"><span class="ln" style="color:#9333ea">LABOUR &amp; ROSTERING</span><span class="sl">Sofia Reyes · HQ function</span></div>
+      <div class="cell">
+        <div class="node"><span class="g">📈</span><span class="l">Demand model refresh</span><span class="t">62% of volume in peak windows</span><span class="r">N126 · N194</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">📐</span><span class="l">Labour-ratio guidance</span><span class="t">crew-per-shift targets by format</span><span class="r">N194</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-fail" title="Only 59% of stores publish on time (N194)"><span class="g">📤</span><span class="l">Publish compliance push</span><span class="t">41% of stores still &lt;72h</span><span class="r">N194</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-fail" title="31% of the 11 weekly swaps per store need rework (N118)"><span class="g">🔁</span><span class="l">Swap escalations</span><span class="t">11/wk/store · 31% rework</span><span class="r">N118 · N195</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">🚑</span><span class="l">Cover-from-region pool</span><span class="t">turnover 94% drives vacancies</span><span class="r">N117 · N156</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">🧮</span><span class="l">Payroll exception review</span><span class="t">1.3% of feed lines errored</span><span class="r">N198</span></div>
+      </div>
+    </div>
+
+    <div class="brow lane-back">
+      <div class="rlab"><span class="ln" style="color:#d97706">GENERAL MANAGER</span><span class="sl">Aisha Rahman · Flagship #14</span></div>
+      <div class="cell">
+        <div class="node"><span class="g">🔮</span><span class="l">Store-level overlay</span><span class="t">events · weather · LTO lifts</span><span class="r">N126</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-fail" title="GMs re-key rosters in Excel when the swap ledger conflicts (N197)"><span class="g">📊</span><span class="l">Excel re-key workaround</span><span class="t">when ShiftOrbit conflicts</span><span class="r">N197</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-hand" title="Roster published to crew app (N194)"><span class="g">📤</span><span class="l">Publish to crew app</span><span class="t">flagship hits ≥72h · network 59%</span><span class="r">N194</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-fail" title="Manager rework on 31% of swaps (N118)"><span class="g">🛠️</span><span class="l">Approve/rework swaps</span><span class="t">31% of 11 weekly requests</span><span class="r">N118</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">☀️</span><span class="l">Morning roster check</span><span class="t">planned vs clocked-in</span><span class="r">N116</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">✅</span><span class="l">Timesheet sign-off</span><span class="t">before T+2wk close</span><span class="r">N198</span></div>
+      </div>
+    </div>
+
+    <div class="brow lane-back">
+      <div class="rlab"><span class="ln" style="color:#d97706">SHIFT LEADER</span><span class="sl">Bo Chen</span></div>
+      <div class="cell">
+        <div class="node"><span class="g">📝</span><span class="l">Availability whispers</span><span class="t">verbal availability drifts</span><span class="r">N195</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">🧍</span><span class="l">Huddle content drafted</span><span class="t">positions + LTO focus</span><span class="r">N133</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">📣</span><span class="l">Pre-shift huddle</span><span class="t">4 min · who does what</span><span class="r">N133</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">🔀</span><span class="l">Cover swaps in-app</span><span class="t">matches · declines · re-posts</span><span class="r">N118</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-fail" title="Call-in absences against 94% turnover (N117)"><span class="g">📵</span><span class="l">Absence call-ins</span><span class="t">re-jig on the day</span><span class="r">N117 · N119</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">🎓</span><span class="l">Shadow-shift logging</span><span class="t">new crew like Grace Mwangi</span><span class="r">N132</span></div>
+      </div>
+    </div>
+
+    <div class="brow lane-cust">
+      <div class="rlab"><span class="ln" style="color:#2563eb">CREW</span><span class="sl">Grace Mwangi · 8 months</span></div>
+      <div class="cell">
+        <div class="node"><span class="g">🗓️</span><span class="l">Set availability</span><span class="t">in ShiftOrbit crew app</span><span class="r">N195</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">👀</span><span class="l">See draft (informal)</span><span class="t">word-of-mouth previews</span><span class="r">N194</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-wait" title="Late rosters are the crew's top complaint (N194, N213)"><span class="g">⏳</span><span class="l">Wait for roster</span><span class="t">41% of stores &lt;72h notice</span><span class="r">N194 · N213</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-hand" title="Request swap in marketplace (N118)"><span class="g">🔁</span><span class="l">Request swap</span><span class="t">avg 11 per store per week</span><span class="r">N118</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">⏰</span><span class="l">Clock in / late flag</span><span class="t">face + fob T&amp;A</span><span class="r">N196</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">💷</span><span class="l">Payslip query</span><span class="t">route via GM to payroll</span><span class="r">N198</span></div>
+      </div>
+    </div>
+
+    <div class="brow lane-data">
+      <div class="rlab"><span class="ln" style="color:#0891b2">SHIFTORBIT</span><span class="sl">system of record for the loop</span></div>
+      <div class="cell">
+        <div class="node"><span class="g">🗄️</span><span class="l">Forecast import</span><span class="t">sales curve × labour model</span><span class="r">N212</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">✍️</span><span class="l">Draft optimizer</span><span class="t">skills matrix + availability</span><span class="r">N195</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-fail" title="Publish timestamps feed the 41% late-roster stat (N194)"><span class="g">📤</span><span class="l">Publish + notify</span><span class="t">timestamped · feeds 41% stat</span><span class="r">N194</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-fail" title="Swap ledger conflicts trigger Excel re-keying (N195, N197)"><span class="g">📕</span><span class="l">Swap ledger</span><span class="t">conflicts → GM re-key</span><span class="r">N195 · N197</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">⏱️</span><span class="l">T&amp;A actuals capture</span><span class="t">clock-in stream vs plan</span><span class="r">N196</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-hand" title="Weekly payroll feed with 1.3% error lines (N198)"><span class="g">💼</span><span class="l">Payroll export</span><span class="t">1.3% of lines errored</span><span class="r">N198</span></div>
+      </div>
+    </div>
+
+  </div><!-- /mini -->
+  </div><!-- /miniwrap -->
+  </div><!-- /secbody -->
+  <section class="sec" id="governance">
+    <div class="sec-kicker">Management &amp; governance</div>
+    <h2>Operating rhythm — the loops that steer the blueprint</h2>
+    <p class="lede">
+      The blueprint is not static: daily, weekly, monthly and quarterly loops re-baseline it. Owners are
+      named per loop — Priya Nair (COO, sponsor), Marcus Adeyemi (VP Store Operations), Sofia Reyes
+      (Director of Labour &amp; Rostering), Daniel Okafor (Head of Franchise Relations), Hana Kim (Head of
+      Digital &amp; Delivery), Tom Whelan (Regional Manager, Northline, 14 years tenure). The engagement
+      itself stopped at delivery of reports and proposals — prototyping was not executed.
+    </p>
+  </section>
+  <div class="secbody">
+  <div class="govwrap">
+  <div class="gov">
+
+    <div class="brow ph-head">
+      <div class="corner">LOOP ↓ · CADENCE →</div>
+      <div class="ph"><span class="pnum">EVERY DAY</span>Daily</div>
+      <div class="ph"><span class="pnum">EVERY WEEK</span>Weekly</div>
+      <div class="ph"><span class="pnum">EVERY MONTH</span>Monthly</div>
+      <div class="ph"><span class="pnum">EVERY QUARTER</span>Quarterly</div>
+    </div>
+
+    <div class="brow lane-front">
+      <div class="rlab"><span class="ln" style="color:#16a34a">STORE</span><span class="sl">in the four walls</span></div>
+      <div class="cell">
+        <div class="node"><span class="g">🧍</span><span class="l">Shift huddles (2×)</span><span class="t">open + mid · 4 min</span><span class="r">N133</span></div>
+        <div class="node"><span class="g">📋</span><span class="l">Q-Pulse open checks</span><span class="t">temp + grill cal</span><span class="r">N203</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">🧮</span><span class="l">Flash P&amp;L + waste log</span><span class="t">3.8% chicken waste tracked</span><span class="r">N170 · N105</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">🧾</span><span class="l">Stock count + variance</span><span class="t">theoretical vs counted 1.9%</span><span class="r">N193</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">🕵️</span><span class="l">Mystery shopper debrief</span><span class="t">accuracy 91.4%</span><span class="r">N177 · N214</span></div>
+      </div>
+    </div>
+
+    <div class="brow lane-back">
+      <div class="rlab"><span class="ln" style="color:#d97706">LABOUR</span><span class="sl">rostering &amp; crew experience</span></div>
+      <div class="cell">
+        <div class="node"><span class="g">☀️</span><span class="l">Roster vs actuals check</span><span class="t">call-ins · swaps · gaps</span><span class="r">N116 · N117</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-fail" title="Swap rework pile (N118)"><span class="g">🔁</span><span class="l">Swap rework review</span><span class="t">31% of 11/store/week</span><span class="r">N118</span></div>
+        <div class="node"><span class="g">📋</span><span class="l">Publish-compliance list</span><span class="t">chase the 41% late stores</span><span class="r">N194</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">📉</span><span class="l">Turnover &amp; vacancy review</span><span class="t">94% annualised vs 78% industry</span><span class="r">N156</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">🗣️</span><span class="l">Labour council w/ crew reps</span><span class="t">eNPS −8 on the table</span><span class="r">N213</span></div>
+      </div>
+    </div>
+
+    <div class="brow lane-sup">
+      <div class="rlab"><span class="ln" style="color:#9333ea">NETWORK</span><span class="sl">region · franchise · digital</span></div>
+      <div class="cell">
+        <div class="node"><span class="g">📊</span><span class="l">Regional ops call</span><span class="t">flash metrics · window 246s</span><span class="r">N219</span><span class="own tom">TOM</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">📲</span><span class="l">Digital &amp; delivery standup</span><span class="t">Route56 incidents · ratings 4.3</span><span class="r">N209</span><span class="own hana">HANA</span></div>
+        <div class="node"><span class="g">🚚</span><span class="l">DC inbound review</span><span class="t">cold-chain exceptions</span><span class="r">N146 · N147</span><span class="own marcus">MARCUS</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">🗺️</span><span class="l">Regional deep review</span><span class="t">Tom Whelan cluster · 14-yr tenure</span><span class="r">N176</span><span class="own tom">TOM</span></div>
+        <div class="node"><span class="g">📢</span><span class="l">Franchise partner forum</span><span class="t">62 partners · Flamebook acks</span><span class="r">N151 · N154</span><span class="own daniel">DANIEL</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">💼</span><span class="l">Franchise QBRs</span><span class="t">P&amp;L + ops + compliance</span><span class="r">N155</span><span class="own daniel">DANIEL</span></div>
+        <div class="node"><span class="g">🎯</span><span class="l">LTO launch calendar review</span><span class="t">6 LTOs/yr gate</span><span class="r">N153</span><span class="own marcus">MARCUS</span></div>
+        <div class="node"><span class="g">🏛️</span><span class="l">Exec ops review</span><span class="t">full-book metrics</span><span class="r">N170 · N220</span><span class="own priya">PRIYA</span><span class="own sofia">SOFIA</span></div>
+      </div>
+    </div>
+
+    <div class="brow lane-data">
+      <div class="rlab"><span class="ln" style="color:#0891b2">RE-BASELINE</span><span class="sl">blueprint as living document</span></div>
+      <div class="cell">
+        <div class="node"><span class="g">🧲</span><span class="l">VoiceBoard daily digest</span><span class="t">stores tagged by theme</span><span class="r">N205 · N206</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">⭐</span><span class="l">Rating exports merged</span><span class="t">app + 3 aggregators</span><span class="r">N207</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node"><span class="g">📉</span><span class="l">Metric pack refresh</span><span class="t">246s · 91.4% · 3.8% · −8 · +31</span><span class="r">N212</span></div>
+        <span class="fa">→</span>
+      </div>
+      <div class="cell">
+        <div class="node n-hand" title="Proposal 10 — quarterly re-baseline (N220)"><span class="g">🔁</span><span class="l">Blueprint re-baseline</span><span class="t">same agent pipeline · proposal 10</span><span class="r">N220</span></div>
+      </div>
+    </div>
+
+  </div><!-- /gov -->
+  </div><!-- /govwrap -->
+  </div><!-- /secbody -->
+  <section class="sec" id="notes">
+    <div class="sec-kicker">Evidentiary layer · 220 notes</div>
+    <h2>Notes panel — N001–N220</h2>
+    <p class="lede">
+      Numbered per house style: IDs are continuous across the whole Copperline 2000 artifact set and are
+      referenced, never renumbered, by sibling artifacts (brief, journey map, analysis report, proposals,
+      deck). Sources behind these notes: 8 flagship interviews (Harbourgate Flagship #14 and Northline
+      Flagship #3), surveys of 412 store managers and 1,893 crew, a 90-day VoiceBoard extract, a
+      120-store POS sample, 60 mystery-shopper reports, 3 aggregator rating exports, and 2 weeks of
+      call-centre logs. All figures synthetic; all failure modes observed at least twice in the field
+      window.
+    </p>
+  </section>
+  <div class="secbody">
+
+    <div class="ngroup ng-ev">
+      <h3><span>Physical evidence — what the customer keeps, sees or is handed</span><span class="rng">N001–N020 · 20 notes</span></h3>
+      <div class="note"><span class="nid">N001</span><span class="ntext">Store fascia carries the charcoal-grill flame mark across all 2,000 stores; 68 flagship grill-houses add a lit chimney motif. Field check found 214 sites with faded fascia vinyl past its 5-year replacement cycle — flagged to maintenance, not to branding, so nobody owns it.</span></div>
+      <div class="note"><span class="nid">N002</span><span class="ntext">The Copperline app icon and app-store listing are the first evidence for the 26% app-plus-delivery mix. Listing screenshots lag the current menu by up to two LTO cycles; Hana Kim's team updates them manually because there is no content pipeline from Flamebook to the store listing.</span></div>
+      <div class="note"><span class="nid">N003</span><span class="ntext">Digital menu boards refresh nightly at 03:00 from the CopperPOS v7 price file. Where the overnight sync fails (0.8% of store-nights), the board shows yesterday's prices and the till charges today's — the single most common source of till-level complaints in the call-centre logs.</span></div>
+      <div class="note"><span class="nid">N004</span><span class="ntext">Queue stanchions in standard stores lay out one serpentine for till + kiosk. Food-court sites (389) have no stanchions at all, so the queue bleeds into mall walkways and security guards informally marshal it during the 11:30–13:30 peak.</span></div>
+      <div class="note"><span class="nid">N005</span><span class="ntext">Drive-thru pre-order boards sit 18–24 m ahead of the speaker post at all 251 drive-thru express sites. Dwell on the board averages 26 s; boards double as the only place lane pricing is visible, which is why price complaints cluster when the board sync (N003) fails.</span></div>
+      <div class="note"><span class="nid">N006</span><span class="ntext">Order confirmation displays at kiosk and speaker post show the basket for 5 s before auto-dismiss. Field timing shows customers need 7–9 s to verify a 4-item basket; the truncation drives a measurable share of the 8.6% order-error rate (accuracy 91.4%).</span></div>
+      <div class="note"><span class="nid">N007</span><span class="ntext">Every receipt carries a QR into VoiceBoard; scan rate is 2.9%. Receipt paper is thermal and fades in roughly 11 weeks, so recovery claims referencing old receipts arrive unverifiable — call-centre agents are told to accept claims within 30 days only.</span></div>
+      <div class="note"><span class="nid">N008</span><span class="ntext">Dine-in customers receive a coaster buzzer at payment; standard stores carry a pool of 24, flagships 60. Buzzer loss runs 3 per store per month and replacements are ordered through StockBeak as a "front-of-house consumable", competing for budget with packaging.</span></div>
+      <div class="note"><span class="nid">N009</span><span class="ntext">Foil-lined wrap buckets in three SKUs (quarter, half, family) are the signature evidence of a dine-in tray. The bucket is deliberately over-engineered for heat retention so the car journey home does not degrade the grill char — the packaging program's one unambiguous win (N185).</span></div>
+      <div class="note"><span class="nid">N010</span><span class="ntext">Delivery orders leave in tamper-sealed insulated bags; the seal is applied on the courier shelf in customer view at food-court sites but behind the window at drive-thru express sites. Inconsistent seal visibility shows up in VoiceBoard themes as "was my bag opened?" — 41 mentions in the 90-day extract.</span></div>
+      <div class="note"><span class="nid">N011</span><span class="ntext">The window handover tray and the "check your bag before you merge" exit sign are the last drive-thru evidences. The sign exists because re-fire after exit costs a 190 s window penalty plus a remade order; it was introduced by Tom Whelan's region three years ago and only rolled into 60% of sites.</span></div>
+      <div class="note"><span class="nid">N012</span><span class="ntext">Courier pickup shelf labels (Dashly / Wheelio / Pedalr initials D, W, P) are hand-taped in most stores rather than using the Flamebook-standard printed kit. Mis-shelved bags are the top contributing cause of the 0.7% crew-to-courier breakage rate (N085).</span></div>
+      <div class="note"><span class="nid">N013</span><span class="ntext">The open charcoal grill — "the theatre" — is visible from 78% of counters and is the brand's core physical evidence. Stores that rebuilt with a blind wall (a 2023 cost program, since halted) saw perceived wait times rise 22%; the grill pays for itself in queue tolerance.</span></div>
+      <div class="note"><span class="nid">N014</span><span class="ntext">Hygiene badges showing "last temp check" timestamps are displayed at 84% of stores, fed by Q-Pulse. Because 22% of checks are logged in bulk at close (N121), the badge sometimes shows a plausibly steady drumbeat that was actually entered at 21:40 in one sitting.</span></div>
+      <div class="note"><span class="nid">N015</span><span class="ntext">LTO window poster kits ship from Flamebook with a 10-day swap window ahead of launch. In the last five LTOs, kits arrived late at a median 11% of stores, so posters went up after the till already charged the new items — visible proof of the marketing/store-ops seam.</span></div>
+      <div class="note"><span class="nid">N016</span><span class="ntext">The allergen matrix card (version 9, 14 allergens) lives at every till and kiosk. Version control is manual: when HQ revises the matrix, old cards persist for a median 17 days, and verbal confirmation (N060) is the only reliable defence at the counter.</span></div>
+      <div class="note"><span class="nid">N017</span><span class="ntext">Food-court order-status screens (389 sites) poll the KDS every 10 s. Where a screen fails, order numbers are shouted over the food court; Harbourgate Flagship #14 reported shouting fallback twice in the field window, each time drawing mall-compliance comments.</span></div>
+      <div class="note"><span class="nid">N018</span><span class="ntext">The in-app live tracking map is fed by Route56 at a 90 s refresh. Customers anchor hard on the courier dot: ETA drift beyond ±7 minutes generates "where is my courier" themes in VoiceBoard even when food arrives hot and on band.</span></div>
+      <div class="note"><span class="nid">N019</span><span class="ntext">Recovery voucher cards in bands of £2 / £6 / £11 equivalent sit under every till float. Stock-out of the physical card is a known failure — 31% of surveyed managers report improvising hand-written vouchers, which then do not reconcile in the POS recovery code.</span></div>
+      <div class="note"><span class="nid">N020</span><span class="ntext">E-receipts with a feedback prompt are emailed within 90 s of order close where an app account or aggregator identity exists — covering 63% of orders. The remaining 37% get paper only, so the feedback funnel structurally under-samples drive-thru cash customers.</span></div>
+    </div>
+
+    <div class="ngroup ng-cust">
+      <h3><span>Customer actions — three channels, one grid</span><span class="rng">N021–N055 · 35 notes</span></h3>
+      <div class="note"><span class="nid">N021</span><span class="ntext">The trigger is routine: "same time, same hunger, same decision" in Mei Lin's words — the regular office worker archetype visits 2.3 times per month, overwhelmingly inside the 11:30–13:30 peak. Channel choice is made before any Copperline evidence is seen, mostly by transport mode that day.</span></div>
+      <div class="note"><span class="nid">N022</span><span class="ntext">App sessions before arrival median 71 s: open, glance at saved favourites ("the usual half bucket"), close. Only 9% of sessions end in a pre-order; the app functions chiefly as a menu memory and loyalty bank, not an ordering tool, for dine-in regulars.</span></div>
+      <div class="note"><span class="nid">N023</span><span class="ntext">LTO banners drive 34% of app menu opens. Customers report choosing the LTO "because it is big on the screen", then wavering at the till when the board price differs from the app anchor price — an artefact of the price-sync gap (N187).</span></div>
+      <div class="note"><span class="nid">N024</span><span class="ntext">Channel decision is a genuine decision node: walk (36%), drive (38%), thumb (26%). Field observation shows weather flips 6–9 points between walk and drive on any given day, which the demand model (N212) only partially ingests.</span></div>
+      <div class="note"><span class="nid">N025</span><span class="ntext">Arrival modes split by format: flagship and standard draw walkers and parkers; drive-thru express is 97% car; travel-hub kiosks are 100% foot traffic with luggage. Luggage at kiosks pushes kiosk session time from median 96 s to 141 s — nobody has redesigned the kiosk flow for a suitcase.</span></div>
+      <div class="note"><span class="nid">N026</span><span class="ntext">Queue tolerance: dine-in walk-aways begin at 7 minutes visible queue (peak queue 7 min is the threshold, not the average); drive-thru bail-outs happen at the ninth car in stack. Both thresholds worsen in rain, when the grill theatre (N013) is not visible from the queue.</span></div>
+      <div class="note"><span class="nid">N027</span><span class="ntext">In lane, customers read the pre-order board for a median 26 s then rehearse their order verbally. Field audio (60 mystery-shopper reports) shows 1 in 5 customers still change their mind at the speaker, which is where speaker-order errors compound (N032).</span></div>
+      <div class="note"><span class="nid">N028</span><span class="ntext">App pre-order (9% of drive orders, 12% of app orders scheduled) nominally skips the speaker. In practice the arrival-scan mat mis-reads 4% of the time and the customer must re-state the order anyway — the pre-order promise has a hole in it exactly at its payoff moment.</span></div>
+      <div class="note"><span class="nid">N029</span><span class="ntext">Menu-board reading is skewed: customers scan the top-left "hero quadrant" for a median 4.2 s and rarely reach board zone 4. Items placed there sell 2.1× items elsewhere, which is why LTO slots are auctioned internally — and why menu R&amp;D (N173) fights for the quadrant.</span></div>
+      <div class="note"><span class="nid">N030</span><span class="ntext">Counter order placement medians 54 s for a spoken order versus 96 s at kiosk for the same basket. Crew consistently report that the kiosk's upsell attach (+11% with the script) is offset by its dwell, especially in peak — the format choice is genuinely ambiguous.</span></div>
+      <div class="note"><span class="nid">N031</span><span class="ntext">Customisation happens on 38% of kiosk orders but only 7% of counter orders — customers will not narrate complexity to a person but will tap it. The kitchen sees kiosk orders as "fiddly" (N106) and batch them last, which quietly punishes the channel that upsells best.</span></div>
+      <div class="note"><span class="nid">N032</span><span class="ntext">Speaker-post ordering fails acoustically: headset audio errors were observed in 1 of 8 speaker orders — motor idling, wind, and the grill's extraction fan all compete. Customers compensate by shouting, which degrades recognition further; this is the drive-thru's leading order-accuracy leak (91.4% overall).</span></div>
+      <div class="note"><span class="nid">N033</span><span class="ntext">Payment is contactless in 81% of transactions; cash remains 19% concentrated in drive-thru (25%) and travel-hub kiosks (31%). Cash at the window adds a median 19 s versus card (22 s vs 41 s total tender) and forces the cash-drop protocol (N124) mid-peak.</span></div>
+      <div class="note"><span class="nid">N034</span><span class="ntext">In-app payment with a saved card completes in a median 9 s and applies promotions correctly 94% of the time. The saved-card rate is 72% of app customers; the remaining 28% re-key cards on a phone keyboard, and card-entry abandonment is 6% of those sessions.</span></div>
+      <div class="note"><span class="nid">N035</span><span class="ntext">Coupon redemption is the payment phase's failure mode: 6.1% of coupon scans are rejected (expired stacking rules, barcode glare in drive-thru sun). Rejected coupons are the number-two complaint theme in call-centre logs, after delivery missing-items.</span></div>
+      <div class="note"><span class="nid">N036</span><span class="ntext">Post-payment wait with buzzer medians 6 min 10 s at peak and 3 min 20 s off-peak. Perceived wait tracks whether the grill is visible (N013); customers describing waits over 8 minutes used the word "forgotten" in 22 of 25 VoiceBoard verbatims sampled.</span></div>
+      <div class="note"><span class="nid">N037</span><span class="ntext">The between-windows gap for drive-thru customers is 104 s at peak versus 51 s off-peak — the interval is pure wait with no evidence but the car in front. Customers cannot see the kitchen, so the gap reads as neglect even when the kitchen is at full cadence.</span></div>
+      <div class="note"><span class="nid">N038</span><span class="ntext">Delivery customers track the courier dot obsessively in the final kilometre — map-open events triple inside the last 6 minutes of ETA. Any dot stall over 90 s (the Route56 poll interval) triggers support contact, making the tracking map itself a demand generator for the call centre.</span></div>
+      <div class="note"><span class="nid">N039</span><span class="ntext">Allergen-anxious customers (est. 4% of orders, self-reported in survey free-text) ask a scripted question at order and again at collection. The double-check is rational: matrix cards lag 17 days on revision (N016), and these customers know it from online forums.</span></div>
+      <div class="note"><span class="nid">N040</span><span class="ntext">Buzzer collection involves an 18 m median walk from table to pass. In food courts the walk crosses other tenants' queues; 3 of 60 mystery-shopper reports recorded the customer losing sight of the pass and waiting at the till instead — a wayfinding failure, not a service one.</span></div>
+      <div class="note"><span class="nid">N041</span><span class="ntext">At the drive-thru window customers spend a median 31 s verifying the order against the confirm screen and hunting for sauces. Verification dwell is the cheapest quality check Copperline owns: it converts kitchen errors into 10-second fixes instead of 190-second re-fires (N074).</span></div>
+      <div class="note"><span class="nid">N042</span><span class="ntext">Doorstep handover medians 38 s: bag pass, pleasantries, door close. Customers rate this micro-moment disproportionately — "handed like groceries, not like food" appears in delivery reviews; couriers (Jack Doyle interview) report no standard for the doorstep beat at all.</span></div>
+      <div class="note"><span class="nid">N043</span><span class="ntext">Table-finding in flagship grill-houses at peak is non-trivial: occupancy runs 92% at 12:30, and tray-carrying customers circle. Aisha Rahman's team informally reserves four perimeter tables for just-collected orders during peak, an accommodation invented at store level and undocumented in Flamebook.</span></div>
+      <div class="note"><span class="nid">N044</span><span class="ntext">The eat-in experience is where the product meets its promise: dwell median 19 minutes, and "char still crisp at minute ten" is the top positive theme in VoiceBoard. Dine-in NPS behaviour drives the blended customer NPS of +31 (against crew eNPS of −8 — the engagement's central asymmetry).</span></div>
+      <div class="note"><span class="nid">N045</span><span class="ntext">Drive-thru exit to first bite medians 4 minutes; customers eating in the car are the strictest judges of packaging (N009) and the likeliest to notice a missing sauce with no recourse but the app. Exit-eat orders generate 2.4× the per-order note count of dine-in in the 90-day extract.</span></div>
+      <div class="note"><span class="nid">N046</span><span class="ntext">Unbagging at home is where delivery defects surface: missing items register in 0.7%-band breakage, cold-food complaints cluster when the warm-bag hold exceeded 10 minutes (N138). The customer's discovery moment is private, so recovery depends entirely on them choosing to report (most do not).</span></div>
+      <div class="note"><span class="nid">N047</span><span class="ntext">Order-error discovery: with order accuracy at 91.4%, roughly 1 in 12 orders has something wrong. Of those, field sampling suggests 55% are noticed on the spot, 30% post-hoc, and 15% never. The unnoticed 15% is silent churn, not captured by any metric Copperline currently runs.</span></div>
+      <div class="note"><span class="nid">N048</span><span class="ntext">App reviews are the drive-thru customer's complaint channel of choice — written from the car park within 6 minutes of exit, median 40 words, and unanswerable by the store because VoiceBoard routes them to HQ theme buckets (N206) rather than back to the originating store.</span></div>
+      <div class="note"><span class="nid">N049</span><span class="ntext">Call-centre calls (Raj Patel's team, AHT 6 min 20 s) skew to delivery missing-items and rejected coupons. Two weeks of logs show 61% of callers had already tried the app's help flow and found it circular; the call is the second attempt, not the first.</span></div>
+      <div class="note"><span class="nid">N050</span><span class="ntext">Receipt-QR scanning into VoiceBoard runs at 2.9% overall but 6.1% among customers who had something go wrong — the feedback funnel over-samples recovery cases, biasing store-level themes toward incidents and away from the silent-majority experience.</span></div>
+      <div class="note"><span class="nid">N051</span><span class="ntext">Aggregator ratings blend to 4.3/5 across Dashly, Wheelio and Pedalr. The rating is given seconds after handover, so it prices the courier's doorstep performance (N042) into Copperline's brand score — a measurement boundary the blueprint makes explicit.</span></div>
+      <div class="note"><span class="nid">N052</span><span class="ntext">Recovery voucher redemption: 58% are redeemed within 14 days, and redeemers' 60-day repeat rate (61%) exceeds the baseline (47%). The £2/£6/£11 ladder works; the problem is upstream consistency — 31% of managers improvising cards (N019) breaks the redemption chain.</span></div>
+      <div class="note"><span class="nid">N053</span><span class="ntext">Loyalty accrual is automatic for app orders and manual (receipt-code entry) for till orders; manual accrual happens in 11% of eligible till transactions. Customers who lose points this way rarely complain — they simply stop expecting the loyalty program to be real.</span></div>
+      <div class="note"><span class="nid">N054</span><span class="ntext">The return decision forms within 48 hours of visit; 47% of customers revisit within 31 days. The strongest single predictor in the survey data is not food score but "the visit felt calm" — queue perception and visible crew composure, both downstream of rostering stability (see deep-dive).</span></div>
+      <div class="note"><span class="nid">N055</span><span class="ntext">Word-of-mouth: customers recommend Copperline at +31 NPS but their stories are operational — "they got my order right", "the line moved". The brand is carried by process reliability, which is why the blueprint treats every backstage lane as customer-facing in effect.</span></div>
+    </div>
+    <div class="ngroup ng-front">
+      <h3><span>Frontstage — visible crew actions (two sub-rows)</span><span class="rng">N056–N100 · 45 notes</span></h3>
+      <div class="note"><span class="nid">N056</span><span class="ntext">Greeter standard: flagship and standard stores staff a greeter from 11:30; drive-thru adds a lane greeter in the 17:30–19:30 window only. Greeters recognise regulars by name at high-performing stores (Mei Lin is greeted at Harbourgate #14) — the behaviour is coached, not scripted, and evaporates when the roster runs short (N117).</span></div>
+      <div class="note"><span class="nid">N057</span><span class="ntext">Queue-busting mobile POS deploys when the visible queue hits 7 minutes or the ninth car stacks. It cuts order-capture time 30% but pulls its operator off assembly, so the wait simply migrates to the buzzer stage (N036) — crews describe it as "moving the queue into the kitchen".</span></div>
+      <div class="note"><span class="nid">N058</span><span class="ntext">Order-taking script v6 prescribes greet, confirm, suggest. Median execution is greet + take; the suggest beat lands in 54% of observed interactions. New crew (remember: 94% annualised turnover means the median crew member is new) learn the script from whoever trained them, not from Flamebook.</span></div>
+      <div class="note"><span class="nid">N059</span><span class="ntext">LTO upsell script lifts attach rate +11% when delivered verbatim. The verbatim rate collapses in peak: from 61% off-peak to 22% at 12:30. Marketing measures attach by store and concludes crews are "not trying"; the crews are triaging a queue.</span></div>
+      <div class="note"><span class="nid">N060</span><span class="ntext">Verbal allergen confirmation is mandatory for any order containing a flagged item or a customer question. Observed compliance is 88% at counter, 71% at speaker (noise, N032), 96% at kiosk-assist. The 12% counter gap concentrates in the last hour of peak, when crew fatigue peaks with volume.</span></div>
+      <div class="note"><span class="nid">N061</span><span class="ntext">POS mis-keys requiring void run at 2.4% of order lines; every void needs a supervisor key, and the median supervisor is 3 minutes away mid-peak (N092). Till operators learn to "build the order twice" rather than void — slower but key-free — an undocumented workaround that biases POS timing data.</span></div>
+      <div class="note"><span class="nid">N062</span><span class="ntext">Terminal handoff is a 9-second choreography: rotate, present, wait, retrieve. Contactless (81%) keeps it short; chip-and-signature customers (2%, travel-hub heavy) block the till for 40+ s. One till in three has a degraded terminal cable, so the handoff includes the crew member's stabilising hand — customers notice and read it as shabbiness.</span></div>
+      <div class="note"><span class="nid">N063</span><span class="ntext">Receipt-plus-buzzer issue closes the counter interaction at a median 7 s. Buzzers are handed out unwiped between customers at 44% of observed handovers (they are "clean enough" per Q-Pulse guidance, but visibly soiled buzzers drew 9 mentions in the VoiceBoard extract).</span></div>
+      <div class="note"><span class="nid">N064</span><span class="ntext">Grill call-outs — "fire three half buckets!" — are the audible heartbeat of the kitchen and spill across the counter. Customers read them as competence (positive theme) but 11:30–13:30 call-out volume makes counter conversation shout-level, degrading the allergen confirmation (N060) exactly when it matters most.</span></div>
+      <div class="note"><span class="nid">N065</span><span class="ntext">Grill theatre protocol: the pass is kept photogenic — skewers rotated on schedule, no clutter on the front rail. Crew score it as their proudest work ("everyone watches the fire"). When the grill runs behind, closing the theatre curtain (steam hood baffle) is the accepted move and perceived waits jump (N013).</span></div>
+      <div class="note"><span class="nid">N066</span><span class="ntext">Order staging on the pass follows a strict geometry: dine-in trays left, drive bags centre, delivery shelf right. Compliance with the geometry is 79%; during re-fires (N110) the pass degrades into archaeology, and handover errors (wrong bag to window) originate here, not at the window.</span></div>
+      <div class="note"><span class="nid">N067</span><span class="ntext">Name-or-number call protocol: call twice, wait 30 s, re-buzz, then hold under the warmer with a marker. Abandoned orders (0.4% of dine-in) are held 20 minutes then wasted — entering StockBeak's waste ledger under reason code 6, "customer did not collect" (N105).</span></div>
+      <div class="note"><span class="nid">N068</span><span class="ntext">Tray handover includes the sauce check — "two garlic, one smoky?" — taking a median 14 s and catching 60% of pre-handover defects. Crew who skip it (typically when two customers arrive at once) generate 3× the post-handover returns to counter (N097).</span></div>
+      <div class="note"><span class="nid">N069</span><span class="ntext">Window greeting confirms order and name from the confirm screen before the bag moves. Where skipped (peak pressure, N073), wrong-car handovers occur — rare (0.1% of drive orders) but memorable enough to anchor negative reviews disproportionately.</span></div>
+      <div class="note"><span class="nid">N070</span><span class="ntext">Speaker-side confirmation repeats the basket back item-for-item; repeat-back cuts mis-hears by 44% (N093) but adds 9 s per order. Crew under window-time pressure (N073) truncate the repeat-back to totals-only — accurate for price, blind for items.</span></div>
+      <div class="note"><span class="nid">N071</span><span class="ntext">First-window payment handles tender (22 s card / 41 s cash median) and floats the conversation that second-window closure depends on. The window operator also watches the pre-order arrival mat (N028) and reconciles scan failures verbally.</span></div>
+      <div class="note"><span class="nid">N072</span><span class="ntext">Bag check versus the confirm screen is the last quality gate before handover: 11 s, two hands, eyes on screen. Mystery-shopper data ties rigorous bag checks to that store's accuracy score more tightly than any kitchen variable — the cheapest intervention in this blueprint.</span></div>
+      <div class="note"><span class="nid">N073</span><span class="ntext">Window-time pressure is structural: median 246 s against a 180 s target, measured by the beacon (N111) and reviewed weekly (N219). Crew respond by front-loading assembly before payment completes — which works until a void (N061) or re-fire (N074) lands mid-stream.</span></div>
+      <div class="note"><span class="nid">N074</span><span class="ntext">Missing-item re-fire at the window costs a median 190 s added window time plus a remade item. The decision node — make them wait versus send them on and re-deliver — is made ad hoc by whoever is at the window; no standard exists, and the two options produce very different customer outcomes.</span></div>
+      <div class="note"><span class="nid">N075</span><span class="ntext">On-the-spot recovery at POS uses the £2/£6/£11 ladder (N019): wrong sauce £2, wrong main £6, ruined visit £11. Crew authority is real but capped; above band requires the MOD (N092). Field observation: recovery executed within 2 minutes converts complainers to promoters at a rate the call-centre path never matches.</span></div>
+      <div class="note"><span class="nid">N076</span><span class="ntext">Service-standard posters in the crew corridor ("90 seconds from order to smile") date from the 2019 brand refresh and reference a till-only world. They are evidence to crew of how out of touch standards are — a small but real drag on eNPS (−8) mentioned unprompted in crew survey free-text.</span></div>
+      <div class="note"><span class="nid">N077</span><span class="ntext">Window handoff script: name, verify screen, bag with two hands, "check your bag before you merge" (N011). Full-script execution observed in 68% of handovers. The script's power is that it delegates final QA to the customer at the last moment mistakes are cheap.</span></div>
+      <div class="note"><span class="nid">N078</span><span class="ntext">Order-name verification at the window catches wrong-car risk (N069) and doubles as the pre-order reconciliation point for app arrivals (N028). Where the name on the bag differs from the app account holder (partner ordering for partner), crews improvise a description-match — effective, unstandardised.</span></div>
+      <div class="note"><span class="nid">N079</span><span class="ntext">Bag-and-drink staging shelf beside the window is stocked during the gap between windows (N037). Drinks staged more than 4 minutes early go flat and cold-drink ice melts; the 4-minute rule is taught verbally and has never been written into the Flamebook ops manual.</span></div>
+      <div class="note"><span class="nid">N080</span><span class="ntext">Courier check-in: Jack Doyle (aggregator courier interviewee) describes checking in on the aggregator app, then finding the shelf by store layout knowledge, not signage. Check-in to shelf-reach medians 92 s at flagship, 140 s at standard stores — pure navigation waste repeated thousands of times daily.</span></div>
+      <div class="note"><span class="nid">N081</span><span class="ntext">Pickup verification scan (bag QR to courier device) is meant to run at 100%. Observed rate is 93% — when the queue of couriers stacks (peak dispatch, N139), scans are skipped to keep bags moving, and the skip is exactly what makes later disputes about missing items unresolvable.</span></div>
+      <div class="note"><span class="nid">N082</span><span class="ntext">Aggregator tablet acknowledgment (order accepted → ready → collected) runs on a 60 s target. Crew acknowledge "ready" on the tablet a median 90 s after the bag physically hits the shelf, because the tablet sits at the till, not at the shelf — the ping then dispatches couriers late relative to food freshness (N138).</span></div>
+      <div class="note"><span class="nid">N083</span><span class="ntext">Tamper seal application in customer view is standard at food-court sites only (N010). Where applied off-stage, customers cannot distinguish sealed-fresh from reopened bags, feeding the "was my bag opened?" theme (41 mentions in 90 days) irrespective of actual integrity.</span></div>
+      <div class="note"><span class="nid">N084</span><span class="ntext">Delay communications: when Route56 flags a courier stale >5 min (N209), the standard is a manual courier call, then an app push to the customer. The push template says "slightly delayed" for delays ranging 5 to 25 minutes — customers have learned the phrase means anything, so it reassures nobody.</span></div>
+      <div class="note"><span class="nid">N085</span><span class="ntext">Crew-to-courier handover breakage runs at 0.7% of delivery orders: wrong bag (mis-shelf, N012), missing drink, seal not applied. Each broken case costs a re-make, a re-dispatch and typically a 4.3→2-star rating swing. The One Copperline Handover proposal (canon #3) targets exactly this node.</span></div>
+      <div class="note"><span class="nid">N086</span><span class="ntext">Courier waiting areas: 12% of stores have any designated space; the rest have couriers queued in the customer lobby, competing with diners for standing room. It generates customer complaints about "loitering men with stacks of bags" — a design failure displaced onto people.</span></div>
+      <div class="note"><span class="nid">N087</span><span class="ntext">Dine-in table checks run on a 12-minute sweep at peak: clear, wipe, check under-tables for abandoned trays. Sweep discipline correlates with the "calm visit" perception (N054) more than with any food metric; it is also the first task dropped when the roster runs one short.</span></div>
+      <div class="note"><span class="nid">N088</span><span class="ntext">Counter complaint intake is where recovery starts: listen, own, band (N075), log in VoiceBoard. Logging happens after the customer leaves in 76% of cases, from memory, which is why store-level complaint themes are thinner than call-centre themes for identical incidents.</span></div>
+      <div class="note"><span class="nid">N089</span><span class="ntext">Phone answering is an off-peak frontstage duty (the store's own line, not the call-centre): median 4 rings, answered by whoever is nearest. During peaks the phone rings out — customers calling to check stock of an LTO item hear nothing and conclude the store is "broken" before arrival.</span></div>
+      <div class="note"><span class="nid">N090</span><span class="ntext">Farewell standard ("see you next time, save room for the honey wings") closes 31% of observed interactions; the rest end in silence once the till turns away. Exit-point warmth shows measurable correlation with next-visit intent in the survey, and it is free — it just needs a crew member with one second to spare.</span></div>
+      <div class="note"><span class="nid">N091</span><span class="ntext">Visible glove-and-mask hygiene: glove change every 30 minutes or on task switch. Observed compliance 83%; visible violations (handling cash then packaging in the same glove) drew the single angriest cluster of VoiceBoard comments in the 90-day window, out of proportion to actual risk.</span></div>
+      <div class="note"><span class="nid">N092</span><span class="ntext">Manager-on-duty escalation: the MOD is paged for voids (N061), refunds above band (N098) and conduct issues; median response 3 minutes at peak. The MOD is usually also running assembly or the window — the escalation path exists on paper and physically competes with itself.</span></div>
+      <div class="note"><span class="nid">N093</span><span class="ntext">Repeat-back at the speaker (N070) is the audio-error antidote: full item repeat-back cuts mis-hears 44%. The Drive-Thru 180 proposal (canon #2) pairs this with the second-window decision (N143) — the two levers that moved pilot windows furthest toward the 180 s target.</span></div>
+      <div class="note"><span class="nid">N094</span><span class="ntext">Window cash handling concentrates risk: cash is 25% of drive transactions, drops to safe above £200 (N124) require dual sign-off, and the second signer is often the grill cook — pulled off the line mid-peak, adding 90 s of kitchen capacity loss per drop.</span></div>
+      <div class="note"><span class="nid">N095</span><span class="ntext">Wrong-order courier resolution: courier returns the bag or photographs it at the doorstep; store re-makes and re-dispatches, median 21 minutes end-to-end. Crews describe these as "ghost orders" — the original error is invisible by then, so no lesson loops back to the pass (N066).</span></div>
+      <div class="note"><span class="nid">N096</span><span class="ntext">Visible front-of-house cleaning (counter wipe-down between customers, floor sweeps) runs on the 12-minute sweep model (N087). Its visibility is the point: surveyed customers rate cleanliness of "things I can see" 4.4/5 while rating washrooms 3.6/5 — cleaned to the same schedule, but offstage.</span></div>
+      <div class="note"><span class="nid">N097</span><span class="ntext">Counter top-up requests (missing sauce, extra napkin, cutlery) arrive at a median 1.9 per peak hour and are handed over free, no questions. Crew universally honour them; the POS has no code for tracking them, so the most common minor defect in the estate generates zero data.</span></div>
+      <div class="note"><span class="nid">N098</span><span class="ntext">Refunds at POS require a manager key (N092) and post to the audit trail (N188). Median refund cycle at counter: 4 minutes including waiting for the MOD. Crew report customers abandoning the wait "out of principle" — the refund process is slower than the recovery decision it executes.</span></div>
+      <div class="note"><span class="nid">N099</span><span class="ntext">Loyalty sign-up pitch at counter lands in 8% of transcripts and converts 2% of eligible customers — the app's best in-store recruitment channel despite being unmeasured. Crew pitch it poorly because the sign-up flow requires the customer to scan a code the till does not print reliably (0.9% print failure).</span></div>
+      <div class="note"><span class="nid">N100</span><span class="ntext">Closing visible cues — "last orders" call at 21:45, doors at 22:00 (23:00 flagship) — are the final frontstage act. Crew begin visible close-down (chairs up, grill banked) 25 minutes before close at 30% of observed stores, broadcasting "we're finished" to customers still eating (N044 dwell is 19 minutes).</span></div>
+    </div>
+    <div class="ngroup ng-back">
+      <h3><span>Backstage — kitchen, prep and rostering (invisible to customer)</span><span class="rng">N101–N145 · 45 notes</span></h3>
+      <div class="note"><span class="nid">N101</span><span class="ntext">Morning prep list is generated against par levels by format — 18 crew peak at flagship, 9 at standard, 7 food-court, 8 drive-thru express, 4 travel-hub. Par accuracy is the quiet variable: 41% of GMs say pars have not been re-based since their format's last remodel, so prep volume is habit, not forecast.</span></div>
+      <div class="note"><span class="nid">N102</span><span class="ntext">Thaw discipline: chicken moves chill-to-thaw 24 h ahead in sealed trays; marinate soaks 12 hours in the signature brine. A missed thaw batch cannot be recovered inside a day — the store then buys time by grilling from a thinner margin, and yield (and waste, 3.8%) pays for it.</span></div>
+      <div class="note"><span class="nid">N103</span><span class="ntext">Grill batch cadence: 12 birds per drop, 9 minutes per skewer rotation, two grill hands at peak. The cadence is the operational metronome — every timing in this blueprint (buzzer waits, window gaps, courier holds) is downstream of whether the grill kept its beat.</span></div>
+      <div class="note"><span class="nid">N104</span><span class="ntext">Hold-time management: grilled chicken holds 20 minutes at temperature before it must be wasted — the direct driver of the 3.8% chicken-waste figure against a 2.5% target. Crew hate wasting visibly good birds and will quietly extend holds; Q-Pulse spot checks catch the temperature drift, not the timing lie.</span></div>
+      <div class="note"><span class="nid">N105</span><span class="ntext">Waste logging into StockBeak uses 7 reason codes (hold expiry, mis-fire, customer no-show, damage, quality reject, LTO run-out, other). Code 7 "other" absorbs 31% of entries — when crews are unsure, they log "other", and the waste analytics inherited by proposal 5 (Waste-to-Order Forecasting) start from partly-fictional categories.</span></div>
+      <div class="note"><span class="nid">N106</span><span class="ntext">Assembly bench runs 2 crew at peak, 40 trays per peak-hour; kiosk orders with customisations (N031) take 1.6× bench time. The bench views customisation as a cost and the app views it as revenue — the two incentives have never been reconciled in one document.</span></div>
+      <div class="note"><span class="nid">N107</span><span class="ntext">Packaging station stocks buckets (N009), liners, boxes and seals; stock-outs at the station mid-peak force a runner to the dry store, a 3-minute bench absence. Packaging stock-outs occurred on 6% of observed peak days — always the same root cause: replenishment proposals (N200) optimise on weight, and liners are light.</span></div>
+      <div class="note"><span class="nid">N108</span><span class="ntext">KDS routing merges dine-in, drive and delivery onto one rail with channel colour codes. The rail has no capacity display: during 62%-of-volume peaks the difference between "busy" and "broken" is invisible until tickets amber out, at which point the recovery options are all expensive (re-fire, N110).</span></div>
+      <div class="note"><span class="nid">N109</span><span class="ntext">Expeditor role (shift leader wearing the headset at peak) sequences the rail, prioritises couriers against their SLA and calls re-fires. Bo Chen describes it as "the hardest 90 minutes in the store". It is staffed by whoever is most senior present — on a thin roster (N117), the expeditor is also the grill hand.</span></div>
+      <div class="note"><span class="nid">N110</span><span class="ntext">Re-fire control: 3.1% of tickets re-fire for error, each costing a full cook cycle for the item plus rail disruption. The top three re-fire causes trace to speaker mis-hears (N032), pass geometry breaks (N066) and customisation misreads (N031) — all upstream of the kitchen that pays for them.</span></div>
+      <div class="note"><span class="nid">N111</span><span class="ntext">Drive-thru timing beacon timestamps lane entry, speaker start/end, and window open/close; the 246 s median against the 180 s target is its signature output. Crew know the beacon's blind spot — the timer can be paused during "legitimate" exceptions, and 9% of measured windows carry at least one pause.</span></div>
+      <div class="note"><span class="nid">N112</span><span class="ntext">Headset channel 2 links kitchen, pass and window. Peak chatter overflows the channel; crews develop shorthand ("half-bucket, no garlic" becomes "half-no-G") that new hires cannot parse — with 94% turnover, the shorthand's teachers are perpetually 8 months in (Grace Mwangi's tenure is the median).</span></div>
+      <div class="note"><span class="nid">N113</span><span class="ntext">Stock count and reorder: the closing manager counts chicken lines daily; StockBeak compares counted versus theoretical depletion (gap 1.9%) and proposes replenishment for GM approval by 14:00 (N200). Miss the 14:00 approval and the drop slips a day — into the next peak window with a thinner margin.</span></div>
+      <div class="note"><span class="nid">N114</span><span class="ntext">Delivery picking runs a 4-minute cycle at peak: the expeditor calls aggregator tickets, a picker walks the pass and shelf. Picking competes with tray assembly for the same two bench crew; on late-roster stores (41% of the estate, N194) delivery picking is explicitly deprioritised and aggregator SLAs (25 min) break first.</span></div>
+      <div class="note"><span class="nid">N115</span><span class="ntext">Staging shelf by aggregator (D/W/P labels, N012) is the single most error-prone surface in the store: wrong-shelf bags drive most of the 0.7% breakage (N085). Rush-hour shelf discipline is 100% correlated with whether one named person owns the shelf — in the field, always a veteran crew member, never a role.</span></div>
+      <div class="note"><span class="nid">N116</span><span class="ntext">Roster morning check: the opening manager compares ShiftOrbit's planned roster against T&amp;A clock-ins (N196) and today's swaps. On a normal day there is a gap; on a bad day the gap is two people, and the morning huddle (N133) becomes a re-assignment negotiation in front of the whole crew.</span></div>
+      <div class="note"><span class="nid">N117</span><span class="ntext">Absence call-ins land against the 94% annualised turnover backdrop: the median store loses a crew member every 9 days to churn in addition to routine sickness. Cover is found by phone tree — a personal network, hours deep, that ShiftOrbit does not model; the roster's fragility is social, not algorithmic.</span></div>
+      <div class="note"><span class="nid">N118</span><span class="ntext">Shift swaps: average 11 requests per store per week, 31% needing manager rework after the initial crew-to-crew match fails (skills mismatch, missed break rules, ledger conflicts). Rework lands on the GM at end of day — the single most-cited admin burden in the 412-manager survey after late rosters themselves.</span></div>
+      <div class="note"><span class="nid">N119</span><span class="ntext">Break rotation staggers legally required breaks through 12:45–14:15, the post-peak trough. On short days the rotation compresses into 30 minutes, everyone breaks at once, and the store runs on skeleton crew through the 14:00 school-run bump — a small, predictable, daily service dip with a rostering cause.</span></div>
+      <div class="note"><span class="nid">N120</span><span class="ntext">Close-down runs 75 minutes (standard) to 95 (flagship): pass deep-clean, floor, filtration. It is unpaid-overrun territory in crew telling ("you're clocked out but still scrubbing") — survey free-text links close-down pressure to the eNPS of −8 more than any peak-hour factor.</span></div>
+      <div class="note"><span class="nid">N121</span><span class="ntext">Q-Pulse temperature checks: 96.2% of required checks are done, but 22% are logged in bulk at close — the timestamps are synthetic even when the readings are real. The Honest Logging proposal (canon #6) attacks this with timestamp-enforced entry; the blueprint flags it as the estate's most normalised falsification.</span></div>
+      <div class="note"><span class="nid">N122</span><span class="ntext">Grease and filtration maintenance: hood filters are degreased weekly in-store, deep-cleaned monthly by contract (N161). A skipped in-store degrease (happens after any short-staffed week) accelerates the contract clean's cost and, twice in the field window, forced a mid-service grill shutdown — the smell of an entire peak lost.</span></div>
+      <div class="note"><span class="nid">N123</span><span class="ntext">Grill failure mode: the charcoal bed's auger jams or the ignition fails, averaging 4.2 faults per store per quarter. The playbook is "one grill down, cook half-cadence" — but the KDS (N108) has no half-cadence mode, so tickets keep arriving at full rate while the kitchen physically cannot comply.</span></div>
+      <div class="note"><span class="nid">N124</span><span class="ntext">Cash discipline: drawer drops to safe above £200, dual-signed; end-of-day count reconciles against the POS audit trail (N188). Discrepancies over £5 trigger a written incident (N134). The dual-sign requirement collides with peaks (N094); the queue-of-one-at-the-safe is a real, unmeasured capacity loss.</span></div>
+      <div class="note"><span class="nid">N125</span><span class="ntext">Waste-bin staging: locked external bins per waste-contract (N163); locked because chicken waste is a pilferage and pest vector. Waste must be logged (N105) before it enters the bin — the log-before-bin rule is the control that bulk-at-close logging (N121) quietly defeats for the temperature checks' sibling process.</span></div>
+      <div class="note"><span class="nid">N126</span><span class="ntext">Pre-peak cook plan targets the two windows (11:30–13:30, 17:30–19:30) that carry 62% of daily volume: hold-stock is cooked to forecast curves and burned down through the window. The curve's residual error is ±12% — which maps directly onto hold-time waste (N104) in the last 20 minutes of every peak.</span></div>
+      <div class="note"><span class="nid">N127</span><span class="ntext">LTO ingredient availability: two of the last five LTOs ran into stock-outs in week one (promo lift × DC lead time misread, N148/N200). The store-level experience of an LTO stockout is brutal — promoted on the board, unavailable at the till, apology at the window — and it is a support-process failure experienced as a frontstage one.</span></div>
+      <div class="note"><span class="nid">N128</span><span class="ntext">Cook-to-line versus cook-to-order is the kitchen's standing decision: hold-stock for speed against waste risk, or fire-to-order for freshness against window times. The formal policy is "cook-to-line in peaks, cook-to-order off-peak"; the informal policy is whatever the most senior grill hand believes that day.</span></div>
+      <div class="note"><span class="nid">N129</span><span class="ntext">Marination batch timing anchors the whole prep clock: 12-hour brine means tomorrow's 11:30 peak was marinated by 23:30 tonight. A store that under-preps Tuesday night serves an under-marinated product all Wednesday — and the customer tastes a rostering failure as "off" chicken without either side knowing.</span></div>
+      <div class="note"><span class="nid">N130</span><span class="ntext">Mid-shift line check: temperature, taste, yield on three items, logged in Q-Pulse. It is the kitchen's own quality loop and the one check crews most consistently do honestly (it protects them). Its readings correlate tightly with the day's waste and re-fire rates — an underused leading indicator.</span></div>
+      <div class="note"><span class="nid">N131</span><span class="ntext">Station allocation at huddle assigns grill / bench / pass / window / lobby against the skills matrix in ShiftOrbit. With the median crew member at 8 months tenure, the matrix is mostly "can work anywhere, expert nowhere" — allocation optimises coverage, not mastery, and the pass (N066) suffers first.</span></div>
+      <div class="note"><span class="nid">N132</span><span class="ntext">Shadow-shift training: new crew work 11 paired shifts before solo sign-off. In practice, staffing pressure cuts shadowing to a median 6 shifts; Grace Mwangi (8 months) describes being "solo by week two, still asking where things are" — the training system as designed and the one that exists differ by a roster constraint.</span></div>
+      <div class="note"><span class="nid">N133</span><span class="ntext">Pre-shift huddle (Bo Chen's, 4 minutes): positions, LTO focus, one metric to watch. The huddle is the only scheduled moment where the whole crew shares state; it is also the first casualty of a call-in (N117) — the manager spends it on the phone finding cover instead.</span></div>
+      <div class="note"><span class="nid">N134</span><span class="ntext">Incident logging covers injuries, near-misses, cash discrepancies and equipment failure in one Q-Pulse-adjacent form. Under-reporting is endemic for near-misses (estimated 30% captured); the form takes 11 minutes to complete and there is no time slot in any shift in which it fits.</span></div>
+      <div class="note"><span class="nid">N135</span><span class="ntext">Spill and slip response: the standard is immediate zone closure, clean, re-open. The equipment (wet-floor signs, absorbent) is universally present; the discipline is present at 70% of observed incidents — the other 30% are cleaned without closure during peak, when closing a zone means admitting the queue will grow.</span></div>
+      <div class="note"><span class="nid">N136</span><span class="ntext">Pest control visits run monthly under contract (N163), with Q-Pulse-logged bait checks in between. Field logs show 4 stores in the sample with recurring fruit-fly pressure around the syrup station — a design issue (drain placement) logged as a cleaning issue for six consecutive months.</span></div>
+      <div class="note"><span class="nid">N137</span><span class="ntext">PPE and uniform stock (gloves, aprons, hats) is a StockBeak-tracked consumable with a notorious blind spot: sizes. Medium gloves dominate the par setting; crew outside medium scavenge, and a glove that does not fit is a contamination control that does not work (N091).</span></div>
+      <div class="note"><span class="nid">N138</span><span class="ntext">Warm-bag staging: assembled delivery orders hold in insulated bags by the shelf for a maximum of 10 minutes before re-make. The 10-minute rule balances freshness against courier lateness; when Route56 reports couriers stale (N209), the store is choosing between wasting a good order or shipping a degraded one.</span></div>
+      <div class="note"><span class="nid">N139</span><span class="ntext">Order batching merges drive-thru and delivery tickets into single grill drops (batch ≤3) during peaks. Batching is the kitchen's main efficiency lever; its failure mode is a courier waiting on a batch whose drive-thru member is still 3 cars back — the courier SLA (25 min) pays for the window's 180 s target.</span></div>
+      <div class="note"><span class="nid">N140</span><span class="ntext">Queue-jacking: aggregator SLA pressure leads expeditors to bump delivery tickets ahead of earlier dine-in orders. Customers waiting with buzzers watch later arrivals collect first (they cannot see why) — the app customer's 25-minute promise silently taxes the dine-in customer's 6-minute one.</span></div>
+      <div class="note"><span class="nid">N141</span><span class="ntext">FIFO discipline on prep: labelled day-dots, front-loaded rotation. Compliance is 91% on chicken lines but 64% on the garnish and sauce prep that LTOs multiply — partly because the day-dot printer is one unit per store and lives by the office, not the bench.</span></div>
+      <div class="note"><span class="nid">N142</span><span class="ntext">Grill temperature calibration: twice daily, logged in Q-Pulse. A drift of 15°C reads as "slow grill" for days before anyone calibrates — the drift's fingerprint is uniformly extended cook times and, downstream, window times creeping from 246 s toward 280 s with no visible cause on the day's reports.</span></div>
+      <div class="note"><span class="nid">N143</span><span class="ntext">Second-window decision: open the second drive window at 5+ car stack. Opening takes 90 seconds of preparation (float, headset pairing) and one crew member from the bench; the decision rule is taught but the trade is lived — every second-window opening is a small wager that the peak will outlast the setup cost.</span></div>
+      <div class="note"><span class="nid">N144</span><span class="ntext">Charcoal grill safety at close: bank the coals, verify extinguishment, log it. It is the day's last safety-critical act, performed by the most tired person in the building at the end of a 75-minute close-down (N120). No incident in the sample; three near-miss log entries in 90 days, all "checked later than policy".</span></div>
+      <div class="note"><span class="nid">N145</span><span class="ntext">Next-day prep handover: closing manager leaves a written sheet (thaw status, par gaps, equipment quirks) for the opener. The sheet is paper because ShiftOrbit has no field for it; the information it carries — last night's reality — is exactly what tomorrow morning's roster check (N116) needs and cannot see.</span></div>
+    </div>
+    <div class="ngroup ng-sup">
+      <h3><span>Support processes — DCs, franchise relations, HR, marketing, maintenance, training</span><span class="rng">N146–N185 · 40 notes</span></h3>
+      <div class="note"><span class="nid">N146</span><span class="ntext">DC inbound receiving (Oscar Villanueva, inbound supervisor, Northline DC): every delivery is checked against order, temperature and seal integrity before putaway. The four DCs — Northline, Eastcliff, Harbourgate, Southmere — run the same checklist, but Harbourgate's paperwork reconciliation runs a half-shift behind physical putaway, so StockBeak shows stock before it is pickable.</span></div>
+      <div class="note"><span class="nid">N147</span><span class="ntext">Cold-chain gates: chicken must arrive between 0–4°C; loads above 6°C are rejected outright, 4–6°C accepted with a flag. Two rejected loads in the field window pushed emergency replenishment runs whose cost exceeded the load value — the gate is never questioned, which is why supplier QA (N150) matters more than it looks.</span></div>
+      <div class="note"><span class="nid">N148</span><span class="ntext">Auto-replenishment proposals (StockBeak, N200) are generated DC-side from store-level depletion plus safety stock. The model does not ingest LTO promo lifts until marketing manually attaches a lift curve — the manual step was missed for two of the last five LTOs (N127), which is how a spreadsheet omission became a store-level stockout.</span></div>
+      <div class="note"><span class="nid">N149</span><span class="ntext">Route scheduling: 2–3 drops per store per week for standard formats, daily for flagships (1,850 orders/day), from 4 DCs across the country. Travel-hub kiosks (610 orders/day, 4 crew peak) get two drops a week and run the thinnest buffer — a single missed drop empties them inside a service day.</span></div>
+      <div class="note"><span class="nid">N150</span><span class="ntext">Supplier quality audits: 11 approved chicken suppliers, each audited quarterly against a 92-point standard. One supplier has been on a corrective-action plan for three consecutive quarters (bird size variance beyond spec, which destabilises grill cadence N103) — procurement keeps the volume because the price is 4% under the next bid.</span></div>
+      <div class="note"><span class="nid">N151</span><span class="ntext">Franchise onboarding (Daniel Okafor, Head of Franchise Relations): new partners get a 6-week program covering Flamebook, Q-Pulse, ShiftOrbit and the ops manual. 780 franchised stores across 62 partners means the average partner runs 12.6 stores — but the onboarding assumes a hands-on single-store owner, so multi-unit partners informally skip half of it.</span></div>
+      <div class="note"><span class="nid">N152</span><span class="ntext">Flamebook ops-manual versioning is the franchise system's spine and its weakness: 214 live documents with independent version numbers, no "current state of the whole" view. The Ops Bridge proposal (canon #7) replaces this with versioned playbooks; today, a franchisee answering "what's the shelf standard?" can find three answers of different vintages.</span></div>
+      <div class="note"><span class="nid">N153</span><span class="ntext">LTO launch calendar: six LTOs per year, each with a launch kit (posters N015, till codes N187, training card, ingredient ramp N127). The calendar is set two quarters ahead by marketing; the field's feedback that five-day ramps are too short for late-arriving kits has been noted in three retro documents and changed zero times.</span></div>
+      <div class="note"><span class="nid">N154</span><span class="ntext">Compliance notices go out via Flamebook with a 72-hour acknowledgement requirement. Acknowledgement rate is 89% company stores, 71% franchised — the unacknowledged 29% cluster around Friday-afternoon notices, which drop below the weekend crush and are genuinely never seen by store management until an audit finds the gap.</span></div>
+      <div class="note"><span class="nid">N155</span><span class="ntext">Franchise QBRs: quarterly business reviews per partner (62 per quarter), chaired from Daniel Okafor's team, covering P&amp;L, compliance and ops scores. Elena Petrova (franchisee, 6 stores) describes the QBR deck arriving 24 hours before the meeting, so partners review their own business from a document they have just met.</span></div>
+      <div class="note"><span class="nid">N156</span><span class="ntext">The hiring funnel: to hold 41,300 crew against 94% annualised turnover (industry median 78%), the network must hire the equivalent of its entire workforce roughly every 12.8 months. Recruiting runs always-on; the funnel's top is wide (applications are plentiful) and its middle leaks — interview-to-start conversion is 38%, dragged down by two-week roster-gap start delays.</span></div>
+      <div class="note"><span class="nid">N157</span><span class="ntext">Onboarding program: day-one safety and food-handling certification, then the 11-shift shadow ladder (N132). The program is well-designed and physically cannot run as designed on short rosters — HR's own audit found shadow-ladder compliance at 54%, which HR reports as a store problem and stores experience as an HQ problem.</span></div>
+      <div class="note"><span class="nid">N158</span><span class="ntext">Training certification modules live inside Q-Pulse (food safety, allergens, grill safety) with annual refresh cycles. Completion is 96%+ everywhere because reminders are relentless; comprehension is unmeasured — the module quiz has a 98% pass rate on unlimited attempts, which certifies persistence, not knowledge.</span></div>
+      <div class="note"><span class="nid">N159</span><span class="ntext">Payroll close runs weekly off the ShiftOrbit T&amp;A export (N198): exceptions (missed punches, swap mismatches, overtime bands) are resolved by store managers in a workflow with a Monday deadline. Median resolution: Thursday — meaning crew with pay queries hear answers the week after the pay they are querying.</span></div>
+      <div class="note"><span class="nid">N160</span><span class="ntext">Benefits administration: crew benefits enrolment is annual, with life-event edits handled through a portal no store has a kiosk link to. Survey free-text shows crew using break-room PCs for enrolment on shifts; the benefit most cited as valuable (shift meal) requires no administration at all — the administered benefits are not the ones that retain.</span></div>
+      <div class="note"><span class="nid">N161</span><span class="ntext">Planned maintenance contracts: monthly grill deep-clean, quarterly HVAC, semi-annual electrical, across 2,000 stores under three national vendors. Scheduling friction is the hidden cost — vendors book directly with GMs, and 14% of planned visits get bumped by peak-trading requests, converting planned work into eventual reactive work (N162).</span></div>
+      <div class="note"><span class="nid">N162</span><span class="ntext">Reactive repair SLA is 4 hours for grill-down, 24 for refrigeration; met 68% and 81% respectively. A grill-down at 17:00 that misses SLA writes off the evening peak — Tom Whelan's region runs an informal WhatsApp channel to vendor technicians that beats the official dispatch path more often than anyone admits in metrics.</span></div>
+      <div class="note"><span class="nid">N163</span><span class="ntext">Pest control (monthly, N136) and waste services (locked bins N125, grease recycling) run under national contracts with regional vendors. Contract KPIs measure visits completed, not infestations prevented — a metric gap that lets a six-month fruit-fly pattern (drain design) be classified as adequately serviced.</span></div>
+      <div class="note"><span class="nid">N164</span><span class="ntext">National campaigns (two per year, TV plus social) drive 9–14% lift in the launch week. The lift arrives as order volume with zero notice to rostering — campaign flight dates and ShiftOrbit demand forecasts (N194) are maintained in different teams, so stores staff the campaign-week peak with the pre-campaign roster.</span></div>
+      <div class="note"><span class="nid">N165</span><span class="ntext">Local store marketing gives each GM a small quarterly budget (flyers, school partnerships, sports-club vouchers). Usage varies 0–100% by GM; franchisees must self-fund, so company stores market locally and 40% of franchised stores do not — a brand-consistency inversion driven by who pays.</span></div>
+      <div class="note"><span class="nid">N166</span><span class="ntext">The app product team (Hana Kim, Head of Digital &amp; Delivery) runs two-week sprints against a backlog dominated by the tracking map (N018) and promo redemption (N035). Store-ops asks (e.g., a till-side loyalty sign-up flow that prints reliably, N099) sit in the backlog with the oldest ticket 14 months old — digital's roadmap optimises the 26% channel and hears the 100% store.</span></div>
+      <div class="note"><span class="nid">N167</span><span class="ntext">Aggregator commercial terms (Hana Kim's team): three contracts with Dashly, Wheelio and Pedalr, each with its own SLA clock, commission band and rating regime. The 25-minute SLA is tightest on Dashly, which drives the queue-jacking behaviour (N140) — a commercial term experienced by the kitchen as a priority inversion.</span></div>
+      <div class="note"><span class="nid">N168</span><span class="ntext">Call-centre operations (Raj Patel, team lead): delivery missing-items and rejected coupons dominate volume; AHT is 6 min 20 s, and first-contact resolution runs 71% — the unresolved 29% need store confirmation that requires calling the store during service, which the store answers off-peak only (N089).</span></div>
+      <div class="note"><span class="nid">N169</span><span class="ntext">Agent recovery authority mirrors the in-store ladder (£2 / £6 / £11, N019) up to £6; the £11 band needs a supervisor. Agents describe the authority as genuine but the tooling as punitive — refund codes require free-text justification that a QA auditor later scores, so agents under-recover to protect their scores.</span></div>
+      <div class="note"><span class="nid">N170</span><span class="ntext">Flash P&amp;L: a daily store-level profit sketch (sales, labour, waste, variances) generated by finance from POS + ShiftOrbit + StockBeak feeds. It is accurate enough to be useful and early enough to be actionable — the rare Copperline report that both stores and HQ trust. Weekly review is the governance band's backbone loop.</span></div>
+      <div class="note"><span class="nid">N171</span><span class="ntext">New-format pipeline: real estate evaluates sites against the five-format portfolio (68 flagship, 1,214 standard, 389 food-court, 251 drive-thru express, 78 travel-hub). Growth capital currently favours drive-thru express (1,310 orders/day on 8 crew) — the format with the thinnest labour margin and the 246 s problem concentrated hardest.</span></div>
+      <div class="note"><span class="nid">N172</span><span class="ntext">Store IT support (06:00–23:00 helpdesk) covers POS, KDS, network and the aggregator tablets. P1 response is 30 minutes remote / 4 hours on-site; the remote fix rate is 62%. When the network itself fails (N216), the helpdesk's first move — "reboot the router" — is the same one the GM already tried.</span></div>
+      <div class="note"><span class="nid">N173</span><span class="ntext">Menu R&amp;D test kitchen runs a stage-gate from concept to board slot: 30 concepts, 6 trials, 2 LTO launches per cycle. The gate most correlated with field success is "grillable at cadence" (N103) — but the gate is assessed by test-kitchen cooks on a quiet morning, never by a two-grill-hand peak shift.</span></div>
+      <div class="note"><span class="nid">N174</span><span class="ntext">Allergen and nutrition data upkeep: recipe changes flow to the matrix (N016) and app within a contractual 5-day window; observed median is 12 days. The gap is a legal-exposure window masked in practice by verbal confirmation at till (N060) — a crew behaviour quietly carrying a compliance process.</span></div>
+      <div class="note"><span class="nid">N175</span><span class="ntext">Food-safety closure audits: Q-Pulse aggregates 96.2% check completion network-wide (with the 22% bulk-at-close caveat, N121), and a sample of stores gets physical audits monthly. Audit findings repeat a pattern — documentation gaps, not unsafe food — confirming that the system's weakness is honesty of timing, not of intent.</span></div>
+      <div class="note"><span class="nid">N176</span><span class="ntext">Regional reviews: Tom Whelan (Regional Manager, Northline, 14 years tenure) runs a monthly deep-dive per cluster — window times, waste, eNPS, Q-Pulse. His longevity is the point: he knows which GMs' numbers to read closely and which stores' "broken grill" means a broken grill. This tacit layer is why regional reviews work and why they do not scale.</span></div>
+      <div class="note"><span class="nid">N177</span><span class="ntext">Mystery shopper program: 60 reports sampled for this engagement, network-wide coverage monthly per store, measuring order accuracy (91.4%), speed bands and script execution. Shoppers cannot see backstage, so the program systematically measures the visible 40% of the service — which the estate then optimises for.</span></div>
+      <div class="note"><span class="nid">N178</span><span class="ntext">Loyalty program operations: points accrual (N053), redemption catalogues and fraud checks run from HQ. Fraud rules freeze accounts with >3 redemptions/day; the rule catches genuine large-family orders at a rate the program accepts silently — frozen customers call the call centre as "loyalty problems" and cycle through three teams.</span></div>
+      <div class="note"><span class="nid">N179</span><span class="ntext">Pricing governance: price files lock two days before effective date (T-2); emergency repricing requires VP sign-off and takes 6 hours to propagate. The lock exists to protect till/board consistency (N003) — its cost is that a competitor's Tuesday price move cannot be answered until Friday, at the earliest.</span></div>
+      <div class="note"><span class="nid">N180</span><span class="ntext">Communications cascade: HQ to regions to stores, with a 24-hour acknowledgement norm (looser than compliance's 72, N154, but unenforced). Urgent operational changes ride the cascade at cascade speed — which is why Tom Whelan's WhatsApp network (N162) exists, and why it, not the cascade, is the de facto urgent channel.</span></div>
+      <div class="note"><span class="nid">N181</span><span class="ntext">Franchise contract renewals run on a rolling five-year cycle; 9 of 62 partners are in renewal negotiation this year. Renewal leverage historically protects fee structures over operational standards — the reason two long-tenure partners run the estate's oldest POS hardware and drag its compliance scores.</span></div>
+      <div class="note"><span class="nid">N182</span><span class="ntext">Weather and event demand signals feed the forecast warehouse (N212): stadium events, school holidays, and rain (which flips walk to drive, N024). Signal latency is 36 hours — fine for marination planning (N129), useless for day-of labour decisions, which is exactly the decision the signals would most improve.</span></div>
+      <div class="note"><span class="nid">N183</span><span class="ntext">Crisis communications protocol covers food-safety incidents, supply contamination and PR events: stores hold, HQ speaks, Flamebook carries the holding statement. Rehearsed annually in tabletop form; the last real activation (a supplier recall) executed cleanly except that franchise partners learned of it from the news before the cascade reached them (N180).</span></div>
+      <div class="note"><span class="nid">N184</span><span class="ntext">Courier partner escalations: a weekly incident call per aggregator covering late pickups, shelf chaos (N115) and doorstep conduct (N042). Escalation works — repeat-offender couriers get rerouted — but the store's evidence is mostly memory (N081's skipped scans), so the call resolves the loudest cases, not the patterned ones.</span></div>
+      <div class="note"><span class="nid">N185</span><span class="ntext">Sustainable packaging program: the foil bucket and liner redesign achieved 92% recyclable content (N009) at +3% unit cost, absorbed by supply. The program's next target — the tamper seal (N083) — is stalled because no recyclable seal meets the 0.7% breakage requirement; the negotiation between packaging engineering and the delivery SLA is now two years old.</span></div>
+    </div>
+    <div class="ngroup ng-data">
+      <h3><span>Data &amp; systems — CopperPOS v7 · ShiftOrbit · StockBeak · Q-Pulse · VoiceBoard · Flamebook · Route56</span><span class="rng">N186–N220 · 35 notes</span></h3>
+      <div class="note"><span class="nid">N186</span><span class="ntext">CopperPOS v7 is the single order-capture brain across tills, kiosks, drive lane screens and the app — 2,000 stores, one estate. v7's great achievement is that all three customer sub-rows end in one queue; its great exposure is that every seam in this blueprint (price sync N187, voids N188, kiosk accessibility N190) is a v7 seam, and the v8 roadmap is unfunded.</span></div>
+      <div class="note"><span class="nid">N187</span><span class="ntext">Price and promo sync: the price file propagates overnight (T-2 lock, N179); promo engine rules for coupon stacking change weekly. The 6.1% coupon-reject rate (N035) traces almost entirely to stacking-rule versions diverging between POS and app for the launch week — a data-timing bug experienced by customers as a shrug at the till.</span></div>
+      <div class="note"><span class="nid">N188</span><span class="ntext">Void and refund audit trail: every supervisor-keyed void and banded refund (N098) posts to an immutable log reconciled daily (N124). The audit trail is excellent forensic accounting and useless operational learning — voids are counted, never classified by cause, so the 2.4% mis-key rate (N061) has never been decomposed into fixable parts.</span></div>
+      <div class="note"><span class="nid">N189</span><span class="ntext">POS-to-terminal integration is certified per-device with quarterly firmware alignment; the degraded-cable tills (N062) sit in a blind spot between certification cycles. Contactless (81% of tenders) fails silently into chip-insert fallback, which the customer experiences as the store being "slow today" rather than a device fault.</span></div>
+      <div class="note"><span class="nid">N190</span><span class="ntext">Kiosk accessibility: WCAG 2.2 AA remediation is outstanding on 467 kiosks (78 travel-hub + 389 food-court) — reach-height, contrast on the sun-struck outdoor units, and screen-reader support. The Kiosk Accessibility Pass (canon proposal 8) exists because a wheelchair user in the travel-hub sample completed an order only with a standing companion's help; the system recorded it as a normal 96 s session.</span></div>
+      <div class="note"><span class="nid">N191</span><span class="ntext">Drive lane screens (order display at speaker) refresh from POS with a 5-second staleness budget. When staleness exceeds budget the screen blanks rather than shows wrong data — correct design, brutal consequence: the customer facing a blank screen re-orders verbally into the noise (N032), compounding the exact error mode the screen exists to prevent.</span></div>
+      <div class="note"><span class="nid">N192</span><span class="ntext">KDS routing engine merges channels onto one rail (N108) with colour codes and SLA badges per ticket. It has no prioritisation model — sequence is FIFO within channel plus expeditor overrides (N109) — so every priority decision is human, every peak, in every store, with the aggregator SLA clock (N167) ticking in the corner of the screen.</span></div>
+      <div class="note"><span class="nid">N193</span><span class="ntext">POS-to-StockBeak depletion: every sold item decrements ingredients by recipe. Theoretical-versus-counted gap runs 1.9% (N113), which is waste + variance mixed; decomposing it is proposal 5's foundation (Waste-to-Order Forecasting targets 2.8% chicken waste from 3.8%). Recipe-master staleness (N217) currently makes 19 recipes' depletion math quietly wrong.</span></div>
+      <div class="note"><span class="nid">N194</span><span class="ntext">ShiftOrbit roster publishing: 41% of stores publish rosters less than 72 hours before week start (59% meet it). The timestamp is objective and the consequence is measured — late-roster stores run higher swap volumes (the 11 weekly requests skew late-store) and higher call-in chaos (N117). The Roster Stability Program (canon proposal 1) aims for ≥7 days ahead; the gap between 72 hours and 7 days is the program's whole first year.</span></div>
+      <div class="note"><span class="nid">N195</span><span class="ntext">ShiftOrbit's swap ledger records every offer, match and decline. When a swap is re-matched after a skills rejection, the ledger's history view can show both versions active — the conflict state crews call "the ghost swap". Until the conflict is manually cleared, availability calculations are wrong, which is why GMs re-key in Excel (N197) rather than fight the ledger.</span></div>
+      <div class="note"><span class="nid">N196</span><span class="ntext">Time-and-attendance: clock-in by face match or fob, late-arrival flags to the GM console, actuals streamed against plan. The morning roster check (N116) is literally this report read aloud. Face-match fails on new crew (no baseline) and on hat/glove PPE combinations, generating roughly 400 false late-flags network-wide per day that managers learn to ignore — training them to ignore the real ones too.</span></div>
+      <div class="note"><span class="nid">N197</span><span class="ntext">The Excel workaround: GMs re-key rosters into spreadsheets when ShiftOrbit's swap ledger conflicts (N195) or the optimizer's availability model diverges from reality. Survey of 412 managers found 47% maintain a shadow spreadsheet; two stores in the sample effectively run the store off Excel with ShiftOrbit as a compliance photocopy. The system of record is not the system of use.</span></div>
+      <div class="note"><span class="nid">N198</span><span class="ntext">ShiftOrbit-to-payroll feed: weekly export, 1.3% of lines error (missed punches, unresolved swap edges) into the Monday exception queue (N159). Every error line is a crew member's pay question and a manager's Thursday. The feed's error rate has been stable for six quarters — stable is not the same as acceptable, but it is the same as ignored.</span></div>
+      <div class="note"><span class="nid">N199</span><span class="ntext">StockBeak waste categories (N105's 7 codes) drive waste analytics but not waste prevention: the system stops at the log. No store has ever received a StockBeak insight about its own waste pattern — the data goes up (to DC forecasting) and never comes back down as an operational prompt. Proposal 5 closes precisely this loop with LTO-aware demand curves.</span></div>
+      <div class="note"><span class="nid">N200</span><span class="ntext">Auto-replenishment proposals (N148) require GM approval by 14:00 to make the next DC cut. Approval rate is 91%; unapproved proposals roll with a default that favours last week's volume — which is how an LTO ramp week (N127) quietly orders pre-LTO quantities while the store sells post-LTO demand.</span></div>
+      <div class="note"><span class="nid">N201</span><span class="ntext">LTO-aware demand curves (proposal 5's mechanism): promo lift, day-of-launch decay and cannibalisation modelled per item, feeding both replenishment (N200) and cook plans (N126). Pilot maths targets chicken waste at 2.8% (from 3.8%, against a 2.5% long target) — the curve's accuracy is now the binding constraint on the whole waste agenda.</span></div>
+      <div class="note"><span class="nid">N202</span><span class="ntext">Q-Pulse checklist engine: every checklist is a template with per-item timing windows. The engine supports timestamp enforcement (a check cannot be entered outside its window) — the feature exists, is off by default, and is the entire technical content of the Honest Logging proposal (canon #6). Turning it on is a one-line change and a culture war.</span></div>
+      <div class="note"><span class="nid">N203</span><span class="ntext">Q-Pulse timestamp gaps: 96.2% of checks completed, 22% entered in bulk at close (N121) — the timestamps for a 14-hour day appear within a 4-minute entry window, which any analysis can see and no analysis has been asked to run. The data to expose the falsification has existed for years; nobody at HQ wanted the answer enough to query it.</span></div>
+      <div class="note"><span class="nid">N204</span><span class="ntext">Q-Pulse closure audit export assembles each store's day into the audit pack (N175). The export preserves entry timestamps (which is how the 22% is known), but the audit scoring rubric scores completion, not honesty of timing — the report card cannot fail what the export plainly shows.</span></div>
+      <div class="note"><span class="nid">N205</span><span class="ntext">VoiceBoard ingestion: app reviews, receipt-QR responses (2.9% scan, N050) and aggregator ratings flow into one theme engine. Ingestion is genuinely multi-channel and genuinely fast (themes refresh daily, N206); the gap is outbound — stores receive themes monthly, summarised, when the actionable shelf-life of "couriers stacked in lobby" is one shift.</span></div>
+      <div class="note"><span class="nid">N206</span><span class="ntext">VoiceBoard-to-store routing: themes are tagged to stores where the source is identifiable (receipt QR always, app review sometimes, aggregator never — the aggregator's store-ID field is populated in only 61% of export rows). A quarter of negative feedback therefore lands on "the network" and nobody's Tuesday huddle.</span></div>
+      <div class="note"><span class="nid">N207</span><span class="ntext">Aggregator rating exports: three monthly files (Dashly, Wheelio, Pedalr) blending to 4.3/5. The files arrive with different schemas and a 9-day lag; merging them is a manual analyst task (one person, monthly). The 4.3 is quoted network-wide while its composition — Dashly 4.5, Wheelio 4.4, Pedalr 3.9 — hides a Pedalr-specific doorstep problem (N042) inside a healthy average.</span></div>
+      <div class="note"><span class="nid">N208</span><span class="ntext">Route56 is the integration layer to all three aggregators: order in, status out, courier GPS through. It exists because each aggregator's API changes quarterly and Copperline refused to let 2,000 stores feel that. Route56 is the quiet success story of the stack — and single point of failure for the entire 26% channel (N218).</span></div>
+      <div class="note"><span class="nid">N209</span><span class="ntext">Route56 polls aggregator state every 90 seconds; a courier record stale for more than 5 minutes raises an alert that triggers a manual courier call (N084) — the store phone-calls a courier whose own app may be fine. Poll staleness during aggregator-side outages produces alert storms: one Pedalr outage in the window generated 212 manual calls in 40 minutes, none useful, all logged as "store responsiveness".</span></div>
+      <div class="note"><span class="nid">N210</span><span class="ntext">Order injection: Route56 injects aggregator orders into CopperPOS (median 12 s from accept to rail, N192). Injection carries the aggregator's item catalogue mapped to Copperline recipes; the mapping for customised items is lossy (aggregator "extra sauce" free-text does not map to a POS code) — so the fiddliest orders arrive with the least data, and the bench guesses (N106).</span></div>
+      <div class="note"><span class="nid">N211</span><span class="ntext">Flamebook versioning (N152) is the franchise intranet's core function: ops manuals, LTO kits (N153), compliance notices (N154). Its content model has pages, not playbooks — a task that spans five documents requires the reader to assemble the process themselves. The Ops Bridge proposal (canon #7) is, technically, a proposal to change Flamebook's unit of content.</span></div>
+      <div class="note"><span class="nid">N212</span><span class="ntext">The analytics warehouse joins POS, ShiftOrbit, StockBeak and VoiceBoard nightly; it powers flash P&amp;L (N170), BI dashboards (N219) and the forecast curves (N201, N182). Warehouse nightlies run 02:00–04:00; a failed load delays every morning number, and GMs start the day refreshing a dashboard that will not refresh — the estate's most reliable generator of "the system's down" calls.</span></div>
+      <div class="note"><span class="nid">N213</span><span class="ntext">Crew eNPS pulse: quarterly survey, latest eNPS −8 against customer NPS +31 — the engagement's defining asymmetry, quoted in the canon verbatim. The pulse's own response rate is 54%, skewing to engaged crew; the disengaged median crew member (8 months tenure, N112) does not answer the survey that would describe their exit.</span></div>
+      <div class="note"><span class="nid">N214</span><span class="ntext">Mystery-shopper data warehouse: 60 reports sampled here, monthly per store network-wide, accuracy 91.4% headline (canon verbatim). Store-level scores swing ±4 points on sample size of one visit — small-number noise that regional reviews (N176) nonetheless read as signal, because a number is a number.</span></div>
+      <div class="note"><span class="nid">N215</span><span class="ntext">Drive-thru timer system (the beacon, N111): lane-entry to exit, staged splits per stop. Its 246 s median vs 180 s target is the Drive-Thru 180 program's (canon #2) baseline. The timer's pause button (9% of windows carry a pause) is the program's first cultural obstacle: a metric that can be paused will be paused when it is watched too closely.</span></div>
+      <div class="note"><span class="nid">N216</span><span class="ntext">Store network: single-circuit connectivity per store (dual-circuit in 90 flagship sites only). A circuit failure drops POS to offline mode, KDS to paper chits, Route56 to nothing — a full-stack degradation experienced by the customer as "cash only and slow". Offline-mode transactions reconcile with a 1.7% loss rate; 2,000 stores × even rare outages makes this a quiet weekly bleed.</span></div>
+      <div class="note"><span class="nid">N217</span><span class="ntext">Data quality in the recipe master: 23 recipes carry stale yield or portion data (N193's gap contributor), maintained by a half-FTE who left in March and was backfilled in July. Nothing rots faster than a master-data table nobody owns — the depletion math quietly drifts and every downstream number inherits the drift.</span></div>
+      <div class="note"><span class="nid">N218</span><span class="ntext">Integration debt: seven named systems (CopperPOS v7, ShiftOrbit, StockBeak, Q-Pulse, VoiceBoard, Flamebook, Route56) connected by 19 point-to-point interfaces. Three have no owner since a 2024 reorganisation; two run on credentials that expired and were renewed by whoever the outage reached first. The stack works because specific people care, which is not an architecture.</span></div>
+      <div class="note"><span class="nid">N219</span><span class="ntext">Regional BI dashboards (Tom Whelan's cluster view): window times by daypart, waste %, eNPS trend, Q-Pulse completion, flash P&amp;L roll-up. Used weekly in regional reviews (N176). Dashboard literacy varies by region — the strongest users annotate with local knowledge (which store just lost its GM), the weakest read the numbers naked and wonder why the numbers lie.</span></div>
+      <div class="note"><span class="nid">N220</span><span class="ntext">Blueprint-as-Living-Document (canon proposal 10): quarterly re-baseline of this blueprint via the same agent pipeline — scaffold, research, synthesis, mapping — so the 220 notes age visibly instead of silently. The engagement's honest boundary is recorded here: it stopped at delivery of reports and proposals; prototyping was not executed. Next baseline's first question should be whether N197's Excel shadow rosters grew or shrank — that single indicator will say more about the Roster Stability Program than any dashboard.</span></div>
+    </div>
+
+  </div><!-- /secbody -->
+
+  <footer class="art-foot">
+    <div>
+      <b>Copperline 2000 — Full-Operation Service Blueprint.</b> Template kind 12 (service-blueprint),
+      refs 09/05, 01/07, 03/06, 19/07. Notes N001–N220, continuous across the artifact set, referenced
+      never renumbered. Lanes: physical evidence · customer actions (dine-in 36% / drive-thru 38% /
+      app + delivery 26%) · frontstage · backstage · support processes · data &amp; systems. Phases:
+      pre-arrival → arrival &amp; queueing → order &amp; payment → preparation → handover →
+      in-store / drive / dispatch → post-visit &amp; recovery.
+    </div>
+    <div class="frow">
+      <span>Field base: Harbourgate Flagship #14 · Northline Flagship #3</span>
+      <span>Interviewees quoted: Aisha Rahman · Bo Chen · Grace Mwangi · Elena Petrova · Jack Doyle · Mei Lin · Raj Patel · Oscar Villanueva</span>
+      <span>Owner network: Priya Nair · Marcus Adeyemi · Sofia Reyes · Daniel Okafor · Hana Kim · Tom Whelan</span>
+    </div>
+    <div class="frow">
+      <span>Headline canon metrics used verbatim: 94% crew turnover (industry 78%) · 11 swaps/store/week, 31% rework · rosters &lt;72h in 41% of stores · window median 246s vs 180s target · accuracy 91.4% · aggregator rating 4.3/5 · waste 3.8% vs 2.5% target · eNPS −8 · NPS +31 · courier breakage 0.7% · Q-Pulse 96.2% done, 22% bulk-at-close.</span>
+    </div>
+    <div class="frow" style="margin-top:10px;">
+      <span class="prov" style="max-width:none">Fictional composite engagement. Every person, quote, figure and outcome is synthetic. No real company, store, or person is described.</span>
+    </div>
+  </footer>
+
+</div><!-- /doc -->
+</body>
+</html>

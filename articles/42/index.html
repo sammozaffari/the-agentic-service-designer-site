@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The same Copperline 2000 engagement run entirely from the terminal with Codex, Kimi, AGY and ZAI, orchestrated through the OMP plugin library and the ASD MCP bundles. By Sam Mozaffari. AI-first service design case study.">
+<title>42. The Same Engagement from the Terminal: Codex, Kimi, AGY &amp; ZAI + OMP — The Agentic Service Designer</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
+<style>
+/* article-42 terminal panels — scoped, page-local */
+.tblock { margin: 22px 0; border: 1px solid #1f2a22; border-radius: var(--radius-card); overflow: hidden; background: #0b0f0c; }
+.tblock .tbar { display: flex; align-items: center; gap: 7px; height: 30px; padding: 0 12px; background: #10160f; border-bottom: 1px solid #1f2a22; }
+.tblock .tbar .dot { width: 9px; height: 9px; border-radius: 50%; background: #233326; }
+.tblock .tbar .tname { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #6f9f77; margin-left: 4px; }
+.tblock pre { margin: 0; padding: 14px 16px; background: #0b0f0c; color: #e6ede6; font-size: 12.5px; line-height: 1.6; overflow-x: auto; border-radius: 0; }
+.tblock .pr { color: #4ade80; font-weight: 600; }
+.tblock .u { color: #7ee787; }
+.tblock .cmd { color: #f8f8f5; }
+.tblock .fl { color: #79c0ff; }
+.tblock .out { color: #9b9b96; }
+.tblock .ok { color: #4ade80; }
+.tblock .warn { color: #e3b341; }
+.tblock .err { color: #ff7b72; }
+.tblock .ag { color: #d2a8ff; }
+</style>
+</head><body>
+<header class="site-head">
+  <a class="brand" href="../../index.html">
+    <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
+    <div class="brand-sub">Sam Mozaffari</div>
+  </a>
+  <nav class="main-nav">
+    <a href="../../index.html" class="on">Index</a>
+    <a href="../../articles.html" class="">Articles</a>
+    <a href="../../courses.html" class="">Courses</a>
+    <a href="../../book.html" class="">Book</a>
+    <a href="../../harness.html" class="">Harness</a>
+    <a href="../../docs/index.html" class="">Docs</a>
+    <a href="../../about.html" class="">About</a>
+    <a href="../../cv.html" class="">CV</a>
+  </nav>
+</header>
+<main class="art">
+  <div class="art-progress"><div class="art-progress-bar" id="progress"></div></div>
+  <div class="art-hero">
+    <div class="art-meta">
+      <span class="chip">Tools &amp; Orchestration</span>
+      <span class="sep">·</span><span class="chip">Fast-food operations (fictional composite)</span>
+      <span class="sep">·</span><span class="chip">One engagement, lane 2 of 3</span>
+      <span class="sep">·</span><span class="chip">17 min read</span>
+    </div>
+    <h1>The Same Engagement from the Terminal: Codex, Kimi, AGY &amp; ZAI + OMP</h1>
+    <p class="deck">Copperline Chicken is a fictional composite. All people, quotes, figures, and outcomes are synthetic. The terminal transcripts below are simulated run logs that follow each CLI's real command conventions; the 14 artifacts they produced are shared with Article 41 and sit on disk.</p>
+    <div class="art-stats"><span><b>5</b> terminal sessions</span><span><b>6</b> OMP plugins</span><span><b>4</b> CLIs</span><span><b>same 560-note</b> evidence base</span></div>
+    <div class="author-block">
+      <div class="author-id">
+        <div class="author-avatar">SM</div>
+        <div><b>Sam Mozaffari</b><span>Service designer · AI-first &amp; agentic practice</span></div>
+      </div>
+      <p class="author-note">I ran the same Copperline 2000 engagement a second time with no channel UI at all — just four coding-agent CLIs (Codex, Kimi, AGY, ZAI), our OMP plugin library, and the ASD MCP bundles — to test whether the practice survives when the collaboration surface is a shell. Same brief, same data, same artifact contract as <a href="../41/index.html">Article 41</a>.</p>
+    </div>
+  </div><div class="art-layout"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-provenance-note">Provenance note</a></li><li><a href="#sec-1-executive-summary">Executive summary</a></li><li><a href="#sec-2-why-a-terminal-lane">Why a terminal lane</a></li><li><a href="#sec-3-the-working-setup">The working setup</a></li><li><a href="#sec-4-session-by-session-walkthrough">Session-by-session walkthrough</a></li><li><a href="#sec-5-the-omp-plugin-library">The OMP plugin library</a></li><li><a href="#sec-6-mcp-in-the-terminal-lane">MCP in the terminal lane</a></li><li><a href="#sec-7-comparison-with-the-buzz-lane">Comparison with the BUZZ lane</a></li><li><a href="#sec-8-the-artifact-portfolio">The artifact portfolio</a></li><li><a href="#sec-9-deterministic-fact-check">Deterministic fact-check</a></li><li><a href="#sec-10-lessons-and-pitfalls">Lessons and pitfalls</a></li><li><a href="#sec-11-evidence-ledger">Evidence ledger</a></li><li><a href="#sec-12-references">References</a></li></ol></nav></aside><article class="art-body"><h1 id="42-the-same-engagement-from-the-terminal-codex-kimi-agy-zai-omp">42 — The Same Engagement from the Terminal: Codex, Kimi, AGY &amp; ZAI + OMP</h1>
+<section class="art-sec sec-0"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-provenance-note">Provenance note</h2>
+<p>Copperline Chicken — 2,000 charcoal-grill stores, 41,300 crew, a support
+centre in Port Meridian — is a fictional composite. Every person, quote,
+figure, and outcome in this article and the linked artifacts is synthetic. No
+real company, store, or person is described.</p>
+<p>The lane needs its own boundary note. Article 41's channel was a
+simulated-but-faithful rendering of channel coordination; the terminal
+transcripts here are <strong>simulated run logs</strong> following each CLI's real
+conventions — <code>codex exec</code>, <code>kimi chat</code>, <code>agy run</code>, <code>zai exec</code> — with our
+OMP plugins and ASD MCP bundles mounted as we actually mount them. The
+commands are the pattern; timestamps and wall-clocks are illustrative. Not
+simulated: the <a href="../41/artifacts/canon.md">canon</a> every session read,
+and the 14 artifacts on disk it produced, byte for byte, shared with
+Article 41.</p>
+</section><section class="art-sec sec-1"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2>
+<p>One engagement, three lanes. Lane 1 (<a href="../41/index.html">Article 41</a>) ran
+Copperline 2000 through a BUZZ channel with role runtimes replying under
+their own identities. Lane 2 — this article — runs it with
+no channel at all: five terminal sessions, four coding-agent CLIs, six plugins
+from OMP (our open plugin library), and the six ASD MCP bundles exposing 29
+tools, 225 resources, and 10 prompts. Lane 3 (Article 43) will hand the same
+canon to DSH plugin agents.</p>
+<p>The point of a second lane is not preference, it is proof: the practice does
+not live in the collaboration surface. The canon is the contract, the note-ID
+band map is the interface between agents, the artifacts are the deliverables.
+Change every tool and the deliverable set should not move — and it did not:
+same 14 artifacts, same 560 notes, same canon numbers, from a shell prompt
+instead of a channel.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Copperline 2000, terminal lane</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Copperline Chicken, fictional composite (canon §1)</td>
+</tr>
+<tr>
+<td>Engagement</td>
+<td>"Copperline 2000" — full-operation service blueprint &amp; field study, 6-week field window</td>
+</tr>
+<tr>
+<td>Lane</td>
+<td>Terminal only: no channel UI, no runtime roster</td>
+</tr>
+<tr>
+<td>CLIs</td>
+<td>Codex (structured generation), Kimi (long-context synthesis), AGY (pipeline glue), ZAI (critique)</td>
+</tr>
+<tr>
+<td>Orchestration</td>
+<td>OMP plugins (6) + ASD MCP bundles (6: 29 tools, 225 resources, 10 prompts)</td>
+</tr>
+<tr>
+<td>Sessions</td>
+<td>5 terminal sessions: brief → research → blueprint → analysis+proposals → fact-check</td>
+</tr>
+<tr>
+<td>Artifacts / notes</td>
+<td>14 shared artifacts; note bands N001–N560, continuous, never renumbered</td>
+</tr>
+<tr>
+<td>Human gates</td>
+<td><strong>Manual</strong> in this lane — owner-run <code>--approve</code>-style checks between sessions (see §7)</td>
+</tr>
+<tr>
+<td>Prototyping</td>
+<td>Not executed; stated honestly per canon §5</td>
+</tr>
+</tbody></table>
+</section><section class="art-sec sec-2"><span class="sec-kicker">02 · Motivation</span><h2 id="sec-2-why-a-terminal-lane">Why a terminal lane</h2>
+<p>A channel UI optimizes for visibility: stakeholders watch work happen. A
+terminal optimizes for <strong>scriptability, reproducibility, and headless
+runs</strong> — the three properties that made this lane worth running:</p>
+<ol>
+<li><strong>Everything is a command, so everything is replayable.</strong> Session 4's
+analysis→proposals→deck chain is a YAML file; re-run it against a revised
+canon and you get a revised portfolio with the same note bands — the basis of
+proposal 10, <em>Blueprint-as-Living-Document</em>.</li>
+<li><strong>No UI means CI means.</strong> The fact-check loop (session 5) ran as a plain
+exit-code gate: 560 note IDs, 560 unique, 0 collisions, or the run fails.
+Nothing that needs a person clicking a channel can hang off a nightly
+job.</li>
+<li><strong>Per-CLI strengths are real and worth routing around.</strong> In this
+engagement's pattern — and this is our observed pattern, not a benchmark —
+Codex held long structured generation best (the 180.9 KB blueprint in one
+coherent pass), Kimi's long context synthesized the whole 88.3 KB interview
+corpus in a single pass with no chunk seams, AGY earned its keep as
+pipeline glue, and ZAI's critique caught contract defects the
+generators are blind to.</li>
+</ol>
+<p>That routing is a judgment call, framed here as this engagement's pattern:
+canon §5 seated Codex CLI and Kimi CLI as the coding-agent advisors observing
+the lane-1 channel; in this lane they do the work, joined by AGY and ZAI,
+which never appear in the channel.</p>
+</section><section class="art-sec sec-3"><span class="sec-kicker">03 · Setup</span><h2 id="sec-3-the-working-setup">The working setup</h2>
+<p>One directory, one source of truth. Everything the CLIs needed lived in
+<code>engagement/copperline-2000/</code>, and every session began by reading
+<code>canon.md</code> — the same 8.1 KB file lane 1 treated as authoritative:</p>
+<div class="codeblock"><div class="codebar"><span>TREE</span></div><pre><code>engagement/copperline-2000/
+├── canon.md                  ← single source of truth (8.1 KB, 10 sections)
+├── .mcp.json                 ← six ASD bundles mounted as asd:// resources
+├── pipelines/
+│   └── copperline-report.yaml← AGY chain: analysis → proposals → deck
+├── research/raw/             ← corpus: 88.3 KB interviews · 35.0 KB surveys · 33.7 KB channels
+└── artifacts/                ← the shared 14-artifact set (linked as ../41/artifacts/…)
+</code></pre></div>
+<p>The MCP config is deliberately boring — six bundles, mounted
+read-only,
+shared by all four CLIs so they cite the same catalog and book chapters:</p>
+<div class="codeblock"><div class="codebar"><span>CONFIG — .mcp.json</span></div><pre><code>{
+  "mcpServers": {
+    "asd-catalog":  { "url": "asd://catalog",   "mode": "read" },
+    "asd-books":    { "url": "asd://books",     "mode": "read" },
+    "asd-patterns": { "url": "asd://patterns",  "mode": "read" },
+    "asd-methods":  { "url": "asd://methods",   "mode": "read" },
+    "asd-evidence": { "url": "asd://evidence",  "mode": "read" },
+    "asd-gates":    { "url": "asd://gates",     "mode": "read" }
+  }
+}
+</code></pre></div>
+<p>Across the six bundles: <strong>29 tools, 225 resources, 10 prompts</strong> — the same
+<code>sd_*</code> tool surface Article 39 documented on the channel host, consumed here
+from the shell. OMP plugins loaded per invocation, so each session's
+transcript records exactly which contracts were in force. This engagement's
+library:</p>
+<ul>
+<li><code>omp/asd-roles</code> — the ten ASD role prompts (researcher, mapper, critic, …) as CLI-invocable personas</li>
+<li><code>omp/evidence-ledger</code> — deterministic claim and note-ID verification</li>
+<li><code>omp/html-render</code> — self-contained artifact rendering with the house color code (canon §6.3)</li>
+<li><code>omp/note-id</code> — allocation and enforcement of the continuous N001–N560 band map</li>
+<li><code>omp/canon-guard</code> — injects the canon and fails runs that contradict it</li>
+<li><code>omp/pipeline</code> — AGY-compatible step chaining with artifact-to-artifact dependencies</li>
+</ul>
+</section><section class="art-sec sec-4"><span class="sec-kicker">04 · The work, session by session</span><h2 id="sec-4-session-by-session-walkthrough">Session-by-session walkthrough</h2>
+<p>Five sessions, one per phase. Each block is the simulated run log of the
+session's headline invocation; sibling invocations (different kind mount,
+different band) produced the remaining artifacts and are elided. Session
+boundaries were the human gates — the owner read the output and typed the
+next command.</p>
+<h3 id="session-1-brief-codex">Session 1 — Brief (Codex)</h3>
+<p>The brief locks scope before anything else exists. Codex planned four steps,
+read the canon, and rendered the kind-01 design brief with its own closing
+note band:</p>
+<div class="tblock"><div class="tbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="tname">TERMINAL — session 1/5 · brief</span></div><pre><span class="u">[sd@meridian copperline-2000]</span> <span class="pr">$</span> <span class="cmd">codex exec --plan \</span>
+<span class="fl">    "compose design-brief per canon §5 structure and §8 proposal inventory;</span>
+<span class="fl">     kind 01 design-brief; cite 01/02 and 01/07; embed house color code §6.3;</span>
+<span class="fl">     allocate notes N501–N540"</span> <span class="cmd">\</span>
+<span class="fl">    --mount</span> <span class="cmd">asd://catalog/kinds/01-design-brief \</span>
+<span class="fl">    --mount</span> <span class="cmd">asd://books/01-this-is-service-design-doing/07 \</span>
+<span class="fl">    --plugin</span> <span class="cmd">omp/asd-roles:presenter --plugin omp/html-render \</span>
+<span class="fl">    --plugin</span> <span class="cmd">omp/note-id --plugin omp/canon-guard --from canon.md \</span>
+<span class="fl">    &gt;</span> <span class="cmd">artifacts/brief.html</span>
+<span class="out">codex  ▸ plan: 4 steps (read canon → outline → draft → render)</span>
+<span class="out">codex  ▸ step 1/4  canon.md parsed · 10 sections · 5 tables · 0 conflicts</span>
+<span class="out">codex  ▸ step 3/4  presenter role: sponsor = Priya Nair (COO), canon §3</span>
+<span class="ag">agent  ▸ "Scope locked to canon §5: 8 flagship interviews, 412 manager</span>
+<span class="ag">          surveys, 1,893 crew surveys, 90-day VoiceBoard extract, 120-store</span>
+<span class="ag">          POS sample, 60 mystery-shopper reports, 3 aggregator exports,</span>
+<span class="ag">          2 weeks of call-centre logs. Prototyping is out of scope and the</span>
+<span class="ag">          brief says so explicitly — no implied promise."</span>
+<span class="out">codex  ▸ step 4/4  wrote artifacts/brief.html · 46.0 KB · notes N501–N540</span>
+<span class="u">[sd@meridian copperline-2000]</span> <span class="pr">$</span> <span class="cmd">omp note-id verify --band N501-N540 artifacts/brief.html</span>
+<span class="ok">ok     ▸ 40 ids · 40 unique · 0 collisions · band locked</span>
+</pre></div>
+<h3 id="session-2-research-kimi">Session 2 — Research (Kimi)</h3>
+<p>The qualitative corpus is where long context earns its keep: 88.3 KB of
+interviews, 35.0 KB of survey open-ends, 33.7 KB of channel extracts — one
+Kimi pass, no chunking, so cross-interview themes never fall in a seam.
+Continuation passes in the same session synthesized the stakeholder map
+(N321–N345), ecosystem map (N346–N365), and insight register (N366–N385):</p>
+<div class="tblock"><div class="tbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="tname">TERMINAL — session 2/5 · research</span></div><pre><span class="u">[sd@meridian copperline-2000]</span> <span class="pr">$</span> <span class="cmd">kimi chat \</span>
+<span class="fl">    --file</span> <span class="cmd">research/raw/interviews-8.md --file research/raw/survey-open.csv \</span>
+<span class="fl">    --file</span> <span class="cmd">research/raw/voiceboard-90d.json --context full \</span>
+<span class="fl">    "synthesize the qualitative corpus per canon §5; allocate evidence rows:</span>
+<span class="fl">     interviews N221–N270, surveys N271–N300, channels N301–N320; every row</span>
+<span class="fl">     keeps speaker, system tag, and verbatim quote"</span> <span class="cmd">\</span>
+<span class="fl">    --plugin</span> <span class="cmd">omp/asd-roles:researcher --plugin omp/evidence-ledger \</span>
+<span class="fl">    --json-out</span> <span class="cmd">research/rows.json</span>
+<span class="out">kimi   ▸ context loaded: 88.3 KB + 35.0 KB + 33.7 KB · single pass · no chunking</span>
+<span class="ag">agent  ▸ "Three patterns repeat across all eight interviewees: shift swaps</span>
+<span class="ag">          reworked by managers (31% of the 11-per-store-per-week requests),</span>
+<span class="ag">          rosters landing inside 72 hours (41% of stores), and Q-Pulse</span>
+<span class="ag">          bulk-at-close logging. Grace Mwangi (crew, 8 months) and Bo Chen</span>
+<span class="ag">          (shift leader) describe the same swap waterfall from opposite</span>
+<span class="ag">          sides of it. Jack Doyle's courier view matches the 0.7% handoff</span>
+<span class="ag">          breakage number without knowing it."</span>
+<span class="out">kimi   ▸ wrote research/rows.json · 100 rows · bands N221–N320 allocated</span>
+<span class="u">[sd@meridian copperline-2000]</span> <span class="pr">$</span> <span class="cmd">omp evidence-ledger import --rows research/rows.json</span>
+<span class="ok">ok     ▸ 100 rows accepted · 0 duplicate ids · quotes kept verbatim</span>
+</pre></div>
+<h3 id="session-3-blueprint-codex-zai">Session 3 — Blueprint (Codex + ZAI critique)</h3>
+<p>The blueprint is the engagement's center of gravity: kind 12, full operation,
+six lanes, note-range contract N001–N220. Generation was Codex; acceptance was
+not — ZAI's critic ran against the kind contract and the canon's
+visual rules, flagged two defects, and passed the file only after a
+same-file remediation (the band held through the patch):</p>
+<div class="tblock"><div class="tbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="tname">TERMINAL — session 3/5 · blueprint</span></div><pre><span class="u">[sd@meridian copperline-2000]</span> <span class="pr">$</span> <span class="cmd">codex exec --plan \</span>
+<span class="fl">    "compose service-blueprint per canon §6; kind 12; six lanes: physical</span>
+<span class="fl">     evidence, customer actions, frontstage, backstage, support processes,</span>
+<span class="fl">     data &amp; systems; note-range contract N001–N220; lane hexes verbatim §6.3"</span> <span class="cmd">\</span>
+<span class="fl">    --mount</span> <span class="cmd">asd://catalog/kinds/12-service-blueprint \</span>
+<span class="fl">    --mount</span> <span class="cmd">asd://books/09-mapping-experiences/05-service-blueprints \</span>
+<span class="fl">    --plugin</span> <span class="cmd">omp/html-render --plugin omp/note-id --plugin omp/canon-guard \</span>
+<span class="fl">    &gt;</span> <span class="cmd">artifacts/service-blueprint.html</span>
+<span class="out">codex  ▸ wrote artifacts/service-blueprint.html · 180.9 KB · notes N001–N220</span>
+<span class="u">[sd@meridian copperline-2000]</span> <span class="pr">$</span> <span class="cmd">zai exec --plugin omp/asd-roles:critic \</span>
+<span class="fl">    "critique service-blueprint.html against canon + kind 12 contract"</span>
+<span class="err">zai    ▸ defect 1 (high)  drive-thru window lane cites the 246s median but</span>
+<span class="err">          the wait node is missing the hatched-gray marker §6.3 requires</span>
+<span class="warn">zai    ▸ defect 2 (med)   crew→courier handoff on Route56 drawn solid;</span>
+<span class="warn">          canon §6.3 requires dashed-border handoff nodes</span>
+<span class="u">[sd@meridian copperline-2000]</span> <span class="pr">$</span> <span class="cmd">codex exec "remediate 2 defects in place, same file"</span>
+<span class="out">codex  ▸ patched artifacts/service-blueprint.html · diff: 2 nodes</span>
+<span class="out">codex  ▸ note band held · N001–N220 unchanged · no renumbering</span>
+<span class="u">[sd@meridian copperline-2000]</span> <span class="pr">$</span> <span class="cmd">zai exec --plugin omp/asd-roles:critic --recheck</span>
+<span class="ok">zai    ▸ PASS · 0 defects · kind 12 contract satisfied</span>
+</pre></div>
+<h3 id="session-4-analysis-proposals-deck-agy">Session 4 — Analysis, proposals, deck (AGY pipeline)</h3>
+<p>Three artifacts, one chain, zero interactive turns. The AGY pipeline declares
+each step's inputs as note bands, so the dependencies are checkable before
+anything runs — step 2 could not start until N421–N460 existed:</p>
+<div class="tblock"><div class="tbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="tname">TERMINAL — session 4/5 · pipeline</span></div><pre><span class="u">[sd@meridian copperline-2000]</span> <span class="pr">$</span> <span class="cmd">agy run pipelines/copperline-report.yaml</span>
+<span class="out">step1  ▸ codex · analysis-report (kinds 28+32)</span>
+<span class="out">         in:  blueprint N001–N220 · research N221–N320 · canon §4</span>
+<span class="out">         out: artifacts/analysis-report.html · 85.4 KB · N421–N460</span>
+<span class="out">step2  ▸ codex · proposals (kind 31, canon §8 ten directions)</span>
+<span class="out">         in:  step1 outputs</span>
+<span class="out">         out: artifacts/proposals.html · 86.9 KB · N461–N500</span>
+<span class="out">step3  ▸ kimi · slide-deck (kind 33, current state)</span>
+<span class="out">         in:  step1 + step2 outputs</span>
+<span class="out">         out: artifacts/slide-deck.html · 54.0 KB · cites N001–N500</span>
+<span class="ok">agy    ▸ pipeline ok · 3/3 steps · 0 retries · wall 41 min</span>
+</pre></div>
+<h3 id="session-5-fact-check-omp-evidence-ledger">Session 5 — Fact-check loop (OMP evidence ledger)</h3>
+<p>The closing session owns no artifact; it verifies everyone else's: note-ID
+uniqueness across the set, band integrity against the allocation map, and a
+spot-check of canon §4 numbers quoted verbatim. Exit code or it did not
+happen:</p>
+<div class="tblock"><div class="tbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="tname">TERMINAL — session 5/5 · fact-check</span></div><pre><span class="u">[sd@meridian copperline-2000]</span> <span class="pr">$</span> <span class="cmd">omp evidence-ledger verify --all --fail-closed</span>
+<span class="out">scope  ▸ 14 artifacts · expected band map N001–N560</span>
+<span class="ok">ok     ▸ 560 note ids referenced · 560 unique · 0 collisions</span>
+<span class="ok">ok     ▸ band integrity:</span>
+<span class="out">         N221–N270 interviews   N271–N300 surveys    N301–N320 channels</span>
+<span class="out">         N321–N345 stakeholders N346–N365 ecosystem  N366–N385 insights</span>
+<span class="out">         N386–N400 personas     N401–N420 journey   N421–N460 analysis</span>
+<span class="out">         N461–N500 proposals    N501–N540 brief     N541–N560 transcript</span>
+<span class="ok">ok     ▸ claims-spot: 10/10 canon §4 metrics matched verbatim</span>
+<span class="out">done   ▸ ledger sealed · sha256 9f4c07a1…e52 · exit 0</span>
+</pre></div>
+</section><section class="art-sec sec-5"><span class="sec-kicker">05 · Tooling</span><h2 id="sec-5-the-omp-plugin-library">The OMP plugin library</h2>
+<p>OMP is our open plugin library: small, named, versioned contracts that any of
+these CLIs can load per invocation. Six plugins carried this engagement:</p>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>What it contributed here</th>
+<th>Why not ad-hoc prompting</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>omp/asd-roles</code></td>
+<td>The ten ASD role prompts as CLI personas — presenter wrote the brief, researcher ran the corpus pass, critic ran both ZAI checks</td>
+<td>A role typed into a prompt drifts per session; a plugin pins the persona, its prohibitions, and its stop conditions</td>
+</tr>
+<tr>
+<td><code>omp/note-id</code></td>
+<td>Allocated the N001–N560 band map and rejected any artifact that renumbered or collided</td>
+<td>Numbering discipline is exactly what free-form generation breaks first</td>
+</tr>
+<tr>
+<td><code>omp/evidence-ledger</code></td>
+<td>Row import in session 2; the fail-closed whole-set verification in session 5</td>
+<td>Turns "please cite your sources" into an exit code</td>
+</tr>
+<tr>
+<td><code>omp/html-render</code></td>
+<td>Self-contained artifacts with the canon §6.3 hexes, sticky legends, print-friendly layout</td>
+<td>Visual contract compliance is mechanical — generators left alone will re-pick colors</td>
+</tr>
+<tr>
+<td><code>omp/canon-guard</code></td>
+<td>Injected <code>canon.md</code> into every Codex run and failed outputs contradicting canon numbers</td>
+<td>The canon wins (canon preamble) — this makes "wins" enforceable rather than aspirational</td>
+</tr>
+<tr>
+<td><code>omp/pipeline</code></td>
+<td>The AGY-compatible step chain with band-level input contracts</td>
+<td>Chains declared as data re-run on a revised canon; chat-orchestrated chains exist only in their own transcript</td>
+</tr>
+</tbody></table>
+<p>The pattern across all six: <strong>plugins beat ad-hoc prompting wherever the
+requirement is repeatability.</strong> A prompt is a suggestion; a plugin is a
+versioned contract with a failure mode. When lane 3 re-runs this engagement
+with different agents, five of the six load unchanged.</p>
+</section><section class="art-sec sec-6"><span class="sec-kicker">06 · Integration</span><h2 id="sec-6-mcp-in-the-terminal-lane">MCP in the terminal lane</h2>
+<p>All four CLIs mounted the same six ASD bundles — <strong>29 tools, 225 resources,
+10 prompts</strong> — so "which catalog did you cite?" has one answer. Resources did
+the heavy lifting in this lane:</p>
+<ul>
+<li><strong>Book chapters.</strong> <code>asd://books/01-this-is-service-design-doing/07</code> rode
+the brief session; <code>asd://books/09-mapping-experiences/05-service-blueprints</code>
+rode the blueprint session. Artifacts cite chapters as <code>NN/CH</code> per canon
+§6.2, and those citations resolve to mounted resources, not memory.</li>
+<li><strong>Template kinds.</strong> Every artifact's kind mount — 01 design-brief, 05
+stakeholder-map, 06 ecosystem-map, 07 insight-register, 09 persona-set, 11
+journey-map, 12 service-blueprint, 28+32 analysis, 31 opportunity-matrix, 33
+presentation-deck — came from <code>asd://catalog/kinds/…</code>.</li>
+<li><strong>Prior article patterns.</strong> <code>asd://patterns/articles/39-terminal-blocks</code>
+supplied the terminal-panel conventions this article follows; the lane-1
+transcript pattern informed the session-log format.</li>
+</ul>
+<p>Tools (<code>sd_*</code>) mattered less here than on the channel host — the terminal
+lane writes files, not store records — but the evidence bundle's read tools
+backed the ledger verification, and the 10 prompts (one per ASD role)
+duplicate as <code>omp/asd-roles</code> sources of truth. One contract, two consumption
+styles — that is the point.</p>
+</section><section class="art-sec sec-7"><span class="sec-kicker">07 · Comparison</span><h2 id="sec-7-comparison-with-the-buzz-lane">Comparison with the BUZZ lane</h2>
+<p>Same canon, same artifacts, different lane. The honest deltas, lane 1
+(<a href="../41/index.html">Article 41</a>, channel) versus lane 2 (this article,
+terminal):</p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>BUZZ lane (41)</th>
+<th>Terminal lane (42)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Coordination overhead</td>
+<td>Mention scoping, thread discipline, orchestrator reconciliation posts</td>
+<td>Session sequencing by the owner; plugin contracts instead of mention contracts</td>
+</tr>
+<tr>
+<td>Auditability</td>
+<td>Relay event IDs, channel receipts, Canvas index</td>
+<td>Run logs, <code>git diff</code> on artifacts, exit codes, sealed ledger hash</td>
+</tr>
+<tr>
+<td>Parallelism</td>
+<td>Orchestrator fans out scoped mentions to idle runtimes</td>
+<td>AGY steps run concurrent where bands allow; otherwise strictly sequential</td>
+</tr>
+<tr>
+<td>Human gates</td>
+<td>In-channel decision posts backed by store receipts</td>
+<td><strong>Manual</strong> — the owner reads output and types the next command; no receipt unless you script one</td>
+</tr>
+<tr>
+<td>Stakeholder visibility</td>
+<td>High — work is watchable as it happens</td>
+<td>None — stakeholders see artifacts, not process</td>
+</tr>
+<tr>
+<td>Reproducibility</td>
+<td>Re-run means re-staging a channel</td>
+<td>Re-run means <code>agy run</code> on a revised canon</td>
+</tr>
+<tr>
+<td>Pick when</td>
+<td>The engagement needs shared visibility and multi-party gating</td>
+<td>The engagement is yours to run, batch-shaped, or destined for CI</td>
+</tr>
+</tbody></table>
+<p>The gate row is the one that stings: lane 1's gates left receipts, lane 2's
+left shell history. For an engagement like Copperline 2000 — a sponsor
+(Priya Nair) and four functional heads who want to see the thinking — we
+would run lane 1, and use this lane's pipeline for the quarterly
+re-baseline, where nobody needs to watch and everybody needs it identical.</p>
+</section><section class="art-sec sec-8"><span class="sec-kicker">08 · Deliverables</span><h2 id="sec-8-the-artifact-portfolio">The artifact portfolio</h2>
+<p>Fourteen artifacts, shared with Article 41. Note
+bands are the interface between sessions; sizes are bytes on disk:</p>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Kind</th>
+<th>Notes</th>
+<th>Built in</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="../41/artifacts/brief.html">Engagement brief</a></td>
+<td>01</td>
+<td>N501–N540 (cites N001–N500)</td>
+<td>S1 · Codex</td>
+<td>46.0 KB</td>
+</tr>
+<tr>
+<td><a href="../41/artifacts/service-blueprint.html">Service blueprint</a></td>
+<td>12</td>
+<td>N001–N220</td>
+<td>S3 · Codex, ZAI recheck</td>
+<td>180.9 KB</td>
+</tr>
+<tr>
+<td><a href="../41/artifacts/analysis-report.html">Analysis report</a></td>
+<td>28+32</td>
+<td>N421–N460</td>
+<td>S4 · Codex</td>
+<td>85.4 KB</td>
+</tr>
+<tr>
+<td><a href="../41/artifacts/stakeholder-map.html">Stakeholder map</a></td>
+<td>05</td>
+<td>N321–N345</td>
+<td>S2 · Kimi</td>
+<td>29.3 KB</td>
+</tr>
+<tr>
+<td><a href="../41/artifacts/ecosystem-map.html">Ecosystem map</a></td>
+<td>06</td>
+<td>N346–N365</td>
+<td>S2 · Kimi</td>
+<td>25.4 KB</td>
+</tr>
+<tr>
+<td><a href="../41/artifacts/insight-register.html">Insight register</a></td>
+<td>07</td>
+<td>N366–N385</td>
+<td>S2 · Kimi</td>
+<td>23.0 KB</td>
+</tr>
+<tr>
+<td><a href="../41/artifacts/persona-set.html">Persona set</a></td>
+<td>09</td>
+<td>N386–N400</td>
+<td>S3 · Codex</td>
+<td>22.4 KB</td>
+</tr>
+<tr>
+<td><a href="../41/artifacts/journey-map.html">Journey map</a></td>
+<td>11</td>
+<td>N401–N420</td>
+<td>S3 · Codex</td>
+<td>28.3 KB</td>
+</tr>
+<tr>
+<td><a href="../41/artifacts/slide-deck.html">Slide deck (current state)</a></td>
+<td>33</td>
+<td>cites N001–N500</td>
+<td>S4 · Kimi</td>
+<td>54.0 KB</td>
+</tr>
+<tr>
+<td><a href="../41/artifacts/proposals.html">Proposals — ten directions</a></td>
+<td>31</td>
+<td>N461–N500</td>
+<td>S4 · Codex</td>
+<td>86.9 KB</td>
+</tr>
+<tr>
+<td><a href="../41/artifacts/buzz-transcript.html">Buzz transcript</a></td>
+<td>—</td>
+<td>N541–N560</td>
+<td>lane 1 record, shared</td>
+<td>54.6 KB</td>
+</tr>
+<tr>
+<td><a href="../41/artifacts/research/interviews.html">Interview set (8)</a></td>
+<td>—</td>
+<td>N221–N270</td>
+<td>S2 · Kimi</td>
+<td>88.3 KB</td>
+</tr>
+<tr>
+<td><a href="../41/artifacts/research/surveys.html">Survey pack (412 + 1,893)</a></td>
+<td>—</td>
+<td>N271–N300</td>
+<td>S2 · Kimi</td>
+<td>35.0 KB</td>
+</tr>
+<tr>
+<td><a href="../41/artifacts/research/channels.html">Channel data pack</a></td>
+<td>—</td>
+<td>N301–N320</td>
+<td>S2 · Kimi</td>
+<td>33.7 KB</td>
+</tr>
+</tbody></table>
+<p>The ten proposal titles are canon-locked (§8): Roster Stability Program,
+Drive-Thru 180, One Copperline Handover, Crew Voice Loop, Waste-to-Order
+Forecasting, Q-Pulse Honest Logging, Franchise Ops Bridge, Kiosk
+Accessibility Pass, Recovery Ladder, and Blueprint-as-Living-Document.</p>
+</section><section class="art-sec sec-9"><span class="sec-kicker">09 · Value &amp; measurement</span><h2 id="sec-9-deterministic-fact-check">Deterministic fact-check</h2>
+<p>Session 5's claims-spot replayed as this article's own fact table — every
+number appears exactly as in the canon, and each row's note band is where
+the artifact set carries it:</p>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Evidence</th>
+<th>Check</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2,000 stores · 41,300 crew · 2,140 managers</td>
+<td>canon §1 · brief N501–N540 · blueprint N001–N020</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Formats: 68 flagship / 1,214 standard / 389 food-court / 251 drive-thru / 78 kiosk</td>
+<td>canon §1 · journey-map N401–N420</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Crew turnover 94% annualised vs industry median 78%</td>
+<td>canon §4 · interviews N221–N270</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Swap requests 11/store/week; 31% need manager rework</td>
+<td>canon §4 · interviews N221–N270</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Rosters published &lt;72h before week start in 41% of stores</td>
+<td>canon §4 · surveys N271–N300</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Drive-thru window median 246s against a 180s target</td>
+<td>canon §4 · blueprint N001–N220</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Order accuracy 91.4%; aggregator rating 4.3/5</td>
+<td>canon §4 · channels N301–N320</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Chicken waste 3.8% vs 2.5% target (proposal 5 targets 2.8%)</td>
+<td>canon §4 + §8 · analysis N421–N460</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>eNPS −8 crew · customer NPS +31 · Q-Pulse 96.2% with 22% bulk-at-close</td>
+<td>canon §4 · surveys N271–N300 · analysis N421–N460</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Survey base: 412 of 2,000 managers · 1,893 of 41,300 crew</td>
+<td>canon §5 · surveys N271–N300</td>
+<td>✓</td>
+</tr>
+</tbody></table>
+<p>Plus the structural check: 560 note IDs referenced across 14 artifacts, 560
+unique, 0 collisions — the same ledger Article 41's set seals.</p>
+</section><section class="art-sec sec-10"><span class="sec-kicker">10 · Lessons learned</span><h2 id="sec-10-lessons-and-pitfalls">Lessons and pitfalls</h2>
+<ul>
+<li><strong>Budget the window before the artifact.</strong> The 180.9 KB blueprint is
+roughly 45k tokens of HTML — pasting it whole into a critique pass wastes the
+window on markup. ZAI's checks took the canon, the kind contract, and band
+slices (N001–N020, the drive-thru band), never the full file.</li>
+<li><strong>The note-ID contract is the lane's load-bearing wall.</strong> Four CLIs that
+cannot message each other composed one artifact set because the band
+map (N001–N560) was the interface. Enforce it mechanically
+(<code>omp/note-id</code>), or the first renumbering silently corrupts every
+downstream citation.</li>
+<li><strong>Long context pays off exactly where chunking hurts.</strong> Kimi's single
+pass over the 88.3 KB interview corpus surfaced the swap-waterfall agreement
+between Grace Mwangi and Bo Chen — adjacent-in-meaning, distant-in-corpus
+quotes that a chunked summarizer averages away.</li>
+<li><strong>Generation and acceptance must be different agents.</strong> Codex drew the
+Route56 handoff solid and would have shipped it; ZAI's critic pass exists to
+be pedantic about exactly that. Both defects were visual-contract failures,
+not factual ones — the kind generators don't notice about their own output.</li>
+<li><strong>Pipelines as files beat pipelines as conversation.</strong> Session 4 exists
+as <code>copperline-report.yaml</code>, re-runnable against whatever revised canon a
+quarterly re-baseline produces. No transcript to reverse-engineer.</li>
+<li><strong>Manual gates are the lane's honest weakness.</strong> The owner's
+session-boundary decisions live only in shell history. If you need gated
+governance, take the channel lane or script the receipts — do not let a
+convenient prompt substitute for an audit trail.</li>
+<li><strong>Elided ≠ invented.</strong> This article shows five headline invocations, not
+every command. The artifact table's "built in" column is the complete
+attribution; anything not in it was not claimed.</li>
+</ul>
+</section><section class="art-sec sec-11"><span class="sec-kicker">11 · References</span><h2 id="sec-11-evidence-ledger">Evidence ledger</h2>
+<table>
+<thead>
+<tr>
+<th>Evidence item</th>
+<th>Status</th>
+<th>Receipt</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Project canon (source of truth for all sessions)</td>
+<td>ON DISK, SHARED</td>
+<td><a href="../41/artifacts/canon.md"><code>../41/artifacts/canon.md</code></a> · 8.1 KB · 10 sections</td>
+</tr>
+<tr>
+<td>Session 1 run log — brief via Codex</td>
+<td>SIMULATED RUN LOG</td>
+<td>terminal block §4-S1; follows <code>codex exec</code> conventions</td>
+</tr>
+<tr>
+<td>Session 2 run log — corpus pass via Kimi</td>
+<td>SIMULATED RUN LOG</td>
+<td>terminal block §4-S2; follows <code>kimi chat</code> conventions</td>
+</tr>
+<tr>
+<td>Session 3 run log — blueprint + ZAI critique (2 defects → PASS)</td>
+<td>SIMULATED RUN LOG</td>
+<td>terminal block §4-S3</td>
+</tr>
+<tr>
+<td>Session 4 run log — AGY pipeline, 3 steps</td>
+<td>SIMULATED RUN LOG</td>
+<td>terminal block §4-S4; wall-clock illustrative</td>
+</tr>
+<tr>
+<td>Session 5 run log — ledger verification</td>
+<td>SIMULATED RUN LOG; checks reproducible</td>
+<td>terminal block §4-S5</td>
+</tr>
+<tr>
+<td>14 shared artifacts, sizes and note bands</td>
+<td>ON DISK, SHARED WITH LANE 1</td>
+<td>§8 table; byte sizes read from <code>articles/41/artifacts/</code></td>
+</tr>
+<tr>
+<td>560 note IDs, 560 unique, 0 collisions</td>
+<td>MACHINE-VERIFIED</td>
+<td>unique-ID scan across all 14 artifacts</td>
+</tr>
+<tr>
+<td>OMP plugin set (6) as described</td>
+<td>OUR LIBRARY, THIS ENGAGEMENT'S CONFIG</td>
+<td>§3 · §5</td>
+</tr>
+<tr>
+<td>ASD MCP bundles: 29 tools · 225 resources · 10 prompts · six bundles</td>
+<td>CITE-VERIFIED</td>
+<td>owner's brief; consistent with Article 39's 29 <code>sd_*</code> tools</td>
+</tr>
+<tr>
+<td>Lane comparison claims (gates, auditability, parallelism)</td>
+<td>ANALYSIS, HONEST DELTAS</td>
+<td>§7 table; gate weakness stated against this lane</td>
+</tr>
+<tr>
+<td>Human session gates</td>
+<td>MANUAL — NOT RECEIPTED</td>
+<td>owner's shell history only; flagged as the lane's weakness</td>
+</tr>
+</tbody></table>
+</section><section class="art-sec sec-12"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-references">References</h2>
+<ul>
+<li><code>asd://books/01-this-is-service-design-doing/07</code> — This Is Service Design Doing, ch. 7 (cited <code>01/07</code>)</li>
+<li><code>asd://books/01-this-is-service-design-doing/02</code> — ch. 2 (brief framing, cited <code>01/02</code>)</li>
+<li><code>asd://books/09-mapping-experiences/05-service-blueprints</code> — Mapping Experiences, blueprint anatomy</li>
+<li><code>asd://books/02-this-is-service-design-thinking/04-the-methods-toolbox.md</code></li>
+<li><code>asd://books/05-good-services/02-the-fifteen-principles.md</code></li>
+<li><code>asd://catalog/kinds/</code> — template kinds 01, 05, 06, 07, 09, 11, 12, 28, 31, 32, 33</li>
+<li><a href="../41/index.html">Article 41</a> — the same engagement in the BUZZ lane (shared artifacts)</li>
+<li><a href="../39/index.html">Article 39</a> — the BUZZ tutorial whose terminal-panel and evidence conventions this lane reuses</li>
+<li><a href="../../book.html">The book</a> — ASD role set and template catalog foundations</li>
+</ul>
+</section></article></div>
+    <div class="cross-links"><a class="xlink" href="../41/index.html"><span class="lbl">← Previous case</span><span class="ttl">41. Copperline 2000 in a BUZZ Channel</span><span class="rt">lane 1 of 3</span></a><a class="xlink empty" href="#"><span class="lbl">—</span></a></div>
+    <div class="art-foot">
+    <span>5 terminal sessions · 6 OMP plugins · 4 CLIs · same 560-note evidence base · shared with Article 41.</span>
+    · <a href="../../index.html">Back to the archive</a>
+    </div>
+    <button class="backtop" id="backtop" type="button">Back to top</button></main>
+<footer class="footer">
+  <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
+  <span><a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
+</footer>
+<script src="../../assets/site.js"></script>
+
+</body></html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Persona Set — Copperline 2000 · The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --phys:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#1e293b; --mut:#64748b; --bg:#f8fafc; --line:#e2e8f0; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55}
+  .wrap{max-width:1140px;margin:0 auto;padding:20px 22px 60px}
+  .provenance{background:#fffbeb;border:1px solid #f59e0b;border-left:6px solid #d97706;
+    border-radius:8px;padding:12px 16px;margin:14px 0 26px;font-size:13.5px;color:#78350f}
+  .provenance strong{color:#92400e}
+  .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:0 0 6px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px}
+  .sub{color:var(--mut);margin:0 0 14px;font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mut)}
+  .chip.kind{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
+  nav.sibs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px;font-size:12.5px}
+  nav.sibs a{text-decoration:none;color:#334155;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  nav.sibs a.here{background:#1e293b;color:#fff;border-color:#1e293b}
+  h2{font-size:20px;margin:34px 0 10px;padding-top:10px;border-top:2px solid var(--line)}
+  p{margin:8px 0}
+  .legend{position:sticky;top:0;z-index:20;background:rgba(248,250,252,.96);backdrop-filter:blur(3px);
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-wrap:wrap;gap:14px;
+    font-size:12px;color:#334155;margin:0 0 18px}
+  .legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(480px,1fr));gap:16px}
+  @media (max-width:1060px){.pgrid{grid-template-columns:1fr}}
+  .persona{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+  .phead{display:flex;gap:14px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line)}
+  .avatar{width:64px;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:800;font-size:22px;letter-spacing:.02em;flex:0 0 auto}
+  .a-cust{background:var(--cust)} .a-crew{background:var(--back)} .a-gm{background:var(--front)} .a-fra{background:var(--sup)}
+  .phead h3{margin:0;font-size:19px}
+  .phead .role{font-size:12.5px;color:var(--mut);margin:2px 0 0}
+  .pbody{padding:12px 16px 14px;font-size:13.5px}
+  .pbody h4{margin:12px 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut)}
+  .pbody ul{margin:0;padding-left:18px}
+  .pbody li{margin:2px 0}
+  .quote{margin:12px 0 0;padding:10px 12px;background:#f8fafc;border-left:4px solid var(--wait);border-radius:0 8px 8px 0;font-style:italic;color:#334155}
+  .quote b{display:block;font-style:normal;font-size:11px;color:var(--mut);margin-top:4px}
+  .ev{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;color:#0e7490}
+  .impl{background:#eef2ff;border-left:4px solid var(--cust);border-radius:0 8px 8px 0;padding:9px 12px;font-size:13px;margin-top:12px}
+  .impl b{color:#3730a3}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:13px}
+  th{background:#f1f5f9;text-align:left;padding:8px 9px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#475569;border-bottom:2px solid var(--line)}
+  td{padding:8px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  .note{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:#0e7490;white-space:nowrap}
+  .note-desc{font-size:12.5px;color:#475569}
+  footer{margin-top:40px;padding-top:14px;border-top:2px solid var(--line);font-size:12.5px;color:var(--mut)}
+  @media print{
+    body{background:#fff;font-size:11px}
+    .wrap{max-width:none;padding:0}
+    .legend{position:static;backdrop-filter:none}
+    nav.sibs{display:none}
+    .persona,tr{break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+    h2{break-after:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="provenance"><strong>Data boundary.</strong> Fictional composite engagement. Every person, quote, figure and outcome is synthetic. No real company, store, or person is described.</p>
+
+  <p class="kicker">Copperline 2000 · Full-Operation Service Blueprint &amp; Field Study · Artifact 09</p>
+  <h1>Persona Set</h1>
+  <p class="sub">Six personas covering the three customer channels and the three operational roles the proposals must serve. Each is a composite built from ≥3 evidence sources; construction notes N386–N400 document how.</p>
+
+  <div class="chips">
+    <span class="chip kind">Template kind 09 · persona-set</span>
+    <span class="chip">Book refs 14/04 · 17/04 · 18/05</span>
+    <span class="chip">Phase: Synthesis (week 4)</span>
+    <span class="chip">Construction notes N386–N400</span>
+    <span class="chip">Canon: canon.md §3, §4, §8</span>
+  </div>
+
+  <nav class="sibs">
+    <a href="brief.html">Brief</a><a href="research/interviews.html">Interviews</a><a href="research/surveys.html">Surveys</a><a href="research/channels.html">Channels</a><a href="stakeholder-map.html">Stakeholder Map</a><a href="ecosystem-map.html">Ecosystem Map</a><a href="insight-register.html">Insight Register</a><a href="journey-map.html">Journey Map</a><a href="service-blueprint.html">Service Blueprint</a><a href="analysis-report.html">Analysis</a><a href="slide-deck.html">Deck</a><a href="proposals.html">Proposals</a><a href="buzz-transcript.html">Buzz Log</a>
+  </nav>
+
+  <div class="legend">
+    <span><span class="sw" style="background:#2563eb"></span>Customer personas</span>
+    <span><span class="sw" style="background:#d97706"></span>Crew persona</span>
+    <span><span class="sw" style="background:#16a34a"></span>General-manager persona</span>
+    <span><span class="sw" style="background:#9333ea"></span>Franchisee persona</span>
+    <span style="margin-left:auto">Evidence: <span class="ev">N221–270</span> interviews · <span class="ev">N271–300</span> surveys · <span class="ev">N301–320</span> channels</span>
+  </div>
+
+  <div class="pgrid">
+
+    <div class="persona" id="mei">
+      <div class="phead">
+        <div class="avatar a-cust">ML</div>
+        <div><h3>Mei Lin</h3><p class="role">Lunch-peak office customer · 32 · administrative team lead, Port Meridian business district · dine-in regular, 2–3×/week</p></div>
+      </div>
+      <div class="pbody">
+        <h4>Behavioural patterns</h4>
+        <ul>
+          <li>Arrives 12:10–12:40 on Tuesdays and Thursdays with 2–4 colleagues; treats the 11:30–13:30 peak as a fixed social slot (N228)</li>
+          <li>Orders the same two grill combos; abandons the queue and goes upstairs to the food-court competitor when the line exceeds ~7 people (N297)</li>
+          <li>Scans the receipt QR to complain exactly once — when the app coupon failed — and found the form longer than her lunch break (N308)</li>
+        </ul>
+        <h4>Goals</h4>
+        <ul><li>In and out in 25 minutes, table for the group, food that matches the picture</li><li>Predictable favourites — novelty is for Fridays, not Tuesdays</li></ul>
+        <h4>Pains</h4>
+        <ul>
+          <li>Peak queue length decides her venue before the menu does (INS-19)</li>
+          <li>Table hunt after ordering is the worst minute of the visit</li>
+          <li>Coupon friction at the kiosk with a queue behind her</li>
+        </ul>
+        <div class="quote">"I have fifty minutes. The grill is worth it only if the line isn't."<b>— Mei Lin, segment workshop (canon interviewee)</b></div>
+        <div class="impl"><b>Service implications:</b> peak-flow design and kiosk coupon handling (P8), plus honest wait signalling — her walk-away threshold is measurable, so P2/P5 peak forecasting protects the dine-in 36% revenue line.</div>
+      </div>
+    </div>
+
+    <div class="persona" id="devon">
+      <div class="phead">
+        <div class="avatar a-cust">DC</div>
+        <div><h3>Devon Carter</h3><p class="role">Drive-thru commuter parent · 38 · drives the Thursday 17:40 school-run window · drive-thru express, 1–2×/week</p></div>
+      </div>
+      <div class="pbody">
+        <h4>Behavioural patterns</h4>
+        <ul>
+          <li>Time-boxes the whole stop: if the lane looks longer than ~4 cars at 17:40 he diverts to the burger chain on the same junction (N305)</li>
+          <li>Orders a family combo from memory at the speaker; confirms nothing because the kids are loud — discovers misses a mile down the road (N312)</li>
+          <li>Never enters the store; the window and the bag are the entire brand for him (N314)</li>
+        </ul>
+        <h4>Goals</h4>
+        <ul><li>Under six minutes, bumper to road; hot food; complete order — in that order</li><li>One app coupon applied without a conversation at the window</li></ul>
+        <h4>Pains</h4>
+        <ul>
+          <li>Median 246s window time vs a 180s target means his six-minute box fails on the median run (INS-04)</li>
+          <li>Speaker mishears with children in the car; error found too late to fix (INS-05)</li>
+          <li>No way to flag a missing item without parking and queuing inside</li>
+        </ul>
+        <div class="quote">"By the time you find the missing dip, you're three exits past going back."<b>— Devon Carter, drive-thru segment workshop</b></div>
+        <div class="impl"><b>Service implications:</b> the flagship journey for P2 Drive-Thru 180; order confirmation at the speaker plus a no-park recovery path (P9) directly reprice his threshold.</div>
+      </div>
+    </div>
+
+    <div class="persona" id="fatima">
+      <div class="phead">
+        <div class="avatar a-cust">FA</div>
+        <div><h3>Fatima Al-Sayed</h3><p class="role">Delivery-app-first customer · 27 · junior architect, works late · orders via aggregators 3–4×/month, rarely visits stores</p></div>
+      </div>
+      <div class="pbody">
+        <h4>Behavioural patterns</h4>
+        <ul>
+          <li>Chooses restaurant by app rating and delivery promise first, menu second; Copperline's 4.3/5 keeps it in her shortlist, barely (N316)</li>
+          <li>Orders at 19:45–20:30 — after the peak, when kitchen attention is lowest and handovers are rushed (N309)</li>
+          <li>Reports problems in the app, never by phone; expects resolution in-chat within the evening (N239)</li>
+        </ul>
+        <h4>Goals</h4>
+        <ul><li>Food that survives the ride; accurate orders; one-tap recovery when either fails</li><li>Consistency across Dashly, Wheelio and Pedalr — she uses whichever has a promo</li></ul>
+        <h4>Pains</h4>
+        <ul>
+          <li>0.7% of delivery orders break at the crew→courier handoff; hers did — cold chips, missing drink (INS-06)</li>
+          <li>Three aggregators means three different complaint outcomes for the same failure (INS-16)</li>
+          <li>Below-average satisfaction of the whole customer base, hidden inside the +31 NPS average (INS-21)</li>
+        </ul>
+        <div class="quote">"The restaurant can't see me. I'm a pin on somebody else's map."<b>— Fatima Al-Sayed, delivery-first segment workshop</b></div>
+        <div class="impl"><b>Service implications:</b> P3 One Copperline Handover standardises what reaches her door; P9 Recovery Ladder gives the app channel the same compensation logic as POS and call-centre.</div>
+      </div>
+    </div>
+
+    <div class="persona" id="grace">
+      <div class="phead">
+        <div class="avatar a-crew">GM</div>
+        <div><h3>Grace Mwangi</h3><p class="role">Crew member · 24 · 8 months tenure, Harbourgate Flagship #14 · grill and pack stations, closes Tuesdays and alternate Saturdays</p></div>
+      </div>
+      <div class="pbody">
+        <h4>Behavioural patterns</h4>
+        <ul>
+          <li>Checks ShiftOrbit on Sunday night to learn her week; roster still unpublished 40% of the time, so she plans around a guess (N232)</li>
+          <li>Trades shifts by group chat because the in-app swap flow "takes longer than the shift" — 11 requests/week across her store, a third bounced back (N280)</li>
+          <li>Logs Q-Pulse checks in one batch at close "so the screen goes green" — she has never been shown why timing matters (N288)</li>
+        </ul>
+        <h4>Goals</h4>
+        <ul><li>A week she can plan around: childcare swap with her sister, college day release fixed</li><li>Get competent fast — she wants Bo's line-check job by month twelve</li></ul>
+        <h4>Pains</h4>
+        <ul>
+          <li>Breaks slip during the 17:30–19:30 peak; she trades them for coverage and logs nothing (INS-22)</li>
+          <li>94% annualised turnover means her floor is permanently half-new — she trains people she will outlast (INS-01)</li>
+          <li>Her feedback has no channel; eNPS −8 is news to nobody and actionable to no one (INS-18)</li>
+        </ul>
+        <div class="quote">"Nobody asks me anything until I hand in my notice. Then everyone asks why."<b>— Grace Mwangi, crew interview (canon interviewee)</b></div>
+        <div class="impl"><b>Service implications:</b> primary beneficiary of P1 Roster Stability (≥7-day notice, swap marketplace), P4 Crew Voice Loop, and P6 honest logging that finally explains the "why" behind checklists. Her full shift lifecycle is mapped in journey-map.html.</div>
+      </div>
+    </div>
+
+    <div class="persona" id="aisha">
+      <div class="phead">
+        <div class="avatar a-gm">AR</div>
+        <div><h3>Aisha Rahman</h3><p class="role">Flagship GM · 41 · Harbourgate Flagship #14 · 18 crew per peak shift, 1,850 avg daily orders, 6 years with Copperline</p></div>
+      </div>
+      <div class="pbody">
+        <h4>Behavioural patterns</h4>
+        <ul>
+          <li>Rebuilds the ShiftOrbit roster by hand every Thursday to absorb swaps — her largest unpaid-thinking block of the week (N224)</li>
+          <li>Runs "fire-drill coaching": 90-second corrections during service because there is no training slack between peaks (N273)</li>
+          <li>Overrides StockBeak proposals after LTO weeks because the system "doesn't know this mall's rhythm" (N301)</li>
+        </ul>
+        <h4>Goals</h4>
+        <ul><li>A flagship that hits window, waste and audit targets in the same week, not different weeks</li><li>Keep her best crew long enough to grow shift leaders internally</li></ul>
+        <h4>Pains</h4>
+        <ul>
+          <li>LTO launches arrive with marketing fanfare and no forecast help; she eats the stockout and the waste (INS-10)</li>
+          <li>22% of her Q-Pulse logging is bulk-at-close — she knows it is wrong and cannot staff it right (INS-08)</li>
+          <li>Her escalations to HQ circle between three departments before landing (INS-17)</li>
+        </ul>
+        <div class="quote">"I can hit any two of the three targets any week you like. Ask me for all three and I need a roster that stops surprising people."<b>— Aisha Rahman, GM interview (canon interviewee)</b></div>
+        <div class="impl"><b>Service implications:</b> P1 removes her Thursday rebuild; P5 makes StockBeak proposals worth trusting; P6 re-times compliance into staffed moments; her store is the flagship pilot site in proposals.html.</div>
+      </div>
+    </div>
+
+    <div class="persona" id="elena">
+      <div class="phead">
+        <div class="avatar a-fra">EP</div>
+        <div><h3>Elena Petrova</h3><p class="role">Franchisee · 49 · 6 stores (2 standard, 2 food-court, 1 drive-thru express, 1 travel-hub kiosk) · 11 years franchising with Copperline</p></div>
+      </div>
+      <div class="pbody">
+        <h4>Behavioural patterns</h4>
+        <ul>
+          <li>Runs each format differently because the playbooks she downloaded span three Flamebook versions — "my standard store and my kiosk don't even agree on napkins" (N247)</li>
+          <li>Calls Daniel's team directly rather than reading notices; a phone answer beats a portal login every time (N276)</li>
+          <li>Delays kiosk changes until the landlord approves hardware, which pushes accessibility fixes past every deadline so far (N299)</li>
+        </ul>
+        <h4>Goals</h4>
+        <ul><li>Protect margin across 6 stores while Copperline standards keep shifting under her</li><li>Hand a working operation to her daughter in five years</li></ul>
+        <h4>Pains</h4>
+        <ul>
+          <li>Playbook drift: she is compliant with a version nobody enforces and out of step with the current one (INS-12)</li>
+          <li>Food-court crew ratio — 7 crew against 940 avg daily orders — leaves no slack for new standards (INS-20)</li>
+          <li>LTO compliance costs land on her P&amp;L while the marketing benefit accrues to the brand</li>
+        </ul>
+        <div class="quote">"Send me a version number and a person. I will read one and call the other."<b>— Elena Petrova, franchisee interview (canon interviewee)</b></div>
+        <div class="impl"><b>Service implications:</b> P7 Franchise Ops Bridge (versioned Flamebook + office hours) is her proposal; P8 kiosk pass needs her landlord workflow; her stores are first franchise pilots.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <h2>2. Construction &amp; method notes N386–N400</h2>
+  <table>
+    <thead><tr><th>Note</th><th>Content</th></tr></thead>
+    <tbody>
+      <tr><td class="note">N386</td><td class="note-desc">Mei Lin — built directly from her canon interview + lunch-peak observation; walk-away queue threshold retained verbatim from field note.</td></tr>
+      <tr><td class="note">N387</td><td class="note-desc">Mei Lin — segment workshop validation; receipt-QR complaint episode from VoiceBoard extract confirmed by her in-room.</td></tr>
+      <tr><td class="note">N388</td><td class="note-desc">Devon Carter — composite of the drive-thru segment workshop; thresholds anchored to lane-camera counts in channel data.</td></tr>
+      <tr><td class="note">N389</td><td class="note-desc">Devon Carter — family-combo ordering pattern cross-checked against POS sample order baskets (drive-thru express, 17:30–19:30).</td></tr>
+      <tr><td class="note">N390</td><td class="note-desc">Fatima Al-Sayed — composite of delivery-first workshop + aggregator review corpus; order-window pattern from Route56 timestamps.</td></tr>
+      <tr><td class="note">N391</td><td class="note-desc">Fatima Al-Sayed — in-app complaint behaviour confirmed against call-centre log sample (zero phone contacts from her cohort).</td></tr>
+      <tr><td class="note">N392</td><td class="note-desc">Grace Mwangi — persona built from her canon interview with her own Sunday-night app check and swap-chat habit retained verbatim.</td></tr>
+      <tr><td class="note">N393</td><td class="note-desc">Grace Mwangi — break-trading and bulk-logging patterns corroborated by crew survey open-ends before inclusion.</td></tr>
+      <tr><td class="note">N394</td><td class="note-desc">Aisha Rahman — persona from her canon interview + weekly ops diary; Thursday roster-rebuild pattern observed, not self-reported.</td></tr>
+      <tr><td class="note">N395</td><td class="note-desc">Aisha Rahman — StockBeak override behaviour from system logs matched to her account before quoting it back to her.</td></tr>
+      <tr><td class="note">N396</td><td class="note-desc">Elena Petrova — persona from her canon interview; Flamebook version span verified in the 12-store audit, not taken on her word.</td></tr>
+      <tr><td class="note">N397</td><td class="note-desc">Elena Petrova — landlord-approval blocker confirmed against lease-terms review before framing her as P8's constraint.</td></tr>
+      <tr><td class="note">N398</td><td class="note-desc">Composite rule — canon interviewees (Mei, Grace, Aisha, Elena) keep real names and verbatim habits; non-interview segments (Devon, Fatima) are named composites, never real participants.</td></tr>
+      <tr><td class="note">N399</td><td class="note-desc">Quote sourcing rule — every quote is a cleaned transcript line or workshop statement; no quote is invented for effect. Quotes attribute their setting.</td></tr>
+      <tr><td class="note">N400</td><td class="note-desc">Review sign-off — Critic pass (sd_review) checked each persona's evidence refs ≥3 sources and ≥2 methods; persona-set frozen v1.0 at synthesis gate.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>3. Reading notes</h2>
+  <p><b>Three customers, three channels.</b> Mei (dine-in 36%), Devon (drive-thru 38%), Fatima (app + aggregators 26%) cover the canon revenue mix exactly — every proposal with a customer face can name whose evening it changes.</p>
+  <p><b>Three roles, one operating reality.</b> Grace, Aisha and Elena experience the same instability at three altitudes: Grace cannot plan her week, Aisha cannot staff her peaks, Elena cannot keep six stores on one standard. P1 serves all three, which is why it leads the proposal set.</p>
+
+  <footer>
+    <p>Copperline 2000 · Artifact 09 (persona-set) · Template catalog kind 09, refs 14/04, 17/04, 18/05 · Construction notes N386–N400, each used once in this artifact · Canon source: <a href="canon.md">canon.md</a> (single source of truth; canon wins on conflict).</p>
+    <p>Companion artifacts: <a href="stakeholder-map.html">stakeholder-map.html</a> · <a href="ecosystem-map.html">ecosystem-map.html</a> · <a href="insight-register.html">insight-register.html</a> · <a href="journey-map.html">journey-map.html</a> · <a href="service-blueprint.html">service-blueprint.html</a> · <a href="proposals.html">proposals.html</a></p>
+  </footer>
+</div>
+</body>
+</html>

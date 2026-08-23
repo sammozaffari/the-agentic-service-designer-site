@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blueprint Analysis Report — Copperline 2000 — The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --ev:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#0f172a; --mut:#64748b; --line:#e2e8f0; --paperbg:#eef2f7;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0; background:var(--paperbg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px; line-height:1.55;
+  }
+  .doc{ max-width:1120px; margin:0 auto; background:#fff; box-shadow:0 1px 3px rgba(15,23,42,.12); }
+  header.art-head{ padding:34px 40px 22px; border-bottom:3px solid #0f172a; }
+  .kicker{ font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#b45309; font-weight:700; }
+  h1{ font-size:30px; line-height:1.2; margin:10px 0 6px; letter-spacing:-.01em; }
+  .sub{ color:#334155; font-size:15px; max-width:76ch; margin:0 0 16px; }
+  .prov{
+    background:#fffbeb; border:1px solid #fcd34d; border-left:4px solid #d97706;
+    padding:10px 14px; font-size:13px; color:#78350f; border-radius:4px; max-width:88ch;
+  }
+  .chips{ margin-top:16px; display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{
+    display:inline-block; font-size:11.5px; font-weight:600; color:#334155;
+    background:#f1f5f9; border:1px solid var(--line); border-radius:999px; padding:4px 11px;
+  }
+  .chip.dark{ background:#0f172a; color:#f8fafc; border-color:#0f172a; }
+
+  .legend{
+    position:sticky; top:0; z-index:60; background:#fff; border-bottom:2px solid #0f172a;
+    padding:10px 40px 12px; box-shadow:0 2px 8px rgba(15,23,42,.08);
+  }
+  .legend h2{ font-size:11px; letter-spacing:.12em; text-transform:uppercase; margin:0 0 8px; color:#334155; }
+  .lg-grid{ display:flex; flex-wrap:wrap; gap:12px 24px; font-size:11.5px; }
+  .sw{ display:flex; align-items:center; gap:7px; white-space:nowrap; color:#334155; }
+  .swx{ width:14px; height:14px; border-radius:3px; border:1px solid rgba(0,0,0,.18); flex:none; }
+  .swx.hatched{ background:repeating-linear-gradient(45deg,#e2e8f0 0 3px,var(--wait) 3px 6px); }
+  .swx.failring{ background:#fff; border:2px solid var(--fail); }
+  .swx.dashed{ background:#fff; border:1.5px dashed #0f172a; }
+
+  .sec{ padding:30px 40px 6px; }
+  .sec-kicker{ font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#b45309; font-weight:700; margin-bottom:4px; }
+  .sec h2{ font-size:21px; margin:0 0 4px; letter-spacing:-.01em; }
+  .sec .lede{ color:#475569; font-size:13.5px; max-width:88ch; margin:4px 0 14px; }
+  .secbody{ padding-bottom:24px; }
+  h3.lanehead{ font-size:15px; margin:26px 0 8px; padding:8px 12px; border-radius:5px; color:#fff; letter-spacing:.01em; }
+  h3.sub2{ font-size:14px; margin:22px 0 6px; color:#0f172a; }
+
+  .find{ border:1px solid var(--line); border-left:3px solid var(--mut); border-radius:6px; padding:10px 14px; margin:0 0 10px; background:#fff; }
+  .find .fid{ font-family:ui-monospace,Menlo,monospace; font-size:10.5px; color:var(--mut); font-weight:700; letter-spacing:.06em; }
+  .find b{ display:block; font-size:13.5px; margin:2px 0 3px; }
+  .find p{ margin:0; font-size:13px; color:#334155; }
+  .ev{ font-family:ui-monospace,Menlo,monospace; font-size:10.5px; color:var(--mut); }
+  .ev a{ color:inherit; text-decoration:none; border-bottom:1px dotted var(--mut); }
+
+  table.t{ width:100%; border-collapse:collapse; font-size:12.5px; margin:10px 0 6px; }
+  table.t th{ background:#0f172a; color:#f8fafc; text-align:left; padding:7px 9px; font-size:11px; letter-spacing:.04em; vertical-align:bottom; }
+  table.t td{ border-bottom:1px solid var(--line); padding:7px 9px; vertical-align:top; color:#1e293b; }
+  table.t tr:nth-child(even) td{ background:#f8fafc; }
+  .est{ font-style:italic; color:var(--mut); }
+  .pill{ display:inline-block; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:999px; color:#fff; white-space:nowrap; }
+  .p-hi{ background:var(--fail); } .p-md{ background:#d97706; } .p-lo{ background:#16a34a; }
+  .p-hiS{ background:#fecaca; color:#7f1d1d; } .p-mdS{ background:#fde68a; color:#78350f; } .p-loS{ background:#bbf7d0; color:#14532d; }
+
+  .notechip{ display:inline-block; font-family:ui-monospace,Menlo,monospace; font-size:10px; font-weight:700; background:#f1f5f9; border:1px solid var(--line); border-radius:4px; padding:1px 6px; color:#334155; vertical-align:middle; }
+
+  .callout{ border:1px solid var(--line); border-left:4px solid var(--data); background:#ecfeff; border-radius:6px; padding:12px 16px; font-size:13.5px; margin:12px 0; max-width:88ch; }
+  .callout.warn{ border-left-color:var(--fail); background:#fef2f2; }
+  .callout.good{ border-left-color:var(--front); background:#f0fdf4; }
+
+  /* realms grid */
+  .realms{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:10px; }
+  .realm{ border:1px solid var(--line); border-radius:8px; padding:12px 14px; background:#fff; }
+  .realm h4{ margin:0 0 4px; font-size:13px; }
+  .realm .rax{ font-size:10.5px; color:var(--mut); font-family:ui-monospace,Menlo,monospace; }
+  .realm p{ margin:6px 0 0; font-size:12.5px; color:#334155; }
+
+  /* issue matrix */
+  .mxwrap{ border:1px solid #cbd5e1; border-radius:8px; background:#f8fafc; padding:14px; margin-top:10px; }
+  .mx{ position:relative; width:100%; aspect-ratio:16/10; background:#fff; border:1px solid var(--line); border-radius:6px; overflow:hidden; }
+  .mx .qx{ position:absolute; inset:0; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; }
+  .mx .q{ padding:6px 8px; font-size:10px; color:#94a3b8; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+  .mx .q.q2{ border-left:1px dashed var(--line); }
+  .mx .q.q3{ border-top:1px dashed var(--line); }
+  .mx .q.q4{ border-left:1px dashed var(--line); border-top:1px dashed var(--line); }
+  .mx .dot{ position:absolute; width:15px; height:15px; border-radius:50%; border:2px solid #fff; box-shadow:0 1px 3px rgba(15,23,42,.35); transform:translate(-50%,50%); cursor:default; }
+  .mx .dot{ }
+  .mx .lbl{ position:absolute; font-size:10px; font-weight:700; color:#0f172a; background:rgba(255,255,255,.92); border:1px solid var(--line); border-radius:4px; padding:1px 5px; transform:translate(8px,50%); white-space:nowrap; }
+  .mx-axis{ display:flex; justify-content:space-between; font-size:10.5px; color:var(--mut); margin-top:6px; font-family:ui-monospace,Menlo,monospace; }
+
+  .notes-panel{ border-top:3px solid #0f172a; }
+  .note{ display:flex; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:12.5px; color:#334155; max-width:100ch; }
+  .note .nid{ font-family:ui-monospace,Menlo,monospace; font-weight:700; color:#0f172a; flex:none; width:44px; }
+
+  footer.art-foot{ padding:26px 40px 34px; border-top:3px solid #0f172a; margin-top:20px; }
+  footer.art-foot a{ color:#2563eb; }
+  .xl{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .xl a{ font-size:12px; color:#1d4ed8; text-decoration:none; border:1px solid var(--line); background:#f8fafc; border-radius:999px; padding:4px 11px; }
+  .xl a:hover{ background:#eff6ff; }
+
+  @media print{
+    body{ background:#fff; font-size:11px; }
+    .doc{ box-shadow:none; max-width:100%; }
+    .legend{ position:static; box-shadow:none; }
+    .sec{ padding:16px 20px 2px; }
+    header.art-head, footer.art-foot{ padding:16px 20px; }
+    .mx .dot{ box-shadow:none; }
+    a{ color:inherit; text-decoration:none; }
+  }
+</style>
+</head>
+<body>
+<div class="doc">
+
+<header class="art-head">
+  <div class="kicker">Copperline 2000 · Artifact 09 · Blueprint Analysis</div>
+  <h1>Analysis Report — the Copperline 2000 Blueprint, Read End to End</h1>
+  <p class="sub">An executive report (SDAP kind 32) read through an experience-audit lens (kind 28): what the full-operation blueprint and its research base say about where demand, wait and risk actually live in a 2,000-store charcoal-grill estate — and what to fix first. Companion to <a href="proposals.html">proposals.html</a> (ten directions) and <a href="slide-deck.html">slide-deck.html</a> (current-state deck).</p>
+  <div class="prov"><strong>Data boundary — read first.</strong> Fictional composite engagement. Every person, quote, figure and outcome is synthetic. No real company, store, or person is described. All forward-looking and derived figures in this report are <em>estimates</em> and are marked as such; canon metrics are quoted verbatim from the project canon and the evidence notes.</div>
+  <div class="chips">
+    <span class="chip dark">Template kind 32 · executive-report</span>
+    <span class="chip">Kind 28 · experience-audit lens</span>
+    <span class="chip">Notes N421–N455 (this report)</span>
+    <span class="chip">Cites blueprint N001–N220 · research N221–N320 · insight-register N366–N385</span>
+    <span class="chip">Lens refs: 05/02–05 · 13/02–05 · 01/07</span>
+    <span class="chip">Engagement: 6-week field study + reporting</span>
+  </div>
+</header>
+
+<div class="legend">
+  <h2>Legend — canon colour code</h2>
+  <div class="lg-grid">
+    <span class="sw"><span class="swx" style="background:var(--cust)"></span>Customer actions</span>
+    <span class="sw"><span class="swx" style="background:var(--front)"></span>Frontstage</span>
+    <span class="sw"><span class="swx" style="background:var(--back)"></span>Backstage</span>
+    <span class="sw"><span class="swx" style="background:var(--sup)"></span>Support processes</span>
+    <span class="sw"><span class="swx" style="background:var(--data)"></span>Data &amp; systems</span>
+    <span class="sw"><span class="swx" style="background:var(--ev)"></span>Physical evidence</span>
+    <span class="sw"><span class="swx hatched"></span>Wait / queue</span>
+    <span class="sw"><span class="swx failring"></span>Failure risk</span>
+    <span class="sw"><span class="swx dashed"></span>Handoff</span>
+  </div>
+</div>
+
+<!-- ============ 1. METHODOLOGY ============ -->
+<section class="sec" id="method">
+  <div class="sec-kicker">01 · Methodology recap</div>
+  <h2>Six weeks in the field, one continuous evidence ledger</h2>
+  <p class="lede">Copperline 2000 was commissioned by Priya Nair (COO) as a full-operation service blueprint: not a journey of the customer alone, but of the machine that serves 2,000 stores at once. The engagement ran as a 6-week field study followed by reporting; per the canon, it stops at delivery of reports and proposals — <strong>prototyping was not executed</strong>, and every proposal's first experiment in <a href="proposals.html">proposals.html</a> is framed as the next step, not a completed one. <span class="notechip">N421</span></p>
+  <div class="secbody">
+    <p style="max-width:92ch; font-size:13.5px; color:#334155;">Evidence was collected under a simulation protocol executed by the dispatched ASD roles (Researcher, Synthesizer, Mapper, Measurer, with the Critic running <code>sd_review</code>): <strong>8 flagship interviews</strong> at Harbourgate Flagship #14 and Northline Flagship #3 (N221), <strong>412 store-manager surveys</strong> of 2,000 and <strong>1,893 crew surveys</strong> of 41,300, and <strong>5 channel datasets</strong> — a 90-day VoiceBoard extract, a 120-store POS sample (3.41M orders, N305), 60 mystery-shopper reports, 3 aggregator rating exports, and 2 weeks of call-centre logs. Claims were graded High only when two independent methods agreed, per the insight register's triangulation rule (N368–N369); minority evidence was kept, never smoothed (N370). This report adds no new field data — it reads the existing ledger and quantifies what it implies. <span class="notechip">N422</span></p>
+    <table class="t">
+      <tr><th style="width:26%">Artifact</th><th>Role in the evidence base</th><th style="width:24%">Notes</th></tr>
+      <tr><td><a href="brief.html">brief.html</a></td><td>Engagement brief — sponsor framing, scope, constraints</td><td class="ev">brief's own range</td></tr>
+      <tr><td><a href="service-blueprint.html">service-blueprint.html</a></td><td>The comprehensive full-operation blueprint — the object this report analyses</td><td class="ev">N001–N220</td></tr>
+      <tr><td><a href="research/interviews.html">research/interviews.html</a></td><td>8 flagship + stakeholder interviews</td><td class="ev">N221–N270</td></tr>
+      <tr><td><a href="research/surveys.html">research/surveys.html</a></td><td>Manager (n=412) and crew (n=1,893) surveys</td><td class="ev">N271–N300</td></tr>
+      <tr><td><a href="research/channels.html">research/channels.html</a></td><td>VoiceBoard · POS · mystery shopper · aggregator · call-centre extracts</td><td class="ev">N301–N320</td></tr>
+      <tr><td><a href="insight-register.html">insight-register.html</a></td><td>24 graded insights, method log</td><td class="ev">N366–N385</td></tr>
+      <tr><td><a href="persona-set.html">persona-set.html</a> · <a href="journey-map.html">journey-map.html</a></td><td>People and journey framings the lanes are read against</td><td class="ev">their own ranges</td></tr>
+      <tr><td><a href="stakeholder-map.html">stakeholder-map.html</a> · <a href="ecosystem-map.html">ecosystem-map.html</a></td><td>Governance and ecosystem context for ownership columns below</td><td class="ev">their own ranges</td></tr>
+      <tr><td><a href="proposals.html">proposals.html</a> · <a href="slide-deck.html">slide-deck.html</a> · <a href="buzz-transcript.html">buzz-transcript.html</a></td><td>Directions, current-state deck, and the channel log of the engagement itself</td><td class="ev">N456–N490 · N491–N500</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 2. FINDINGS BY LANE ============ -->
+<section class="sec" id="lanes">
+  <div class="sec-kicker">02 · Findings by lane</div>
+  <h2>Thirty findings across six lanes</h2>
+  <p class="lede">Each lane of <a href="service-blueprint.html">service-blueprint.html</a> is summarised as five findings (F-01…F-30) citing blueprint note IDs (N001–N220) and research note IDs (N221–N320). Lane colour follows the canon code.</p>
+  <div class="secbody">
+
+    <h3 class="lanehead" style="background:var(--cust)">Customer actions — how demand actually arrives and how it copes with failure <span class="notechip" style="background:#fff">N423</span></h3>
+    <div class="find" style="border-left-color:var(--cust)"><span class="fid">F-01 · CUSTOMER</span><b>Channel choice is made before any Copperline evidence is seen — and it swings with weather.</b><p>Walk 36% · drive 38% · app + aggregators 26%. The decision is a genuine node driven mostly by transport mode that day; weather flips 6–9 points between walk and drive, a signal the demand model only partially ingests.</p><p class="ev">N021 · N024 · <a href="journey-map.html">journey-map.html</a></p></div>
+    <div class="find" style="border-left-color:var(--cust)"><span class="fid">F-02 · CUSTOMER</span><b>The pre-order promise leaks exactly at its payoff moment.</b><p>The arrival-scan mat mis-reads 4% of drive pre-orders, forcing re-statement into speaker noise; click-and-collect orders are "not started" on two arrivals in three. Order-ahead is sold as waiting removed, and is experienced as waiting relocated.</p><p class="ev">N028 · N253 · N254</p></div>
+    <div class="find" style="border-left-color:var(--cust)"><span class="fid">F-03 · CUSTOMER</span><b>Perceived wait is governed by the grill, not the clock.</b><p>Stores that walled off the charcoal grill saw perceived waits rise 22%; customers describing 8-minute waits use the word "forgotten". The open grill "theatre" is the estate's cheapest wait-management asset and it is currently a flagship accident, not a design decision.</p><p class="ev">N013 · N036 · N065</p></div>
+    <div class="find" style="border-left-color:var(--cust)"><span class="fid">F-04 · CUSTOMER</span><b>Verification dwell is the cheapest quality gate Copperline owns — and the interface truncates it.</b><p>Customers need 7–9 s to verify a 4-item basket; confirmation displays auto-dismiss at 5 s, feeding the 8.6% error tail. At the window, the 31 s customer verification dwell converts kitchen errors into 10-second fixes instead of 190-second re-fires.</p><p class="ev">N006 · N041 · N072</p></div>
+    <div class="find" style="border-left-color:var(--cust)"><span class="fid">F-05 · CUSTOMER</span><b>A measurable slice of failure is silent churn no metric sees.</b><p>With accuracy at 91.4%, roughly 1 in 12 orders has something wrong; field sampling suggests 15% of those errors are never noticed by anyone — invisible in NPS, VoiceBoard and refund codes alike. The feedback funnel also over-samples recovery cases (6.1% scan rate among wronged customers vs 2.9% overall) and structurally under-samples drive-thru cash customers.</p><p class="ev">N047 · N050 · N020</p></div>
+
+    <h3 class="lanehead" style="background:var(--front)">Frontstage — where scripts meet peaks <span class="notechip" style="background:#fff">N424</span></h3>
+    <div class="find" style="border-left-color:var(--front)"><span class="fid">F-06 · FRONTSTAGE</span><b>Scripts degrade deterministically with load, and HQ reads the degradation as effort.</b><p>LTO upsell verbatim delivery collapses from 61% off-peak to 22% at 12:30; allergen confirmation's 12% counter gap concentrates in the last hour of peak. Marketing concludes crews "are not trying"; crews are triaging a queue.</p><p class="ev">N059 · N060 · N310</p></div>
+    <div class="find" style="border-left-color:var(--front)"><span class="fid">F-07 · FRONTSTAGE</span><b>Queue-busting migrates the queue into the kitchen.</b><p>Mobile POS cuts order-capture 30% but pulls its operator off assembly, so the wait reappears at the buzzer stage. Any frontstage fix that doesn't touch kitchen capacity is a wait relocation, not a wait reduction.</p><p class="ev">N057 · N036 · N109</p></div>
+    <div class="find" style="border-left-color:var(--front)"><span class="fid">F-08 · FRONTSTAGE</span><b>The expeditor is the load-bearing human of the peak.</b><p>"The hardest 90 minutes in the store" (Bo Chen) — sequencing the rail, juggling courier SLAs against buzzers, calling re-fires. On thin rosters the expeditor is also the grill hand; queue-jacking then silently taxes dine-in customers who watch later arrivals collect first.</p><p class="ev">N109 · N140 · N139</p></div>
+    <div class="find" style="border-left-color:var(--front)"><span class="fid">F-09 · FRONTSTAGE</span><b>Window-time pressure is structural, and its coping mechanism is fragile.</b><p>Median 246 s against a 180 s target; crews respond by front-loading assembly before payment completes — which works until a void (2.4% of lines, supervisor 3 minutes away) or a re-fire (3.1% of tickets) lands mid-stream. The re-fire decision — make them wait vs send and re-deliver — is made ad hoc, with no standard, by whoever is at the window.</p><p class="ev">N073 · N061 · N110 · N074</p></div>
+    <div class="find" style="border-left-color:var(--front)"><span class="fid">F-10 · FRONTSTAGE</span><b>The delivery shelf is the most error-prone surface on the floor, and its discipline is a person, not a role.</b><p>Wrong-shelf bags drive most of the 0.7% crew→courier breakage; rush-hour shelf discipline correlates perfectly with whether one named veteran owns the shelf — a positive-deviance pattern (four such stores named in one district) that the org chart does not contain.</p><p class="ev">N115 · N085 · N247 · N248</p></div>
+
+    <h3 class="lanehead" style="background:var(--back)">Backstage — the roster, the grill, and the paperwork between them <span class="notechip" style="background:#fff">N425</span></h3>
+    <div class="find" style="border-left-color:var(--back)"><span class="fid">F-11 · BACKSTAGE</span><b>Roster fragility is social, not algorithmic.</b><p>Cover for the median store's churn (one crew member lost every 9 days) is found by phone tree — a personal network ShiftOrbit does not model. 47% of GMs maintain shadow spreadsheets; in two sampled stores the spreadsheet, not the system, runs the store. The system of record is not the system of use.</p><p class="ev">N117 · N197 · N288</p></div>
+    <div class="find" style="border-left-color:var(--back)"><span class="fid">F-12 · BACKSTAGE</span><b>Grill cadence is the operational metronome; its failure modes cascade unmodelled.</b><p>Every timing in the estate is downstream of whether the grill kept its beat — yet one-grill-down means "cook half-cadence" while the KDS keeps sending tickets at full rate, 4.2 faults per store per quarter, and a 15 °C calibration drift reads as "slow grill" for days.</p><p class="ev">N103 · N123 · N142</p></div>
+    <div class="find" style="border-left-color:var(--back)"><span class="fid">F-13 · BACKSTAGE</span><b>The 3.8% waste figure is a forecasting artefact, not carelessness.</b><p>Chicken holds 20 minutes at temperature before mandatory waste; the pre-peak cook plan's forecast residual (±12%) maps directly onto hold-time waste in the last 20 minutes of every peak. Crew extend holds quietly; Q-Pulse catches temperature drift, not timing lies.</p><p class="ev">N104 · N126 · N226 · N267</p></div>
+    <div class="find" style="border-left-color:var(--back)"><span class="fid">F-14 · BACKSTAGE</span><b>Breaks are structurally unfunded, and the log lies about them.</b><p>The break exists on the roster "as an abstract idea" while the floor runs one short; rotation compresses into 30 minutes on short days. 56% of crew "always/usually" get their full 30-minute peak break; a kiosk manager logs breaks they did not take. Break debt is paid in accuracy errors and in the eNPS of −8.</p><p class="ev">N231 · N119 · N290 · N286</p></div>
+    <div class="find" style="border-left-color:var(--back)"><span class="fid">F-15 · BACKSTAGE</span><b>Training-as-designed and training-as-exist differ by a roster constraint, and last night's reality travels on paper.</b><p>The 11-shift shadow ladder runs at a median 6 (54% compliance); the closing manager's prep handover — thaw status, par gaps, equipment quirks — is a paper sheet because ShiftOrbit has no field for it. Exactly the information tomorrow's roster check needs cannot be seen by it.</p><p class="ev">N132 · N157 · N145 · N116</p></div>
+
+    <h3 class="lanehead" style="background:var(--sup)">Support processes — supply, franchise, maintenance, HR <span class="notechip" style="background:#fff">N426</span></h3>
+    <div class="find" style="border-left-color:var(--sup)"><span class="fid">F-16 · SUPPORT</span><b>Replenishment misses LTO lifts because a manual step is the integration.</b><p>Auto-replenishment proposals ignore promo lift until marketing manually attaches a curve; the step was missed for two of the last five LTOs — a spreadsheet omission that became a store-level stockout experienced frontstage as an apology at the window. Miss the 14:00 approval and the drop slips a day.</p><p class="ev">N148 · N127 · N200 · N113 · N268</p></div>
+    <div class="find" style="border-left-color:var(--sup)"><span class="fid">F-17 · SUPPORT</span><b>Maintenance friction converts planned work into reactive work.</b><p>14% of planned vendor visits get bumped by trading; reactive SLA is met 68% for grill-down. The de facto urgent channel is a regional WhatsApp network that beats official dispatch — effective, unscalable, and invisible to governance.</p><p class="ev">N161 · N162 · N180 · N176</p></div>
+    <div class="find" style="border-left-color:var(--sup)"><span class="fid">F-18 · SUPPORT</span><b>The franchise spine is a versioning failure.</b><p>214 live Flamebook documents with independent version numbers and no whole-view; safety-relevant parameters change silently and old versions persist (median 17 days for allergen cards). Compliance-notice acknowledgement: 89% company, 71% franchised.</p><p class="ev">N152 · N225 · N240 · N241 · N154</p></div>
+    <div class="find" style="border-left-color:var(--sup)"><span class="fid">F-19 · SUPPORT</span><b>LTO and campaign calendars broadcast into stores with zero roster notice.</b><p>The LTO calendar is set two quarters ahead; the field's feedback that five-day ramps are too short has been noted in three retros and changed zero times. National campaigns add 9–14% launch-week lift while campaign dates and ShiftOrbit forecasts live in different teams.</p><p class="ev">N153 · N015 · N164</p></div>
+    <div class="find" style="border-left-color:var(--sup)"><span class="fid">F-20 · SUPPORT</span><b>The hiring funnel leaks where roster instability makes the offer worthless.</b><p>To hold 41,300 crew against 94% annualised turnover, the network re-hires its whole workforce roughly every 12.8 months; interview-to-start conversion is 38%, dragged by two-week roster-gap start delays. Exit comparisons name schedule visibility, not pay, as the leaving reason.</p><p class="ev">N156 · N239 · N295</p></div>
+
+    <h3 class="lanehead" style="background:var(--data)">Data &amp; systems — seven systems, nineteen seams <span class="notechip" style="background:#fff">N427</span></h3>
+    <div class="find" style="border-left-color:var(--data)"><span class="fid">F-21 · DATA</span><b>Integration debt is people-shaped.</b><p>Seven named systems (CopperPOS v7, ShiftOrbit, StockBeak, Q-Pulse, VoiceBoard, Flamebook, Route56) joined by 19 point-to-point interfaces; three interfaces have had no owner since a 2024 reorganisation. The stack works because specific people care, which is not an architecture.</p><p class="ev">N218 · N186</p></div>
+    <div class="find" style="border-left-color:var(--data)"><span class="fid">F-22 · DATA</span><b>The truth about timing exists and is not scored.</b><p>Q-Pulse's export preserves entry timestamps — the 22% bulk-at-close pattern has been queryable for years — but the audit rubric scores completion, not honesty of timing, so the report card cannot fail what the export plainly shows.</p><p class="ev">N203 · N204 · N121 · N274</p></div>
+    <div class="find" style="border-left-color:var(--data)"><span class="fid">F-23 · DATA</span><b>Data flows up and never comes back down.</b><p>No store has ever received a StockBeak insight about its own waste pattern; VoiceBoard themes reach stores monthly and summarised, when the actionable shelf-life of "couriers stacked in lobby" is one shift; a quarter of negative feedback cannot be routed to a store at all because the aggregator store-ID field is populated in only 61% of rows.</p><p class="ev">N199 · N205 · N206 · N257</p></div>
+    <div class="find" style="border-left-color:var(--data)"><span class="fid">F-24 · DATA</span><b>The estate measures the visible 40% and pauses what it doesn't like.</b><p>Mystery shoppers cannot see backstage, so the program optimises the visible slice; 9% of measured drive-thru windows carry at least one beacon pause; top-up requests (the most common minor defect) have no POS code; voids are counted but never classified by cause.</p><p class="ev">N177 · N111 · N215 · N097 · N188</p></div>
+    <div class="find" style="border-left-color:var(--data)"><span class="fid">F-25 · DATA</span><b>Master data rots quietly and every downstream number inherits the drift.</b><p>23 recipes carry stale yield/portion data maintained by a half-FTE post vacant March–July; the aggregated 4.3/5 rating is quoted network-wide while its per-platform composition (and each platform's policy fingerprint on which failure customers notice) hides inside the average.</p><p class="ev">N217 · N193 · N207 · N313 · N314</p></div>
+
+    <h3 class="lanehead" style="background:var(--ev)">Physical evidence — what the customer keeps, and what it betrays <span class="notechip" style="background:#fff">N428</span></h3>
+    <div class="find" style="border-left-color:var(--ev)"><span class="fid">F-26 · EVIDENCE</span><b>Ownership gaps are visible in the fascia.</b><p>214 sites run faded fascia vinyl past its 5-year replacement cycle, flagged to maintenance, not branding — nobody owns it. The brand's most repeated physical signal decays without an owner while six LTO poster kits ship on time to only ~89% of stores.</p><p class="ev">N001 · N015</p></div>
+    <div class="find" style="border-left-color:var(--ev)"><span class="fid">F-27 · EVIDENCE</span><b>The receipt expires before the right to complain does.</b><p>Thermal receipt paper fades in ~11 weeks; recovery claims referencing old receipts arrive unverifiable and agents are told to accept claims within 30 days only — the evidence artifact has a shorter life than the dispute window it serves.</p><p class="ev">N007 · N088</p></div>
+    <div class="find" style="border-left-color:var(--ev)"><span class="fid">F-28 · EVIDENCE</span><b>Trust signals contradict each other at the seam.</b><p>Tamper seals are applied in customer view at food-court sites but behind the window at drive-thru express — generating 41 "was my bag opened?" mentions in 90 days irrespective of actual integrity. Hygiene badges display "last temp check" timestamps fed by a system in which 22% of checks are logged in bulk at close: the badge sometimes displays a drumbeat that was actually entered at 21:40 in one sitting.</p><p class="ev">N010 · N083 · N014 · N121</p></div>
+    <div class="find" style="border-left-color:var(--ev)"><span class="fid">F-29 · EVIDENCE</span><b>Handed evidence carries hygiene and cost problems nobody budgets for.</b><p>Buzzers are handed out visibly unwiped at 44% of observed handovers and 3 per store per month are lost, ordered as a "front-of-house consumable" competing with packaging budget. The foil bucket, by contrast, is the packaging program's unambiguous win.</p><p class="ev">N063 · N008 · N009 · N185</p></div>
+    <div class="find" style="border-left-color:var(--ev)"><span class="fid">F-30 · EVIDENCE</span><b>The recovery ladder's physical token is its weakest link.</b><p>Voucher cards sit under every till float in £2/£6/£11 bands and redemption works (58% redeemed within 14 days; redeemers repeat at 61% vs 47% baseline) — but 31% of surveyed managers report improvising hand-written vouchers that do not reconcile in the POS recovery code. The mechanism works; the evidence of it does not.</p><p class="ev">N019 · N052 · N075</p></div>
+  </div>
+</section>
+
+<!-- ============ 3. FAILURE DEMAND ============ -->
+<section class="sec" id="failure-demand">
+  <div class="sec-kicker">03 · Failure-demand analysis</div>
+  <h2>How much of the workload exists only because something failed</h2>
+  <p class="lede">Failure demand is work that would not exist if the service had worked the first time (re-work, re-contact, re-make, audit repair). Copperline does not measure it, so this section estimates it from the canon metrics and the evidence ledger, using conservative assumptions. <span class="notechip">N429</span> <span class="notechip">N449</span></p>
+  <div class="secbody">
+    <table class="t">
+      <tr><th style="width:19%">Failure source</th><th style="width:15%">Canon / measured rate</th><th>Estimated recurring cost (per store, per week unless stated)</th><th style="width:22%">Estate-scale estimate</th><th class="ev">Evidence</th></tr>
+      <tr>
+        <td><b>Reworked shift swaps</b> <span class="notechip">N430</span></td>
+        <td>11 requests/store/week; <b>31% need manager rework</b> (≈3.4/store/week, matching survey midpoints)</td>
+        <td>≈3.4 reworks × ~15 min GM admin ("a fifteen-minute admin job each") ≈ <b>~51 min/week</b> <span class="est">(est.)</span>; plus 15% of crew abandon swaps, and 61% of those report an unplanned absence afterwards — feeding the call-in phone tree</td>
+        <td>≈1,700 GM-hours/week across 2,000 stores <span class="est">(est.)</span>; late-roster stores carry the higher end (11 requests skew late-store)</td>
+        <td class="ev">N118 · N223 · N230 · N285 · N272 · N289 · N194</td>
+      </tr>
+      <tr>
+        <td><b>Bulk-logged Q-Pulse checks</b> <span class="notechip">N431</span></td>
+        <td>96.2% of checks done, but <b>22% logged "in bulk at close"</b> (falsified timing); 18% of managers self-report "often/always" vs 22% telemetry</td>
+        <td>Managers spend a mean <b>41 min/day</b> on Q-Pulse; the bulk-at-close share represents checks whose timing must be re-done or re-audited to be trustworthy — an honesty debt of roughly <b>9 min/store/day</b> <span class="est">(est.)</span> plus unquantified food-safety exposure</td>
+        <td>≈2,100 audit-repair hours/day estate-wide <span class="est">(est.)</span>; every closure-audit pack currently carries synthetic timestamps</td>
+        <td class="ev">N121 · N273 · N274 · N224 · N284 · N203 · N204</td>
+      </tr>
+      <tr>
+        <td><b>Crew→courier handover breakage</b> <span class="notechip">N432</span></td>
+        <td><b>0.7% of delivery orders</b> — ≈1 broken handover per store per week (0.4% lost/unclaimed, 0.2% wrong-bag, 0.1% courier no-show)</td>
+        <td>Each case: re-make + re-dispatch <b>median 21 min</b> store time, courier time, a 4.3→2-star rating swing, and a call-centre refund contact within a median 40 min</td>
+        <td>≈2,000 broken handovers/week estate-wide <span class="est">(est.)</span>, each avoidable by shelf + label + scan discipline (9-of-22 stores with that discipline wait 3.8 min vs 8.0)</td>
+        <td class="ev">N085 · N316 · N095 · N115 · N312 · N012</td>
+      </tr>
+      <tr>
+        <td><b>Recovery calls</b> <span class="notechip">N433</span></td>
+        <td>Refunds 38% + order-status 24% ≈ <b>62% of voice volume is failure-recovery</b>; AHT 4m51s vs 4m30s target; escalations 12% (7 points are authority-band edges, i.e. policy artefacts); Band X 4% (~128 customers/2 weeks) fall through the policy map entirely</td>
+        <td>≈1,988 failure-recovery calls per fortnight × 291 s ≈ <b>161 hours of handle time per fortnight</b> <span class="est">(est.)</span>, of which the structural-escalation share (7 of 12 points) is recoverable by policy design, not effort</td>
+        <td>≈80 failure-recovery hours/week in the contact centre <span class="est">(est.)</span>, plus 9% hold abandonment concentrated Friday–Saturday evenings</td>
+        <td class="ev">N317 · N318 · N319 · N320 · N260 · N261 · N256 · N049</td>
+      </tr>
+    </table>
+    <div class="callout warn"><span class="notechip">N434</span> <b>Roll-up (estimate).</b> Summing the four streams conservatively, we estimate that <b>roughly 15–20% of salaried-manager labour-hours</b> (against a measured median of 9.5 h/week of personal admin, of which swap rework and Q-Pulse mechanics are the largest blocks) and <b>about two-thirds of voice-channel contact</b> is failure demand — work that exists only because a prior step failed. This is demand Copperline currently staffs for and pays for as if it were value work. All figures above are estimates derived from the cited notes; none is a canon metric.</div>
+  </div>
+</section>
+
+<!-- ============ 4. WAIT INVENTORY ============ -->
+<section class="sec" id="waits">
+  <div class="sec-kicker">04 · Wait inventory</div>
+  <h2>Every queue and wait in the blueprint, with owner and tail</h2>
+  <p class="lede">Sixteen waits appear in <a href="service-blueprint.html">service-blueprint.html</a>. Medians and P90s are quoted where the ledger states them; values marked <span class="est">est.</span> are this report's estimates from adjacent evidence. The estate has no single wait owner: waits are owned by whoever is nearest. <span class="notechip">N435</span></p>
+  <div class="secbody">
+    <table class="t">
+      <tr><th style="width:3%">#</th><th style="width:22%">Wait / queue</th><th style="width:13%">Median</th><th style="width:12%">P90</th><th style="width:14%">Owner (de facto)</th><th>Notes &amp; thresholds</th><th class="ev">Evidence</th></tr>
+      <tr><td>W01</td><td>Till + kiosk queue (dine-in, peak)</td><td>~5 min <span class="est">est.</span></td><td>~7 min <span class="est">est.</span></td><td>Greeter / GM</td><td>Walk-aways begin at 7 min visible queue; ninth drive-thru car is the bail threshold; both worsen in rain</td><td class="ev">N026 · N004 · N056 · N057</td></tr>
+      <tr><td>W02</td><td>Drive-thru lane stack (cars waiting)</td><td>5–6 cars <span class="est">est.</span></td><td>9 cars <span class="est">est.</span></td><td>Lane greeter / MOD</td><td>Second window opens at 5+ stack (90 s setup, one crew from bench)</td><td class="ev">N026 · N143 · N056</td></tr>
+      <tr><td>W03</td><td>Buzzer wait, payment→collection (peak / off-peak)</td><td><b>6 min 10 s / 3 min 20 s</b></td><td>8+ min <span class="est">est.</span></td><td>Expeditor</td><td>Perceived wait tracks grill visibility; "forgotten" language appears above 8 min</td><td class="ev">N036 · N013 · N109</td></tr>
+      <tr><td>W04</td><td>Between-windows gap (drive-thru, peak / off-peak)</td><td><b>104 s / 51 s</b></td><td>~180 s <span class="est">est.</span></td><td>Window operator</td><td>Pure wait with no evidence but the car in front; reads as neglect at full kitchen cadence</td><td class="ev">N037 · N079</td></tr>
+      <tr><td>W05</td><td>Drive-thru window total (lane entry→exit)</td><td><b>246 s</b> vs 180 s target</td><td><b>411 s</b></td><td>Window crew / MOD</td><td>P10 beats target — the gap is load- and process-shaped; 9% of measured windows carry a timer pause</td><td class="ev">N111 · N306 · N215 · N093</td></tr>
+      <tr><td>W06</td><td>Kiosk order placement (standard / travel-hub with luggage)</td><td>96 s / 141 s</td><td>~200 s <span class="est">est.</span></td><td>Format GM (device: Hana Kim's team)</td><td>Counter spoken order medians 54 s; kiosk dwell is traded against +11% upsell attach</td><td class="ev">N030 · N025 · N232 · N031</td></tr>
+      <tr><td>W07</td><td>Courier check-in → shelf reach (flagship / standard)</td><td>92 s / 140 s</td><td>~240 s <span class="est">est.</span></td><td>Expeditor</td><td>Pure navigation waste repeated thousands of times daily; signage is hand-taped initials</td><td class="ev">N080 · N012</td></tr>
+      <tr><td>W08</td><td>Courier wait-at-counter (order ready→pickup)</td><td><b>6.4 min</b> (mean 7.1)</td><td><b>11.2 min</b></td><td>Shelf owner (named veteran, where one exists)</td><td>54% of wait is post-ready staging/search; dedicated shelf + name-facing labels: 3.8 vs 8.0 min</td><td class="ev">N315 · N115 · N247 · N248 · N246</td></tr>
+      <tr><td>W09</td><td>Warm-bag hold (assembled→courier departure)</td><td>~6 min <span class="est">est.</span></td><td>10 min (hard cap)</td><td>Expeditor</td><td>Beyond 10 min the order is re-made; cold-food complaints cluster at holds &gt;10 min</td><td class="ev">N138 · N046</td></tr>
+      <tr><td>W10</td><td>Aggregator "ready" acknowledgement lag</td><td>90 s after shelf</td><td>~240 s <span class="est">est.</span></td><td>Till operator</td><td>Tablet sits at the till, not the shelf; dispatches couriers late relative to freshness</td><td class="ev">N082 · N229</td></tr>
+      <tr><td>W11</td><td>Click-and-collect: arrival→order started</td><td>~5 min <span class="est">est.</span></td><td>"twice of three" not started</td><td>Expeditor</td><td>Order-ahead arrives as "a ticket that means nothing" in the exact window it matters</td><td class="ev">N254 · N028</td></tr>
+      <tr><td>W12</td><td>Shift-swap request→resolution</td><td><b>3.1 days</b></td><td>&gt;4 days (abandonment)</td><td>GM / ShiftOrbit</td><td>Only 22% resolve same-day; 15% of crew give up, 61% of those then report unplanned absence</td><td class="ev">N289 · N118 · N235 · N236</td></tr>
+      <tr><td>W13</td><td>MOD escalation response (peak)</td><td>3 min</td><td>~6 min <span class="est">est.</span></td><td>MOD (also running assembly/window)</td><td>Voids, above-band refunds, conduct; the escalation path physically competes with itself</td><td class="ev">N092 · N061 · N098</td></tr>
+      <tr><td>W14</td><td>Counter refund cycle</td><td>4 min</td><td>abandoned "on principle" <span class="est">est.</span></td><td>MOD</td><td>Refund is slower than the recovery decision it executes</td><td class="ev">N098 · N075</td></tr>
+      <tr><td>W15</td><td>Wrong-order courier resolution (end-to-end)</td><td>21 min</td><td>~35 min <span class="est">est.</span></td><td>GM + call centre</td><td>"Ghost orders" — the original error is invisible by resolution time, so no lesson loops back</td><td class="ev">N095 · N085 · N316</td></tr>
+      <tr><td>W16</td><td>Feedback &amp; fix loop (store-visible)</td><td>monthly themes; 9-day ratings lag</td><td>never (for unrouteable rows)</td><td>HQ VoiceBoard owner</td><td>Actionable shelf-life of "couriers stacked in lobby" is one shift; 39% of negative rows can't route to a store</td><td class="ev">N205 · N206 · N207 · N257</td></tr>
+    </table>
+    <div class="callout"><span class="notechip">N452</span> <b>The tail is the story, and nobody owns it.</b> P90 waits — 411 s windows, 11.2-minute courier counter waits, 596 s dine-in end-to-end — are where walk-aways, breakage and one-star reviews are manufactured, yet every current metric governs the median. A tail owner per format (the MOD at peak, with authority to shed low-value work when P90 thresholds breach) is the single cheapest governance change available. <span class="est">Estimate: P90-governed formats would re-focus roughly a third of current supervisory attention from average performance to worst-case experience.</span></div>
+  </div>
+</section>
+
+<!-- ============ 5. HANDOFF RISK REGISTER ============ -->
+<section class="sec" id="handoffs">
+  <div class="sec-kicker">05 · Handoff risk register</div>
+  <h2>Twelve handoffs, rated and controlled</h2>
+  <p class="lede">Risk = likelihood × blast radius, both rated from the evidence ledger; controls listed are the ones that exist today (several exist on paper only). The register confirms the blueprint's sharpest pattern: the highest-risk handoffs are precisely the ones with no standard. <span class="notechip">N436</span> <span class="notechip">N453</span></p>
+  <div class="secbody">
+    <table class="t">
+      <tr><th style="width:3%">ID</th><th style="width:18%">Handoff</th><th style="width:22%">What breaks</th><th style="width:9%">Likelihood</th><th style="width:10%">Blast radius</th><th style="width:8%">Risk</th><th>Existing controls</th><th class="ev">Evidence</th></tr>
+      <tr><td>H01</td><td>Customer → headset crew (speaker-post order)</td><td>Mis-hears in 1 of 8 orders; motor, wind and extraction fan compete; customers shout, recognition degrades further</td><td>High</td><td>Order accuracy, window time, re-fires</td><td><span class="pill p-hi">HIGH</span></td><td>Item repeat-back (cuts mis-hears 44%) — but truncated to totals-only under window-time pressure</td><td class="ev">N032 · N070 · N093 · N027 · N005</td></tr>
+      <tr><td>H02</td><td>Crew → courier (shelf pickup, all three aggregators)</td><td>0.7% breakage: mis-shelved bags, missing drink, unapplied seal; three different pickup rituals on one counter</td><td>High</td><td>Delivery order, rating, refund cost</td><td><span class="pill p-hi">HIGH</span></td><td>Pickup scan (observed 93% — skipped when couriers stack); hand-taped D/W/P shelf labels; no unified standard</td><td class="ev">N085 · N115 · N012 · N081 · N249 · N250 · N316</td></tr>
+      <tr><td>H03</td><td>GM → ShiftOrbit (roster publish &amp; swap matches)</td><td>41% of stores publish &lt;72 h ahead; "ghost swaps" corrupt availability; 47% of GMs keep shadow spreadsheets</td><td>High</td><td>Every downstream lane, weekly</td><td><span class="pill p-hi">HIGH</span></td><td>T&amp;A clock-ins vs plan at morning check; personal phone-tree cover; Excel shadow (the de facto control)</td><td class="ev">N194 · N195 · N196 · N197 · N116 · N117</td></tr>
+      <tr><td>H04</td><td>Store ↔ call-centre (recovery confirmation)</td><td>Agents need store confirmation; store phone rings out at peak; 29% of calls need exactly that confirmation</td><td>High</td><td>Recovery time, repeat contacts</td><td><span class="pill p-hi">HIGH</span></td><td>Off-peak phone answering (median 4 rings); none at peak — the loop closes by customer persistence or abandonment</td><td class="ev">N168 · N089 · N259 · N256</td></tr>
+      <tr><td>H05</td><td>Shift → shift (closing → opening, prep state)</td><td>Thaw status, par gaps, equipment quirks travel on a paper sheet ShiftOrbit has no field for</td><td>High</td><td>Next day's peak, product quality</td><td><span class="pill p-hi">HIGH</span></td><td>Paper prep sheet; verbal handover where sheets are skipped</td><td class="ev">N145 · N116 · N129</td></tr>
+      <tr><td>H06</td><td>Kitchen → pass (staging geometry)</td><td>79% compliance; re-fires turn the pass "into archaeology"; wrong-bag-to-window errors originate here</td><td>Med</td><td>Order accuracy, window time</td><td><span class="pill p-md">MED</span></td><td>Trays-left/bags-centre/shelf-right geometry; sauce check catches 60% of pre-handover defects</td><td class="ev">N066 · N110 · N068</td></tr>
+      <tr><td>H07</td><td>Crew → customer (window bag handover)</td><td>Wrong-car handovers (0.1% of drive orders) anchor reviews disproportionately; missing items re-fire at 190 s</td><td>Med</td><td>Drive-thru NPS, window time</td><td><span class="pill p-md">MED</span></td><td>Full script (name, verify screen, two hands, "check your bag") observed in 68% of handovers; bag-check 11 s is the strongest accuracy correlate</td><td class="ev">N077 · N069 · N072 · N078 · N011</td></tr>
+      <tr><td>H08</td><td>Route56 → aggregator (status &amp; timing truth)</td><td>90 s poll; stale records trigger manual courier calls; one Pedalr outage generated 212 useless calls in 40 min</td><td>Med</td><td>Entire 26% channel (single point of failure)</td><td><span class="pill p-md">MED</span></td><td>Stale-&gt;5-min alert → manual call; alert storms unfiltered</td><td class="ev">N208 · N209 · N084 · N018 · N038</td></tr>
+      <tr><td>H09</td><td>Aggregator → kitchen (order injection)</td><td>Lossy customisation mapping: free-text "extra sauce" arrives with no POS code; the fiddliest orders carry the least data</td><td>Med</td><td>Accuracy, bench time (1.6× for custom)</td><td><span class="pill p-md">MED</span></td><td>Expeditor judgement; bench batching (kiosk/delivery customs batched last)</td><td class="ev">N210 · N106 · N031 · N192 · N228</td></tr>
+      <tr><td>H10</td><td>Store → DC (replenishment approval)</td><td>Miss the 14:00 cut and the drop slips a day into the next peak; LTO lift curves attached manually (missed 2 of 5 LTOs)</td><td>Med</td><td>Stock availability, waste</td><td><span class="pill p-md">MED</span></td><td>GM approval workflow (91% approval rate); default favours last week's volume</td><td class="ev">N200 · N113 · N148 · N127 · N267</td></tr>
+      <tr><td>H11</td><td>Crew → customer (buzzer/tray collection)</td><td>Wayfinding failure (waiting at the till instead of the pass); abandoned orders 0.4% of dine-in, held 20 min then wasted</td><td>Low</td><td>Dine-in experience, waste ledger</td><td><span class="pill p-lo">LOW</span></td><td>Call-twice/re-buzz/hold-with-marker protocol; 12-min table sweep</td><td class="ev">N067 · N040 · N087</td></tr>
+      <tr><td>H12</td><td>Customer → crew (counter spoken order)</td><td>Customisation narrated by only 7% of counter customers vs 38% at kiosk; POS mis-keys 2.4% of lines needing supervisor voids</td><td>Low</td><td>Accuracy, till throughput</td><td><span class="pill p-lo">LOW</span></td><td>Confirm display (5 s truncation weakens it); "build the order twice" undocumented workaround</td><td class="ev">N031 · N061 · N006 · N030</td></tr>
+    </table>
+    <div class="callout warn"><span class="notechip">N437</span> <b>Pattern.</b> Five of twelve handoffs are High-risk, and all five share one property: <strong>the standard either does not exist or is unwritten</strong> — a phone tree instead of a cover model, a paper sheet instead of a system field, three aggregator rituals instead of one handover, an unanswered phone instead of a confirmation loop. Copperline's handoff risk is not carelessness; it is the absence of designed handoffs at precisely the seams where three organisational worlds meet (store, contact centre, aggregator). <a href="proposals.html">Proposals P3, P9 and P1</a> attack the top three directly.</div>
+  </div>
+</section>
+
+<!-- ============ 6. GOOD SERVICES AUDIT ============ -->
+<section class="sec" id="good-services">
+  <div class="sec-kicker">06 · Good Services 15-principles mini-audit</div>
+  <h2>The estate scored against Lou Downe's fifteen principles</h2>
+  <p class="lede">Scoring: High = the principle is reliably met estate-wide; Med = met with known, patterned exceptions; Low = structurally unmet. Every score is evidence-bound to the ledger. Lens: 05/02–05. <span class="notechip">N438</span></p>
+  <div class="secbody">
+    <table class="t">
+      <tr><th style="width:3%">#</th><th style="width:28%">Principle (05/02–05)</th><th style="width:9%">Score</th><th>Evidence</th></tr>
+      <tr><td>1</td><td>Be easy to find</td><td><span class="pill p-mdS">Med</span></td><td>2,000 fascias and a live app storefront make discovery trivial (N001, N002) — but the found service contradicts itself at the edges: board prices vs till at 0.8% failed syncs (N003), LTO promoted and unavailable (N127), app screenshots lagging two LTO cycles (N002).</td></tr>
+      <tr><td>2</td><td>Clearly explain the purpose of your service</td><td><span class="pill p-hiS">High</span></td><td>The charcoal-grill proposition is legible in seconds — hero-quadrant reading (N029), the visible grill as purpose-made-evidence (N013), "char still crisp at minute ten" as the top positive theme (N044).</td></tr>
+      <tr><td>3</td><td>Set the expectations a user has of your service</td><td><span class="pill p-mdS">Med</span></td><td>Kiosk promises 96 s ordering and delivers a relocated wait (N232, N253); the tracking map's ±7-minute ETA drift generates contact even when food is on band (N018, N038); "slightly delayed" spans 5–25 minutes and reassures nobody (N084).</td></tr>
+      <tr><td>4</td><td>Enable each user to complete the outcome they set out to do</td><td><span class="pill p-mdS">Med</span></td><td>Accuracy 91.4% means ~1 in 12 outcomes fails at the item level (N047); pre-order arrivals re-state into speaker noise 4% of the time (N028); click-and-collect starts on arrival one time in three (N254).</td></tr>
+      <tr><td>5</td><td>Work in a way that is familiar</td><td><span class="pill p-hiS">High</span></td><td>The counter ritual (greet, order, pay, buzzer, collect) matches fast-food schema; spoken order at 54 s vs kiosk 96 s shows the familiar path is also the faster one for simple baskets (N030, N058).</td></tr>
+      <tr><td>6</td><td>Require no prior knowledge to use</td><td><span class="pill p-mdS">Med</span></td><td>Customisation is only usable by customers who learn the kiosk's model (38% kiosk vs 7% counter, N031); coupon stacking rules require knowledge of this week's promo-engine version (N035, N187); allergen customers carry forum knowledge of the 17-day card lag (N039, N016).</td></tr>
+      <tr><td>7</td><td>Be agnostic of organisational structures</td><td><span class="pill p-loS">Low</span></td><td>The customer meets Copperline's org chart at the worst moment: aggregator-policy vs brand-policy recovery (N256, N261), "one handover, four scorecards" (N251), Band X customers falling through the policy map (N320), loyalty fraud freezes cycling three teams (N178).</td></tr>
+      <tr><td>8</td><td>Require the minimum possible steps</td><td><span class="pill p-loS">Low</span></td><td>Recovery is a pilgrimage — "nineteen hours and one human for a small side" (N256); loyalty accrual is manual for till orders and silently lost (N053); the app help flow is circular for 61% of callers (N049); refunds need a manager key and 4 minutes (N098).</td></tr>
+      <tr><td>9</td><td>Be consistent throughout</td><td><span class="pill p-loS">Low</span></td><td>Three pickup rituals at one counter (N249); seal visibility differs by format (N010, N083); identical failures recover at Band-C rates of 24% / 9% / 17% by platform (N320); store-level complaint themes run thinner than call-centre themes for identical incidents (N088).</td></tr>
+      <tr><td>10</td><td>Have no dead ends</td><td><span class="pill p-mdS">Med</span></td><td>Most journeys complete; the dead ends are concentrated in recovery (Band X 4%, N320; frozen loyalty accounts, N178) and in the store phone that rings out at peak — "the store is broken" before arrival (N089).</td></tr>
+      <tr><td>11</td><td>Be usable by everyone, equally</td><td><span class="pill p-loS">Low</span></td><td>467 kiosks fail WCAG 2.2 AA basics — reach height, sun-struck contrast, 90 s timeouts, no audio path; a wheelchair user completed an order only with a standing companion, recorded as a normal 96 s session (N190, N312); luggage pushes kiosk sessions from 96 s to 141 s (N025).</td></tr>
+      <tr><td>12</td><td>Encourage the right behaviours from users and service providers</td><td><span class="pill p-loS">Low</span></td><td>The estate teaches its own corruption: bulk-at-close is the rational response to a checklist with no labour (N121, N244); beacon pauses become routine under scrutiny (N111, N215); queue-jacking teaches crews that promises are ranked by contract, not fairness (N140); agents under-recover to protect QA scores (N169).</td></tr>
+      <tr><td>13</td><td>Respond to change quickly</td><td><span class="pill p-mdS">Med</span></td><td>Price moves answer a competitor in ≥6 hours and only after a T-2 lock (N179); weather signals arrive with 36-hour latency — fine for brine, useless for labour (N182); the official cascade loses to WhatsApp for anything urgent (N180, N162).</td></tr>
+      <tr><td>14</td><td>Clearly explain why a decision has been made</td><td><span class="pill p-loS">Low</span></td><td>The re-fire-vs-re-deliver decision at the window is ad hoc and unexplained to the waiting customer (N074); "slightly delayed" explains nothing (N084); loyalty freezes arrive unexplained (N178); targets (180 s) are set without publishing their staffing assumptions (N243, N282).</td></tr>
+      <tr><td>15</td><td>Make it easy to get human assistance</td><td><span class="pill p-loS">Low</span></td><td>The store's own phone rings out exactly at peak (N089); 61% of callers had already tried a circular app flow (N049); agents want to help but the tooling punishes recovery (N169); 9% hold abandonment concentrates on Friday–Saturday evenings (N317).</td></tr>
+    </table>
+    <div class="callout"><span class="notechip">N439</span> <b>What the fifteen scores say.</b> Copperline is excellent at the <em>product-facing</em> principles (2, 5) and weakest at the <em>organisation-facing</em> ones (7, 8, 9, 11, 12, 14, 15). Every Low score traces to internal structure leaking into the customer's experience: three aggregators, two policy ladders, a checklist with no labour, a phone nobody can answer. This is the audit's headline: <strong>the customer experience is currently limited by the back office, not by the front stage</strong> — and the fix list is therefore mostly in proposals P3, P6, P8, P9.</div>
+  </div>
+</section>
+
+<!-- ============ 7. EXPERIENCE ECONOMY ============ -->
+<section class="sec" id="realms">
+  <div class="sec-kicker">07 · Experience-economy snapshot</div>
+  <h2>Four realms, one strong quadrant</h2>
+  <p class="lede">Pine &amp; Gilmore's four realms of experience (13/02–05), read against the evidence. The estate over-delivers in one realm by accident (the grill) and under-delivers in three by omission — and the under-delivery clusters in exactly the formats (food-court, travel-hub) where the product alone must carry the price. <span class="notechip">N440</span></p>
+  <div class="secbody">
+    <div class="realms">
+      <div class="realm" style="border-top:3px solid var(--front)">
+        <h4>Entertainment <span class="rax">passive participation · absorption</span></h4>
+        <p><strong>Strong, flagship-led.</strong> The open charcoal grill is "the theatre", visible from 78% of counters; grill call-outs are read as competence; the pass is kept photogenic on protocol. Walled-in stores lost 22% perceived-wait tolerance — the entertainment realm is literally load-bearing (N013, N064, N065).</p>
+      </div>
+      <div class="realm" style="border-top:3px solid var(--data)">
+        <h4>Educational <span class="rax">active participation · absorption</span></h4>
+        <p><strong>Weakest realm.</strong> The customer who wants to learn (allergen matrix, provenance, why the char matters) meets a version-9 card lagging 17 days and verbal confirmation as the only reliable defence. The double-question ritual of allergen-anxious customers is self-taught knowledge, not a designed path (N016, N039, N174).</p>
+      </div>
+      <div class="realm" style="border-top:3px solid var(--fail)">
+        <h4>Escapist <span class="rax">active participation · immersion</span></h4>
+        <p><strong>Nearly absent beyond the flagship.</strong> Peak experience runs the other way: queue anxiety (7-minute walk-away threshold), bag-check mutual suspicion ("which the staff visibly find rude"), and verification-as-labour at the window. The escapist realm currently exists only as its inverse — the 19-minute flagship dwell (N026, N255, N041, N044).</p>
+      </div>
+      <div class="realm" style="border-top:3px solid var(--ev)">
+        <h4>Esthetic <span class="rax">passive participation · immersion</span></h4>
+        <p><strong>Format-dependent.</strong> Flagship grill-houses at 92% occupancy deliver it; food-courts bleed the queue into mall walkways, drive-thru customers get a bumper-to-bumper corridor with no evidence but the car in front, and the packaging program's one unambiguous win (the foil bucket) is doing esthetic work the stores' interiors do not (N043, N004, N037, N009).</p>
+      </div>
+    </div>
+    <p style="font-size:13px; color:#475569; max-width:92ch; margin-top:12px;"><span class="est">Implication (estimate):</span> the experience premium currently earned by 68 flagships is unavailable to the 1,214 standard stores not by cost but by design omission — the grill is visible in 78% of counters, yet nothing else in the standard-store journey is asked to carry any realm at all.</p>
+  </div>
+</section>
+
+<!-- ============ 8. ISSUE MATRIX ============ -->
+<section class="sec" id="matrix">
+  <div class="sec-kicker">08 · Prioritised issue matrix</div>
+  <h2>Impact × effort — twelve issues, four quadrants</h2>
+  <p class="lede">Impact = breadth × depth of customer/crew harm removed (1–5); effort = combined technology, process and change-management load (1–5). Placement is this report's judgement from the evidence, not a measurement. <span class="notechip">N441</span> <span class="notechip">N449</span></p>
+  <div class="secbody">
+    <div class="mxwrap">
+      <div class="mx">
+        <div class="qx">
+          <div class="q">Quick wins — high impact, low effort</div>
+          <div class="q q2">Big bets — high impact, high effort</div>
+          <div class="q q3">Fill-ins — low impact, low effort</div>
+          <div class="q q4">Money pits — low impact, high effort</div>
+        </div>
+        <!-- impact y: bottom=0 top=100% ; effort x: left=0 right=100% -->
+        <div class="dot" style="left:56%; bottom:92%; background:var(--back)"></div><div class="lbl" style="left:56%; bottom:92%">I-01 Roster stability</div>
+        <div class="dot" style="left:78%; bottom:80%; background:var(--back)"></div><div class="lbl" style="left:78%; bottom:80%">I-02 Drive-thru physics</div>
+        <div class="dot" style="left:34%; bottom:78%; background:var(--front)"></div><div class="lbl" style="left:34%; bottom:78%">I-03 Handover standard</div>
+        <div class="dot" style="left:20%; bottom:60%; background:var(--sup)"></div><div class="lbl" style="left:20%; bottom:60%">I-04 Honest logging</div>
+        <div class="dot" style="left:58%; bottom:76%; background:var(--back)"></div><div class="lbl" style="left:58%; bottom:76%">I-05 Waste forecasting</div>
+        <div class="dot" style="left:40%; bottom:58%; background:var(--sup)"></div><div class="lbl" style="left:40%; bottom:58%">I-06 Playbook versioning</div>
+        <div class="dot" style="left:42%; bottom:38%; background:var(--data)"></div><div class="lbl" style="left:42%; bottom:38%">I-07 Kiosk accessibility</div>
+        <div class="dot" style="left:38%; bottom:56%; background:var(--cust)"></div><div class="lbl" style="left:38%; bottom:56%">I-08 Recovery bands</div>
+        <div class="dot" style="left:16%; bottom:56%; background:var(--front)"></div><div class="lbl" style="left:16%; bottom:56%">I-09 Crew voice loop</div>
+        <div class="dot" style="left:12%; bottom:34%; background:var(--data)"></div><div class="lbl" style="left:12%; bottom:34%">I-10 Confirm screens</div>
+        <div class="dot" style="left:18%; bottom:28%; background:var(--ev)"></div><div class="lbl" style="left:18%; bottom:28%">I-11 Voucher stock</div>
+        <div class="dot" style="left:24%; bottom:66%; background:var(--wait)"></div><div class="lbl" style="left:24%; bottom:66%">I-12 Shelf labels</div>
+      </div>
+      <div class="mx-axis"><span>← less effort</span><span>effort →</span></div>
+      <div class="mx-axis" style="justify-content:flex-end"><span>↑ more impact</span></div>
+    </div>
+    <table class="t">
+      <tr><th style="width:5%">ID</th><th style="width:26%">Issue</th><th style="width:8%">Impact</th><th style="width:8%">Effort</th><th>Anchor evidence</th><th style="width:12%">→ Proposal</th></tr>
+      <tr><td>I-01</td><td>Roster instability (late publish + swap rework)</td><td>5</td><td>3</td><td class="ev">N194 · N118 · N289 · INS-01–03</td><td><a href="proposals.html#p1">P1</a></td></tr>
+      <tr><td>I-02</td><td>Drive-thru window physics</td><td>4</td><td>4</td><td class="ev">N111 · N306 · N243 · INS-04–05</td><td><a href="proposals.html#p2">P2</a></td></tr>
+      <tr><td>I-03</td><td>Crew→courier handover standard</td><td>4</td><td>2</td><td class="ev">N085 · N316 · N249 · INS-06–07</td><td><a href="proposals.html#p3">P3</a></td></tr>
+      <tr><td>I-04</td><td>Q-Pulse honest logging</td><td>3</td><td>1</td><td class="ev">N121 · N202 · N203 · INS-08–09</td><td><a href="proposals.html#p6">P6</a></td></tr>
+      <tr><td>I-05</td><td>Waste &amp; forecast gap</td><td>4</td><td>3</td><td class="ev">N104 · N126 · N148 · INS-10–11</td><td><a href="proposals.html#p5">P5</a></td></tr>
+      <tr><td>I-06</td><td>Franchise playbook versioning</td><td>3</td><td>2</td><td class="ev">N152 · N240 · N241 · INS-12–13</td><td><a href="proposals.html#p7">P7</a></td></tr>
+      <tr><td>I-07</td><td>Kiosk accessibility</td><td>2</td><td>2</td><td class="ev">N190 · N312 · N025 · INS-14–15</td><td><a href="proposals.html#p8">P8</a></td></tr>
+      <tr><td>I-08</td><td>Recovery band unification</td><td>3</td><td>2</td><td class="ev">N261 · N320 · N256 · INS-16–17</td><td><a href="proposals.html#p9">P9</a></td></tr>
+      <tr><td>I-09</td><td>Crew voice loop</td><td>3</td><td>1</td><td class="ev">N213 · N233 · INS-18 · N296</td><td><a href="proposals.html#p4">P4</a></td></tr>
+      <tr><td>I-10</td><td>Confirmation-display truncation (5 s → 10 s)</td><td>2</td><td>1</td><td class="ev">N006 · N041</td><td>quick win (P2 adjacency)</td></tr>
+      <tr><td>I-11</td><td>Voucher card stock discipline</td><td>2</td><td>1</td><td class="ev">N019 · N052</td><td>quick win (P9 adjacency)</td></tr>
+      <tr><td>I-12</td><td>Courier shelf labels + name-facing bags</td><td>3</td><td>1</td><td class="ev">N315 · N115 · N247</td><td>quick win (P3 adjacency)</td></tr>
+    </table>
+    <div class="callout good"><span class="notechip">N442</span> <b>Do-first cluster.</b> The top of the quick-win quadrant is unambiguous: <strong>I-12 (shelf labels), I-04 (timestamp enforcement — "a one-line change and a culture war"), I-09 (crew pulse) and I-03 (one handover standard)</strong>. Together they attack the 0.7% breakage, the 22% falsified timing and the two highest-risk handoffs without waiting for the two structural bets (I-01 roster, I-02 window physics) that must follow in the same sequence. <span class="notechip">N443</span> <b>Quick wins are sequenced inside Wave 1 of <a href="proposals.html">proposals.html</a></b>; none requires new capital.</div>
+  </div>
+</section>
+
+<!-- ============ 9. WHAT'S WORKING / COST OF INACTION ============ -->
+<section class="sec" id="working">
+  <div class="sec-kicker">09 · Balance of the ledger</div>
+  <h2>What is working, what inaction costs</h2>
+  <div class="secbody">
+    <div class="callout good"><span class="notechip">N444</span> <strong>Do not break these.</strong> Customer NPS <b>+31</b> against an industry-shaped headwind; order accuracy <b>91.4%</b>; the flagship grill-house standard (18 crew peak, the engagement's reference experience); the foil-bucket packaging win; the flash P&amp;L — "the rare Copperline report that both stores and HQ trust"; Route56, "the quiet success story of the stack"; the recovery voucher ladder, whose redeemers out-repeat the baseline (61% vs 47%). Every proposal in the companion document is sequenced to protect these assets first.</div>
+    <p style="max-width:92ch; font-size:13.5px; color:#334155; margin-top:14px;"><span class="notechip">N445</span> <b>Cost of inaction (estimates).</b> Holding the current state means, per week, roughly: 1,700 GM-hours of swap rework; ~2,000 broken courier handovers each costing a 21-minute re-make plus a refund contact; 22% of food-safety telemetry with synthetic timestamps; 62% of contact-centre volume arriving as failure recovery; and the flywheel compounding — the median crew member leaves inside 12.8 months, taking shorthand, shelf discipline and the expeditor's judgement with them. <span class="est">All figures are estimates from §03; the trend they describe, not their precision, is the finding.</span></p>
+    <p style="max-width:92ch; font-size:13.5px; color:#334155;"><span class="notechip">N446</span> <b>One cut the blended numbers hide.</b> Company stores and the 780 franchised stores should not be read together (per the franchisee's own request): acknowledgement rates split 89%/71%, playbook currency confidence sits at 31% among franchise managers, and two long-tenure partners run the estate's oldest POS hardware under renewal leverage. Wherever this report says "the estate", the franchise cut is more volatile — and it is 39% of the estate.</p>
+    <p style="max-width:92ch; font-size:13.5px; color:#334155;"><span class="notechip">N447</span> <b>Peak physics in one line.</b> 62% of daily volume lands in four hours; the labour curve rises 1.9× against a 2.7× order-rate curve, so every peak runs a structural deficit that the current format mix then concentrates hardest in drive-thru express — the format growth capital currently favours (1,310 orders/day on 8 crew). The estate is investing into its tightest physics.</p>
+    <p style="max-width:92ch; font-size:13.5px; color:#334155;"><span class="notechip">N448</span> <b>The flywheel, quantified.</b> Late rosters (&lt;72 h, 41% of stores) → swaps (11/week) → rework (31%) → GM time poverty (9.5 h/week admin) → thinner peaks → breaks not taken → crew exit (94% annualised) → new crew median 8 months → shadow training cut (6 of 11 shifts) → errors at peak → worse peaks. Every arrow in that chain is evidence-cited in §02; the loop is the single most expensive structure in the estate.</p>
+  </div>
+</section>
+
+<!-- ============ 10. CONFIDENCE ============ -->
+<section class="sec" id="confidence">
+  <div class="sec-kicker">10 · Confidence &amp; limitations</div>
+  <h2>What this analysis cannot claim</h2>
+  <div class="secbody">
+    <p style="max-width:92ch; font-size:13.5px; color:#334155;"><span class="notechip">N451</span> Evidence coverage is uneven by lane: Customer and Frontstage findings rest on three methods each (interviews + surveys + channel extracts), while Support-lane claims (DC operations, maintenance contracts) rest largely on single interviews (N264–N269) and should be treated as directionally strong but thinly triangulated. The 15-principle scores and the issue-matrix placements are structured judgements, not measurements. <span class="notechip">N454</span> Prototyping was not executed in this engagement: every quantified benefit in <a href="proposals.html">proposals.html</a> is a hypothesis to be tested by that document's 30-day experiments, and this report's failure-demand roll-up is an estimate bounded by stated assumptions rather than a measured baseline. The canon's own boundary applies: this is a fictional composite engagement; every person, quote, figure and outcome is synthetic.</p>
+    <div class="callout"><span class="notechip">N450</span> <b>Executive headline.</b> Copperline runs a genuinely loved product (NPS +31) on top of a machine that manufactures its own demand: a third of swap labour, a fifth of compliance telemetry, two-thirds of call volume and every broken handover are self-inflicted. The machine's load-bearing parts are social (a phone tree, a named shelf veteran, a WhatsApp channel) and therefore do not scale — but they are also, precisely for that reason, the cheapest things in the estate to support deliberately. <span class="notechip">N455</span> <b>Read next:</b> <a href="proposals.html">proposals.html</a> (ten directions, three waves), <a href="slide-deck.html">slide-deck.html</a> (the 16-slide current-state deck), then the living-document proposal P10 for how this baseline gets re-measured.</div>
+  </div>
+</section>
+
+<!-- ============ NOTES PANEL ============ -->
+<section class="sec notes-panel" id="notes">
+  <div class="sec-kicker">Notes panel</div>
+  <h2>N421–N455 — this report's own annotations</h2>
+  <p class="lede">Continuous with the artifact set (N001–N320 blueprint + research; N366–N385 insight register; N456–N490 proposals; N491–N500 deck). Never renumbered; sibling IDs are cited, not restated.</p>
+  <div class="secbody">
+    <div class="note"><span class="nid">N421</span><span>Methodology recap — 6-week field study followed by reporting; the engagement's honest boundary (prototyping NOT executed) is inherited from the canon and restated in every downstream artifact. Researcher, Synthesizer, Mapper, Measurer and Critic (sd_review) roles executed the simulation protocol over weeks 1–6.</span></div>
+    <div class="note"><span class="nid">N422</span><span>Evidence base composition (verbatim from canon §5): 8 flagship interviews; 412 store-manager surveys (of 2,000) and 1,893 crew surveys (of 41,300); 90-day VoiceBoard extract; POS sample (120 stores); 60 mystery-shopper reports; 3 aggregator rating exports; 2 weeks of call-centre logs. This report adds no new field data.</span></div>
+    <div class="note"><span class="nid">N423</span><span>Customer-lane synthesis: demand arrives pre-decided by transport mode; the service's own promise-leaks (scan mat, click-and-collect) re-create the waiting they were sold to remove; perception is governed by the visible grill; and the most dangerous failures are the 15% nobody notices.</span></div>
+    <div class="note"><span class="nid">N424</span><span>Frontstage-lane synthesis: every scripted behaviour degrades deterministically with load, and HQ misreads the degradation as effort; the expeditor is a single load-bearing human; and the delivery shelf — the most error-prone surface — is owned by personality, not role.</span></div>
+    <div class="note"><span class="nid">N425</span><span>Backstage-lane synthesis: the roster's fragility is social (phone-tree cover, Excel shadows), the grill is the metronome whose failures cascade unmodelled, waste is a forecasting artefact, and both training and handover run on paper because the systems have no field for reality.</span></div>
+    <div class="note"><span class="nid">N426</span><span>Support-lane synthesis: replenishment's integration with marketing is a manual step that fails silently (2 of 5 LTOs); maintenance converts planned to reactive; the franchise spine is a versioning failure; and the hiring funnel leaks at the exact point roster instability makes the offer worthless.</span></div>
+    <div class="note"><span class="nid">N427</span><span>Data-lane synthesis: 7 systems, 19 point-to-point interfaces, 3 ownerless since 2024; the truth about timing exists in exports but is not scored by rubrics; data flows up and never returns as an operational prompt; and the estate measures the visible 40% while pausing what it dislikes.</span></div>
+    <div class="note"><span class="nid">N428</span><span>Evidence-lane synthesis: physical evidence betrays ownership gaps (faded fascias), expired dispute rights (fading thermal paper), contradictory trust signals (seals, badges fed by falsified timing), and a recovery ladder whose physical token is its weakest link (31% improvised vouchers).</span></div>
+    <div class="note"><span class="nid">N429</span><span>Failure-demand model — definition and method: demand that would not exist if the service had worked first time (re-work, re-contact, re-make, audit repair). Copperline does not measure it; this section estimates the four largest streams from canon metrics plus ledger-derived assumptions, each stated inline. Estimates are conservative (no double counting between streams).</span></div>
+    <div class="note"><span class="nid">N430</span><span>Swap-rework failure demand: 11 requests/store/week × 31% rework = ~3.4 reworks; × ~15 min GM admin each (interview estimate) ≈ 51 min/store/week ≈ 1,700 GM-hours/week estate-wide. Secondary stream: 15% of swap requesters give up; 61% of those then log unplanned absence — failure demand converting into failure supply.</span></div>
+    <div class="note"><span class="nid">N431</span><span>Bulk-logging failure demand: 22% of checks carry synthetic timestamps; the demand materialises as audit-repair (re-validation) and unquantified food-safety exposure. Arithmetic: 22% × 41 min/day ≈ 9 min/store/day ≈ 2,100 estate hours/day of trust-repair work if honesty were enforced and backfilled. Marked estimate; the 41-minute figure is measured, the multiplication is ours.</span></div>
+    <div class="note"><span class="nid">N432</span><span>Handover-breakage failure demand: 0.7% of delivery orders ≈ 1 broken handover/store/week (channels reconciliation); each costs a median 21-minute re-make + re-dispatch plus a refund contact arriving within a median 40 minutes. The counterfactual is measured, not estimated: stores with shelf + label discipline wait 3.8 vs 8.0 minutes.</span></div>
+    <div class="note"><span class="nid">N433</span><span>Recovery-call failure demand: refunds 38% + status 24% = 62% of 3,206 calls/fortnight ≈ 161 hours of handle time per fortnight at AHT 4m51s. Structural escalation (7 of 12 points) is policy artefact, recoverable by design; Band X (4%) is pure policy-map failure.</span></div>
+    <div class="note"><span class="nid">N434</span><span>Roll-up estimate: ~15–20% of salaried-manager labour-hours and ~two-thirds of voice-channel contact is failure demand. Stated as a range deliberately: the streams share root causes (a late roster causes both a swap rework and a missed check), so summation would double-count. This single number is the report's most quotable estimate and its least precise — both facts are the point.</span></div>
+    <div class="note"><span class="nid">N435</span><span>Wait-inventory method: 16 waits extracted from the blueprint; medians quoted where the ledger states them (W03, W04, W05, W06, W07, W08, W12, W13, W14, W15) and estimated elsewhere from adjacent evidence. Total customer-facing wait budget at peak, dine-in: ~11.5 minutes across W01+W03 (estimate) — of which only W03 is currently measured anywhere.</span></div>
+    <div class="note"><span class="nid">N436</span><span>Handoff risk model: likelihood (observed frequency of degradation) × blast radius (how many lanes the failure contaminates). HIGH = both high; controls column lists only controls observed in the field, including informal ones (Excel shadows, WhatsApp) — informal controls are real but unscaleable, which is itself a finding.</span></div>
+    <div class="note"><span class="nid">N437</span><span>Highest-risk handoff pattern: all five HIGH-rated handoffs lack a designed standard (H01 truncated repeat-back, H02 three rituals, H03 phone-tree cover, H04 unanswered peak phone, H05 paper sheet). Risk concentrates at tri-organisational seams: store × contact centre × aggregator.</span></div>
+    <div class="note"><span class="nid">N438</span><span>Good Services audit method: 15 principles (05/02–05) scored High/Med/Low against ledger evidence only; no score without a note ID. Scores are structured judgements — they are reproducible (evidence given) but not measurements, and should be re-scored at each blueprint re-baseline (P10).</span></div>
+    <div class="note"><span class="nid">N439</span><span>Good Services pattern: product-facing principles (2, 5) score High; organisation-facing principles (7, 8, 9, 11, 12, 14, 15) score Low. The customer experience is limited by back-office structure, not front-stage behaviour — which relocates most of the fix list to P3, P6, P8, P9.</span></div>
+    <div class="note"><span class="nid">N440</span><span>Experience-economy snapshot (13/02–05): one strong realm (Entertainment, via the grill), one format-dependent (Esthetic), two weak (Educational, Escapist). The experience premium is an accident of flagship architecture; standard stores are not asked to carry any realm, which is a design omission, not a cost constraint.</span></div>
+    <div class="note"><span class="nid">N441</span><span>Matrix method: impact (1–5) = breadth × depth of harm removed; effort (1–5) = technology + process + change-management load combined. Placements are this report's judgement, anchored to the INS rows of the insight register; the matrix is a sorting device for sequencing, not a business case.</span></div>
+    <div class="note"><span class="nid">N442</span><span>Do-first cluster: I-12, I-04, I-09, I-03 — all quick-win quadrant, all attacking measured failure rates (0.7% breakage, 22% falsified timing, −8 eNPS, two HIGH handoffs), none requiring capital. Sequenced as Wave 1 in proposals.html.</span></div>
+    <div class="note"><span class="nid">N443</span><span>Quick-win adjacency: I-10 (confirm displays 5 s→10 s), I-11 (voucher card stock discipline) and I-12 (shelf labels) are small enough to run as P2/P9/P3 pre-work during Wave 1 without dedicated governance — each is a named proposal's first visible change.</span></div>
+    <div class="note"><span class="nid">N444</span><span>Protective findings (do-not-break list): NPS +31, accuracy 91.4%, flagship standard, foil bucket, flash P&amp;L trust, Route56 resilience, voucher-ladder redemption economics (61% vs 47% repeat). Proposals are sequenced to avoid touching these; any experiment that risks them carries an explicit stop rule.</span></div>
+    <div class="note"><span class="nid">N445</span><span>Cost-of-inaction roll-up: weekly estimates from §03 restated as a compounding trend rather than a total — the flywheel (N448) makes inaction non-linear: each quarter of the current state trains a new median-tenure cohort in the workarounds the next quarter must unwind.</span></div>
+    <div class="note"><span class="nid">N446</span><span>Franchise cut: blended estate figures conceal a 780-store franchise sub-estate with materially worse playbook currency (31% confident), acknowledgement (71% vs 89%) and hardware vintage. Report-wide rule: wherever "the estate" is said, read the franchise cut as higher-variance; analysis was segmented by format (per insight-register rule N374) and by ownership here.</span></div>
+    <div class="note"><span class="nid">N447</span><span>Peak physics: 62% of volume in two 2-hour windows; staffing rises 1.9× against a 2.7× order-rate curve; the deficit concentrates in drive-thru express (1,310 orders/day, 8 crew peak) — the format the growth pipeline favours. The estate is expanding into its own tightest physics.</span></div>
+    <div class="note"><span class="nid">N448</span><span>Flywheel quantification: every arrow (late rosters → swaps → rework → admin load → thin peaks → missed breaks → churn → novice median → cut training → peak errors) is evidence-cited in §02–§03. The loop explains why single-point fixes (hiring faster, paying more) feed it rather than break it: hiring faster supplies the loop's exit stage.</span></div>
+    <div class="note"><span class="nid">N449</span><span>Estimate discipline: every forward-looking or derived figure in this report is marked "est." at point of use; canon metrics (94%, 11/31%, 41%, 246 s, 91.4%, 3.8%, −8/+31, 0.7%, 96.2%/22%, 36/38/26, 62%) are quoted verbatim. No estimate in this report should be re-quoted without its "est." marker.</span></div>
+    <div class="note"><span class="nid">N450</span><span>Executive headline: a loved product running on a machine that manufactures its own demand; load-bearing parts are social and therefore unscalable — and therefore the cheapest to deliberately support. This sentence is the deck's (slide-deck.html) thesis.</span></div>
+    <div class="note"><span class="nid">N451</span><span>Evidence-coverage map: Customer/Frontstage = three methods each (strong); Backstage = interviews + surveys (strong); Support = thin (largely single-interview for DC/maintenance claims N264–N269); Data = document + telemetry (strong). Weakly triangulated claims are flagged inline rather than downgraded silently, per the register's minority-flag rule (N370).</span></div>
+    <div class="note"><span class="nid">N452</span><span>Tail governance: all current metrics govern medians; walk-aways, breakage and one-star reviews are P90 phenomena. Recommendation embedded here: assign a named P90 owner per format with authority to shed low-value work at breach — a governance change, not a technology one.</span></div>
+    <div class="note"><span class="nid">N453</span><span>Controls-on-paper finding: several register controls exist formally but compete with themselves physically (MOD paged for voids while running assembly; dual-sign cash drops pulling the grill cook). A control that requires the same body twice is not a control at peak.</span></div>
+    <div class="note"><span class="nid">N454</span><span>Limitations: 15-principle scores and matrix placements are judgements; failure-demand roll-up is an estimate range; Support-lane claims thinly triangulated; and the engagement stopped before prototyping — no benefit figure anywhere in this artifact set is a measured outcome. Fictional composite engagement; all people, quotes, figures and outcomes are synthetic.</span></div>
+    <div class="note"><span class="nid">N455</span><span>Reading guide: analysis-report.html (this file) → proposals.html (N456–N490) → slide-deck.html (N491–N500); against insight-register.html (N366–N385) and the evidence base (service-blueprint.html N001–N220; research N221–N320). Next baseline's first question, inherited from N220: did the Excel shadow rosters grow or shrink?</span></div>
+  </div>
+</section>
+
+<footer class="art-foot">
+  <div class="kicker">Cross-links</div>
+  <div class="xl">
+    <a href="service-blueprint.html">Blueprint (N001–N220)</a>
+    <a href="research/interviews.html">Interviews (N221–N270)</a>
+    <a href="research/surveys.html">Surveys (N271–N300)</a>
+    <a href="research/channels.html">Channels (N301–N320)</a>
+    <a href="insight-register.html">Insight register (N366–N385)</a>
+    <a href="proposals.html">Proposals (N456–N490)</a>
+    <a href="slide-deck.html">Slide deck (N491–N500)</a>
+    <a href="brief.html">Engagement brief</a>
+    <a href="journey-map.html">Journey map</a>
+    <a href="persona-set.html">Persona set</a>
+    <a href="stakeholder-map.html">Stakeholder map</a>
+    <a href="ecosystem-map.html">Ecosystem map</a>
+    <a href="buzz-transcript.html">Buzz channel log</a>
+  </div>
+  <p style="font-size:11.5px; color:var(--mut); margin-top:14px;">Copperline 2000 · analysis-report.html · SDAP kinds 32 (executive-report) + 28 (experience-audit lens) · lens refs 05/02–05, 13/02–05, 01/07 · notes N421–N455 · part of the article 41 artifact set of The Agentic Service Designer.</p>
+</footer>
+
+</div>
+</body>
+</html>
