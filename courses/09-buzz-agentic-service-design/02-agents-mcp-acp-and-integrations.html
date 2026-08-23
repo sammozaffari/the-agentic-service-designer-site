@@ -60,16 +60,15 @@
 <h1 id="agents-mcp-acp-and-the-integration-landscape">Agents, MCP, ACP, and the integration landscape</h1>
 <p>Module 01 placed BUZZ in the picture. This module places everything else:
 where the ten role agents come from, how they reach the ASD store through MCP,
-what ACP is allowed to do (and not do), and which hosts the platform already
-integrates with — from the BUZZ desktop app to the DeepSeek Harness shell that
-Article 38 drove end to end. By the end you should be able to draw the whole
-stack on a napkin and defend every arrow on it.</p>
+what ACP is allowed to do (and not do), and which hosts the persona pack
+already integrates with beyond the BUZZ desktop app. By the end you should be
+able to draw the whole stack on a napkin and defend every arrow on it.</p>
 <h2 id="learning-objectives"><i data-lucide="target" class="ic"></i> Learning Objectives</h2>
 <ul>
 <li>Describe the ASD platform stack: persona pack → materialized runtimes → pack-local MCP server → ASD workspace store.</li>
 <li>Say what MCP contributes (29 canonical tools, corpus resources, prompts) and what the <code>ASD_WORKSPACE</code> boundary protects.</li>
 <li>State the ACP contract precisely: record-only, fail-closed, no external spawn.</li>
-<li>Map the integration landscape: the six emitted MCP bundles and the DeepSeek Harness Studio.</li>
+<li>Map the integration landscape: the six emitted MCP bundles, and where each host&#39;s proof stops.</li>
 </ul>
 <h2 id="the-stack-on-one-diagram"><i data-lucide="globe" class="ic"></i> The stack on one diagram</h2>
 <div class="diagram" id="diagram-0">
@@ -79,7 +78,7 @@ stack on a napkin and defend every arrow on it.</p>
   R -- &quot;MCP stdio (pack-local .mcp.json)&quot; --&gt; M[&quot;ASD MCP server · 29 sd_* tools · resources · prompts&quot;]
   M -- &quot;ASD_WORKSPACE boundary&quot; --&gt; W[&quot;ASD workspace store · projects · evidence · artifacts · reviews · gates&quot;]
   R -- &quot;typed record only (fail-closed)&quot; --&gt; A[&quot;ACP envelope asd-acp/1&quot;]
-  H[&quot;Hosts: BUZZ · Claude Code · Codex · Kimi · OpenCode · DSH Studio&quot;] -.-&gt; R</pre>
+  H[&quot;Hosts: BUZZ · Claude Code · Codex · Kimi · OpenCode · standalone MCP&quot;] -.-&gt; R</pre>
 </div>
 <p>Read it bottom-up for the ownership story: the store owns state; the MCP
 server is the single governed door to it; runtimes are the only things
@@ -196,9 +195,8 @@ same server without central configuration:</p>
 </tbody></table>
 <p>Two properties of this door matter for everything that follows in this
 course. First, it is <strong>the same door everywhere</strong>: the runtimes that replied
-in BUZZ, the Studio that ran inside the DeepSeek Harness in module 08, and the
-standalone CLI all go through one tool contract — which is why an artifact id
-written by one surface is meaningful to all the others. Second, the server&#39;s
+in BUZZ and the standalone CLI all go through one tool contract — which is why
+an artifact id written by one surface is meaningful to all the others. Second, the server&#39;s
 workspace is bounded by <code>ASD_WORKSPACE</code>, defaulting to <code>~/.asd/projects</code>: a
 runtime can only touch the projects its environment points it at. In the
 Aster Grove session that boundary was load-bearing — it is the reason the
@@ -231,20 +229,16 @@ and OpenCode</strong> — proving initialize, discovery, and representative ASD 
 workflows in isolated environments for each. (Pack-local evidence is candid
 about its own limits: it does not prove that every host has executed every
 tool.)</p>
-<p>The deepest host integration to date is the one Article 38 documented: the
-<strong>Agentic SD Studio as a center tab inside the DeepSeek Harness (DSH)
-shell</strong>. The host owns sessions, model configuration, and layout; the Studio
-registers surfaces through the host&#39;s <code>conversation.view</code> seam and reads and
-writes the same store through the same MCP tool contract. Two captures from
-that integration, both live:</p>
-<p><img src="images/38-03-center-tab-studio.png" alt="The Agentic SD Studio as a top tab in the DeepSeek Harness center column, beside Chat and Trajectory, with the Studio workbench at full width."></p>
-<p><em>Live capture (Article 38) — the Agentic SD Studio as a top tab in the DSH center column: Chat, Trajectory, Agentic SD Studio, with the tabbed workbench (Projects, Artifacts, Evidence, Canvas, Templates, Methods, Review, Reports) at full width. The composer stays resident underneath, so moving from looking at the work to instructing the model is a shift of the eyes, not a change of window.</em></p>
-<p><img src="images/38-20-04-library-search.webp" alt="The Studio Library section in the v2 build: source tabs and a search box; results for blueprint grouped by source with content snippets and Use-in-project actions."></p>
-<p><em>Live capture (Article 38, studio v2) — the Studio Library: the corpus the model reads (227 resources) as a human surface. Searching &quot;blueprint&quot; returns 50 grouped hits with snippets, and every hit has a Use-in-project action that drafts a provenance-cited librarian instruction into the composer.</em></p>
-<p>Module 08 turns that integration into a full case study — two live
-service-design journeys, a placement failure and fix, and the studio v2
-surfaces. For this module the point is architectural: hosts come and go, the
-store and its door stay the same.</p>
+<p>Each host&#39;s evidence is its own: a bundle&#39;s disposable stdio run proves the
+pack loads and the tools answer on that host — it does not prove a live
+engagement ran there. The live-engagement proof in this course is the BUZZ
+lane itself (modules 04–07): replies matched to member pubkeys, citations
+resolved against the store, a Canvas round-trip hash. Keep the two proof
+kinds separate when you report integrations to stakeholders, the same way
+this course keeps BUZZ, store, and ACP proofs separate. Hosted workbench
+surfaces beyond the relay — the harness-hosted ASD Studio — are a different
+course&#39;s lane (Course 02), not this one. The architectural point stands
+either way: hosts come and go, the store and its door stay the same.</p>
 <h2 id="definition-identity-vs-runtime-identity"><i data-lucide="brain" class="ic"></i> Definition identity vs runtime identity</h2>
 <p>The persona pack is intentionally <strong>keyless</strong>. A definition has a stable
 slug, display name, model metadata, and prompt. A running runtime has a
@@ -311,7 +305,7 @@ audit.</p>
 <li>State lives in the ASD store; MCP is its single governed door (29 tools, corpus resources, prompts) — identical on every host.</li>
 <li><code>ASD_WORKSPACE</code> is a security boundary, not a convenience flag; refusals in module 05 are it working.</li>
 <li>ACP is record-only and fail-closed: handoffs are store rows, announcements are chat messages, and spawning across hosts is unsupported by design.</li>
-<li>Six MCP bundles plus the DSH Studio integration all sit on the same contract — hosts change, the door doesn&#39;t.</li>
+<li>Six MCP bundles all sit on the same contract — hosts change, the door doesn&#39;t.</li>
 <li>Persona definitions are keyless; only owner-verified runtime pubkeys are mention targets.</li>
 </ul>
 
