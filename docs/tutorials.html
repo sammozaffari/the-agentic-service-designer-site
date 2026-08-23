@@ -31,7 +31,7 @@
     <h1>Tutorials</h1>
     <p class="lede">Three illustrative walkthroughs grounded in the pack-local engine contract: the gated-artifact lifecycle in the CLI, a bounded Claude Code prompt flow, and the fact-check as a CI gate.</p>
   </section>
-  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Concepts</b><ol><li><a href="./acp.html">ACP and collaboration records</a></li><li><a href="./concepts.html">Engine concepts</a></li><li><a href="./tutorials.html" class="on">Tutorials</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#your-first-gated-artifact-in-ten-minutes-cli">Your first gated artifact in ten minutes (CLI)</a></li><li><a href="#an-engagement-in-claude-code">An engagement in Claude Code</a></li><li><a href="#the-gate-in-ci">The gate in CI</a></li><li><a href="#where-next">Where next</a></li></ol></nav></aside><article class="art-body"><h1 id="tutorials">Tutorials</h1>
+  <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Concepts</b><ol><li><a href="./acp.html">ACP and collaboration records</a></li><li><a href="./concepts.html">Engine concepts</a></li><li><a href="./tutorials.html" class="on">Tutorials</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#your-first-gated-artifact-in-ten-minutes-cli">Your first gated artifact in ten minutes (CLI)</a></li><li><a href="#an-engagement-in-claude-code">An engagement in Claude Code</a></li><li><a href="#an-engagement-in-the-deepseek-harness-studio">An engagement in the DeepSeek Harness Studio</a></li><li><a href="#the-gate-in-ci">The gate in CI</a></li><li><a href="#where-next">Where next</a></li></ol></nav></aside><article class="art-body"><h1 id="tutorials">Tutorials</h1>
 <p>Three tutorials, three surfaces, one engine. The CLI lifecycle is a disposable, pack-local workflow; the Claude Code section is an illustrative prompt flow; and the CI section describes the deterministic gate. Outputs are representative contract-shaped examples unless a disposable receipt is named. These tutorials do not prove a native host installation, BUZZ/DSH live workflow, or ACP spawn. Host execution is unverified in this documentation release. The concepts are in <a href="./concepts.html">Engine concepts</a>; this page is the doing.</p>
 <h2 id="your-first-gated-artifact-in-ten-minutes-cli">Your first gated artifact in ten minutes (CLI)</h2>
 <p>The whole lifecycle in a shell: project → evidence (including a deliberate kind rejection) → a failing write that persists as a draft → in-place remediation → a Critic veto → remediation → a pass → the deterministic fact-check → renders. You need the suite built and the <code>asd</code> shim from <code>platform/packs/cli</code> — see <a href="./cli.html">the CLI page</a>. Work in a scratch workspace so nothing touches real projects:</p>
@@ -171,6 +171,67 @@ link, baseline, and source.
 </code></pre></div>
 <p>The skills the roles name — <code>contextual-inquiry</code>, <code>journey-from-transcripts</code>, <code>kpi-tree-design</code> — are the SOP layer in between: 80 readable <code>SKILL.md</code> files, one per method manifest, each spelling out who does what, in what order, with which evidence discipline, and which acceptance gate the write will face. The agent reads the skill, the skill names the tools, and the engine enforces the rest. Nothing in the conversational surface bypasses the machine checks you saw in the terminal — the plugin is a different driver for the same gates, not a way around them.</p>
 <p>Article 31, <a href="../articles/31/index.html">Riding the Current</a>, is an illustrative fictional engagement that demonstrates the conversational flow at scale. Its technical boundary is the current disposable CLI/MCP receipt; Claude Code, OpenCode, Codex, Kimi, BUZZ, DSH, and ACP live execution are not implied by the article or this tutorial.</p>
+<h2 id="an-engagement-in-the-deepseek-harness-studio">An engagement in the DeepSeek Harness Studio</h2>
+<p>The same loop once more, this time driven from the workbench. This tutorial
+walks the current studio build — the profile serving at <code>http://127.0.0.1:4685/</code>
+(profile <code>asd-studio-v2</code>; host boot rev <code>ad3ba0951ddb</code>; <code>@asd/ui</code> plugin rev
+<code>367432b4e475</code>). The engagement-level evidence behind every step is Article
+38&#39;s receipt set; nothing below claims more than those receipts show.</p>
+<p><strong>Open the Studio.</strong> On a blank session the Service Design activity opens the
+sidebar panel — the compact surface, and the correct one when there is no
+conversation body to host the tab. Start (or open) a session and click again:
+the <strong>Agentic SD Studio</strong> center tab activates beside Chat and Trajectory,
+full width, with the host composer resident underneath. That pairing is the
+posture the whole surface is designed around: the workbench above, the model
+instruction below, one window.</p>
+<p><strong>Start from the brief.</strong> The hero offers a starter-brief draft. The Studio&#39;s
+create-project form does not call a backend — it <strong>drafts the
+<code>sd_project_create</code> instruction into the live composer</strong>. Read it, edit it if
+needed, send it. The turn runs with visible tool calls: in Article 38&#39;s
+receipted Aurelia run, a real model turn took 8m19s across 36 steps and wrote
+four critic-passed Discover artifacts through the gated path, and the session
+renamed itself to the project&#39;s name.</p>
+<p><strong>Watch the board.</strong> New projects land in <strong>briefed</strong>. The Kanban renders five
+lifecycle columns — briefed, active, gated, blocked, archived — with phase and
+draft badges and a WIP budget on Active. Moving a card is a first-class
+operation: drag and the keyboard Move menu both execute
+<code>sd_project_status_set</code> under its legal transition rules, and the board rolls
+back visibly when the engine refuses. The columns are enforced by the engine;
+the drag is optimistic, the truth is not.</p>
+<p><strong>Interview before you write.</strong> Selecting a template or method in the Studio
+starts a <strong>guided interview</strong> in the chat: the drafted instruction tells the
+model to review existing project evidence first, ask focused questions one at
+a time, and only then write the artifact, run the critic, and report the
+verdict — with a hard guard requiring at least three answered questions
+before any artifact is created. All seven authored templates (journey map,
+ecosystem map, insight register, persona set, service blueprint, stakeholder
+map, jobs-to-be-done) open their interview with a question.</p>
+<p><strong>Read the work, not the chat log.</strong> The right panel renders ASD tool results
+as purpose-built views — an artifact write opens its sanitized SVG render
+with an Open-in-Studio deep link, a review opens its verdict card, a
+factcheck opens a pass/fail table. The canvas workspace gives compare mode,
+an evidence spotlight rail mapping every node to the records it cites, and
+SVG/PNG export for the review pack. And the Library turns the 228-resource
+corpus into a searchable surface whose every hit has a <strong>Use in project</strong>
+action that drafts a provenance-cited librarian instruction into the composer.</p>
+<p><strong>Expect the refusals.</strong> Three surfaced in Article 38&#39;s runs, none swallowed:
+a closed-schema rejection (per-field errors, self-corrected in-turn), a
+dangling-evidence refusal (<code>ev-fabricated-0000-deadbeef</code> — the write came
+back a ToolCallError and the artifact persisted as a draft), and an empty
+gate-approval rejection (<em>approvedBy must be a non-empty string</em>, recorded as
+a gate audit). A tool that silently &quot;fixed&quot; any of these would have produced
+a cleaner transcript and a worse system.</p>
+<p><strong>Close at the gate.</strong> The turn ends with a phase-gate report — artifact
+table with critic verdicts, evidence register, findings — and the contract
+sentence asking for your explicit approval (receipt id, name, rationale).
+Then reload the page: the counts must match exactly. After browser reload
+<em>and</em> server restart, Article 38&#39;s Meridian project reloaded 26 artifacts
+and 15 evidence records unchanged — persistence is the demo, and receipts
+are the proof.</p>
+<p>For the integration architecture — slots, loopback routes, the 24-row
+capability projection, boundaries — read <a href="./dsh-workbench.html">the DSH workbench
+page</a>; Article 38 carries the full case studies and
+screenshot set.</p>
 <h2 id="the-gate-in-ci">The gate in CI</h2>
 <p>The fact-check&#39;s exit code is the integration point: 0 when every artifact in the project passes integrity, acceptance, and review; 1 on any failure. A minimal pipeline step — run it from a checkout with the suite built, against the workspace your pipeline materialized:</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>#!/usr/bin/env bash
