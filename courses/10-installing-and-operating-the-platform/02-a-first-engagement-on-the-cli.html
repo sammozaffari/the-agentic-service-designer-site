@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A first engagement on the CLI — Course 10 — Installing and operating the platform | The Agentic Service Designer">
+<title>A first engagement on the CLI | Course 10 — Installing and operating the platform</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  :root { color-scheme: light; }
+  body.module-page { background: var(--paper-tint); }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
+  .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+  .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
+  .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
+  .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
+  .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
+  .module-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  .module-body th, .module-body td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
+  .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
+  .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
+</head>
+<body class="module-page">
+  <div class="module-wrap">
+    <nav class="module-crumb"><a href="../10-installing-and-operating-the-platform.html"><i data-lucide="arrow-left"></i>Course 10 — Installing and operating the platform</a></nav>
+    <article class="module-body">
+
+<h1 id="a-first-engagement-on-the-cli">A first engagement on the CLI</h1>
+<p>The CLI pack (<code>asd</code>) is the fastest way to learn the engine because every
+tool call is visible. This module runs one complete Discover loop on a small
+fictional engagement — <strong>Harbor Loop Cafe, breakfast service</strong> — including
+two failures you will hit in real life.</p>
+<p><img src="images/03-cli-create-evidence.png" alt="CLI create + evidence"></p>
+<h2 id="create-and-capture">Create and capture</h2>
+<pre><code class="language-bash">export ASD_WORKSPACE=/tmp/demo/projects        # projects default to ~/.asd/projects
+asd project-create --name &quot;Harbor Loop Cafe&quot; --client &quot;Harbor Loop&quot; \
+  --sector hospitality --service breakfast-service
+</code></pre>
+<p>The project lands as <code>harbor-loop-cafe-1d0affe7/</code> with <code>project.json</code>,
+<code>artifacts/</code>, <code>evidence/</code>, <code>renders/</code>, <code>sops/</code>. Then capture evidence — every
+record is content-addressed:</p>
+<pre><code class="language-bash">asd evidence-add --projectId harbor-loop-cafe-1d0affe7 --kind quote \
+  --source guest-01 --body &quot;The coffee arrived cold twice this week&quot;
+#   &quot;id&quot;: &quot;24bfb42e6eb855d8f33ea9535cdbe9ce2b8881945ff8fdf6d52f7e2b15c26d9b&quot;,
+</code></pre>
+<p>Three records: two guest quotes, one POS telemetry line, one rota note.</p>
+<h2 id="failure-1-methods-enforce-their-own-preconditions">Failure 1 — methods enforce their own preconditions</h2>
+<pre><code class="language-text">$ asd method-run --projectId harbor-loop-cafe-1d0affe7 --methodId aeiou-coding
+asd method-run: method &quot;aeiou-coding&quot; requires at least 3 evidence records; project has 2.
+</code></pre>
+<p>With only two records captured, the SOP refuses to run. Add the third record
+and it passes. Nothing was half-written; there is nothing to clean up.</p>
+<h2 id="write-the-typed-artifact">Write the typed artifact</h2>
+<pre><code class="language-bash">asd artifact-write --projectId … --methodId aeiou-coding --title &#39;Breakfast peak clusters&#39; \
+  --nodes &#39;[{&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Cold coffee at handoff&quot;,
+             &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;24bfb42e…&quot;},{&quot;evidenceId&quot;:&quot;e3d55af0…&quot;}],
+             &quot;fields&quot;:{&quot;cluster&quot;:&quot;quality&quot;,&quot;theme&quot;:&quot;handoff delay&quot;}},
+            …]&#39; --edges &#39;[]&#39;
+#   &quot;status&quot;: &quot;draft&quot;
+</code></pre>
+<p>Closed schema: unknown fields rejected, cited ids must resolve, acceptance
+minimums enforced (three nodes × two evidence refs here). The artifact lands
+as a <strong>draft</strong> — finality belongs to the Critic.</p>
+<h2 id="failure-2-review-rows-are-contracts-too">Failure 2 — review rows are contracts too</h2>
+<p>A pass verdict requires at least one <strong>evidence-cited</strong> row and cannot carry
+defects; a veto requires defect rows each naming a fix. Omit the citation and
+the gate answers: <code>pass verdict requires at least one evidence-cited review row</code>.</p>
+<p><img src="images/04-cli-gate-review-phase.png" alt="Gate, review, factcheck, phase"></p>
+<h2 id="review-factcheck-the-human-gate">Review → factcheck → the human gate</h2>
+<pre><code class="language-text">$ asd review --projectId … --artifactId 55e7efb3703d4c7e… --verdict pass --rows &#39;[…]&#39;
+  &quot;status&quot;: &quot;final&quot;
+  &quot;verdict&quot;: &quot;pass&quot;
+
+$ asd factcheck --projectId …
+  &quot;pass&quot;: true
+
+$ asd phase-advance --projectId … --toPhase define --idempotencyKey gate-1 \
+    --approvalReceipt &#39;{&quot;receiptId&quot;:&quot;hl-gate-discover-1&quot;,&quot;decision&quot;:&quot;approve&quot;,…}&#39;
+    &quot;toPhase&quot;: &quot;define&quot;
+    &quot;outcome&quot;: &quot;advanced&quot;
+</code></pre>
+<p><code>factcheck</code> exits nonzero while anything is draft or failing integrity — that
+is what makes it usable as a CI step. The phase gate demands a full approval
+receipt (<code>receiptId</code>, <code>decision:&quot;approve&quot;</code>, <code>rationale</code>, <code>approvedBy</code>,
+<code>approvedAt</code>) and re-checks that every design artifact is final before it
+moves discover → define.</p>
+<h2 id="hands-on-lab">Hands-on lab</h2>
+<p>Reproduce this loop end-to-end, but deliberately: omit <code>--client</code> at create,
+run <code>aeiou-coding</code> with two records, submit a pass row without an evidence id.
+Keep all three failure messages in your notes — recognizing them fast is the
+skill.</p>
+
+
+      <div class="module-nav"><span>← <a href="./01-install-in-five-commands.html">Install in five commands</a></span><span><a href="./03-the-mcp-server-on-every-host.html">The MCP server on every host</a> →</span></div>
+    </article>
+  </div>
+  <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=0</script>
+</body>
+</html>

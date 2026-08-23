@@ -188,6 +188,82 @@
 <h3 id="lifecycle-diagram-from-raw-staff-data-to-an-investment-grade-chain">Lifecycle diagram — from raw staff data to an investment-grade chain</h3>
 <p></p>
 <hr>
+<h2 id="worked-example-a-fully-populated-seven-link-chain-with-a-kpi-tree">Worked Example: A Fully Populated Seven-Link Chain with a KPI Tree</h2>
+<p><strong>The fixture.</strong> Northfield Regional Health&#39;s day-surgery follow-up service. Known baselines from the evidence store: 18% of patients miss the first follow-up; median callback latency is 62 hours; three portals duplicate data entry; ward nurses spend ~40 minutes per patient chasing GP confirmation. The measurer&#39;s job: populate all seven links so the chain reads as one causal sentence, each link carrying a metric, a baseline, and a target.</p>
+<p><strong>Step 1 — fill the chain, lead to lag.</strong> Targets assume the toolchain investment lands in month 0; the lag column is the earliest honest checkpoint per the time-lagged cascade.</p>
+<table>
+<thead>
+<tr>
+<th align="left">#</th>
+<th align="left">link</th>
+<th align="left">metric</th>
+<th align="left">baseline</th>
+<th align="left">target</th>
+<th align="left">lag</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">Internal service quality</td>
+<td align="left">nurse minutes per patient on GP-confirmation chasing</td>
+<td align="left">40 min</td>
+<td align="left">10 min</td>
+<td align="left">~30d</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">Employee satisfaction</td>
+<td align="left">ward-nurse eNPS</td>
+<td align="left">-12</td>
+<td align="left">+10</td>
+<td align="left">~30d</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">Retention &amp; productivity</td>
+<td align="left">agency-nurse hours per week</td>
+<td align="left">210 h</td>
+<td align="left">120 h</td>
+<td align="left">~90d</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">External service value</td>
+<td align="left">median callback latency</td>
+<td align="left">62 h</td>
+<td align="left">24 h</td>
+<td align="left">~60d</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">Customer satisfaction</td>
+<td align="left">post-follow-up top-box CSAT</td>
+<td align="left">61%</td>
+<td align="left">75%</td>
+<td align="left">~60d</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left">Customer loyalty</td>
+<td align="left">first-follow-up attendance (missed rate inverted)</td>
+<td align="left">82% (18% miss)</td>
+<td align="left">92% (8% miss)</td>
+<td align="left">~120d</td>
+</tr>
+<tr>
+<td align="left">7</td>
+<td align="left">Revenue growth &amp; profitability</td>
+<td align="left">avoidable readmission cost per 100 procedures</td>
+<td align="left">$41k</td>
+<td align="left">$28k</td>
+<td align="left">~180d</td>
+</tr>
+</tbody></table>
+<p><strong>Step 2 — express it as a <code>kpi-tree</code>.</strong> Tiers carry the lead/lag discipline; <code>parent</code> edges make the causal narrative explicit; <code>baseline</code>/<code>target</code> make each claim falsifiable:</p>
+<p></p>
+<p><strong>Step 3 — write both artifacts.</strong> The <code>service-profit-chain</code> draft holds the seven nodes (<code>metric</code> required, ≥1 evidence id each — the baseline rows cite the telemetry records that produced them); the <code>kpi-tree</code> then attaches via a <code>supports</code> reference, tiers set as above. Expected result: critic pass on the first attempt only if every one of the seven nodes cites its baseline source — link 3 (agency hours) is the usual veto, because rosters are the data nobody thought to capture.</p>
+<p><strong>Interpretation.</strong> Read the table aloud as one sentence: <em>because nurses stop chasing confirmations, satisfaction and retention recover, callbacks accelerate, patients feel served, attendance compounds, and cost falls.</em> Any link without a metric breaks the sentence and the investment case with it. Note also what the targets make possible that a workshop poster cannot: in month 3 the measurer re-runs the query, and each node turns green, amber, or red against its own baseline — the chain becomes a live instrument instead of a strategy-slide metaphor.</p>
+<hr>
 <h2 id="4-case-study-lens-article-05-quotthe-service-profit-chain-in-logistics-halcyon39s-account-experiencequot"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 05 — &quot;The Service Profit Chain in Logistics: Halcyon&#39;s Account Experience&quot;</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong></p>
@@ -248,6 +324,6 @@ $CLI factcheck --projectId &lt;pid&gt; ; echo &quot;exit=$?&quot;
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
-  <script>window.__DIAGRAMS__=3</script>
+  <script>window.__DIAGRAMS__=4</script>
 </body>
 </html>

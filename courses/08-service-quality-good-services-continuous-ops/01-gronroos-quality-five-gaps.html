@@ -271,6 +271,86 @@ $CLI factcheck --projectId kestrel-quality-ops-1e9bfb41   # exit 0: all artifact
 <h3 id="lifecycle-diagram-draft-veto-final">Lifecycle diagram — draft, veto, final</h3>
 <p></p>
 <hr>
+<h2 id="worked-example-scoring-northfield39s-follow-up-service-against-the-five-gaps">Worked example: scoring Northfield&#39;s follow-up service against the five gaps</h2>
+<p><strong>Fixture.</strong> Northfield Regional Health&#39;s day-surgery follow-up service, with four evidence records already in the project store:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Evidence id</th>
+<th align="left">Kind</th>
+<th align="left">Body (abridged)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>3f9a1c7e…8b60</code></td>
+<td align="left">quote</td>
+<td align="left">&quot;Nobody told me when my results would come back. I called three times.&quot; — patient P-07</td>
+</tr>
+<tr>
+<td align="left"><code>8c2e5f19…d7b3</code></td>
+<td align="left">quote</td>
+<td align="left">&quot;The leaflet says the GP letter goes out same day. My GP had nothing after two weeks.&quot; — patient P-12</td>
+</tr>
+<tr>
+<td align="left"><code>5d71a3e8…48b2</code></td>
+<td align="left">telemetry</td>
+<td align="left">18% of patients miss the first follow-up; median callback latency 62h (n=412 episodes, Q2)</td>
+</tr>
+<tr>
+<td align="left"><code>a64c2f81…73e6</code></td>
+<td align="left">document</td>
+<td align="left">Ward time audit: nurses spend ~40 min per patient chasing GP confirmation across 3 portals</td>
+</tr>
+</tbody></table>
+<p><strong>Application — gap by gap.</strong> Score each gap open / partially closed / closed, and bind every verdict to an evidence id:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Gap</th>
+<th align="left">Verdict</th>
+<th align="left">Quoted evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1 Knowledge</td>
+<td align="left">open</td>
+<td align="left"><code>5d71a3e8…</code>: the management dashboard reports &quot;follow-up complete&quot; while 18% miss the first appointment</td>
+</tr>
+<tr>
+<td align="left">2 Standards</td>
+<td align="left">open</td>
+<td align="left">the 62h median in <code>5d71a3e8…</code> violates no spec, because no callback-latency standard exists</td>
+</tr>
+<tr>
+<td align="left">3 Delivery</td>
+<td align="left">open</td>
+<td align="left"><code>a64c2f81…</code>: 40 min/patient of nurse chase work is un-designed compensation for the spec</td>
+</tr>
+<tr>
+<td align="left">4 Communication</td>
+<td align="left">open</td>
+<td align="left"><code>8c2e5f19…</code>: the leaflet promises a same-day GP letter the process cannot deliver — overpromise as operational defect</td>
+</tr>
+<tr>
+<td align="left">5 Service</td>
+<td align="left">open</td>
+<td align="left"><code>3f9a1c7e…</code>: the patient supplies the coordination the service was expected to provide</td>
+</tr>
+</tbody></table>
+<p><strong>Expected artifact.</strong> The scores persist as an <code>experience-audit</code> — one node per gap, <code>issue</code> required, evidence per node:</p>
+<pre><code class="language-json">{ &quot;kind&quot;: &quot;experience-audit&quot;, &quot;methodId&quot;: &quot;service-quality-diagnostic&quot;,
+  &quot;nodes&quot;: [
+    { &quot;id&quot;: &quot;g4&quot;, &quot;label&quot;: &quot;Communication gap: discharge promise&quot;,
+      &quot;evidence&quot;: [{ &quot;evidenceId&quot;: &quot;8c2e5f19a47b03d6c81e2a95f46b1d703c9e62a84f15b3d7069c2e8f41a5d7b3&quot; }],
+      &quot;fields&quot;: { &quot;issue&quot;: &quot;Leaflet promises same-day GP letter; delivery takes up to 14 days&quot;,
+                  &quot;severity&quot;: &quot;critical&quot;, &quot;touchpoint&quot;: &quot;discharge pack&quot; } },
+    { &quot;id&quot;: &quot;g1&quot;, &quot;label&quot;: &quot;Knowledge gap: invisible misses&quot;,
+      &quot;evidence&quot;: [{ &quot;evidenceId&quot;: &quot;5d71a3e8c06b42f9a13d7e25b98c40f16d2a7c53e91b84f06c3d5a29e71f48b2&quot; }],
+      &quot;fields&quot;: { &quot;issue&quot;: &quot;18% first-follow-up miss rate absent from any management report&quot;,
+                  &quot;severity&quot;: &quot;high&quot; } } ] }
+</code></pre>
+<p><strong>Interpretation.</strong> Every open verdict names a quote or a number, never an impression — an uncited gap score is an assertion, and the gap-1 evidence gate from §2 exists to refuse exactly that. Gap 4 surfaces first in the patient&#39;s experience, but gap 2 is the one remediation must close first: until a measurable callback standard exists, no other fix can be audited.</p>
+<hr>
 <h2 id="4-case-study-lens-kestrel-energy-article-22-and-lighthouse-transit-article-31"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Kestrel Energy (Article 22) and Lighthouse Transit (Article 31)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Both articles are illustrative composites from this repo&#39;s <code>articles/</code> corpus; their metrics and transcripts are fictional.</p>

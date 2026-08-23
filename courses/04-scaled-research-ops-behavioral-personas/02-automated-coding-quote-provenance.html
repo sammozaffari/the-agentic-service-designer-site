@@ -243,6 +243,106 @@ type ArtifactNode = {
 <li><strong>Single-source clusters are hypotheses.</strong> Lumen treated any pattern seen in one school as a follow-up question, not a finding. The <code>aeiou-coding</code> gate (&quot;reject a cluster built from only one source&quot;) and the <code>min-evidence-per-node: 2</code> acceptance rule make that stance executable.</li>
 </ul>
 <hr>
+<h2 id="worked-example-the-same-four-quotes-through-open-axial-and-affinity-passes">Worked example: the same four quotes through open, axial, and affinity passes</h2>
+<p><strong>Fixture.</strong> Four verbatim lines from the Fernwood corpus (module 04.1&#39;s import), with their content-addressed ids:</p>
+<table>
+<thead>
+<tr>
+<th align="left">#</th>
+<th align="left">quote</th>
+<th align="left">evidence id (prefix)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">q1</td>
+<td align="left">&quot;I waited on hold for forty minutes before anyone picked up.&quot;</td>
+<td align="left"><code>34d366d04daacaf2…</code></td>
+</tr>
+<tr>
+<td align="left">q2</td>
+<td align="left">&quot;The call handler could not see my earlier report, so I repeated everything.&quot;</td>
+<td align="left"><code>08605591b1b71133…</code></td>
+</tr>
+<tr>
+<td align="left">q3</td>
+<td align="left">&quot;I took a day off work and nobody showed up.&quot;</td>
+<td align="left"><code>157bb1b7b9fa399b…</code></td>
+</tr>
+<tr>
+<td align="left">q4</td>
+<td align="left">&quot;I reported the same leak three times; each call started from zero.&quot;</td>
+<td align="left"><code>2d4e5451681e64e8…</code></td>
+</tr>
+</tbody></table>
+<p><strong>Pass 1 — open coding.</strong> Stay close to the language; one code per observed move, no themes yet.</p>
+<table>
+<thead>
+<tr>
+<th align="left">quote</th>
+<th align="left">open codes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">q1</td>
+<td align="left">&quot;waited on hold forty minutes&quot;; &quot;no one picked up&quot;</td>
+</tr>
+<tr>
+<td align="left">q2</td>
+<td align="left">&quot;handler could not see earlier report&quot;; &quot;repeated everything&quot;</td>
+</tr>
+<tr>
+<td align="left">q3</td>
+<td align="left">&quot;took a day off work&quot;; &quot;nobody showed up&quot;</td>
+</tr>
+<tr>
+<td align="left">q4</td>
+<td align="left">&quot;reported same leak three times&quot;; &quot;each call started from zero&quot;</td>
+</tr>
+</tbody></table>
+<p><strong>Pass 2 — axial coding.</strong> Relate codes into categories with properties and a causal condition.</p>
+<table>
+<thead>
+<tr>
+<th align="left">category</th>
+<th align="left">properties</th>
+<th align="left">member codes</th>
+<th align="left">causal condition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Record does not travel</td>
+<td align="left">who carries the history (the tenant); cost = re-telling</td>
+<td align="left">q2 codes; q4 codes</td>
+<td align="left">handlers and visits share no case memory</td>
+</tr>
+<tr>
+<td align="left">Promise without confirmation</td>
+<td align="left">a time or pickup is asserted; no check-back; cost = wasted day</td>
+<td align="left">q1 codes; q3 codes</td>
+<td align="left">appointments and queues have no confirmation loop</td>
+</tr>
+</tbody></table>
+<p><strong>Pass 3 — affinity clustering (KJ).</strong> Rename categories by the <em>need</em>, not the activity, and write the <code>affinity-cluster-set</code>:</p>
+<pre><code class="language-json">{&quot;artifact&quot;: {&quot;id&quot;: &quot;a8d12489311c93257cc11a1d27bf7ed9&quot;, &quot;kind&quot;: &quot;affinity-cluster-set&quot;,
+  &quot;methodId&quot;: &quot;aeiou-coding&quot;,
+  &quot;nodes&quot;: [
+    {&quot;id&quot;: &quot;cl-continuity&quot;, &quot;label&quot;: &quot;Tenants need the service to remember their case&quot;,
+     &quot;evidence&quot;: [
+       {&quot;evidenceId&quot;: &quot;08605591b1b71133da32cdfaf46487c1dad421558a7be03fbe6dca269bf7b4f1&quot;,
+        &quot;quote&quot;: &quot;The call handler could not see my earlier report, so I repeated everything.&quot;},
+       {&quot;evidenceId&quot;: &quot;2d4e5451681e64e88dfdd7067ebf7ff83191fda31e44b829e228cb54dc47a8d7&quot;,
+        &quot;quote&quot;: &quot;I reported the same leak three times; each call started from zero.&quot;}],
+     &quot;fields&quot;: {&quot;cluster&quot;: &quot;Interactions&quot;, &quot;theme&quot;: &quot;record-does-not-travel&quot;}},
+    {&quot;id&quot;: &quot;cl-reliability&quot;, &quot;label&quot;: &quot;Tenants need confirmed commitments, not optimistic ones&quot;,
+     &quot;evidence&quot;: [
+       {&quot;evidenceId&quot;: &quot;34d366d04daacaf2ab9e5b9d895b06723762e90c2bbaa583e204b32db5b1d673&quot;,
+        &quot;quote&quot;: &quot;I waited on hold for forty minutes before anyone picked up.&quot;},
+       {&quot;evidenceId&quot;: &quot;157bb1b7b9fa399b1f487dd5640609348a0159f91256165900931f15c83556cf&quot;,
+        &quot;quote&quot;: &quot;I took a day off work and nobody showed up.&quot;}],
+     &quot;fields&quot;: {&quot;cluster&quot;: &quot;Interactions&quot;, &quot;theme&quot;: &quot;promise-without-confirmation&quot;}}]}}
+</code></pre>
+<p><strong>Interpretation.</strong> Watch what each pass preserves and discards: open coding keeps the tenant&#39;s words; axial coding adds structure (properties, causal condition) while dropping nothing; affinity renames the structure by need and — crucially — every surviving claim still resolves to a content id in the store. The three tables are not three deliverables; they are one chain of custody from verbatim line to design-relevant pattern, and the <code>min-evidence-per-node: 2</code> rule is what stops pass 3 from laundering a single anecdote into a &quot;theme&quot;.</p>
+<hr>
 <h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab-04b
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;

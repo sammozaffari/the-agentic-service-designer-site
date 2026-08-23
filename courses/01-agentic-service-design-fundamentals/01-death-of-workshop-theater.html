@@ -240,6 +240,35 @@ export type Artifact = {
 <h3 id="lifecycle-diagram-artifact-states">Lifecycle diagram — artifact states</h3>
 <p></p>
 <hr>
+<h2 id="worked-example-six-transcript-lines-three-typed-records-one-citable-insight-register">Worked Example: Six Transcript Lines → Three Typed Records → One Citable Insight Register</h2>
+<p><strong>The fixture.</strong> Six lines from a 25-minute discovery session (ws-01) at Callorna Clinic, on appointment rescheduling:</p>
+<pre><code class="language-text">P1: I tried to move my physio appointment online and the form made me start over three times.
+P1: In the end I just called, and I was on hold for forty minutes.
+R1: Half my morning is rebooking people who gave up on the portal.
+P2: I got a text saying my appointment changed but it didn&#39;t say to what.
+R1: The system sends the confirmation before we finish the slot swap, so the message is often wrong.
+P2: I turned up on the wrong day because I trusted the text.
+</code></pre>
+<p><strong>Step 1 — classify before you capture.</strong> Every line is reported speech, so kind is <code>quote</code> — never <code>observation</code> (rejected by the taxonomy) and never paraphrase. Lines P1&#39;s two statements are one episode, so they travel as one record body. Three records, three sources (<code>ws-01-p1</code>, <code>ws-01-r1</code>, <code>ws-01-p2</code>).</p>
+<p><strong>Step 2 — capture.</strong> <code>sd_evidence_add</code> per record mints content-addressed ids (real output, disposable run 2026-08-23):</p>
+<pre><code class="language-json">{&quot;id&quot;:&quot;8b603633b761c25af271d270b1dc4c96e04e9d2d23d5115e24d530ed6d99e1a2&quot;,&quot;source&quot;:&quot;ws-01-p2&quot;,&quot;kind&quot;:&quot;quote&quot;}
+{&quot;id&quot;:&quot;bad03326aca8e84aafed186643bcd6de2ce4c0f189868f47a9daa5e75725b579&quot;,&quot;source&quot;:&quot;ws-01-r1&quot;,&quot;kind&quot;:&quot;quote&quot;}
+{&quot;id&quot;:&quot;f70abec029d50b58237d678e984cb2d0fca51139407f6625bea306125e99d0ad&quot;,&quot;source&quot;:&quot;ws-01-p1&quot;,&quot;kind&quot;:&quot;quote&quot;}
+</code></pre>
+<p><strong>Step 3 — synthesize into the insight register.</strong> The register is artifact kind <code>insight-set</code> (produced by <code>insight-statement-formulation</code>; node field <code>insight</code> required, edges forbidden — insights cite evidence, not each other). <code>sd_artifact_write</code> with two nodes:</p>
+<pre><code class="language-json">{&quot;accepted&quot;:true,&quot;status&quot;:&quot;draft&quot;,
+ &quot;artifact&quot;:{&quot;id&quot;:&quot;6943a57bbf39402ca1f8d3d0c0ff8b2b&quot;,&quot;kind&quot;:&quot;insight-set&quot;,
+  &quot;methodId&quot;:&quot;insight-statement-formulation&quot;,&quot;status&quot;:&quot;draft&quot;},
+ &quot;nodes&quot;:[
+  {&quot;id&quot;:&quot;i1&quot;,&quot;label&quot;:&quot;Confirmation-before-completion defect&quot;,
+   &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;bad03326…b579&quot;},{&quot;evidenceId&quot;:&quot;8b603633…e1a2&quot;}],
+   &quot;fields&quot;:{&quot;insight&quot;:&quot;The flow fires the confirmation SMS before the slot swap completes, so patients act on wrong information.&quot;,&quot;confidence&quot;:&quot;high&quot;,&quot;theme&quot;:&quot;broken-notification&quot;,&quot;opportunity&quot;:&quot;Gate the SMS on transaction completion.&quot;}},
+  {&quot;id&quot;:&quot;i2&quot;,&quot;label&quot;:&quot;Self-service abandonment into phone queue&quot;,
+   &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;f70abec0…90ad&quot;}],
+   &quot;fields&quot;:{&quot;insight&quot;:&quot;Form restarts push patients off the portal into a 40-minute phone queue, converting a digital task into failure demand.&quot;,&quot;confidence&quot;:&quot;medium&quot;,&quot;theme&quot;:&quot;channel-collapse&quot;,&quot;opportunity&quot;:&quot;Persist form state across errors.&quot;}}]}
+</code></pre>
+<p><strong>Interpretation.</strong> The provenance chain is now unbroken and auditable in both directions: insight <code>i1</code> cites <code>bad03326…</code> and <code>8b603633…</code>, which resolve to R1&#39;s and P2&#39;s exact words, which trace to session ws-01. Nobody can later &quot;improve&quot; the quotes — editing the body changes the SHA-256 and dangles every citation. Confidence is honestly asymmetric: <code>i1</code> is corroborated by two speakers on opposite sides of the counter (<code>high</code>); <code>i2</code> rests on one patient (<code>medium</code>) and is flagged for triangulation with portal telemetry before it can anchor an investment case. A photographed sticky-note wall cannot express any of this — who said it, how sure we are, or what would make us surer.</p>
+<hr>
 <h2 id="4-case-study-lens-article-01-quotthe-ai-first-service-design-operating-systemquot"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 01 — &quot;The AI-First Service Design Operating System&quot;</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> The <code>articles/</code> corpus is a set of illustrative composites, not client runlogs.</p>

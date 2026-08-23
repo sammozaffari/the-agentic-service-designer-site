@@ -250,6 +250,137 @@ $CLI method-run --projectId fernwood-repairs-blueprint-sprint-7cee33e4 --methodI
 </code></pre>
 <p>Note the fail-closed behaviour: with fewer than 4 evidence records, <code>method-run</code> refuses — <code>&quot;requires at least 4 evidence records; project has N.&quot;</code> The contract is enforced <em>before</em> any agent writes a word.</p>
 <hr>
+<h2 id="worked-example-from-a-journey-segment-to-a-five-lane-fragment">Worked example: From a journey segment to a five-lane fragment</h2>
+<p>This exercise takes one journey-map segment — the symptom view — and derives the blueprint fragment that diagnoses it. The method is fixed: each journey stage contributes at most one customer-actions row, taken verbatim; everything else must be discovered as organizational machinery and cited to its own evidence.</p>
+<p><strong>Fixture — journey segment (<code>journey-map</code>, three nodes):</strong></p>
+<pre><code class="language-json">[
+  {&quot;id&quot;:&quot;j1&quot;,&quot;label&quot;:&quot;Tenant reports leak via online portal&quot;,
+   &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;6326084aa23af33006921f498f92561a3f6d1504a52fbf6af9eb494551d0edaa&quot;}],
+   &quot;fields&quot;:{&quot;stage&quot;:&quot;report&quot;,&quot;touchpoint&quot;:&quot;portal&quot;,&quot;emotion&quot;:&quot;relieved&quot;}},
+  {&quot;id&quot;:&quot;j2&quot;,&quot;label&quot;:&quot;Tenant waits three weeks for a booking date&quot;,
+   &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;43c4d2a9458b583384e10142f27087b9723bddbe6c8862d59100a6dd132d38ba&quot;}],
+   &quot;fields&quot;:{&quot;stage&quot;:&quot;wait&quot;,&quot;touchpoint&quot;:&quot;sms&quot;,&quot;emotion&quot;:&quot;anxious&quot;}},
+  {&quot;id&quot;:&quot;j3&quot;,&quot;label&quot;:&quot;Plumber arrives without the triage details&quot;,
+   &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;2719105f93111f352cd60bb7764ee314d5f4ee3426d77493d1fb2c96c4011024&quot;}],
+   &quot;fields&quot;:{&quot;stage&quot;:&quot;visit&quot;,&quot;touchpoint&quot;:&quot;front door&quot;,&quot;emotion&quot;:&quot;frustrated&quot;}}
+]
+</code></pre>
+<p><strong>Step-by-step application.</strong> For each stage, ask four questions in lane order: What does the customer physically hold or see? What does the customer do (verbatim from the journey)? Who acts in view of the customer? What happens that the customer never sees? Never invent a step: two new rows below required evidence the journey never cited — the depot scheduling SOP <code>6c5c4e80bc1fc8612f09fb6dd34d8d52df55446e3303e43dfd3ef2546617d194</code> and the re-keying quote <code>8c54aad267ff689d700d02a0cb20a4b47ff98aba9c60d1b02adb0c947ef5b4ec</code>.</p>
+<p><strong>Lane-by-lane mapping table:</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">Journey stage</th>
+<th align="left">physical-evidence</th>
+<th align="left">customer-actions</th>
+<th align="left">frontstage-actions</th>
+<th align="left">backstage-actions</th>
+<th align="left">support-processes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">report</td>
+<td align="left">SMS booking reference</td>
+<td align="left">report online (from j1)</td>
+<td align="left">agent triages urgency</td>
+<td align="left">agent re-keys portal details into scheduler</td>
+<td align="left">policy engine starts 24h/20-day clocks</td>
+</tr>
+<tr>
+<td align="left">wait</td>
+<td align="left">status SMS</td>
+<td align="left">phone for status (from j2, <code>marker: &quot;W&quot;</code>)</td>
+<td align="left">—</td>
+<td align="left">16:00 batch dispatch to contractor round</td>
+<td align="left">ticketing system tracks reopen rate</td>
+</tr>
+<tr>
+<td align="left">visit</td>
+<td align="left">job sheet</td>
+<td align="left">admit plumber (from j3)</td>
+<td align="left">plumber attends without triage context (<code>marker: &quot;F&quot;</code>)</td>
+<td align="left">depot releases round</td>
+<td align="left">—</td>
+</tr>
+</tbody></table>
+<p><strong>Expected artifact fragment (<code>service-blueprint</code>):</strong></p>
+<pre><code class="language-json">{&quot;kind&quot;:&quot;service-blueprint&quot;,&quot;status&quot;:&quot;draft&quot;,
+ &quot;nodes&quot;:[
+  {&quot;id&quot;:&quot;ca1&quot;,&quot;label&quot;:&quot;Tenant reports leak via online portal&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;6326084a…&quot;}],&quot;fields&quot;:{&quot;lane&quot;:&quot;customer-actions&quot;,&quot;stage&quot;:&quot;report&quot;}},
+  {&quot;id&quot;:&quot;fs1&quot;,&quot;label&quot;:&quot;Contact centre agent triages urgency&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;8c54aad2…&quot;}],&quot;fields&quot;:{&quot;lane&quot;:&quot;frontstage-actions&quot;,&quot;stage&quot;:&quot;report&quot;}},
+  {&quot;id&quot;:&quot;bs1&quot;,&quot;label&quot;:&quot;Agent re-keys portal details into scheduler&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;8c54aad2…&quot;}],&quot;fields&quot;:{&quot;lane&quot;:&quot;backstage-actions&quot;,&quot;stage&quot;:&quot;report&quot;}},
+  {&quot;id&quot;:&quot;sp1&quot;,&quot;label&quot;:&quot;Policy engine starts 24h/20-day clocks&quot;,&quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;38f83fea…&quot;}],&quot;fields&quot;:{&quot;lane&quot;:&quot;support-processes&quot;,&quot;stage&quot;:&quot;report&quot;}}],
+ &quot;edges&quot;:[
+  {&quot;id&quot;:&quot;b1&quot;,&quot;from&quot;:&quot;ca1&quot;,&quot;to&quot;:&quot;fs1&quot;,&quot;relation&quot;:&quot;triggers&quot;,&quot;fields&quot;:{&quot;label&quot;:&quot;crosses line of interaction&quot;}},
+  {&quot;id&quot;:&quot;b2&quot;,&quot;from&quot;:&quot;fs1&quot;,&quot;to&quot;:&quot;bs1&quot;,&quot;relation&quot;:&quot;hands-to&quot;,&quot;fields&quot;:{&quot;label&quot;:&quot;crosses line of visibility&quot;}},
+  {&quot;id&quot;:&quot;b3&quot;,&quot;from&quot;:&quot;bs1&quot;,&quot;to&quot;:&quot;sp1&quot;,&quot;relation&quot;:&quot;depends-on&quot;,&quot;fields&quot;:{&quot;label&quot;:&quot;crosses line of internal interaction&quot;}}],
+ &quot;references&quot;:[{&quot;artifactId&quot;:&quot;&lt;journey-map id&gt;&quot;,&quot;kind&quot;:&quot;journey-map&quot;,&quot;relation&quot;:&quot;derived-from&quot;,
+  &quot;provenance&quot;:{&quot;source&quot;:&quot;method&quot;,&quot;methodId&quot;:&quot;service-blueprinting&quot;,&quot;note&quot;:&quot;Lanes operationalise journey stages j1-j3.&quot;}}]}
+</code></pre>
+<p><strong>Interpretation.</strong> The fan-out is the lesson: three journey nodes became nine blueprint nodes because one customer experience is produced by many organizational steps. Emotions stay in the journey map; the blueprint carries actors, lanes, and line crossings. The <code>derived-from</code> reference with mandatory provenance lets a reviewer walk from any lane row back to the stage and quote that motivated it.</p>
+<hr>
+<h2 id="worked-example-institution-and-rule-map-one-row-becomes-one-blueprint-dependency">Worked example: Institution and rule map — one row becomes one blueprint dependency</h2>
+<p>Before drawing lanes, map the rules actors actually follow — formal policy, informal convention, system-imposed constraint. Institutions are the operating rules that make service actors behave predictably, and conflicts between rules are where services break. Six rows for the repairs service:</p>
+<table>
+<thead>
+<tr>
+<th align="left">#</th>
+<th align="left">Actor</th>
+<th align="left">Operative rule</th>
+<th align="left">Rule basis (evidence id prefix)</th>
+<th align="left">Conflict it exposes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">Contact-centre agent</td>
+<td align="left">Re-key portal submissions into the scheduler before triage</td>
+<td align="left"><code>8c54aad2…</code> quote</td>
+<td align="left">Portal and scheduler hold divergent versions of the same job</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">Depot controller</td>
+<td align="left">Non-urgent jobs batch at 16:00, released next morning</td>
+<td align="left"><code>6c5c4e80…</code> document</td>
+<td align="left">Batch delay stacks onto the 24h urgent clock</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">Policy engine</td>
+<td align="left">Urgent leaks: 24h; routine: 20 working days</td>
+<td align="left"><code>38f83fea…</code> document</td>
+<td align="left">Tenant-visible promise assumes same-day triage</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">Contractor plumber</td>
+<td align="left">Attend with the job sheet as dispatched; never re-triage on site</td>
+<td align="left"><code>2719105f…</code> quote</td>
+<td align="left">Job sheet lacks triage context; wrong-fix risk</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">Ticketing system</td>
+<td align="left">A reopened ticket re-enters the standard queue</td>
+<td align="left"><code>43c4d2a9…</code> telemetry</td>
+<td align="left">Rework is invisible as a priority class</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left">Tenant</td>
+<td align="left">Keep the SMS booking reference as proof of the appointment</td>
+<td align="left"><code>6326084a…</code> quote</td>
+<td align="left">The SMS is the only artifact spanning all actors</td>
+</tr>
+</tbody></table>
+<p>Rows 2 and 3 are the structural conflict: the batching rule can consume most of the 24-hour urgent clock before a human ever sees the job. That conflict is not a workshop anecdote — it becomes one typed dependency edge in the blueprint, between the two nodes whose evidence records carry the conflicting rules:</p>
+<pre><code class="language-json">{&quot;id&quot;:&quot;b4&quot;,&quot;from&quot;:&quot;sp1&quot;,&quot;to&quot;:&quot;bs2&quot;,&quot;relation&quot;:&quot;depends-on&quot;,
+ &quot;fields&quot;:{&quot;label&quot;:&quot;24h clock starts before the 16:00 batch releases the job&quot;}}
+</code></pre>
+<p>Here <code>sp1</code> (policy clocks, citing <code>38f83fea…</code>) and <code>bs2</code> (batch dispatch, citing <code>6c5c4e80…</code>) carry the citations; the edge makes the collision visible as architecture.</p>
+<p><strong>Interpretation.</strong> A rule map converts &quot;how things work around here&quot; into checkable rows, each carrying a citation. When two rules conflict, the blueprint must show the collision as a dependency between the nodes that enforce each rule — that is the difference between an operational specification and organizational folklore.</p>
+<hr>
 <h2 id="4-case-study-lens-article-11-fernwood-council-housing-repairs"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 11 — Fernwood Council Housing Repairs</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 11 (<em>Service Blueprints as Operational Diagnostics: Fernwood Council&#39;s Housing Repairs Service</em>) is a synthetic composite case study from this repo&#39;s <code>articles/</code> corpus. Its counts and transcripts are illustrative, not measured production data.</p>

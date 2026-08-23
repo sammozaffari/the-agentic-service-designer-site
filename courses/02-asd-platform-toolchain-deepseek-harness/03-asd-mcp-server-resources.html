@@ -207,13 +207,47 @@
 
 // id 7 — resources/read: the chapter itself
 {&quot;id&quot;:7,&quot;result&quot;:{&quot;contents&quot;:[{&quot;uri&quot;:&quot;asd://books/12-service-dominant-logic/03-value-co-creation&quot;,
-  &quot;mimeType&quot;:&quot;text/markdown&quot;,&quot;text&quot;:&quot;---\nbook: \&quot;Service-Dominant Logic: ... (12127 chars)&quot;}]}}
+  &quot;mimeType&quot;:&quot;text/markdown&quot;,&quot;text&quot;:&quot;---\n[frontmatter elided]\n… (12127 chars)&quot;}]}}
 
 // id 9 — prompts/get mapper: {&quot;description&quot;: ..., &quot;messages&quot;:[{&quot;role&quot;:&quot;user&quot;,
 //   &quot;content&quot;:{&quot;text&quot;:&quot;# SDAP Role Contract — the collaboration protocol\n&gt; Canonical source:
 //   suite/packages/knowledge/data/practice-contract.json ...&quot;}}]}
 </code></pre>
 <p>Error behavior, verified: a fabricated URI (<code>asd://books/12-service-dominant-logic/01-introduction</code>, which does not exist) returns <code>{&quot;id&quot;:7,&quot;error&quot;:{&quot;code&quot;:-32002,&quot;message&quot;:&quot;resource not found: asd://books/12-service-dominant-logic/01-introduction&quot;}}</code>. The correct first chapter URI is <code>asd://books/12-service-dominant-logic/01-from-goods-to-service-dominant-logic</code> — discover real URIs with <code>resources/list</code>, never guess stems.</p>
+<h3 id="worked-example-paginated-capture-from-page-1-cursor-to-a-lodged-evidence-record">Worked example — paginated capture: from page-1 cursor to a lodged evidence record</h3>
+<p><strong>Fixture.</strong> You are building an evidence base and want one chapter of the corpus captured with full provenance. Two protocol calls, then one tool call.</p>
+<p><strong>Step 1 — <code>resources/list</code>, first page (no cursor):</strong></p>
+<pre><code class="language-jsonc">// request
+{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:2,&quot;method&quot;:&quot;resources/list&quot;}
+// response (trimmed, real): 100 descriptors + the cursor for page 2
+{&quot;id&quot;:2,&quot;result&quot;:{&quot;resources&quot;:[
+    {&quot;uri&quot;:&quot;asd://articles/01&quot;,&quot;name&quot;:&quot;article-01&quot;,&quot;mimeType&quot;:&quot;text/markdown&quot;,
+     &quot;size&quot;:52264,&quot;version&quot;:&quot;1&quot;,&quot;provenance&quot;:&quot;articles/01/README.md&quot;},
+    {&quot;uri&quot;:&quot;asd://books/01-this-is-service-design-doing/01-why-service-design&quot;,
+     &quot;name&quot;:&quot;01-why-service-design&quot;,&quot;title&quot;:&quot;Why Service Design?&quot;,&quot;mimeType&quot;:&quot;text/markdown&quot;,
+     &quot;size&quot;:9078,&quot;version&quot;:&quot;1&quot;,&quot;provenance&quot;:&quot;books/01-this-is-service-design-doing/01-why-service-design.md&quot;},
+    …98 more…],
+  &quot;nextCursor&quot;:&quot;b2Zmc2V0OjEwMA&quot;}}   // opaque base64url of &quot;offset:100&quot;
+</code></pre>
+<p><strong>Step 2 — <code>resources/read</code> on the chosen chapter URI:</strong></p>
+<pre><code class="language-jsonc">// request
+{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:3,&quot;method&quot;:&quot;resources/read&quot;,
+ &quot;params&quot;:{&quot;uri&quot;:&quot;asd://books/01-this-is-service-design-doing/01-why-service-design&quot;}}
+// response (text elided; envelope fields real)
+{&quot;id&quot;:3,&quot;result&quot;:{&quot;contents&quot;:[
+  {&quot;uri&quot;:&quot;asd://books/01-this-is-service-design-doing/01-why-service-design&quot;,
+   &quot;mimeType&quot;:&quot;text/markdown&quot;,&quot;size&quot;:9078,&quot;version&quot;:&quot;1&quot;,
+   &quot;provenance&quot;:&quot;books/01-this-is-service-design-doing/01-why-service-design.md&quot;,
+   &quot;text&quot;:&quot;---\n[frontmatter: corpus provenance fields]\n# Why Service Design?\n…(9040 chars)&quot;}]}}
+</code></pre>
+<p><strong>Step 3 — lodge the capture as project evidence</strong> so downstream artifacts can cite it (CLI form shown; the MCP <code>tools/call sd_evidence_add</code> shape is identical):</p>
+<pre><code class="language-bash">node suite/packages/runtime/lib/cli.mjs evidence-add --projectId w02-verify-2f006547 \
+  --source corpus-capture --kind document \
+  --body &quot;asd://books/01-this-is-service-design-doing/01-why-service-design (9078 bytes, provenance books/01-this-is-service-design-doing/01-why-service-design.md) — captured via resources/read after resources/list page 1 cursor b2Zmc2V0OjEwMA.&quot;
+# → {&quot;evidence&quot;:{&quot;id&quot;:&quot;60379238d54d33c835273445745e1218a1665c9aa6055c947aafee23129a01ed&quot;,
+#    &quot;kind&quot;:&quot;document&quot;,&quot;capturedAt&quot;:&quot;2026-08-23T00:06:40.816Z&quot;, …}}
+</code></pre>
+<p><strong>Interpretation.</strong> Notice the division of labor: <code>resources/list</code> gives you <em>descriptors</em> (address, size, provenance) cheaply and stably across pages; <code>resources/read</code> gives you <em>content</em> for exactly one address — paginating to find, then reading precisely what you found. The capture discipline is the point — the evidence record&#39;s id is the SHA-256 of its own content, so the lodged record, the <code>asd://</code> URI, and the repo path in <code>provenance</code> are three pointers to one fact. When a journey-map node later cites <code>60379238…29a01ed</code>, factcheck can walk that chain mechanically, and nobody has to take the citation on trust.</p>
 <h3 id="34-corpus-retrieval-through-the-sd-knowledge-tool">3.4 Corpus retrieval through the <code>sd_knowledge</code> tool</h3>
 <p><code>resources/read</code> is the protocol-native path. The <code>sd_knowledge</code> tool is the role-facing path (the Librarian&#39;s lookup): <code>resourceQuery</code> searches corpus URIs/names case-insensitively, and <code>resource</code> fetches an exact URI:</p>
 <pre><code class="language-bash">&#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:8,&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{&quot;name&quot;:&quot;sd_knowledge&quot;,

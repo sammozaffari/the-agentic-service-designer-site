@@ -311,6 +311,48 @@
 <td align="left">manifest counts</td>
 </tr>
 </tbody></table>
+<h3 id="worked-example-the-host-matrix-decision-exercise">Worked example — the host-matrix decision exercise</h3>
+<p><strong>Fixture.</strong> You are staffing the Northfield Regional Health day-surgery follow-up redesign (18% of patients miss their first follow-up; ward nurses spend ~40 min per patient chasing GP confirmation). Three work lanes need distribution surfaces. Decide each from capability rows, not preference:</p>
+<ul>
+<li><strong>Lane A — native plugin host.</strong> The core design team works in a host with native subagents, slash commands, and skills directories.</li>
+<li><strong>Lane B — MCP-only host.</strong> An analyst&#39;s client speaks MCP (one server config slot) but has no plugin/skill format.</li>
+<li><strong>Lane C — prompt-only review lane.</strong> An external red-team reviewer works in a plain chat host with no MCP client at all.</li>
+</ul>
+<p><strong>Step-by-step application.</strong> Read each candidate&#39;s committed <code>capabilities.json</code> and select on decisive rows:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Lane</th>
+<th align="left">Chosen pack</th>
+<th align="left">Decisive capability rows</th>
+<th align="left">Explicit non-claims</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">A</td>
+<td align="left"><code>claude-code</code> (<code>mcp-host</code>)</td>
+<td align="left"><code>tool-execution: supported</code> (pack-local MCP server runs the shared registry); <code>role-prompts: supported</code>; <code>corpus-resources: supported</code>; <code>mcp-self-contained: supported</code></td>
+<td align="left"><code>host-execution: unverified</code>; <code>host-agent-spawn: unsupported</code> — the pack never spawns; the host spawns its own subagents; <code>cli-json-coercion: unsupported</code></td>
+</tr>
+<tr>
+<td align="left">B</td>
+<td align="left"><code>mcp</code> (emitted bundle)</td>
+<td align="left"><code>mcp-host</code> profile: vendored <code>asd-mcp</code> + <code>asd-mcp.json</code>; disposable-boot verified; same 29 tools / 10 prompts, 225 pack-local corpus resources</td>
+<td align="left">No host-native UI; anything beyond MCP framing is out of scope</td>
+</tr>
+<tr>
+<td align="left">C</td>
+<td align="left"><code>grok</code> (<code>prompt-only</code>)</td>
+<td align="left">Every execution row <code>unsupported</code>; <code>role-prompts: unverified</code>; <code>host-execution: unverified</code></td>
+<td align="left">This lane can <em>voice</em> the critic role but cannot run <code>sd_review</code>; verdicts it drafts must be re-entered by a human on a real surface — claiming otherwise is a veto-grade defect</td>
+</tr>
+</tbody></table>
+<p><strong>Expected artifact.</strong> In a live project the decision is recorded, not remembered — as an orchestration plan step whose <code>capability</code> field cites the row it relies on:</p>
+<pre><code class="language-json">{&quot;stepId&quot;:&quot;lane-a-mapping&quot;,&quot;capability&quot;:&quot;tool-execution&quot;,&quot;targetSurface&quot;:&quot;claude-code&quot;,
+ &quot;rationale&quot;:&quot;capabilities.json row tool-execution=supported (pack-local MCP server)&quot;,
+ &quot;nonClaims&quot;:[&quot;host-execution unverified&quot;,&quot;host-agent-spawn unsupported&quot;]}
+</code></pre>
+<p><strong>Interpretation.</strong> The matrix is a decision procedure: the rows are the evidence, and the labels do the routing — <code>supported</code> selects, <code>unverified</code> cautions, <code>unsupported</code> disqualifies. Two boundaries deserve explicit name-checks because they are the easiest to overstate: <strong>buzz</strong> is an <code>mcp-host</code> persona pack (10 keyless personas, native pack verified) whose live use is <em>deferred</em> — a persona distribution, not a student runtime; <strong>dsh</strong> declares <code>execution: canonical-tool-registry</code> with <code>unsupportedBehavior: return-structured-error</code>, but its <code>phase.gate.status</code> row is <code>unsupported</code> and Studio live integration is deferred — never present either one as a verified execution environment.</p>
 <hr>
 <h2 id="4-enterprise-case-study-lens"> 4. Enterprise Case Study Lens</h2>
 <h3 id="article-36-as-honesty-benchmark-wattle-grove-community-care-articles36">Article 36 (as honesty benchmark) — <em>Wattle Grove Community Care</em> (<code>articles/36</code>)</h3>

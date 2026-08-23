@@ -260,6 +260,121 @@ $CLI review --projectId $PID --artifactId a416ee0a… --verdict pass \
 <h3 id="score-matrix-diagram-the-run39s-verdicts-by-cluster">Score matrix diagram — the run&#39;s verdicts by cluster</h3>
 <p></p>
 <hr>
+<h2 id="worked-example-all-fifteen-principles-scored-on-one-journey">Worked example: all fifteen principles scored on one journey</h2>
+<p><strong>Fixture.</strong> Northfield&#39;s day-surgery follow-up journey, audited against the evidence pool from 08.1&#39;s worked example — patient interviews (<code>3f9a1c7e…</code>, <code>8c2e5f19…</code>), Q2 telemetry (<code>5d71a3e8…</code>), and the ward time audit (<code>a64c2f81…</code>).</p>
+<p><strong>Application — the full matrix.</strong> One row per principle; every below-target verdict carries an evidence id:</p>
+<table>
+<thead>
+<tr>
+<th align="center">#</th>
+<th align="left">Principle</th>
+<th align="left">Verdict</th>
+<th align="left">Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="left">Is easy to find</td>
+<td align="left">fail</td>
+<td align="left"><code>3f9a1c7e…</code> — patients discover the follow-up only by phoning in</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="left">Clearly explains its purpose</td>
+<td align="left">pass</td>
+<td align="left">discharge pack defines the follow-up&#39;s goal</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="left">Sets a user&#39;s expectations</td>
+<td align="left">fail</td>
+<td align="left"><code>8c2e5f19…</code> — same-day GP-letter promise unmet</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="left">Enables the outcome</td>
+<td align="left">fail</td>
+<td align="left"><code>5d71a3e8…</code> — 18% miss the first follow-up</td>
+</tr>
+<tr>
+<td align="center">5</td>
+<td align="left">Works in a familiar way</td>
+<td align="left">pass</td>
+<td align="left">standard outpatient appointment pattern</td>
+</tr>
+<tr>
+<td align="center">6</td>
+<td align="left">Requires no prior knowledge</td>
+<td align="left">partial</td>
+<td align="left"><code>3f9a1c7e…</code> — callback instructions assume portal literacy</td>
+</tr>
+<tr>
+<td align="center">7</td>
+<td align="left">Agnostic of organisational structures</td>
+<td align="left">fail</td>
+<td align="left"><code>a64c2f81…</code> — three portals mirror three departments</td>
+</tr>
+<tr>
+<td align="center">8</td>
+<td align="left">Minimum possible steps</td>
+<td align="left">fail</td>
+<td align="left"><code>a64c2f81…</code> — GP confirmation re-entered three times</td>
+</tr>
+<tr>
+<td align="center">9</td>
+<td align="left">Consistent throughout</td>
+<td align="left">fail</td>
+<td align="left"><code>8c2e5f19…</code> — leaflet and practice diverge</td>
+</tr>
+<tr>
+<td align="center">10</td>
+<td align="left">No dead ends</td>
+<td align="left">fail</td>
+<td align="left"><code>3f9a1c7e…</code> — no response path after a missed callback</td>
+</tr>
+<tr>
+<td align="center">11</td>
+<td align="left">Usable by everyone, equally</td>
+<td align="left">partial</td>
+<td align="left">phone-only recovery path excludes some patients</td>
+</tr>
+<tr>
+<td align="center">12</td>
+<td align="left">Responds to change quickly</td>
+<td align="left">fail</td>
+<td align="left"><code>5d71a3e8…</code> — 62h latency shows no adaptive capacity</td>
+</tr>
+<tr>
+<td align="center">13</td>
+<td align="left">Clearly explains decisions</td>
+<td align="left">fail</td>
+<td align="left"><code>3f9a1c7e…</code> — no reason given for delayed results</td>
+</tr>
+<tr>
+<td align="center">14</td>
+<td align="left">Easy to get human assistance</td>
+<td align="left">partial</td>
+<td align="left">ward phone exists but routes through the switchboard</td>
+</tr>
+<tr>
+<td align="center">15</td>
+<td align="left">Requires the right knowledge</td>
+<td align="left">fail</td>
+<td align="left"><code>a64c2f81…</code> — patients re-state data the system already holds</td>
+</tr>
+</tbody></table>
+<p>Tally: <strong>11 fail, 3 partial, 1 pass.</strong></p>
+<p><strong>Expected artifact</strong> — an <code>insight-set</code> with all fifteen nodes, verdicts encoded inside the closed schema (<code>description</code>), evidence per node:</p>
+<pre><code class="language-json">{ &quot;kind&quot;: &quot;insight-set&quot;, &quot;methodId&quot;: &quot;good-services-audit-15&quot;,
+  &quot;nodes&quot;: [
+    { &quot;id&quot;: &quot;p07&quot;, &quot;label&quot;: &quot;Is agnostic of organisational structures&quot;,
+      &quot;evidence&quot;: [{ &quot;evidenceId&quot;: &quot;a64c2f81d35e09b74c18f6a2d95e7301b84c6f2a5d39e107c62b8f45a91d73e6&quot; }],
+      &quot;fields&quot;: { &quot;insight&quot;: &quot;Patients traverse three portals that mirror three internal departments&quot;,
+                  &quot;theme&quot;: &quot;org-agnostic&quot;, &quot;source&quot;: &quot;good-services-audit-15&quot;,
+                  &quot;confidence&quot;: &quot;high&quot;, &quot;description&quot;: &quot;verdict: fail&quot; } } ] }
+</code></pre>
+<p><strong>Interpretation.</strong> The chain property shows immediately: the single pass (purpose) cannot rescue the journey, because principle 7&#39;s fail poisons every downstream step with re-entry work. Sequence remediation from the structural cluster — kill the triple re-entry (principles 7 and 8) before polishing expectation-setting, or the communications fix will be built on a journey that still strands users.</p>
+<hr>
 <h2 id="4-case-study-lens-the-virtual-ward-at-capacity-article-33"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: The Virtual Ward at Capacity (Article 33)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 33 (<code>articles/33/README.md</code>) is an illustrative composite of a telehealth scale-up &quot;with the ASD Critic on every gate.&quot;</p>

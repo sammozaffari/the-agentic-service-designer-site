@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Agents, skills, and the /asd command — Course 10 — Installing and operating the platform | The Agentic Service Designer">
+<title>Agents, skills, and the /asd command | Course 10 — Installing and operating the platform</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  :root { color-scheme: light; }
+  body.module-page { background: var(--paper-tint); }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
+  .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+  .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
+  .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
+  .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
+  .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
+  .module-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  .module-body th, .module-body td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
+  .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
+  .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
+</head>
+<body class="module-page">
+  <div class="module-wrap">
+    <nav class="module-crumb"><a href="../10-installing-and-operating-the-platform.html"><i data-lucide="arrow-left"></i>Course 10 — Installing and operating the platform</a></nav>
+    <article class="module-body">
+
+<h1 id="agents-skills-and-the-asd-command">Agents, skills, and the /asd command</h1>
+<p>The plugin carries three component families. Knowing what each one loads —
+and what it does <em>not</em> do — is the difference between driving the platform
+and being driven by it.</p>
+<h2 id="the-ten-role-agents">The ten role agents</h2>
+<p>Each role is a subagent with its own system prompt derived from the canonical
+role contract: authority (what it may decide), inputs (which artifacts it
+reads), outputs (which kinds it authors), handoffs, veto rights, and the human
+checkpoints it must respect.</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Reads</th>
+<th>Authors</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>orchestrator</td>
+<td>project, plans</td>
+<td>orchestration-plan</td>
+</tr>
+<tr>
+<td>researcher</td>
+<td>brief, evidence asks</td>
+<td>research-plan, discussion-guide, evidence</td>
+</tr>
+<tr>
+<td>synthesizer</td>
+<td>raw evidence</td>
+<td>insight-set, affinity-cluster-set</td>
+</tr>
+<tr>
+<td>mapper</td>
+<td>insights</td>
+<td>journey-map, service-blueprint, ecosystem-map</td>
+</tr>
+<tr>
+<td>ideator / prototyper</td>
+<td>insights, HMWs</td>
+<td>hmw-set, concept-set, prototype-plan, walkthrough-script</td>
+</tr>
+<tr>
+<td>measurer</td>
+<td>baseline + targets</td>
+<td>kpi-tree, test-report</td>
+</tr>
+<tr>
+<td>critic</td>
+<td>everything</td>
+<td>review verdicts, review-veto-log</td>
+</tr>
+<tr>
+<td>presenter</td>
+<td>finals</td>
+<td>executive-report, presentation-deck</td>
+</tr>
+<tr>
+<td>librarian</td>
+<td>corpus</td>
+<td>canon grounding, provenance checks</td>
+</tr>
+</tbody></table>
+<p>In Claude Code you invoke them as subagents (<code>@sd-mapper …</code>) or let <code>/asd</code>
+route for you.</p>
+<h2 id="the-skills-method-skills">The {{SKILLS}} method skills</h2>
+<p>Every method from the corpus ships as a <code>SKILL.md</code> with <code>name</code> +
+<code>description</code> frontmatter — that frontmatter is what makes them triggerable.
+Skills encode the same SOPs the engine enforces: which evidence minimums
+apply, which artifact kind the method produces, which acceptance rules gate
+finality. Triggering one by name in conversation should end in the same
+<code>sd_method_run</code> → <code>sd_artifact_write</code> → <code>sd_review</code> sequence as calling the
+tools by hand; if a session claims an artifact without those calls, nothing
+was persisted.</p>
+<h2 id="what-asd-does">What /asd does</h2>
+<p>The <code>asd</code> command is the orchestrator shortcut: it frames the engagement,
+routes role work, keeps every write on the tool path, and stops at phase
+gates. Its own text is generated from the enforcement notes in the emitter —
+it cannot claim gates that do not exist, because the claim and the code come
+from one place.</p>
+<h2 id="how-hosts-load-all-this">How hosts load all this</h2>
+<ul>
+<li><strong>Claude Code</strong>: plugin root components (<code>agents/</code>, <code>skills/</code>,
+<code>commands/asd.md</code>) plus <code>.mcp.json</code> — verified live: Skills (75), Agents
+(10), MCP servers (1).</li>
+<li><strong>Kimi / OpenCode</strong>: native agent files + <code>&lt;name&gt;/SKILL.md</code> skill
+directories + their MCP config formats.</li>
+<li><strong>Codex</strong>: <code>AGENTS.md</code> conventions + <code>.codex/config.toml</code> MCP registration.</li>
+<li><strong>OMP / Pi</strong>: neutral <code>agents/&lt;role&gt;/instructions.md</code> +
+<code>skills/&lt;skill&gt;/SKILL.md</code> trees to copy into discovery paths.</li>
+<li><strong>Grok / AGY</strong>: prompt adapters only — role posture without runtime tools;
+pair them with the standalone <code>asd-mcp</code> repo when tools are needed.</li>
+</ul>
+<h2 id="hands-on-lab">Hands-on lab</h2>
+<p>In your host of choice: trigger three different skills by name and confirm
+each produced (or requested) real store writes via the tool path. Then ask
+the critic role to review something that has no producing method and observe
+the honest refusal — finality requires a gate that exists.</p>
+
+
+      <div class="module-nav"><span>← <a href="./03-the-mcp-server-on-every-host.html">The MCP server on every host</a></span><span><a href="./05-operate-verify-publish.html">Operate, verify, publish</a> →</span></div>
+    </article>
+  </div>
+  <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=0</script>
+</body>
+</html>

@@ -297,6 +297,59 @@ $CLI review --projectId … --artifactId 817bb8ebd20c49efbe13bc7ccf64a8c1 --verd
 <h3 id="review-lifecycle-diagram">Review lifecycle diagram</h3>
 <p></p>
 <hr>
+<h2 id="worked-example-annotating-one-task-tower-from-a-raw-interview-excerpt">Worked example: annotating one task tower from a raw interview excerpt</h2>
+<p><strong>Fixture — raw excerpt (<code>int-04</code>, Meridian rider, evening commute):</strong></p>
+<blockquote>
+<p>&quot;Before I even leave the office I&#39;ve already opened the app twice. Then at the stop I&#39;m watching the road, not the phone, because the phone has lied to me before. When the bus finally comes I&#39;m half-relieved, half-annoyed. What I never see is anyone on Meridian&#39;s side noticing any of this — the driver doesn&#39;t know the app said 6 minutes for the last 20.&quot;</p>
+</blockquote>
+<p><strong>Step 1 — comb the excerpt into task statements, keeping the user&#39;s verbs.</strong> Each line yields one atomic, active-verb task; no interface nouns survive the comb:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Excerpt line</th>
+<th align="left">Temporal position</th>
+<th align="left">Backstage signal (what the org is doing, invisibly)</th>
+<th align="left">Task statement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">&quot;opened the app twice&quot; before leaving</td>
+<td align="left"><strong>before</strong></td>
+<td align="left">none — no proactive alert exists</td>
+<td align="left"><em>reassure myself the bus is coming</em></td>
+</tr>
+<tr>
+<td align="left">&quot;watching the road, not the phone&quot;</td>
+<td align="left"><strong>during</strong></td>
+<td align="left">prediction feed silently degrades</td>
+<td align="left"><em>verify the promise with my own eyes</em></td>
+</tr>
+<tr>
+<td align="left">&quot;half-relieved, half-annoyed&quot;</td>
+<td align="left"><strong>after</strong></td>
+<td align="left">arrival is unlogged; no closure event</td>
+<td align="left"><em>absorb the mismatch and move on</em></td>
+</tr>
+<tr>
+<td align="left">&quot;the driver doesn&#39;t know&quot;</td>
+<td align="left">cross-cutting</td>
+<td align="left">prediction never reaches the frontline</td>
+<td align="left"><em>(belief, not a task — feeds <code>belief</code>)</em></td>
+</tr>
+</tbody></table>
+<p><strong>Step 2 — stack the tasks into one tower.</strong> All three tasks serve a single cognitive intent — <em>know whether to trust the prediction</em> — so they form one tower in the <code>verify</code> mental space, not three.</p>
+<p><strong>Step 3 — expected artifact: one <code>mental-model-map</code> node.</strong> The quote is minted first (<code>sd_evidence_add --source int-04 --kind quote</code>), then the tower:</p>
+<pre><code class="language-json">{&quot;id&quot;: &quot;t2&quot;, &quot;label&quot;: &quot;Tower: Verify the prediction against reality&quot;,
+ &quot;evidence&quot;: [{&quot;evidenceId&quot;: &quot;9c1f2b7a4d6e8305f2a94c1be7d035689ab41c2e5f708d3b69a1e4c2075f9d31&quot;,
+               &quot;quote&quot;: &quot;the phone has lied to me before&quot;}],
+ &quot;fields&quot;: {&quot;side&quot;: &quot;user&quot;,
+            &quot;belief&quot;: &quot;the prediction will lie, so only my own eyes count&quot;,
+            &quot;goal&quot;: &quot;trust I can act on the information&quot;,
+            &quot;theme&quot;: &quot;verify&quot;,
+            &quot;context&quot;: &quot;before/during/after: re-checking begins before departure and never resolves&quot;}}
+</code></pre>
+<p><strong>Interpretation.</strong> The before/during/after columns keep the comb honest: a task that spans all three positions is a <em>durable concern</em>, which is why it earns a tower rather than a sub-task. The backstage column is the alignment line in embryo — every entry of &quot;none&quot; or &quot;silently degrades&quot; predicts a gap or half-supported tower before a single offering is mapped.</p>
+<hr>
 <h2 id="4-case-study-lens-lumen-edtech-article-10"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Lumen EdTech (Article 10)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Lumen EdTech is a fictional composite client from <code>articles/10/</code>; figures are illustrative.</p>

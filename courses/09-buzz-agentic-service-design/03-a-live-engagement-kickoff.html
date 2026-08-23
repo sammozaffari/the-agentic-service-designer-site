@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A live engagement kickoff — Course 09 — BUZZ for Agentic Service Design | The Agentic Service Designer">
+<title>A live engagement kickoff | Course 09 — BUZZ for Agentic Service Design</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  :root { color-scheme: light; }
+  body.module-page { background: var(--paper-tint); }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
+  .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+  .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
+  .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
+  .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
+  .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
+  .module-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  .module-body th, .module-body td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
+  .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
+  .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
+</head>
+<body class="module-page">
+  <div class="module-wrap">
+    <nav class="module-crumb"><a href="../09-buzz-agentic-service-design.html"><i data-lucide="arrow-left"></i>Course 09 — BUZZ for Agentic Service Design</a></nav>
+    <article class="module-body">
+
+<h1 id="a-live-engagement-kickoff">A live engagement kickoff</h1>
+<p>This module and the next three walk one complete receipted session: the
+<strong>Northfield Regional Health</strong> outpatient follow-up engagement
+(<code>sd/northfield-followup-care</code>). Northfield is a fictional composite health
+system; the relay session, runtime replies, and Canvas round trip are live and
+receipted.</p>
+<p>The scenario: 18% of day-surgery patients miss their first follow-up
+appointment; median wound-check callback latency is 62 hours; patients re-enter
+data across three portals; ward nurses spend about forty minutes per patient
+chasing GP confirmation. The redesign target is the 14-day post-discharge
+journey.</p>
+<p><img src="images/01-channel-roster.png" alt="Channel roster"></p>
+<p><em>Reconstructed from session receipts. All frames in this course are re-renders of live receipt data (message events, roster pubkeys, canvas hash), not native-app pixels.</em></p>
+<h2 id="step-1-create-the-channel">Step 1 — create the channel</h2>
+<pre><code class="language-bash">buzz channels create \
+  --name &quot;sd/northfield-followup-care&quot; \
+  --type stream --visibility private \
+  --description &quot;ASD engagement: Northfield Regional Health — outpatient follow-up care after day surgery.&quot;
+</code></pre>
+<pre><code class="language-json">{&quot;accepted&quot;:true,
+ &quot;channel_id&quot;:&quot;7909e866-74ef-4ef2-827b-649119aa972e&quot;,
+ &quot;event_id&quot;:&quot;9d38e604ed08809b5c739e23d327c458260ede9c6b5101cddcacc1c1336fbc84&quot;}
+</code></pre>
+<p>Then add the roster (<code>channels add-member</code> per pubkey) — the membership list
+becomes part of your receipt.</p>
+<h2 id="step-2-the-brief">Step 2 — the brief</h2>
+<p>A good brief does four things: names the client as fictional, bounds the work,
+states known signals as <em>signals</em> (not findings), and states where authority
+lives. The kickoff message ends with: <em>&quot;Human authority stays with me at every
+phase gate. Evidence lives in the ASD store; Canvas carries the artifact
+index.&quot;</em></p>
+<p><img src="images/02-kickoff.png" alt="Kickoff"></p>
+<h2 id="step-3-scoped-mentions">Step 3 — scoped mentions</h2>
+<p>One mention per ask, each with a deliverable and a boundary:</p>
+<pre><code class="language-bash">buzz messages send --channel $CH \
+  --mention 1b0d61df9076688c…   \
+  --content &quot;@sd-orchestrator — Maya, you have the intake. Frame the
+  engagement, propose the Discover role workplan, flag first evidence asks.&quot;
+</code></pre>
+<p>Four more follow for researcher, librarian, mapper, critic. Each ask names its
+deliverable (&quot;frame&quot;, &quot;ground in canon&quot;, &quot;draft journey skeleton&quot;, &quot;gate
+posture&quot;) so replies are auditable against requests.</p>
+<p><img src="images/04-role-mentions.png" alt="Role mentions"></p>
+<h2 id="step-4-the-orchestrator39s-runtime-authored-reply">Step 4 — the orchestrator&#39;s runtime-authored reply</h2>
+<p>Maya&#39;s reply arrived signed by her identity:</p>
+<blockquote>
+<p><strong># Northfield Discover frame and workplan</strong>
+…The unit of work is the outpatient follow-up journey from day-surgery
+discharge through day 14… recorded at <code>PLANS/NORTHFIELD_FOLLOWUP_DISCOVER_WORKPLAN_2026-08-23.md</code>.</p>
+</blockquote>
+<p>Note what makes this a <em>runtime-authored</em> reply rather than pasted text: it is
+signed by Maya&#39;s key, it references artifacts by path, and it bounds scope
+without being told to. That combination — signature plus artifact reference —
+is what your receipts must show to claim agent authorship.</p>
+<p><img src="images/03-orchestrator-reply.png" alt="Orchestrator reply"></p>
+<h2 id="hands-on-lab">Hands-on lab</h2>
+<p>Run steps 1–4 on your own relay with your own fictional client. Save:
+the create event id, the member dump after adds, every <code>--mention</code> you send,
+and every signed reply. You will reuse them in module 06 when you assemble the
+Canvas index.</p>
+
+
+      <div class="module-nav"><span>← <a href="./02-the-asd-persona-pack-and-roster.html">The ASD persona pack and the roster</a></span><span><a href="./04-fail-closed-evidence-handshake.html">The fail-closed evidence handshake</a> →</span></div>
+    </article>
+  </div>
+  <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=0</script>
+</body>
+</html>

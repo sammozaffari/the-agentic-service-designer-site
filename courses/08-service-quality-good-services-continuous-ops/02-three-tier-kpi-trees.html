@@ -239,6 +239,81 @@ $CLI export-artifact --projectId $PID --artifactId ddfee25e…
 <h3 id="tree-diagram-the-real-artifact-drawn-from-its-nodes-and-edges">Tree diagram — the real artifact, drawn from its nodes and edges</h3>
 <p></p>
 <hr>
+<h2 id="worked-example-a-three-tier-tree-for-the-follow-up-backlog">Worked example: a three-tier tree for the follow-up backlog</h2>
+<p><strong>Fixture.</strong> A telemetry export for Northfield&#39;s day-surgery follow-up journey:</p>
+<pre><code class="language-csv">metric,value,window
+first_followup_miss_rate_pct,18,Q2
+median_callback_latency_h,62,Q2
+portal_duplicate_entries_per_patient,3,Q2
+nurse_gp_chase_min_per_patient,40,Q2
+followup_completed_within_14d_pct,61,Q2
+followup_cost_per_episode_usd,74,Q2
+</code></pre>
+<p><strong>Application.</strong> Build bottom-up: operational telemetry drives experience KPIs, which roll up to the financial outcome — one edge per causal claim.</p>
+<table>
+<thead>
+<tr>
+<th align="left">Node</th>
+<th align="left">Tier</th>
+<th align="left">Metric</th>
+<th align="right">Baseline</th>
+<th align="right">Target</th>
+<th align="left">Parent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">n1</td>
+<td align="left">operational</td>
+<td align="left">portal duplicate entries per patient</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="left">n3</td>
+</tr>
+<tr>
+<td align="left">n2</td>
+<td align="left">operational</td>
+<td align="left">nurse GP-chase minutes per patient</td>
+<td align="right">40</td>
+<td align="right">10</td>
+<td align="left">n3</td>
+</tr>
+<tr>
+<td align="left">n3</td>
+<td align="left">experience</td>
+<td align="left">median callback latency (h)</td>
+<td align="right">62</td>
+<td align="right">24</td>
+<td align="left">n4</td>
+</tr>
+<tr>
+<td align="left">n4</td>
+<td align="left">experience</td>
+<td align="left">follow-ups completed within 14 days (%)</td>
+<td align="right">61</td>
+<td align="right">90</td>
+<td align="left">n5</td>
+</tr>
+<tr>
+<td align="left">n5</td>
+<td align="left">financial</td>
+<td align="left">follow-up cost per episode ($)</td>
+<td align="right">74</td>
+<td align="right">38</td>
+<td align="left">—</td>
+</tr>
+</tbody></table>
+<p></p>
+<p><strong>Expected artifact</strong> (<code>kpi-tree</code> via <code>kpi-tree-design</code>; each node cites the telemetry evidence record <code>5d71a3e8…</code>):</p>
+<pre><code class="language-json">{ &quot;kind&quot;: &quot;kpi-tree&quot;,
+  &quot;nodes&quot;: [ { &quot;id&quot;: &quot;n3&quot;, &quot;label&quot;: &quot;Median callback latency&quot;,
+               &quot;evidence&quot;: [{ &quot;evidenceId&quot;: &quot;5d71a3e8c06b42f9a13d7e25b98c40f16d2a7c53e91b84f06c3d5a29e71f48b2&quot; }],
+               &quot;fields&quot;: { &quot;tier&quot;: &quot;experience&quot;, &quot;metric&quot;: &quot;median callback latency h&quot;,
+                           &quot;baseline&quot;: 62, &quot;target&quot;: 24 } } ],
+  &quot;edges&quot;: [ { &quot;id&quot;: &quot;e2&quot;, &quot;from&quot;: &quot;n2&quot;, &quot;to&quot;: &quot;n3&quot;, &quot;relation&quot;: &quot;drives&quot;, &quot;fields&quot;: {} },
+             { &quot;id&quot;: &quot;e4&quot;, &quot;from&quot;: &quot;n4&quot;, &quot;to&quot;: &quot;n5&quot;, &quot;relation&quot;: &quot;rolls-up&quot;, &quot;fields&quot;: {} } ] }
+</code></pre>
+<p><strong>Interpretation.</strong> The tree earns its keep on the n2 → n3 edge: the causal claim is that removing duplicate data entry frees the nurse hours that currently produce the 62h latency — a lead-to-lag chain with a built-in time delay that a flat scoreboard cannot express. The baseline/target pair on every node is what turns the financial claim at n5 from rhetoric into something the critic can test.</p>
+<hr>
 <h2 id="4-case-study-lens-servitizing-a-capital-equipment-vendor-article-32"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Servitizing a Capital-Equipment Vendor (Article 32)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 32 (<code>articles/32/README.md</code>, &quot;Air in the Cylinders&quot;) is an illustrative composite.</p>
@@ -279,6 +354,6 @@ $CLI export-artifact --projectId $PID --artifactId ddfee25e…
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
-  <script>window.__DIAGRAMS__=3</script>
+  <script>window.__DIAGRAMS__=4</script>
 </body>
 </html>

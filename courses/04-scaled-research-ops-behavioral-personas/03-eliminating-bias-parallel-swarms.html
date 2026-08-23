@@ -209,6 +209,71 @@ artifacts/review-veto-log.review-fernwood-behavioural-personas-v1.fd18bc3f.json
 <p>Halcyon Logistics (fictional 3PL, ~4,200 B2B accounts) believed its 87.4% SLA attainment meant satisfied shippers while churn ran at 11.8%. The engagement instrumented all five Service Profit Chain links with <strong>unit-level data from independent vantage points</strong> — account managers, warehouse telemetry, and shipper interviews — and the disagreements between those codings were the finding: dashboards said &quot;acceptable&quot; while shippers were exiting.</p>
 <p>That is inter-coder disagreement doing its job. In this toolchain the same dynamic is enforced rather than hoped for: each vantage point is an independent method run over one store, and the critic gate forces disagreements into defect rows with fixes. Halcyon&#39;s redesigned weekly service review ritual is the organizational analogue of <code>sd_review_list</code> — a standing board where contested interpretations stay visible until resolved.</p>
 <hr>
+<h2 id="worked-example-two-coders-six-quotes-one-agreement-calculation">Worked example: two coders, six quotes, one agreement calculation</h2>
+<p><strong>Fixture.</strong> Six verbatim lines from the Fernwood corpus, coded independently by Pass A (<code>aeiou-coding</code>, synthesizer) and Pass B (<code>affinity-diagramming</code>, researcher) against a shared four-theme frame agreed beforehand: <strong>RT</strong> record-does-not-travel, <strong>PC</strong> promise-without-confirmation, <strong>CF</strong> channel-fallback, <strong>CC</strong> closure-communication.</p>
+<table>
+<thead>
+<tr>
+<th align="left">quote (evidence id prefix)</th>
+<th align="left">Pass A</th>
+<th align="left">Pass B</th>
+<th align="left">agree?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">q1 &quot;…on hold for forty minutes…&quot; (<code>34d366d0…</code>)</td>
+<td align="left">PC</td>
+<td align="left">PC</td>
+<td align="left">yes</td>
+</tr>
+<tr>
+<td align="left">q2 &quot;…could not see my earlier report…&quot; (<code>08605591…</code>)</td>
+<td align="left">RT</td>
+<td align="left">RT</td>
+<td align="left">yes</td>
+</tr>
+<tr>
+<td align="left">q3 &quot;…gave up on the online form and emailed a photo…&quot; (<code>215c3e75…</code>)</td>
+<td align="left">CF</td>
+<td align="left">PC</td>
+<td align="left"><strong>no</strong></td>
+</tr>
+<tr>
+<td align="left">q5 &quot;…took a day off work and nobody showed up.&quot; (<code>157bb1b7…</code>)</td>
+<td align="left">PC</td>
+<td align="left">PC</td>
+<td align="left">yes</td>
+</tr>
+<tr>
+<td align="left">q7 &quot;…same leak three times; each call started from zero.&quot; (<code>2d4e5451…</code>)</td>
+<td align="left">RT</td>
+<td align="left">RT</td>
+<td align="left">yes</td>
+</tr>
+<tr>
+<td align="left">q8 &quot;…upload photos but never told me if anyone looked…&quot; (<code>9a447185…</code>)</td>
+<td align="left">CC</td>
+<td align="left">CF</td>
+<td align="left"><strong>no</strong></td>
+</tr>
+</tbody></table>
+<p><strong>Step 1 — simple agreement.</strong> 4 of 6 quotes match: observed agreement = 66.7%.</p>
+<p><strong>Step 2 — the kappa-lite caution.</strong> With four categories and no strong marginal skew, chance agreement sits near 25%, so 66.7% is comfortably above chance but far from consensus-grade (a full Cohen&#39;s kappa would land roughly in the 0.5 band — moderate). The runtime computes no kappa; treat the number as a screening signal, and route the two disagreements into the mechanism that actually exists: review rows.</p>
+<p><strong>Step 3 — disagreements as defects, corroboration as proposal.</strong> The critic vetoes Pass A&#39;s cluster set, and the log persists:</p>
+<pre><code class="language-json">{&quot;artifact&quot;: {&quot;id&quot;: &quot;843a398fca995041dc57ae98d5523484&quot;, &quot;kind&quot;: &quot;review-veto-log&quot;},
+ &quot;rows&quot;: [
+  {&quot;rowKind&quot;: &quot;defect&quot;, &quot;severity&quot;: &quot;medium&quot;,
+   &quot;message&quot;: &quot;q3 coded channel-fallback (A) vs promise-without-confirmation (B): the form failing is a broken commitment, the email is the workaround.&quot;,
+   &quot;fix&quot;: &quot;Recode q3 as PC with CF as a secondary tag; cite q3 in the reliability cluster.&quot;,
+   &quot;evidenceId&quot;: &quot;215c3e757d6d1882f554d2d0b778678a4f61396e88508f37a79ff1572e2253a0&quot;},
+  {&quot;rowKind&quot;: &quot;defect&quot;, &quot;severity&quot;: &quot;medium&quot;,
+   &quot;message&quot;: &quot;q8 coded closure-communication (A) vs channel-fallback (B): the tenant stayed in-channel; the missing element is acknowledgement.&quot;,
+   &quot;fix&quot;: &quot;Recode q8 as CC; add an acknowledgement sub-theme to the closure cluster.&quot;,
+   &quot;evidenceId&quot;: &quot;9a44718565b500785b03c2cae70b1d557fd38eb394ff07d4892cd73e252abbd4&quot;}]}
+</code></pre>
+<p>Remediation rewrites the artifact under the same <code>artifactId</code>; the second-pass review records <code>{&quot;rowKind&quot;: &quot;proposal&quot;, &quot;message&quot;: &quot;Both codings now agree on 6/6 themes after adjudication&quot;, &quot;evidenceId&quot;: &quot;215c3e75…&quot;}</code> and the artifact goes <code>final</code>. Lifecycle states on the board: <code>draft → veto (log persisted) → draft (remediated) → final</code>.</p>
+<p><strong>Interpretation.</strong> The point of the exercise is not the 66.7% — it is that q3 and q8 were forced into the open with verbatim quotes attached, adjudicated against the data rather than seniority, and preserved in the veto log. Agreement you cannot reconstruct is not agreement; here the entire path from disagreement to consensus is a queryable artifact.</p>
+<hr>
 <h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab-04c
 CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;

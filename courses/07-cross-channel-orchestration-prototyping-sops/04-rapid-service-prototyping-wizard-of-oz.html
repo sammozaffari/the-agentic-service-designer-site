@@ -217,6 +217,133 @@ $CLI artifact-write ... --methodId prototype-ladder-gating --title &quot;Ladder 
 <h3 id="rung-state-machine">Rung state machine</h3>
 <p></p>
 <hr>
+<h2 id="worked-example-gating-one-rung-end-to-end-script-report-matrix">Worked example: Gating one rung end to end — script, report, matrix</h2>
+<p>The selected concept from 07.3 (pre-committed callback + shared register) enters the ladder at the Wizard-of-Oz rung: patients experience an apparently automatic &quot;your callback is booked&quot; flow at discharge, while a hidden nurse — the wizard — performs the scheduling manually.</p>
+<p><strong>WoZ script excerpt</strong> (walkthrough-script nodes):</p>
+<table>
+<thead>
+<tr>
+<th align="left">step</th>
+<th align="left">role</th>
+<th align="left">action</th>
+<th align="left">expected</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">w1</td>
+<td align="left">discharging nurse</td>
+<td align="left">taps &quot;book follow-up&quot; on the ward terminal; wizard creates the slot</td>
+<td align="left">confirmation on screen in under 10s</td>
+</tr>
+<tr>
+<td align="left">w2</td>
+<td align="left">patient</td>
+<td align="left">sees the slot printed on the discharge summary</td>
+<td align="left">patient reads the slot unprompted</td>
+</tr>
+<tr>
+<td align="left">w3</td>
+<td align="left">wizard</td>
+<td align="left">writes the slot into the shared register</td>
+<td align="left">all three portals show identical state</td>
+</tr>
+<tr>
+<td align="left">w4</td>
+<td align="left">patient (day 2)</td>
+<td align="left">receives the callback at the booked time</td>
+<td align="left">no inbound &quot;just checking&quot; call</td>
+</tr>
+</tbody></table>
+<p><strong>Test-report rows</strong> — the schema&#39;s <code>min-evidence-per-node 2</code> rule means each row cites two session records:</p>
+<pre><code class="language-json">{&quot;kind&quot;: &quot;test-report&quot;, &quot;nodes&quot;: [
+  {&quot;id&quot;: &quot;r1&quot;, &quot;label&quot;: &quot;Illusion held&quot;,
+   &quot;evidence&quot;: [{&quot;evidenceId&quot;: &quot;cbc03f30be6753851fc8c7c7ce40119d947e4523d4cb69f516f8b32460e51406&quot;},
+                {&quot;evidenceId&quot;: &quot;e730e52e10394e45785efc314333f548b30f00c1e550fdd095d1004183ddb47d&quot;}],
+   &quot;fields&quot;: {&quot;result&quot;: &quot;7 of 8 patients named the booked time unprompted; 1 missed the printout&quot;, &quot;gate-decision&quot;: &quot;advance&quot;, &quot;test&quot;: &quot;WoZ discharge simulation, 8 sessions&quot;}},
+  {&quot;id&quot;: &quot;r2&quot;, &quot;label&quot;: &quot;Wizard latency&quot;,
+   &quot;evidence&quot;: [{&quot;evidenceId&quot;: &quot;cbc03f30be6753851fc8c7c7ce40119d947e4523d4cb69f516f8b32460e51406&quot;},
+                {&quot;evidenceId&quot;: &quot;16d49e8829caceb6213fb005ba9bbd46427d125aa34fa313f87d00fc0c421b00&quot;}],
+   &quot;fields&quot;: {&quot;result&quot;: &quot;wizard needed a mean 42s to create the slot — over the 10s script expectation in 3 sessions&quot;, &quot;gate-decision&quot;: &quot;repeat-with-fix&quot;, &quot;severity&quot;: &quot;medium&quot;, &quot;test&quot;: &quot;WoZ discharge simulation&quot;}}]}
+</code></pre>
+<p><strong>Decision-matrix</strong> scores from <code>prototype-ladder-gating</code>:</p>
+<table>
+<thead>
+<tr>
+<th align="left">option</th>
+<th align="left">criteria</th>
+<th align="left">score</th>
+<th align="left">risk</th>
+<th align="left">recommendation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Advance to concierge pilot</td>
+<td align="left">illusion held; pinned gate &quot;≥7 of 8&quot; met</td>
+<td align="left">4.3</td>
+<td align="left">2</td>
+<td align="left">advance</td>
+</tr>
+<tr>
+<td align="left">Repeat WoZ with a register stub</td>
+<td align="left">wizard latency broke the script in 3 of 8 sessions</td>
+<td align="left">2.1</td>
+<td align="left">4</td>
+<td align="left">repeat</td>
+</tr>
+</tbody></table>
+<p>Interpretation: the gate pinned in the <code>prototype-plan</code> before the run (&quot;≥7 of 8 name the slot&quot;) turned r1 into arithmetic, while r2 shows why a report is more than its headline — the same run produced an advance <em>and</em> a repeat-with-fix. The matrix keeps both decisions side by side, so the concierge rung starts with a known latency defect rather than a cleaned-up story.</p>
+<hr>
+<h2 id="worked-example-experience-staging-across-the-follow-up-touchpoints">Worked example: Experience staging across the follow-up touchpoints</h2>
+<p>Experience staging classifies each touchpoint on two axes — customer <strong>participation</strong> (passive ↔ active) and <strong>connection</strong> (absorption ↔ immersion) — producing four realms: entertainment (passive absorption), educational (active absorption), escapist (active immersion), and esthetic (passive immersion).</p>
+<table>
+<thead>
+<tr>
+<th align="left">Touchpoint</th>
+<th align="left">Participation</th>
+<th align="left">Connection</th>
+<th align="left">Realm</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Discharge briefing (nurse explains the plan)</td>
+<td align="left">active</td>
+<td align="left">absorption</td>
+<td align="left">educational</td>
+</tr>
+<tr>
+<td align="left">Waiting at home for the callback</td>
+<td align="left">passive</td>
+<td align="left">absorption</td>
+<td align="left">entertainment-void — undesigned</td>
+</tr>
+<tr>
+<td align="left">The callback conversation</td>
+<td align="left">active</td>
+<td align="left">immersion</td>
+<td align="left">escapist-leaning educational</td>
+</tr>
+<tr>
+<td align="left">SMS confirmation</td>
+<td align="left">passive</td>
+<td align="left">absorption</td>
+<td align="left">entertainment</td>
+</tr>
+</tbody></table>
+<p>The dominant realm for the redesigned journey is <strong>educational</strong>: the service succeeds when the patient actively takes in a plan they can act on. Staging that realm:</p>
+<ul>
+<li><strong>Theme</strong>: &quot;no loose ends&quot; — every cue reinforces that the loop is already closed.</li>
+<li><strong>Positive cues</strong>: the slot printed on the discharge summary; the nurse naming the exact callback time; one register entry visible from any portal.</li>
+<li><strong>Negative cues to eliminate</strong>: &quot;someone will call you&quot; (vague), portal silence during the wait, any request to re-state details.</li>
+<li><strong>Memorabilia</strong>: the SMS confirmation as a tangible receipt of the experience — the artifact the patient keeps.</li>
+</ul>
+<p>In the toolchain the staging decisions attach to the rung as evidence-cited walkthrough steps, so a cue becomes a testable step rather than a mood-board adjective:</p>
+<pre><code class="language-json">{&quot;kind&quot;: &quot;walkthrough-script&quot;, &quot;nodes&quot;: [
+  {&quot;id&quot;: &quot;s3&quot;, &quot;label&quot;: &quot;Cue check: the named time&quot;,
+   &quot;evidence&quot;: [{&quot;evidenceId&quot;: &quot;0a796459f3bb9dffc3ef8b423a03632cf383b3ac838817eb8ef76399f214058d&quot;}],
+   &quot;fields&quot;: {&quot;step&quot;: &quot;3&quot;, &quot;action&quot;: &quot;Nurse names the booked callback time and points to it on the summary&quot;, &quot;expected&quot;: &quot;patient repeats the time unprompted at the door&quot;, &quot;role&quot;: &quot;discharging nurse&quot;}}]}
+</code></pre>
+<p><strong>Transformation path note.</strong> Staging graduates to a transformation when the offering is the change in the customer, not the performance itself: here the aim is a patient who leaves as a confident self-manager of their recovery. That reframes the success measure — not &quot;did the callback happen&quot; but &quot;does the patient know what to watch for and when to escalate&quot; — and it makes the educational realm a requirement rather than a style, because a transformation cannot be delivered to a passive audience.</p>
+<hr>
 <h2 id="4-case-study-lens-rapid-experiments-at-ember-hospitality-article-17"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Rapid Experiments at Ember Hospitality (Article 17)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 17 (<em>Prototyping Services: Rapid Experiments at Ember Hospitality</em>) is an illustrative composite.</p>

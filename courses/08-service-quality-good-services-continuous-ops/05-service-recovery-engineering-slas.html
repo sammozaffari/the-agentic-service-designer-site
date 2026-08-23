@@ -205,6 +205,55 @@ $CLI review --projectId $PID --artifactId 7cd714a2… --verdict pass \
 <h3 id="playbook-lifecycle-diagram">Playbook lifecycle diagram</h3>
 <p></p>
 <hr>
+<h2 id="worked-example-three-scenarios-deepened-across-justice-sla-and-the-learning-loop">Worked example: three scenarios deepened across justice, SLA, and the learning loop</h2>
+<p><strong>Fixture.</strong> Northfield&#39;s three most frequent failure clusters, induced from the complaint transcripts and telemetry (<code>3f9a1c7e…</code>, <code>8c2e5f19…</code>, <code>5d71a3e8…</code>, <code>a64c2f81…</code>): missed callback, duplicate portal entry, delayed GP letter.</p>
+<p><strong>Application.</strong> Deepen each playbook scenario from §3 by scoring the designed response against all three justice dimensions, attaching an SLA timer, and naming what the incident must teach:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Scenario</th>
+<th align="left">Distributive (fair outcome)</th>
+<th align="left">Procedural (fair process)</th>
+<th align="left">Interactional (fair treatment)</th>
+<th align="left">SLA timer</th>
+<th align="left">Learning-loop entry</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Missed callback</td>
+<td align="left">Same-day results delivery; fee waiver if the delay forced an extra visit</td>
+<td align="left">Auto-dial within 4h of result sign-off; no patient-initiated chase</td>
+<td align="left">Named nurse apologises and states what changed; no &quot;policy&quot; scripts</td>
+<td align="left">4h to first contact, 24h to resolution</td>
+<td align="left">Incident appended as evidence; recurrence &gt;2/quarter triggers a root-cause method re-run</td>
+</tr>
+<tr>
+<td align="left">Duplicate portal entry</td>
+<td align="left">Reimburse travel for the redundant appointment</td>
+<td align="left">Single-entry intake; the patient never re-states data</td>
+<td align="left">The wasted effort is acknowledged explicitly</td>
+<td align="left">correction before the next visit</td>
+<td align="left">Monthly duplicate-entry count becomes a <code>kpi-tree</code> baseline</td>
+</tr>
+<tr>
+<td align="left">GP-letter delay</td>
+<td align="left">Priority re-issue plus written confirmation to the GP</td>
+<td align="left">Letter generated at discharge, tracked to receipt</td>
+<td align="left">Honest status on request; no blame-shifting</td>
+<td align="left">same-day dispatch, 48h confirmed receipt</td>
+<td align="left">Receipt failures enter the standards set as a new measurable <code>measure</code></td>
+</tr>
+</tbody></table>
+<p><strong>Expected artifact</strong> — a <code>recovery-playbook</code> node carrying the deepened fields:</p>
+<pre><code class="language-json">{ &quot;kind&quot;: &quot;recovery-playbook&quot;, &quot;methodId&quot;: &quot;service-recovery-design&quot;,
+  &quot;nodes&quot;: [ { &quot;id&quot;: &quot;r1&quot;, &quot;label&quot;: &quot;Missed-callback scenario&quot;,
+    &quot;evidence&quot;: [{ &quot;evidenceId&quot;: &quot;5d71a3e8c06b42f9a13d7e25b98c40f16d2a7c53e91b84f06c3d5a29e71f48b2&quot; }],
+    &quot;fields&quot;: { &quot;trigger&quot;: &quot;result signed off and no outbound call logged within 4 hours&quot;,
+                &quot;response&quot;: &quot;auto-dial task to the named nurse; fee waiver if the delay caused an extra visit&quot;,
+                &quot;justice&quot;: &quot;procedural&quot;, &quot;owner&quot;: &quot;ward-ops&quot; } } ] }
+</code></pre>
+<p><strong>Interpretation.</strong> The distributive column is deliberately the smallest lever: the fee waiver costs money and buys tolerance, while the 4h procedural trigger is what restores trust — the paradox boundary from §1.4, where speed beats compensation for first-time minor failures. The learning-loop column is what stops the playbook becoming a museum of compensation rules: every executed recovery mints the evidence that either shrinks or re-versions the scenario.</p>
+<hr>
 <h2 id="4-case-study-lens-aria-telecom-article-20"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Aria Telecom (Article 20)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 20 (<code>articles/20/README.md</code>, &quot;Service Recovery &amp; Complaint Journeys at Aria Telecom&quot;) is the method&#39;s own cited source alongside book 19 ch.6.</p>

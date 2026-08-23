@@ -141,6 +141,70 @@
 <h3 id="sequence-diagram-three-gates-around-one-artifact">Sequence diagram — three gates around one artifact</h3>
 <p></p>
 <hr>
+<h2 id="worked-example-a-a-checkpoint-transcript-rejected-receipt-corrected-receipt">Worked Example A: A Checkpoint Transcript — Rejected Receipt, Corrected Receipt</h2>
+<p><strong>The fixture.</strong> A real gate conversation (disposable run, 2026-08-23). Callorna rescheduling project; one journey-map (<code>1528c1c4c25b4902a46d5b0df0b71135</code>) final, factcheck exit 0. The human approver is Dana Okafor, service owner.</p>
+<pre><code class="language-text">orchestrator: All artifacts final, factcheck green. Requesting discover → define.
+dana:         Approved.
+orchestrator: I need that as a receipt, not a sentence. Submitting what I have…
+
+$CLI phase-advance --toPhase define --idempotencyKey gate-1 \
+  --approvalReceipt &#39;{&quot;receiptId&quot;:&quot;RCP-CLN-01&quot;,&quot;approvedBy&quot;:&quot;Dana Okafor&quot;,
+    &quot;decision&quot;:&quot;approve&quot;,&quot;rationale&quot;:&quot;&quot;,&quot;approvedAt&quot;:&quot;2026-08-23T09:14:00Z&quot;}&#39;
+→ asd phase-advance: approvalReceipt.rationale must be a non-empty string   (exit 1)
+
+orchestrator: Refused. The rationale field is empty — &quot;approved&quot; is a decision,
+              not a reason. Why is the evidence base sufficient?
+dana:         Because the journey map is final, every stage is cited, and we can
+              now frame opportunities. Resubmit it like that.
+</code></pre>
+<p><strong>Step 1 — resubmit under a new key.</strong> The refusal is pinned to <code>gate-1</code>; reusing the key replays the recorded refusal even with a perfect receipt (verified: the same key with a corrected receipt returns the original error). Remediation means a <em>new</em> idempotency key:</p>
+<pre><code class="language-bash">$CLI phase-advance --toPhase define --idempotencyKey gate-2 \
+  --approvalReceipt &#39;{&quot;receiptId&quot;:&quot;RCP-CLN-01&quot;,&quot;approvedBy&quot;:&quot;Dana Okafor&quot;,&quot;decision&quot;:&quot;approve&quot;,
+    &quot;rationale&quot;:&quot;Journey map final and fully cited; rescheduling evidence base is sufficient to frame opportunities in define.&quot;,
+    &quot;approvedAt&quot;:&quot;2026-08-23T09:21:00Z&quot;}&#39;
+</code></pre>
+<p><strong>Step 2 — read the stored receipt.</strong> The decision record persists both the receipt and the world-state at approval time:</p>
+<pre><code class="language-json">{&quot;advanced&quot;:true,&quot;decision&quot;:{&quot;kind&quot;:&quot;phase-gate-decision&quot;,&quot;id&quot;:&quot;acbd899f1f344b64976a6639760a3c3b&quot;,
+ &quot;fromPhase&quot;:&quot;discover&quot;,&quot;toPhase&quot;:&quot;define&quot;,&quot;idempotencyKey&quot;:&quot;gate-2&quot;,
+ &quot;receipt&quot;:{&quot;receiptId&quot;:&quot;RCP-CLN-01&quot;,&quot;approvedBy&quot;:&quot;Dana Okafor&quot;,&quot;decision&quot;:&quot;approve&quot;,
+  &quot;rationale&quot;:&quot;Journey map final and fully cited; rescheduling evidence base is sufficient to frame opportunities in define.&quot;,
+  &quot;approvedAt&quot;:&quot;2026-08-23T09:21:00Z&quot;},
+ &quot;evaluation&quot;:{&quot;artifactCount&quot;:1,&quot;finalArtifactIds&quot;:[&quot;1528c1c4c25b4902a46d5b0df0b71135&quot;],
+  &quot;draftArtifactIds&quot;:[],&quot;vetoArtifactIds&quot;:[],&quot;factcheckPass&quot;:true,&quot;factcheckFailures&quot;:[]},
+ &quot;outcome&quot;:&quot;advanced&quot;}}
+</code></pre>
+<p><strong>Interpretation.</strong> The gate refused a <em>contentless</em> approval, not a missing signature — the five receipt fields are all mandatory because each answers a different audit question: who (<code>approvedBy</code>), what (<code>decision</code>), why (<code>rationale</code>), when (<code>approvedAt</code>), and which decision instance (<code>receiptId</code>). The <code>evaluation</code> block is the part no meeting minute ever captures: the exact set of final artifacts the approver was looking at. And the key-pinning behavior teaches the operational rule — a gate attempt is an immutable event, so you never &quot;edit&quot; a refusal, you supersede it with a new keyed attempt.</p>
+<h2 id="worked-example-b-reliability-vs-validity-then-abduction-one-ambiguous-telemetry-dip">Worked Example B: Reliability vs. Validity, Then Abduction — One Ambiguous Telemetry Dip</h2>
+<p><strong>The fixture.</strong> Week 7 telemetry from the Northfield Regional Health day-surgery follow-up portal: completed follow-up confirmations drop from 82% to 64% in one week. One number, one week, no explanation. (This is the same service where 18% of patients miss the first follow-up at baseline.)</p>
+<p><strong>Step 1 — reliability first: is the signal repeatable?</strong> Before any interpretation, ask whether the same measurement procedure yields the same result. Recompute the rate per day (not per week): the dip is concentrated on Wednesday–Friday. Recompute excluding one portal node: the dip survives. Check the ingestion log: no deploy, no schema change, no missing-day gaps. Conclusion: the <em>signal</em> is reliable — a real, recomputable drop, not an instrumentation artifact.</p>
+<p><strong>Step 2 — validity second: does the metric measure what we think?</strong> &quot;Completed confirmation&quot; is a proxy for <em>patients being followed up</em>, but a valid dip in the proxy is not automatically a valid dip in the construct. The SMS-to-portal handoff changed copy the same week (found in the release notes): the proxy now undercounts confirmations completed by phone. Part of the dip is measurement, not behavior.</p>
+<p><strong>Step 3 — abduce hypotheses and design discriminating probes.</strong> Inference to the best explanation means generating rival explanations and finding the cheapest observation that separates them:</p>
+<table>
+<thead>
+<tr>
+<th align="left">#</th>
+<th align="left">abductive hypothesis</th>
+<th align="left">discriminating next probe</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">H1</td>
+<td align="left">Copy change confused patients; behavior genuinely worsened</td>
+<td align="left">Cohort compare: patients who received old vs. new SMS copy, same week — if old-copy cohort is flat, H1 weakens</td>
+</tr>
+<tr>
+<td align="left">H2</td>
+<td align="left">Channel shift: confirmations moved to phone, construct is fine</td>
+<td align="left">Join portal logs to call-centre disposition codes for the dip window — phone confirmations should rise by the missing ~18 points</td>
+</tr>
+<tr>
+<td align="left">H3</td>
+<td align="left">Ward capacity: fewer nurses chasing GP confirmations (~40 min/patient at baseline), so follow-ups genuinely slipped</td>
+<td align="left">Correlate daily dip depth with ward staffing rota — H3 predicts dip tracks understaffed days, not the copy-change date</td>
+</tr>
+</tbody></table>
+<p><strong>Interpretation.</strong> Reliability and validity answer different questions and must be answered in order: an unreliable signal needs no explanation, and a reliable signal may still measure the wrong thing. Abduction then disciplines the jump from data to story — each hypothesis must name the observation that would <em>demote</em> it. Notice the artifact consequences: H2&#39;s probe becomes a telemetry evidence record, H1&#39;s becomes an experiment documented in a <code>test-report</code>, and the surviving hypothesis earns its place in the insight register only with its probe&#39;s evidence id attached.</p>
+<hr>
 <h2 id="4-case-study-lens-article-04-quotservice-design-for-business-turning-claims-into-an-experience-at-aurelia-insurancequot"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 04 — &quot;Service Design for Business: Turning Claims into an Experience at Aurelia Insurance&quot;</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong></p>

@@ -237,6 +237,43 @@ $CLI evidence-import … --onError skip
 <h3 id="import-record-flow-sequence-view">Import record flow — sequence view</h3>
 <p></p>
 <hr>
+<h2 id="worked-example-a-poisoned-csv-row-fails-closed">Worked example: a poisoned CSV row fails closed</h2>
+<p>The librarian stages a three-row callback log and imports it. One row is malformed; the exercise is to watch exactly what the pipeline refuses to do.</p>
+<p><strong>Fixture — <code>imports/callbacks.csv</code> (staged inside the workspace).</strong></p>
+<pre><code class="language-csv">date,caller,note
+2026-08-18,c-11,&quot;Prescription was ready but nobody called.&quot;
+2026-08-19,c-12,&quot;They said the portal would show the result — it never did.
+2026-08-20,c-13,&quot;Callback came two days late.&quot;
+</code></pre>
+<p>Row 2 opens a quoted field and never closes it.</p>
+<p><strong>Step 1 — default policy (<code>onError: fail</code>).</strong></p>
+<pre><code class="language-text">asd evidence-import: evidence import failed for …/imports/callbacks.csv:
+  CSV record contains an unclosed quoted field   (exit 1)
+</code></pre>
+<p>Nothing is imported. Fail-closed is <strong>file-level</strong>: one poisoned row blocks the whole file, because importing rows 1 and 3 while dropping row 2 would fabricate a cleaner dataset than reality provided.</p>
+<p><strong>Step 2 — <code>--onError skip</code>.</strong></p>
+<pre><code class="language-json">{ &quot;imported&quot;: [],
+  &quot;skipped&quot;: [ { &quot;path&quot;: &quot;…/imports/callbacks.csv&quot;,
+                 &quot;error&quot;: &quot;CSV record contains an unclosed quoted field&quot; } ],
+  &quot;files&quot;: 0, &quot;bytes&quot;: 0 }
+</code></pre>
+<p>Exit 0, with the failure <em>named in the report</em> — skip means &quot;quarantine and disclose,&quot; never &quot;absorb silently.&quot;</p>
+<p><strong>Step 3 — repair row 2 (close the quote) and re-import.</strong></p>
+<pre><code class="language-json">{ &quot;imported&quot;: [
+    { &quot;id&quot;: &quot;a1f0…&quot;,  &quot;kind&quot;: &quot;quote&quot;, &quot;body&quot;: &quot;date,caller,note&quot;,
+      &quot;origin&quot;: { &quot;relativePath&quot;: &quot;callbacks.csv&quot;, &quot;format&quot;: &quot;csv&quot;,
+                  &quot;encoding&quot;: &quot;utf8&quot;, &quot;bytes&quot;: 208, &quot;record&quot;: &quot;row&quot;, &quot;ordinal&quot;: 1 } },
+    { &quot;id&quot;: &quot;7c3e…&quot;,  &quot;kind&quot;: &quot;quote&quot;, &quot;body&quot;: &quot;2026-08-18,c-11,\&quot;Prescription was ready but nobody called.\&quot;&quot;,
+      &quot;origin&quot;: { &quot;record&quot;: &quot;row&quot;, &quot;ordinal&quot;: 2, &quot;…&quot;: &quot;…&quot; } },
+    { &quot;id&quot;: &quot;e59b…&quot;,  &quot;kind&quot;: &quot;quote&quot;, &quot;body&quot;: &quot;2026-08-19,c-12,\&quot;They said the portal … never did.\&quot;&quot;,
+      &quot;origin&quot;: { &quot;record&quot;: &quot;row&quot;, &quot;ordinal&quot;: 3, &quot;…&quot;: &quot;…&quot; } },
+    { &quot;id&quot;: &quot;b27d…&quot;,  &quot;kind&quot;: &quot;quote&quot;, &quot;body&quot;: &quot;2026-08-20,c-13,\&quot;Callback came two days late.\&quot;&quot;,
+      &quot;origin&quot;: { &quot;record&quot;: &quot;row&quot;, &quot;ordinal&quot;: 4, &quot;…&quot;: &quot;…&quot; } } ],
+  &quot;skipped&quot;: [], &quot;files&quot;: 1, &quot;bytes&quot;: 208 }
+</code></pre>
+<p><strong>Expected artifact.</strong> Four <code>quote</code> records in the register (CSV rows import as <code>quote</code>), each carrying full provenance — <code>relativePath</code>, <code>format: &quot;csv&quot;</code>, <code>bytes</code>, <code>record: &quot;row&quot;</code>, <code>ordinal</code> — and each id being <code>sha256([source, &quot;quote&quot;, body, origin])</code>.</p>
+<p><strong>Interpretation.</strong> Three habits fall out of the run. First, the importer is a <em>record splitter, not a parser</em>: it stores the raw row text and never invents cell content, which is why the <strong>header row imports as ordinal 1</strong> — cite data rows as ordinals 2–4. Second, provenance columns make a citation answer &quot;which row of which file&quot; exactly, so a critic can check <code>7c3e…</code> against the physical log. Third, because ids are content-addressed, the repair re-import converges — fixed rows mint ids once, and no duplicate records appear no matter how many times the corrected file is re-imported.</p>
+<hr>
 <h2 id="4-case-study-lens-article-09-journey-mapping-from-transcripts-albatross-airways"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 09 — <em>Journey Mapping from Transcripts</em> (Albatross Airways)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 09 is a fictional aviation disruption-recovery composite; this lens applies the taxonomy to its narrative.</p>

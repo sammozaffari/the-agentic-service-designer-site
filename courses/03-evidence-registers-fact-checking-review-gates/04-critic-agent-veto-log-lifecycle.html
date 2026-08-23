@@ -231,6 +231,55 @@ asd review: rows[0]: &quot;severity&quot; must be one of critical, high, medium,
 <h3 id="the-full-lifecycle-as-a-sequence">The full lifecycle as a sequence</h3>
 <p></p>
 <hr>
+<h2 id="worked-example-one-veto-one-remediation-one-log">Worked example: one veto, one remediation, one log</h2>
+<p>A mapper drafts a callback-journey map (<code>artifactId: 9f31aa05…</code>). The critic reviews it with exactly two rows — one defect with a binding fix, one proposal:</p>
+<pre><code class="language-json">[ { &quot;rowKind&quot;: &quot;defect&quot;, &quot;severity&quot;: &quot;high&quot;, &quot;rule&quot;: &quot;evidence-support&quot;,
+    &quot;message&quot;: &quot;Node n2 claims callers &#39;give up on the portal&#39; but cites only a workshop quote; no telemetry supports the magnitude&quot;,
+    &quot;fix&quot;: &quot;Re-scope n2 to the verbatim quote, or add the portal-abandonment telemetry record as a second citation&quot;,
+    &quot;evidenceId&quot;: &quot;62c845bbd3b95533613613b90825bd1af48d901febadb81116df22520a3d8644&quot; },
+  { &quot;rowKind&quot;: &quot;proposal&quot;, &quot;severity&quot;: &quot;low&quot;,
+    &quot;message&quot;: &quot;Consider a backstage lane for GP-confirmation chasing in the next iteration&quot; } ]
+</code></pre>
+<p><strong>Step 1 — veto receipt.</strong> The call returns <code>&quot;status&quot;: &quot;draft&quot;</code>, <code>&quot;verdict&quot;: &quot;veto&quot;</code>, and a <code>logArtifactId</code> (say <code>4be19c72…</code>). The runtime persists a <code>review-veto-log</code> artifact: <code>status: &quot;final&quot;</code> immediately, <code>reviewOf: &quot;9f31aa05…&quot;</code>, and each row as a node whose <code>fields</code> carry the full row schema — the defect&#39;s <code>evidenceId</code> is itself integrity-checked against the register.</p>
+<p><strong>Step 2 — remediation.</strong> The mapper re-scopes n2 and rewrites <strong>the same artifactId</strong>. The content write clears the recorded verdict: edited content is unreviewed until re-gated.</p>
+<p><strong>Step 3 — second pass.</strong> The critic re-reviews with one evidence-cited proposal row. Receipt: <code>&quot;status&quot;: &quot;final&quot;</code>, <code>&quot;verdict&quot;: &quot;pass&quot;</code>, and the <strong>same</strong> <code>logArtifactId: &quot;4be19c72…&quot;</code> — the log accumulates both verdicts rather than spawning a second artifact.</p>
+<p><strong>Lifecycle states, end to end:</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">Step</th>
+<th align="left">Artifact <code>9f31aa05…</code></th>
+<th align="left"><code>review.verdict</code></th>
+<th align="left">Log <code>4be19c72…</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">draft accepted</td>
+<td align="left">draft</td>
+<td align="left">— (none recorded)</td>
+<td align="left">does not exist</td>
+</tr>
+<tr>
+<td align="left">critic veto</td>
+<td align="left">draft</td>
+<td align="left">veto → log</td>
+<td align="left">final, holds defect + proposal rows</td>
+</tr>
+<tr>
+<td align="left">content rewrite</td>
+<td align="left">draft</td>
+<td align="left">cleared</td>
+<td align="left">unchanged (history kept)</td>
+</tr>
+<tr>
+<td align="left">critic pass</td>
+<td align="left">final</td>
+<td align="left">pass → log</td>
+<td align="left">updated in place; full argument preserved</td>
+</tr>
+</tbody></table>
+<p><strong>Interpretation.</strong> The table is the module&#39;s contracts in miniature. A veto is only representable because every defect carried a <code>fix</code> — the schema made the objection actionable before it was recorded. The pass was only representable because a row cited live evidence — the schema refused an ungrounded compliment. And because the verdict binds to exact content, the remediation write <em>had</em> to clear it: the gate re-asked the question of the new bytes, and the log kept the whole exchange as a final, auditable artifact rather than a chat thread nobody can replay.</p>
+<hr>
 <h2 id="4-case-study-lens-article-35-the-butler39s-memory-sable-amp-slate"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 35 — <em>The Butler&#39;s Memory</em> (Sable &amp; Slate)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 35 is a fictional luxury-hospitality composite; this lens applies the veto lifecycle to its narrative.</p>

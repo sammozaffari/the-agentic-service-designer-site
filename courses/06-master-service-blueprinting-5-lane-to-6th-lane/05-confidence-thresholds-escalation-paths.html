@@ -208,6 +208,69 @@ $CLI phase-advance --projectId $PID --toPhase define --idempotencyKey gate-1 --a
 </code></pre>
 <p>Read the shape of that last error: even <em>with</em> a signed receipt, the human gate refuses while any design artifact is still a draft. Escalation paths terminate at humans, but the humans are protected from rubber-stamping unfinished work — the machine&#39;s &quot;no&quot; is structural, not advisory.</p>
 <hr>
+<h2 id="worked-example-from-a-signal-matrix-to-escalation-receipts">Worked example: From a signal matrix to escalation receipts</h2>
+<p>The discipline this module teaches is: classify the signal first, then let the lowest competent rung decide. This exercise builds that classification matrix for one project, then follows one escalation all the way up, collecting the receipt each rung emits.</p>
+<p><strong>Fixture — signal matrix for the repairs blueprint project:</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">Signal class</th>
+<th align="left">Concrete signal observed</th>
+<th align="left">Lowest rung that may decide</th>
+<th align="left">Decider</th>
+<th align="left">Receipt emitted</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Structural defect</td>
+<td align="left">node <code>n2</code> uses forbidden lane value <code>&quot;tbd&quot;</code></td>
+<td align="left">Rung 1 — deterministic acceptance</td>
+<td align="left">runtime</td>
+<td align="left"><code>check.failures[]</code> row on the draft</td>
+</tr>
+<tr>
+<td align="left">Legal-but-wrong content</td>
+<td align="left">fail point <code>fs2</code> has no recovery path to triage</td>
+<td align="left">Rung 2 — critic reviewGate</td>
+<td align="left">critic role</td>
+<td align="left"><code>review-veto-log</code> artifact</td>
+</tr>
+<tr>
+<td align="left">Execution failure</td>
+<td align="left">presenter host timed out annotating waits</td>
+<td align="left">Rung 3 — failure policy</td>
+<td align="left">orchestration ledger</td>
+<td align="left">dispatch record with <code>error</code> + <code>retryable</code></td>
+</tr>
+<tr>
+<td align="left">Judgment call</td>
+<td align="left">approve moving the project from discover to define</td>
+<td align="left">Rung 4 — human gate</td>
+<td align="left">human designer</td>
+<td align="left">signed <code>approvalReceipt</code></td>
+</tr>
+</tbody></table>
+<p><strong>Step-by-step escalation.</strong> The critic vetoes the draft with a structured defect row; the row persists as a <code>review-veto-log</code>; the author remediates; the critic passes; the human approves the handoff with a signed receipt.</p>
+<pre><code class="language-json">// Veto row set (sd_review --verdict veto)
+[{&quot;rowKind&quot;:&quot;defect&quot;,&quot;severity&quot;:&quot;high&quot;,&quot;rule&quot;:&quot;fail-point-trace&quot;,
+  &quot;message&quot;:&quot;Node fs2 is marked F but the blueprint shows no recovery edge back to triage.&quot;,
+  &quot;fix&quot;:&quot;Add an edge fs2 → fs1 labelled recovery-loop.&quot;,
+  &quot;evidenceId&quot;:&quot;2719105f93111f352cd60bb7764ee314d5f4ee3426d77493d1fb2c96c4011024&quot;}]
+
+// Persisted review-veto-log artifact — the rung-2 receipt, stored fields:
+{&quot;kind&quot;:&quot;review-veto-log&quot;,&quot;id&quot;:&quot;11aa2d19…&quot;,
+ &quot;artifactId&quot;:&quot;4d64fbd3…&quot;,&quot;verdict&quot;:&quot;veto&quot;,
+ &quot;rows&quot;:[ &quot;&lt;the defect row above&gt;&quot; ],
+ &quot;createdBy&quot;:&quot;critic&quot;,&quot;status&quot;:&quot;final&quot;}
+
+// Human gate receipt (sd_phase_advance --approvalReceipt) — the rung-4 receipt, stored fields:
+{&quot;receiptId&quot;:&quot;RCP-2026-014&quot;,&quot;checkpoint&quot;:&quot;handoff-approval&quot;,&quot;authority&quot;:&quot;human-designer&quot;,
+ &quot;approvedBy&quot;:&quot;Sam Mozaffari&quot;,&quot;decision&quot;:&quot;approve&quot;,
+ &quot;rationale&quot;:&quot;Critic pass on 4d64fbd3… verified; recovery loop fs2 → fs1 now explicit.&quot;,
+ &quot;approvedAt&quot;:&quot;2026-08-22T14:05:00Z&quot;}
+</code></pre>
+<p><strong>Interpretation.</strong> Each rung emits a differently-shaped receipt: an acceptance failure row, a veto log, a dispatch record, a signed receipt. An audit reads receipts, never confidence scores. A scalar threshold τ would collapse four distinct decision classes into one number and discard the <code>rationale</code> and <code>fix</code> fields — the very fields that make each decision defensible six months later, when nobody remembers why the gate was passed.</p>
+<hr>
 <h2 id="4-case-study-lens-article-33-the-critic-on-every-gate"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 33 — The Critic on Every Gate</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong></p>

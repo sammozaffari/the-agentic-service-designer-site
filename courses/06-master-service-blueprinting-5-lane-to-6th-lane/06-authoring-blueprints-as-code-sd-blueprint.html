@@ -266,6 +266,67 @@ $CLI method-run --projectId &lt;pid&gt; --methodId blueprint-to-backlog
 <h3 id="session-sequence-diagram">Session sequence diagram</h3>
 <p></p>
 <hr>
+<h2 id="worked-example-a-bounded-pilot-plan-with-rollback-as-a-change-plan-artifact">Worked example: A bounded pilot plan with rollback, as a change-plan artifact</h2>
+<p>A pilot earns the word &quot;bounded&quot; only when its boundaries are decided before launch: one site, one timebox, named KPI baselines and targets, a monitoring cadence, a pre-agreed rollback trigger, a named incident owner, and a scale/pivot/kill gate with a human authority. This exercise authors those boundaries for a day-surgery follow-up pilot at the fictional Northfield Regional Health — where 18% of patients miss their first follow-up and median callback latency runs at 62 hours — and renders the plan as a <code>change-plan</code> artifact, the kind a <code>service-blueprint</code> may reference with <code>supports</code>.</p>
+<p><strong>Fixture — the bounded pilot plan:</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">Boundary</th>
+<th align="left">Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Site</td>
+<td align="left">Ward 4B day-surgery unit only; no other ward in scope</td>
+</tr>
+<tr>
+<td align="left">Timebox</td>
+<td align="left">Weeks 1–6; gate review in week 6</td>
+</tr>
+<tr>
+<td align="left">KPI baseline → target</td>
+<td align="left">First-follow-up attendance 82% → 92%; median callback latency 62h → 24h</td>
+</tr>
+<tr>
+<td align="left">Monitoring cadence</td>
+<td align="left">Weekly KPI pull every Friday; daily exception flag on callback latency &gt; 72h</td>
+</tr>
+<tr>
+<td align="left">Rollback trigger</td>
+<td align="left">Attendance below 80% for 2 consecutive weeks, or any median callback latency above 72h</td>
+</tr>
+<tr>
+<td align="left">Incident owner</td>
+<td align="left">Ward 4B clinical lead (named, on the rota)</td>
+</tr>
+<tr>
+<td align="left">Gate</td>
+<td align="left">Week-6 scale / pivot / kill decision, authority: human-designer, with a signed <code>approvalReceipt</code></td>
+</tr>
+</tbody></table>
+<p><strong>Step-by-step application.</strong> Run <code>sd_method_run --methodId change-pack-authoring</code> (phase <code>delivery</code>, owner <code>orchestrator</code>; inputs require a future-state <code>service-blueprint</code> or <code>roadmap</code>). Break the change into discrete actions — communication, training, system cutover, plus the rollback as a first-class action, not a footnote. The contract&#39;s acceptance rules (<code>min-nodes: 3</code>, <code>field-non-empty: owner</code>, <code>forbid-field-values: status: [&quot;tbd&quot;]</code>) force every action to be owned and honestly stated; the critic gate rejects any action with no owner.</p>
+<p><strong>Expected artifact (<code>change-plan</code>; edges are forbidden for this kind — dependencies ride on node fields):</strong></p>
+<pre><code class="language-json">{&quot;kind&quot;:&quot;change-plan&quot;,&quot;status&quot;:&quot;draft&quot;,&quot;title&quot;:&quot;Ward 4B follow-up pilot (bounded, weeks 1-6)&quot;,
+ &quot;nodes&quot;:[
+  {&quot;id&quot;:&quot;cp1&quot;,&quot;label&quot;:&quot;Train two Ward 4B nurses on the follow-up call script&quot;,
+   &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;70952f6b…&quot;}],
+   &quot;fields&quot;:{&quot;action&quot;:&quot;Deliver two 45-min training sessions before week 1 start&quot;,&quot;owner&quot;:&quot;clinical-educator&quot;,&quot;status&quot;:&quot;scheduled&quot;,&quot;priority&quot;:&quot;high&quot;}},
+  {&quot;id&quot;:&quot;cp2&quot;,&quot;label&quot;:&quot;Enable discharge-summary auto-send to the GP portal for the day-surgery cohort&quot;,
+   &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;70952f6b…&quot;}],
+   &quot;fields&quot;:{&quot;action&quot;:&quot;Configure one-way export; verify against three test discharges&quot;,&quot;owner&quot;:&quot;integration-engineer&quot;,&quot;status&quot;:&quot;in-progress&quot;,&quot;priority&quot;:&quot;high&quot;,&quot;dependency&quot;:&quot;cp1&quot;}},
+  {&quot;id&quot;:&quot;cp3&quot;,&quot;label&quot;:&quot;Send day-2 post-discharge SMS check-in to pilot patients&quot;,
+   &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;5f6ee7f7…&quot;},{&quot;evidenceId&quot;:&quot;3f5d2436…&quot;}],
+   &quot;fields&quot;:{&quot;action&quot;:&quot;Activate SMS template; nurse callback on any negative reply within 24h&quot;,&quot;owner&quot;:&quot;service-manager&quot;,&quot;status&quot;:&quot;scheduled&quot;,&quot;priority&quot;:&quot;high&quot;,&quot;dependency&quot;:&quot;cp2&quot;}},
+  {&quot;id&quot;:&quot;cp4&quot;,&quot;label&quot;:&quot;Rollback path: revert to nurse-phone follow-up and disable SMS check-in&quot;,
+   &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;3f5d2436…&quot;}],
+   &quot;fields&quot;:{&quot;action&quot;:&quot;On trigger (attendance &lt;80% for 2 consecutive weeks, or median callback latency &gt;72h), restore prior SOP within one working day and log the trigger evidence&quot;,&quot;owner&quot;:&quot;service-manager&quot;,&quot;status&quot;:&quot;armed&quot;,&quot;priority&quot;:&quot;critical&quot;,&quot;dependency&quot;:&quot;cp3&quot;}}],
+ &quot;references&quot;:[{&quot;artifactId&quot;:&quot;&lt;future-state blueprint id&gt;&quot;,&quot;kind&quot;:&quot;service-blueprint&quot;,&quot;relation&quot;:&quot;supports&quot;,
+  &quot;provenance&quot;:{&quot;source&quot;:&quot;human&quot;,&quot;note&quot;:&quot;Pilot operationalises the future-state follow-up lane approved at the handoff-approval checkpoint.&quot;}}]}
+</code></pre>
+<p>The three evidence ids are content hashes of the SOP document, the patient quote, and the telemetry baseline (<code>followup_attendance_rate=0.82; median_callback_latency_h=62</code>). After the critic passes and the week-6 gate decides scale, pivot, or kill, the decision lands as a signed <code>approvalReceipt</code> — the same receipt shape module 06.5 stores for phase gates.</p>
+<p><strong>Interpretation.</strong> Pilot governance is architecture, not project-management hygiene: rollback is a node with an owner and a trigger in data, the monitoring cadence is written down, and the gate is a human checkpoint the runtime enforces. Because the plan is a typed artifact referencing the blueprint with provenance, the week-6 review can traverse from any KPI movement back to the lane change that caused it — and a kill decision leaves an auditable trail instead of a quiet deletion.</p>
+<hr>
 <h2 id="4-case-study-lens-article-1139s-portfolio-as-this-provenance-chain"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 11&#39;s Portfolio as This Provenance Chain</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong></p>

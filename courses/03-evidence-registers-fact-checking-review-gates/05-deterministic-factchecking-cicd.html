@@ -250,6 +250,39 @@ jobs:
 <h3 id="red-green-loop-as-a-sequence">Red → green loop as a sequence</h3>
 <p></p>
 <hr>
+<h2 id="worked-example-breaking-one-citation-turns-the-build-red">Worked example: breaking one citation turns the build red</h2>
+<p>The red run in §3 was an <em>acceptance</em> failure (a thin draft). This example exercises the other tripwire — <code>integrity</code> — by corrupting exactly one citation.</p>
+<p><strong>Fixture.</strong> A final, gate-passed journey map whose node n2 cites a live register record:</p>
+<pre><code class="language-json">{ &quot;id&quot;: &quot;n2&quot;, &quot;label&quot;: &quot;caller waits past tolerance&quot;,
+  &quot;evidence&quot;: [ { &quot;evidenceId&quot;: &quot;62c845bbd3b95533613613b90825bd1af48d901febadb81116df22520a3d8644&quot; } ] }
+</code></pre>
+<p>Someone hand-edits the artifact file and changes two hex characters of the id (or deletes the register record — same effect, since the register cannot mutate in place).</p>
+<p><strong>Step 1 — run the verifier.</strong></p>
+<pre><code class="language-text">asd factcheck --projectId &lt;pid&gt;
+</code></pre>
+<pre><code class="language-json">{ &quot;pass&quot;: false,
+  &quot;rows&quot;: [
+    { &quot;artifactId&quot;: &quot;9f31aa05…&quot;, &quot;kind&quot;: &quot;journey-map&quot;, &quot;status&quot;: &quot;final&quot;,
+      &quot;integrity&quot;: { &quot;pass&quot;: false,
+        &quot;dangling&quot;: [ { &quot;node&quot;: &quot;n2&quot;,
+                        &quot;evidenceId&quot;: &quot;62c845bbd3b95533613613b90825bd1af48d901febadb81116df22520a3d8644&quot; } ] },
+      &quot;schema&quot;: { &quot;pass&quot;: true }, &quot;acceptance&quot;: { &quot;pass&quot;: true },
+      &quot;review&quot;: { &quot;pass&quot;: true, &quot;gate&quot;: &quot;critic&quot;, &quot;verdict&quot;: &quot;pass&quot; } } ] }
+</code></pre>
+<pre><code class="language-text">exit=1
+</code></pre>
+<p>One edited citation, one red build. Note what the report isolates: <code>schema</code>, <code>acceptance</code>, and <code>review</code> all still pass — the artifact is well-formed, rule-complete, and carries a recorded pass verdict — and the project is <em>still</em> unmergeable, because a citation no longer resolves. The exit code does not negotiate with the other three fields.</p>
+<p><strong>Step 2 — repair.</strong> Restore the register record (re-run the original <code>evidence-add</code>; content addressing mints the identical id <code>62c845bb…3d8644</code>) or point n2 at a record that exists. No other file changes.</p>
+<p><strong>Step 3 — re-run.</strong></p>
+<pre><code class="language-json">{ &quot;pass&quot;: true,
+  &quot;rows&quot;: [ { &quot;artifactId&quot;: &quot;9f31aa05…&quot;, &quot;integrity&quot;: { &quot;pass&quot;: true, &quot;dangling&quot;: [] },
+              &quot;schema&quot;: { &quot;pass&quot;: true }, &quot;acceptance&quot;: { &quot;pass&quot;: true },
+              &quot;review&quot;: { &quot;pass&quot;: true, &quot;verdict&quot;: &quot;pass&quot; } } ] }
+</code></pre>
+<pre><code class="language-text">exit=0
+</code></pre>
+<p><strong>Interpretation.</strong> This is the avalanche property from 03.2 doing audit work downstream: a two-character edit did not produce a slightly wrong citation, it produced a <em>dangling</em> one — a fact the verifier can state with certainty because ids are content-derived. It also shows why the repair path is cheap: re-adding the original content reproduces the original id, so the citation heals without touching the artifact. Determinism is what makes both directions mechanical — red names the exact node and id; green is the same command, replayed, on the repaired store.</p>
+<hr>
 <h2 id="4-case-study-lens-article-36-running-a-service-design-engagement-inside-the-harness-wattle-grove"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 36 — <em>Running a Service Design Engagement Inside the Harness</em> (Wattle Grove)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 36 is a fictional aged-care composite whose distinguishing discipline is separating bounded integration receipts from illustrative narrative — exactly the instinct factcheck mechanizes.</p>

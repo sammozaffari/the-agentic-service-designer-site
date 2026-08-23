@@ -232,6 +232,29 @@ export const CAPABILITY_SURFACES = [&#39;runtime-core&#39;, &#39;cli&#39;, &#39;
 </ol>
 <h3 id="package-layering-diagram">Package layering diagram</h3>
 <p></p>
+<h3 id="worked-example-one-sd-project-create-call-traced-through-every-layer">Worked example — one <code>sd_project_create</code> call, traced through every layer</h3>
+<p><strong>Fixture</strong> (a real invocation against the built runtime):</p>
+<pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-w02-verify
+node suite/packages/runtime/lib/cli.mjs project-create \
+  --name &quot;W02 Verify&quot; --client &quot;Test Client&quot; --sector government --service &quot;permit renewals&quot;
+</code></pre>
+<p><strong>Step-by-step trace</strong> (each hop verified against source):</p>
+<ol>
+<li><strong>Shell → projection layer.</strong> <code>suite/packages/runtime/lib/cli.mjs</code> parses argv generically: <code>--flag value</code> pairs, no per-command code.</li>
+<li><strong>Name normalization.</strong> <code>project-create</code> maps to the canonical <code>sd_project_create</code> by stripping the <code>sd_</code> prefix and converting <code>-</code> to <code>_</code>; both spellings hit the same row.</li>
+<li><strong>Registry lookup.</strong> The name resolves against the one executable registry — <code>@asd/engine</code>&#39;s tool definitions (<code>src/tools/project.ts</code>, <code>defineTool({ name: &#39;sd_project_create&#39;, … })</code>).</li>
+<li><strong>Contract-layer validation.</strong> Flags are checked against the tool&#39;s JSON-schema <code>parameters</code>: required <code>stringField</code>s <code>name</code>, <code>client</code>, <code>sector</code>, <code>service</code>; <code>phase</code> constrained to the closed enum <code>discover | define | develop | deliver</code>. Unknown flags die here with <code>unknown flag &quot;--bogus&quot; (known: name, client, sector, service, phase)</code> — before anything touches disk.</li>
+<li><strong>Execute.</strong> The tool&#39;s <code>execute()</code> calls <code>asd.projects.create(...)</code> on the <code>AsdService</code> facade in <code>@asd/core</code>.</li>
+<li><strong>Store write.</strong> <code>ProjectStore.create</code> (<code>core/src/store/project.ts</code>) mints <code>projectId = slugify(name) + &#39;-&#39; + randomUUID().slice(0, 8)</code>, creates the four subdirectories <code>evidence/</code>, <code>artifacts/</code>, <code>renders/</code>, <code>sops/</code> (each with a <code>.gitkeep</code>), and writes <code>project.json</code> under <code>storeMutex</code>.</li>
+<li><strong>Render.</strong> The result returns through the tool&#39;s <code>output.render</code> (<code>renderJson(&#39;Project created&#39;)</code>) to stdout; exit 0.</li>
+</ol>
+<p><strong>Expected result</strong> (from this run — the produced structure, expressed as the project record shape):</p>
+<pre><code class="language-json">{&quot;project&quot;:{&quot;projectId&quot;:&quot;w02-verify-2f006547&quot;,&quot;name&quot;:&quot;W02 Verify&quot;,&quot;client&quot;:&quot;Test Client&quot;,
+  &quot;sector&quot;:&quot;government&quot;,&quot;service&quot;:&quot;permit renewals&quot;,&quot;phase&quot;:&quot;discover&quot;,
+  &quot;createdAt&quot;:&quot;2026-08-23T00:02:51.923Z&quot;,&quot;updatedAt&quot;:&quot;2026-08-23T00:02:51.923Z&quot;}}
+</code></pre>
+<p>plus on disk: <code>w02-verify-2f006547/{project.json, evidence/, artifacts/, renders/, sops/}</code>.</p>
+<p><strong>Interpretation.</strong> The trace is the architecture made observable: hops 2–7 are identical whether the call arrives over the CLI or as an MCP <code>tools/call</code> — only hop 1 (framing) differs, which is exactly what &quot;one registry, thin projections&quot; claims. Note also the ordering: validation (hop 4) precedes any write (hop 6), so a rejected call leaves zero partial state behind — fail-closed is a property of the layering, not of individual error messages.</p>
 <h3 id="verified-execution-the-canonical-loop-run-today">Verified execution — the canonical loop, run today</h3>
 <p>The following is a real session against the built runtime (<code>node suite/packages/runtime/lib/cli.mjs</code>) in a disposable workspace, trimmed for length. The ids below were minted by this run.</p>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-c02-1787398523

@@ -235,6 +235,76 @@ $CLI knowledge --query &quot;journey&quot;          # substring over method/kind
 $CLI knowledge --resourceQuery &quot;profit&quot;   # substring over corpus resource URIs/names
 $CLI knowledge --resource &quot;asd://books/20-the-service-profit-chain/03-external-service-value&quot;
 </code></pre>
+<h3 id="worked-example-a-failing-session-recovered-by-exit-codes">Worked example — a failing session, recovered by exit codes</h3>
+<p><strong>Fixture.</strong> A new operator makes three mistakes in a row. Every line below is a real run; <code>$?</code> is printed after each command.</p>
+<pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-w02-verify
+CLI=&quot;node suite/packages/runtime/lib/cli.mjs&quot;
+
+# MISTAKE 1 — a flag that does not exist (misremembered from another tool)
+$CLI project-create --name &quot;Permit Renewals&quot; --bogus fast
+# asd project-create: unknown flag &quot;--bogus&quot; (known: name, client, sector, service, phase)
+# running `asd help` shows usage
+echo $?   # → 1
+
+# MISTAKE 2 — a JSON payload with an unclosed array
+$CLI artifact-write --projectId w02-verify-2f006547 --methodId journey-from-transcripts \
+  --title &quot;x&quot; --nodes &#39;[{&quot;id&quot;:&#39;
+# asd artifact-write: value &quot;[{&quot;id&quot;:…&quot; is not valid JSON: Unexpected end of JSON input
+echo $?   # → 1
+
+# MISTAKE 3 — omitted a required flag
+$CLI project-create --name &quot;Permit Renewals&quot;
+# asd project-create: missing required flag &quot;--client&quot;
+echo $?   # → 1
+
+# RECOVERY — the manual is one command away, and it exits 0
+$CLI help | sed -n &#39;1,4p&#39;
+# usage: asd &lt;tool&gt; [--flag value ...]
+# tools: sd_project_list / sd_project_create  name, client, sector, service, phase …
+echo $?   # → 0
+
+# CORRECTED — the same intent, spelled against the known-flags list
+$CLI project-create --name &quot;Permit Renewals&quot; --client &quot;City Test&quot; \
+  --sector government --service &quot;permit renewals&quot;
+# → {&quot;project&quot;:{&quot;projectId&quot;:&quot;permit-renewals-&lt;8-hex&gt;&quot;, …}}
+echo $?   # → 0
+</code></pre>
+<p><strong>Expected result — the failure/recovery ledger:</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">Mistake</th>
+<th align="center">Exit</th>
+<th align="left">Recovery move the error itself gave</th>
+<th align="left">Cleanup needed?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Unknown flag <code>--bogus</code></td>
+<td align="center">1</td>
+<td align="left">Error lists the known flags inline</td>
+<td align="left">None — rejected before any write</td>
+</tr>
+<tr>
+<td align="left">Unclosed JSON in <code>--nodes</code></td>
+<td align="center">1</td>
+<td align="left">Parser error quotes the offending value</td>
+<td align="left">None — validation precedes store writes</td>
+</tr>
+<tr>
+<td align="left">Missing <code>--client</code></td>
+<td align="center">1</td>
+<td align="left">Message names the missing flag</td>
+<td align="left">None</td>
+</tr>
+<tr>
+<td align="left"><code>asd help</code></td>
+<td align="center">0</td>
+<td align="left">Full tool + flag inventory</td>
+<td align="left">—</td>
+</tr>
+</tbody></table>
+<p><strong>Interpretation.</strong> Three properties make this transcript boring in the best way. First, exit codes are the API: a script can branch on <code>$?</code> without parsing prose. Second, every rejection names the rule and the remedy, so the error text <em>is</em> the recovery path. Third — and this is the fail-closed guarantee from module 02.1 made tangible — none of the three failures wrote anything: validation happens in the projection layer, before the store is touched, so there is no partial project, no half-written artifact, nothing to clean up.</p>
 <hr>
 <h2 id="4-enterprise-case-study-lens"> 4. Enterprise Case Study Lens</h2>
 <h3 id="article-31-revisited-for-the-terminal-riding-the-current-articles31">Article 31 (revisited for the terminal) — <em>Riding the Current</em> (<code>articles/31</code>)</h3>

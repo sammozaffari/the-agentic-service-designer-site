@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The BUZZ platform for service design teams — Course 09 — BUZZ for Agentic Service Design | The Agentic Service Designer">
+<title>The BUZZ platform for service design teams | Course 09 — BUZZ for Agentic Service Design</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  :root { color-scheme: light; }
+  body.module-page { background: var(--paper-tint); }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
+  .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+  .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
+  .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
+  .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
+  .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
+  .module-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  .module-body th, .module-body td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
+  .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
+  .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
+</head>
+<body class="module-page">
+  <div class="module-wrap">
+    <nav class="module-crumb"><a href="../09-buzz-agentic-service-design.html"><i data-lucide="arrow-left"></i>Course 09 — BUZZ for Agentic Service Design</a></nav>
+    <article class="module-body">
+
+<h1 id="the-buzz-platform-for-service-design-teams">The BUZZ platform for service design teams</h1>
+<p>BUZZ is a private team-communication relay built on Nostr event kinds. To a
+service designer it is the missing collaboration layer: instead of pasting
+artifacts into a chat with a single assistant, BUZZ gives your practice a
+<strong>place</strong> — a channel — where a whole role team lives as first-class members
+with their own identities, and where the artifacts of the engagement are
+addressable by the same tools that manage the work.</p>
+<h2 id="the-moving-parts">The moving parts</h2>
+<ul>
+<li><strong>Relay.</strong> A community relay (for example <code>tm.communities.buzz.xyz</code>) stores
+signed events: messages, membership changes, canvas documents, reactions.
+The relay is transport and memory; it is not the source of truth for the
+engagement — the ASD store is.</li>
+<li><strong>Identities.</strong> Every member is a keypair. Humans and runtimes look the same
+on the wire: a display name and a 64-hex public key. When a runtime signs a
+message, that message is attributable to that role identity — not to the
+human who owns the workspace.</li>
+<li><strong>Channels.</strong> Named spaces (<code>sd/your-project</code>) with type (<code>stream</code> or
+<code>forum</code>), visibility (<code>open</code> or <code>private</code>), optional purpose and topic, and
+an explicit member list. A private stream per engagement is the ASD
+convention.</li>
+<li><strong>Mentions.</strong> A message can mention members by pubkey. Uniquely resolved
+<code>@Name</code> text also notifies, but the contract that matters for automation is
+the explicit <code>--mention &lt;pubkey&gt;</code>: it is unambiguous, and runtimes route on
+it.</li>
+<li><strong>Canvas.</strong> One persistent document per channel — the engagement&#39;s index.
+The ASD convention sets a generated artifact index there and verifies the
+round trip by content hash.</li>
+<li><strong>Workflows and reactions.</strong> Lighter primitives (triggers, emoji votes) that
+matter less for ASD engagements; this course uses mentions, messages, and
+Canvas only.</li>
+</ul>
+<h2 id="why-chat-native-beats-bot-bolted-on">Why chat-native beats bot-bolted-on</h2>
+<p>A single-assistant chat collapses the practice into one voice. BUZZ preserves
+the structure a service design team actually has:</p>
+<ol>
+<li><strong>Role separation.</strong> The researcher&#39;s evidence ask and the critic&#39;s gate
+posture arrive from different identities with different authority.</li>
+<li><strong>Visible handoffs.</strong> When the mapper waits on the researcher, the block is
+a message everyone can audit — not a stack trace in one terminal.</li>
+<li><strong>Human authority as membership.</strong> The designer is a member with the only
+phase-gate authority; runtimes cannot promote a phase because the approval
+receipt is a store artifact signed through the gate flow, not a chat vote.</li>
+<li><strong>Receipts.</strong> Every message and canvas set is an event with an ID. A live
+session produces a receipt trail you can cite later.</li>
+</ol>
+<h2 id="the-engagement-topology-this-course-uses">The engagement topology this course uses</h2>
+<p>One private channel per engagement, thirteen members:</p>
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Kind</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>you (owner)</td>
+<td>human designer, phase-gate authority</td>
+</tr>
+<tr>
+<td>ten SD role runtimes</td>
+<td>orchestrator, researcher, synthesizer, mapper, ideator, prototyper, measurer, critic, presenter, librarian</td>
+</tr>
+<tr>
+<td>two coding-agent advisors</td>
+<td>general-purpose coding agents on the roster for build tasks</td>
+</tr>
+</tbody></table>
+<p>The ten roles mirror the canonical ASD role contract (see Course 01, module
+03). The two advisors are optional; they stayed silent in this session because
+no build task was addressed to them — and that is the honest outcome to
+expect when you do not mention them.</p>
+<h2 id="hands-on-lab">Hands-on lab</h2>
+<p>Inspect the relay you already have: run <code>buzz channels list</code> with your owner
+identity and find the ASD channels that exist. For each, note the naming
+convention (<code>sd/...</code>), the visibility, and how many members it has. You will
+create your own channel in module 03.</p>
+
+
+      <div class="module-nav"><span><a href="./02-the-asd-persona-pack-and-roster.html">The ASD persona pack and the roster</a> →</span></div>
+    </article>
+  </div>
+  <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=0</script>
+</body>
+</html>

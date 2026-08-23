@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The MCP server on every host — Course 10 — Installing and operating the platform | The Agentic Service Designer">
+<title>The MCP server on every host | Course 10 — Installing and operating the platform</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+  :root { color-scheme: light; }
+  body.module-page { background: var(--paper-tint); }
+  .module-wrap { max-width: min(1240px, 94vw); margin: 0 auto; padding: 48px 24px 96px; }
+  .module-crumb { font-family: var(--mono); font-size: 12.5px; margin-bottom: 28px; }
+  .module-crumb a { color: var(--muted); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+  .module-crumb a:hover { color: var(--ink); text-decoration: underline; }
+  .module-crumb .lucide { width: 14px; height: 14px; }
+  .module-body { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-card); box-shadow: var(--shadow-hover); padding: clamp(28px, 4.5vw, 72px); }
+  .module-body h1 { font-size: clamp(28px, 4vw, 46px); letter-spacing: -0.025em; line-height: 1.08; margin: 4px 0 20px; }
+  .module-body h2 { font-size: clamp(21px, 2.6vw, 29px); letter-spacing: -0.02em; margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
+  .module-body h3 { font-size: 18.5px; margin-top: 30px; }
+  .module-body h2 .lucide, .module-body h1 .lucide { width: 0.85em; height: 0.85em; flex: none; color: #2b6cb0; }
+  .module-body blockquote { border-left: 3px solid var(--dark); background: var(--paper-tint); margin: 18px 0; padding: 12px 20px; color: var(--ink-soft); border-radius: 0 var(--radius-small) var(--radius-small) 0; }
+  .module-body code { font-family: var(--mono); font-size: 0.86em; background: var(--paper-tint); border: 1px solid var(--line); border-radius: 3px; padding: 1px 5px; }
+  .module-body pre code { display: block; background: var(--dark); color: var(--dark-ink); border: 0; border-radius: var(--radius-small); padding: 16px 18px; overflow-x: auto; line-height: 1.55; font-size: 13px; }
+  .module-body table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+  .module-body th, .module-body td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  .module-body th { background: var(--paper-tint); font-family: var(--mono); font-size: 12.5px; }
+  .module-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 36px; font-size: 14.5px; }
+  .module-nav a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .diagram { position: relative; margin: 26px 0; padding: 22px 14px 18px; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-small); overflow-x: auto; }
+  .diagram .mermaid { display: flex; justify-content: center; min-width: min(720px, 100%); }
+  .diagram .mermaid svg { max-width: 100% !important; height: auto !important; }
+  .diagram-expand { position: absolute; top: 8px; right: 8px; z-index: 2; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 4px; background: var(--paper); color: var(--ink-soft); cursor: pointer; opacity: 0.45; transition: opacity var(--fast), color var(--fast), border-color var(--fast); }
+  .diagram-expand:hover { color: var(--ink); border-color: var(--ink-soft); }
+  .diagram-expand:focus-visible { opacity: 1; outline: 2px solid #3182ce; outline-offset: 1px; }
+  .diagram:hover .diagram-expand { opacity: 1; }
+  .diagram-expand .lucide { width: 15px; height: 15px; }
+  .diagram:fullscreen, .diagram:-webkit-full-screen { background: #fff; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs { position: fixed; inset: 0; z-index: 999; margin: 0; border: 0; border-radius: 0; background: #fff; display: flex; align-items: center; justify-content: center; overflow: auto; padding: clamp(16px, 4vw, 48px); }
+  .diagram.diagram-fs .mermaid { width: 100%; max-height: 100%; }
+  .diagram.diagram-fs svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram.diagram-fs .diagram-expand { opacity: 1; }
+  .diagram.diagram-fs .diagram-expand .lucide { transform: rotate(180deg); }
+  body.diagram-fs-open { overflow: hidden; }
+  body.diagram-fs-open::after { content: ""; position: fixed; inset: 0; background: rgba(23,24,23,.55); z-index: 998; }
+  .diagram:fullscreen .mermaid, .diagram:-webkit-full-screen .mermaid { width: 100%; max-height: 100%; }
+  .diagram:fullscreen svg, .diagram:-webkit-full-screen svg { max-width: 100% !important; width: 100% !important; height: auto !important; }
+  .diagram:fullscreen .diagram-expand .lucide, .diagram:-webkit-full-screen .diagram-expand .lucide { transform: rotate(180deg); }
+  .module-foot { max-width: min(1240px, 94vw); margin: 0 auto; padding: 0 24px 64px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="../../assets/course-icons.js"></script>
+</head>
+<body class="module-page">
+  <div class="module-wrap">
+    <nav class="module-crumb"><a href="../10-installing-and-operating-the-platform.html"><i data-lucide="arrow-left"></i>Course 10 — Installing and operating the platform</a></nav>
+    <article class="module-body">
+
+<h1 id="the-mcp-server-on-every-host">The MCP server on every host</h1>
+<p>The MCP surface is the same engine as the CLI, exposed over stdio JSON-RPC.
+One self-contained bundle — <code>mcp/bin/server.mjs</code> plus the bundled knowledge
+corpus — serves any MCP client.</p>
+<h2 id="client-configurations">Client configurations</h2>
+<p><strong>Claude Code</strong> (project <code>.mcp.json</code>; the plugin wires this automatically):</p>
+<pre><code class="language-json">{&quot;mcpServers&quot;:{&quot;asd&quot;:{&quot;command&quot;:&quot;node&quot;,&quot;args&quot;:[&quot;/absolute/path/to/mcp/bin/server.mjs&quot;]}}}
+</code></pre>
+<p><strong>Codex CLI / desktop</strong> (<code>~/.codex/config.toml</code>, shared by both):</p>
+<pre><code class="language-toml">[mcp_servers.asd]
+command = &quot;node&quot;
+args = [&quot;/absolute/path/to/asd-mcp/mcp/bin/server.mjs&quot;]
+</code></pre>
+<p><strong>Kimi Code</strong> (<code>mcp.json</code>, project-level; approve <em>Trust this folder</em>):</p>
+<pre><code class="language-json">{&quot;mcpServers&quot;:{&quot;asd&quot;:{&quot;command&quot;:&quot;node&quot;,&quot;args&quot;:[&quot;mcp/bin/server.mjs&quot;]}}}
+</code></pre>
+<p><strong>OpenCode</strong>: same shape in <code>opencode.json</code>. <strong>Anything else speaking stdio
+MCP</strong>: point it at <code>node …/server.mjs</code> and prefer absolute paths — clients
+choose their own working directory.</p>
+<h2 id="a-live-session">A live session</h2>
+<p><img src="images/05-mcp-session.png" alt="MCP session"></p>
+<p>Five calls, real responses:</p>
+<pre><code class="language-json">{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;initialize&quot;,
+ &quot;params&quot;:{&quot;protocolVersion&quot;:&quot;2025-06-18&quot;,&quot;capabilities&quot;:{},
+           &quot;clientInfo&quot;:{&quot;name&quot;:&quot;course&quot;,&quot;version&quot;:&quot;0&quot;}}}
+</code></pre>
+<pre><code class="language-text">initialize -&gt; {&quot;name&quot;:&quot;asd-mcp&quot;,&quot;version&quot;:&quot;0.1.0&quot;} caps: tools/resources/prompts  tools: 29
+tools/list -&gt; 29 tools; first: sd_project_list
+resources/list -&gt; page of 100 cursor: true
+prompts/list -&gt; critic, ideator, librarian, mapper, …
+sd_project_list -&gt; ## ASD projects ```json { &quot;projects&quot;: [ { &quot;projectId&quot;: &quot;harbor-loop-cafe-…
+</code></pre>
+<p>Details that matter:</p>
+<ul>
+<li><strong>initialize</strong> advertises all three capabilities and a derived tool
+inventory (the count comes from the live registry, not a hardcoded number).</li>
+<li><strong>resources/list</strong> is cursor-paginated at 100 per page — {{RESOURCES}}
+corpus entries total (books, articles, templates, schemas). Pass the
+returned <code>nextCursor</code> back to continue.</li>
+<li><strong>prompts/list</strong> returns the ten role contracts; <code>prompts/get</code> fetches one.</li>
+<li>Tool names are <code>sd_*</code> snake_case over MCP and kebab-case on the CLI
+(<code>sd_project_create</code> ↔ <code>asd project-create</code>). Same registry underneath.</li>
+</ul>
+<h2 id="environment">Environment</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ASD_WORKSPACE</code></td>
+<td>project store root (default cwd → <code>~/.asd/projects</code>)</td>
+</tr>
+<tr>
+<td><code>ASD_BOOKS_ROOT</code> / <code>ASD_ARTICLES_ROOT</code> / <code>ASD_AGENTS_ROOT</code></td>
+<td>override bundled corpus roots individually</td>
+</tr>
+<tr>
+<td><code>ASD_CORPUS_DATA_ROOT</code></td>
+<td>replace the whole bundled data directory</td>
+</tr>
+</tbody></table>
+<p>With every corpus root pointed elsewhere the prompts list empties and
+resources reduce to the nine built-in metadata/template entries — tools stay
+intact. That is how you test a client against the server without the corpus.</p>
+<h2 id="hands-on-lab">Hands-on lab</h2>
+<p>Wire the server into two different clients on the same machine and run
+<code>sd_project_list</code> through both against the same <code>ASD_WORKSPACE</code>. The project
+list must match exactly — that is the portability guarantee of the on-disk
+store doing its job.</p>
+
+
+      <div class="module-nav"><span>← <a href="./02-a-first-engagement-on-the-cli.html">A first engagement on the CLI</a></span><span><a href="./04-agents-skills-and-the-asd-command.html">Agents, skills, and the /asd command</a> →</span></div>
+    </article>
+  </div>
+  <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
+  <script>window.__DIAGRAMS__=0</script>
+</body>
+</html>

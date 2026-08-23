@@ -241,6 +241,39 @@ if(m.id===2)console.log(m.result.prompts.map(p=&gt;p.name).join(&quot;, &quot;))
 # → critic, ideator, librarian, mapper, measurer, orchestrator, presenter, prototyper, researcher, synthesizer
 </code></pre>
 <hr>
+<h2 id="worked-example-a-researcher-mapper-handoff-as-typed-payloads">Worked Example: A Researcher → Mapper Handoff as Typed Payloads</h2>
+<p><strong>The fixture.</strong> The Callorna ws-01 evidence set from module 01.1&#39;s worked example — three registered quotes (<code>8b603633…e1a2</code>, <code>bad03326…b579</code>, <code>f70abec0…90ad</code>) and a draft <code>insight-set</code> artifact (<code>6943a57bbf39402ca1f8d3d0c0ff8b2b</code>). The researcher&#39;s posture work is done; the mapper needs everything required to draft a journey map without ever asking the researcher a question in chat.</p>
+<p><strong>Step 1 — write the handoff payload.</strong> Before touching any tool, the researcher composes the handoff as data. Three sections: what exists, what it cites, what is unresolved.</p>
+<pre><code class="language-json">{
+  &quot;handoffPayload&quot;: {
+    &quot;from&quot;: &quot;researcher&quot;,
+    &quot;to&quot;: &quot;mapper&quot;,
+    &quot;artifact&quot;: {&quot;kind&quot;: &quot;insight-set&quot;, &quot;id&quot;: &quot;6943a57bbf39402ca1f8d3d0c0ff8b2b&quot;, &quot;status&quot;: &quot;draft&quot;},
+    &quot;evidenceIds&quot;: [
+      &quot;8b603633b761c25af271d270b1dc4c96e04e9d2d23d5115e24d530ed6d99e1a2&quot;,
+      &quot;bad03326aca8e84aafed186643bcd6de2ce4c0f189868f47a9daa5e75725b579&quot;,
+      &quot;f70abec029d50b58237d678e984cb2d0fca51139407f6625bea306125e99d0ad&quot;
+    ],
+    &quot;openQuestions&quot;: [
+      &quot;No telemetry yet for portal form-restart rate — i2 confidence is medium; can the mapper stage it as &#39;suspected&#39; until tel data lands?&quot;,
+      &quot;P1&#39;s 40-minute hold is one data point; phone-queue wait distribution unknown.&quot;,
+      &quot;Nothing captured about the SMS sender identity — patients may not know messages come from the clinic.&quot;
+    ],
+    &quot;suggestedMethod&quot;: &quot;journey-from-transcripts&quot;,
+    &quot;knownConstraints&quot;: [&quot;contract requires min 3 evidence — satisfied&quot;, &quot;emotions must come from quoted language&quot;]
+  }
+}
+</code></pre>
+<p><strong>Step 2 — record the handoff in the runtime.</strong> The payload&#39;s durable core goes through <code>sd_orchestration_handoff</code> (verified run, 2026-08-23):</p>
+<pre><code class="language-json">{&quot;handoff&quot;:{&quot;kind&quot;:&quot;orchestration-handoff&quot;,&quot;id&quot;:&quot;4b226fbf1f1446eb9077cd47253e8004&quot;,
+ &quot;planId&quot;:&quot;7b5768a144cc4cf08ca6ad155d878a3c&quot;,&quot;idempotencyKey&quot;:&quot;h1&quot;,
+ &quot;from&quot;:&quot;researcher&quot;,&quot;to&quot;:&quot;mapper&quot;,
+ &quot;artifactId&quot;:&quot;6943a57bbf39402ca1f8d3d0c0ff8b2b&quot;,&quot;artifactKind&quot;:&quot;insight-set&quot;,
+ &quot;condition&quot;:&quot;evidence set complete: 3 ws-01 quotes registered&quot;,
+ &quot;status&quot;:&quot;recorded&quot;}}
+</code></pre>
+<p><strong>Interpretation.</strong> Notice the division of labor between the two layers. The runtime record is deliberately thin — who, to whom, which artifact, under what condition — because it is an audit object: immutable, idempotent (<code>h1</code> replays safely), and resolvable. The thick context (evidence ids, open questions, known constraints) travels as the payload the mapper reads before running <code>sd_method_run</code>. What must never travel is the <em>content</em> of the evidence: the mapper resolves <code>8b603633…</code> against the store and gets the verbatim quote, not the researcher&#39;s memory of it. The open questions are the most valuable section — they tell the mapper which journey stages to hold lightly, converting the researcher&#39;s uncertainty into the mapper&#39;s staging decisions instead of letting it evaporate at the role boundary.</p>
+<hr>
 <h2 id="4-case-study-lens-article-06-quotresearch-ops-at-scale-200-interviews-one-agent-teamquot"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 06 — &quot;Research Ops at Scale: 200 Interviews, One Agent Team&quot;</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong></p>

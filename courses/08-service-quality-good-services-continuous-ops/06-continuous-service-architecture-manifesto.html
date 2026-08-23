@@ -217,6 +217,147 @@ $CLI phase-advance --projectId gate-replay-probe-4d155435 --toPhase define \
 <h3 id="ownership-diagram-roadmap-raci-spine">Ownership diagram — roadmap + RACI spine</h3>
 <p></p>
 <hr>
+<h2 id="worked-example-six-discipline-maturity-diagnostic-and-a-90-day-capability-backlog">Worked example: six-discipline maturity diagnostic and a 90-day capability backlog</h2>
+<p><strong>Fixture.</strong> A structured self-assessment of Northfield&#39;s follow-up service across the six CX operating disciplines, scored on a five-stage maturity scale (1 ad hoc, 2 repeatable, 3 defined, 4 managed, 5 optimizing):</p>
+<table>
+<thead>
+<tr>
+<th align="left">Discipline</th>
+<th align="center">Score</th>
+<th align="left">Observable basis</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Strategy &amp; mandate</td>
+<td align="center">2</td>
+<td align="left">follow-up quality named in the annual plan; no accountable owner</td>
+</tr>
+<tr>
+<td align="left">Customer understanding</td>
+<td align="center">2</td>
+<td align="left">interviews exist; the telemetry (<code>5d71a3e8…</code>) is never joined to them</td>
+</tr>
+<tr>
+<td align="left">Design &amp; delivery</td>
+<td align="center">1</td>
+<td align="left">journeys improvised per ward</td>
+</tr>
+<tr>
+<td align="left">Measurement</td>
+<td align="center">2</td>
+<td align="left">62h latency measured; no tiered <code>kpi-tree</code></td>
+</tr>
+<tr>
+<td align="left">Governance &amp; prioritisation</td>
+<td align="center">1</td>
+<td align="left">no review cadence; fixes compete informally</td>
+</tr>
+<tr>
+<td align="left">Culture &amp; capability</td>
+<td align="center">2</td>
+<td align="left">nurses compensate (~40 min/patient, <code>a64c2f81…</code>) without mandate</td>
+</tr>
+</tbody></table>
+<p>Overall stage: <strong>1–2 (ad hoc trending repeatable)</strong> — the weakest disciplines cap the whole.</p>
+<p><strong>Application.</strong> A maturity score matters only as a backlog. Convert the two weakest disciplines into a 90-day plan with named owners, expressed as a <code>roadmap</code> artifact (<code>milestone</code> required by the closed kind schema):</p>
+<table>
+<thead>
+<tr>
+<th align="left">Milestone</th>
+<th align="left">Discipline raised</th>
+<th align="left">Owner</th>
+<th align="right">Day</th>
+<th align="left">Exit test</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Weekly evidence import + <code>experience-audit</code> refresh</td>
+<td align="left">Governance 1→2</td>
+<td align="left">service ops lead (A)</td>
+<td align="right">30</td>
+<td align="left"><code>factcheck</code> exit 0 on fresh evidence</td>
+</tr>
+<tr>
+<td align="left">Tiered <code>kpi-tree</code> published with baselines/targets</td>
+<td align="left">Measurement 2→3</td>
+<td align="left">journey analyst (R), CX lead (A)</td>
+<td align="right">60</td>
+<td align="left">every KPI cites a data point</td>
+</tr>
+<tr>
+<td align="left">First phase-gate review with <code>approvalReceipt</code></td>
+<td align="left">Governance 2→3</td>
+<td align="left">executive sponsor</td>
+<td align="right">90</td>
+<td align="left">stored <code>phase-gate-decision</code></td>
+</tr>
+</tbody></table>
+<pre><code class="language-json">{ &quot;kind&quot;: &quot;roadmap&quot;,
+  &quot;nodes&quot;: [ { &quot;id&quot;: &quot;m1&quot;, &quot;label&quot;: &quot;Weekly evidence-import cadence live&quot;,
+    &quot;evidence&quot;: [{ &quot;evidenceId&quot;: &quot;a64c2f81d35e09b74c18f6a2d95e7301b84c6f2a5d39e107c62b8f45a91d73e6&quot; }],
+    &quot;fields&quot;: { &quot;milestone&quot;: &quot;day 30: audit loop running&quot;, &quot;owner&quot;: &quot;service-ops-lead&quot; } } ] }
+</code></pre>
+<p><strong>Interpretation.</strong> The diagnostic&#39;s real output is the ordering: buying journey tooling (design) before the governance cadence exists would replay the failure the audit just documented. The 90-day backlog therefore spends the quarter on the operating model — cadence, measurement, gate — not on the service surface.</p>
+<h2 id="worked-example-an-evidence-backed-business-model-canvas-with-a-dfv-gate">Worked example: an evidence-backed business model canvas with a DFV gate</h2>
+<p><strong>Fixture.</strong> The same provider&#39;s proposal to replace the three-portal follow-up with a single coordinated callback service. Nine blocks, every assumption carrying an evidence id:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Block</th>
+<th align="left">Assumption</th>
+<th align="left">Evidence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Customer segments</td>
+<td align="left">day-surgery patients and their GPs</td>
+<td align="left"><code>5d71a3e8…</code></td>
+</tr>
+<tr>
+<td align="left">Value proposition</td>
+<td align="left">results and next steps reach you without you chasing</td>
+<td align="left"><code>3f9a1c7e…</code></td>
+</tr>
+<tr>
+<td align="left">Channels</td>
+<td align="left">outbound call + SMS; portal becomes optional</td>
+<td align="left"><code>3f9a1c7e…</code></td>
+</tr>
+<tr>
+<td align="left">Customer relationships</td>
+<td align="left">named-nurse continuity per episode</td>
+<td align="left"><code>3f9a1c7e…</code></td>
+</tr>
+<tr>
+<td align="left">Revenue streams</td>
+<td align="left">funded from the follow-up cost base, not new spend</td>
+<td align="left"><code>5d71a3e8…</code></td>
+</tr>
+<tr>
+<td align="left">Key resources</td>
+<td align="left">triage-trained nurses, shared scheduling system</td>
+<td align="left"><code>a64c2f81…</code></td>
+</tr>
+<tr>
+<td align="left">Key activities</td>
+<td align="left">same-day result dispatch, tracked callbacks</td>
+<td align="left"><code>8c2e5f19…</code></td>
+</tr>
+<tr>
+<td align="left">Key partnerships</td>
+<td align="left">GP practices agree a receipt-confirmation protocol</td>
+<td align="left"><code>8c2e5f19…</code></td>
+</tr>
+<tr>
+<td align="left">Cost structure</td>
+<td align="left">eliminates 40 min/patient of chase work</td>
+<td align="left"><code>a64c2f81…</code></td>
+</tr>
+</tbody></table>
+<p>As an artifact shape: kind <code>business-model-canvas</code>, one node per block with <code>fields: { assumption, evidenceId, status: evidenced | open }</code>; in the current runtime the DFV decision itself persists as a critic review row on the proposal&#39;s governing artifact.</p>
+<p><strong>Application — the DFV gate.</strong> Desirability: evidenced — patients describe the chasing burden verbatim (<code>3f9a1c7e…</code>). Feasibility: partially evidenced — the receipt-confirmation protocol depends on GP partners and no partner evidence exists yet, so mark Key partnerships <strong>open</strong>. Viability: plausible but thin — the cost case rests on a single ward&#39;s time audit (<code>a64c2f81…</code>), not a system measurement. <strong>Gate decision: conditional proceed</strong> — a one-ward pilot must convert the two weak cells into evidence before any phase-gate receipt is signed.</p>
+<p><strong>Interpretation.</strong> The discipline lives in the verdicts, not the blocks: two of nine cells carried the decision, and naming their evidence ids is what made the weakness visible. A canvas without an evidence column is a poster; with one, it is a queue of testable assumptions feeding the pilot plan.</p>
+<hr>
 <h2 id="4-case-study-lens-running-an-engagement-inside-the-harness-article-36"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Running an Engagement Inside the Harness (Article 36)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 36 (<code>articles/36/README.md</code>) narrates a full engagement inside the ASD harness.</p>

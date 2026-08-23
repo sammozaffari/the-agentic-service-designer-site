@@ -221,6 +221,107 @@ $CLI artifact-write --projectId juniper-collect-and-return-sprint-5cdce310 \
 </code></pre>
 <p>A <strong>veto</strong> on an unjustified score would look like: <code>{&quot;rowKind&quot;:&quot;defect&quot;,&quot;severity&quot;:&quot;high&quot;,&quot;message&quot;:&quot;score 4.3 has no feasibility basis&quot;,&quot;fix&quot;:&quot;cite scanner capability evidence or lower feasibility&quot;,&quot;rule&quot;:&quot;nuf-feasibility&quot;}</code> — every defect row must carry a <code>fix</code>, and the artifact stays draft.</p>
 <hr>
+<h2 id="worked-example-the-full-chain-from-tensions-to-a-selected-concept">Worked example: The full chain from tensions to a selected concept</h2>
+<p>Fixture — three evidence-backed tensions from the Northfield follow-up research:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Tension</th>
+<th align="left">Statement</th>
+<th align="left">Evidence id</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">T1</td>
+<td align="left">Callback latency (median 62h) lands outside the 24h window when patient anxiety peaks</td>
+<td align="left"><code>d89ed8d2…</code></td>
+</tr>
+<tr>
+<td align="left">T2</td>
+<td align="left">Ward nurses spend ~40 minutes per patient chasing GP confirmation</td>
+<td align="left"><code>cfbee89a…</code></td>
+</tr>
+<tr>
+<td align="left">T3</td>
+<td align="left">Three portals duplicate data entry, so follow-up records silently diverge</td>
+<td align="left"><code>fa43b10e…</code></td>
+</tr>
+</tbody></table>
+<p><strong>Step 1 — HMW prompts.</strong> Reframe each tension as a question; every node cites its tension&#39;s evidence:</p>
+<pre><code class="language-json">{&quot;kind&quot;: &quot;hmw-set&quot;, &quot;nodes&quot;: [
+  {&quot;id&quot;: &quot;h2&quot;, &quot;label&quot;: &quot;Confirmation as byproduct&quot;,
+   &quot;evidence&quot;: [{&quot;evidenceId&quot;: &quot;cfbee89ae36a9ae181d6b9e449a185e94364f8d48bc2ca9f67247366285b8ed1&quot;}],
+   &quot;fields&quot;: {&quot;question&quot;: &quot;How might we make GP confirmation a byproduct of documentation rather than a chase?&quot;, &quot;opportunity&quot;: &quot;Remove the 40-minute chase from every follow-up&quot;, &quot;insight&quot;: &quot;Nurses re-enter facts the GP already holds&quot;}}]}
+</code></pre>
+<p><strong>Step 2 — 6-3-5 brainwriting.</strong> Six participants write three ideas each per round for five rounds, sheets rotating so each round builds on the previous: up to 90 raw candidates in 30 minutes, and the handwriting forces building over talking. Round-1 excerpt for H2:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Participant</th>
+<th align="left">Idea A</th>
+<th align="left">Idea B</th>
+<th align="left">Idea C</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">P1</td>
+<td align="left">GP co-signs the discharge note once</td>
+<td align="left">shared follow-up register</td>
+<td align="left">callback slot booked at discharge</td>
+</tr>
+<tr>
+<td align="left">P2 (building on P1)</td>
+<td align="left">co-signature auto-closes the loop</td>
+<td align="left">register readable by all 3 portals</td>
+<td align="left">SMS shows the booked slot</td>
+</tr>
+</tbody></table>
+<p><strong>Step 3 — 10-plus-10 on the top HMW.</strong> For H2, list the first ten ideas without judging (co-signing, shared register, pre-booked slot, fax-free GP feed, nurse-practitioner sign-off…), then deliberately produce ten <em>more</em> — patient self-confirms in the GP practice app, pharmacy-mediated confirmation, GP list batch-confirmed overnight…. The second ten is where the non-obvious combinations live; two of the three finalists below came from it.</p>
+<p><strong>Step 4 — NUF scoring</strong> (1–5 per lens, composite = mean):</p>
+<table>
+<thead>
+<tr>
+<th align="left">Concept</th>
+<th align="left">New</th>
+<th align="left">Useful</th>
+<th align="left">Feasible</th>
+<th align="left">Composite</th>
+<th align="left">Decision</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Pre-committed callback slot + shared register</td>
+<td align="left">4</td>
+<td align="left">5</td>
+<td align="left">4</td>
+<td align="left">4.3</td>
+<td align="left">advance</td>
+</tr>
+<tr>
+<td align="left">GP co-signature workflow</td>
+<td align="left">3</td>
+<td align="left">4</td>
+<td align="left">2</td>
+<td align="left">3.0</td>
+<td align="left">park</td>
+</tr>
+<tr>
+<td align="left">Pharmacy-mediated confirmation</td>
+<td align="left">5</td>
+<td align="left">2</td>
+<td align="left">2</td>
+<td align="left">3.0</td>
+<td align="left">park</td>
+</tr>
+</tbody></table>
+<p><strong>Step 5 — selected concept</strong>, written as a scored concept-set node:</p>
+<pre><code class="language-json">{&quot;kind&quot;: &quot;concept-set&quot;, &quot;nodes&quot;: [
+  {&quot;id&quot;: &quot;c1&quot;, &quot;label&quot;: &quot;Pre-committed callback&quot;,
+   &quot;evidence&quot;: [{&quot;evidenceId&quot;: &quot;d89ed8d27665486f7c07ef6871b8c8016fe28aaf7a346c6a77c21de6972a0e38&quot;}],
+   &quot;fields&quot;: {&quot;concept&quot;: &quot;Callback slot booked before discharge, recorded once in a register all three portals read&quot;, &quot;score&quot;: 4.3, &quot;feasibility&quot;: 4, &quot;risk&quot;: 2, &quot;hypothesis&quot;: &quot;A visible, pre-committed slot removes the anxiety window and the 40-minute chase&quot;}}]}
+</code></pre>
+<p>Interpretation: the chain&#39;s value is that each stage <em>constrains</em> the next — H2 exists only because T2 has evidence, and c1 advances only because its scores are numbers the Critic can compare against the parked alternatives. The 10-plus-10 discipline matters because the first ten ideas are the ones the room already believed; divergence that never leaves the obvious is not divergence.</p>
+<hr>
 <h2 id="4-case-study-lens-concept-briefs-at-forge-industrial-article-18"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Concept Briefs at Forge Industrial (Article 18)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 18 (<em>Concept Briefs &amp; Value Propositions: Funding Predictive Care at Forge Industrial</em>) is an illustrative composite.</p>

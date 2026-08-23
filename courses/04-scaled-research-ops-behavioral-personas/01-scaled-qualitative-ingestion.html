@@ -261,6 +261,74 @@ $CLI evidence-import --projectId fernwood-repairs-research-ops-b0254f32 \
 <li><strong>Heterogeneous corpus, one store.</strong> Interviews (quotes), enrollment funnel numbers (telemetry), and insurer policy constraints (documents) coexisted in one register. The runtime mirrors this with the three-kind enum — and nothing else: <code>asd evidence-add --kind observation</code> fails closed with <code>&quot;arguments.kind&quot; must be one of [&quot;quote&quot;,&quot;telemetry&quot;,&quot;document&quot;]</code> (verified live, exit 1).</li>
 </ul>
 <hr>
+<h2 id="worked-example-a-10-row-transcript-csv-through-the-whole-ingestion-chain">Worked example: a 10-row transcript CSV through the whole ingestion chain</h2>
+<p><strong>Fixture.</strong> Five Fernwood tenants (P-01…P-05), one verbatim line each per theme, exported by the field researcher as <code>imports/int-tenants-01.csv</code>:</p>
+<pre><code class="language-csv">&quot;I waited on hold for forty minutes before anyone picked up.&quot;
+&quot;The call handler could not see my earlier report, so I repeated everything.&quot;
+&quot;I gave up on the online form and emailed a photo instead.&quot;
+&quot;The operative arrived without the part, so we booked a second visit.&quot;
+&quot;I took a day off work and nobody showed up.&quot;
+&quot;The text said morning, but nobody came until half past four.&quot;
+&quot;I reported the same leak three times; each call started from zero.&quot;
+&quot;The portal let me upload photos but never told me if anyone looked at them.&quot;
+&quot;My neighbour ended up phoning on my behalf because of the language barrier.&quot;
+&quot;Once the repair was done, nobody told me what happens if it leaks again.&quot;
+</code></pre>
+<p><strong>Step 1 — import.</strong> <code>asd evidence-import --projectId $PID --path $ASD_WORKSPACE/imports/int-tenants-01.csv --source int-tenants-01</code> produces ten <code>kind: &quot;quote&quot;</code> records. Expected result (first two rows; ids are the SHA-256 content addresses):</p>
+<table>
+<thead>
+<tr>
+<th align="left">ordinal</th>
+<th align="left">body (prefix)</th>
+<th align="left">evidence id</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">I waited on hold for forty minutes…</td>
+<td align="left"><code>34d366d04daacaf2ab9e5b9d895b06723762e90c2bbaa583e204b32db5b1d673</code></td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">The call handler could not see…</td>
+<td align="left"><code>08605591b1b71133da32cdfaf46487c1dad421558a7be03fbe6dca269bf7b4f1</code></td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">I gave up on the online form…</td>
+<td align="left"><code>215c3e757d6d1882f554d2d0b778678a4f61396e88508f37a79ff1572e2253a0</code></td>
+</tr>
+</tbody></table>
+<p><strong>Step 2 — the plan that should have preceded the fieldwork.</strong> <code>asd method-run --methodId research-plan-design</code> then <code>asd artifact-write</code> yields the typed plan the guide depends on:</p>
+<pre><code class="language-json">{&quot;artifact&quot;: {&quot;id&quot;: &quot;34e52119bd5de9ae7dfb334f1c32d34a&quot;, &quot;kind&quot;: &quot;research-plan&quot;,
+  &quot;nodes&quot;: [
+    {&quot;id&quot;: &quot;rp-objective&quot;, &quot;label&quot;: &quot;Explain repeat-contact demand in repairs reporting&quot;,
+     &quot;fields&quot;: {&quot;question&quot;: &quot;Why do tenants contact the service more than once per repair?&quot;}},
+    {&quot;id&quot;: &quot;rp-methods&quot;, &quot;label&quot;: &quot;Semi-structured interviews (n=5) + portal telemetry&quot;,
+     &quot;fields&quot;: {&quot;instruments&quot;: &quot;interview-guide, evidence-import&quot;}},
+    {&quot;id&quot;: &quot;rp-ethics&quot;, &quot;label&quot;: &quot;Consent recorded; verbatim lines only, no names&quot;,
+     &quot;fields&quot;: {&quot;anonymization&quot;: &quot;participant codes P-01..P-05&quot;}}]}}
+</code></pre>
+<p><strong>Step 3 — the guide.</strong> <code>discussion-guide-design</code> (which fails closed without the plan) produces <code>interview-guide</code> artifact <code>f47837d4e51c764a6655b44a1d0608b6</code> with nodes such as <code>{&quot;id&quot;: &quot;ig-journey&quot;, &quot;fields&quot;: {&quot;prompt&quot;: &quot;Walk me through the last repair you reported, from noticing it to the final visit.&quot;}}</code> — open prompts only, since the acceptance rules forbid <code>leading</code> and <code>closed</code> descriptions.</p>
+<p><strong>Interpretation.</strong> The chain only coheres in one direction: the plan declares intent, the guide shapes the instrument, the CSV is its output, and every imported row lands in the store with an ordinal and content id that module 04.2&#39;s clusters will cite. If you import before the plan exists, the runtime lets you — but no method downstream will treat uncited rows as findings. Ingestion order is the research-ops discipline made executable.</p>
+<h2 id="worked-example-library-method-shadowing-diaryprobe-study-triangulated-into-the-register">Worked example (library method): shadowing + diary/probe study, triangulated into the register</h2>
+<p><strong>Recruitment.</strong> From Northfield Regional Health&#39;s day-surgery follow-up cohort, recruit two contrasting participants: NRH-P07, who attended the follow-up call and uses the portal confidently, and NRH-P12, one of the 18% who missed the first follow-up, with low digital confidence. Contrast is deliberate: a diary study of only confident users would silently encode the service&#39;s existing bias.</p>
+<p><strong>The 3-day diary kit.</strong> Each participant receives: a pocket booklet with two prompted pages per day (morning: &quot;What are you watching for in your recovery today?&quot;; evening: &quot;What did you do about it, and who or what helped?&quot;), a prepaid photo envelope for medication labels and discharge paperwork, three SMS check-in prompts, and a consent card. Consent covers verbatim quotation under participant codes only; names, addresses, and clinician names are struck before any line reaches the store.</p>
+<p><strong>Capture.</strong> Shadowing sessions and diary pages are transcribed to workspace-local CSVs and imported as <code>quote</code> records; portal login telemetry for the same window is added with <code>evidence-add --kind telemetry</code>. Triangulation happens at synthesis: one insight node cites one record of each kind.</p>
+<pre><code class="language-json">{&quot;artifact&quot;: {&quot;id&quot;: &quot;a11ccb0e000d72b4e38948043461c5a9&quot;, &quot;kind&quot;: &quot;insight-set&quot;,
+  &quot;nodes&quot;: [
+    {&quot;id&quot;: &quot;ins-silent-gap&quot;, &quot;label&quot;: &quot;The follow-up gap is silent, not refused&quot;,
+     &quot;evidence&quot;: [
+       {&quot;evidenceId&quot;: &quot;11081730e484c94172787ad3fbab87c2753238240d5facdee152243ef72b435a&quot;,
+        &quot;quote&quot;: &quot;I thought no news meant I was healing fine.&quot;},
+       {&quot;evidenceId&quot;: &quot;8423709104cde89eb59beb3f1764c39bf93f48c71fd3e47027a63d1a32423953&quot;,
+        &quot;quote&quot;: &quot;Diary day 2: waited for the call, never rang them myself.&quot;},
+       {&quot;evidenceId&quot;: &quot;2e8ad4a39460b33ed3390ddaecd78563ec32f9336163dad5bd4da4ed0384127a&quot;,
+        &quot;quote&quot;: &quot;{\&quot;metric\&quot;:\&quot;portal_logins_post_discharge\&quot;,\&quot;participant\&quot;:\&quot;NRH-P12\&quot;,\&quot;value\&quot;:0}&quot;}],
+     &quot;fields&quot;: {&quot;insight&quot;: &quot;Missed follow-ups read as disengagement but behave as assumed-safety; the channel never signals that contact is expected.&quot;, &quot;theme&quot;: &quot;silent-gap&quot;, &quot;confidence&quot;: &quot;supported&quot;}}]}}
+</code></pre>
+<p><strong>Interpretation.</strong> Shadowing shows what people do, the diary shows what they <em>meant</em>, and telemetry shows what the system recorded — no single source carries the insight. The artifact contract forces the triangulation to be visible: each cited id resolves to a verbatim record, so a reviewer can check that the &quot;assumed safety&quot; claim rests on an observation, a self-report, and a system trace rather than on one vivid quote.</p>
+<hr>
 <h2 id="5-hands-on-lab"><i data-lucide="microscope" class="ic"></i> 5. Hands-On Lab</h2>
 <p>Full instructions and the automated verifier live in <a href="../labs/lab-04-research-ops-personas/README.md"><code>courses/labs/lab-04-research-ops-personas/</code></a>. Core exercise for this module:</p>
 <pre><code class="language-bash">export ASD_WORKSPACE=/tmp/asd-lab-04

@@ -274,6 +274,60 @@ $CLI artifact-write --projectId $PID --methodId journey-from-transcripts \
 </code></pre>
 <h3 id="node-integrity-state-diagram">Node integrity state diagram</h3>
 <p></p>
+<h3 id="worked-example-a-complete-4-node-segment-and-the-three-writes-that-must-die">Worked example: a complete 4-node segment, and the three writes that must die</h3>
+<p><strong>Fixture — Northfield Regional Health, day-surgery follow-up</strong> (four evidence records minted with <code>sd_evidence_add</code>):</p>
+<table>
+<thead>
+<tr>
+<th align="left">id prefix</th>
+<th align="left">kind</th>
+<th align="left">body (trimmed)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>a41f9c02…</code></td>
+<td align="left">quote</td>
+<td align="left">&quot;I left with a leaflet and a number nobody answered.&quot;</td>
+</tr>
+<tr>
+<td align="left"><code>7b3e05d1…</code></td>
+<td align="left">telemetry</td>
+<td align="left">&quot;18% of day-surgery patients miss their first follow-up contact&quot;</td>
+</tr>
+<tr>
+<td align="left"><code>c2d88f47…</code></td>
+<td align="left">telemetry</td>
+<td align="left">&quot;median callback latency from first patient attempt: 62 hours&quot;</td>
+</tr>
+<tr>
+<td align="left"><code>e5b17a90…</code></td>
+<td align="left">quote</td>
+<td align="left">&quot;By day three I just stopped trying and hoped nothing was wrong.&quot;</td>
+</tr>
+</tbody></table>
+<p><strong>Step 1 — write the spine.</strong> Four nodes, edge-chained, every field drawn from a cited record:</p>
+<pre><code class="language-json">[{&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Discharge with leaflet and phone number&quot;,
+  &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;a41f9c02…&quot;,&quot;quote&quot;:&quot;a number nobody answered&quot;}],
+  &quot;fields&quot;:{&quot;stage&quot;:&quot;discharge&quot;,&quot;emotion&quot;:&quot;uncertain&quot;,&quot;touchpoint&quot;:&quot;leaflet + ward phone&quot;}},
+ {&quot;id&quot;:&quot;n2&quot;,&quot;label&quot;:&quot;Attempt first follow-up, reach nobody&quot;,
+  &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;7b3e05d1…&quot;},{&quot;evidenceId&quot;:&quot;a41f9c02…&quot;}],
+  &quot;fields&quot;:{&quot;stage&quot;:&quot;follow-up&quot;,&quot;emotion&quot;:&quot;anxious&quot;,&quot;touchpoint&quot;:&quot;phone&quot;,
+            &quot;pain&quot;:&quot;18% miss the first follow-up contact&quot;}},
+ {&quot;id&quot;:&quot;n3&quot;,&quot;label&quot;:&quot;Wait 62 hours for a callback&quot;,
+  &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;c2d88f47…&quot;}],
+  &quot;fields&quot;:{&quot;stage&quot;:&quot;follow-up&quot;,&quot;emotion&quot;:&quot;distressed&quot;,&quot;touchpoint&quot;:&quot;callback queue&quot;}},
+ {&quot;id&quot;:&quot;n4&quot;,&quot;label&quot;:&quot;Give up and self-monitor&quot;,
+  &quot;evidence&quot;:[{&quot;evidenceId&quot;:&quot;e5b17a90…&quot;,&quot;quote&quot;:&quot;I just stopped trying&quot;}],
+  &quot;fields&quot;:{&quot;stage&quot;:&quot;recovery-gap&quot;,&quot;emotion&quot;:&quot;resigned&quot;,&quot;touchpoint&quot;:&quot;none&quot;}}]
+</code></pre>
+<p>Result: <code>{&quot;accepted&quot;:true,&quot;status&quot;:&quot;draft&quot;,&quot;artifact&quot;:{&quot;id&quot;:&quot;2f8b4e91c6a04735…&quot;,&quot;kind&quot;:&quot;journey-map&quot;},&quot;failures&quot;:[]}</code>.</p>
+<p><strong>Step 2 — the three invalid writes, each rejected before storage:</strong></p>
+<ol>
+<li><strong>Unknown field.</strong> Adding <code>&quot;fields&quot;:{…,&quot;sentiment_score&quot;:-3}</code> → <code>artifact.nodes[0].fields.sentiment_score is not allowed by the closed kind schema</code>, <strong>exit 1</strong>, nothing stored. Numbers are derived views (module 05.4), never node fields.</li>
+<li><strong>Dangling evidence.</strong> Citing <code>&quot;evidenceId&quot;:&quot;beefbeefbeef…&quot;</code> → <code>node &quot;n2&quot; cites evidence &quot;beefbeef…&quot; which is not in the project evidence store</code>, <strong>exit 1</strong>. A spine that can point at a nonexistent quote is a poster, not a map.</li>
+<li><strong>Missing required field.</strong> Omitting <code>emotion</code> on n3 → <code>artifact.nodes[2].fields.emotion is required</code>, <strong>exit 1</strong>. The same gate fires for any kind-required categorizer — a <code>mental-model-map</code> node missing <code>belief</code> fails identically.</li>
+</ol>
+<p><strong>Interpretation.</strong> All three rejections share one property: the store stays clean because validation precedes persistence. The mapper&#39;s workflow is therefore <em>write → read the exact failure → remediate → rewrite</em>, with <code>sd_artifact_write --artifactId</code> carrying corrections in place. A 4-node spine that survives all three gates is small but unfalsifiable-proof: every stage, emotion, and pain resolves to a record a reviewer can open.</p>
 <hr>
 <h2 id="4-case-study-lens-albatross-airways-article-09"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Albatross Airways (Article 09)</h2>
 <blockquote>

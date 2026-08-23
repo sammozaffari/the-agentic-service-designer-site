@@ -226,6 +226,55 @@ console.log(id(&quot;int-01&quot;,&quot;quote&quot;,
 <h3 id="mutation-forensics-how-an-edit-becomes-visible">Mutation forensics — how an edit becomes visible</h3>
 <p></p>
 <hr>
+<h2 id="worked-example-hashing-one-record-by-hand">Worked example: hashing one record by hand</h2>
+<p>A workshop capture yields one verbatim line worth keeping. Here is the complete derivation from content to id, with nothing taken on trust.</p>
+<p><strong>Fixture — the four hash slots.</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">Slot</th>
+<th align="left">Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>source</code></td>
+<td align="left"><code>wrk-07</code> (follow-up workshop, session 7)</td>
+</tr>
+<tr>
+<td align="left"><code>kind</code></td>
+<td align="left"><code>quote</code></td>
+</tr>
+<tr>
+<td align="left"><code>body</code></td>
+<td align="left"><code>The follow-up letter arrived after my appointment did.</code></td>
+</tr>
+<tr>
+<td align="left"><code>origin</code></td>
+<td align="left"><code>null</code> (manual capture, no import provenance)</td>
+</tr>
+</tbody></table>
+<p><strong>Step 1 — serialize in the fixed order.</strong> <code>JSON.stringify</code> over the array <code>[source, kind, body, origin]</code> with compact separators (no spaces; array order is the schema):</p>
+<pre><code class="language-text">[&quot;wrk-07&quot;,&quot;quote&quot;,&quot;The follow-up letter arrived after my appointment did.&quot;,null]
+</code></pre>
+<p>That string is exactly 80 UTF-8 bytes. Byte count matters: the hash commits to these bytes and no others — not to <code>projectId</code>, not to <code>capturedAt</code>, not to whatever tool produced them.</p>
+<p><strong>Step 2 — digest.</strong> SHA-256 over those bytes, hex-encoded:</p>
+<pre><code class="language-text">sha256(80 bytes above) = 62c845bbd3b95533613613b90825bd1af48d901febadb81116df22520a3d8644
+</code></pre>
+<p><strong>Step 3 — verify independently.</strong> No platform code involved:</p>
+<pre><code class="language-bash">node -e &#39;console.log(require(&quot;crypto&quot;).createHash(&quot;sha256&quot;)
+  .update(JSON.stringify([&quot;wrk-07&quot;,&quot;quote&quot;,
+    &quot;The follow-up letter arrived after my appointment did.&quot;,null]),&quot;utf8&quot;)
+  .digest(&quot;hex&quot;))&#39;
+# prints: 62c845bbd3b95533613613b90825bd1af48d901febadb81116df22520a3d8644
+</code></pre>
+<p><strong>Expected artifact.</strong> The register row this derivation predicts — an <code>EvidenceRecord</code> with <code>kind: &quot;quote&quot;</code> whose id <em>is</em> the hash:</p>
+<pre><code class="language-json">{ &quot;id&quot;: &quot;62c845bbd3b95533613613b90825bd1af48d901febadb81116df22520a3d8644&quot;,
+  &quot;source&quot;: &quot;wrk-07&quot;, &quot;kind&quot;: &quot;quote&quot;,
+  &quot;body&quot;: &quot;The follow-up letter arrived after my appointment did.&quot; }
+</code></pre>
+<p><strong>Avalanche micro-check.</strong> Change one word (<code>after</code> → <code>before</code>) and the id becomes <code>2adc52e59a54f2ff57c6d36d93d7adcb3d84641f04eaeb25c552eae3ae623fbe</code> — sharing no prefix with the original.</p>
+<p><strong>Interpretation.</strong> The id is a pure function of content: anyone, on any machine, hashing the same four slots gets <code>62c845bb…3d8644</code>, so a citation can be checked without asking the register &quot;what did you mean at the time?&quot; And because the body sits inside the hash, the one-word edit cannot be laundered — it mints a <em>new</em> record, leaving every citation of the old id pointing at bytes that either still exist (unchanged, checkable) or dangle loudly. That is what it means for provenance to be unfakeable: the identifier and the content are the same fact.</p>
+<hr>
 <h2 id="4-case-study-lens-article-34-the-street-of-small-business-vela-bank"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Article 34 — <em>The Street of Small Business</em> (Vela Bank)</h2>
 <blockquote>
 <p><strong>Synthetic illustration — not a production log.</strong> Article 34 is a fictional composite SME-banking engagement; this lens applies the module&#39;s mechanics to its narrative.</p>

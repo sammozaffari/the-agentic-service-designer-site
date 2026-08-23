@@ -176,6 +176,79 @@
 <li><strong>The v1→v2 comparison is the honest &quot;dynamic&quot; part.</strong> v1 ended at frustrated (−3). v2 adds n4 (relieved, +3) — drawn from post-change quote <code>03d1bc24…</code>. The curve <em>moved</em> because new evidence entered the store and the artifact was rewritten (module 05.6), not because a smoothing function ran.</li>
 <li><strong>What you may not claim:</strong> statistical significance, population-level sentiment, or precision beyond the mapping&#39;s declared granularity. Four quote-backed stages produce a <em>shape to argue with</em>, not a measurement.</li>
 </ul>
+<h3 id="worked-example-from-a-quote-valence-table-to-a-derived-curve">Worked example: from a quote-valence table to a derived curve</h3>
+<p><strong>Fixture — eight coded quotes across four stages</strong> (Meridian evening rider sample, <code>sd_evidence_query</code> export). Declared mapping, written down <em>before</em> coding: <code>delighted +4, relieved +3, calm +1, uneasy −1, anxious −2, frustrated −3, distressed −4</code>.</p>
+<table>
+<thead>
+<tr>
+<th align="left">stage</th>
+<th align="left">evidence id prefix</th>
+<th align="left">quote (trimmed)</th>
+<th align="left">asserted <code>fields.emotion</code></th>
+<th align="right">coded valence</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">n1 pre-journey</td>
+<td align="left"><code>dd7a0a0c…</code></td>
+<td align="left">&quot;I check the app three times before I leave work&quot;</td>
+<td align="left">anxious</td>
+<td align="right">−2</td>
+</tr>
+<tr>
+<td align="left">n1 pre-journey</td>
+<td align="left"><code>b60e2f19…</code></td>
+<td align="left">&quot;If the app says coming, I still leave five minutes early&quot;</td>
+<td align="left">uneasy</td>
+<td align="right">−1</td>
+</tr>
+<tr>
+<td align="left">n2 journey</td>
+<td align="left"><code>cf7764fd…</code></td>
+<td align="left">&quot;I found out from another passenger, not from Meridian&quot;</td>
+<td align="left">frustrated</td>
+<td align="right">−3</td>
+</tr>
+<tr>
+<td align="left">n2 journey</td>
+<td align="left"><code>2a94d8e6…</code></td>
+<td align="left">&quot;The stranger next to me knew more than the sign did&quot;</td>
+<td align="left">frustrated</td>
+<td align="right">−3</td>
+</tr>
+<tr>
+<td align="left">n3 recovery</td>
+<td align="left"><code>433237cb…</code></td>
+<td align="left">&quot;they re-read me the same website page&quot;</td>
+<td align="left">frustrated</td>
+<td align="right">−3</td>
+</tr>
+<tr>
+<td align="left">n3 recovery</td>
+<td align="left"><code>f91c67f7…</code></td>
+<td align="left"><em>(telemetry: 41 of 60 evening calls are re-calls)</em></td>
+<td align="left">distressed</td>
+<td align="right">−4</td>
+</tr>
+<tr>
+<td align="left">n4 resolution</td>
+<td align="left"><code>03d1bc24…</code></td>
+<td align="left">&quot;It just rebooks me.&quot;</td>
+<td align="left">relieved</td>
+<td align="right">+3</td>
+</tr>
+<tr>
+<td align="left">n4 resolution</td>
+<td align="left"><code>77c1a3d8…</code></td>
+<td align="left">&quot;First time I didn&#39;t have to chase anyone&quot;</td>
+<td align="left">delighted</td>
+<td align="right">+4</td>
+</tr>
+</tbody></table>
+<p><strong>Step-by-step derivation.</strong> Per stage, average the coded valences: n1 = (−2−1)/2 = <strong>−1.5</strong>; n2 = <strong>−3.0</strong>; n3 = (−3−4)/2 = <strong>−3.5</strong>; n4 = (+3+4)/2 = <strong>+3.5</strong>. Plot in edge order and annotate the n2→n3 drop with its trigger (cancellation SMS with no rebooking offer):</p>
+<p></p>
+<p><strong>Asserted vs derived — the distinction that keeps the curve honest.</strong> The <code>emotion</code> string on each node is <em>asserted</em>: it must appear in, or fairly paraphrase, the cited quote, and the critic gate enforces that. The valence number is <em>derived</em>: it is computed by the declared mapping, lives in the review row or the presentation layer, and is rejected by the closed schema if anyone tries to store it. n3 shows why both layers matter: its asserted word (<code>distressed</code>, from telemetry) is stronger than any quote word, and the derived average (−3.5) reflects it — but had the two n3 codings been −4 and +2, the mean of −1 would be a fiction; report the spread, not just the mean.</p>
+<p><strong>Interpretation.</strong> The curve says sentiment bottoms during the wait, not at the cancellation — and every point can be walked back to a quote id. That walk-back is the entire claim to truth: remove the declared mapping or the evidence column and what remains is decoration.</p>
 <hr>
 <h2 id="4-case-study-lens-albatross-airways-article-09"><i data-lucide="bar-chart-3" class="ic"></i> 4. Case Study Lens: Albatross Airways (Article 09)</h2>
 <blockquote>
@@ -234,6 +307,6 @@ $CLI artifact-write --projectId &lt;pid&gt; --methodId journey-from-transcripts 
     </article>
   </div>
   <footer class="module-foot">The Agentic Service Designer — evidence-gated, agentic service design.</footer>
-  <script>window.__DIAGRAMS__=3</script>
+  <script>window.__DIAGRAMS__=4</script>
 </body>
 </html>
