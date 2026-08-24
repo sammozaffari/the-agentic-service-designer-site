@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Where Humans Matter Most: Rebuilding Connection in an Automated Drive-Thru — QSR (anonymized). By Sam Mozaffari. AI-first service design case study.">
+<title>54. Where Humans Matter Most: Rebuilding Connection in an Automated Drive-Thru — The Agentic Service Designer</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
+
+</head><body>
+<header class="site-head">
+  <a class="brand" href="../../index.html">
+    <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
+    <div class="brand-sub">Sam Mozaffari</div>
+  </a>
+  <nav class="main-nav">
+    <a href="../../index.html" class="">Index</a>
+    <a href="../../articles.html" class="on">Articles</a>
+    <a href="../../courses.html" class="">Courses</a>
+    <a href="../../book.html" class="">Book</a>
+    <a href="../../harness.html" class="">Harness</a>
+    <a href="../../docs/index.html" class="">Docs</a>
+    <a href="../../about.html" class="">About</a>
+    <a href="../../cv.html" class="">CV</a>
+  </nav>
+</header>
+<main class="art art-article"><div class="art-progress"><div class="art-progress-bar" id="progress"></div></div><div class="art-layout art-layout--hero">
+  <header class="art-hero">
+    <div class="art-meta">
+      <span class="art-meta-item"><span class="chip">Innovation &amp; Prototyping</span></span><span class="art-meta-item"><span class="chip">QSR (anonymized)</span></span><span class="art-meta-item"><span class="chip">~14 weeks (design + two sequenced pilots)</span></span><span class="art-meta-item"><span class="chip">38 min read</span></span>
+    </div>
+    <h1>Where Humans Matter Most: Rebuilding Connection in an Automated Drive-Thru</h1>
+    <p class="deck">Client anonymized: a global quick-service restaurant chain. All names, figures, and data are illustrative and anonymized.</p>
+    <div class="art-stats"><span><b>8</b> figures</span><span><b>~8.5k</b> words</span><span><b>3</b> tools of record</span><span><b>critic-reviewed</b> every gate</span></div>
+    <div class="author-block">
+      <div class="author-id">
+        <div class="author-avatar">SM</div>
+        <div><b>Sam Mozaffari</b><span>Service designer · AI-first &amp; agentic practice</span></div>
+      </div>
+      <p class="author-note">In this anonymized drive-thru case, I frame a global quick-service restaurant chain's human-connection programme — from journey mapping through two sequenced pilots — with an agent team producing the example artifacts. Every name, figure, and quote is illustrative and transformed.</p>
+    </div>
+  </header></div><div class="art-layout art-layout--body"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</a></li>
+<li><a href="#sec-1-executive-summary">Executive summary</a></li>
+<li><a href="#sec-2-the-brief">The brief</a></li>
+<li><a href="#sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</a></li>
+<li><a href="#sec-4-phase-by-phase-narrative">Phase-by-phase narrative</a></li>
+<li><a href="#sec-5-artifacts-portfolio">Artifacts portfolio</a></li>
+<li><a href="#sec-6-use-cases">Use cases</a></li>
+<li><a href="#sec-7-sops-for-ai">SOPs for AI — how service design SOPs are best used by agents</a></li>
+<li><a href="#sec-8-value-creation-amp-measurement">Value creation &amp; measurement</a></li>
+<li><a href="#sec-9-ai-tool-playbook">AI tool playbook</a></li>
+<li><a href="#sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</a></li>
+<li><a href="#sec-11-references">References</a></li>
+<li><a href="#sec-12-appendix-artifact-index">Appendix: artifact index</a></li></ol></nav></aside><article class="art-body">
+<section class="art-sec"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</h2>
+<p>The client in this case study is a global quick-service restaurant chain, anonymized by agreement. No real restaurant, franchisee, employee, or customer is depicted; no store, city, or market is named; no system, platform, or program name appears. The article shares the service-design method, process, and craft — the touchpoint architecture, the pilot design, the measurement discipline, the honest null finding — never client specifics. Every figure, metric, quote, and dataset is illustrative and transformed from the client's internal measurements, and each is labelled as such. The engagement narrative is synthetic in its specifics: the agent toolchain named in Section 9 is an illustrative working surface, while the human designer retained framing, judgment, and every go/no-go decision.</p>
+<p><strong>Evidence boundary.</strong> All metrics, dates, and datasets in this article are illustrative and anonymized, including the sample dataset at <code>data/drive-thru-pilot-sample.csv</code> (a synthetic fixed-seed file that regenerates the article's charts). Public research cited in Section 11 is real and attributable; everything describing the client's operations is transformed.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2>
+<p>A global quick-service restaurant chain had been rolling voice-AI order takers into its drive-thrus — and discovered it had quietly deleted the one human moment the channel had always guaranteed: the spoken order conversation. Efficiency went up; the personal touch that the brand was built on went down. The customer data said it plainly: drive-thru experiences "often lack personal touch and meaningful interactions." The chain did not remove the technology. Instead, over roughly 14 weeks, a small programme team redesigned <em>where and how humans show up</em> around the automation: four named touchpoints, a scripted-but-ownable hospitality ritual, and a two-arm surprise-and-delight experiment run for exactly one pre-selected hour a day.</p>
+<p>The work was deliberately low-tech. No new systems, no base-labour increase, no impact on speed, no margin erosion — those were hard constraints, not aspirations. Pilot 1 rolled a hospitality training system (per-touchpoint cards, poor-vs-good training videos, leaderboards, bingo) across 10 restaurants, training roughly 200 crew in the first month. Pilot 2 ran a 5-vs-5 two-arm experiment — a giveaway arm versus a zero-cost handwritten-note arm — during one daily "delight hour," with a surprise-first mechanic that gave the tokens to crew before customers. The results: overall drive-thru satisfaction up ~14 percentage points, service satisfaction up ~7, friendliness up, and the negative-experience share down — with no measurable speed cost. During the intervention hour, test restaurants ran ~3.5 points higher on order accuracy and ~4 points higher on friendliness mentions than the national baseline, and ~2.5 points lower on negative comments. And the programme's most honest finding was a null result: the giveaway tokens themselves never appeared in customer comments. The gift was not the point. The interaction was.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>A global quick-service restaurant chain (anonymized)</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>Quick-service restaurant (QSR), drive-thru channel</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>Drive-thru hospitality experience design — a "human-connection" programme across four touchpoints, layered on an automated voice-ordering flow</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>10 pilot restaurants (5+5 two-arm experiment) plus a control group; ~3,700-response national comparison dataset across ~520 restaurants; expansion proposed to front counter, delivery, and self-service channels</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>~14 weeks (design + two sequenced pilots), late 2024 – early 2025</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>Small programme core (design leads + data analysts) with an operations sponsor, area leaders, ~10 restaurant managers, ~20 assistant managers, and ~200 crew</td>
+</tr>
+<tr>
+<td>AI tools</td>
+<td>The chain's voice-AI drive-thru order taker (the automation layer the programme was designed to balance); the guest feedback platform (unnamed); the designer's agent toolchain (illustrative working surfaces)</td>
+</tr>
+<tr>
+<td>Headline results</td>
+<td>Overall drive-thru satisfaction +~14 points; service satisfaction +~7; friendliness up; negative-experience share down; order accuracy +~3.5 at the intervention hour vs national baseline; no speed or labour cost (all figures illustrative)</td>
+</tr>
+</tbody></table>
+<p>What you will learn:</p>
+<ul>
+<li>How to treat an automation rollout as a <em>role-redesign</em> problem rather than a technology problem — naming the human moments a machine deleted and training them like any operational skill.</li>
+<li>How to run a two-arm experiment inside a live restaurant operation: one pre-selected hour, every receipt touched, a controlled comparison, and a measurement stack that separates pilot 1's effect from pilot 2's.</li>
+<li>How to report a null finding honestly — the tokens no customer mentioned — and still make the case that the programme worked, because the evidence pointed at the interaction, not the gift.</li>
+</ul>
+</section>
+<section class="art-sec"><span class="sec-kicker">02 · The brief</span><h2 id="sec-2-the-brief">The brief</h2>
+<h3 id="client-portrait">Client portrait</h3>
+<p>The client is a global quick-service restaurant chain with a dense drive-thru footprint in the South Pacific region: thousands of restaurants, a loyal but impatient customer base, and a multi-year automation agenda. By the time this programme started, the chain had already rolled a voice-AI order taker into a wave of drive-thrus — a system that takes the spoken order, shows it on a confirmation screen, and alerts crew by headset when a customer needs help. It also ran digital ordering, self-order screens, and a QR-on-receipt guest feedback survey that had collected roughly 3,700 drive-thru responses over the trailing months. The chain was winning on speed and losing on warmth, and its own customer data was the first to say so.</p>
+<h3 id="the-challenge">The challenge</h3>
+<p>The stated brief, in the client's own words: "We are implementing multiple new technologies to enhance our drive-thrus. While this enhances efficiency, it risks diminishing the personal touch that has been central to our brand. We need to balance technological advancement with meaningful human interactions to maintain and improve customer satisfaction and brand loyalty." The customer-data driver underneath it: drive-thru experiences "often lack personal touch and meaningful interactions." The automation-era channel had stripped out the one guaranteed human moment — the spoken order — and replaced it with a machine voice. Team members had no behavioural script for their new role, and crew confidence for customer interaction sat at just ~4.1 out of 5. The ask was framed as a balancing act: keep the efficiency of the new technology without losing the human element.</p>
+<p>The team's reframe was blunt: this is not a technology problem — it is a role and behaviour problem. The voice-AI did not need to be removed; the crew needed to know <em>where</em> they were now the experience, and <em>how</em> to be it. The direction-setting question recorded in the early materials was the one that carried the whole engagement: "Ultimately what is our goal? What do we want to be famous for? Is it that we want to be world class in customer experience and hospitality?"</p>
+<h3 id="success-criteria-agreed-with-the-client">Success criteria (agreed with the client)</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline (illustrative)</th>
+<th>Pilot target</th>
+<th>Measured by</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Overall drive-thru satisfaction (top-box share)</td>
+<td>~44% (survey-based, start of pilot 1)</td>
+<td>≥ +10 points by end of pilot 2</td>
+<td>Guest feedback platform, weekly</td>
+</tr>
+<tr>
+<td>Service satisfaction</td>
+<td>~54%</td>
+<td>≥ +6 points</td>
+<td>Platform service item, weekly</td>
+</tr>
+<tr>
+<td>Negative-experience share (all channels)</td>
+<td>~22%</td>
+<td>≤ ~18%</td>
+<td>Platform bottom-of-ladder, weekly</td>
+</tr>
+<tr>
+<td>Order accuracy, intervention hour</td>
+<td>National baseline</td>
+<td>≥ +3 points vs national during the hour</td>
+<td>Hourly platform cuts, test vs national</td>
+</tr>
+<tr>
+<td>Throughput (speed)</td>
+<td>Stable</td>
+<td>No regression (within ±1%)</td>
+<td>Operations telemetry, weekly</td>
+</tr>
+<tr>
+<td>Crew confidence for customer interaction (1–5)</td>
+<td>~4.1</td>
+<td>≥ 4.5</td>
+<td>Crew survey, week 1 of each pilot</td>
+</tr>
+<tr>
+<td>Surprise-and-delight execution</td>
+<td>None</td>
+<td>Token with every receipt in the intervention hour; zero complaints about it</td>
+<td>Mystery-shopper visits + platform</td>
+</tr>
+</tbody></table>
+<h3 id="constraints">Constraints</h3>
+<p>Six guiding principles were treated as hard, non-negotiable filters for every concept considered. Any idea that failed one was dead on arrival:</p>
+<ul>
+<li><strong>Low-to-no technology requirements.</strong> The human layer must not need new hardware, software, or integrations.</li>
+<li><strong>No negative impact on speed.</strong> The intervention must not cost throughput — a drive-thru second is a commercial fact, not a feeling.</li>
+<li><strong>No increase in base labour.</strong> No new staffing model, no extra hours; the ritual had to run inside existing rosters.</li>
+<li><strong>Low complexity.</strong> Something a restaurant manager can brief in a pre-shift huddle, not a multi-week change programme.</li>
+<li><strong>No margin erosion.</strong> Surprise-and-delight gestures must not decrease overall margins, and they must never be only an apology or a reaction to a negative event.</li>
+<li><strong>Four-week implementation horizon.</strong> Each pilot had to be runnable inside a single reporting period.</li>
+</ul>
+<h3 id="why-service-design">Why service design</h3>
+<p>This was not a marketing campaign problem or a script-writing problem. The experience was produced by a socio-technical system — the voice-AI's recognition layer, the headsets, the confirmation screen, the pay window, the pick-up window, the waiting bay, and a crew of ~200 people whose role had been silently redefined by the machine. The failures lived below the line of visibility: crew unsure what their new job was, customers speaking to a robot with nobody listening, apologies happening ad hoc at the payment window instead of by design. That is precisely what service design exists for (See: 09-mapping-experiences/05-service-blueprints.md). Polaine, Løvlie, and Reason's arc — research to insight, ideas, prototyping, implementation — provided the governing structure (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md), and the Service Profit Chain gave the economic frame: internal service quality (crew enabled, confident, purposeful) drives external service value, which drives satisfaction, loyalty, and the economics that justify the whole automation agenda (See: 20-the-service-profit-chain/03-external-service-value.md). The psychology framing the team cited throughout — "70% of people base their entire buying experience on how they're treated. Not the food, not the speed — just how someone made them feel" — was published research they brought to the client, not client-original material, and it did the heavy lifting in the sponsor conversation.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">03 · Approach</span><h2 id="sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</h2>
+<p>The engagement followed a Double Diamond with a deliberately compressed execution spine: <em>discover → define → pilot 1 → pilot 2 → decide</em>. Fourteen weeks, two live pilots, one decision gate. The designer ran every phase with AI collaborators: Claude Code for research synthesis and artifact authoring, OpenCode for the data pipelines and sample datasets, Codex for adversarial review, and the chain's own systems — the guest feedback platform and the voice-AI order taker's escalation telemetry — as the systems of record for customer voice and automation behaviour. Every figure below is illustrative; the method is real.</p>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 296" role="img" aria-hidden="true"><defs><marker id="arr-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Discover - weeks 1-3</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Define - weeks 4-5</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Pilot 1 - weeks 6-9</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Pilot 2 - weeks 10-14</text><line x1="0" y1="294" x2="296" y2="294" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 1</span><span class="figcap">Approach: four phases over 14 weeks — discover, define, pilot 1, pilot 2</span></figcaption></figure>
+<figure class="fig fig-gantt"><div class="gantt"><div class="gantt-head"><span class="gantt-taskcol">Phase</span><span class="gantt-track"><span>Wk 1–3</span><span>Wk 4–5</span><span>Wk 6–9</span><span>Wk 10–13</span><span>Wk 14</span></span></div><div class="gantt-section">Discover</div><div class="gantt-row"><span class="gantt-taskcol">Desktop research &amp; competitor scan</span><span class="gantt-track"><span class="gantt-bar future" style="left:0.00%;width:21.43%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Journey mapping of the automated flow</span><span class="gantt-track"><span class="gantt-bar future" style="left:0.00%;width:21.43%"></span></span></div><div class="gantt-section">Define</div><div class="gantt-row"><span class="gantt-taskcol">Synthesis — insight cards</span><span class="gantt-track"><span class="gantt-bar future" style="left:14.29%;width:21.43%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Two-arm experiment design &amp; feasibility</span><span class="gantt-track"><span class="gantt-bar future" style="left:21.43%;width:14.29%"></span></span></div><div class="gantt-section">Pilot 1</div><div class="gantt-row"><span class="gantt-taskcol">Hospitality rollout — training &amp; launch</span><span class="gantt-track"><span class="gantt-bar future" style="left:35.71%;width:28.57%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Hypercare &amp; weekly measurement</span><span class="gantt-track"><span class="gantt-bar future" style="left:35.71%;width:28.57%"></span></span></div><div class="gantt-section">Pilot 2</div><div class="gantt-row"><span class="gantt-taskcol">Surprise-and-delight two arms</span><span class="gantt-track"><span class="gantt-bar future" style="left:64.29%;width:28.57%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Analysis &amp; national decision gate</span><span class="gantt-track"><span class="gantt-bar future" style="left:85.71%;width:14.29%"></span></span></div></div><figcaption><span class="fignum">Figure 2</span><span class="figcap">Programme plan — 14 weeks across two sequenced pilots with a national decision gate (illustrative timeline)</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>SD method</th>
+<th>AI tool(s)</th>
+<th>Artifact produced</th>
+<th>Client involvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Research</td>
+<td>Desktop research, competitor scan, journey mapping of the automated ordering flow (09/04)</td>
+<td>Claude Code (theme extraction), feedback-platform exports</td>
+<td>Evidence register, current-state journey map</td>
+<td>Ops sponsor shared platform data; area leaders walked the flow</td>
+</tr>
+<tr>
+<td>Synthesis</td>
+<td>Collaborative affinity synthesis, insight cards (03/04, 01/04)</td>
+<td>Claude Code (clustering pass), Codex (challenge pass)</td>
+<td>6 insight cards, design principles</td>
+<td>Half-day synthesis wall with ops and marketing</td>
+</tr>
+<tr>
+<td>Mapping</td>
+<td>Touchpoint architecture — four points of human connection; blueprint with fail points (09/05)</td>
+<td>Claude Code (lane diagrams), OpenCode (leaderboard mock)</td>
+<td>Four-touchpoint journey + crew happy path</td>
+<td>Restaurant managers rehearsed the blueprint</td>
+</tr>
+<tr>
+<td>Ideation</td>
+<td>HMW, two-arm experiment design, feasibility filter (03/05)</td>
+<td>Claude Code (concept sheets), Codex (feasibility challenge)</td>
+<td>Two-arm experiment brief, feasibility table</td>
+<td>Commercial sign-off on the giveaway arm</td>
+</tr>
+<tr>
+<td>Prototyping</td>
+<td>Training media (poor-vs-good videos), touchpoint cards, gamification (06/03)</td>
+<td>Claude Code (draft scripts), OpenCode (sample data)</td>
+<td>Training kit, key cards, bingo, leaderboard</td>
+<td>Managers reviewed cards for natural language</td>
+</tr>
+<tr>
+<td>Pilot 1</td>
+<td>Live rollout with hypercare; weekly measurement loop (07/03)</td>
+<td>Feedback platform weekly reports; Claude Code (readouts)</td>
+<td>Rollout kit, weekly satisfaction/throughput/complaints reports</td>
+<td>10 restaurant managers + 20 assistant managers</td>
+</tr>
+<tr>
+<td>Pilot 2</td>
+<td>Randomized two-arm experiment in a controlled time window (06/01)</td>
+<td>OpenCode (delta pipeline), Claude Code (readouts)</td>
+<td>Two-arm results, intervention-hour analysis</td>
+<td>Mystery shoppers, weekly ops calls, crew survey</td>
+</tr>
+<tr>
+<td>Measurement</td>
+<td>Period-over-period cuts, national comparison, honest null-finding review (20/03, 01/07)</td>
+<td>OpenCode (deltas), Codex (adversarial review)</td>
+<td>After-action deck, rollout recommendation</td>
+<td>Executive decision gate on the annual operating calendar</td>
+</tr>
+</tbody></table>
+</section>
+<section class="art-sec"><span class="sec-kicker">04 · The work, phase by phase</span><h2 id="sec-4-phase-by-phase-narrative">Phase-by-phase narrative</h2>
+<h3 id="41-research-weeks-13">4.1 Research (weeks 1–3)</h3>
+<p><strong>Goal.</strong> Understand what the automation had actually changed for customers and crew, and where the human moments still lived.</p>
+<p><strong>Method &amp; SOP.</strong> Triangulated desk work rather than greenfield fieldwork: a competitor scan of how other quick-service brands handled the automation-versus-humanity tension; a desktop research pass over the psychology of automation and social disconnection in service environments; and — the load-bearing evidence — the chain's own guest feedback data: ~3,700 drive-thru responses with ~2,600 verbatim comments. The team also mapped the automated ordering flow end to end, customer side and crew side, from the ground-loop trigger that wakes the voice-AI to the waiting bay for parked cars.</p>
+<p><strong>AI execution.</strong> The verbatim comments were processed by a Claude Code subagent team using the comment-classifier SOP in Section 7: one agent extracted themes (service, product quality, speed, accuracy, value), one verified every quoted snippet verbatim against the export (the engagement's key hallucination control), and one triaged crew-recognition comments into a separate stream. Result: a theme register where every claim traced to source rows. The feedback platform's reporting API supplied the weekly satisfaction, throughput, and complaint numbers.</p>
+<p><strong>Human designer judgment.</strong> The decision to treat the ~3,700-response dataset as the primary evidence base (not new interviews — the window was too tight), the reading of the psychology research as a framing device for the sponsor, and the choice to map the happy path rather than the full journey breadth first.</p>
+<p><strong>Illustrative Claude Code host command — emitted pack; live case execution unverified.</strong></p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>claude "Read data/feedback-export.csv (drive-thru, ordered 2pm-3pm, last
+6 months). Classify every verbatim comment into theme: product|service|
+speed|accuracy|value, using the SOP schema. Separate crew-recognition
+comments into their own stream with a recognition flag. Report theme-share
+per reporting period. Drop all PII: customer names, crew names, store
+codes, receipt references. Output data/theme-register.jsonl."</code></pre></div>
+<h3 id="42-synthesis-weeks-45">4.2 Synthesis (weeks 4–5)</h3>
+<p><strong>Goal.</strong> Turn the evidence register into a small set of insight cards that would survive contact with the operations team.</p>
+<p><strong>Method &amp; SOP.</strong> Collaborative affinity synthesis in the three-part syntax the site uses throughout — <em>observed behaviour → root cause → design implication</em> — followed by a Codex challenge pass and a half-day wall session with ops and marketing.</p>
+<p><strong>AI execution.</strong> Claude Code proposed clusters with active-sentence names (the bare-noun bucket trap was disabled in the prompt); Codex attacked each card with the strongest alternative explanation it could find. One card — "automation stripped the spoken order" — survived; one hypothesis — "customers want the robot gone" — was killed: the evidence said customers never asked for the machine to leave, they asked to be treated well.</p>
+<p><strong>Human designer judgment.</strong> The naming of the six final insights, the decision to keep the null-finding on tokens as a card rather than a footnote, and the framing of service as "the measurable product."</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Observed behaviour</th>
+<th>Root cause</th>
+<th>Design implication</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Automation-era drive-thru satisfaction started near ~44% (survey-based) and the client's own data said the channel "lacks personal touch"</td>
+<td>The voice-AI deleted the one guaranteed human moment — the spoken order — and hospitality was an unwritten expectation, not a trained behaviour</td>
+<td>Name the human moments explicitly (four touchpoints) and train them like any operational skill: cards, poor-vs-good videos, scripting</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Crew confidence for customer interaction sat at ~4.1/5; crew questions about the new tech ran to basics ("how will the customer know what to say?", "what do we hear through the headset?")</td>
+<td>The automation redefined the crew role (order taking moved to the machine) without giving crew a behavioural script for the new role</td>
+<td>Pair every tech change with a role-redesign layer: what's-in-it-for-me framing, micro-scripts per touchpoint, coached handoffs</td>
+</tr>
+<tr>
+<td>3</td>
+<td>More than half of ~2,600 verbatim comments praised a crew member; crew-service satisfaction (~4.7/5) was the highest-rated item in the whole survey</td>
+<td>Customers already noticed and rewarded human service — service was the strongest available driver of satisfaction, before any intervention</td>
+<td>Treat service as the measurable product: service satisfaction, friendliness share, and recognition-comment counts as first-class metrics, closed loop weekly</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Comment focus shifted from product quality to service across both pilots; service was the key driver of service satisfaction in the test group</td>
+<td>The training layer changed what crew did at the touchpoints, so service quality — not food — became the experience customers talked about</td>
+<td>If behaviour training shifts the customer conversation, keep investing in the service layer and measure it specifically; don't read it off overall satisfaction alone</td>
+</tr>
+<tr>
+<td>5</td>
+<td>The giveaway tokens and handwritten notes never appeared in customer comments; the giveaway arm still edged the note arm on average</td>
+<td>Small physical tokens sit below the threshold of what customers mention; the interaction around the token is what moves feedback, and gift type varies in perceived value</td>
+<td>Spend on the delivery ritual, not the token; keep tokens cheap and simple; treat the two-arm comparison as a cost-vs-outcome trade, not a verdict on delight</td>
+</tr>
+<tr>
+<td>6</td>
+<td>During the intervention hour, test restaurants ran lower on negative comments (~−2.5) and higher on positive sentiment (~+3) vs national</td>
+<td>The programme's defensive effect — preventing dissatisfaction — is at least as valuable as its delight effect</td>
+<td>Frame human connection as dissatisfaction-prevention with upside; the four touchpoints protect the relationship when automation or waits go wrong</td>
+</tr>
+</tbody></table>
+<h3 id="43-mapping-weeks-45">4.3 Mapping (weeks 4–5)</h3>
+<p><strong>Goal.</strong> Locate the human moments the automation had erased and design the crew role around them.</p>
+<p><strong>Method &amp; SOP.</strong> The customer happy path and the crew happy path were mapped for the automated flow, then fused into a touchpoint architecture: <strong>four points of human connection</strong> — the order point, the payment window, the pick-up window, and the waiting bay. Each touchpoint got a training card with concrete micro-behaviours and scripts. The blueprint also captured the fail points: the voice-AI's recognition failures (bad days, uncomfortable customers, app orders, communication trouble) all resolved to one human ritual — apologise and serve in person at the payment window. The automation is front-stage technology but back-stage labour: its voice is the brand's voice, so the human layer must catch what the machine cannot — tone, empathy, eye contact, and the apology.</p>
+<p><strong>AI execution.</strong> Claude Code authored the lane diagrams and the first-pass training cards; OpenCode built the anonymized leaderboard mock from the weekly report shape.</p>
+<p><strong>Human designer judgment.</strong> The four-touchpoint cut itself (not five, not two), the "automation is back-stage labour" reading, and the decision that the waiting bay — not the order point — was where surprise-and-delight belonged.</p>
+<h3 id="44-ideation-weeks-45">4.4 Ideation (weeks 4–5)</h3>
+<p><strong>Goal.</strong> Design a pilot 2 concept that could run inside the guiding principles: no new tech, no speed cost, no base labour, no margin erosion, no apology-only gestures, four-week horizon.</p>
+<p><strong>Method &amp; SOP.</strong> How-might-we over the insight cards; every candidate idea run through the six principles as a decision filter; feasibility reviewed for complexity and cost.</p>
+<p><strong>What was designed.</strong> A two-arm surprise-and-delight experiment. <em>Giveaway arm:</em> small branded merchandise and occasional 10% discounts, delivered gamified (spin the wheel, pick a number, lucky dip, flip a card). <em>Handwritten-note arm:</em> branded affirmation cards the crew could add a handwritten note to — zero cost. Both arms: one token with every receipt during one pre-selected hour. Plus an internal surprise-first mechanic: managers were given tokens to surprise crew for a week before the customer hour, so crew could "experience being surprised and delighted and then reciprocate this to customers."</p>
+<p><strong>What was rejected.</strong> Food giveaways and voucher giveaways (register-management codes and tracking friction); numbered-customer targeting (complexity, gimmick risk); the 10% discount as a standalone mechanic (needed commercial sign-off, so it folded into the giveaway arm); and any apology-only gesture — banned by principle.</p>
+<p><strong>AI execution.</strong> Claude Code drafted the concept sheets; Codex stress-tested the experiment design and flagged that the two arms would be confounded if the automation-rollout variable wasn't balanced across them — the team then split the arms across automation-era and non-automation stores deliberately.</p>
+<p><strong>Human designer judgment.</strong> The choice of the intervention hour by operational economics: the 2pm–3pm hour was selected because it carried lower transaction volume (less gift stock, less cost, less storage), lower staffing stress, and higher baseline satisfaction — a cost, labour, and measurement optimisation in one decision. The hour also made the hype exclusive: "one hour, every receipt, maximum effort — not required to sustain over long periods," which sharply reduced training burden.</p>
+<h3 id="45-pilot-1-hospitality-rollout-weeks-69">4.5 Pilot 1 — hospitality rollout (weeks 6–9)</h3>
+<p><strong>Goal.</strong> Install the four-touchpoint hospitality behaviours as a trained, reinforced operational skill across 10 restaurants (a cluster of suburban restaurants, 5 automation-era + 5 control), then measure.</p>
+<p><strong>Method &amp; SOP.</strong> The training system: manager and rollout meetings with all 10 restaurant managers; per-touchpoint training videos showing a poor experience and a good experience side by side, plus an intro video on the what, the why, and what's-in-it-for-me; physical key cards at each touchpoint; a comms board giving all crew ongoing information about the what and the why; a pre-shift poster and run-sheet; a customer-experience bingo game; and a store-by-store satisfaction leaderboard with weekly winners. Baseline was captured two weeks before launch; rollout happened on a single day; hypercare ran through the end of the reporting period. Roughly 200 crew were trained across the 10 restaurants, with ~50 crew trained by mid-morning on day one.</p>
+<p><strong>AI execution.</strong> Claude Code drafted the training scripts from the insight cards (the micro-scripts below came out of this pass); the feedback platform produced the weekly satisfaction, throughput, and complaint reports; OpenCode maintained the leaderboard mock.</p>
+<p><strong>Human designer judgment.</strong> The scripting standard — "we encourage the team to make it their own so it sounds natural and feels good for them" — authenticity over compliance, written into every card. The grandma rule ("treat every customer as if it was your grandmother") and the exact-wait-time language came from the restaurant managers in review, not from the design team.</p>
+<p><strong>Artifacts.</strong> The training kit (Section 5), the leaderboard, the weekly reports, and the hypercare log.</p>
+<h3 id="46-pilot-2-surprise-and-delight-weeks-1014">4.6 Pilot 2 — surprise-and-delight, two arms (weeks 10–14)</h3>
+<p><strong>Goal.</strong> Test whether a surprise moment layered on the hospitality foundation could lift satisfaction and word-of-mouth without breaking the guiding principles.</p>
+<p><strong>Method &amp; SOP.</strong> A 5-vs-5 two-arm experiment (giveaway arm vs handwritten-note arm) with a control group, run during one pre-selected hour daily (2pm–3pm) for one reporting period only. Every receipt in the hour received a token. Internal surprise came first: the project team visited all test locations, and for one week managers surprised crew with tokens, then the crew surprised customers. A "make somebody's day" challenge gave one crew member per shift licence to gift a free upsize, item, or discount. Mystery shoppers monitored execution; a crew survey ran at week 1; weekly satisfaction/throughput/complaint reports continued; and the programme was promoted only by word of mouth — which doubled as a free uptake detector, since customers asking about it outside the hour could be tracked.</p>
+<p><strong>AI execution.</strong> OpenCode ran the delta pipeline (test vs national, intervention hour only) and generated the sample dataset (Section 5, A6); Claude Code drafted the weekly readouts; Codex adversarially reviewed the after-action analysis, including a direct challenge to the token null-finding.</p>
+<p><strong>Human designer judgment.</strong> Keeping the experiment honest: the hour was fixed and pre-registered; stock was sized from historical transaction data with an uplift adjustment; and the team requested hourly-level reports from the feedback platform for the test restaurants — a measurement capability the platform didn't yet have built in, and which was never fully delivered.</p>
+<h3 id="47-measurement-and-decision-weeks-14">4.7 Measurement and the decision (week 14)</h3>
+<p><strong>Goal.</strong> Attribute the results, tell the truth about what didn't work, and give the business a decision.</p>
+<p><strong>Method &amp; SOP.</strong> Weekly reporting through both pilots; period-over-period cuts to separate pilot 1's effect from pilot 2's; test-vs-national comparisons restricted to the intervention hour; the reintroduced mystery-shopper program; and an after-action review structured context → what was done → results → recommendation, each slide carrying its speaker notes.</p>
+<p><strong>Results (illustrative, transformed).</strong> Test-group overall drive-thru satisfaction rose from the high 60s to the low 80s (+~14 points) across the two pilots; service satisfaction rose ~54 to ~61 (+~7); friendliness rose ~3 points; and the negative-experience share fell ~4 points overall and ~3 in drive-thru. During the intervention hour, test restaurants beat the national baseline on service satisfaction (+~1.5), service quality (+~2), order accuracy (+~3.5), positive sentiment (+~3), and friendliness mentions (+~4), while negative comments ran ~2.5 points lower and order speed was flat. The tokens themselves appeared in almost no comments — the honest null finding. The giveaway arm edged the note arm on average.</p>
+<p><strong>The decision.</strong> The recommendation was adopted: pilot 1's hospitality behaviours become the foundation of the chain's drive-thru operating standard, rolled out nationally through the annual operating calendar; pilot 2's surprise-and-delight hour becomes a periodic engagement driver rather than a daily standard. Expansion was proposed to the front counter, delivery, and self-service channels, with consistent human-connection metrics defined across them.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">05 · Artifacts portfolio</span><h2 id="sec-5-artifacts-portfolio">Artifacts portfolio</h2>
+<p>All figures illustrative.</p>
+<h3 id="a1-journey-map-automated-drive-thru">A1 — Journey map: the automated drive-thru with four human touchpoints</h3>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1420 150" role="img" aria-hidden="true"><defs><marker id="arr-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><text x="10" y="13" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="1">SYSTEM LANE — AUTOMATION LAYER</text><path d="M 186,39.5 212,39.5 238,39.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-2)"/><path d="M 429.2,39.5 455.2,39.5 481.2,39.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-2)"/><line x1="573" y1="61" x2="573" y2="92" stroke="#9B9B96" stroke-width="1" stroke-dasharray="3 3"/><rect x="10" y="18" width="176" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="98" y="37" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Voice-AI takes the</text><text x="98" y="50" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">spoken order</text><rect x="238" y="18" width="191.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="333.6" y="37" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Order-confirmation</text><text x="333.6" y="50" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">screen verifies</text><rect x="481.2" y="18" width="183.6" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="573" y="37" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Help request — alert</text><text x="573" y="50" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">to crew, takeover</text><text x="10" y="87" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="1">FRONT STAGE — FOUR HUMAN TOUCHPOINTS</text><path d="M 186,113.5 212,113.5 238,113.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-2)"/><path d="M 429.2,113.5 455.2,113.5 481.2,113.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-2)"/><path d="M 664.8,113.5 690.8,113.5 716.8,113.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-2)"/><rect x="10" y="92" width="176" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="98" y="111" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">1 · Order point</text><text x="98" y="124" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">listen, jump in, handoff</text><rect x="238" y="92" width="191.2" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="333.6" y="111" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">2 · Payment window</text><text x="333.6" y="124" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">greet, confirm, small talk</text><rect x="481.2" y="92" width="183.6" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="573" y="111" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">3 · Pick-up window</text><text x="573" y="124" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">accuracy check, farewell</text><rect x="716.8" y="92" width="198.8" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="816.2" y="111" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">4 · Waiting bay</text><text x="816.2" y="124" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">exact wait time, updates</text></svg><figcaption><span class="fignum">Figure 3</span><span class="figcap">The automated drive-thru journey: the automation layer above (system lane) and the four human touchpoints below (front stage); the dashed line is the escalation channel</span></figcaption></figure>
+<h3 id="a2-touchpoint-training-cards">A2 — Per-touchpoint training cards (micro-scripts, paraphrased)</h3>
+<table>
+<thead>
+<tr>
+<th>Touchpoint</th>
+<th>Trained behaviour</th>
+<th>Script flavour (paraphrased)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Order point (speaker box)</td>
+<td>Friendly tone, active listening, never sound robotic; verify accuracy</td>
+<td>Drop the flat "and then…" cadence; read the order back with warmth</td>
+</tr>
+<tr>
+<td>Order point — voice-AI handoff</td>
+<td>Jump in before the customer gets frustrated; smooth takeover</td>
+<td>A light joke about the machine still learning; then take over naturally</td>
+</tr>
+<tr>
+<td>Payment window</td>
+<td>Eye contact, authentic greeting, confirm the order, small talk during delays, hand the receipt for the feedback survey</td>
+<td>"Anything else while we get that ready for you?"</td>
+</tr>
+<tr>
+<td>Pick-up window</td>
+<td>Visually and audibly confirm accuracy; progress updates; sincere farewell</td>
+<td>"Fresh chips are about 30 seconds away." "Have a great day — see you next time."</td>
+</tr>
+<tr>
+<td>Waiting bay</td>
+<td>Exact wait time up front; number-plate and order recall; updates; surprise moments during the wait</td>
+<td>"It'll be about five minutes for fresh chicken." Treat every customer like your own grandmother</td>
+</tr>
+</tbody></table>
+<h3 id="a3-two-arm-experiment">A3 — The two-arm experiment</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Giveaway arm (5 restaurants)</th>
+<th>Handwritten-note arm (5 restaurants)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Token</td>
+<td>Small branded merchandise; occasional 10% discount</td>
+<td>Branded affirmation card, crew may add a handwritten note</td>
+</tr>
+<tr>
+<td>Delivery ritual</td>
+<td>Gamified: spin the wheel, pick a number, lucky dip, flip a card</td>
+<td>Handed with the receipt and a genuine line</td>
+</tr>
+<tr>
+<td>Cost profile</td>
+<td>Low cost (stock, storage); sized from historical transaction data</td>
+<td>Zero cost</td>
+</tr>
+<tr>
+<td>Execution</td>
+<td>One token with every receipt in the intervention hour, one reporting period only</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>Outcome (illustrative)</td>
+<td>Edged the note arm on average across the satisfaction deltas</td>
+<td>Positive, slightly behind on averages — won on cost, lost on outcomes</td>
+</tr>
+<tr>
+<td>Honest null finding</td>
+<td colspan="2">Neither token appeared in customer comments — the gift was not memorable; the interaction around it was</td>
+</tr>
+</tbody></table>
+<h3 id="a4-leaderboard-and-gamification">A4 — Leaderboard &amp; gamification mock</h3>
+<p>The reinforcement system: a store-by-store satisfaction leaderboard with weekly winners (restaurant codes A–J, illustrative), customer-experience bingo cards, pre-shift posters, and merchandise giveaways for completed bingo cards.</p>
+<table>
+<thead>
+<tr>
+<th>Restaurant</th>
+<th>Week 4 satisfaction (top-box %, illustrative)</th>
+<th>Weekly winner</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td>81</td>
+<td>—</td>
+</tr>
+<tr>
+<td>B</td>
+<td>78</td>
+<td>—</td>
+</tr>
+<tr>
+<td>C</td>
+<td>84</td>
+<td>Week 4</td>
+</tr>
+<tr>
+<td>D</td>
+<td>76</td>
+<td>—</td>
+</tr>
+<tr>
+<td>E</td>
+<td>79</td>
+<td>—</td>
+</tr>
+<tr>
+<td>F</td>
+<td>85</td>
+<td>Week 3</td>
+</tr>
+<tr>
+<td>G</td>
+<td>74</td>
+<td>—</td>
+</tr>
+<tr>
+<td>H</td>
+<td>80</td>
+<td>—</td>
+</tr>
+<tr>
+<td>I</td>
+<td>77</td>
+<td>—</td>
+</tr>
+<tr>
+<td>J</td>
+<td>82</td>
+<td>Week 2</td>
+</tr>
+</tbody></table>
+<h3 id="a5-training-media">A5 — Training media</h3>
+<p>Per-touchpoint videos in a poor-vs-good format: each touchpoint filmed twice — once showing the flat, robotic, no-eye-contact version, once showing the coached version — preceded by an intro video on the what, the why, and what's-in-it-for-me for crew ("feeling safer, more connected, a sense of purpose"). This pairing, not a hero video of ideal behaviour, is what made the training land: crew saw the failure they were actually committing, then the fix.</p>
+<h3 id="a6-sample-dataset">A6 — Sample dataset</h3>
+<p>Full file: <a href="data/drive-thru-pilot-sample.csv"><code>data/drive-thru-pilot-sample.csv</code></a> — a synthetic illustrative sample of the metric deltas across the two pilots (12 rows, fixed seed), labelled as illustrative in the header and ready to regenerate Figures 4 and 5.</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code># drive-thru-pilot-sample.csv — SYNTHETIC ILLUSTRATIVE SAMPLE
+# Client anonymized: a global quick-service restaurant chain.
+metric,pilot,comparison,value_pp,note
+overall_satisfaction,pilot_1_hospitality,test_vs_baseline,14,"Overall drive-thru satisfaction, start of pilot 1 to end of pilot 2"
+service_satisfaction,pilot_1_hospitality,test_vs_baseline,7,"Service satisfaction, same window"
+order_accuracy,pilot_2_delight_hour,test_vs_national,3.5,"Order accuracy, intervention hour only"
+friendliness_mentions,pilot_2_delight_hour,test_vs_national,4,"Friendliness mentions, hour only"
+negative_comments,pilot_2_delight_hour,test_vs_national,-2.5,"Negative-comment share, hour only"</code></pre></div>
+<h3 id="a7-charts">A7 — Charts</h3>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">40</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">55</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">70</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">85</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">100</text><line x1="44" y1="304" x2="730" y2="304" stroke="#DEDEDA" stroke-width="1"/><text x="129.75" y="324" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Baseline</text><text x="387" y="324" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">End of pilot 1</text><text x="644.25" y="324" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">End of pilot 2</text><line x1="588" y1="12" x2="604" y2="12" stroke="#171817" stroke-width="2" stroke-linecap="round"/><text x="610" y="15" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">overall</text><line x1="588" y1="28" x2="604" y2="28" stroke="#4A7FA8" stroke-width="2" stroke-linecap="round"/><text x="610" y="31" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">service</text><polyline points="129.75,182.7 387,152.3 644.25,122" fill="none" stroke="#171817" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="129.75" cy="182.7" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="387" cy="152.3" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="644.25" cy="122" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><text x="653" y="125.5" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">82</text><polyline points="129.75,243.3 387,230.3 644.25,213" fill="none" stroke="#4A7FA8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="129.75" cy="243.3" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="387" cy="230.3" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="644.25" cy="213" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><text x="653" y="216.5" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#4A7FA8" font-weight="600" text-anchor="start" letter-spacing="0">61</text></svg><figcaption><span class="fignum">Figure 4</span><span class="figcap">Drive-thru satisfaction trajectory, test restaurants — baseline to end of both pilots (illustrative, top-box share)</span></figcaption></figure>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">-3</text><line x1="44" y1="200" x2="730" y2="200" stroke="#DEDEDA" stroke-width="1"/><text x="36" y="203.5" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="148" x2="730" y2="148" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="151.5" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">1.5</text><line x1="44" y1="96" x2="730" y2="96" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="99.5" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">3</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">4.5</text><text x="93" y="324" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Service sat.</text><text x="191" y="324" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Service qual.</text><text x="289" y="324" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Order accuracy</text><text x="387" y="324" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Order speed</text><text x="485" y="324" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Pos. sentiment</text><text x="583" y="324" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Friendliness</text><text x="681" y="324" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Neg. comments</text><rect x="78" y="148" width="30" height="52" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="93" y="142" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">1.5</text><rect x="176" y="130.7" width="30" height="69.3" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="191" y="124.7" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">2</text><rect x="274" y="78.7" width="30" height="121.3" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="289" y="72.7" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">3.5</text><rect x="372" y="193.1" width="30" height="6.9" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="387" y="187.1" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">0.2</text><rect x="470" y="96" width="30" height="104" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="485" y="90" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">3</text><rect x="568" y="61.3" width="30" height="138.7" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="583" y="55.3" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">4</text><rect x="666" y="200" width="30" height="86.7" rx="3" fill="#B08A00" stroke="currentColor" stroke-width="1"/><text x="681" y="298.7" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">-2.5</text></svg><figcaption><span class="fignum">Figure 5</span><span class="figcap">Intervention-hour deltas: test restaurants vs national baseline, during the delight hour only (illustrative, percentage points); negative comments ran lower — the defensive effect</span></figcaption></figure>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="222.75" x2="730" y2="222.75" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="226.25" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">25</text><line x1="44" y1="141.5" x2="730" y2="141.5" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="145" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">50</text><line x1="44" y1="60.25" x2="730" y2="60.25" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="63.75" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">75</text><text x="200" y="324" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Baseline (before pilots)</text><text x="560" y="324" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">End of both pilots</text><rect x="515" y="7" width="14" height="10" rx="2" fill="#171817"/><text x="537" y="15" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">Product &amp; food quality</text><rect x="515" y="22" width="14" height="10" rx="2" fill="#4A7FA8"/><text x="537" y="30" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">Service &amp; crew</text><rect x="155" y="176.4" width="90" height="127.6" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="200" y="244.5" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#F8F8F5" font-weight="600" text-anchor="middle" letter-spacing="0">58%</text><rect x="155" y="84" width="90" height="92.4" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="200" y="134.5" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#F8F8F5" font-weight="600" text-anchor="middle" letter-spacing="0">42%</text><rect x="515" y="218.2" width="90" height="85.8" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="560" y="265.5" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#F8F8F5" font-weight="600" text-anchor="middle" letter-spacing="0">39%</text><rect x="515" y="84" width="90" height="134.2" rx="3" fill="#4A7FA8" stroke="currentColor" stroke-width="1"/><text x="560" y="155.5" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#F8F8F5" font-weight="600" text-anchor="middle" letter-spacing="0">61%</text></svg><figcaption><span class="fignum">Figure 6</span><span class="figcap">Share of customer comments by theme: product quality vs service — baseline vs end of both pilots (illustrative)</span></figcaption></figure>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1420 63" role="img" aria-hidden="true"><defs><marker id="arr-3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 260,31.5 274,31.5 288,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 538,31.5 552,31.5 566,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 816,31.5 830,31.5 844,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><path d="M 1094,31.5 1108,31.5 1122,31.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-3)"/><rect x="10" y="10" width="250" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="135" y="29" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Pilot 1 — hospitality</text><text x="135" y="42" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">rollout, 10 restaurants</text><rect x="288" y="10" width="250" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="413" y="29" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Pilot 2 — two-arm</text><text x="413" y="42" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">surprise-and-delight, 5 vs 5</text><rect x="566" y="10" width="250" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="691" y="29" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Analysis &amp; decision</text><text x="691" y="42" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">gate — annual calendar</text><rect x="844" y="10" width="250" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="969" y="29" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">National rollout</text><text x="969" y="42" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">(foundation behaviours)</text><rect x="1122" y="10" width="250" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1247" y="29" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Expansion: counter,</text><text x="1247" y="42" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">delivery, self-service</text></svg><figcaption><span class="fignum">Figure 7</span><span class="figcap">Programme arc: two sequenced pilots, an evidence gate, and the scale decision (illustrative)</span></figcaption></figure>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="222.75" x2="730" y2="222.75" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="226.25" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">25</text><line x1="44" y1="141.5" x2="730" y2="141.5" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="145" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">50</text><line x1="44" y1="60.25" x2="730" y2="60.25" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="63.75" font-family='"IBM Plex Mono", "SFMono-Regular", Menlo, monospace' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">75</text><text x="112.6" y="324" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">1</text><text x="249.8" y="324" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">2</text><text x="387" y="324" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">3</text><text x="524.2" y="324" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">4</text><text x="661.4" y="324" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">5</text><rect x="95.6" y="291" width="34" height="13" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="112.6" y="285" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">4%</text><rect x="232.8" y="297.5" width="34" height="6.5" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="249.8" y="291.5" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">2%</text><rect x="370" y="294.25" width="34" height="9.75" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="387" y="288.25" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">3%</text><rect x="507.2" y="245.5" width="34" height="58.5" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="524.2" y="239.5" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">18%</text><rect x="644.4" y="66.75" width="34" height="237.25" rx="3" fill="#171817" stroke="currentColor" stroke-width="1"/><text x="661.4" y="60.75" font-family='Inter, "Helvetica Neue", Helvetica, Arial, sans-serif' font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">73%</text></svg><figcaption><span class="fignum">Figure 8</span><span class="figcap">Illustrative distribution of overall drive-thru satisfaction ratings (1–5), survey window (n ≈ 3,700)</span></figcaption></figure>
+</section>
+<section class="art-sec"><span class="sec-kicker">06 · Use cases</span><h2 id="sec-6-use-cases">Use cases</h2>
+<h3 id="use-case-a-the-mishear-handoff">Use case A — The mishear handoff</h3>
+<p><strong>Scenario.</strong> The voice-AI mishears a customer's order — a "bad day" for the speech recognition, an uncomfortable customer, an app order, or a communication breakdown. Before the programme, this was a silent failure: the customer got the wrong food, discovered it at the pick-up window, and the interaction soured at the exact moment the brand could least afford it.</p>
+<p><strong>What was designed.</strong> A named handoff ritual. The recognition system alerts crew by headset the moment a help request fires; crew take over before the customer gets frustrated; the apology happens in person at the payment window — "serve them in person," the card says — with a light, human touch about the machine still learning. The order is re-verified, the customer is handled with eye contact and warmth, and the failure becomes the moment the brand is actually experienced.</p>
+<p><strong>AI working session.</strong> The escalation telemetry from the voice-AI (alert tones, takeover buttons) was mapped into the touchpoint blueprint as a back-stage trigger for a front-stage behaviour. Claude Code drafted the takeover lines; Codex reviewed the scripts for patronising tone and flagged the original joke as risky for unfamiliar customers — softened before rollout.</p>
+<p><strong>Outcome (illustrative).</strong> Escalation-related complaints trended down in the test group across both pilots, and order accuracy during the intervention hour ran ~3.5 points above the national baseline.</p>
+<h3 id="use-case-b-the-waiting-bay-kept-honest">Use case B — The waiting bay, kept honest</h3>
+<p><strong>Scenario.</strong> The drive-thru hits a slow spell; cars are parked in the waiting bay with no information and no contact. Silence reads as abandonment.</p>
+<p><strong>What was designed.</strong> Exact-wait-time honesty, progress updates, and the number-plate-and-order recall ritual: crew greet the parked car by the order, give a real number ("about five minutes for fresh chicken"), update when the kitchen slips, and use the wait as the moment for a surprise gesture. The grandma rule — treat every customer as if it were your own grandmother — was the coachable standard, not a values poster.</p>
+<p><strong>AI working session.</strong> OpenCode pulled the bay-wait verbatim comments from the feedback export so the team could hear the silence as customers wrote it; Claude Code grouped them into wait-time and no-update clusters that became the card's two behaviours.</p>
+<p><strong>Outcome (illustrative).</strong> Negative comments during the intervention hour ran ~2.5 points lower than national; bay-related comments in the test group shifted from "waited with no word" to "they told me exactly how long."</p>
+<h3 id="use-case-c-surprise-the-crew-first">Use case C — Surprise the crew first</h3>
+<p><strong>Scenario.</strong> A surprise-and-delight gesture delivered by crew who have never received one tends to land as a chore. The team inverted the sequence.</p>
+<p><strong>What was designed.</strong> One week before the customer hour launched, managers were given tokens to surprise their own crew — the explicit design intent being that crew "experience being surprised and delighted and then reciprocate this to customers." On top of it ran the make-somebody's-day challenge: one crew member per shift may gift a free upsize, a free item, or a discount to a customer who deserves it, at their own judgment.</p>
+<p><strong>AI working session.</strong> Claude Code drafted the challenge briefing and the manager cheat-sheet; Codex reviewed the gifting rules against the margin principle and flagged that the free-item licence needed a per-shift cap to stay within the no-margin-erosion constraint — capped at one gesture per shift.</p>
+<p><strong>Outcome (illustrative).</strong> The week-1 crew survey showed training materials rated useful and confidence with customers up from the ~4.1 baseline; restaurant managers reported visibly higher willingness to engage at the windows — the internal gesture did its job as a training mechanic disguised as a perk.</p>
+<h3 id="use-case-d-the-delight-hour-rhythm">Use case D — The delight hour rhythm</h3>
+<p><strong>Scenario.</strong> Sustained delight is expensive and exhausting; one hour is not.</p>
+<p><strong>What was designed.</strong> One pre-selected hour per day (2pm–3pm) for one reporting period only. Every receipt in the hour receives a token; the hour is briefed at pre-shift; the team gives it full attention because it is bounded — "not required to sustain over long periods" was the design logic, and it sharply reduced the training required to execute. The hour was promoted only by word of mouth, which doubled as a free uptake detector: customers who came in at other times asking about it were tracked as organic proof the surprise was spreading.</p>
+<p><strong>AI working session.</strong> The hourly transaction and sales data for the 10 test restaurants (intervention hour vs the hour after) was pulled per restaurant so the hour's economics — gift cost absorbed by a low-traffic window — could be checked against the margin principle before launch. OpenCode computed the test-vs-national deltas for the after-action deck.</p>
+<p><strong>Outcome (illustrative).</strong> During the hour, test restaurants beat national on service satisfaction, service quality, order accuracy, positive sentiment, and friendliness mentions, with no speed cost; the tokens themselves were invisible in the comments — the interaction was the gift.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">07 · SOPs for AI</span><h2 id="sec-7-sops-for-ai">SOPs for AI — how service design SOPs are best used by agents</h2>
+<p><strong>Encoded SOPs.</strong> Three SOPs were encoded for agent execution, each following the same pattern: <em>method → numbered steps → output schema → acceptance criteria → review gate</em>.</p>
+<ol>
+<li><strong>Comment-theme classifier SOP</strong> (research and measurement). Output: JSONL theme items from the feedback platform's verbatim comments. Acceptance: every quoted snippet verbatim-verifiable against the export; every item carries theme, sentiment, recognition flag, and source row; no PII survives. Gate: human spot-check of 10% before merge. The prompt template:</li>
+</ol>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>You are COMMENT-CLASSIFIER. Input: one row of a drive-thru feedback export.
+Classify the verbatim comment. Output EXACTLY:
+- item_id: CC-&lt;source_row&gt;-&lt;seq&gt;
+- theme: product | service | speed | accuracy | value | other
+- sentiment: -2..+2
+- recognition_flag: 1 if the comment praises a crew member by name or role
+- token_flag: 1 if the comment mentions a giveaway item or handwritten note
+- text: the verbatim comment (never paraphrase)
+RULES: quote text must be copy-paste exact from the export; if the comment
+contains a person's name, a store code, or any identifying detail, replace
+it with [NAME]/[STORE] before output and set pii_redacted: true. Never
+invent a theme for an empty comment. Output JSONL.</code></pre></div>
+<ol start="2">
+<li><strong>Delight-hour operating SOP</strong> (implementation). The one-hour ritual as SOP-as-code — schedule, owner, steps, acceptance, gate — so any restaurant manager or agent can execute or audit it:</li>
+</ol>
+<div class="codeblock"><div class="codebar"><span>CONFIG</span></div><pre><code>sop: DT-DELIGHT-001
+name: Delight-hour operating procedure
+version: 1.2
+owner: restaurant_manager
+schedule: daily 14:00-15:00, one reporting period only
+steps:
+  - pre_shift: brief the hour, assign one token bearer per window
+  - stock: verify token stock sized from historical transactions
+  - execute: one token with every receipt in the hour
+  - script: crew may adapt the line; must sound natural
+  - handoff: voice-AI mishears &gt; crew takeover before frustration
+acceptance:
+  - every receipt in the hour carries a token (mystery-shopper check)
+  - zero complaints about the gesture itself
+  - throughput within +/-1% of the hour before
+gate: weekly ops review; period-end decision on continuation
+constraints: no margin erosion; no apology-only gestures; no base labour</code></pre></div>
+<ol start="3">
+<li><strong>Measurement SOP</strong> (measurement). Weekly satisfaction, throughput, and complaint reports from the feedback platform; crew survey at week 1 of each pilot; mystery-shopper visits; and — the attribution discipline — period-over-period cuts (the period before pilot 1 vs the pilot-1 period vs the pilot-2 period) so the two pilots' effects can be separated, plus test-vs-national comparisons restricted to the intervention hour.</li>
+</ol>
+<p><strong>The meta-SOP.</strong> The engagement itself ran research → synthesize → map → ideate → prototype → pilot → measure → decide, with a hard gate between stages: no ideation before the insight cards passed the challenge pass; no pilot 2 before pilot 1's weekly reports were reviewed; no scale recommendation before the null finding was confronted. Each gate was a review with the operations sponsor — process enforced by rhythm, not memory.</p>
+<p><strong>Guardrails.</strong></p>
+<ul>
+<li><strong>Customer privacy.</strong> No real customer PII in any prompt, ever: agents worked on the pseudonymized export with names, store codes, and receipt references redacted, and the sample dataset is synthetic with a fixed seed.</li>
+<li><strong>Hallucination control.</strong> Quote verification ran on every synthesis pass: a quoted string not found verbatim in the export failed the review. Insight cards without source rows failed schema validation.</li>
+<li><strong>Commercial sensitivity.</strong> Store-level satisfaction ladders and hourly transaction economics stayed internal; every shared artifact carried the anonymization line.</li>
+<li><strong>Human sign-off points.</strong> Training content; the intervention-hour selection; concept selection for both arms; pilot 1 go; pilot 2 go; the scale decision.</li>
+</ul>
+<p><strong>Failure modes observed.</strong> (1) Over-clustering in the first synthesis pass — 60-plus candidate clusters with near-duplicates; fixed with active-sentence names plus a similarity merge. (2) Thin afternoon samples: most test restaurants returned only a handful of responses per daypart, so hourly-level attribution was never fully delivered — the team requested the capability from the feedback platform and reported the gap openly rather than over-claiming. (3) The AI-ordering-experience question in the survey drew zero responses in the extract — the voice-AI's direct effect was never measured by that item; the team acknowledged it and measured around it. (4) The token null finding was nearly buried in the after-action deck because it read as a failure; the review gate kept it in — and it became the programme's most useful lesson.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">08 · Value</span><h2 id="sec-8-value-creation-amp-measurement">Value creation &amp; measurement</h2>
+<p><strong>Before/after (illustrative; test group of 10 restaurants, both pilots).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline</th>
+<th>End of both pilots</th>
+<th>Delta</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Overall drive-thru satisfaction (top-box share)</td>
+<td>~68%</td>
+<td>~82%</td>
+<td>+~14 pts</td>
+</tr>
+<tr>
+<td>Service satisfaction</td>
+<td>~54%</td>
+<td>~61%</td>
+<td>+~7 pts</td>
+</tr>
+<tr>
+<td>Friendliness (drive-thru comments)</td>
+<td>~92%</td>
+<td>~95%</td>
+<td>+~3 pts</td>
+</tr>
+<tr>
+<td>Negative-experience share (all channels)</td>
+<td>~22%</td>
+<td>~18%</td>
+<td>−~4 pts</td>
+</tr>
+<tr>
+<td>Negative-experience share (drive-thru only)</td>
+<td>~9%</td>
+<td>~6%</td>
+<td>−~3 pts</td>
+</tr>
+<tr>
+<td>Crew trained</td>
+<td>—</td>
+<td>~200 across 10 restaurants (~50 by day one)</td>
+<td>Training at scale proven</td>
+</tr>
+</tbody></table>
+<p><strong>Intervention-hour deltas (test vs national, during the delight hour only; illustrative, percentage points).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Test vs national</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Service satisfaction</td>
+<td>+~1.5</td>
+</tr>
+<tr>
+<td>Service quality</td>
+<td>+~2</td>
+</tr>
+<tr>
+<td>Order accuracy</td>
+<td>+~3.5</td>
+</tr>
+<tr>
+<td>Order speed</td>
+<td>~0 (flat — no speed cost)</td>
+</tr>
+<tr>
+<td>Positive sentiment</td>
+<td>+~3</td>
+</tr>
+<tr>
+<td>Friendliness mentions</td>
+<td>+~4</td>
+</tr>
+<tr>
+<td>Negative comments</td>
+<td>−~2.5</td>
+</tr>
+</tbody></table>
+<p><strong>Causal logic (Service Profit Chain).</strong> The chain ran as Heskett, Sasser, and Schlesinger describe (See: 20-the-service-profit-chain/03-external-service-value.md): internal service quality — crew re-skilled, given a script they could own, rewarded publicly, and surprised themselves — raised frontline capability; external service value rose through the service layer specifically (service satisfaction +~7, friendliness up, recognition comments up); customer satisfaction and loyalty intentions followed; and the economics stayed clean because the guiding principles were constraints, not hopes: zero base-labour increase, no speed impact, and gift cost absorbed by choosing the low-traffic hour for the giveaway arm, with the note arm at zero cost. The defensive effect deserves its own line: negative-experience share fell and negative comments ran lower during the intervention hour — the programme prevented dissatisfaction at least as much as it delighted, and prevention is the cheaper win.</p>
+<p><strong>KPI tree (abridged).</strong> North-star: <em>service satisfaction in the drive-thru channel.</em> Leading drivers: touchpoint behaviour execution (mystery-shopper score), wait-time honesty (bay comments), surprise execution (token coverage in the hour), order accuracy at the intervention hour. Lagging: overall satisfaction, negative-experience share, friendliness share, repeat-visit intent, crew confidence and tenure. Reviewed weekly in the pilots; proposed monthly in run-state, with the same human-connection metrics extended to the front counter, delivery, and self-service channels.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">09 · AI tools</span><h2 id="sec-9-ai-tool-playbook">AI tool playbook</h2>
+<p><strong>Claude Code — orchestration, research team, artifact authoring.</strong> The engagement's agent operating system: ran the comment-classifier subagent team (extraction, quote verification, recognition-comment triage), the synthesis digital wall, the training-card and script drafts, and the weekly readouts. Excels at: structured extraction against a schema; consistency across dozens of files; 80%-there first drafts. Failed at: judging which insight would land with the operations team (the "customers want the robot gone" misread was caught by humans, not the model) and facilitation. Human took over: insight naming, script tone, gates.</p>
+<p><strong>OpenCode — agent-mode pipelines and sample data.</strong> Ran the delta pipeline (test vs national, intervention hour only), the period-over-period attribution cuts, the leaderboard mock, and generated the seeded sample dataset <code>data/drive-thru-pilot-sample.csv</code>. Excels at: self-directed multi-file builds, realistic seed data, fast iteration. Failed at: copy tone (first-pass training lines read like a corporate manual — rewritten with the restaurant managers) and method intent (it will happily compute a delta the experiment did not pre-register; the written experiment design was the leash). Human took over: test design, thresholds, wording.</p>
+<p><strong>Codex — adversarial review.</strong> Second-opinion engine, run with the artifact plus a specific concern, never the whole project. Delivered the insight challenge pass (one hypothesis killed), the experiment-design review (the automation-variable confound, fixed by balancing arms), the gifting-rule review (the per-shift cap, keeping the margin principle intact), and the after-action review that pushed back on the token null finding. Excels at: disagreeing productively — "be adversarial" is a load-bearing instruction. Failed at: occasionally treating stated client constraints (no base labour, no new tech) as defects to be designed away; every finding was verified before action — reconcile by verifying, never by averaging.</p>
+<p><strong>The chain's systems of record.</strong> The guest feedback platform (unnamed) supplied the weekly satisfaction, throughput, and complaint reports and the verbatim export; the voice-AI order taker's escalation telemetry (alert tones, takeover buttons) informed the handoff ritual. Neither was modified by the programme — the design worked within them.</p>
+<p><strong>Illustrative host commands — emitted pack; live case execution unverified.</strong></p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>claude "Read data/theme-register.jsonl and data/weekly-reports.csv. Draft the
+week-4 readout: satisfaction and complaint deltas vs the pre-pilot period,
+the three best customer comments this week (names and stores redacted), and
+the leaderboard winners. Flag any comment mentioning the giveaway token or
+handwritten note. Keep it to 12 lines a restaurant manager can read in a
+huddle."</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>opencode run --agent measurer "Read data/feedback-export.csv and
+data/control-export.csv. Compute per-metric deltas for the intervention
+hour (test vs national) and for pilot 1 (test vs baseline). Then generate
+a 12-row illustrative sample CSV matching those deltas to
+data/drive-thru-pilot-sample.csv, seed fixed."</code></pre></div>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>codex exec --skip-git-repo-check "Read analysis/after-action.md and
+data/drive-thru-pilot-sample.csv. Be adversarial: (1) argue the strongest
+alternative explanation for the satisfaction uplift besides the hospitality
+programme; (2) check whether the token null-finding is reported honestly or
+buried; (3) verify every delta in the deck is present in the sample data."</code></pre></div>
+</section>
+<section class="art-sec"><span class="sec-kicker">10 · Lessons</span><h2 id="sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</h2>
+<ul>
+<li><strong>A simple, repeatable ritual beats grand gestures.</strong> The intervention was compressed to one pre-selected hour: "ability for the team to give it 100% attention, not required to sustain over long periods." The hour cut training burden, gift cost, and operational stress simultaneously — constraints (no base labour, no speed cost, no margin erosion, four weeks) were converted into design features, not accepted as limitations.</li>
+<li><strong>Let the crew own the script.</strong> "We encourage the team to make it their own so it sounds natural and feels good for them" was written into the training cards. Authenticity over compliance is what made the micro-scripts land; a compliance poster would have produced robot apologies at the pay window — the exact failure the voice-AI was already causing.</li>
+<li><strong>Experience-then-reciprocate is a training mechanic disguised as a perk.</strong> Surprising crew before they surprised customers produced the week-1 crew-survey gains and the manager-reported willingness to engage. The internal gesture taught the behaviour more cheaply than any video.</li>
+<li><strong>The gift is not the point; the interaction is.</strong> The tokens never appeared in customer comments — a null result on the gift, redeemed by everything around it. The giveaway arm still edged the note arm on averages, leaving an unresolved cost-vs-outcome tension for scaling: the team chose the honest framing (interaction-centred, token cheap and simple) over a hero narrative.</li>
+<li><strong>Measure what you claim, and admit what you can't.</strong> The after-action materials said it themselves: "metrics to be refined," "can we get to the hourly level?," and the period-over-period cuts to separate pilot 1 from pilot 2. The AI-ordering-experience question drew zero responses — the voice-AI's direct effect was never measured. Reporting the gaps before anyone else could find them is what made the honest numbers believable.</li>
+<li><strong>Word of mouth doubles as a measurement device.</strong> Promoting the delight hour only by word of mouth meant customers arriving at other times asking about it were organic uptake evidence — free tracking of exactly the behaviour the programme wanted to cause.</li>
+<li><strong>Done differently next time:</strong> pre-register hourly-level reporting with the feedback platform before the pilot starts (the capability arrived late and thin samples limited attribution), and score the baseline with the Good Services principles in week 1 rather than discovering the gap later (See: 05-good-services/02-the-fifteen-principles.md).</li>
+</ul>
+</section>
+<section class="art-sec"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2>
+<p>Service-design canon (the site's working library):</p>
+<ul>
+<li>Polaine, A., Løvlie, L., &amp; Reason, B. (2013). <em>Service Design: From Insight to Implementation</em> —the research-to-insight-to-implementation arc that governed the engagement.</li>
+<li>Stickdorn, M., Hormess, M., Lawrence, A., &amp; Schneider, J. (2018). <em>This Is Service Design Doing</em> —research methods, prototyping, implementation and piloting, KPI triangulation.</li>
+<li>Kalbach, J. (2016). <em>Mapping Experiences</em> —journey anatomy, emotional curve, blueprint lanes and the line of visibility.</li>
+<li>Downe, L. (2020). <em>Good Services: How to Design Services That Work</em> —the fifteen principles used to audit the drive-thru experience.</li>
+<li>Heskett, J., Sasser, W. E., &amp; Schlesinger, L. (1997). <em>The Service Profit Chain</em> —internal service quality → external service value → satisfaction → loyalty → profit.</li>
+<li>Reason, B., Løvlie, L., &amp; Flu, M. B. (2016). <em>Service Design for Business</em> —the business case for service design in operational settings.</li>
+</ul>
+<p>Public research cited by the programme (attributed as published research, not client-original):</p>
+<ul>
+<li>"70% of people base their entire buying experience on how they're treated. Not the food, not the speed — just how someone made them feel." — widely cited service-industry research the team used to frame the sponsor conversation.</li>
+<li>"While digital efficiency drives transactions, human connection drives transformation of customers into brand advocates." — <em>Journal of Service Management</em>.</li>
+<li>Research on automation and "social disconnection" in service environments — used to frame the voice-AI rollout risk before any pilot data existed.</li>
+</ul>
+<p>All case figures in this article are illustrative and anonymized; the sample dataset is synthetic. No internal materials, URLs, or program names are referenced.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-appendix-artifact-index">Appendix: artifact index</h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Format</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Confidentiality &amp; provenance note</td>
+<td>0</td>
+<td>prose</td>
+<td>Disguise policy, illustrative disclaimer</td>
+</tr>
+<tr>
+<td>Key-facts table</td>
+<td>1</td>
+<td>table</td>
+<td>Engagement snapshot, all values disguised</td>
+</tr>
+<tr>
+<td>Success criteria</td>
+<td>2</td>
+<td>table</td>
+<td>Contract for pilot targets</td>
+</tr>
+<tr>
+<td>Approach lanes</td>
+<td>3</td>
+<td>fig-lane</td>
+<td>Four-phase spine over 14 weeks</td>
+</tr>
+<tr>
+<td>Programme gantt</td>
+<td>3</td>
+<td>fig-gantt</td>
+<td>14-week plan with sections and the decision gate</td>
+</tr>
+<tr>
+<td>Phase-method-tool table</td>
+<td>3</td>
+<td>table</td>
+<td>Method-to-AI-execution map</td>
+</tr>
+<tr>
+<td>Comment-classifier prompt</td>
+<td>4.1, 7</td>
+<td>fenced prompt</td>
+<td>Theme extraction SOP</td>
+</tr>
+<tr>
+<td>Insight cards</td>
+<td>4.2</td>
+<td>table</td>
+<td>Research-to-design bridge, six cards</td>
+</tr>
+<tr>
+<td>A1 journey map</td>
+<td>5</td>
+<td>fig-flow</td>
+<td>Automation lane + four human touchpoints</td>
+</tr>
+<tr>
+<td>A2 touchpoint cards</td>
+<td>5</td>
+<td>table</td>
+<td>Trained behaviours and micro-scripts</td>
+</tr>
+<tr>
+<td>A3 two-arm experiment</td>
+<td>5</td>
+<td>table</td>
+<td>Giveaway vs note arm, incl. the null finding</td>
+</tr>
+<tr>
+<td>A4 leaderboard mock</td>
+<td>5</td>
+<td>table</td>
+<td>Reinforcement system, anonymized rows</td>
+</tr>
+<tr>
+<td>A5 training media</td>
+<td>5</td>
+<td>prose</td>
+<td>Poor-vs-good video concept</td>
+</tr>
+<tr>
+<td>A6 sample dataset</td>
+<td>5, data/</td>
+<td>CSV + sample</td>
+<td>12-row illustrative delta set, fixed seed</td>
+</tr>
+<tr>
+<td>A7 charts</td>
+<td>5, 8</td>
+<td>fig-xy</td>
+<td>Trajectory, hour deltas, theme shift, arc, distribution</td>
+</tr>
+<tr>
+<td>Use cases A–D</td>
+<td>6</td>
+<td>prose + tables</td>
+<td>Mishear handoff, waiting bay, crew-first, delight hour</td>
+</tr>
+<tr>
+<td>SOP-as-code</td>
+<td>7</td>
+<td>fenced config</td>
+<td>Delight-hour operating procedure</td>
+</tr>
+<tr>
+<td>Before/after metrics</td>
+<td>8</td>
+<td>table</td>
+<td>Value creation evidence</td>
+</tr>
+<tr>
+<td>KPI tree</td>
+<td>8</td>
+<td>prose</td>
+<td>North-star and driver structure</td>
+</tr>
+<tr>
+<td>Host commands</td>
+<td>9</td>
+<td>fenced terminal</td>
+<td>Illustrative agent toolchain usage</td>
+</tr>
+</tbody></table>
+<h3 id="glossary">Glossary (plain-English)</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Voice-AI order taker</td>
+<td>The chain's automated drive-thru ordering system; takes the spoken order, verifies on screen, alerts crew on help requests</td>
+</tr>
+<tr>
+<td>Overall satisfaction</td>
+<td>Share of surveyed customers rating the drive-thru experience top-box</td>
+</tr>
+<tr>
+<td>Service satisfaction</td>
+<td>Share rating the service (crew interaction) top-box — the programme's north-star</td>
+</tr>
+<tr>
+<td>Negative-experience share</td>
+<td>Share of customers rating the experience at the bottom of the scale</td>
+</tr>
+<tr>
+<td>Friendliness share</td>
+<td>Share of comments mentioning friendly or warm crew service</td>
+</tr>
+<tr>
+<td>The intervention hour ("delight hour")</td>
+<td>One pre-selected hour per day (2pm–3pm) in which every receipt received a surprise token, for one reporting period only</td>
+</tr>
+<tr>
+<td>Two-arm experiment</td>
+<td>5 restaurants with giveaway tokens vs 5 with handwritten notes, compared during the same hour against the national baseline</td>
+</tr>
+<tr>
+<td>Decision gate</td>
+<td>The analysis checkpoint on the annual operating calendar that decides national rollout</td>
+</tr>
+</tbody></table>
+<h3 id="methodology-note">Methodology note on the illustrative transformation</h3>
+<p>Every figure in this article is transformed from the client's internal measurements: values are rounded, scaled, or replaced with illustrative equivalents of the same order of magnitude, and each figure is labelled illustrative. The narrative, method, pilot design, and craft are reported faithfully; the numbers are not the client's numbers. The sample dataset at <code>data/drive-thru-pilot-sample.csv</code> is synthetic, generated with a fixed seed, and regenerates Figures 4 and 5. Deck legal lines, internal URLs, email addresses, store codes, system names, program names, and all identifying detail have been removed.</p>
+</section>
+</article>
+</div>
+</main>
+<footer class="footer">
+  <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
+  <span><a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
+</footer>
+<script src="../../assets/site.js"></script>
+
+</body></html>

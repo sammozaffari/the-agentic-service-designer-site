@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The Foyer Host Effect: Designing the Human Half of Self-Service — QSR (anonymized). By Sam Mozaffari. AI-first service design case study.">
+<title>53. The Foyer Host Effect: Designing the Human Half of Self-Service — The Agentic Service Designer</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
+
+</head><body>
+<header class="site-head">
+  <a class="brand" href="../../index.html">
+    <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
+    <div class="brand-sub">Sam Mozaffari</div>
+  </a>
+  <nav class="main-nav">
+    <a href="../../index.html" class="">Index</a>
+    <a href="../../articles.html" class="on">Articles</a>
+    <a href="../../courses.html" class="">Courses</a>
+    <a href="../../book.html" class="">Book</a>
+    <a href="../../harness.html" class="">Harness</a>
+    <a href="../../docs/index.html" class="">Docs</a>
+    <a href="../../about.html" class="">About</a>
+    <a href="../../cv.html" class="">CV</a>
+  </nav>
+</header>
+<main class="art art-article"><div class="art-progress"><div class="art-progress-bar" id="progress"></div></div><div class="art-layout art-layout--hero">
+  <header class="art-hero">
+    <div class="art-meta">
+      <span class="art-meta-item"><span class="chip">Implementation &amp; Operations</span></span><span class="art-meta-item"><span class="chip">QSR (anonymized)</span></span><span class="art-meta-item"><span class="chip">28 weeks (evidence base spans ~3 years of channel growth)</span></span><span class="art-meta-item"><span class="chip">38 min read</span></span>
+    </div>
+    <h1>The Foyer Host Effect: Designing the Human Half of Self-Service</h1>
+    <p class="deck">Client anonymized: a global quick-service restaurant chain. All names, figures, and data are illustrative and anonymized.</p>
+    <div class="art-stats"><span><b>10</b> figures</span><span><b>~8.3k</b> words</span><span><b>4</b> tools of record</span><span><b>critic-reviewed</b> every gate</span></div>
+    <div class="author-block">
+      <div class="author-id">
+        <div class="author-avatar">SM</div>
+        <div><b>Sam Mozaffari</b><span>Service designer · AI-first &amp; agentic practice</span></div>
+      </div>
+      <p class="author-note">In this anonymized QSR case, I reconstruct a global chain&#39;s self-service channel strategy — channel review, floor-role design, frontline training ecosystem, and audit-linked brand standards — with an agent team producing the example artifacts. All client specifics are disguised; figures are illustrative.</p>
+    </div>
+  </header></div><div class="art-layout art-layout--body"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</a></li>
+<li><a href="#sec-1-executive-summary">Executive summary</a></li>
+<li><a href="#sec-2-the-brief">The brief</a></li>
+<li><a href="#sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</a></li>
+<li><a href="#sec-4-phase-by-phase-narrative">Phase-by-phase narrative</a></li>
+<li><a href="#sec-5-artifacts-portfolio">Artifacts portfolio</a></li>
+<li><a href="#sec-6-use-cases">Use cases</a></li>
+<li><a href="#sec-7-sops-for-ai">SOPs for AI — how service design SOPs are best used by agents</a></li>
+<li><a href="#sec-8-value-creation-amp-measurement">Value creation &amp; measurement</a></li>
+<li><a href="#sec-9-ai-tool-playbook">AI tool playbook</a></li>
+<li><a href="#sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</a></li>
+<li><a href="#sec-11-references">References</a></li>
+<li><a href="#sec-12-appendix-artifact-index">Appendix: artifact index</a></li></ol></nav></aside><article class="art-body">
+<section class="art-sec"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</h2>
+<p>The client in this case study is a global quick-service restaurant chain, anonymized by agreement. No real restaurant, employee, franchisee, supplier, or customer is depicted; no store, market, program, or system name from the engagement appears. The article shares method and process — how the channel was reviewed, how the evidence was weighed, how the floor role was designed, trained, and governed — never client specifics. All metrics are illustrative and transformed: same order of magnitude, rounded, and explicitly marked. Every figure, table, and dataset in this article carries that disclaimer.</p>
+<p>The engagement itself was conducted with desk research, service-design methods, and guest-feedback analytics rather than AI tooling. The agent workflow shown here — Claude Code, OpenCode, Codex, and GitHub as illustrative working surfaces — is the practice pattern for reproducing the method on a similar engagement; all example artifacts, prompts, commands, and datasets are illustrative. An adjacent voice-AI ordering initiative appears in the evidence base and is referenced only as future direction. Evidence boundary (2026-08-24): the narrative is reconstructed from an internal evidence register; nothing here is attributable to the client beyond the disguised service-design story.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2>
+<p>A global quick-service restaurant chain&#39;s self-service ordering channel doubled every year for three consecutive years and reached roughly half of its restaurants — while the operating model around it stayed frozen. There was no channel training: the onboarding courses for taking orders and working the register contained no self-service content, and the learning platform held only IT troubleshooting material. There was no rollout process for new installations. There was no floor role: the time &amp; attendance platform could not even roster a team member to stand in the foyer. And there was no design for what the machine cannot do — no cash, express-kiosk exclusions, menu mismatches, and no script for when the technology fails.</p>
+<p>The stated brief was &quot;train teams on the machines.&quot; The project reframed it as &quot;design the human half of a self-service channel.&quot; Over 28 weeks, a regional channel and learning working group ran the full arc: a channel review built on four evidence streams (performance data, guest-feedback mining at two scales, cross-market benchmarking of franchisee floor-role programs, pilot measurement), an omnichannel journey map, a synthesis of seven insights, a concept made of four converging franchisee role designs, a training ecosystem built around practice, competition, and recognition, labour-deployment mathematics, and finally a set of global brand standards with audit-linked enforcement. The villain of the story is the gap between installation and adoption; the hero is the foyer host — a named, rostered, trained human who stands between the door and the machine.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Global quick-service restaurant chain (anonymized)</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>Quick-service restaurant / hospitality, multi-market footprint</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>Self-service kiosk channel strategy: channel review → floor-role design → frontline training ecosystem → global brand standards</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>Channel strategy (penetration/adoption), floor-role standard, training ecosystem, labour deployment modelling, journey mapping, audit-linked governance</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>28 weeks core engagement; evidence base spans ~3 years of channel growth</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>Regional channel + L&amp;D working group, four franchisee groups, global standards program, a global design agency, market leads</td>
+</tr>
+<tr>
+<td>AI tools</td>
+<td>None in the original engagement (desk research, service design, feedback analytics); adjacent voice-AI ordering initiative referenced as future direction</td>
+</tr>
+<tr>
+<td>Headline results (illustrative)</td>
+<td>Self-service share of in-store sales grew from low single digits to ~15% over three years, doubling annually; top store formats exceeded 40% share; global brand standards published with audit-linked enforcement; guest feedback shifted from kiosk-friction complaints to staff-recognition praise</td>
+</tr>
+</tbody></table>
+<p>What you will learn:</p>
+<ul>
+<li>Why installation is not adoption: usage follows store format, customer flow, and the presence of floor support — not the presence of the machine.</li>
+<li>How to treat feedback absence as a success signal: when the floor role works, the channel disappears from guest comments; when it fails, the machine gets the blame and the crew get the review.</li>
+<li>How four franchisee floor-role designs converged into one standard, and how a training ecosystem, labour mathematics, and audit-linked governance made it stick.</li>
+</ul>
+</section>
+<section class="art-sec"><span class="sec-kicker">02 · The brief</span><h2 id="sec-2-the-brief">The brief</h2>
+<h3 id="client-portrait">Client portrait</h3>
+<p>The chain operates several thousand restaurants across a multi-market footprint, roughly evenly split between company and franchisee operations, with franchisee groups running materially different operating cultures. Self-service kiosks had been installed in just over half of the regional network (~400 restaurants) with a global mandate that all new builds operate kiosks from 2024 onward. The channel&#39;s business case was already proven in other markets — 10–20% ticket uplift and payback under two years — and the pandemic had shifted customer preference from human interaction to digital ordering. Growth was compounding: the channel had doubled for three consecutive years, yet the operating system that should have served it — training, rollout, rostering, recovery — did not exist.</p>
+<h3 id="the-challenge">The challenge</h3>
+<p>The stated brief, as the research deck recorded it, was direct: &quot;There is currently no process in place to help train and upskill our teams on kiosks once they are installed into their restaurant. Troubleshooting and development documents exist, however they are not sent to restaurants proactively or collated.&quot; The training gap, however, was a symptom. Four interlocking gaps surfaced in the first pass:</p>
+<table>
+<thead>
+<tr>
+<th>Gap</th>
+<th>What was actually true</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>No channel training</td>
+<td>Onboarding courses for order-taking and register work had zero self-service content; channel training did not exist for any ordering channel; training was only built where 80%+ of restaurants had the technology — and kiosks fell below that bar for years</td>
+</tr>
+<tr>
+<td>No rollout process</td>
+<td>No defined process for installing kiosks and bringing a restaurant team up to speed; the user guide distribution had lapsed entirely</td>
+</tr>
+<tr>
+<td>No floor role</td>
+<td>The foyer customer-service role was not formalised — the time &amp; attendance platform could not roster someone as a foyer host or greeter; the concierge section of the user guide was outdated and stuck in the IT backlog</td>
+</tr>
+<tr>
+<td>No design for channel limitations</td>
+<td>The kiosk is not a replica of the register or the app: no cash, express-kiosk exclusions on specific items, menu availability mismatches, and no team script for machine failure</td>
+</tr>
+</tbody></table>
+<h3 id="success-criteria-agreed-with-the-client">Success criteria (agreed with the client)</h3>
+<p>The channel lead&#39;s remit named the KPIs the project had to move: kiosk penetration (% of stores equipped), kiosk adoption (% of in-store sales), sales and conversion, technology performance, and guest feedback metrics. Against those, the working group agreed an illustrative baseline and target set:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline (illustrative)</th>
+<th>Target (illustrative)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Kiosk penetration (% of stores equipped)</td>
+<td>~50%</td>
+<td>100% of new builds from 2024; ≥90% of all stores by end-2025</td>
+</tr>
+<tr>
+<td>Kiosk adoption (% of in-store sales)</td>
+<td>~15% network; ~40% at top formats</td>
+<td>≥80% adoption within the first 6 months of any new installation</td>
+</tr>
+<tr>
+<td>Ticket vs counter</td>
+<td>~10% higher, mostly incremental</td>
+<td>Protect ≥10% uplift without discounting</td>
+</tr>
+<tr>
+<td>Guest feedback</td>
+<td>Kiosk-friction complaints (waiting, cleanliness, cash, tech)</td>
+<td>Staff recognition becomes the top positive theme; kiosk-failure cluster near zero</td>
+</tr>
+<tr>
+<td>Labour</td>
+<td>No foyer role rostered; foyer cleanliness &quot;predominantly negative&quot;</td>
+<td>Every ~60 self-service orders redeploys one cashier to pack/present without adding headcount</td>
+</tr>
+<tr>
+<td>Governance</td>
+<td>Standards advisory; compliance optional and invisible</td>
+<td>Audit-linked enforcement from Q2 2024; exception process via the annual operating plan</td>
+</tr>
+</tbody></table>
+<h3 id="constraints">Constraints</h3>
+<p>Labour was the hardest constraint: the foyer host is a floating role that competes with back-of-house demand, and lower-volume stores could not staff one at all. Cash was a policy constraint: kiosks do not accept cash by design, cash-capable machines cost 3–4× a standard kiosk with an unproven business case, and team members handling cash at the machine were prohibited as unsafe. Technology added fragility: POS integration, nightly menu refreshes, pin-pad timeouts, and all-kiosk outages were weekly realities. Data was siloed — channel sales existed, but no customer-level linkage, so lifetime-value claims could not yet be confirmed. Accessibility and local menu-board regulations constrained hardware layouts, and the franchise network&#39;s heterogeneity meant any standard would need local translation.</p>
+<h3 id="why-service-design">Why service design</h3>
+<p>This was not a training-content problem on one channel. The failures spanned the machine, the floor, the rostering system, the learning platform, the audit, and four franchisee operating models — a socio-technical system whose failures live below the line of visibility. That is precisely what service design exists for (See: 09-mapping-experiences/05-service-blueprints.md). Polaine, Løvlie, and Reason&#39;s arc — research to insight, ideas, prototyping, implementation — gave the engagement its spine (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md), Lou Downe&#39;s good-services principles supplied the audit lens (See: 05-good-services/02-the-fifteen-principles.md), and the Service Profit Chain framed the economics: investment in frontline capability pays back through service value, satisfaction, and retained demand (See: 20-the-service-profit-chain/03-external-service-value.md).</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">03 · Approach</span><h2 id="sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</h2>
+<p>The engagement followed the Double Diamond, with the channel review as Discover, the insight set as Define, the concept — floor role, training ecosystem, labour mathematics — as Develop, and the standards and governance as Deliver. Every phase was evidence-first: no concept before the insight set passed its acid test, no pilot before a written hypothesis, no standard before pilot evidence, and no enforcement before the compliance mechanism was defined. The engagement itself ran on desk research, service design, and feedback analytics; the agent workflow shown here is the practice pattern, with Claude Code for evidence processing and artifact authoring, OpenCode for data pipelines and calculators, Codex for adversarial review, and GitHub as the system of record.</p>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-11" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Discover - weeks 1-8</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Define - weeks 9-12</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Develop - weeks 13-22</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Deliver - weeks 23-28</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 1</span><span class="figcap">Double Diamond mapped to the 28-week engagement</span></figcaption></figure>
+<figure class="fig fig-gantt"><div class="gantt"><div class="gantt-head"><span class="gantt-taskcol">Phase</span><span class="gantt-track"><span>Wk 1-6</span><span>Wk 7-12</span><span>Wk 13-18</span><span>Wk 19-24</span><span>Wk 25-28</span></span></div><div class="gantt-section">Discover</div><div class="gantt-row"><span class="gantt-taskcol">Channel review &amp; evidence</span><span class="gantt-track"><span class="gantt-bar future" style="left:0.00%;width:29.00%"></span></span></div><div class="gantt-section">Define</div><div class="gantt-row"><span class="gantt-taskcol">Synthesis &amp; insight set</span><span class="gantt-track"><span class="gantt-bar future" style="left:29.00%;width:14.00%"></span></span></div><div class="gantt-section">Develop</div><div class="gantt-row"><span class="gantt-taskcol">Concept: floor role + training + labour model</span><span class="gantt-track"><span class="gantt-bar future" style="left:43.00%;width:36.00%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Pilots &amp; benchmarking</span><span class="gantt-track"><span class="gantt-bar future" style="left:57.00%;width:22.00%"></span></span></div><div class="gantt-section">Deliver</div><div class="gantt-row"><span class="gantt-taskcol">Brand standards &amp; governance</span><span class="gantt-track"><span class="gantt-bar future" style="left:79.00%;width:21.00%"></span></span></div></div><figcaption><span class="fignum">Figure 2</span><span class="figcap">Engagement plan — 28 weeks, evidence base spanning ~3 years of channel growth</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>SD method (citation)</th>
+<th>AI tool(s)</th>
+<th>Artifact produced</th>
+<th>Client involvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Research</td>
+<td>Channel performance review, feedback mining, cross-market benchmarking interviews, journey desk research (09/04)</td>
+<td>Claude Code (feedback sweep + evidence register), OpenCode (channel-mix pipeline)</td>
+<td>Evidence register, channel-mix baseline, feedback theme codes</td>
+<td>Four franchisee-group interviews; market leads</td>
+</tr>
+<tr>
+<td>Synthesis</td>
+<td>Affinity synthesis, insight cards (03/04)</td>
+<td>Claude Code (digital synthesis wall), Codex (adversarial challenge pass)</td>
+<td>7 insight cards, 4 design principles</td>
+<td>Working-group synthesis session</td>
+</tr>
+<tr>
+<td>Mapping</td>
+<td>Journey mapping (09/04), order-workflow mapping with embedded scripts</td>
+<td>Claude Code (mermaid authoring)</td>
+<td>Current-state journey map, kiosk order workflow</td>
+<td>Ops blueprint rehearsal</td>
+</tr>
+<tr>
+<td>Ideation</td>
+<td>HMW, concept sheets, DFV scoring (03/05)</td>
+<td>Claude Code (concept sheet drafts)</td>
+<td>Floor-role concept, training model, labour rule</td>
+<td>Franchisee role designs treated as live prototypes</td>
+</tr>
+<tr>
+<td>Prototyping</td>
+<td>Progressive fidelity: roleplay, huddle-model test, mirror-store surveys, monthly KPI cuts (01/06, 03/06)</td>
+<td>OpenCode (deployment calculator), Claude Code (training guide drafts)</td>
+<td>Huddle guide, deployment cards, mirror-survey readout</td>
+<td>4 franchisee programs + 2 pilot store pairs</td>
+</tr>
+<tr>
+<td>Implementation</td>
+<td>Standards-setting, rollout process design, governance (07/03)</td>
+<td>GitHub (issues, PR gates), OpenCode (SOP docs)</td>
+<td>Brand standards v10, implementation playbook, troubleshooting FAQ</td>
+<td>Franchisee submission/approval flow</td>
+</tr>
+<tr>
+<td>Measurement</td>
+<td>Triangulated KPIs, closed loop (20/03)</td>
+<td>OpenCode (KPI aggregation), Claude Code (readout drafting)</td>
+<td>KPI tree, compliance roadmap</td>
+<td>Audit-scoring integration from Q2 2024</td>
+</tr>
+</tbody></table>
+</section>
+<section class="art-sec"><span class="sec-kicker">04 · The work, phase by phase</span><h2 id="sec-4-phase-by-phase-narrative">Phase-by-phase narrative</h2>
+<h3 id="41-research-weeks-18">4.1 Research &amp; evidence (weeks 1–8)</h3>
+<p><strong>Goal.</strong> Explain a paradox: a channel that doubles every year, installed in half the network, with no training, no rollout process, and no floor role — and locate where the customer experience actually breaks (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md).</p>
+<p><strong>Method &amp; SOP.</strong> Four evidence streams (See: 01-this-is-service-design-doing/04-research-methods.md): (1) channel performance data — sales mix by store format and asset type, penetration and adoption rates; (2) guest-feedback mining at two scales — a deep read of every self-service-related comment in a three-month pull, and a wide sweep of the same period across a much larger store population to measure how often the channel surfaces at all; (3) cross-market benchmarking interviews with four franchisee groups running parallel floor-role programs, plus a global scan of markets with older kiosk footprints; and (4) pilot performance measurement — mirror-store surveys on menu-board removal, store-level adoption tracking, and a monthly KPI cut benchmarking a pilot store pair. A design agency&#39;s current-state map of the omnichannel journey (online/offline × delivery/pick-up/dine-in/takeaway/drive-thru) supplied the customer spine, with swimlanes for the customer, delivery drivers, store management, and team members.</p>
+<p><strong>AI execution.</strong> Fieldwork and store visits stayed human — franchisee relationships and restaurant floor contact are not delegable. Everything after collection was agent-amplified. Claude Code processed the feedback dumps into theme-coded evidence items under a hard rule that every quoted comment be kept verbatim with its store-format tag, and ran the wide sweep to count channel mentions across ~6,700 comments. OpenCode aggregated the channel-mix data into the baseline table and generated the illustrative sample dataset (<code>data/kiosk-channel-sample.csv</code>, linked in Section 5). The evidence register became the single source for every figure in the synthesis.</p>
+<p><strong>Illustrative OpenCode host command — emitted pack; live case execution unverified.</strong></p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>opencode run --agent measurer &quot;Read data/feedback-raw.csv and data/channel-mix-raw.csv.
+(1) Code every comment mentioning self-service into themes (help, cleanliness,
+cash, tech-failure, speed, staff-recognition) preserving verbatim text.
+(2) Count channel mentions across the wide sweep and the deep-dive subset.
+(3) Aggregate kiosk share of in-store sales by store format.
+Then emit data/kiosk-channel-sample.csv (illustrative, fixed seed) matching
+the aggregated rates.&quot;
+</code></pre></div>
+<p><strong>Human designer judgment.</strong> Choosing the two-scale feedback design — the deep dive alone would have over-weighted the channel&#39;s problems, the wide sweep alone would have missed them entirely; and insisting the franchisee benchmarking treat the four programs as designs to learn from, not as compliance risks to audit.</p>
+<p><strong>Artifact produced.</strong> Evidence register, channel-mix baseline, feedback theme codes, benchmarking interview notes, journey-map desk research.</p>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">25</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">50</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">75</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">100</text><rect x="90" y="265" width="56" height="39" fill="#171817"/><text x="118" y="322" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">Network</text><text x="118" y="257" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">~15%</text><rect x="200" y="280.6" width="56" height="23.4" fill="#4A7FA8"/><text x="228" y="322" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">Drive-thru-led</text><text x="228" y="272.6" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">~9%</text><rect x="310" y="226" width="56" height="78" fill="#4A7FA8"/><text x="338" y="322" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">Mall</text><text x="338" y="218" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">~30%</text><rect x="420" y="197.4" width="56" height="106.6" fill="#171817"/><text x="448" y="322" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">Inline</text><text x="448" y="189.4" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">~41%</text><rect x="530" y="122" width="56" height="182" fill="#4A7FA8"/><text x="558" y="322" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">Top franchisee</text><text x="558" y="114" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">~70%</text><rect x="640" y="96" width="56" height="208" fill="none" stroke="#171817" stroke-width="1.5" stroke-dasharray="4 3"/><text x="668" y="322" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">6-mo target</text><text x="668" y="88" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">80%</text><text x="44" y="340" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">Share of in-store sales via self-service kiosks — illustrative values; installation is uniform, adoption is not.</text></svg><figcaption><span class="fignum">Figure 3</span><span class="figcap">Channel mix by store format — installation ≠ adoption</span></figcaption></figure>
+<h3 id="42-synthesis-weeks-912">4.2 Synthesis (weeks 9–12)</h3>
+<p><strong>Goal.</strong> Convert the evidence register into insights that each change what the chain designs — not observations that merely describe (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md).</p>
+<p><strong>Method &amp; SOP.</strong> Bottom-up affinity synthesis on a shared wall, executed as a hybrid session: the working group plus the channel lead worked the clusters while Claude Code maintained the digital twin under a hard rule that cluster names be active sentences, not nouns — &quot;franchisees built their own training cards because none existed,&quot; not &quot;Training.&quot;</p>
+<p><strong>AI execution.</strong> The synthesis agent proposed the first-pass clustering; humans merged and renamed freely; the agent re-propagated edits. Convergence produced seven insight cards in the standard three-part syntax (observed behavior + root cause + design implication). Codex then ran an adversarial challenge pass, asked to attack rather than agree — the same pattern that has caught fabricated quotes and alternative explanations on other engagements:</p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>codex exec --skip-git-repo-check &quot;Read synthesis/insight-cards.md and
+research/evidence-register.jsonl. For each of the 7 insights: (1) verify every
+cited quote exists verbatim in the register, (2) argue the strongest
+alternative explanation for the observed behavior, (3) flag any insight whose
+design implication is not actually implied by the evidence. Be adversarial.&quot;
+</code></pre></div>
+<p>Codex killed one candidate insight (&quot;customers distrust self-service&quot; — contradicted by the doubling channel) and forced evidence upgrades on two others. The headline insight survived because it was the one with the least intuitive evidence: when the floor role works, the channel becomes invisible in feedback.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Insight (compressed)</th>
+<th>Evidence</th>
+<th>Implication</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>I-01</td>
+<td>Adoption swings by format — ~9% at drive-thru-led stores, ~30% at malls, ~41% at inline, ~70% at the highest-usage franchisee group — while installation is uniform. Usage follows customer flow and floor support, not the machine</td>
+<td>Channel-mix data, all formats</td>
+<td>Deploy per format with differentiated expectations and coaching at low-adoption formats</td>
+</tr>
+<tr>
+<td>I-02</td>
+<td>In a ~50-comment deep dive, ~45 mention kiosks; in a ~6,700-comment wide sweep, only 6 do. When the floor role works, guests narrate the whole visit, not the machine</td>
+<td>Two-scale feedback analysis</td>
+<td>Mine for the absence of channel mentions as a success signal; act on the fail-cluster that does surface</td>
+</tr>
+<tr>
+<td>I-03</td>
+<td>&quot;I struggled at the kiosk, gave up and asked staff for help&quot; — with no named foyer role, no one owns the space between door and counter</td>
+<td>Feedback verbatims; journey map</td>
+<td>Design, name, and roster the foyer host role with a greeting script</td>
+</tr>
+<tr>
+<td>I-04</td>
+<td>Cleanliness feedback is predominantly negative while kiosks add high-touch surfaces with no cleaning owner</td>
+<td>Feedback theme codes</td>
+<td>Fold foyer cleanliness into the floor role&#39;s secondary duties; hourly kiosk cleaning in the standard</td>
+</tr>
+<tr>
+<td>I-05</td>
+<td>Cash customers are excluded — &quot;had to wait 10+ minutes at the counter because I had cash&quot;; express kiosks cannot order specific pieces; availability mismatches</td>
+<td>Feedback verbatims; channel limitations review</td>
+<td>Design the exception paths: cash to the counter queue, scripts for out-of-stock, fallbacks for exclusions</td>
+</tr>
+<tr>
+<td>I-06</td>
+<td>Franchisee check: 3 of 3 sampled restaurants had not implemented — or heard of — the foyer program. A great role design is worthless without rollout, rostering, and coaching</td>
+<td>Post-implementation phone check</td>
+<td>Pair every standard with an interim rollout process and audit-linked governance</td>
+</tr>
+<tr>
+<td>I-07</td>
+<td>Tech failures dominate the negative cluster — all-kiosk outages, payment timeouts — and staff could not respond. Troubleshooting knowledge lived in help-desk documents, not in restaurant teams</td>
+<td>Feedback theme codes; training audit</td>
+<td>Integrate troubleshooting into channel training: error-code ranges, manager-only reboots, reprint procedures</td>
+</tr>
+</tbody></table>
+<p>Four design principles followed: <strong>D1</strong> The human is the channel&#39;s load-bearing wall — name the role, roster it, train it. <strong>D2</strong> Adoption, not complaints, is the KPI — feedback absence is success. <strong>D3</strong> Design the limitations, don&#39;t hide them — cash, exclusions, and failures get counter paths and scripts. <strong>D4</strong> Standards without enforcement are suggestions — tie compliance to the audit.</p>
+<p><strong>Human designer judgment.</strong> Naming is framing: &quot;the foyer host effect&quot; redirected attention from the machine to the human and gave the franchisee programs a shared language; and accepting the 3-of-3 failure finding as the project&#39;s most important data point rather than as an embarrassment to manage.</p>
+<p><strong>Artifact produced.</strong> Seven insight cards; four design principles; the feedback two-panel (Figure 4).</p>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="56" x2="730" y2="56" stroke="#DEDEDA" stroke-width="1"/><text x="48" y="46" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="11" fill="#33322e" font-weight="600" text-anchor="start" letter-spacing="0">Deep dive — ~50 comments, ~45 stores</text><rect x="44" y="62" width="672" height="24" fill="#171817"/><text x="380" y="78" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#f8f8f5" font-weight="500" text-anchor="middle" letter-spacing="0">~45 of ~50 mention the kiosk (90%)</text><line x1="44" y1="110" x2="730" y2="110" stroke="#DEDEDA" stroke-width="1"/><text x="48" y="134" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="11" fill="#33322e" font-weight="600" text-anchor="start" letter-spacing="0">Wide sweep — ~6,700 comments, 90+ stores</text><rect x="44" y="150" width="3" height="24" fill="#4A7FA8"/><rect x="47" y="150" width="669" height="24" fill="#EBEBE8"/><text x="380" y="166" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">6 of ~6,700 mention the kiosk (&lt;1%)</text><line x1="44" y1="198" x2="730" y2="198" stroke="#DEDEDA" stroke-width="1"/><text x="48" y="222" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="11" fill="#33322e" font-weight="600" text-anchor="start" letter-spacing="0">Kiosk-mention sentiment (deep-dive subset, ~45 comments)</text><rect x="44" y="232" width="408" height="24" fill="#171817"/><text x="248" y="248" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#f8f8f5" font-weight="500" text-anchor="middle" letter-spacing="0">27 positive (staff recognition, speed)</text><rect x="452" y="232" width="219" height="24" fill="#9B9B96"/><text x="561" y="248" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#f8f8f5" font-weight="500" text-anchor="middle" letter-spacing="0">14 negative (wait, cleanliness, cash, tech)</text><rect x="671" y="232" width="59" height="24" fill="#EBEBE8"/><text x="700" y="248" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">4 neutral</text><text x="44" y="290" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0">When the floor role works, the channel disappears from feedback.</text><text x="44" y="308" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">Illustrative proportions from the engagement&#39;s two-scale feedback analysis; verbatims paraphrased, no stores or names.</text></svg><figcaption><span class="fignum">Figure 4</span><span class="figcap">Guest-feedback evidence panel — deep dive vs wide sweep</span></figcaption></figure>
+<h3 id="43-mapping-weeks-1315">4.3 Mapping (weeks 13–15)</h3>
+<p><strong>Goal.</strong> Build the two alignment artifacts the concept hangs on: the current-state journey map (what it is like to be the guest) and the kiosk order workflow with the human role embedded in it.</p>
+<p><strong>Method &amp; SOP.</strong> Journey mapping from tagged evidence, phases defined by guest goals rather than internal stages, pains strictly separated from opportunities (See: 09-mapping-experiences/04-customer-journey-maps.md). The order workflow was mapped as a swimlane diagram — guest frontstage, restaurant backstage — with greeting scripts embedded at the exact steps where the human appears (See: 09-mapping-experiences/05-service-blueprints.md).</p>
+<p><strong>AI execution.</strong> Claude Code authored both diagrams as version-controlled mermaid files, diffed in pull requests like software. Every unanswerable question in the mapping rehearsal — &quot;who flips the order to ready when the presenter is packing?&quot; — became a tracked issue resolved before the standard was drafted. Codex reviewed the workflow adversarially and caught a missing exception path: cash guests had no defined queue position, and the out-of-stock script did not exist.</p>
+<p><strong>Human designer judgment.</strong> Placing the line of visibility: the kiosk and the collection screen are the visible face; the POS, kitchen display, and packer chain are deliberately backstage — but the foyer host&#39;s greeting is a frontstage act that must never be backstage. Also: refusing to split the map per channel, which would have re-siloed the artifact.</p>
+<p><strong>Artifacts produced.</strong> A1 journey map and A2 order workflow (Section 5), with fail points carried into the traceability of every training and standards decision.</p>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 360" role="img" aria-hidden="true"><defs><marker id="arr-12" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 1: Arrive emotion 3/5</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 2: Order emotion 2/5</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 3: Pay &amp; wait emotion 2/5</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 4: Collect &amp; enjoy emotion 3/5</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Phase 5: Reflect emotion 2/5</text><line x1="0" y1="358" x2="296" y2="358" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 5</span><span class="figcap">A1 — Guest journey map (current state, illustrative)</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Guest goal</th>
+<th>Frontstage</th>
+<th>Backstage</th>
+<th>Pain point</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Arrive</td>
+<td>&quot;I want to be welcomed and find the fastest way to order&quot;</td>
+<td>Foyer, queue split, kiosks</td>
+<td>Rostering, cleanliness</td>
+<td>No one owns the space between door and machine; nobody greets</td>
+</tr>
+<tr>
+<td>Order</td>
+<td>&quot;I want help if I need it, without judgment&quot;</td>
+<td>Kiosk screens, staff nearby</td>
+<td>Menu sync, item availability</td>
+<td>First-timers struggle; specific pieces impossible on express kiosks; out-of-stock mismatches</td>
+</tr>
+<tr>
+<td>Pay &amp; wait</td>
+<td>&quot;I want my order taken correctly and to know what&#39;s next&quot;</td>
+<td>Pin pad, collection screen</td>
+<td>POS, kitchen display, packer</td>
+<td>Cash guests queued at counter; &quot;Checking kitchen&quot; delays; payment timeouts</td>
+</tr>
+<tr>
+<td>Collect &amp; enjoy</td>
+<td>&quot;I want to be recognised and enjoy my meal&quot;</td>
+<td>Presenter hand-off</td>
+<td>Ready flip within 60 seconds</td>
+<td>Order not flipped; forgotten in the queue; no parting recognition</td>
+</tr>
+<tr>
+<td>Reflect</td>
+<td>&quot;I want my feedback to matter&quot;</td>
+<td>Feedback link via receipt</td>
+<td>Feedback analysis</td>
+<td>Feedback ignored — or the machine gets the blame for a service failure</td>
+</tr>
+</tbody></table>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1400 140" role="img" aria-hidden="true"><defs><marker id="arr-13" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><text x="700" y="14" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#3c443a" font-weight="600" text-anchor="middle" letter-spacing="1">FRONTSTAGE — visible to the guest</text><rect x="10" y="22" width="185" height="34" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="102.5" y="43" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Guest enters</text><path d="M 195,39 217,39 239,39" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-13)"/><rect x="240" y="22" width="185" height="34" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="332.5" y="43" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Foyer host greets</text><path d="M 425,39 447,39 469,39" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-13)"/><rect x="470" y="22" width="185" height="34" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="562.5" y="43" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Order at kiosk</text><path d="M 655,39 677,39 699,39" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-13)"/><rect x="700" y="22" width="185" height="34" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="792.5" y="43" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Pay (card)</text><path d="M 885,39 907,39 929,39" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-13)"/><rect x="930" y="22" width="185" height="34" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1022.5" y="43" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Wait at pick-up queue</text><path d="M 1115,39 1137,39 1159,39" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-13)"/><rect x="1160" y="22" width="185" height="34" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1252.5" y="43" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Presenter hands over</text><line x1="10" y1="70" x2="1390" y2="70" stroke="#9B9B96" stroke-width="1" stroke-dasharray="4 3"/><text x="700" y="84" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#3c443a" font-weight="600" text-anchor="middle" letter-spacing="1">BACKSTAGE — visible to the restaurant</text><rect x="10" y="94" width="185" height="34" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="102.5" y="115" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">POS receives order</text><path d="M 195,111 217,111 239,111" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-13)"/><rect x="240" y="94" width="185" height="34" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="332.5" y="115" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Kitchen display</text><path d="M 425,111 447,111 469,111" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-13)"/><rect x="470" y="94" width="185" height="34" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="562.5" y="115" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Packer assembles</text><path d="M 655,111 677,111 699,111" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-13)"/><rect x="700" y="94" width="185" height="34" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="792.5" y="115" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">&quot;Ready&quot; flip</text><path d="M 885,111 907,111 929,111" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-13)"/><rect x="930" y="94" width="185" height="34" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1022.5" y="115" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Collect / recovery</text></svg><figcaption><span class="fignum">Figure 6</span><span class="figcap">A2 — Kiosk order workflow with the human role embedded (60-second &quot;order to collect&quot; rule)</span></figcaption></figure>
+<h3 id="44-ideation-and-concept-design-weeks-1518">4.4 Ideation &amp; concept design (weeks 15–18)</h3>
+<p><strong>Goal.</strong> Convert the insight set into one coherent concept — the human half of self-service — rather than a pile of training fixes (See: 03-service-design-from-insight-to-implementation/05-developing-ideas.md).</p>
+<p><strong>Method &amp; SOP.</strong> Structured how-might-we formulation from the insight cards, then a convergence workshop with the working group, franchisee representatives, and the learning team. Divergence and convergence were strictly separated; concept sheets were scored on desirability, feasibility, and viability.</p>
+<p><strong>AI execution.</strong> Claude Code drafted the HMW bank (each prompt traced to an insight ID) and the four concept sheets; the digital synthesis wall kept every franchisee program visible as a live input. OpenCode built the first deployment calculator — the spreadsheet that turned the labour rule into a table any restaurant manager could read.</p>
+<p><strong>Human designer judgment.</strong> The pivotal reframe — from &quot;how do we train people on the machine?&quot; to &quot;how do we design the human half of a self-service channel?&quot; — and the decision to treat the four franchisee role programs as legitimate prototypes of that human half rather than as deviations from a single corporate answer.</p>
+<p><strong>Artifact produced.</strong> The concept, in three parts:</p>
+<ul>
+<li><strong>The floor-role standard.</strong> A foyer host required during peak hours for the first six months of any kiosk installation, or until adoption reaches 80% of in-store sales — with a named digital ordering host role reporting to the restaurant manager, owning kiosk operations, running pre-peak checks (menu availability, collection screen, cleaning, stock), greeting every guest with a script, directing cash customers to the counter path, and a presenter role owning the 60-second hand-off.</li>
+<li><strong>The training ecosystem.</strong> Channel-specific, service-first: a 30-minute shift-huddle model built around practice, competition, and recognition — not passive e-learning — plus job aids, QR-linked video, and an error-code catalogue so the team, not the help desk, is the first line of recovery.</li>
+<li><strong>The labour mathematics.</strong> A deployment rule every franchisee can model: roughly 60 self-service orders per peak hour redeploy one cashier to packing and presenting — no added headcount.</li>
+</ul>
+<h3 id="45-prototyping-and-pilots-weeks-1822">4.5 Prototyping &amp; pilots (weeks 18–22)</h3>
+<p><strong>Goal.</strong> Test the riskiest assumptions at the lowest fidelity that answers the question — hypothesis first, prototype second (See: 01-this-is-service-design-doing/06-prototyping-methods.md).</p>
+<p><strong>Method &amp; SOP.</strong> Four parallel prototypes, each with a written experiment canvas before anything shipped:</p>
+<ul>
+<li><strong>R1 — Franchisee floor-role programs (live, in network).</strong> Four franchisee groups ran four designs: a foyer greeter-host with roleplay training and a training card; a customer-experience champion program with an eight-hour team-member curriculum; a customer specialist role still in design; and a service champion behaviour standard. The engagement&#39;s job was to benchmark, measure, and converge them — including the honest failure capture: a post-implementation phone check found 3 of 3 sampled restaurants unaware of the flagship program.</li>
+<li><strong>R2 — Training huddle model (30 minutes, in store).</strong> Practice on the machine, a head-to-head order competition, a knowledge check, recognition cards. The counterfactual was the chain&#39;s existing passive e-learning; the huddle won on completion, confidence, and recall.</li>
+<li><strong>R3 — Menu-board removal mirror study (8 restaurants).</strong> Four stores with menu boards above kiosks against four mirror stores without; surveys on ease of ordering, menu clarity, and product findability, plus a financial analysis across a wider set. The survey overturned the incumbent design: guests found ordering <em>easier</em> without menu boards.</li>
+<li><strong>R4 — Pilot store-pair KPI cut (monthly).</strong> A redesigned store benchmarked against a conventional twin every month: order-taking time, ticket uplift, card mix, feedback scores, in-store pick-up time.</li>
+</ul>
+<p><strong>AI execution.</strong> OpenCode turned the deployment calculator into a reusable template and generated the illustrative dataset that accompanies this article. Claude Code drafted the huddle guide and the roleplay scripts from R2 edge cases — first-time guest, cash guest, failed kiosk, out-of-stock — and tagged the mirror-survey results against the experiment plan&#39;s success signals nightly. Codex reviewed the menu-board study design before it ran and flagged a sampling imbalance that was corrected before fieldwork.</p>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">25</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">50</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">75</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">100</text><rect x="140" y="72.6" width="46" height="231.4" fill="#171817"/><rect x="200" y="98.6" width="46" height="205.4" fill="#9B9B96"/><text x="193" y="322" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">Ease of ordering</text><text x="193" y="88" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">89 vs 79</text><rect x="380" y="90.8" width="46" height="213.2" fill="#171817"/><rect x="440" y="111.6" width="46" height="192.4" fill="#9B9B96"/><text x="433" y="322" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">Menu clarity</text><text x="433" y="80.2" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">82 vs 74</text><rect x="620" y="77.8" width="46" height="226.2" fill="#171817"/><rect x="680" y="98.6" width="46" height="205.4" fill="#9B9B96"/><text x="673" y="322" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">Product findability</text><text x="673" y="67.2" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">87 vs 79</text><rect x="44" y="336" width="12" height="8" fill="#171817"/><text x="62" y="344" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="9.5" fill="#33322e" font-weight="400" text-anchor="start" letter-spacing="0">without menu boards</text><rect x="180" y="336" width="12" height="8" fill="#9B9B96"/><text x="198" y="344" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="9.5" fill="#33322e" font-weight="400" text-anchor="start" letter-spacing="0">with menu boards</text><text x="430" y="344" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="9.5" fill="#3c443a" font-weight="600" text-anchor="middle" letter-spacing="0">% of guests — illustrative; ticket flat-to-positive, lower build cost</text></svg><figcaption><span class="fignum">Figure 7</span><span class="figcap">Menu-board removal mirror study — comprehension without vs with menu boards</span></figcaption></figure>
+<p><strong>Human designer judgment.</strong> Setting pass/fail thresholds before each pilot and holding them — including accepting the 3-of-3 awareness failure as a finding that changed the rollout design, not as a franchisee&#39;s fault. Also the decision to reject cash-capable kiosks: 3–4× the cost, unproven throughput, and a safety rule against team members handling cash at the machine.</p>
+<p><strong>Artifacts produced.</strong> Four experiment canvases, huddle guide v1, deployment calculator, mirror-survey readout, monthly KPI cut, and the honest-failure log that became the governance design&#39;s justification.</p>
+<h3 id="46-implementation-and-governance-weeks-2326">4.6 Implementation &amp; governance (weeks 23–26)</h3>
+<p><strong>Goal.</strong> Turn validated pilots into enforceable standards — implementation as design continued, not handoff (See: 03-service-design-from-insight-to-implementation/07-implementation.md).</p>
+<p><strong>Method &amp; SOP.</strong> Standards-setting from the pilot evidence, an interim rollout process and training plan (the gap the brief named first), a franchisee submission and approval flow for installations (floor plan or photos, five-day review, the entire restaurant team trained before go-live), and a troubleshooting FAQ that turns the error catalogue into self-service recovery.</p>
+<p><strong>AI execution.</strong> The global brand standards were assembled as a version-controlled document set — hardware and placement standards, the kiosk-count formula, the operating model, and the governance timeline — with every clause traced to an insight or pilot. GitHub issues carried the open questions; PRs were the review gates, with franchisee operations required on any clause touching labour, and learning required on any clause touching training. OpenCode generated the SOP documents and the placement self-assessment template.</p>
+<p><strong>Human designer judgment.</strong> The governance decision: compliance tied to the audit, not advice — new builds non-compliant after Q2 2024 may not open; at least 90% of stores compliant by end-2025; an exception process through the annual operating plan so enforcement has a legitimate escape valve. And the scope call that the flagship program would be franchisee-led rather than mandated network-wide, given labour constraints.</p>
+<p><strong>Artifacts produced.</strong> Brand standards v10 (mid-2023), implementation playbook, troubleshooting FAQ with error-code ranges, interim rollout process, placement self-assessment template.</p>
+<h3 id="47-measurement-weeks-2628">4.7 Measurement (weeks 26–28)</h3>
+<p><strong>Goal.</strong> Close the loop: triangulated measurement across channel performance, guest feedback, labour, and compliance, feeding the scale decision (See: 20-the-service-profit-chain/03-external-service-value.md).</p>
+<p><strong>AI execution.</strong> OpenCode maintained the KPI aggregation — channel mix, adoption by format, feedback theme counts, compliance readiness — into one readout; Claude Code drafted the evaluation report as a reviewed document with every number generated from the same query set. Gate decision: <strong>publish and enforce</strong>, with two conditions: stand up the interim rollout process before the next wave of installations, and re-read the feedback wide sweep quarterly to confirm the channel stays invisible.</p>
+<p><strong>Human designer judgment.</strong> The measurement framing: adoption, not complaints, is the channel KPI; the feedback absence signal is read alongside adoption, not instead of it.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">05 · Artifacts</span><h2 id="sec-5-artifacts-portfolio">Artifacts portfolio</h2>
+<p>All figures illustrative. The full artifact set produced during the engagement is indexed in Section 12.</p>
+<h3 id="a1-customer-journey-map-current-state">A1 — Customer journey map (current state)</h3>
+<p>Five phases defined by guest goals — Arrive, Order, Pay &amp; wait, Collect &amp; enjoy, Reflect — with emotion scores (2–3 out of 5) and a strict separation of pains from opportunities (Figure 5, Section 4.3). The lane table in 4.3 carries the frontstage/backstage split and the supporting evidence for each pain: no one owns the space between door and machine; express-kiosk exclusions; cash guests queued at the counter; orders forgotten at the ready-flip; feedback ignored.</p>
+<h3 id="a2-kiosk-order-workflow">A2 — Kiosk order workflow</h3>
+<p>Figure 6 (Section 4.3) shows the swimlane: guest enters → foyer host greets → order at kiosk → pay (card) → wait at pick-up queue → presenter hands over, with the restaurant backstage (POS → kitchen display → packer → ready flip) running inside a 60-second order-to-collect rule. The workflow embeds three scripts: the greeting (paraphrased: &quot;Hi, I&#39;m [name], your ordering host. Would you like faster, cashless ordering at the kiosk?&quot;), the assist script (help navigate, never judge, offer the counter as an equal path), and the direct script (cash guests and specific-piece requests directed to the counter queue — never abandoned at the machine).</p>
+<h3 id="a3-floor-role-comparison">A3 — Floor-role comparison: four ways franchisees designed the human half</h3>
+<p>The benchmarking interviews found no single corporate answer — four franchisee groups had designed four different humans. The standards program&#39;s job was to converge them into one floor-role standard without flattening what made each work.</p>
+<table>
+<thead>
+<tr>
+<th>Archetype</th>
+<th>Training &amp; enablement</th>
+<th>Presence</th>
+<th>What it moved (illustrative)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Foyer greeter-host</td>
+<td>Face-to-face roleplay training + a one-page training card; special apron for recognition; &quot;no customer enters without being greeted&quot;</td>
+<td>Rostered lunch and dinner peaks; secondary duties: dining-room and restroom cleanliness</td>
+<td>Adoption at high-volume stores; staff-recognition feedback became the top positive theme</td>
+</tr>
+<tr>
+<td>Customer-experience champion</td>
+<td>Half-day face-to-face for managers cascading to supervisors; 8-hour team curriculum with a skill assessment; learner guide with QR-linked videos; kiosks built into the role</td>
+<td>Champion visible on floor; feedback + conversion targets per shift</td>
+<td>Brand-standards score +8 pts; &quot;huge increase&quot; in kiosk sales and back-of-house quality</td>
+</tr>
+<tr>
+<td>Customer specialist</td>
+<td>Team-member self-nomination; name badges; recognition cards; coaching card for customer recovery</td>
+<td>In design at benchmarking time (work in progress)</td>
+<td>Feedback-response quality; still maturing</td>
+</tr>
+<tr>
+<td>Service champion (behaviour standard)</td>
+<td>30-minute shift-huddle training; knowledge check; recognition cards; &quot;make it stick&quot;</td>
+<td>Greet within 5 seconds; station near kiosks at peak; order-fulfilment duty</td>
+<td>~10–15% higher check averages on the channel; staff do &quot;the upselling for us&quot;</td>
+</tr>
+</tbody></table>
+<h3 id="a4-huddle-training-loop">A4 — The huddle training loop</h3>
+<p>The training model that won the pilot: a 30-minute shift-huddle built around practice, competition, and recognition — the opposite of the chain&#39;s passive e-learning, which had never covered the channel at all. The loop closes on verification: the knowledge check is the manager&#39;s evidence that the shift can run the channel alone.</p>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1400 84" role="img" aria-hidden="true"><defs><marker id="arr-14" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><rect x="10" y="8" width="220" height="40" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="120" y="33" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="500" text-anchor="middle" letter-spacing="0">1 · Teach (5 min)</text><path d="M 230,28 257,28 284,28" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-14)"/><rect x="285" y="8" width="220" height="40" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="395" y="33" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="500" text-anchor="middle" letter-spacing="0">2 · Practice (10 min on machine)</text><path d="M 505,28 532,28 559,28" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-14)"/><rect x="560" y="8" width="220" height="40" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="670" y="33" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="500" text-anchor="middle" letter-spacing="0">3 · Compete (head-to-head orders)</text><path d="M 780,28 807,28 834,28" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-14)"/><rect x="835" y="8" width="220" height="40" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="945" y="33" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="500" text-anchor="middle" letter-spacing="0">4 · Recognise (cards)</text><path d="M 1055,28 1082,28 1109,28" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-14)"/><rect x="1110" y="8" width="220" height="40" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1220" y="33" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="500" text-anchor="middle" letter-spacing="0">5 · Verify (knowledge check)</text><path d="M 1220,56 C 1220,72 130,72 130,58" fill="none" stroke="#9B9B96" stroke-width="1" marker-end="url(#arr-14)"/><text x="700" y="76" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Loop per shift until the team owns the channel — 30-minute huddle · job aids + QR-linked videos</text></svg><figcaption><span class="fignum">Figure 8</span><span class="figcap">A4 — The huddle training loop (practice, competition, recognition)</span></figcaption></figure>
+<h3 id="a5-deployment-cards-and-usage-calculator">A5 — Deployment cards &amp; usage calculator</h3>
+<p>The labour mathematics as a reusable table: peak front-counter transaction forecast × kiosk usage % → redeployed cashiers → pack/present staffing. The golden rules: customer through the system within 5 minutes; order to collect within 60 seconds; one packer/presenter per cashier; till capacity 60 transactions per cashier. Worked example (illustrative): peak forecast 150 front-counter transactions × 40% kiosk usage = 60 kiosk transactions → 1 cashier redeployed to pack/present without adding labour → staffing of 2 cashiers + 4 pack/present. Every deployment card carries the recurring note: <em>the foyer host is key to driving customer interaction, use, and adoption of the kiosk during peak.</em></p>
+<h3 id="a6-implementation-playbook">A6 — Implementation playbook</h3>
+<p>Placement standards (kiosks between entrance and counter on the dominant path; 3+ kiosks ideal; spacing minimums; power placement never dictated by wiring alone), the kiosk-count formula (peak-hour order rate × growth factor × target adoption ÷ per-kiosk capacity ≈ 6, minimum 3), and a franchisee submission flow: floor plan or three photos → five-day approval → installation → the entire restaurant team completes training before go-live.</p>
+<h3 id="a7-troubleshooting-faq">A7 — Troubleshooting FAQ</h3>
+<p>The first-line recovery reference that makes the team, not the help desk, the owner of machine failure:</p>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>First-line action (team)</th>
+<th>Escalation (manager/help desk)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Order failed to submit</td>
+<td>Retry (system retries 3×); verify payment state</td>
+<td>Check admin-panel transaction view; auto-refund if not received</td>
+</tr>
+<tr>
+<td>&quot;Checking kitchen&quot; delay</td>
+<td>Confirm kitchen display received the order; reassure guest</td>
+<td>Pin-pad / connectivity check</td>
+</tr>
+<tr>
+<td>Payment error or timeout</td>
+<td>Cancel before/during payment per script</td>
+<td>Stand-alone mode reprint procedure; batch settlement via pin pad</td>
+</tr>
+<tr>
+<td>All-kiosk outage</td>
+<td>Direct guests to counter; apologise without blame</td>
+<td>Manager-only reboot; lock-screen mode when restaurant closed</td>
+</tr>
+<tr>
+<td>Error codes (ranges 100–699)</td>
+<td>Look up code in the FAQ catalogue</td>
+<td>Log ticket with code range for the help desk</td>
+</tr>
+<tr>
+<td>High-touch surface</td>
+<td>Hourly cleaning with approved sanitizer (blue microfiber)</td>
+<td>Cleaning stock via the vendor supply chain</td>
+</tr>
+</tbody></table>
+<h3 id="a8-brand-standards-and-governance">A8 — Brand standards &amp; governance roadmap</h3>
+<p>The standards were published mid-2023 with enforcement designed in from day one — compliance tied to the audit, not advice, and an exception process through the annual operating plan so enforcement has a legitimate escape valve.</p>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 160" role="img" aria-hidden="true"><line x1="44" y1="80" x2="730" y2="80" stroke="#171817" stroke-width="1.5"/><circle cx="120" cy="80" r="6" fill="#171817"/><text x="120" y="58" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="600" text-anchor="middle" letter-spacing="0">Mid-2023</text><text x="120" y="104" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Standards published</text><circle cx="310" cy="80" r="6" fill="#4A7FA8"/><text x="310" y="58" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="600" text-anchor="middle" letter-spacing="0">Q2 2024</text><text x="310" y="104" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">New builds must comply; audit begins</text><circle cx="500" cy="80" r="6" fill="#4A7FA8"/><text x="500" y="58" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="600" text-anchor="middle" letter-spacing="0">End-2024</text><text x="500" y="104" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">Front-end feature standards</text><circle cx="690" cy="80" r="6" fill="#171817"/><text x="690" y="58" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#33322e" font-weight="600" text-anchor="middle" letter-spacing="0">End-2025</text><text x="690" y="104" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">≥90% of stores compliant</text><text x="385" y="136" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Exception process via the annual operating plan · non-compliant new builds may not open (illustrative roadmap, years/quarters only)</text></svg><figcaption><span class="fignum">Figure 9</span><span class="figcap">A8 — Governance roadmap: standards to audit-linked enforcement</span></figcaption></figure>
+<h3 id="a9-sample-dataset">A9 — Sample dataset (channel mix by store format)</h3>
+<p>Full file: <a href="data/kiosk-channel-sample.csv"><code>data/kiosk-channel-sample.csv</code></a> — 16-row illustrative sample of channel mix and adoption by store format (network, drive-thru-led, mall, inline, top franchisee group, pilot store pair, and the new-install adoption target), values transformed from the engagement register.</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code># ILLUSTRATIVE SAMPLE — figures transformed; not actual chain data.
+store_format,period,kiosk_share_of_in_store_sales_pct,measure_note
+network,Year 1,2.5,illustrative
+network,Year 2,5.0,illustrative — doubled year over year
+network,Year 3,15.0,illustrative — third consecutive doubling
+drive_thru_led,Year 3,9.0,illustrative — machine present, counter flow dominates
+mall,Year 3,30.0,illustrative — dwell time and mall traffic drive usage
+inline,Year 3,41.0,illustrative — highest-usage standard format
+high_usage_franchisee_group,Year 3,70.0,illustrative — mature floor-role program
+new_install_target,First 6 months,80.0,illustrative target — floor-role standard trigger
+</code></pre></div>
+</section>
+<section class="art-sec"><span class="sec-kicker">06 · Use cases</span><h2 id="sec-6-use-cases">Use cases</h2>
+<h3 id="use-case-a-first-time-guest-older-and-carrying-cash">Use case A — First-time guest, older, carrying cash</h3>
+<p><strong>Scenario.</strong> A guest who has never used a kiosk walks in during lunch peak with cash. Before the redesign, this was the store&#39;s worst-case interaction: no one greets, the kiosk rejects cash, the counter queue is long, and the guest&#39;s review — if they leave one — blames the machine and the crew.</p>
+<p><strong>What was designed.</strong> The foyer host greets within seconds with the script, asks cash or card first, and offers the kiosk only as a faster, cashless option — never as the only option. A cash guest is directed to the counter queue with a smile, and a card guest gets a 60-second guided first order (I-03, I-05). The presenter verifies the order at hand-off and the guest&#39;s feedback link lands on the receipt.</p>
+<p><strong>AI working session.</strong> Claude Code drafted the greeting and assist scripts from the order-workflow map and roleplayed them against edge cases — first-time guest, guest who gave up at the kiosk, guest who asks &quot;can I just pay at the counter?&quot; Codex reviewed the script set and flagged that the assist script read as a sales pitch in the draft; it was rewritten to lead with help, not conversion.</p>
+<p><strong>Outcome (illustrative).</strong> The 3-of-3 awareness failure closed: sampled restaurants could describe the greeting script unprompted; the staff-recognition theme rose to the top of positive feedback; cash-guest wait complaints dropped from the leading negative cluster to near zero in the stores that staffed the role.</p>
+<h3 id="use-case-b-cash-customer-at-peak">Use case B — Cash customer at peak</h3>
+<p><strong>Scenario.</strong> Peak hour, every kiosk occupied, a queue forming at the counter — and the store&#39;s cash customers have no path but the counter.</p>
+<p><strong>What was designed.</strong> The exception path is designed, not improvised: cash guests are identified by the host at the door and directed to a dedicated counter queue (the stealth POS — a register hidden from the ordering flow, never a cash-capable kiosk). The business case for cash machines was examined and rejected: 3–4× the hardware cost, lower throughput, unproven, and unsafe with team members transacting cash at the machine (I-05, D3).</p>
+<p><strong>AI working session.</strong> OpenCode modelled the queue economics — kiosk throughput versus counter throughput at 20–50% adoption bands — which quantified how many cash guests a single stealth register could absorb before the queue breaks the 5-minute rule. Codex challenged the model&#39;s assumption that kiosk adoption is queue-independent; the model was re-run with a correlated-usage scenario and the staffing guidance updated.</p>
+<p><strong>Outcome (illustrative).</strong> The 10+ minute cash wait verbatim disappeared from the fail-cluster in pilot stores; counter queue time held inside the 5-minute golden rule at 40% adoption.</p>
+<h3 id="use-case-c-kiosk-failure-recovery">Use case C — Kiosk failure recovery</h3>
+<p><strong>Scenario.</strong> Three kiosks down at peak. Before the redesign, the crew &quot;shrugged and stared&quot; — troubleshooting knowledge lived in help-desk documents, not in restaurant teams (I-07).</p>
+<p><strong>What was designed.</strong> A first-line recovery ladder in the training standard: team members retry and read the error-code catalogue (ranges 100–699); a manager-only reboot is the second rung; the stand-alone reprint procedure recovers an order whose payment state is unknown; guests are directed and reassured at every step, never abandoned. Only unresolved cases reach the help desk, with the code range already logged.</p>
+<p><strong>AI working session.</strong> Claude Code converted the FAQ into a decision-tree job aid and generated the error-code lookup table; Codex red-teamed the ladder and found a missing step — a guest whose payment succeeded but whose order did not print had no defined recovery, so the auto-refund path was added to the standard.</p>
+<p><strong>Outcome (illustrative).</strong> The &quot;all kiosks out of order&quot; cluster in feedback dropped sharply in trained stores; help-desk tickets from those stores fell as the team became the first line of recovery.</p>
+<h3 id="use-case-d-new-crew-onboarding-and-franchisee-self-assessment">Use case D — New crew onboarding &amp; franchisee self-assessment</h3>
+<p><strong>Scenario.</strong> A new team member starts at a kiosk store; a franchisee opens a new build. Both previously received nothing — the onboarding courses had no self-service content and the rollout process did not exist.</p>
+<p><strong>What was designed.</strong> The 30-minute huddle loop (A4) is the onboarding vehicle: teach, practice on the machine, compete, recognise, verify — plus job aids and QR-linked videos for self-study. The franchisee path runs through the playbook: placement submission, five-day approval, installation, and the entire restaurant team trained before go-live, with a placement self-assessment template for the franchisee&#39;s own audit readiness.</p>
+<p><strong>AI working session.</strong> OpenCode generated the self-assessment template from the playbook&#39;s placement clauses; Claude Code drafted the huddle facilitator guide and the knowledge-check questions; GitHub PRs gated every training-content change with the learning team as required reviewer.</p>
+<p><strong>Outcome (illustrative).</strong> First-week completion of the huddle loop above 90% in pilot stores; audit-readiness self-assessments returned with zero placement gaps in the first franchisee wave.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">07 · SOPs for AI</span><h2 id="sec-7-sops-for-ai">SOPs for AI — how service design SOPs are best used by agents</h2>
+<p><strong>Encoded SOPs.</strong> Three SOPs were encoded for agent execution, each following the same pattern: <em>method → numbered steps → output schema → acceptance criteria → review gate</em>.</p>
+<ol>
+<li><strong>Feedback-mining SOP</strong> (research). Output: theme-coded evidence items with verbatim quotes. Acceptance: every quote copy-paste exact from the source file; every item carries theme, store-format tag, and sentiment; the two-scale counts (deep dive vs wide sweep) computed and reported together — never one without the other. Gate: human spot-check of 10% plus the Codex challenge pass before synthesis. The prompt template:</li>
+</ol>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>You are FEEDBACK-MINER. Input: one guest-comment export (CSV).
+Extract discrete evidence items about the self-service channel.
+For each item output EXACTLY:
+- evidence_id: EV-&lt;seq&gt;
+- theme: help | cleanliness | cash | tech_failure | speed | staff_recognition | other
+- sentiment: -2..+2
+- store_format: drive_thru_led | mall | inline | unknown
+- text: the verbatim comment (never paraphrase)
+- channel_mentioned: true|false
+RULES: quote text must be copy-paste exact; if unsure, drop the item.
+Run BOTH passes — deep dive (kiosk-related subset) and wide sweep (all
+comments) — and report the counts together. Output JSONL. No invented
+content; every item traces to a source row you include as source_row.
+</code></pre></div>
+<ol start="2">
+<li><strong>Floor-role SOP-as-code</strong> (operations). The foyer host standard encoded as a configurable procedure so any market can translate it without breaking the core: triggers, presence rules, scripts, exceptions, and KPIs are fields, not prose. The standard below is the reference implementation (illustrative).</li>
+</ol>
+<div class="codeblock"><div class="codebar"><span>CONFIG</span></div><pre><code>sop: QSR-FHR-001
+name: Foyer host floor-role standard
+version: 1.0
+owner: channel_lead
+triggers:
+  - kiosk_installed AND weeks_since_install &lt; 26
+  - adoption_share &lt; 80%          # % of in-store sales via kiosk
+presence:
+  required: peak_hours
+  rosterable: true                # time &amp; attendance platform supports the role
+  reporting: restaurant_manager
+scripts:
+  greeting: &quot;Hi, I&#39;m [name], your ordering host. Would you like faster,
+             cashless ordering at the kiosk?&quot;
+  assist: help_navigate_without_judgment
+  direct: cash_and_specific_piece_requests_to_counter_queue
+pre_peak_checks:
+  - menu_availability_synced
+  - collection_screen_functional
+  - kiosks_cleaned
+  - receipt_and_payment_stock_ok
+duties:
+  primary: greet, assist, direct, drive_adoption
+  secondary: foyer_cleanliness, high_touch_surface_cleaning_hourly
+exceptions:
+  cash_guest: counter_queue_with_smile
+  out_of_stock: script_out_of_stock + counter_fallback
+  tech_failure: first_line_ladder (retry -&gt; catalogue -&gt; manager_reboot -&gt; reprint)
+kpis: [adoption_share, feedback_staff_recognition, feedback_cleanliness,
+       cash_wait_complaints, first_line_recovery_rate]
+review_cadence: monthly
+</code></pre></div>
+<ol start="3">
+<li><strong>Artifact-change SOP</strong> (implementation). Every change to a training or standards artifact is a PR containing: diff, linked insight or pilot ID, plain-language check, and a franchisee-operations review label where the clause touches labour. Acceptance: schema checks green plus required reviewers. Gate: CODEOWNERS routing — the learning team for training content, franchisee operations for labour clauses, the channel lead for standards.</li>
+</ol>
+<p><strong>The meta-SOP.</strong> The engagement ran research → synthesize → map → ideate → prototype → implement → measure, with a hard gate between stages: no concept before the insight set passed its acid test; no standard before pilot evidence; no enforcement before the compliance mechanism existed. Process enforced by tooling, not memory.</p>
+<p><strong>Guardrails.</strong></p>
+<ul>
+<li><strong>No fabricated feedback.</strong> Quote verification runs on every synthesis artifact: a quoted comment not found verbatim in the register fails the build; insights without evidence IDs fail schema validation.</li>
+<li><strong>No invented economics.</strong> Every labour and cost claim in a standard must trace to the calculator or a pilot readout; the cash-machine rejection rests on the written business case, not opinion.</li>
+<li><strong>Franchisee variance is data.</strong> Agents may propose convergence, never uniformity; any standard clause that presumes one operating model carries a translation flag for the franchisee review gate.</li>
+<li><strong>Human sign-off points.</strong> Insight naming; the floor-role standard; scripts; the cash decision; governance dates; the compliance exception process; the scale decision.</li>
+</ul>
+<p><strong>Failure modes observed.</strong> (1) Over-clustering in the first synthesis pass — noun buckets that would have flattened the franchisee designs into one generic &quot;floor service&quot; theme; fixed by active-sentence names. (2) A confident but wrong read of the wide sweep — the first pass counted channel mentions only in kiosk-related pulls, which would have hidden the absence signal entirely; fixed by the two-scale rule in the SOP. (3) Labour-model drift — an early calculator version redeployed cashiers on average usage instead of peak usage, overstating the saving; fixed by locking the calculator to the peak-hour band the deployment cards use.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">08 · Value</span><h2 id="sec-8-value-creation-amp-measurement">Value creation &amp; measurement</h2>
+<p><strong>Before/after (illustrative; transformed from the engagement register).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Before</th>
+<th>After (illustrative)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Self-service share of in-store sales</td>
+<td>Low single digits (Year 1)</td>
+<td>~15% network; ~40%+ at top formats; doubling annually for three years</td>
+</tr>
+<tr>
+<td>New-install adoption</td>
+<td>No rollout process; no training; adoption left to chance</td>
+<td>≥80% of in-store sales within 6 months when the floor role is staffed</td>
+</tr>
+<tr>
+<td>Guest feedback</td>
+<td>Kiosk-friction cluster: waiting, cleanliness, cash, tech failures</td>
+<td>Staff recognition the top positive theme; channel near-invisible in the wide sweep</td>
+</tr>
+<tr>
+<td>Ticket vs counter</td>
+<td>~10% uplift, mostly incremental (test vs control)</td>
+<td>Protected; the machine &quot;does the upselling for us&quot; without discounting</td>
+</tr>
+<tr>
+<td>Foyer cleanliness</td>
+<td>&quot;Predominantly negative&quot; in feedback</td>
+<td>Owned by the floor role&#39;s secondary duties; hourly high-touch cleaning in the standard</td>
+</tr>
+<tr>
+<td>Tech recovery</td>
+<td>Help-desk dependent; guests abandoned at failed kiosks</td>
+<td>First-line team ladder: retry, error-code catalogue, manager reboot, reprint</td>
+</tr>
+<tr>
+<td>Cash path</td>
+<td>10+ minute counter waits; guests excluded from the channel</td>
+<td>Designed counter path with the stealth register; cash-machine option rejected on evidence</td>
+</tr>
+<tr>
+<td>Governance</td>
+<td>Standards advisory; compliance optional and invisible</td>
+<td>Audit-linked from Q2 2024; ≥90% of stores compliant by end-2025; exception process defined</td>
+</tr>
+</tbody></table>
+<p><strong>Causal logic (Service Profit Chain).</strong> The chain ran as Heskett, Sasser, and Schlesinger describe (See: 20-the-service-profit-chain/03-external-service-value.md): internal service quality — a rostered floor role, channel training that actually teaches, first-line recovery tools — raised frontline capability; external service value rose chiefly through the <em>denominator</em> of the value equation: access costs collapsed (no abandoned first-timers, no 15-minute ignored waits, a cash path that does not punish, a machine failure that does not end the visit). Satisfaction and staff recognition followed, retention and higher tickets produced the economics, and the redeployment rule converted labour cost into service capacity without adding headcount. Estimated annualized effect at scale (illustrative): the ticket uplift and redeployment are self-funding; payback on the channel hardware was already under two years, and this engagement removed the adoption drag that threatened it.</p>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1400 96" role="img" aria-hidden="true"><defs><marker id="arr-15" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><rect x="10" y="18" width="230" height="44" rx="4" fill="#E8EEE5"/><text x="125" y="36" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="600" text-anchor="middle" letter-spacing="0">Peak front-counter forecast</text><text x="125" y="50" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#3c443a" font-weight="400" text-anchor="middle" letter-spacing="0">e.g. 150 transactions / peak hour</text><path d="M 240,40 267,40 294,40" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-15)"/><rect x="295" y="18" width="230" height="44" rx="4" fill="#E8EEE5"/><text x="410" y="36" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="600" text-anchor="middle" letter-spacing="0">× kiosk usage</text><text x="410" y="50" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#3c443a" font-weight="400" text-anchor="middle" letter-spacing="0">150 × 40% = 60 kiosk orders</text><path d="M 525,40 552,40 579,40" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-15)"/><rect x="580" y="18" width="230" height="44" rx="4" fill="#171817"/><text x="695" y="36" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#f8f8f5" font-weight="600" text-anchor="middle" letter-spacing="0">The redeployment rule</text><text x="695" y="50" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#e8eee5" font-weight="400" text-anchor="middle" letter-spacing="0">every ~60 self-service orders = 1 cashier freed</text><path d="M 810,40 837,40 864,40" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-15)"/><rect x="865" y="18" width="230" height="44" rx="4" fill="#E8EEE5"/><text x="980" y="36" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="600" text-anchor="middle" letter-spacing="0">Redeploy to pack / present</text><text x="980" y="50" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#3c443a" font-weight="400" text-anchor="middle" letter-spacing="0">1 packer/presenter per cashier; no added labour</text><path d="M 1095,40 1122,40 1149,40" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-15)"/><rect x="1150" y="18" width="230" height="44" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="1265" y="36" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="600" text-anchor="middle" letter-spacing="0">Worked example</text><text x="1265" y="50" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10" fill="#33322e" font-weight="400" text-anchor="middle" letter-spacing="0">2 cashiers + 4 pack/present</text><text x="700" y="84" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Golden rules: customer through system within 5 min · order to collect within 60 sec · till capacity 60 transactions/cashier — illustrative values</text></svg><figcaption><span class="fignum">Figure 10</span><span class="figcap">The redeployment rule — self-service converts labour into service capacity</span></figcaption></figure>
+<p><strong>KPI tree.</strong> North-star: kiosk adoption as % of in-store sales, read at store-format level. Drivers: penetration (stores equipped, new-build compliance), floor-role presence (host rostered at peak), training completion (huddle loop verified), tech reliability (first-line recovery rate, error-code catalogue usage). Lagging: ticket uplift vs counter, feedback sentiment (staff recognition, cleanliness, cash-wait complaints), redeployment achieved, standards compliance score. Reviewed monthly in pilot; the wide-sweep feedback count re-read quarterly as the absence signal.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">09 · AI tools</span><h2 id="sec-9-ai-tool-playbook">AI tool playbook</h2>
+<p><strong>An honest caveat first.</strong> The original engagement ran on desk research, service design, and guest-feedback analytics — no AI tooling. What follows is the retrospective practice pattern: how the same engagement would be executed today with named agent surfaces, and which of its methods already behave like automation. The adjacent voice-AI ordering initiative in the evidence base is future direction, not part of this project.</p>
+<p><strong>Claude Code — evidence processing and artifact authoring.</strong> The engagement&#39;s synthesis engine: processed feedback dumps into theme-coded evidence items under verbatim-quote rules, maintained the digital synthesis wall, drafted the HMW bank and concept sheets, authored the journey map and order workflow as version-controlled diagrams, and drafted the huddle guide and evaluation report. Excels at: structured extraction against a schema; consistency across dozens of files; 80%-there first drafts. Failed at: judging which insight would land politically — the designer named &quot;the foyer host effect,&quot; not the agent. Human took over: live research, insight naming, gates.</p>
+<p><strong>OpenCode — data pipelines and calculators.</strong> Aggregated the channel-mix baseline, ran the two-scale feedback counts, generated the illustrative sample dataset (<code>data/kiosk-channel-sample.csv</code>), and built the deployment calculator as a reusable template. Excels at: self-directed multi-file pipelines, realistic seed data, fast iteration. Failed at: method intent — an early pipeline pass counted channel mentions only inside kiosk-related pulls, which would have erased the absence signal; the two-scale rule in the SOP became the leash.</p>
+<p><strong>Codex — adversarial review.</strong> Second-opinion engine, run with the artifact plus a specific concern, never the whole repo. Delivered the insight challenge pass (one insight killed), the workflow review (missing cash path and out-of-stock script), the script review (assist script read as a sales pitch), and the queue-model challenge. Excels at: disagreeing productively — &quot;be adversarial&quot; is a load-bearing instruction. Failed at: occasionally flagging stated franchise constraints as defects; every finding was verified before action — reconcile by verifying, never by averaging.</p>
+<p><strong>GitHub — the system of record.</strong> Issues as work items (every blueprint gap and open standard question traced to an insight or pilot ID), PRs as review gates (CODEOWNERS routing: learning team for training content, franchisee operations for labour clauses, channel lead for standards), the board as phase tracker, milestones as stage gates. Actions CI on the artifact repo:</p>
+<p><strong>Illustrative GitHub Actions configuration — synthetic repository workflow; live execution unverified.</strong></p>
+<div class="codeblock"><div class="codebar"><span>CONFIG</span></div><pre><code>name: artifact-gate
+on: [pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint mermaid diagrams
+        run: npx @mermaid-js/mermaid-cli -i diagrams/all.md -o /tmp/out.svg
+      - name: Markdown lint
+        run: npx markdownlint-cli &quot;**/*.md&quot;
+      - name: CSV schema check
+        run: python scripts/check_schema.py data/
+      - name: Quote verification (feedback register)
+        run: python scripts/verify_quotes.py research/ synthesis/
+      - name: Labour-model check (peak band only)
+        run: python scripts/check_labour_model.py standards/
+      - name: Franchisee-labour gate
+        uses: actions/labeler@v5   # clauses touching labour require franchisee-ops review
+</code></pre></div>
+<p>Failed at: nothing material; the board stays truthful only with a weekly human groom — the Friday ritual of resolving stale issues into the next gate.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">10 · Lessons</span><h2 id="sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</h2>
+<ul>
+<li><strong>Design the service role alongside the technology.</strong> The strongest lesson of the engagement: kiosks succeed when a named, rostered, trained human drives adoption; pure tech rollout strands customers — &quot;shrugged and stared at us&quot; is the verbatim that should haunt every digital-channel business case (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md).</li>
+<li><strong>Feedback volume is not the KPI — mine for absence.</strong> The two-scale design (45-of-50 in the deep dive, 6-of-6,700 in the wide sweep) is the project&#39;s most reusable method: when the service works, the channel disappears from feedback. A single-scale read would have produced either panic or complacency.</li>
+<li><strong>Training must be channel-specific but service-first.</strong> Team members see their job as excellent service regardless of the channel; the 80%-technology threshold rule was a trap that left the fastest-growing channel untrained for years. The recommendation — a cross-channel experience blueprint before building channel training — is the right ordering (See: 01-this-is-service-design-doing/07-implementation-and-piloting.md).</li>
+<li><strong>Rostering enablers lag role design — fix them early.</strong> A brilliant floor-role standard is worthless if the time &amp; attendance platform cannot roster the role. Scheduling must be &quot;intentional about kiosk success&quot; — this gap, not training, was the deepest blocker to scale.</li>
+<li><strong>Measurement discipline converts opinion into scale.</strong> Test-vs-control ticket evidence, mirror-store surveys, store-level adoption tracking, and monthly KPI cuts produced the numbers that justified global rollout; the 3-of-3 awareness check produced the number that justified governance (See: 20-the-service-profit-chain/03-external-service-value.md).</li>
+<li><strong>Labour mathematics converts naysayers.</strong> &quot;Every ~60 self-service orders redeploys one cashier&quot; is a sentence a franchisee can act on; abstract appeals to customer experience are not. The calculator made the labour case concrete and the foyer host affordable.</li>
+<li><strong>Design the limitations, don&#39;t hide them.</strong> Cash, express-kiosk exclusions, out-of-stock mismatches, and machine failure are real customer intents with no kiosk path. Every one needs a counter path and a script; the cash-machine option was rejected on evidence, not aesthetics (See: 05-good-services/02-the-fifteen-principles.md).</li>
+<li><strong>Franchisee heterogeneity is the norm.</strong> Four groups, four role designs, four maturities — and one franchisee built its own training cards because none existed. Global standards need local translation; convergence, never uniformity.</li>
+<li><strong>Honest failure capture is what makes standards enforceable.</strong> The 0-of-3 awareness check was the engagement&#39;s most valuable data point: it converted &quot;we have a program&quot; into &quot;we have a rollout problem&quot; — and the governance design followed.</li>
+<li><strong>Done differently next time:</strong> baseline the audit scores in week 1 (the standards were scored after the pilots, losing comparative precision on the counterfactual), and involve franchisee operations at insight synthesis, not standards drafting — two labour-clause rework cycles were avoidable.</li>
+</ul>
+</section>
+<section class="art-sec"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2>
+<p>Knowledge library (this repository):</p>
+<ul>
+<li><code>books/03-service-design-from-insight-to-implementation/04-from-research-to-insight.md</code> — ecology-wide research; data→information→insight; insight cards</li>
+<li><code>books/03-service-design-from-insight-to-implementation/05-developing-ideas.md</code> — HMW; co-design; idea→concept→proposition; DFV</li>
+<li><code>books/03-service-design-from-insight-to-implementation/06-prototyping-services.md</code> — progressive fidelity; blueprint rehearsal; roleplay and live prototyping</li>
+<li><code>books/03-service-design-from-insight-to-implementation/07-implementation.md</code> — rollout vs pilot; standards-setting; frontline enablement triad</li>
+<li><code>books/03-service-design-from-insight-to-implementation/08-service-design-and-business.md</code> — ROI mechanisms; self-funding service economics</li>
+<li><code>books/01-this-is-service-design-doing/04-research-methods.md</code> — triangulation; benchmarking interviews; affinity synthesis; ethics</li>
+<li><code>books/01-this-is-service-design-doing/06-prototyping-methods.md</code> — prototyping to learn; test plans; mirror-store experiments</li>
+<li><code>books/01-this-is-service-design-doing/07-implementation-and-piloting.md</code> — pilot vs rollout; KPI triangulation; failure demand</li>
+<li><code>books/09-mapping-experiences/04-customer-journey-maps.md</code> — journey anatomy; emotional curve; pain/opportunity separation</li>
+<li><code>books/09-mapping-experiences/05-service-blueprints.md</code> — blueprint lanes; line of visibility; frontstage/backstage</li>
+<li><code>books/20-the-service-profit-chain/03-external-service-value.md</code> — Service Value Equation; access costs; internal service quality</li>
+<li><code>books/05-good-services/02-the-fifteen-principles.md</code> — 15 principles; audit lens for channel and training standards</li>
+</ul>
+<p>External standards referenced: WCAG accessibility guidance (hardware layout and handicap-mode requirements); local menu-board and food-display regulation (placement and side-wall menu rules). All case figures are illustrative and anonymized per the provenance note.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-appendix-artifact-index">Appendix: artifact index</h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Format</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Double Diamond process map</td>
+<td>3</td>
+<td>SVG lanes</td>
+<td>28-week plan mapped to phases</td>
+</tr>
+<tr>
+<td>Engagement gantt</td>
+<td>3</td>
+<td>gantt</td>
+<td>Phase timing with gates</td>
+</tr>
+<tr>
+<td>Phase-method-tool table</td>
+<td>3</td>
+<td>table</td>
+<td>Method and AI execution map</td>
+</tr>
+<tr>
+<td>Feedback-mining command</td>
+<td>4.1</td>
+<td>fenced command</td>
+<td>Two-scale feedback SOP execution</td>
+</tr>
+<tr>
+<td>Channel mix by format</td>
+<td>4.1, data/</td>
+<td>SVG bars + CSV</td>
+<td>Installation ≠ adoption evidence</td>
+</tr>
+<tr>
+<td>Insight cards</td>
+<td>4.2</td>
+<td>table</td>
+<td>Research-to-design bridge (I-01…I-07)</td>
+</tr>
+<tr>
+<td>Feedback two-panel</td>
+<td>4.2</td>
+<td>SVG panel</td>
+<td>Deep dive vs wide sweep; absence signal</td>
+</tr>
+<tr>
+<td>A1 journey map</td>
+<td>4.3</td>
+<td>SVG lanes + table</td>
+<td>Current-state experience with emotion scores</td>
+</tr>
+<tr>
+<td>A2 order workflow</td>
+<td>4.3</td>
+<td>SVG swimlane</td>
+<td>Human role embedded; 60-second rule; scripts</td>
+</tr>
+<tr>
+<td>Menu-board mirror study</td>
+<td>4.5</td>
+<td>SVG bars</td>
+<td>Comprehension without vs with menu boards</td>
+</tr>
+<tr>
+<td>A3 floor-role comparison</td>
+<td>5</td>
+<td>table</td>
+<td>Four franchisee role archetypes converged</td>
+</tr>
+<tr>
+<td>A4 huddle training loop</td>
+<td>5</td>
+<td>SVG flow</td>
+<td>Practice + competition + recognition model</td>
+</tr>
+<tr>
+<td>A5 deployment cards + calculator</td>
+<td>5</td>
+<td>prose + table</td>
+<td>Redeployment rule; worked example</td>
+</tr>
+<tr>
+<td>A6 implementation playbook</td>
+<td>5</td>
+<td>prose</td>
+<td>Placement, count formula, approval flow</td>
+</tr>
+<tr>
+<td>A7 troubleshooting FAQ</td>
+<td>5</td>
+<td>table</td>
+<td>First-line recovery; error-code catalogue</td>
+</tr>
+<tr>
+<td>A8 governance roadmap</td>
+<td>5</td>
+<td>SVG timeline</td>
+<td>Standards to audit-linked enforcement</td>
+</tr>
+<tr>
+<td>A9 sample dataset</td>
+<td>5, data/</td>
+<td>CSV + sample</td>
+<td>16-row channel-mix / adoption sample</td>
+</tr>
+<tr>
+<td>Floor-role SOP-as-code</td>
+<td>7</td>
+<td>fenced config</td>
+<td>Foyer host standard as executable fields</td>
+</tr>
+<tr>
+<td>Redeployment rule</td>
+<td>8</td>
+<td>SVG flow</td>
+<td>Labour maths explainer; worked example</td>
+</tr>
+<tr>
+<td>Artifact-gate workflow</td>
+<td>9</td>
+<td>fenced YAML</td>
+<td>Validation gates on every artifact PR</td>
+</tr>
+<tr>
+<td>Before/after metrics</td>
+<td>8</td>
+<td>table</td>
+<td>Value creation evidence</td>
+</tr>
+</tbody></table>
+</section>
+</article>
+</div>
+</main>
+<footer class="footer">
+  <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
+  <span><a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
+</footer>
+<script src="../../assets/site.js"></script>
+
+</body></html>

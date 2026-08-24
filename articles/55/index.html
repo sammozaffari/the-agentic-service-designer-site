@@ -1,0 +1,922 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Hiring in Days, Not Weeks: Blueprinting Recruitment and Onboarding End to End — QSR (anonymized). By Sam Mozaffari. AI-first service design case study.">
+<title>55. Hiring in Days, Not Weeks: Blueprinting Recruitment and Onboarding End to End — The Agentic Service Designer</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
+
+</head><body>
+<header class="site-head">
+  <a class="brand" href="../../index.html">
+    <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
+    <div class="brand-sub">Sam Mozaffari</div>
+  </a>
+  <nav class="main-nav">
+    <a href="../../index.html" class="">Index</a>
+    <a href="../../articles.html" class="on">Articles</a>
+    <a href="../../courses.html" class="">Courses</a>
+    <a href="../../book.html" class="">Book</a>
+    <a href="../../harness.html" class="">Harness</a>
+    <a href="../../docs/index.html" class="">Docs</a>
+    <a href="../../about.html" class="">About</a>
+    <a href="../../cv.html" class="">CV</a>
+  </nav>
+</header>
+<main class="art art-article"><div class="art-progress"><div class="art-progress-bar" id="progress"></div></div><div class="art-layout art-layout--hero">
+  <header class="art-hero">
+    <div class="art-meta">
+      <span class="art-meta-item"><span class="chip">Mapping &amp; Design</span></span><span class="art-meta-item"><span class="chip">QSR (anonymized)</span></span><span class="art-meta-item"><span class="chip">16 weeks</span></span><span class="art-meta-item"><span class="chip">40 min read</span></span>
+    </div>
+    <h1>Hiring in Days, Not Weeks: Blueprinting Recruitment and Onboarding End to End</h1>
+    <p class="deck">Client anonymized: a global quick-service restaurant chain. All names, figures, and data are illustrative and anonymized.</p>
+    <div class="art-stats"><span><b>10</b> figures</span><span><b>~9.0k</b> words</span><span><b>4</b> tools of record</span><span><b>critic-reviewed</b> every gate</span></div>
+    <div class="author-block">
+      <div class="author-id">
+        <div class="author-avatar">SM</div>
+        <div><b>Sam Mozaffari</b><span>Service designer · AI-first &amp; agentic practice</span></div>
+      </div>
+      <p class="author-note">In this anonymized QSR case, I frame the end-to-end blueprinting of crew recruitment and onboarding — from 60+ interviews through a layered current-state map to a live hiring-automation outcome — with an agent team producing the example artifacts.</p>
+    </div>
+  </header></div><div class="art-layout art-layout--body"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</a></li>
+<li><a href="#sec-1-executive-summary">Executive summary</a></li>
+<li><a href="#sec-2-the-brief">The brief</a></li>
+<li><a href="#sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</a></li>
+<li><a href="#sec-4-phase-by-phase-narrative">Phase-by-phase narrative</a></li>
+<li><a href="#sec-5-artifacts-portfolio">Artifacts portfolio</a></li>
+<li><a href="#sec-6-use-cases">Use cases</a></li>
+<li><a href="#sec-7-sops-for-ai">SOPs for AI — how service design SOPs are best used by agents</a></li>
+<li><a href="#sec-8-value-creation-amp-measurement">Value creation &amp; measurement</a></li>
+<li><a href="#sec-9-ai-tool-playbook">AI tool playbook</a></li>
+<li><a href="#sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</a></li>
+<li><a href="#sec-11-references">References</a></li>
+<li><a href="#sec-12-appendix-artifact-index">Appendix: artifact index</a></li></ol></nav></aside><article class="art-body">
+<section class="art-sec"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</h2>
+<p>The client is a global quick-service restaurant chain operating hundreds of restaurants in the South Pacific region. No real restaurant, employee, franchisee, store, or customer is depicted; no brand, vendor, system, or internal program is named; no internal document, URL, or email address is reproduced. The article shares knowledge and process — method, SOPs, prompts, artifacts, review gates — never client specifics.</p>
+<p>All names, figures, datasets, and quotes are illustrative and anonymized. Metrics are transformed to the same order of magnitude as the underlying evidence, every figure and table carries the illustrative disclaimer, and the sample dataset (<code>data/hiring-funnel-sample.csv</code>) is a fixed-seed synthetic file that demonstrates the measurement method rather than reporting real volumes. The engagement narrative is a reconstructed case: Claude Code, OpenCode, Codex, and GitHub are illustrative working surfaces, while the human designer retains framing, ethics, and labor-market judgment.</p>
+<p><strong>Evidence boundary (2026-08-24).</strong> The chain, participants, metrics, and artifacts described here are an anonymized reconstruction of a real engagement conducted across 2023–2026; host commands shown are emitted packs whose live case execution is unverified. Measurement gaps — first-shift attendance and 90-day retention had no data — are documented as findings with owners, not papered over. Where internal documents disagreed, the disagreement itself is recorded as an insight about the data layer.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2>
+<p>A global quick-service restaurant chain, growing by hundreds of restaurants in the coming years, was running its most important experience by accident. Its careers site lost nearly half of its monthly visitors before an application was completed; candidates described an application that asked for information repeatedly across stores and franchisee groups; first interviews happened in dining rooms and food courts; and first shifts began with trainees standing in hallways because uniforms had not arrived. Meanwhile the manager pipeline — fed almost entirely by promotion from within — was leaking: assistant-manager turnover had climbed by roughly half in four years, and every new restaurant multiplied the hiring demand the existing process could not meet.</p>
+<p>Over 16 weeks, a single lead service designer amplified by an AI agent team ran the full arc: 60+ interviews across support-office, franchisee, and restaurant roles; a review of more than 100 documents; restaurant observations; a 200+ response field survey; synthesis into 12+ evidence-grounded personas and seven &quot;moments that matter&quot;; a layered current-state service blueprint across nine journey stages; and a manager competency framework to rebuild the top of the pipeline. The honest verdict landed early and framed everything: <strong>five of the seven moments that matter failed basic expectations</strong> — the experience was admin-optimized, not human-optimized.</p>
+<p>The redesign then moved from map to machine. The application-to-interview core was automated end to end: screening questions answered in a conversation with an AI assistant, auto-scheduled interviews for high-fit candidates, 24/48/72-hour reminders, 10-day no-action dispositioning, integrated work-rights verification with human review lanes, and automated employee-record setup with daily pushes to scheduling and payroll. Application-to-interview confirmation compressed to <strong>under two days on average</strong>. Nine in ten restaurant teams reported better candidates, faster hiring, and significant time savings; one franchisee group moved crew fill from roughly full to above target within a year.</p>
+<p>The case is told honestly: the data needed to prove first-shift attendance and 90-day retention simply did not exist, and we documented that absence as a finding rather than inventing a number. What follows is the method, the artifacts, and the lessons — the specifics of the chain, disguised.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>Global quick-service restaurant chain (anonymized)</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>Quick-service restaurant (QSR)</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>End-to-end crew recruitment &amp; onboarding redesign (service design, blueprinting, capability framework)</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>Current-state blueprint across 9 journey stages; automation flow design; manager competency framework; value model</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>16 weeks (research through blueprint, capability work, and automation workflow design)</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>1 lead designer + AI agents + client people function, operations, technology, franchise network</td>
+</tr>
+<tr>
+<td>AI tools</td>
+<td>AI recruitment assistant (screening, scheduling, candidate care); automated work-rights verification; automated employee-record setup</td>
+</tr>
+<tr>
+<td>Headline results</td>
+<td>Application→interview in under 2 days (was erratic, days to weeks); ~45% funnel drop-off identified and targeted; 9-in-10 restaurant-team approval; manager admin burden cut; hiring capacity for hundreds of new restaurants</td>
+</tr>
+</tbody></table>
+<p>What you will learn:</p>
+<ul>
+<li>How to blueprint an end-to-end hiring experience across a franchise network with a one-designer-plus-agents team — from 60+ interviews to a layered current-state map with an honest verdict attached.</li>
+<li>How to turn &quot;five of seven decisive moments failing basic expectations&quot; into a prioritization spine rather than a scapegoat, and how the moments framework survives contact with the data.</li>
+<li>How to encode the hiring workflow as an executable SOP for agents: screening logic, auto-scheduling, reminders, dispositioning, human review lanes, and honest measurement.</li>
+</ul>
+</section>
+<section class="art-sec"><span class="sec-kicker">02 · The brief</span><h2 id="sec-2-the-brief">The brief</h2>
+<h3 id="client-portrait">Client portrait</h3>
+<p>The client is a global quick-service restaurant chain; this engagement covered its South Pacific region, where hundreds of restaurants are run by a mix of company-owned and franchisee-operated groups. The workforce is dominated by crew: tens of thousands of people, most of them first-job young people, many under the legal working age. More than nine in ten hires into restaurants are crew roles, and more than nine in ten restaurant and assistant managers are promoted from within — which makes the crew hiring funnel the single feeder for the entire management pipeline. A growth plan of hundreds of new restaurants over the coming years multiplied the hiring demand on a process already straining. Two internal mantras framed the engagement: the customer experience will never exceed the team member experience, and people first, sales and profit follow. Neither had ever been operationalized for hiring.</p>
+<h3 id="the-challenge">The challenge</h3>
+<p>The people function had commissioned research with three questions: how do current services enable the end-to-end team-member experience; how is recruitment and onboarding enabled, deeper and more holistically; and what is expected of managers at each level? The stated purpose was to inform system improvements, connect the team-member experience to the customer experience, and shape a path forward. But the evidence said the pain was structural, not a single-fix problem: disconnected systems across channels; error-prone re-keying for candidates and managers; no reporting to inform recruitment performance; processes bypassed and variable across franchisee groups.</p>
+<p>The careers-site funnel told the starkest story: roughly 34,000 visitors a month, and nearly half gone before an application was completed. The interview room was a dining-room table; the first-shift experience began with missing uniforms and hallway training; managers carried recruitment inside an already full day-to-day role. Manager churn was climbing — assistant-manager turnover from 18% to 27% in four years, restaurant-manager turnover from 13% to 17% — compressing the six-plus-year tenure path from crew to restaurant manager that had historically fed the pipeline. Externally, national labour-market statistics in mid-2022 reported 31% of businesses finding it difficult to hire, and of those, 79% citing too few applicants. The problem was real, shared, and structural.</p>
+<h3 id="success-criteria-agreed-with-the-client">Success criteria (agreed with the client)</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Baseline (illustrative)</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Application→interview confirmation</td>
+<td>Erratic; days to weeks; documented leakage driver</td>
+<td>≤ 2 days, automated</td>
+</tr>
+<tr>
+<td>Careers-site funnel drop-off</td>
+<td>~45%</td>
+<td>≤ 25%</td>
+</tr>
+<tr>
+<td>Manager admin effort per hire</td>
+<td>Hours of re-keying across systems; texting candidates</td>
+<td>Minutes; no manual scheduling</td>
+</tr>
+<tr>
+<td>First-shift attendance data</td>
+<td>No data</td>
+<td>Measured and reported</td>
+</tr>
+<tr>
+<td>&gt;90-day retention data</td>
+<td>No data</td>
+<td>Measured and reported</td>
+</tr>
+<tr>
+<td>Restaurant-team feedback on hiring</td>
+<td>Mixed; documented pain points</td>
+<td>≥ 9 in 10 positive</td>
+</tr>
+<tr>
+<td>Manager capability pipeline</td>
+<td>Thin and informal; churn rising</td>
+<td>Competency framework; targeted gap closure</td>
+</tr>
+</tbody></table>
+<h3 id="constraints">Constraints</h3>
+<p>Franchisee technology configuration was explicitly out of scope — the automation had to work across the network without breaking any group&#39;s setup. The third-party recruiting platform was expensive to change and reported on request only, with no product-roadmap visibility and no testing window before releases. The data layer treated the latest update as correct, so numbers conflicted across documents, and reports were limited to a 90-day history. The candidate base itself constrained the design: first-job young people often lacked bank, tax, and identity infrastructure; many had no photo identification; parental-consent forms expired after seven days; and uniform supply ran on long external lead times. Compliance — minimum age, parental consent, work-rights verification — was non-negotiable.</p>
+<h3 id="why-service-design">Why service design</h3>
+<p>This was not a form-design problem on one web page. The leaks spanned a careers site, a recruiting platform, a work-rights verification service, payroll, time &amp; attendance, a learning platform, uniform supply, restaurant managers, and the candidate&#39;s own family (See: 09-mapping-experiences/05-service-blueprints.md). The experience is produced by a socio-technical system whose failures live below the line of visibility — precisely what service blueprinting exists to expose. Polaine, Løvlie, and Reason&#39;s arc — research to insight, ideas, prototyping, implementation — supplied the governing structure (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md), and the chain&#39;s own funnel data supplied the spine: an experience that cannot be measured cannot be managed, and a hiring experience designed for admin convenience would keep losing the people it needed most.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">03 · Approach</span><h2 id="sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</h2>
+<p>The engagement followed the Double Diamond with the insight-to-implementation arc as the spine: research → synthesis → mapping → ideation → prototyping → implementation → measurement, with a hard gate between stages — no ideation before insights passed the evidence acid test, no blueprint before personas held up, no automation before the flow was simulated. The designer ran every phase with named AI collaborators: a Claude Code research team for evidence extraction and synthesis, OpenCode for data pipelines and flow simulation, Codex for adversarial review, and GitHub as the system of record — every artifact a PR, every gate a review.</p>
+<p>The AI-first pattern that matters here: the machines did the bookkeeping of evidence — extraction, verbatim verification, clustering, diagramming, simulation — while the designer kept the framing (the &quot;five of seven&quot; verdict, the reframe from systems to experience) and every human interaction. Nothing in this case was delegated that a candidate or a manager would feel.</p>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 296" role="img" aria-hidden="true"><defs><marker id="arr-55-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Discover - weeks 1-4</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Define - weeks 4-7</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Develop - weeks 7-12</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Deliver - weeks 12-16</text><line x1="0" y1="294" x2="296" y2="294" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 1</span><span class="figcap">Approach: the AI-first service design process — 16 weeks, four movements</span></figcaption></figure>
+<figure class="fig fig-gantt"><div class="gantt"><div class="gantt-head"><span class="gantt-taskcol">Phase</span><span class="gantt-track"><span>Month 1</span><span>Month 2</span><span>Month 3</span><span>Month 4</span></span></div><div class="gantt-section">Research &amp; Synthesis</div><div class="gantt-row"><span class="gantt-taskcol">60+ interviews · 100+ documents · field survey</span><span class="gantt-track"><span class="gantt-bar future" style="left:0.00%;width:25.00%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Personas · 7 moments · insight cards</span><span class="gantt-track"><span class="gantt-bar future" style="left:25.00%;width:18.75%"></span></span></div><div class="gantt-section">Mapping &amp; Ideation</div><div class="gantt-row"><span class="gantt-taskcol">Current-state blueprint + journey flows</span><span class="gantt-track"><span class="gantt-bar future" style="left:37.50%;width:25.00%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">HMW · leading-practice provocation</span><span class="gantt-track"><span class="gantt-bar future" style="left:56.25%;width:18.75%"></span></span></div><div class="gantt-section">Build &amp; Measure</div><div class="gantt-row"><span class="gantt-taskcol">Automation flow design + manager pilots</span><span class="gantt-track"><span class="gantt-bar future" style="left:62.50%;width:18.75%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">Automation go-live · SOPs · dashboards</span><span class="gantt-track"><span class="gantt-bar future" style="left:75.00%;width:25.00%"></span></span></div><div class="gantt-row"><span class="gantt-taskcol">In-flow surveys · baseline vs target</span><span class="gantt-track"><span class="gantt-bar future" style="left:87.50%;width:12.50%"></span></span></div></div><figcaption><span class="fignum">Figure 2</span><span class="figcap">Recruitment &amp; onboarding blueprint — 16 weeks</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>SD method</th>
+<th>AI tool(s)</th>
+<th>Artifact produced</th>
+<th>Client involvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Research</td>
+<td>Triangulated fieldwork: episodic interviews, site observations, artifact audit, funnel data (01/04, 03/04)</td>
+<td>Claude Code (transcript processing), OpenCode (funnel pipeline)</td>
+<td>Research plan, evidence register, funnel baseline</td>
+<td>60+ interviews across roles; site visits and observations</td>
+</tr>
+<tr>
+<td>Synthesis</td>
+<td>Collaborative affinity synthesis, insight cards, moments-that-matter framework (03/04, 01/04)</td>
+<td>Claude Code research team (3 subagents), Codex (challenge pass)</td>
+<td>12+ personas, 7 moments, 7 insight cards</td>
+<td>Half-day synthesis wall session</td>
+</tr>
+<tr>
+<td>Mapping</td>
+<td>Journey mapping, layered service blueprinting with fail points (09/04, 09/05)</td>
+<td>Claude Code (diagram authoring), Codex (adversarial blueprint review)</td>
+<td>Current-state blueprint v2, journey flows</td>
+<td>Blueprint rehearsal with operations + people function</td>
+</tr>
+<tr>
+<td>Ideation</td>
+<td>HMW, co-design workshop, leading-practice &quot;Imagine if…&quot; review (03/05)</td>
+<td>Claude Code (HMW bank, concept sheets)</td>
+<td>Future-state concepts, evaluation matrix</td>
+<td>Cross-functional workshop</td>
+</tr>
+<tr>
+<td>Prototyping</td>
+<td>Flow simulation, manager walkthroughs, pilot lanes (01/06, 03/06)</td>
+<td>OpenCode (flow simulation, seeded data), Claude Code (conversation scripts)</td>
+<td>Decision matrix, seeded sample dataset</td>
+<td>Two franchisee groups pilot lanes</td>
+</tr>
+<tr>
+<td>Implementation</td>
+<td>Blueprint-to-backlog, SOP-as-code, live automation (03/07, 01/07)</td>
+<td>GitHub (issues, PR gates), Claude Code (SOPs, copy)</td>
+<td>Hiring SOP, dashboards, automation in market</td>
+<td>Weekly steering with people function</td>
+</tr>
+<tr>
+<td>Measurement</td>
+<td>Triangulated KPIs, honest data-gap documentation (01/07, 20/03)</td>
+<td>OpenCode (dashboard pipeline), Claude Code (readout drafting)</td>
+<td>KPI tree, measurement-gap findings</td>
+<td>Gate review with executive sponsor</td>
+</tr>
+</tbody></table>
+</section>
+<section class="art-sec"><span class="sec-kicker">04 · The work, phase by phase</span><h2 id="sec-4-phase-by-phase-narrative">Phase-by-phase narrative</h2>
+<h3 id="41-research-weeks-14">4.1 Research (weeks 1–4)</h3>
+<p><strong>Goal.</strong> Understand how people actually find, apply for, and start working at the chain — across the whole service ecology — and quantify where the funnel leaks (See: 01-this-is-service-design-doing/04-research-methods.md).</p>
+<p><strong>Method &amp; SOP.</strong> Triangulated fieldwork: 60+ episodic interviews (30 in-restaurant — restaurant managers, assistant managers, shift supervisors, crew, trainees — and 30+ above-store and support-office people across the people function, technology, operations, marketing, finance, and data, plus franchisee leaders); restaurant site visits and observations including a live interview and a promotion-board review; a 200+ response field survey; a document review spanning more than 100 operational, recruitment, and technology artifacts; and quantitative funnel and turnover data. The funnel pipeline (January–March) and the careers-site funnel (June) gave the numbers; the interviews gave the reasons.</p>
+<p><strong>AI execution.</strong> Fieldwork stayed human — consent, rapport, and the decision to observe a real interview are not delegable. Everything after the recording was agent-amplified. Transcripts were pseudonymized and processed by a Claude Code subagent team using the evidence-extraction SOP in Section 7: one agent extracted evidence items, one verified every quote verbatim against the transcript store (the engagement&#39;s key hallucination control), and one triaged survey open-text responses through the same schema. Result: hundreds of traceable evidence items, each with a participant code and line range. OpenCode ran the funnel pipeline and normalized the careers-site and application data into a single leakage view — which exposed the ~45% drop-off and, just as importantly, the two stages where no data existed at all.</p>
+<p><strong>Illustrative Claude Code host command — emitted pack; live case execution unverified.</strong></p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>claude -p --agents evidence-extractor,quote-verifier,survey-triage &quot;Process
+research/transcripts/batch-04/. Extract evidence items into
+research/evidence-register.jsonl per the EVIDENCE-EXTRACTOR SOP. Every quote
+must verify verbatim against the transcript store — drop any item that cannot
+be traced to a source line range. Triage survey open-text through the same
+schema. Report orphans, never drop them silently.&quot;
+</code></pre></div>
+<p><strong>Human designer judgment.</strong> Interview quotas (oversampling first-job young people and parents, plus franchisee groups of different sizes), the consent protocol, and the decision to pursue &quot;the admin burden is the experience&quot; — not &quot;candidates don&#39;t want to work&quot; — after early interviews contradicted the client&#39;s working theory that hiring difficulty was purely a labour-market problem.</p>
+<p><strong>Artifacts produced.</strong> Research plan and interview guides (A6), evidence register, funnel baseline, turnover series.</p>
+<h3 id="42-synthesis-weeks-47">4.2 Synthesis (weeks 4–7)</h3>
+<p><strong>Goal.</strong> Convert the evidence into insights that pass the acid test — each must change what the chain designs — and into the analytic spine the whole engagement would hang on (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md).</p>
+<p><strong>Method &amp; SOP.</strong> Bottom-up affinity synthesis on a shared wall, executed as a hybrid session: the designer and two client stakeholders worked the evidence while Claude Code maintained the digital twin. From the converged themes came two outputs. First, 12+ evidence-based personas — fictional, &quot;characterized by an interpretation of evidence&quot; — including the first-job school leaver, the returning crew member, the visa worker, the parent-negotiating teen, and the manager hiring inside an already full day. Second, the <strong>Moments That Matter</strong> framework: seven disproportionate moments from first thinking about working at the chain to realizing comfort and competence — &quot;the job doesn&#39;t start on the first shift.&quot;</p>
+<p><strong>AI execution.</strong> Claude Code proposed the first-pass clustering under a hard rule that cluster names be active sentences, not nouns — &quot;candidates are asked for the same documents three times,&quot; not &quot;Documentation.&quot; The humans merged and renamed freely; the agent re-propagated edits between breaks. Codex then ran an adversarial challenge pass — a second opinion instructed to attack, not agree:</p>
+<p><strong>Illustrative Codex host command — emitted pack; live case execution unverified.</strong></p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>codex exec --skip-git-repo-check &quot;Read synthesis/insight-cards.md and
+research/evidence-register.jsonl. For each of the 7 insights: (1) confirm
+every cited quote exists verbatim in the register, (2) argue the strongest
+alternative explanation for the observed behaviour, (3) flag any insight
+whose design implication is not actually implied by the evidence. Be
+adversarial.&quot;
+</code></pre></div>
+<p>Codex killed one candidate insight (&quot;applicants lack interest in the brand&quot; — contradicted by survey data and by application volumes) and forced evidence upgrades on two others. The surviving seven insights each cited three or more independent evidence items from at least two methods.</p>
+<p><strong>The verdict.</strong> When the seven moments were scored against basic expectations, the result was unambiguous: <strong>five of seven fail</strong>. The board became the prioritization spine for everything that followed.</p>
+<table>
+<thead>
+<tr>
+<th>Moment</th>
+<th>What we heard (illustrative voices)</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. First thinking about working at the chain</td>
+<td>No employer brand separate from the consumer brand; hiring is constant; no campaigns run — &quot;too hard to coordinate&quot;</td>
+<td>Fails</td>
+</tr>
+<tr>
+<td>2. Applying and getting a response</td>
+<td>Unnecessary asks; slow responses push applicants elsewhere; duplicate emails across stores; silent rejections after 7–14 days</td>
+<td>Fails</td>
+</tr>
+<tr>
+<td>3. First interview</td>
+<td>Dining rooms and food courts; rushed; no rapport — &quot;we walked upstairs to the dining room, I gave my availability and that was it&quot;</td>
+<td>Fails</td>
+</tr>
+<tr>
+<td>4. The admin of starting</td>
+<td>Same documents requested repeatedly; offers lost to spam; consent forms expiring; first-time bank and tax setup</td>
+<td>Fails</td>
+</tr>
+<tr>
+<td>5. First shift</td>
+<td>Uniforms missing; hallway training; no chance to meet colleagues — &quot;I would have preferred to train at home; I was in the way&quot;</td>
+<td>Fails</td>
+</tr>
+<tr>
+<td>6. First customer service experience</td>
+<td>Trainees view first service moments with trepidation; role models vary — &quot;customers felt a bit scary the first couple of times&quot;</td>
+<td>Partially meets</td>
+</tr>
+<tr>
+<td>7. Realizing comfort and competence</td>
+<td>Recognition works; but training quality varies with trainer availability — &quot;it&#39;s hard to learn when my shifts are spread out&quot;</td>
+<td>Partially meets</td>
+</tr>
+</tbody></table>
+<p><strong>Human designer judgment.</strong> Naming insights is framing, and framing is political: the designer chose &quot;admin-optimized, not human-optimized&quot; as the headline because it redirected blame away from candidates and toward the system — and accepted Codex&#39;s kill without sentiment. The three load-bearing insights carried the design:</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Insight (compressed)</th>
+<th>Evidence</th>
+<th>Implication</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>I-01</td>
+<td>The application asks for unnecessary information and repeats it across stores and franchisee groups; candidates multi-apply and silently disappear — &quot;the whole process from application to interview was a bit disorganised&quot;</td>
+<td>30+ items, funnel data, 3 methods</td>
+<td>Minimal-ask application; one connected candidate record; fast response SLA</td>
+</tr>
+<tr>
+<td>I-02</td>
+<td>Managers re-enter the same information across systems; payroll discovers wrong documents only at pay time; candidates upload documents repeatedly — &quot;I had to do it multiple times even though all the information was correct&quot;</td>
+<td>25+ items, system map, 3 methods</td>
+<td>Integration-first architecture: single submission propagates; human review lanes</td>
+</tr>
+<tr>
+<td>I-05</td>
+<td>First interviews and first shifts are admin-optimized, not human-optimized; manager capability varies with the local leader — &quot;interviews are rushed, the dining room is not a quiet space&quot;</td>
+<td>Interview + observation evidence</td>
+<td>Moment-based redesign of interview and first-shift experience; manager enablement</td>
+</tr>
+</tbody></table>
+<p><strong>Artifacts produced.</strong> Seven insight cards, 12+ personas, the seven-moments board, and the design principle set: <strong>D1</strong> Ask once, ask only what decides. <strong>D2</strong> Respond before they look elsewhere. <strong>D3</strong> Make the compliant path the easy path. <strong>D4</strong> A human is one tap away. <strong>D5</strong> Measure or it didn&#39;t happen.</p>
+<h3 id="43-mapping-weeks-610">4.3 Mapping (weeks 6–10)</h3>
+<p><strong>Goal.</strong> Build the alignment artifact everything else hangs on: a layered current-state service blueprint of recruitment and onboarding across the whole network, with fail points and the emotional journey attached (See: 09-mapping-experiences/05-service-blueprints.md).</p>
+<p><strong>Method &amp; SOP.</strong> Nine journey stages — <em>Identify → Search → Consider → Apply → Interview → Offer → Accept → Onboard → Start</em> — crossed with nine layers: External, Frontstage, Backstage, People, Processes, Systems, Integration, Automation, and Measures &amp; Metrics, plus a &quot;moments that matter&quot; row and an emotional-journey track. Companion journey flows added swimlanes — candidate, hiring manager, automations, surveys, screening — tracing the live automation status workflow from first conversation through employee creation. Every cell carried a fail point (F) or a wait point (W) where the evidence said one existed.</p>
+<p><strong>AI execution.</strong> Claude Code authored the diagrams as version-controlled code, diffed in PRs like software. During the blueprint rehearsal with operations and the people function, every unanswerable question — &quot;where does the hiring manager see that the work-rights check failed?&quot; — became a GitHub issue tagged <code>blueprint-gap</code> on the spot; each was later resolved into a backlog ticket. Codex reviewed the blueprint PR adversarially and caught genuine defects, including a missing branch for candidates who cannot withdraw (wasting manager time) and a re-hire path that never off-boarded records.</p>
+<p><strong>Human designer judgment.</strong> Choosing where the line of visibility sits — work-rights verification stays backstage, but the candidate always knows the check is running and what to do if it stalls. Refusing the request to split the blueprint per system, which would have re-siloed the artifact. And insisting that the two empty cells — first shift, retention — be drawn as explicit &quot;no data&quot; cells rather than omitted.</p>
+<p><strong>Artifacts produced.</strong> A1 blueprint and journey flows (Section 5), fail points F-01…F-09 carried into the traceability table (A9).</p>
+<h3 id="44-ideation-weeks-912">4.4 Ideation (weeks 9–12)</h3>
+<p><strong>Goal.</strong> Convert insights into a coherent direction — not a pile of idea fragments (See: 03-service-design-from-insight-to-implementation/05-developing-ideas.md).</p>
+<p><strong>Method &amp; SOP.</strong> Structured HMW formulation from the insight cards, then a cross-functional workshop (people function, operations, technology, finance, two franchisee groups) with strict divergence/convergence separation. A leading-practice review — gamified employer branding, on-the-spot hiring, open hiring, welcome kits, single-app onboarding — was deliberately framed as &quot;Imagine if…&quot; provocation: stimulus for the future state, not commitments.</p>
+<p><strong>AI execution.</strong> Claude Code prepared the HMW bank beforehand (5 primary HMWs, each traced to an insight ID — I-01 → &quot;How might we make applying feel like five minutes of answers, not a job application?&quot;) and scribed the workshop, clustering 60+ raw ideas into themes live. Codex scored the concept directions against the constraints register — franchisee configurations, vendor surfaces, compliance — and flagged which ideas the client could actually ship.</p>
+<p><strong>Human designer judgment.</strong> The convergence call: automate the application→interview core first, because that is where the funnel bleeds and where the client controls the surface. The reframe — from &quot;HR system improvements&quot; to &quot;an intentionally designed recruitment and onboarding experience that attracts and retains the best candidates, streamlines manager activity, and drives great customer experiences&quot; — was accepted as the positioning statement for the program.</p>
+<p><strong>Artifact produced.</strong> The concept direction, working name <strong>Hire in Days, Not Weeks</strong>: (1) a conversational AI assistant that screens, schedules, and answers candidate questions day or night; (2) automated application→interview with reminders and dispositioning; (3) integrated work-rights verification with human review lanes; (4) automated employee-record setup; (5) re-hire branch logic. DFV scores 4.5 / 4.1 / 4.3 (illustrative).</p>
+<h3 id="45-prototyping-weeks-1013">4.5 Prototyping (weeks 10–13)</h3>
+<p><strong>Goal.</strong> Test the automation logic before committing to build — at the lowest fidelity that answers the question: hypothesis first, prototype second (See: 01-this-is-service-design-doing/06-prototyping-methods.md).</p>
+<p><strong>Method &amp; SOP.</strong> Flow simulation against seeded applicant data, walkthroughs with managers from two franchisee groups, and pilot lanes for the riskiest rules. Each round had a written experiment canvas stating the learning question and pass/fail thresholds before anything ran.</p>
+<p><strong>AI execution.</strong> OpenCode simulated the screening decision logic against an illustrative 1,000-row synthetic applicant set to test the auto-scheduling rule (high-demand shift availability <em>and</em> 3–5 shifts per week → auto-scheduled interview; all other combinations → human review queue) and the dispositioning cadence (24/48/72-hour incomplete-application reminders; 10-day no-action dispositioning). Claude Code drafted the candidate-facing conversation scripts in plain language; Codex reviewed the decision matrix for edge cases — the age gate, the under-18 parental-consent branch, same-group re-hires versus first-job candidates.</p>
+<p><strong>Illustrative OpenCode host command — emitted pack; live case execution unverified.</strong></p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>opencode run --agent flow-simulator &quot;Read data/hiring-funnel-sample.csv and
+config/screening-rules.yaml. Simulate 1,000 synthetic applicants through the
+screening decision matrix: age gate, work-rights flag, availability, shifts
+per week, high-demand shift. Report (a) auto-scheduled vs review-queue vs
+dispositioned splits, (b) interview-confirmation latency distribution, (c)
+rule combinations that route to no action within 10 days. Seed fixed.&quot;
+</code></pre></div>
+<p><strong>Human designer judgment.</strong> Thresholds were set before the simulation ran — and held when the first pass showed only 61% of high-fit candidates actually confirming interviews. The fix was not to loosen the rule but to add the 24/48/72-hour reminder cadence. The designer also refused to automate the rejection of under-18 applicants without the parental-consent flow completing first: compliance was the product, not a checkbox.</p>
+<p><strong>Artifacts produced.</strong> Decision matrix, conversation scripts, experiment canvases, and the seeded sample dataset (A7) that backs the funnel figures in this article.</p>
+<h3 id="46-implementation-weeks-1216">4.6 Implementation (weeks 12–16)</h3>
+<p><strong>Goal.</strong> Put the automation in market — as documented current state, not a distant roadmap — and encode the workflow so it can be operated, measured, and improved.</p>
+<p><strong>Method &amp; SOP.</strong> Blueprint-to-backlog translation: the blueprint was walked cell by cell and decomposed into issues, each carrying its blueprint step ID for traceability. The hiring workflow was encoded as an SOP-as-code (Section 7) with review gates; the live flow became: AI assistant conversation → screening → auto-scheduled interview → 24/48/72-hour reminders → 10-day dispositioning → work-rights verification with human review lanes → automated employee-record creation with two daily pushes to scheduling and payroll → in-flow survey invites after interview, offer decline, and hire.</p>
+<p><strong>AI execution.</strong> GitHub issues tracked the build; pull requests were the review gates, with candidate-facing copy requiring people-function sign-off and anything touching age or consent carrying a compliance label enforced in CI. OpenCode built the dashboard pulls that replaced on-request reporting; Claude Code drafted the SOP and the manager enablement one-pager.</p>
+<p><strong>Human designer judgment.</strong> Gate negotiation with the executive sponsor — the go-live sequence (screen first, then schedule, then verify, then set up) — and the decision to instrument the in-flow surveys from day one so the loop closed on real candidates, not assumptions.</p>
+<p><strong>Artifacts produced.</strong> Hiring SOP-as-code, live automation flows, in-flow survey triggers, dashboards.</p>
+<h3 id="47-measurement-weeks-1516">4.7 Measurement (weeks 15–16)</h3>
+<p><strong>Goal.</strong> Close the loop — and name what cannot yet be measured. The engagement&#39;s measurement discipline was: instrument first, then improve; where data does not exist, say so and attach an owner (See: 01-this-is-service-design-doing/07-implementation-and-piloting.md).</p>
+<p><strong>AI execution.</strong> OpenCode maintained the dashboard pipeline reconciling funnel, time-to-hire, and survey responses into one KPI table; Claude Code drafted the readout as a reviewed PR — every number generated from the same query set, no hand-typed metrics.</p>
+<p><strong>Results observed.</strong> Application→interview confirmation averaged under two days (0–2 day band) where slow response had been a documented leakage driver; interview→offer averaged three to four days. Restaurant teams reported overwhelming positive feedback — &quot;better candidates, faster hiring processes, and significant time savings&quot; — at a 9-in-10 rate; one franchisee group credited the automation with moving crew fill from roughly full to above target. Managers no longer texted candidates to arrange interviews.</p>
+<p><strong>The honest gaps.</strong> First-shift attendance and 90-day retention still had no data — the support office could not see franchisee detail, records were not always terminated correctly, report history was capped at 90 days, and the integration layer treated the latest update as correct, producing conflicting numbers. Each gap became a documented finding with an owner and a target instrument, not a silent omission. The designer&#39;s rule: <em>a dashboard that shows you what you cannot see is a deliverable.</em></p>
+<p><strong>Human designer judgment.</strong> Refusing to invent a retention number for the exec summary; presenting the measurement-gap register as part of the final readout — the &quot;anecdotal evidence runs supreme&quot; quote did more work than any chart.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">05 · Artifacts</span><h2 id="sec-5-artifacts-portfolio">Artifacts portfolio</h2>
+<p>All figures illustrative.</p>
+<h3 id="a1-layered-current-state-blueprint">A1 — Layered current-state blueprint (the hero artifact)</h3>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 420" role="img" aria-hidden="true"><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="92" height="22" rx="3" fill="#E8EEE5"/><text x="12" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.4">External</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="92" height="22" rx="3" fill="#E8EEE5"/><text x="12" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.4">Frontstage</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="92" height="22" rx="3" fill="#E8EEE5"/><text x="12" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.4">Backstage</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="92" height="22" rx="3" fill="#E8EEE5"/><text x="12" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.4">People</text><line x1="0" y1="282" x2="296" y2="282" stroke="currentColor" stroke-width="1"/><rect x="4" y="298" width="92" height="22" rx="3" fill="#E8EEE5"/><text x="12" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.4">Processes</text><line x1="0" y1="346" x2="296" y2="346" stroke="currentColor" stroke-width="1"/><rect x="4" y="362" width="92" height="22" rx="3" fill="#E8EEE5"/><text x="12" y="377" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.4">Systems</text><line x1="0" y1="410" x2="296" y2="410" stroke="currentColor" stroke-width="1"/><rect x="104" y="42" width="92" height="22" rx="3" fill="#F4F4F1"/><text x="112" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#55554e" font-weight="500" text-anchor="start" letter-spacing="0.2">Integration</text><rect x="104" y="106" width="92" height="22" rx="3" fill="#F4F4F1"/><text x="112" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#55554e" font-weight="500" text-anchor="start" letter-spacing="0.2">Automation</text><rect x="104" y="170" width="92" height="22" rx="3" fill="#F4F4F1"/><text x="112" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#55554e" font-weight="500" text-anchor="start" letter-spacing="0.2">Measures &amp; metrics</text><rect x="104" y="234" width="92" height="22" rx="3" fill="#F4F4F1"/><text x="112" y="249" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#55554e" font-weight="500" text-anchor="start" letter-spacing="0.2">Moments row</text><rect x="104" y="298" width="92" height="22" rx="3" fill="#F4F4F1"/><text x="112" y="313" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#55554e" font-weight="500" text-anchor="start" letter-spacing="0.2">Emotional track</text><rect x="104" y="362" width="92" height="22" rx="3" fill="#F4F4F1"/><text x="112" y="377" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#55554e" font-weight="500" text-anchor="start" letter-spacing="0.2">Fail / wait points</text></svg><figcaption><span class="fignum">Figure 3</span><span class="figcap">Blueprint anatomy: 9 journey stages × 9 layers, with moments, emotional track, and F/W points</span></figcaption></figure>
+<p>The full map crossed nine stages (Identify → Search → Consider → Apply → Interview → Offer → Accept → Onboard → Start) with nine layers and annotated every fail point. Lane table (stages abridged to the decisive columns; verdicts from the current state, targets illustrative):</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Candidate experience</th>
+<th>Frontstage</th>
+<th>Backstage / people</th>
+<th>Systems &amp; automation</th>
+<th>Current-state verdict</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Identify</td>
+<td>&quot;Where do I even find jobs?&quot;</td>
+<td>Careers site, word of mouth, walk-ins</td>
+<td>Managers hire constantly; no campaigns</td>
+<td>Careers site; no employee-dedicated channel</td>
+<td>F-01: no clear path from customer to crew</td>
+</tr>
+<tr>
+<td>Search</td>
+<td>Browses roles; unclear hours</td>
+<td>Role pages, store listings</td>
+<td>Job posts left live; duplicate listings</td>
+<td>Careers site + recruiting platform</td>
+<td>F-02: roles stale; duplicates confuse</td>
+</tr>
+<tr>
+<td>Consider</td>
+<td>Asks family; weighs first job</td>
+<td>Content, reviews</td>
+<td>No employer brand separate from brand</td>
+<td>—</td>
+<td>F-03: nothing answers &quot;what is it really like?&quot;</td>
+</tr>
+<tr>
+<td>Apply</td>
+<td>Long form; repeats info per store</td>
+<td>Application form</td>
+<td>Managers re-key into other systems</td>
+<td>Recruiting platform; AI assistant</td>
+<td>F-04: asks more than it decides; 45% drop-off</td>
+</tr>
+<tr>
+<td>Interview</td>
+<td>Dining-room table; rushed</td>
+<td>In-store interview</td>
+<td>Manager capability varies</td>
+<td>Auto-scheduling, calendar</td>
+<td>F-05: no quiet space; no rapport</td>
+</tr>
+<tr>
+<td>Offer</td>
+<td>Offer lands in spam</td>
+<td>Offer letter</td>
+<td>Slow confirmation</td>
+<td>Automated offer</td>
+<td>F-06: offers lost; candidates vanish</td>
+</tr>
+<tr>
+<td>Accept</td>
+<td>Documents repeated; consent expiry</td>
+<td>Onboarding forms</td>
+<td>Payroll finds errors at pay time</td>
+<td>Work-rights check; payroll</td>
+<td>F-07: hardest part of the experience</td>
+</tr>
+<tr>
+<td>Onboard</td>
+<td>Online training; no device</td>
+<td>Training platform</td>
+<td>Trainer availability varies</td>
+<td>Learning platform; employee records</td>
+<td>F-08: incomplete training spills into shifts</td>
+</tr>
+<tr>
+<td>Start</td>
+<td>Uniforms missing; hallway training</td>
+<td>First shifts</td>
+<td>Manager absorbs admin</td>
+<td>Time &amp; attendance; scheduling</td>
+<td>F-09 + W: no data on first shift at all</td>
+</tr>
+</tbody></table>
+<h3 id="a2-careers-site-funnel">A2 — Careers-site funnel (the leak quantified)</h3>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">10k</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">20k</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">30k</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">40k</text><rect x="100" y="44" width="56" height="260" fill="#171817"/><rect x="182" y="70.8" width="56" height="233.2" fill="#171817"/><rect x="264" y="89.9" width="56" height="214.1" fill="#171817"/><rect x="346" y="109" width="56" height="195" fill="#171817"/><rect x="428" y="124.3" width="56" height="179.7" fill="#171817"/><rect x="510" y="135.8" width="56" height="168.2" fill="#171817"/><rect x="592" y="147.2" width="56" height="156.8" fill="#171817"/><rect x="674" y="162.5" width="56" height="141.5" fill="#4A7FA8"/><text x="128" y="322" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">visit</text><text x="210" y="322" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">browse</text><text x="292" y="322" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">open</text><text x="374" y="322" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">start</text><text x="456" y="322" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">details</text><text x="538" y="322" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">upload</text><text x="620" y="322" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">review</text><text x="702" y="322" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">submit</text><line x1="44" y1="162.5" x2="730" y2="162.5" stroke="#171817" stroke-width="1" stroke-dasharray="3,3"/><text x="700" y="152" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#171817" font-weight="600" text-anchor="end" letter-spacing="0.2">−45% total drop-off</text></svg><figcaption><span class="fignum">Figure 4</span><span class="figcap">Careers-site funnel, monthly, illustrative: ~34,000 visitors → ~18,500 applications completed</span></figcaption></figure>
+<p>The funnel reads like an autopsy: the biggest losses sit in the middle of the form — start to details to upload — the exact points where candidates hit unnecessary asks and repeated requests. &quot;Effort to complete the application&quot; was logged as the leading volume-loss driver. The design implication was minimal-ask: every field on the form had to survive the question <em>does this change a decision?</em></p>
+<h3 id="a3-time-to-hire-timeline">A3 — Time-to-hire timeline</h3>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 200" role="img" aria-hidden="true"><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="150" height="22" rx="3" fill="#E8EEE5"/><text x="12" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.3">Application → Interview</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="150" height="22" rx="3" fill="#E8EEE5"/><text x="12" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.3">Interview → Offer</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="150" height="22" rx="3" fill="#E8EEE5"/><text x="12" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.3">Offer → First shift</text><line x1="0" y1="198" x2="296" y2="198" stroke="currentColor" stroke-width="1"/><text x="162" y="57" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">0–2 days · avg ≈1.6</text><text x="162" y="121" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">2–4 days · avg ≈3.5</text><text x="162" y="185" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">1–6 days · avg ≈3.1</text></svg><figcaption><span class="fignum">Figure 5</span><span class="figcap">Time-to-hire bands after automation, days, illustrative</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Before (illustrative)</th>
+<th>After (illustrative)</th>
+<th>What changed</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Application → interview confirmation</td>
+<td>Days to weeks; erratic; candidates lost to silence</td>
+<td>0–2 days, avg ≈1.6</td>
+<td>Auto-scheduled interviews; instant confirmation</td>
+</tr>
+<tr>
+<td>Interview → offer</td>
+<td>Up to a week; manual paperwork</td>
+<td>2–4 days, avg ≈3.5</td>
+<td>Automated offer; work-rights check starts at interview</td>
+</tr>
+<tr>
+<td>Offer → first shift</td>
+<td>Weeks; document back-and-forth</td>
+<td>1–6 days, avg ≈3.1</td>
+<td>Guided document submission; automated employee setup</td>
+</tr>
+</tbody></table>
+<h3 id="a4-pipeline-leakage-with-honest-gaps">A4 — Pipeline leakage, with the honest gaps</h3>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><defs><pattern id="hatch-55" width="6" height="6" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#9B9B96" stroke-width="1.2"/></pattern></defs><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">25</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">50</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">75</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">100</text><rect x="100" y="44" width="56" height="260" fill="#171817"/><rect x="192" y="233.8" width="56" height="70.2" fill="#171817"/><rect x="284" y="272.8" width="56" height="31.2" fill="#171817"/><rect x="376" y="288.4" width="56" height="15.6" fill="#171817"/><rect x="468" y="291" width="56" height="13" fill="#171817"/><rect x="560" y="264" width="56" height="40" fill="url(#hatch-55)"/><rect x="652" y="264" width="56" height="40" fill="url(#hatch-55)"/><text x="588" y="256" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="600" text-anchor="middle" letter-spacing="0">no data</text><text x="680" y="256" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="600" text-anchor="middle" letter-spacing="0">no data</text><text x="128" y="322" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">views</text><text x="220" y="322" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">apps</text><text x="312" y="322" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">interviews</text><text x="404" y="322" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">offers</text><text x="496" y="322" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">onboarded</text><text x="588" y="322" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">first shift</text><text x="680" y="322" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">90-day</text></svg><figcaption><span class="fignum">Figure 6</span><span class="figcap">Pipeline leakage, normalized per 100 views, illustrative — hatched stages had no data at all</span></figcaption></figure>
+<p>The two hatched stages are the point. The chain knew how many people applied and how many got offers; it could not tell you how many new hires actually showed up for a first shift, or who was still there at 90 days. Every decision about the funnel&#39;s bottom half was therefore anecdote. &quot;Anecdotal evidence runs supreme in this business because the data is just too hard to get your hands on&quot; — support-office leader. Making the missing data visible, with owners attached, was a first-class deliverable.</p>
+<h3 id="a5-manager-tenure-pressure">A5 — Manager tenure pressure</h3>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0%</text><line x1="44" y1="217.3" x2="730" y2="217.3" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="220.8" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">10%</text><line x1="44" y1="130.7" x2="730" y2="130.7" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="134.2" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">20%</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">30%</text><polyline points="100,191.3 230,217.3 360,200 490,156.7 620,156.7" fill="none" stroke="#171817" stroke-width="2"/><polyline points="100,148 230,156.7 360,104.7 490,52.7 620,70" fill="none" stroke="#4A7FA8" stroke-width="2"/><circle cx="100" cy="191.3" r="3.5" fill="#171817"/><circle cx="230" cy="217.3" r="3.5" fill="#171817"/><circle cx="360" cy="200" r="3.5" fill="#171817"/><circle cx="490" cy="156.7" r="3.5" fill="#171817"/><circle cx="620" cy="156.7" r="3.5" fill="#171817"/><circle cx="100" cy="148" r="3.5" fill="#4A7FA8"/><circle cx="230" cy="156.7" r="3.5" fill="#4A7FA8"/><circle cx="360" cy="104.7" r="3.5" fill="#4A7FA8"/><circle cx="490" cy="52.7" r="3.5" fill="#4A7FA8"/><circle cx="620" cy="70" r="3.5" fill="#4A7FA8"/><text x="100" y="334" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">2019</text><text x="230" y="334" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">2020</text><text x="360" y="334" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">2021</text><text x="490" y="334" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">2022</text><text x="620" y="334" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#33322e" font-weight="500" text-anchor="middle" letter-spacing="0">2023</text><line x1="540" y1="44" x2="720" y2="44" stroke="#171817" stroke-width="2"/><circle cx="546" cy="44" r="3.5" fill="#171817"/><text x="554" y="47.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#33322e" font-weight="500" text-anchor="start" letter-spacing="0">restaurant managers</text><line x1="540" y1="66" x2="720" y2="66" stroke="#4A7FA8" stroke-width="2"/><circle cx="546" cy="66" r="3.5" fill="#4A7FA8"/><text x="554" y="69.5" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#33322e" font-weight="500" text-anchor="start" letter-spacing="0">assistant managers</text></svg><figcaption><span class="fignum">Figure 7</span><span class="figcap">Manager turnover, moving annual total 2019–2023, illustrative (13→17%, 18→27%)</span></figcaption></figure>
+<p>The pipeline&#39;s top end was eroding exactly as its bottom end leaked: turnover up, tenure compressed, and 25% of crew expressing interest in stepping up to shift supervisor. The manager competency framework (A8) was the response — an explicit build of the promotion-from-within engine.</p>
+<h3 id="a6-seven-moments-board">A6 — The seven-moments board</h3>
+<p>The board from section 4.2, in its working form: one row per moment, an honest verdict, and the design response that followed. The verdict — <strong>5 of 7 fail</strong> — was the single highest-leverage artifact of the engagement: it turned a sprawling system into seven prioritizable bets and made &quot;the job doesn&#39;t start on the first shift&quot; the working slogan.</p>
+<table>
+<thead>
+<tr>
+<th>Moment</th>
+<th>Verdict</th>
+<th>Design response</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1. First thinking about working here</td>
+<td>Fails</td>
+<td>Employer-brand direction; &quot;what is it really like&quot; content; proactive recruiting from the customer base</td>
+</tr>
+<tr>
+<td>2. Applying and getting a response</td>
+<td>Fails</td>
+<td>Minimal-ask application; AI assistant; response SLA; auto-scheduling</td>
+</tr>
+<tr>
+<td>3. First interview</td>
+<td>Fails</td>
+<td>Auto-scheduled quiet slots; interview guidance; rapport prompts for managers</td>
+</tr>
+<tr>
+<td>4. The admin of starting</td>
+<td>Fails</td>
+<td>Guided document submission; work-rights check with human review lanes; automated setup</td>
+</tr>
+<tr>
+<td>5. First shift</td>
+<td>Fails</td>
+<td>Welcome kit and uniform lead-time fix; buddy model; first-shift checklist</td>
+</tr>
+<tr>
+<td>6. First customer service</td>
+<td>Partially meets</td>
+<td>Role-model standards; trainees served by observed, guided exposure</td>
+</tr>
+<tr>
+<td>7. Realizing comfort and competence</td>
+<td>Partially meets</td>
+<td>Consistent training quality; recognition loops tied to milestones</td>
+</tr>
+</tbody></table>
+<h3 id="a7-seeded-sample-dataset">A7 — Seeded sample dataset</h3>
+<p>Full file: <a href="data/hiring-funnel-sample.csv"><code>data/hiring-funnel-sample.csv</code></a> — an 18-row illustrative sample of the funnel and pipeline stages with step conversions, fixed seed; the two &quot;no data&quot; stages are carried as documented findings, matching the measurement method in this article.</p>
+<div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>stage,count_illustrative,step_conversion,note
+careers_visitors,34000,1.00,monthly baseline (illustrative)
+browse_roles,30500,0.90,
+open_application,28000,0.92,
+start_application,25500,0.91,
+enter_details,23500,0.92,
+upload_documents,22000,0.94,
+review_application,20500,0.93,
+application_completed,18500,0.90,45% cumulative drop-off vs visitors
+interviews_scheduled,6400,0.35,of completed applications
+interviews_confirmed,5600,0.88,
+offers_sent,3100,0.55,of confirmed interviews
+offers_accepted,2850,0.92,
+onboarding_completed,2550,0.89,
+first_shift_attended,,,NO DATA - documented finding
+retained_90_days,,,NO DATA - documented finding
+</code></pre></div>
+<h3 id="a8-manager-competency-framework">A8 — Manager competency framework</h3>
+<figure class="fig fig-quad"><svg class="fgsvg quad" viewBox="0 0 660 300" role="img" aria-hidden="true"><polygon points="330,40 470,120 190,120" fill="#4A7FA8"/><text x="330" y="92" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="11" fill="#ffffff" font-weight="600" text-anchor="middle" letter-spacing="0.5">restaurant manager</text><polygon points="190,132 470,132 520,220 140,220" fill="#E8EEE5" stroke="#171817" stroke-width="1"/><text x="330" y="172" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="11" fill="#3c443a" font-weight="600" text-anchor="middle" letter-spacing="0.5">assistant manager</text><text x="330" y="206" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#55554e" font-weight="400" text-anchor="middle" letter-spacing="0.2">shift supervisor</text><polygon points="140,232 520,232 560,280 100,280" fill="#F4F4F1" stroke="#171817" stroke-width="1"/><text x="330" y="262" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#55554e" font-weight="400" text-anchor="middle" letter-spacing="0.2">40+ competencies · 3 leadership areas · 8 behaviour types (Great Eight)</text></svg><figcaption><span class="fignum">Figure 8</span><span class="figcap">Competency framework pyramid, illustrative: 40+ competencies across three leadership areas</span></figcaption></figure>
+<p>The framework — &quot;manager of the future&quot; — defines 40+ competencies across three leadership areas (operational delivery, commercial performance, team and individual achievement), maps them to the eight behaviour types of the published Great Eight taxonomy (Bartram, Kurz &amp; Baron 2002), and sets proficiency levels for shift supervisor, assistant manager, and restaurant manager. Each competency is specified as knowledge, skills, and attributes — e.g. &quot;managing time and effort&quot;: time-management and productivity concepts (knowledge); prioritization, delegation, working under pressure (skills); self-awareness, conscientiousness, accountability (attributes). The framework itself carried a restraint note: best practice cautions against over-investing in detailed competency inventory development — the goal was a working instrument, not an encyclopedia.</p>
+<h3 id="a9-nested-value-model">A9 — Nested value model</h3>
+<figure class="fig fig-quad"><svg class="fgsvg quad" viewBox="0 0 460 460" role="img" aria-hidden="true"><circle cx="230" cy="230" r="40" fill="#171817"/><text x="230" y="234" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="10.5" fill="#ffffff" font-weight="600" text-anchor="middle" letter-spacing="0.5">brand</text><circle cx="230" cy="230" r="86" fill="#E8EEE5" stroke="#171817" stroke-width="1.2"/><text x="230" y="224" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#3c443a" font-weight="600" text-anchor="middle" letter-spacing="0.3">customer value</text><circle cx="230" cy="230" r="132" fill="#F4F4F1" stroke="#171817" stroke-width="1"/><text x="230" y="226" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#3c443a" font-weight="600" text-anchor="middle" letter-spacing="0.3">employee value</text><circle cx="230" cy="230" r="178" fill="#FBFBF8" stroke="#DEDEDA" stroke-width="1"/><text x="230" y="228" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#3c443a" font-weight="600" text-anchor="middle" letter-spacing="0.3">franchisee value</text><circle cx="230" cy="230" r="222" fill="none" stroke="#DEDEDA" stroke-width="1" stroke-dasharray="4,4"/><text x="230" y="230" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#9B9B96" font-weight="500" text-anchor="middle" letter-spacing="0.3">supplier &amp; partner value</text></svg><figcaption><span class="fignum">Figure 9</span><span class="figcap">Nested value model: employee-lifecycle-first — &quot;starting here&quot;</span></figcaption></figure>
+<p>The model formalized the engagement&#39;s premise: value to customers is nested inside value to employees, which is nested inside value to franchisees and suppliers — and the chain&#39;s own mantra (customer experience never exceeds team member experience) is the same statement. The recruitment and onboarding journey was the first lifecycle stage to be designed against this model, because it is where the employee relationship is either earned or lost.</p>
+<h3 id="a10-automation-swimlane-flow">A10 — Automation swimlane flow</h3>
+<figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 1480 260" role="img" aria-hidden="true"><defs><marker id="arr-55-10" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><rect x="0" y="20" width="1480" height="80" fill="#FAFAF7" stroke="none"/><rect x="0" y="100" width="1480" height="80" fill="#F7F7F3" stroke="none"/><rect x="0" y="180" width="1480" height="80" fill="#FAFAF7" stroke="none"/><line x1="0" y1="100" x2="1480" y2="100" stroke="#DEDEDA" stroke-width="1" stroke-dasharray="3,3"/><line x1="0" y1="180" x2="1480" y2="180" stroke="#DEDEDA" stroke-width="1" stroke-dasharray="3,3"/><text x="14" y="46" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="600" text-anchor="start" letter-spacing="1">CANDIDATE</text><text x="14" y="146" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="600" text-anchor="start" letter-spacing="1">HIRING MANAGER</text><text x="14" y="246" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="600" text-anchor="start" letter-spacing="1">AUTOMATIONS</text><rect x="120" y="40" width="210" height="56" rx="6" fill="#E8EEE5" stroke="#171817" stroke-width="1"/><text x="225" y="62" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#3c443a" font-weight="600" text-anchor="middle" letter-spacing="0.2">Applies via AI assistant</text><text x="225" y="78" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#55554e" font-weight="400" text-anchor="middle" letter-spacing="0">answers 5 screening questions</text><rect x="420" y="200" width="230" height="56" rx="6" fill="#E8EEE5" stroke="#171817" stroke-width="1"/><text x="535" y="222" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#3c443a" font-weight="600" text-anchor="middle" letter-spacing="0.2">Screening logic</text><text x="535" y="238" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#55554e" font-weight="400" text-anchor="middle" letter-spacing="0">high-fit → auto-schedule; else review</text><rect x="740" y="120" width="230" height="56" rx="6" fill="#E8EEE5" stroke="#171817" stroke-width="1"/><text x="855" y="142" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#3c443a" font-weight="600" text-anchor="middle" letter-spacing="0.2">Manager reviews queue</text><text x="855" y="158" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#55554e" font-weight="400" text-anchor="middle" letter-spacing="0">confirms schedule, sends offer</text><rect x="1060" y="200" width="260" height="56" rx="6" fill="#E8EEE5" stroke="#171817" stroke-width="1"/><text x="1190" y="222" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="9.5" fill="#3c443a" font-weight="600" text-anchor="middle" letter-spacing="0.2">Reminders 24/48/72h</text><text x="1190" y="238" font-family=""IBM Plex Mono", "SFMono-Regular", Menlo, monospace" font-size="8.5" fill="#55554e" font-weight="400" text-anchor="middle" letter-spacing="0">10-day no-action dispositioning</text><path d="M 330,68 420,228" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-55-10)"/><path d="M 650,228 740,148" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-55-10)"/><path d="M 970,148 1060,228" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-55-10)"/></svg><figcaption><span class="fignum">Figure 10</span><span class="figcap">Automation swimlane flow, current state (generic lanes; illustrative)</span></figcaption></figure>
+<p>The full flow continues past the offer: guided document submission → work-rights verification with automated checks and human review lanes → employee-record creation → two daily pushes to scheduling and payroll → in-flow survey invites after interview, offer decline, and hire. The swimlanes make the division of labour legible: the assistant and the automations carry the bookkeeping, the manager keeps the judgment, and the candidate always knows what happens next.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">06 · Use cases</span><h2 id="sec-6-use-cases">Use cases</h2>
+<h3 id="use-case-a-first-job-young-person-applying">Use case A — First-job young person, applying with the family in the loop</h3>
+<p><strong>Scenario.</strong> The core use case for the chain: a first-job school leaver, under the legal working age, applying for their first ever job with parental involvement in the paperwork. Before the redesign, this candidate faced a form that asked for information the family did not have yet (bank details, tax number, superannuation), a work-rights check that assumed photo identification many young people do not hold, and a parental-consent form that expired after seven days — with no human anywhere in the loop.</p>
+<p><strong>What was designed.</strong> The AI assistant asks only the questions that decide the next step — age, work rights, availability, shifts per week, high-demand shift availability — in a conversation that works on a phone. The under-18 branch triggers the parental-consent flow before anything else proceeds; the work-rights verification accepts a wider document set with guided capture and a human review lane when automated checks cannot confirm identity; reminders arrive at 24/48/72 hours with a phone number to call. The candidate never hits a form field whose answer does not change a decision.</p>
+<p><strong>AI working session.</strong> Claude Code drafted the conversation scripts and red-teamed them for a first-job reader — no jargon, no assumed financial knowledge; Codex reviewed the decision matrix and caught a branch where an age-restricted candidate could be auto-dispositioned before consent was attempted; OpenCode simulated the parental-consent expiry path against seeded data until the 7-day expiry no longer produced silent drop-off.</p>
+<p><strong>Outcome (illustrative).</strong> Application completion for this cohort tracked the overall funnel improvement; the assisted-capture and human review lanes cut the identity-validation friction that had been the hardest part of the experience; candidate feedback moved from &quot;I had to do it multiple times even though all the information was correct&quot; to &quot;the application was quick and easy because of the simple instructions.&quot;</p>
+<h3 id="use-case-b-restaurant-manager-hiring-within-a-full-day">Use case B — Restaurant manager, hiring inside an already full day</h3>
+<p><strong>Scenario.</strong> The hiring manager carries recruitment as one more duty inside a day of shifts, paperwork, and customer peaks. Before the redesign, hiring meant re-entering candidate data across systems, texting applicants to arrange interviews, waiting on documents, and discovering at pay time that something was wrong.</p>
+<p><strong>What was designed.</strong> The manager&#39;s surface was reduced to two things: a review queue of candidates the automation could not route, and a calendar of auto-scheduled interviews to confirm. Offers, reminders, work-rights status, and employee setup propagate automatically; the manager reviews rather than re-types. A candidate who cannot be reached is dispositioned after 10 days of no action — closing the loop the old process never did.</p>
+<p><strong>AI working session.</strong> The review-queue design was tested with managers from two franchisee groups: what must stay human (judgment on borderline candidates, rapport in the interview, the offer conversation) and what must never reach a human (re-keying, chasing, reminder fatigue). Claude Code drafted the manager-facing copy — &quot;here is who needs your decision today, and why&quot; — and the queue ordering was tuned so the oldest and the borderline cases surface first.</p>
+<p><strong>Outcome (illustrative).</strong> Managers reported not having to waste time texting candidates to arrange interviews; nine in ten restaurant teams rated the new process positive, citing better candidates, faster hiring, and significant time savings. One franchisee group credited the automation with moving crew fill from roughly full to above target within a year.</p>
+<h3 id="use-case-c-rehire-and-transfer-across-the-franchise-network">Use case C — Re-hire and transfer across the franchise network</h3>
+<p><strong>Scenario.</strong> A crew member leaves and returns — sometimes to the same franchisee group, sometimes to a different one, sometimes to a restaurant across town. Before the redesign, re-hires were treated like new applicants, work-rights checks and onboarding forms were repeated pointlessly, and records were never off-boarded, so the system did not even know the person had left.</p>
+<p><strong>What was designed.</strong> A re-hire branch at the application stage: candidates who previously worked for the same franchisee group skip the work-rights check and onboarding form and transfer their existing employee record — previous training and credentials carried over; candidates returning to a different group, or with no history, run the full workflow with new records created. The branch logic was drawn on the blueprint as a first-class path, not an edge case.</p>
+<p><strong>AI working session.</strong> Codex reviewed the branch against the evidence and caught the off-boarding defect (records never closed on exit meant the branch could not reliably detect a re-hire); Claude Code drafted the transfer checklist; OpenCode simulated the branch against seeded re-hire records to verify that training and credentials actually followed the person.</p>
+<p><strong>Outcome (illustrative).</strong> Re-hire onboarding time collapsed to the transfer path where eligible; the training-carryover behaviour — previously a manual, manager-dependent judgment call — became a system guarantee, and the branch removed a whole class of duplicate records.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">07 · SOPs for AI</span><h2 id="sec-7-sops-for-ai">SOPs for AI — how service design SOPs are best used by agents</h2>
+<p><strong>Encoded SOPs.</strong> Three SOPs were encoded for agent execution, each following the same pattern: <em>method → numbered steps → output schema → acceptance criteria → review gate</em>.</p>
+<ol>
+<li><strong>Evidence-extraction SOP</strong> (research). Output: JSONL evidence items. Acceptance: every quote verbatim-verifiable against the transcript store; every item carries participant code, role type, journey stage, and line range; orphans reported, never dropped. Gate: human spot-check of 10% before merge. The prompt template:</li>
+</ol>
+<div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>You are EVIDENCE-EXTRACTOR. Input: one pseudonymized interview transcript.
+Extract discrete evidence items. For each item output EXACTLY:
+- evidence_id: EV-&lt;transcript&gt;-&lt;seq&gt;
+- participant_code, role_type (crew|manager|support_office|franchisee|parent)
+- journey_stage (identify|search|consider|apply|interview|offer|accept|onboard|start)
+- type: verbatim_quote | observed_behavior | operational_fact | workaround
+- text: the verbatim quote or factual statement (never paraphrase quotes)
+- emotion_valence: -2..+2
+- candidate_theme: 3-6 word cluster label
+RULES: quote text must be copy-paste exact from the transcript; if unsure,
+drop the item. Output JSONL. No invented content — every item must trace
+to a transcript line range you include as source_lines.
+</code></pre></div>
+<ol start="2">
+<li><strong>Hiring-workflow SOP</strong> (the live automation, encoded as configuration). The screening questions, the auto-scheduling rule, the reminder cadence, the dispositioning rule, the work-rights verification with its human review lanes, the employee-setup pushes, and the re-hire branch — all expressed as executable configuration, so the workflow is versioned, reviewable, and testable rather than tribal knowledge:</li>
+</ol>
+<div class="codeblock"><div class="codebar"><span>CONFIG</span></div><pre><code>sop: HIRE-001
+name: Crew hiring workflow — application to first shift
+version: 2.0
+owner: people_function_recruitment_lead
+compliance_locked: true            # age + parental-consent changes need compliance sign-off
+screening:
+  questions: [minimum_age, work_rights, availability, shifts_per_week, high_demand_shift]
+  auto_schedule_if: high_demand_shift == YES AND shifts_per_week in [3,4,5]
+  review_queue_otherwise: true
+  underage_branch: parental_consent_flow_first   # never disposition before consent attempted
+interviews:
+  scheduling: auto_scheduled, calendar_sync
+  manager_actions: [confirm, invite, reject]
+reminders:
+  cadence: [24h, 48h, 72h]         # incomplete application
+  disposition: after_10_days_no_action
+work_rights:
+  verification: automated_checks    # document + biometric + registry lookup
+  human_review_lane: payroll_admin  # accept | reject with reason emailed
+onboarding:
+  employee_record: auto_created
+  pushes: [scheduling_12pm, scheduling_6pm]   # twice daily
+  payroll_validation: full_pack_push_back_on_failure
+rehire_branch:
+  same_franchisee_group: skip_work_rights_and_onboarding, transfer_record
+  other: full_workflow, new_records
+surveys:
+  triggers: [interview_complete, offer_declined, employee_hired]
+kpis: [application_to_interview_days, funnel_dropoff, time_to_offer, first_shift_attendance, retention_90d]
+review_cadence: monthly
+</code></pre></div>
+<ol start="3">
+<li><strong>Artifact-change SOP</strong> (implementation). Every change to a candidate- or manager-facing artifact is a PR containing: the diff, the linked blueprint step ID, a readability check, the compliance checklist where relevant, and the CSV/schema check for data artifacts. Acceptance: CI green plus required reviewers. Gate: CODEOWNERS routing — people function for candidate-facing copy, compliance for anything touching age or consent, franchisee liaison for anything that changes network-facing behaviour.</li>
+</ol>
+<p><strong>The meta-SOP.</strong> The engagement itself ran research → synthesize → map → ideate → prototype → implement → measure, with a hard gate between stages: no ideation before insights passed the evidence acid test; no blueprint before personas held up in rehearsal; no automation before the flow was simulated with pass/fail thresholds; no rollout before the measurement gaps were named. Each gate is a GitHub milestone with required reviews — process enforced by tooling, not memory.</p>
+<p><strong>Guardrails.</strong></p>
+<ul>
+<li><strong>Candidate data privacy.</strong> No real applicant data in any prompt, ever: agents worked on locally pseudonymized transcripts and fixed-seed synthetic data. Consent, age, and work-rights data flows follow data-minimization under compliance review.</li>
+<li><strong>Age and consent compliance.</strong> Anything touching minimum age, parental consent, or work-rights carries a <code>compliance</code> label enforced in CI; merge is blocked without compliance sign-off. Agents may not route around the under-18 branch.</li>
+<li><strong>Hallucination control.</strong> Quote verification runs on every synthesis PR: a quoted string not found verbatim in the register fails the build. Insights without evidence IDs fail schema validation.</li>
+<li><strong>Human sign-off points.</strong> Interview conduct; insight naming; the moments verdicts; the auto-schedule rule; consent-model changes; the go-live sequence; the measurement-gap register.</li>
+</ul>
+<p><strong>Failure modes observed.</strong> (1) Over-clustering: the first synthesis pass proposed dozens of near-duplicate clusters; the active-sentence naming rule plus a similarity merge pass fixed it. (2) A confidently wrong read of the survey (&quot;candidates prefer applying in person&quot; — drawn from a question about channel preference, not application mode) — caught by requiring every claim to carry its survey question ID. (3) Diagram drift: early blueprint diagrams broke rendering; CI linting killed the class of error permanently.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">08 · Value &amp; measurement</span><h2 id="sec-8-value-creation-amp-measurement">Value creation &amp; measurement</h2>
+<p><strong>Before/after (illustrative; figures transformed).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Baseline</th>
+<th>After</th>
+<th>Delta</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Application→interview confirmation</td>
+<td>Erratic; days to weeks; top leakage driver</td>
+<td>0–2 days, avg ≈1.6</td>
+<td>Order of magnitude faster</td>
+</tr>
+<tr>
+<td>Interview→offer</td>
+<td>Up to a week; manual paperwork</td>
+<td>2–4 days, avg ≈3.5</td>
+<td>Days saved per hire</td>
+</tr>
+<tr>
+<td>Careers-site funnel drop-off</td>
+<td>~45%</td>
+<td>Tracked; ≤ 25% target</td>
+<td>−20 pts target</td>
+</tr>
+<tr>
+<td>Manager admin effort per hire</td>
+<td>Hours; re-keying; texting candidates</td>
+<td>Minutes; auto-scheduled</td>
+<td>~80% effort reduction (illustrative)</td>
+</tr>
+<tr>
+<td>Restaurant-team feedback</td>
+<td>Mixed; documented pain</td>
+<td>9 in 10 positive</td>
+<td>+</td>
+</tr>
+<tr>
+<td>Crew fill, one franchisee group</td>
+<td>Roughly full</td>
+<td>Above target</td>
+<td>+12 pts (illustrative)</td>
+</tr>
+<tr>
+<td>First-shift attendance data</td>
+<td>No data</td>
+<td>Instrumented; finding owned</td>
+<td>Finding → measure</td>
+</tr>
+<tr>
+<td>&gt;90-day retention data</td>
+<td>No data</td>
+<td>Instrumented; finding owned</td>
+<td>Finding → measure</td>
+</tr>
+</tbody></table>
+<p><strong>Causal logic (Service Profit Chain).</strong> The chain ran as Heskett, Sasser, and Schlesinger describe (See: 20-the-service-profit-chain/03-external-service-value.md): internal service quality — automated screening, a single connected candidate record, aligned manager incentives — raised frontline capability; external service value rose chiefly through the <em>denominator</em> of the Service Value Equation: access costs collapsed. Application effort dropped from a multi-system form to five conversational questions; the wait for a first human touch dropped from days-or-weeks to under two days; the work-rights friction — the hardest part of the experience — gained guided capture and a human review lane. Candidates retained through the funnel became crew; crew retained became the manager pipeline; and every reapplied document and every vanished applicant that no longer happened was failure demand removed from the system.</p>
+<p><strong>KPI tree (abridged).</strong> North-star: <em>a hired crew member attending a first shift within two weeks of applying.</em> Drivers: application completion (ask count, response SLA), interview attendance (auto-scheduling, reminder delivery, dispositioning), admin completion (guided capture, review-lane latency, setup pushes), first-shift experience (uniforms, buddy, checklist). Lagging: 90-day retention, manager-pipeline health, manager turnover. Reviewed weekly in rollout; monthly in run-state — with the two measurement gaps (first shift, retention) tracked as open findings with owners until instrumented.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">09 · AI tools</span><h2 id="sec-9-ai-tool-playbook">AI tool playbook</h2>
+<p><strong>Claude Code — orchestration, research team, artifact authoring.</strong> The engagement&#39;s operating system: ran the parallel subagent research team (extraction, quote verification, survey triage), the synthesis digital wall, all blueprint and journey diagram authoring, the HMW bank, conversation-script drafting, SOP-as-code, and the final readout. Excels at: structured extraction against a schema; consistency across dozens of files; 80%-there first drafts. Failed at: judging which insight would land politically; facilitation. Human took over: live research, insight naming, moments verdicts, gates.</p>
+<p><strong>OpenCode — agent-mode pipelines and simulation.</strong> Ran the funnel pipeline that exposed the 45% drop-off; simulated the screening decision matrix and dispositioning cadence against seeded data; generated the sample dataset (A7); built the dashboard pulls that replaced on-request reporting. Excels at: self-directed data work, realistic seed data, fast iteration. Failed at: method intent — it will happily simulate a rule the experiment does not need; the written experiment canvas was the leash. Human took over: thresholds, test design, rule choices.</p>
+<p><strong>Codex — deep research and adversarial review.</strong> Second-opinion engine, run via <code>codex exec --skip-git-repo-check</code> with the artifact plus a specific concern, never the whole repo. Delivered the insight challenge pass (one insight killed, two upgraded), the blueprint review (four real defects, including the re-hire off-boarding gap and the under-18 branch), and the decision-matrix review. Excels at: disagreeing productively — &quot;be adversarial&quot; is a load-bearing instruction. Failed at: occasionally flagging stated client constraints as defects (e.g., demanding real-time integration the vendor surface cannot do); every finding was verified before action — reconcile by verifying, never by averaging.</p>
+<p><strong>GitHub — the system of record.</strong> Issues as work items (every one carrying its blueprint step ID), PRs as review gates (CODEOWNERS; the <code>compliance</code> label blocking merge), the board as phase tracker, milestones as stage gates. Actions CI on the artifact repo:</p>
+<p><strong>Illustrative GitHub Actions configuration — synthetic repository workflow; live execution unverified.</strong></p>
+<div class="codeblock"><div class="codebar"><span>CONFIG</span></div><pre><code>name: artifact-gate
+on: [pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint blueprint diagrams
+        run: npx @mermaid-js/mermaid-cli -i diagrams/all.md -o /tmp/out.svg
+      - name: Markdown lint
+        run: npx markdownlint-cli &quot;**/*.md&quot;
+      - name: CSV schema check
+        run: python scripts/check_schema.py data/
+      - name: Quote verification
+        run: python scripts/verify_quotes.py research/ synthesis/
+      - name: Compliance content gate
+        uses: actions/labeler@v5   # &#39;compliance&#39; label requires people-function + compliance review
+</code></pre></div>
+<p>Failed at: nothing material; the board stays truthful only with a weekly human groom — the designer&#39;s Friday ritual. The dashboard pipeline that replaced on-request reporting was OpenCode&#39;s, and its nightly pulls were the difference between a case study with evidence and one with anecdotes.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">10 · Lessons learned</span><h2 id="sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</h2>
+<ul>
+<li><strong>The honest verdict was the highest-leverage artifact.</strong> &quot;Five of seven moments that matter fail basic expectations&quot; did what a hundred pain-point lists could not: it turned a sprawling system into seven prioritizable bets and made the case for redesign without blame. The client&#39;s working theory — hiring difficulty is a labour-market problem — would have produced a marketing campaign; the evidence produced an experience redesign (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md).</li>
+<li><strong>The missing data was the second-most important finding.</strong> No first-shift attendance, no 90-day retention, conflicting numbers from an integration layer that treats the latest update as correct. Documenting the absence — with owners and instruments attached — was itself a deliverable. &quot;Anecdotal evidence runs supreme&quot; did more work than any chart.</li>
+<li><strong>Admin burden is the experience for first-job young people.</strong> The hardest part of the candidate journey was the paperwork: documents asked for repeatedly, identity validation without photo ID, consent forms expiring, bank and tax setup on a first job. Designing for a first-job applicant&#39;s reality — guided capture, human review lanes, one connected record — fixed the funnel&#39;s middle better than any form optimization.</li>
+<li><strong>Speed to first human touch is a retention lever.</strong> Slow responses were a documented leakage driver; the auto-scheduled interview made the first human moment part of the application itself. Under two days average is a feature, not a metric.</li>
+<li><strong>Automate the core you control; vendor surfaces constrain the rest.</strong> The chain could not roadmap a third-party platform, could not change expensive vendor systems, and could not configure franchisee technology. Scope discipline — automate what the client controls, name what it cannot — kept the design honest and shippable.</li>
+<li><strong>Agents cluster fast and name badly.</strong> Left alone, the synthesis agent produced noun-bucket clusters that would have quietly destroyed insight quality. The active-sentence naming rule, enforced in CI, fixed it in one line.</li>
+<li><strong>Framework restraint is a virtue.</strong> The competency framework warned against over-investing in detailed inventory development — a working instrument for the manager-of-the-future, not an encyclopedia. The same discipline applied to personas: 12+ evidence-grounded characters, each load-bearing, none decorative.</li>
+<li><strong>Done differently next time:</strong> baseline the measurement architecture in week 1 (we were naming data gaps in week 15 that week-1 instrumentation would have started closing), and involve franchisee operations at ideation rather than prototyping — one network-facing rework cycle was avoidable.</li>
+</ul>
+</section>
+<section class="art-sec"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2>
+<p>Knowledge library (this repository):</p>
+<ul>
+<li><code>books/03-service-design-from-insight-to-implementation/04-from-research-to-insight.md</code> — ecology-wide research; data→information→insight; insight cards</li>
+<li><code>books/03-service-design-from-insight-to-implementation/05-developing-ideas.md</code> — HMW; co-design; idea→concept→proposition; DFV</li>
+<li><code>books/03-service-design-from-insight-to-implementation/06-prototyping-services.md</code> — progressive fidelity; blueprint rehearsal; flow simulation</li>
+<li><code>books/03-service-design-from-insight-to-implementation/07-implementation.md</code> — pilots; blueprint-to-backlog; frontline enablement triad</li>
+<li><code>books/01-this-is-service-design-doing/04-research-methods.md</code> — triangulation; episodic interviewing; affinity synthesis; ethics</li>
+<li><code>books/01-this-is-service-design-doing/07-implementation-and-piloting.md</code> — pilot vs rollout; KPI triangulation; failure demand</li>
+<li><code>books/09-mapping-experiences/04-customer-journey-maps.md</code> — journey anatomy; emotional curve; pain/opportunity separation</li>
+<li><code>books/09-mapping-experiences/05-service-blueprints.md</code> — blueprint lanes; three lines; fail/wait annotations; layered anatomy</li>
+<li><code>books/20-the-service-profit-chain/03-external-service-value.md</code> — Service Value Equation; access costs</li>
+<li><code>books/05-good-services/02-the-fifteen-principles.md</code> — 15 principles; scorecard method</li>
+</ul>
+<p>External canon and standards:</p>
+<ul>
+<li>Polaine, A., Løvlie, L. &amp; Reason, B. (2013). <em>Service Design: From Insight to Implementation.</em> Rosenfeld Media.</li>
+<li>Downe, L. (2020). <em>Good Services: How to Design Services that Work.</em> BIS Publishers.</li>
+<li>Heskett, J. L., Sasser, W. E. &amp; Schlesinger, L. A. (1997). <em>The Service Profit Chain.</em> Free Press.</li>
+<li>Bartram, D., Kurz, R. &amp; Baron, H. (2002). The Great Eight competencies: a criterion-centric approach to validation. <em>Journal of Applied Psychology, 87</em>(6) — behaviour taxonomy adapted for the manager competency framework.</li>
+<li>National labour-market statistics (June 2022) — 31% of businesses reporting hiring difficulty; of those, 79% citing insufficient applicants.</li>
+<li>Recognition research (2022) — &gt;70% of employees with good recognition experiences more likely to be thriving.</li>
+</ul>
+<p>All case figures, names, and data are illustrative and anonymized.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-appendix-artifact-index">Appendix: artifact index</h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Format</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Process overview</td>
+<td>3</td>
+<td>SVG lane diagram</td>
+<td>16-week approach mapped to four movements</td>
+</tr>
+<tr>
+<td>Project gantt</td>
+<td>3</td>
+<td>div-based gantt</td>
+<td>Phase plan with gates</td>
+</tr>
+<tr>
+<td>Phase-method-tool table</td>
+<td>3</td>
+<td>table</td>
+<td>Method to AI execution to artifact map</td>
+</tr>
+<tr>
+<td>Evidence-extraction prompt</td>
+<td>4.1, 7</td>
+<td>fenced prompt</td>
+<td>Transcript-to-evidence SOP</td>
+</tr>
+<tr>
+<td>Seven-moments board</td>
+<td>4.2, A6</td>
+<td>table</td>
+<td>Prioritization spine; the 5-of-7 verdict</td>
+</tr>
+<tr>
+<td>Insight cards</td>
+<td>4.2</td>
+<td>table</td>
+<td>Research-to-design bridge</td>
+</tr>
+<tr>
+<td>A1 Layered blueprint</td>
+<td>5</td>
+<td>SVG anatomy + lane table</td>
+<td>Current-state map, 9 stages × 9 layers, F/W points</td>
+</tr>
+<tr>
+<td>A2 Careers-site funnel</td>
+<td>5</td>
+<td>bar chart</td>
+<td>The 45% leak quantified</td>
+</tr>
+<tr>
+<td>A3 Time-to-hire timeline</td>
+<td>5</td>
+<td>lane bands + table</td>
+<td>Speed outcome, before/after</td>
+</tr>
+<tr>
+<td>A4 Pipeline leakage</td>
+<td>5</td>
+<td>bar chart</td>
+<td>Relative shrinkage + honest &quot;no data&quot; stages</td>
+</tr>
+<tr>
+<td>A5 Manager tenure pressure</td>
+<td>5</td>
+<td>line chart</td>
+<td>Turnover trend 2019–2023</td>
+</tr>
+<tr>
+<td>A7 Seeded sample dataset</td>
+<td>5, data/</td>
+<td>CSV + sample</td>
+<td>18-row funnel/pipeline sample, fixed seed</td>
+</tr>
+<tr>
+<td>A8 Competency framework</td>
+<td>5</td>
+<td>pyramid + prose</td>
+<td>40+ competencies; Great Eight mapping</td>
+</tr>
+<tr>
+<td>A9 Nested value model</td>
+<td>5</td>
+<td>concentric diagram</td>
+<td>Employee-lifecycle-first framing</td>
+</tr>
+<tr>
+<td>A10 Automation swimlane</td>
+<td>5</td>
+<td>flow diagram</td>
+<td>Live hiring workflow division of labour</td>
+</tr>
+<tr>
+<td>Use cases A–C</td>
+<td>6</td>
+<td>prose + tables</td>
+<td>Candidate, manager, re-hire pathways</td>
+</tr>
+<tr>
+<td>Hiring-workflow SOP</td>
+<td>7</td>
+<td>fenced config</td>
+<td>SOP-as-code for the live automation</td>
+</tr>
+<tr>
+<td>GitHub Actions workflow</td>
+<td>9</td>
+<td>fenced YAML</td>
+<td>Artifact validation gates</td>
+</tr>
+<tr>
+<td>Before/after metrics</td>
+<td>8</td>
+<td>table</td>
+<td>Value creation evidence</td>
+</tr>
+</tbody></table>
+<p><strong>Glossary (public-facing terms).</strong> <em>Crew</em> — restaurant team members, the entry-level workforce; <em>people function</em> — the client&#39;s human-resources organization; <em>support office</em> — the corporate center; <em>work-rights verification</em> — the legal eligibility check every candidate passes before employment; <em>dispositioning</em> — formally closing an inactive candidate&#39;s status instead of leaving it open; <em>moments that matter</em> — the seven disproportionate moments that decide whether a candidate becomes a retained crew member.</p>
+</section>
+</article>
+</div>
+</main>
+<footer class="footer">
+  <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
+  <span><a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
+</footer>
+<script src="../../assets/site.js"></script>
+
+</body></html>

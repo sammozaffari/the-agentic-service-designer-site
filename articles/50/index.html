@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The Manager Makes or Breaks It: Blueprinting the First 12 Weeks of a Restaurant Career — QSR (anonymized). By Sam Mozaffari. AI-first service design case study.">
+<title>50. The Manager Makes or Breaks It: Blueprinting the First 12 Weeks of a Restaurant Career — The Agentic Service Designer</title>
+<link rel="stylesheet" href="../../assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
+
+</head><body>
+<header class="site-head">
+  <a class="brand" href="../../index.html">
+    <div class="brand-title">The Agentic Service Designer<span class="reg">®</span></div>
+    <div class="brand-sub">Sam Mozaffari</div>
+  </a>
+  <nav class="main-nav">
+    <a href="../../index.html" class="">Index</a>
+    <a href="../../articles.html" class="on">Articles</a>
+    <a href="../../courses.html" class="">Courses</a>
+    <a href="../../book.html" class="">Book</a>
+    <a href="../../harness.html" class="">Harness</a>
+    <a href="../../docs/index.html" class="">Docs</a>
+    <a href="../../about.html" class="">About</a>
+    <a href="../../cv.html" class="">CV</a>
+  </nav>
+</header>
+<main class="art art-article"><div class="art-progress"><div class="art-progress-bar" id="progress"></div></div><div class="art-layout art-layout--hero">
+  <header class="art-hero">
+    <div class="art-meta">
+      <span class="art-meta-item"><span class="chip">Implementation &amp; Operations</span></span><span class="art-meta-item"><span class="chip">QSR (anonymized)</span></span><span class="art-meta-item"><span class="chip">~20 weeks (12 design + bounded pilot window)</span></span><span class="art-meta-item"><span class="chip">43 min read</span></span>
+    </div>
+    <h1>The Manager Makes or Breaks It: Blueprinting the First 12 Weeks of a Restaurant Career</h1>
+    <p class="deck">Client anonymized: a global quick-service restaurant chain. All names, figures, and data are illustrative and anonymized.</p>
+    <div class="art-stats"><span><b>7</b> figures</span><span><b>~9.5k</b> words</span><span><b>4</b> tools of record</span><span><b>critic-reviewed</b> every gate</span></div>
+    <div class="author-block">
+      <div class="author-id">
+        <div class="author-avatar">SM</div>
+        <div><b>Sam Mozaffari</b><span>Service designer · AI-first &amp; agentic practice</span></div>
+      </div>
+      <p class="author-note">In this anonymized engagement for a global quick-service restaurant chain, I frame the employee-experience redesign — from 20,000+ survey responses through one attrition chain and two competing blueprint options to a gated roadmap — with an agent team producing the example artifacts.</p>
+    </div>
+  </header></div><div class="art-layout art-layout--body"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol><li><a href="#sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</a></li>
+<li><a href="#sec-1-executive-summary">Executive summary</a></li>
+<li><a href="#sec-2-the-brief">The brief</a></li>
+<li><a href="#sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</a></li>
+<li><a href="#sec-4-phase-by-phase-narrative">Phase-by-phase narrative</a></li>
+<li><a href="#sec-5-artifacts-portfolio">Artifacts portfolio</a></li>
+<li><a href="#sec-6-use-cases">Use cases</a></li>
+<li><a href="#sec-7-sops-for-ai">SOPs for AI — how service design SOPs are best used by agents</a></li>
+<li><a href="#sec-8-value-creation-amp-measurement">Value creation &amp; measurement</a></li>
+<li><a href="#sec-9-ai-tool-playbook">AI tool playbook</a></li>
+<li><a href="#sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</a></li>
+<li><a href="#sec-11-references">References</a></li>
+<li><a href="#sec-12-appendix-artifact-index">Appendix: artifact index</a></li></ol></nav></aside><article class="art-body">
+<section class="art-sec"><span class="sec-kicker">00 · Provenance note</span><h2 id="sec-0-confidentiality-amp-provenance-note">Confidentiality &amp; provenance note</h2>
+<p>The client is a global quick-service restaurant chain operating a large franchise network across multiple markets. No real restaurant, employee, franchisee, or customer is depicted in this article. All names, role titles, figures, datasets, and quotes are illustrative, anonymized, and transformed from the source material: metrics keep their order of magnitude but are never reproduced verbatim, and every figure in this article is explicitly labeled illustrative. The article shares method and process — research design, synthesis discipline, blueprint structure, decision framing, and the AI execution patterns — never client specifics.</p>
+<p><strong>Evidence boundary (2026).</strong> As of the case date the engagement sat at a decision gate: the analysis, the two competing blueprint options, and the gated roadmap were complete and tabled to the chain&#39;s governance; pilots were designed and forward-planned, not yet run. This article therefore reports decision-stage outputs — no post-pilot outcome claims are made, and where targets are quoted they are pilot targets, not results. An illustrative sample dataset accompanies the article: <a href="data/employee-experience-sample.csv"><code>data/employee-experience-sample.csv</code></a> (onboarding-milestone KPIs by tenure week, clearly labeled illustrative).</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2>
+<p>One brand runs a single-digit-engaged restaurant and a two-thirds-engaged restaurant. Same training materials, same standards manual, same menu. The difference is who is standing on the shift and how that person&#39;s week was built. That observation — surfaced from the chain&#39;s quarterly engagement survey, more than 20,000 responses at roughly 54% participation, joined with open-text comments and operating records — opened a 20-week engagement that turned three disconnected asks into one decision-ready program.</p>
+<p>The chain had asked for three separate things: a holistic view of the crew-member experience, a single definition of the restaurant-manager role (five unconnected frameworks existed), and relief on record turnover. The analysis refused to treat them as three problems. It synthesized them into one connected attrition chain — <em>unprepared start → inconsistent hours and skill mix → pressured shifts → inconsistent support and recognition → limited progress → avoidable attrition</em> — and then designed for consistency rather than for &ldquo;higher engagement&rdquo;: start people ready, back them on shift, notice their effort, show them what comes next.</p>
+<p>Two fully-designed blueprint options emerged, and the two analysis documents <em>deliberately disagreed</em> on which should run first. The earlier synthesis argued for the first-twelve-weeks model (a bounded, pilotable unit from offer to week 12). The decision options paper argued for the healthy-shift model first (the recurring shift experience, the most repeated controllable issues), with first-twelve-weeks as a targeted follow-on. That tension — documented, evidence-argued, unresolved until the decision meeting — is the case&#39;s most honest artifact: the folder evidences an iterative decision process, not a fixed answer.</p>
+<p>Underneath both options sits the human spine: the restaurant general manager. Managers rate the same relationship 25–35 points more positively than crew do, and manager engagement swings from single digits to two-thirds across franchise groups. The managerial conclusion: the manager-role redesign is not another engagement campaign but a more sustainable operating model — protect the committed manager group and their experience improvement flows downstream to assistants and crew. The insight that holds the whole argument together is a single sentence about rostering: <em>hours are not always allocated to the right people, at the right time, with the right capability</em> — which is why &ldquo;more hours&rdquo; and &ldquo;more people on shift&rdquo; (the two most-selected stress fixes) are the same problem, not two.</p>
+<table>
+<thead>
+<tr>
+<th>Key fact</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Client</td>
+<td>A global quick-service restaurant chain (anonymized)</td>
+</tr>
+<tr>
+<td>Sector</td>
+<td>Quick-service restaurant, large franchise network</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>Employee-experience service design; role redesign; survey analytics at scale</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>End-to-end crew-experience blueprint (day 1 to lifecycle end), first-twelve-weeks model, healthy-shift model, manager-role redesign — three linked workstreams</td>
+</tr>
+<tr>
+<td>Duration</td>
+<td>~20 weeks (Q1 survey wave through decision gates; pilot and scale forward-planned), standing on a 2022 baseline study</td>
+</tr>
+<tr>
+<td>Team</td>
+<td>Internal employee-experience team (4 core + governance forums) + an external design consultancy (baseline study) + franchise-network co-design</td>
+</tr>
+<tr>
+<td>AI tools</td>
+<td>AI-assisted topic analysis of ~10,000 open-text comments; built-in AI analytics for score computation and driver analysis (platform genericized); agentic analysis and adversarial review</td>
+</tr>
+<tr>
+<td>Headline results (illustrative)</td>
+<td>20,000+ survey responses at ~54% participation; engagement ~36%; ~one-third planning to leave within a year; franchise engagement spread single-digit to ~two-thirds; ~25–35-point manager-perception gap; turnover cost model in the low six figures per manager; decision-ready gated roadmap tabled to franchise governance</td>
+</tr>
+</tbody></table>
+<p>What you will learn:</p>
+<ul>
+<li>How to turn survey analytics at scale — including the &ldquo;strongly-agree-only&rdquo; coding discipline that stops dashboards from flattering themselves — into one connected problem statement rather than three siloed briefs.</li>
+<li>How to design two competing, fully-specified research options for the same evidence base, frame the sequencing tension honestly, and package the decision so a governance forum can leave the room with four concrete decisions.</li>
+<li>How to blueprint an employee experience with a line of visibility: a frontstage journey spine, backstage owners, and measures, failure points, and owners per stage — the transferable service-design pattern at the heart of this engagement.</li>
+</ul>
+</section>
+<section class="art-sec"><span class="sec-kicker">02 · The brief</span><h2 id="sec-2-the-brief">The brief</h2>
+<h3 id="client-portrait">Client portrait</h3>
+<p>The client is a global quick-service restaurant chain with a large franchise network: thousands of restaurants, a crew-heavy workforce (the overwhelming majority of employees are hourly crew members and shift supervisors), and a management spine of restaurant general managers, assistant managers, and area coaches. Two engagement waves frame the case. In 2022 an external design consultancy was commissioned to &ldquo;examine the current restaurant structure and environment to create a model that is best in class for the attraction and retention of critical talent, prioritises wellbeing, and enables a sustainable, scalable, and future-fit design.&rdquo; That study ran on a ~21,000-participant survey, 60 data sets, 18 focus groups, 8 store observations, and 10 co-design working groups with franchisees — and produced a role-design framework that was issued as franchisee pre-reading, with its structural proposals flagged for negotiation rather than implemented.</p>
+<p>Four years later the same problems had not moved. The 2026 brief read: the chain &ldquo;lacks a holistic, evidence-based understanding of the end-to-end team-member experience&hellip; there is no single view of the journey, the moments that matter, or the pain points and gain points that most influence the experience. This limits our ability to prioritise improvement efforts and make informed investment decisions.&rdquo; In parallel, the manager role had five unconnected frameworks, none rolled out, and no overarching job definition. The brief explicitly scoped <em>out</em> a redesign of every process and a replacement for functional improvement projects: the blueprint existed to guide future work and decide where to invest first.</p>
+<h3 id="the-challenge">The challenge</h3>
+<p>Operational data painted a leaking funnel and a flatlining first quarter of employment. Headline engagement sat around 36%, experience-vs-expectations around 27%, and intent to stay around 62% — while roughly a third of crew planned to leave within a year (about 2% within a month, 5% within one to three months, 10% within four to six months, 17% within seven to eleven months). Turnover had run at roughly a quarter of the workforce since 2021. On day one, new crew arrived without uniform (≈59%), without a training schedule (≈26%), and without system access (≈18%). At two weeks, only ~17% strongly agreed they had received a manager check-in. At twelve weeks, only ~14% could see a path forward at the chain and ~23% felt their effort was recognized. And the experience curves barely moved between week 2 and week 12 — people were spending longer at the chain without becoming more positive about it.</p>
+<p>Compounding it: the same brand ran a ~6%-engaged and a ~64%-engaged restaurant; manager engagement spanned a ~40-point spread across franchise groups; and managers rated the same relationship 25–35 points higher than crew did. The system was producing wildly different employee experiences under one brand standard — which is exactly what a service blueprint is built to expose.</p>
+<h3 id="success-criteria-agreed-with-the-client">Success criteria (agreed with the client)</h3>
+<p>The client&#39;s own framing, quoted in the project plan, was used as the contract: the objective was to &ldquo;reduce avoidable early exits, extend productive tenure, and ensure that even shorter-tenure team members leave with a positive view&rdquo; — and explicitly <em>not</em> &ldquo;zero attrition.&rdquo; Much attrition is structural (another job, school, a move, people who never intended to stay), and chasing zero would distort the design. The success criteria were therefore expressed as decision criteria the first blueprint must satisfy, plus the baseline measures it must improve:</p>
+<table>
+<thead>
+<tr>
+<th>Decision / measure</th>
+<th>Baseline (illustrative)</th>
+<th>Target posture (illustrative)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>First blueprint scope</td>
+<td>Three candidate scopes on the table</td>
+<td>One agreed scope + sequencing with rationale</td>
+</tr>
+<tr>
+<td>Outcomes and measures the blueprint must improve</td>
+<td>Engagement ~36%; experience-vs-expectations ~27%</td>
+<td>Strong-agree scores on the controllable chain (start, hours, support, recognition, progress)</td>
+</tr>
+<tr>
+<td>Functions and owners required</td>
+<td>No single owner for crew experience</td>
+<td>Named backstage owners per journey stage</td>
+</tr>
+<tr>
+<td>Restaurants and data for discovery and piloting</td>
+<td>Fragmented exit data; anonymous survey</td>
+<td>Balanced restaurant cohort: high/low attrition, equity/franchise</td>
+</tr>
+<tr>
+<td>Day-1 readiness (everything ready for first shift)</td>
+<td>~40% strongly agree</td>
+<td>≥ 85% at pilot restaurants</td>
+</tr>
+<tr>
+<td>Manager check-in at 2 weeks</td>
+<td>~17% strongly agree</td>
+<td>≥ 70% at pilot restaurants</td>
+</tr>
+<tr>
+<td>&ldquo;See a path forward&rdquo; at 12 weeks</td>
+<td>~14% strongly agree</td>
+<td>≥ 45% at pilot restaurants</td>
+</tr>
+<tr>
+<td>Avoidable early exits</td>
+<td>~one-third planning to leave within a year</td>
+<td>Reduce avoidable exits; measure exit reasons in pilot</td>
+</tr>
+</tbody></table>
+<h3 id="constraints">Constraints</h3>
+<p>The evidence base carried hard limits, and the analysis named them in the deck rather than hiding them. The survey was anonymous by design, so individual responses could not be joined to tenure or exit records (&ldquo;exists but unjoinable&rdquo;). Exit data was fragmented across the network with unknown adoption — &ldquo;the end of the journey is evidence-free; we map unhappiness, not why people go.&rdquo; The junior-age band was a single bucket with gender-only cuts, so it could not distinguish a first-job problem from a life-stage-fit problem — &ldquo;opposite fixes&rdquo; — and age-restricted training gating applied as a compliance constraint throughout. Timeline and resourcing were indicative and pending confirmation, and any technology-enablement work threatened the schedule. Finally, serious-conduct comments surfaced in open text (bullying, harassment, unsafe work) had a standing rule: routed to confidential case-management, never absorbed into a general blueprint study.</p>
+<h3 id="why-service-design">Why service design</h3>
+<p>This was not an engagement-score problem and not a pay problem. The day-to-day experience decided who stayed long enough for pay and benefits to matter: the controllable chain — start, hours, support, recognition, progress — was produced by a socio-technical system (recruitment, scheduling, training, maintenance, leadership routines) whose failures live below the line of visibility. That is precisely what service design exists for. The governing structure was Polaine, Løvlie, and Reason&#39;s arc — research to insight, ideas, prototyping, implementation — with service blueprinting as the core mapping discipline: a frontstage journey spine, a line of visibility, and named backstage owners, so that &ldquo;improve crew experience&rdquo; became &ldquo;change these owners&#39; routines and measures.&rdquo; And the economic frame came from the attrition chain itself: every avoidable early exit is a wasted recruitment and training investment, and every manager departure ripples into the disengagement of the crew around them.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">03 · Approach</span><h2 id="sec-3-approach-the-ai-first-service-design-process">Approach: the AI-first service design process</h2>
+<p>The engagement followed the Double Diamond with the insight-to-implementation arc as the spine, compressed into a 20-week decision arc: align with the evidence, define the current state, develop the future state, and deliver a decision package. The designer ran every phase with named AI collaborators: a Claude Code research team for synthesis and artifact authoring, OpenCode for data pipelines and analysis scripts, Codex for adversarial review, and GitHub as the system of record — every work item an issue, every artifact a PR, every gate a review. The client&#39;s own survey platform contributed its built-in AI analytics and AI topic tagging; those outputs were treated as raw material to be validated against the underlying comments, never as conclusions.</p>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 296" role="img" aria-hidden="true"><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Discover · wks 0-4</text><text x="104" y="57" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.3">survey wave · align &amp; validate</text><line x1="0" y1="90" x2="296" y2="90" stroke="currentColor" stroke-width="1"/><rect x="4" y="106" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="121" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Define · wks 4-8</text><text x="104" y="121" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.3">attrition chain · current-state blueprint</text><line x1="0" y1="154" x2="296" y2="154" stroke="currentColor" stroke-width="1"/><rect x="4" y="170" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="185" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Develop · wks 8-12</text><text x="104" y="185" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.3">future-state design · options paper</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Deliver · wks 12-20</text><text x="104" y="249" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.3">decision gates · pilot readiness</text><line x1="0" y1="294" x2="296" y2="294" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 1</span><span class="figcap">The 20-week arc: four diamond phases mapped to the engagement&#39;s decision gates</span></figcaption></figure>
+<p>The roadmap underneath the arc ran on five gated phases — align and validate, current-state blueprint, future-state design, pilot, scale — with a hard discipline inherited from the scoping: depth goes where the evidence points, not evenly across the line (&ldquo;coverage is the failure mode&rdquo;). The onboarding stage was deliberately removed from the blueprint scope because another team already owned it (&ldquo;duplicating it adds no new evidence&rdquo;), while early experience (2–90 days) and the 90-days-to-a-year stage were rated the highest-priority evidence gap.</p>
+<figure class="fig fig-gantt"><div class="gantt"><div class="gantt-head"><span class="gantt-taskcol">Phase</span><span class="gantt-track"><span>Apr 2026</span><span>May 2026</span><span>Jun 2026</span><span>Jul 2026</span><span>Aug 2026</span></span></div><div class="gantt-section">Decide</div><div class="gantt-row"><span class="gantt-taskcol">Align &amp; validate · link voice to operating records</span><span class="gantt-track"><span class="gantt-bar future" style="left:0.00%;width:100.00%"></span></span></div><div class="gantt-section">Blueprint</div><div class="gantt-row"><span class="gantt-taskcol">Current-state blueprint · interviews &amp; observations</span><span class="gantt-track"><span class="gantt-bar future" style="left:0.00%;width:100.00%"></span></span></div><div class="gantt-section">Design</div><div class="gantt-row"><span class="gantt-taskcol">Future-state design · prototypes &amp; options paper</span><span class="gantt-track"><span class="gantt-bar future" style="left:0.00%;width:100.00%"></span></span></div><div class="gantt-section">Pilot</div><div class="gantt-row"><span class="gantt-taskcol">Bounded pilot window · high/low-attrition cohort</span><span class="gantt-track"><span class="gantt-bar future" style="left:33.00%;width:67.00%"></span></span></div><div class="gantt-section">Scale</div><div class="gantt-row"><span class="gantt-taskcol">Scale decision · franchise governance gates</span><span class="gantt-track"><span class="gantt-bar future" style="left:80.00%;width:20.00%"></span></span></div></div><figcaption><span class="fignum">Figure 2</span><span class="figcap">Gated roadmap, April–August 2026 (illustrative; quarters only, no internal period codes)</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>SD method (citation)</th>
+<th>AI tool(s)</th>
+<th>Artifact produced</th>
+<th>Client involvement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Research</td>
+<td>Survey analytics at scale; strong-agree-only coding; secondary operating data (01/04, 03/04)</td>
+<td>Claude Code (evidence extraction), OpenCode (score pipelines), survey platform AI (topic tags)</td>
+<td>Baseline readout, evidence register, data-gap list</td>
+<td>Survey wave already run; governance forums briefed</td>
+</tr>
+<tr>
+<td>Synthesis</td>
+<td>Collaborative affinity synthesis; insight cards; variation as lens (03/04, 01/04)</td>
+<td>Claude Code (clustering, insight drafts), Codex (adversarial challenge pass)</td>
+<td>One connected attrition chain; 5–7 insight cards</td>
+<td>Four-person voting/rationale group on scoping</td>
+</tr>
+<tr>
+<td>Mapping</td>
+<td>Journey mapping; service blueprinting with line of visibility and fail points (09/04, 09/05)</td>
+<td>Claude Code (mermaid authoring), Codex (adversarial blueprint review)</td>
+<td>6-stage journey spine; stage × owner swimlanes</td>
+<td>Blueprint rehearsal with operations and learning functions</td>
+</tr>
+<tr>
+<td>Ideation</td>
+<td>Evidence-led option design; decision framing (03/05)</td>
+<td>Claude Code (study-design drafts), Codex (risk challenge)</td>
+<td>Two competing blueprint options + sequencing recommendation</td>
+<td>Options paper prepared for the decision meeting</td>
+</tr>
+<tr>
+<td>Prototyping</td>
+<td>Study designs as prototypes; pilot cohort design (01/06, 03/06)</td>
+<td>Claude Code (observation protocols, tracking templates)</td>
+<td>First-12-weeks cohort design; healthy-shift store design</td>
+<td>Restaurant selection criteria co-owned with operations</td>
+</tr>
+<tr>
+<td>Implementation</td>
+<td>Blueprint-to-owners; scorecard embedding; gated governance (03/07, 01/07)</td>
+<td>GitHub (issues, PR gates), OpenCode (analysis pipelines)</td>
+<td>Gated roadmap, owner assignments, scorecard weight change</td>
+<td>Four decisions tabled; franchise governance approval gates</td>
+</tr>
+<tr>
+<td>Measurement</td>
+<td>Triangulated KPIs; strong-agree discipline; closed loop (01/07, 20/03)</td>
+<td>Claude Code (KPI tree, readout drafting)</td>
+<td>KPI tree, pilot measurement plan, dashboard caveat</td>
+<td>Gate review with the decision meeting</td>
+</tr>
+</tbody></table>
+</section>
+<section class="art-sec"><span class="sec-kicker">04 · The work, phase by phase</span><h2 id="sec-4-phase-by-phase-narrative">Phase-by-phase narrative</h2>
+<h3 id="41-research-weeks-04">4.1 Research (weeks 0–4)</h3>
+<p><strong>Goal.</strong> Build a single, evidence-based view of the end-to-end crew experience — and, critically, name what the evidence cannot say (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md).</p>
+<p><strong>Method &amp; SOP.</strong> The primary instrument was the chain&#39;s quarterly engagement survey — more than 20,000 responses at ~54% participation across the region, plus a wider ~66% participation wave across the broader program — with exports at area, franchise-group, and restaurant level. The survey platform&#39;s built-in AI analytics computed scores and driver analysis; open-text exports carried ~10,000 topic-tagged comments from ~750 restaurants plus two smaller verbatim exports (unmet expectations, and &ldquo;what would make you stay&rdquo;). Operating evidence was assembled alongside: onboarding KPI dashboards at 2/6/12 weeks, exit-interview snapshots, a competency matrix of ~100 skills scored per role, and the scorecard. A 2022 baseline study (21,000+ participants, 60 data sets, 18 focus groups, 8 store observations, 10 co-design working groups) provided the historical anchor.</p>
+<p><strong>AI execution.</strong> The survey work was agent-amplified from the first export. OpenCode ran the score pipelines: recompute strong-agree rates per item, per role population (crew ≈20,000+ responses; assistant managers ≈800; general managers ≈440), and per area — always from the same query set, never hand-typed numbers. Claude Code extracted evidence items from the exports into a structured register, each carrying its source file and measure. The platform&#39;s AI topic tags were ingested but flagged for validation (Section 4.2).</p>
+<p><strong>Illustrative host command — emitted pack; live case execution unverified.</strong></p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>opencode run --agent measurer "Read survey/exports/*.csv. Compute strong-agree
+rates per item for crew, assistant managers and general managers, then per area.
+Publish every dashboard headline WITH the coding caveat: the dashboards count
+only 'Strongly agree' as favourable. Output baseline.md with n, participation
+and the strong-agree share per item, plus the areas at each tail of the range."
+</code></pre></div>
+<p><strong>Human designer judgment.</strong> The pivotal judgment was procedural: adopt and broadcast the <em>strongly-agree-only</em> discipline. The dashboards coded only &ldquo;strongly agree&rdquo; as favourable — &ldquo;many results look broadly positive until you examine how few people are strongly positive&rdquo; — so every readout carried the caveat, and sub-40% scores were treated as action thresholds, not mid-pack performance. The team also resisted joining survey rows to individual exit records (impossible by design) and instead scoped what <em>could</em> be linked: roster, labour, training, and maintenance records at cohort and restaurant level.</p>
+<p><strong>Artifact produced.</strong> Baseline readout with the coding caveat; evidence register (each item traceable to source); data-gap list naming the three hard limits (anonymous survey, fragmented exit data, single junior-age bucket).</p>
+<h3 id="42-synthesis-weeks-46">4.2 Synthesis (weeks 4–6)</h3>
+<p><strong>Goal.</strong> Convert the evidence base into insights that pass the acid test: each must change what the chain designs (See: 03-service-design-from-insight-to-implementation/04-from-research-to-insight.md).</p>
+<p><strong>Method &amp; SOP.</strong> Bottom-up affinity synthesis on the data → themes → insights ladder, executed as a hybrid session: the four-person project group worked the themes while Claude Code maintained the digital twin. AI topic summaries from the survey platform were validated against raw comments before any were cited — a named step in the options paper, not a nicety.</p>
+<p><strong>AI execution.</strong> A Claude Code synthesis agent proposed first-pass clustering under a hard rule: cluster names as active sentences, not nouns — &ldquo;new crew arrive without uniform, access, or a training schedule,&rdquo; not &ldquo;Onboarding.&rdquo; The humans merged, renamed, and challenged; the agent re-propagated edits between sessions. Codex then ran an adversarial challenge pass over the insight drafts: verify every cited figure against the register, argue the strongest alternative explanation, flag implications the evidence does not imply. The validation pass on the platform&#39;s topic tags ran as a sampled agreement check:</p>
+<p><strong>Illustrative host command — emitted pack; live case execution unverified.</strong></p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>claude -p "Read survey/open-text-topic-export.csv (~10,000 tagged rows) and
+survey/open-text-raw.csv. Validate the platform AI's topic tags: sample 40 rows
+per topic, compare each tag against the raw comment, record agreement. Then
+aggregate volumes per topic into topic-summary.md. RULE: any topic with less
+than 75% sampled agreement is re-reviewed by a human before it is cited."
+</code></pre></div>
+<p><strong>Human designer judgment.</strong> Three calls defined the synthesis. First, the reframe: three siloed problems became one connected attrition chain — the &ldquo;core analytical move.&rdquo; Second, paradox resolution: &ldquo;enough people on shift&rdquo; (≈2,300 selections) and &ldquo;enough hours on the schedule&rdquo; (≈1,050) looked contradictory and resolved to one root cause — <em>hours are not always allocated to the right people, at the right time, with the right capability</em>. Third, variation as the lens: comparing the ~6%-engaged and ~64%-engaged restaurants, and the ~40-point franchise spread on manager engagement, surfaced what averages hide. One candidate finding — the 25–35-point manager gap — was held under a &ldquo;finding or artefact?&rdquo; interrogation before it was allowed into the deck: was the gap real, or an instrument effect of different role populations answering different items? The conclusion: real, but it needs interrogation, not acquisition.</p>
+<p><strong>Artifact produced.</strong> The attrition chain (Figure 3); insight cards in observed-behavior / root-cause / design-implication syntax; the topic-summary with validation record; the variation analysis (best vs worst restaurants and franchise cohorts).</p>
+<h3 id="43-mapping-weeks-68">4.3 Mapping (weeks 6–8)</h3>
+<p><strong>Goal.</strong> Build the alignment artifact everything else hangs on: the crew-experience blueprint with a line of visibility — what crew experience (frontstage) versus the owners and systems producing it (backstage), with measures, failure points, and owners per stage (See: 09-mapping-experiences/05-service-blueprints.md).</p>
+<p><strong>Method &amp; SOP.</strong> The journey spine was defined as six frontstage stages: <em>land and settle → find my feet → station-trained and beyond → progress or stall → established → move on</em>. The blueprint was scoped through three lenses — the crew journey as the spine, the restaurant experience for depth, and organizational enablers deferred to a later phase — and depth was evidence-weighted: early experience (2–90 days) and 90-days-to-a-year were high priority; exit was low priority for data because no system-wide exit-reason capture existed. A bounded slice of the spine — the first 12 weeks, from offer through pre-start, day 1, weeks 2/6/12, and the transition beyond — became the pilotable unit.</p>
+<p><strong>AI execution.</strong> Claude Code authored the blueprint as version-controlled mermaid code — journey spine and swimlanes lived as files in Git, diffed in PRs like software. During the blueprint rehearsal, every unanswerable question (&ldquo;who sees that a new starter&#39;s week-2 check-in never happened?&rdquo;) became a GitHub issue tagged <code>blueprint-gap</code> on the spot; each was later resolved into an owner assignment. Codex reviewed the blueprint PR adversarially and caught real defects, including a missing escalation path when a new starter&#39;s hours collapse in weeks 3–6.</p>
+<p><strong>Human designer judgment.</strong> Choosing where the line of visibility sits — for example, keeping backstage roster mechanics invisible while deliberately exposing the &ldquo;roster conversation&rdquo; (a named chat in week 2 about hours, flexibility, and skill ambitions). Also: refusing the request to split the blueprint per function, which would have re-siloed the artifact.</p>
+<p><strong>Artifacts produced.</strong> A1 attrition chain (Figure 3); A6 journey spine × owners (Figure 5 and table); fail points annotated and carried into the KPI tree (Section 8).</p>
+<h3 id="44-ideation-weeks-810">4.4 Ideation (weeks 8–10)</h3>
+<p><strong>Goal.</strong> Convert the evidence into a small number of fully-designed, decision-ready blueprint options — not a pile of improvement ideas (See: 03-service-design-from-insight-to-implementation/05-developing-ideas.md).</p>
+<p><strong>Method &amp; SOP.</strong> The synthesis produced three candidates, each costed for scope, population, and evidence coverage:</p>
+<ul>
+<li><strong>Option A — the first-twelve-weeks model:</strong> a bounded study of the entry experience, from offer to week 12, as the first blueprint. The strongest claim to <em>boundedness</em>: a cohort you can follow, measure, and pilot in one unit.</li>
+<li><strong>Option B — the healthy-shift model:</strong> the recurring shift experience — opens, peaks, changeovers, closes, weekends, promotional shifts — as the first blueprint. The strongest claim to <em>reach</em>: the largest population, the most repeated controllable issues, and the direct link to the rostering root cause.</li>
+<li><strong>Option C — manager enablement:</strong> not a competing first blueprint but an essential parallel workstream for assistant managers — the &ldquo;squeezed middle&rdquo; carrying responsibility without consistently receiving the authority, resources, recognition, coaching, or clarity to succeed.</li>
+</ul>
+<p>The two analysis documents then <em>deliberately disagreed on sequencing</em>. The earlier synthesis recommended Option A first, then B, then sustainable leadership roles (Waves 1–3). The decision options paper recommended B first — six reasons: larger population; the most repeated controllable issues; getting underneath the onboarding findings; alignment with labour/rostering and role-design work; linking employee experience to customer and business results; and bringing the employee value proposition to life operationally — with A as a targeted follow-on, and a decision line designed to make the choice legible: <em>the first twelve weeks tells us how well we bring people into the chain; the healthy shift tells us what they experience every time they come back.</em> The register frames the tension as craft, not error: an iterative, evidence-argued decision process rather than a fixed answer — and the process was packaged so a governance forum could settle it in one meeting.</p>
+<p><strong>AI execution.</strong> Claude Code drafted both study designs to the same specification depth — sample, method, observations, outputs, strengths, risks — and built the comparison matrix. Codex attacked each design&#39;s risk section; its flags included the healthy-shift study&#39;s scope-expansion risk (&ldquo;could become a review of every restaurant process&hellip; coverage is the failure mode&rdquo;) and the first-twelve-weeks model&#39;s ceiling (&ldquo;a checklist, buddy and check-in will not overcome inconsistent hours, weak skill mix, poor manager behaviour or broken equipment&rdquo;). Both risks were carried into the decision paper verbatim — which is what made the options credible.</p>
+<p><strong>Human designer judgment.</strong> Framing the decision itself. The meeting was asked to leave with four concrete decisions — first blueprint scope; outcomes and measures it must improve; functions and owners required; restaurants and data for discovery and piloting — behind a single crisp ask, an opening line, and an ambition statement (<em>ready to start, backed on shift, seen for your effort, clear on what comes next</em>).</p>
+<p><strong>Artifact produced.</strong> The options paper (decision-at-a-glance table, full study designs, comparison matrix, 6-point recommendation, the four decisions); the decision brief template (Section 7).</p>
+<h3 id="45-prototyping-weeks-1012">4.5 Prototyping (weeks 10–12)</h3>
+<p><strong>Goal.</strong> Test the riskiest assumptions of each option at the lowest fidelity that answers the question — here, the &ldquo;prototypes&rdquo; were the study designs themselves, plus the future-state service prototypes they would evaluate (See: 01-this-is-service-design-doing/06-prototyping-methods.md).</p>
+<p><strong>Method &amp; SOP.</strong> Two pilot designs were specified to field-ready detail.</p>
+<ul>
+<li><strong>First-12-weeks pilot:</strong> follow a cohort of 30–50 new starters from pre-start to week 12 — touchpoints before the first shift, after the first shift, and at weeks 2/6/12 — with direct observation of the first 1–2 shifts for a smaller subset. Link cohort voice to: hire-to-first-shift time, weekly shifts and hours, roster consistency, training completion, station sign-offs, check-ins, absence, and 30/60/90-day retention. Compare progress vs stall vs transfer vs leave.</li>
+<li><strong>Healthy-shift pilot:</strong> select a balanced set of 8–12 restaurants across stronger/weaker employee experience, higher/lower turnover, sales volumes, metro/regional, and equity/franchise. Observe the shift moments (opens, peaks, changeovers, closes, weekends, promotional shifts), hear each role separately — a field rule so people speak honestly without their manager present — and link voice to operating evidence: planned vs actual labour, roster changes, hours, skill coverage, call-outs, breaks, late finishes, equipment, training, customer results, attrition.</li>
+</ul>
+<p><strong>AI execution.</strong> Claude Code drafted the observation protocols, the 2/6/12-week tracking template, and the restaurant-selection matrix; the template was version-controlled and linted for schema stability (it became the sample CSV accompanying this article). OpenCode built the linking pipelines for the healthy-shift design — joining survey voice to roster and labour records at restaurant level, and detecting zero-shift weeks and late cancellations automatically.</p>
+<p><strong>Human designer judgment.</strong> The cohort designs were deliberately bounded; the team rejected beginning with a whole-lifecycle blueprint (&ldquo;I would not begin by trying to blueprint the entire employee lifecycle&hellip; coverage is the failure mode&rdquo;). The pilot cohort selection was co-owned with operations, and the serious-conduct handling rule was written into the observation protocol before fieldwork.</p>
+<p><strong>Artifacts produced.</strong> Two field-ready study designs; tracking template; restaurant-selection matrix; observation protocols with the role-separation rule.</p>
+<h3 id="46-implementation-weeks-1220">4.6 Implementation (weeks 12–20)</h3>
+<p><strong>Goal.</strong> Turn the decision package into owned, gated, measured work — implementation as design continued, not handoff (See: 03-service-design-from-insight-to-implementation/07-implementation.md).</p>
+<p><strong>Method &amp; SOP.</strong> The roadmap was gated end to end: Phase 1 align and validate (weeks 0–4: link survey data to actual attrition by tenure and role, rostered vs available hours, zero-shift weeks, late cancellations, training completion, maintenance, exit reasons; compare high- vs low-attrition restaurants); Phase 2 current-state blueprint (4–8); Phase 3 future-state design (8–12: prototype the day-1 readiness standard, 2/6/12-week check-ins, station training, the roster conversation, the buddy/trainer model, recognition during learning, escalation, and assistant/general-manager support routines); Phase 4 pilot (3–6 months); Phase 5 scale. The scorecard was the embedding mechanism: restaurant and area scorecards now carry team-member experience at roughly a third weight, alongside customer experience (~two-fifths) and business growth (~a third), with area-level lines for team turnover and certification coverage.</p>
+<p><strong>AI execution.</strong> GitHub carried the work: every blueprint stage with its owners became issues; every artifact was a PR with required reviewers; the CI pipeline linted diagrams, checked CSV schemas, and verified that every figure in a readout was traceable to the evidence register. The manager-role workstream — five unconnected frameworks, no overarching role definition — was mapped by Claude Code into one role standard with four design moves: standardize the core job, flex support by complexity, protect people-leadership time, and design the assistant and general-manager roles together.</p>
+<p><strong>Human designer judgment.</strong> The franchise governance path: approval gates through the year with the franchise council, and the honest acknowledgment that adding the area-coach role to scope threatened the timeline (&ldquo;the role needs to be completed for the learning-and-development handoff next year&rdquo;). The team also named resourcing unknowns in the plan rather than hiding them.</p>
+<p><strong>Artifacts produced.</strong> Gated roadmap (Figure 2); owner assignments per journey stage; scorecard weight change; role-standard mapping for the manager workstream.</p>
+<h3 id="47-measurement-weeks-1220-and-forward">4.7 Measurement (weeks 12–20, and forward)</h3>
+<p><strong>Goal.</strong> Make the measurement honest before the first pilot runs: the KPI tree, the strong-agree discipline, and the explicit statement of what the data cannot prove (See: 01-this-is-service-design-doing/07-implementation-and-piloting.md, 20-the-service-profit-chain/03-external-service-value.md).</p>
+<p><strong>AI execution.</strong> Claude Code drafted the KPI tree and the pilot measurement plan as reviewed PRs; every number was generated from the same query set. The dashboard caveat was enforced by a CI check: any readout citing engagement without the strong-agree coding note fails the build. Codex reviewed the measurement plan and flagged the survey-anonymity trap — the plan must never claim individual-level causation; all joins happen at cohort and restaurant level.</p>
+<p><strong>Human designer judgment.</strong> The north-star was set as <em>consistent, productive tenure</em>, not &ldquo;zero attrition&rdquo; — and the objective explicitly extended to short-tenure leavers leaving with a positive view. The 90%+ intent-to-stay among general managers was treated as a masking risk, not a comfort: strong retention can hide role strain, so retention alone was never a sufficient measure.</p>
+<p><strong>Artifacts produced.</strong> KPI tree and measurement plan (Section 8); pilot evaluation design; the strong-agree caveat enforced as CI.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">05 · Artifacts portfolio</span><h2 id="sec-5-artifacts-portfolio">Artifacts portfolio</h2>
+<p>All figures and tables in this section are illustrative and transformed.</p>
+<h3 id="a1-the-attrition-chain">A1 — The attrition chain</h3>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 326" role="img" aria-hidden="true"><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">1 · Unprepared start</text><text x="282" y="70" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">↓</text><line x1="0" y1="74" x2="296" y2="74" stroke="currentColor" stroke-width="1"/><rect x="4" y="90" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="105" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">2 · Inconsistent hours &amp; skill mix</text><text x="282" y="118" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">↓</text><line x1="0" y1="122" x2="296" y2="122" stroke="currentColor" stroke-width="1"/><rect x="4" y="138" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="153" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">3 · Pressured shifts</text><text x="282" y="166" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">↓</text><line x1="0" y1="170" x2="296" y2="170" stroke="currentColor" stroke-width="1"/><rect x="4" y="186" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="201" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">4 · Inconsistent support &amp; recognition</text><text x="282" y="214" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">↓</text><line x1="0" y1="218" x2="296" y2="218" stroke="currentColor" stroke-width="1"/><rect x="4" y="234" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="249" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">5 · Limited progress</text><text x="282" y="262" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">↓</text><line x1="0" y1="266" x2="296" y2="266" stroke="currentColor" stroke-width="1"/><rect x="4" y="282" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="297" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">6 · Avoidable attrition</text><line x1="0" y1="314" x2="296" y2="314" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 3</span><span class="figcap">The six-step controllable attrition chain — the reframe that turned three briefs into one problem</span></figcaption></figure>
+<p>Read top to bottom, the chain is the argument: each step makes the next more likely, and each step is produced by a backstage system — not by &ldquo;lazy crew.&rdquo; Pay may be the final stated reason people leave, but the day-to-day experience determines whether someone stays long enough for pay to be negotiated.</p>
+<h3 id="a2-the-manager-perception-gap">A2 — The manager-perception gap</h3>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">25</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">50</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">75</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">100</text><line x1="44" y1="304" x2="730" y2="304" stroke="#DEDEDA" stroke-width="1"/><text x="112.6" y="324" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Shows interest</text><text x="249.8" y="324" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Keeps updated</text><text x="387" y="324" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Follows through</text><text x="524.2" y="324" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Explains expectations</text><text x="661.4" y="324" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Talks about growth</text><line x1="560" y1="12" x2="576" y2="12" stroke="#171817" stroke-width="2" stroke-linecap="round"/><text x="582" y="15" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">managers</text><line x1="560" y1="27" x2="576" y2="27" stroke="#4A7FA8" stroke-width="2" stroke-linecap="round"/><text x="582" y="30" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">crew</text><polyline points="112.6,129.8 249.8,132.4 387,148 524.2,135 661.4,148" fill="none" stroke="#171817" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="112.6" cy="129.8" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="249.8" cy="132.4" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="387" cy="148" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="524.2" cy="135" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="661.4" cy="148" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><polyline points="112.6,210.4 249.8,202.6 387,218.2 524.2,200 661.4,233.8" fill="none" stroke="#4A7FA8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="112.6" cy="210.4" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="249.8" cy="202.6" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="387" cy="218.2" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="524.2" cy="200" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="661.4" cy="233.8" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><text x="112.6" y="176" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">31</text><text x="249.8" y="173.5" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">27</text><text x="387" y="189" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">27</text><text x="524.2" y="173.5" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">25</text><text x="661.4" y="196" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="9" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">33</text></svg><figcaption><span class="fignum">Figure 4</span><span class="figcap">How managers and crew rate the same manager — strong-agree %, illustrative, ~25–35-point gap</span></figcaption></figure>
+<p>The 25–35-point gap is the human spine of the case. The manager opportunity is not another engagement campaign; it is a more sustainable operating model. Managers are the committed group holding the restaurant experience together — protecting them is expected to improve assistant-manager and crew experiences downstream.</p>
+<h3 id="a3-headline-engagement-panel">A3 — Headline engagement panel</h3>
+<table>
+<thead>
+<tr>
+<th>Metric (strong-agree %)</th>
+<th>Q1 wave (illustrative)</th>
+<th>Reading rule</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Engagement</td>
+<td>~36%</td>
+<td>Scores under 40%: engagement can be improved</td>
+</tr>
+<tr>
+<td>Experience vs expectations</td>
+<td>~27%</td>
+<td>Sub-40%: action threshold</td>
+</tr>
+<tr>
+<td>Intent to stay</td>
+<td>~62%</td>
+<td>30–70% band: moderate</td>
+</tr>
+<tr>
+<td>Would recommend the chain</td>
+<td>~43%</td>
+<td>Strongly agree only</td>
+</tr>
+<tr>
+<td>Motivated to go above and beyond</td>
+<td>~33%</td>
+<td>Strongly agree only</td>
+</tr>
+<tr>
+<td>Personal accomplishment</td>
+<td>~33%</td>
+<td>Strongly agree only</td>
+</tr>
+<tr>
+<td>Plan to leave within a year</td>
+<td>~34% (2 / 5 / 10 / 17% by horizon)</td>
+<td>Attrition posture, not intent-to-stay mirror</td>
+</tr>
+</tbody></table>
+<h3 id="a4-the-first-12-weeks-flatline">A4 — The first-12-weeks flatline</h3>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 344" role="img" aria-hidden="true"><line x1="44" y1="304" x2="730" y2="304" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="307.5" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">0</text><line x1="44" y1="239" x2="730" y2="239" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="242.5" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">25</text><line x1="44" y1="174" x2="730" y2="174" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="177.5" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">50</text><line x1="44" y1="109" x2="730" y2="109" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="112.5" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">75</text><line x1="44" y1="44" x2="730" y2="44" stroke="#EBEBE8" stroke-width="1"/><text x="36" y="47.5" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="end" letter-spacing="0">100</text><line x1="44" y1="304" x2="730" y2="304" stroke="#DEDEDA" stroke-width="1"/><text x="112.6" y="324" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Week 2</text><text x="387" y="324" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Week 6</text><text x="661.4" y="324" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="middle" letter-spacing="0">Week 12</text><line x1="560" y1="12" x2="576" y2="12" stroke="#171817" stroke-width="2" stroke-linecap="round"/><text x="582" y="15" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">Welcome</text><line x1="560" y1="27" x2="576" y2="27" stroke="#4A7FA8" stroke-width="2" stroke-linecap="round"/><text x="582" y="30" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">Exceeded exp.</text><line x1="660" y1="12" x2="676" y2="12" stroke="#B0853C" stroke-width="2" stroke-linecap="round"/><text x="682" y="15" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">Independence</text><polyline points="112.6,184.4 387,176.6 661.4,176.6" fill="none" stroke="#171817" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="112.6" cy="184.4" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="387" cy="176.6" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><circle cx="661.4" cy="176.6" r="2.6" fill="#171817" stroke="#171817" stroke-width="1"/><text x="670.4" y="173" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#171817" font-weight="600" text-anchor="start" letter-spacing="0">49</text><polyline points="112.6,249.4 387,252 661.4,252" fill="none" stroke="#4A7FA8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="112.6" cy="249.4" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="387" cy="252" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><circle cx="661.4" cy="252" r="2.6" fill="#4A7FA8" stroke="#4A7FA8" stroke-width="1"/><polyline points="112.6,244.2 387,244.2 661.4,226" fill="none" stroke="#B0853C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="112.6" cy="244.2" r="2.6" fill="#B0853C" stroke="#B0853C" stroke-width="1"/><circle cx="387" cy="244.2" r="2.6" fill="#B0853C" stroke="#B0853C" stroke-width="1"/><circle cx="661.4" cy="226" r="2.6" fill="#B0853C" stroke="#B0853C" stroke-width="1"/><text x="670.4" y="223" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10.5" fill="#B0853C" font-weight="600" text-anchor="start" letter-spacing="0">30</text></svg><figcaption><span class="fignum">Figure 5</span><span class="figcap">Illustrative first-12-weeks curves — the flatline that drove the redesign</span></figcaption></figure>
+<p>Welcome barely moves (46 → 49), experience-exceeding-expectations drifts down (21 → 20), and even independence — the one rising line — reaches only ~30% at week 12. People were spending longer at the chain without becoming more positive about it. Day-1 gaps (uniform ≈59%, training schedule ≈26%, system access ≈18%) show the first experience is set by operational preparation, not onboarding content.</p>
+<h3 id="a5-open-text-topic-volumes">A5 — Open-text topic volumes</h3>
+<figure class="fig fig-xy"><svg class="fgsvg xy" viewBox="0 0 760 244" role="img" aria-hidden="true"><text x="170" y="64" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">Leadership</text><rect x="190" y="50" width="500" height="18" rx="3" fill="#171817"/><text x="696" y="64" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">1,600</text><text x="170" y="104" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">Resources</text><rect x="190" y="90" width="484.4" height="18" rx="3" fill="#4A7FA8"/><text x="680.4" y="104" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">1,550</text><text x="170" y="144" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">People and teams</text><rect x="190" y="130" width="390.6" height="18" rx="3" fill="#4A7FA8"/><text x="586.6" y="144" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">1,250</text><text x="170" y="184" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">Performance &amp; development</text><rect x="190" y="170" width="343.8" height="18" rx="3" fill="#4A7FA8"/><text x="539.8" y="184" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">1,100</text><text x="170" y="224" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" fill="#33322e" font-weight="500" text-anchor="end" letter-spacing="0">Pay and benefits</text><rect x="190" y="210" width="312.5" height="18" rx="3" fill="#4A7FA8"/><text x="508.5" y="224" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="9.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0">1,000</text></svg><figcaption><span class="fignum">Figure 6</span><span class="figcap">Top comment topics by volume — illustrative counts, AI-tagged then human-validated</span></figcaption></figure>
+<p>Leadership is the loudest topic in the open text, and the single most-selected improvement across the whole workforce was &ldquo;enough people on shift&rdquo; — both pointing at the same backstage system. Topic labels are genericized; the AI tags were sampled and human-validated before any count was cited.</p>
+<h3 id="a6-journey-spine-and-backstage-owners">A6 — Journey spine × backstage owners</h3>
+<figure class="fig fig-lane"><svg class="fgsvg lane" viewBox="0 0 296 206" role="img" aria-hidden="true"><line x1="0" y1="26" x2="296" y2="26" stroke="currentColor" stroke-width="1"/><rect x="4" y="42" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="57" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Frontstage journey</text><text x="104" y="57" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.3">6-stage lifecycle spine</text><line x1="0" y1="82" x2="296" y2="82" stroke="currentColor" stroke-width="1"/><rect x="4" y="98" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="113" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Line of visibility</text><text x="104" y="113" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.3">what crew see vs what produces it</text><line x1="0" y1="138" x2="296" y2="138" stroke="currentColor" stroke-width="1"/><rect x="4" y="154" width="88" height="22" rx="3" fill="#E8EEE5"/><text x="14" y="169" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="10" fill="#3c443a" font-weight="600" text-anchor="start" letter-spacing="0.5">Backstage owners</text><text x="104" y="169" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="8.5" fill="#9B9B96" font-weight="400" text-anchor="start" letter-spacing="0.3">people · learning · ops · store leadership · time &amp; attendance · recognition</text><line x1="0" y1="194" x2="296" y2="194" stroke="currentColor" stroke-width="1"/></svg><figcaption><span class="fignum">Figure 7</span><span class="figcap">Blueprint structure: frontstage journey × backstage owners, with measures, failure points, and owners per stage</span></figcaption></figure>
+<table>
+<thead>
+<tr>
+<th>Journey stage (frontstage)</th>
+<th>What crew experience</th>
+<th>Backstage owners</th>
+<th>Signature failure point</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Land &amp; settle</td>
+<td>Offer → day 1: uniform, access, training schedule, first shift</td>
+<td>Recruitment, people support, time &amp; attendance</td>
+<td>Day-1 gaps: uniform ≈59%, schedule ≈26%, access ≈18%</td>
+</tr>
+<tr>
+<td>Find my feet</td>
+<td>Weeks 1–2: check-ins, training plan, buddy</td>
+<td>Store leadership, learning, crew peers</td>
+<td>Manager check-in at 2 weeks ≈17% strongly agree</td>
+</tr>
+<tr>
+<td>Station-trained &amp; beyond</td>
+<td>Weeks 6–12: station sign-offs, roster conversation</td>
+<td>Learning, store leadership, scheduling</td>
+<td>Independence ≈30% at week 12; inconsistent hours</td>
+</tr>
+<tr>
+<td>Progress or stall</td>
+<td>Weeks 12+: visible path, recognition, growth talk</td>
+<td>Store leadership, learning, recognition</td>
+<td>Path forward ≈14%; recognition ≈23% at week 12</td>
+</tr>
+<tr>
+<td>Established</td>
+<td>Productive tenure; coach and recognize others</td>
+<td>Store leadership, operations</td>
+<td>Manager capacity squeezed; coaching drops first</td>
+</tr>
+<tr>
+<td>Move on</td>
+<td>Departure — ideally positive, regardless of tenure</td>
+<td>People support, exit capture</td>
+<td>&ldquo;The end of the journey is evidence-free&rdquo;: fragmented exit data</td>
+</tr>
+</tbody></table>
+<h3 id="a7-blueprint-options-decision-matrix">A7 — Blueprint options decision matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>First-12-weeks model</th>
+<th>Healthy-shift model</th>
+<th>Manager enablement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Population reached</td>
+<td>New starters (30–50 per cohort)</td>
+<td>Every crew member on every shift</td>
+<td>Assistant + general managers</td>
+</tr>
+<tr>
+<td>Most repeated controllable issues</td>
+<td>Direct: start, check-ins, training, hours</td>
+<td>Direct: staffing, skill mix, equipment, breaks</td>
+<td>Indirect: capacity and role clarity</td>
+</tr>
+<tr>
+<td>Evidence gap addressed</td>
+<td>2–90-day experience — the named high-priority gap</td>
+<td>Gets underneath the onboarding findings</td>
+<td>The 25–35-point manager gap</td>
+</tr>
+<tr>
+<td>Link to labour/rostering work</td>
+<td>Hours, roster consistency per starter</td>
+<td>Planned vs actual labour, skill coverage</td>
+<td>Support routines, decision rights</td>
+</tr>
+<tr>
+<td>Employee ↔ customer ↔ business linkage</td>
+<td>Indirect</td>
+<td>Direct (shift-level operating evidence)</td>
+<td>Indirect</td>
+</tr>
+<tr>
+<td>Risk profile</td>
+<td>Improves entry without fixing the everyday job</td>
+<td>Scope creep — &ldquo;coverage is the failure mode&rdquo;</td>
+<td>Timeline risk if area-coach scope added</td>
+</tr>
+<tr>
+<td>Sequencing recommendation</td>
+<td>First (earlier synthesis); follow-on (options paper)</td>
+<td>First (options paper, 6-point rationale)</td>
+<td>Essential parallel workstream, not a first blueprint</td>
+</tr>
+</tbody></table>
+<h3 id="a8-cost-of-turnover-model">A8 — Cost-of-turnover model</h3>
+<table>
+<thead>
+<tr>
+<th>Cost item</th>
+<th>Illustrative value</th>
+<th>Basis</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Pre-departure (vacancy, admin, lost output)</td>
+<td>~$170 per leaver</td>
+<td>Industry benchmark, transformed</td>
+</tr>
+<tr>
+<td>Recruitment and selection</td>
+<td>~$1,100 per leaver</td>
+<td>Advertising, screening, interviewing</td>
+</tr>
+<tr>
+<td>Onboarding and training</td>
+<td>~$800 per leaver</td>
+<td>First weeks at reduced productivity</td>
+</tr>
+<tr>
+<td>Productivity loss</td>
+<td>~$2,900 per leaver</td>
+<td>Ramp-up period, transformed</td>
+</tr>
+<tr>
+<td><strong>Total per crew leaver</strong></td>
+<td><strong>~$5,000–6,000</strong></td>
+<td>Hospitality-sector turnover research, transformed</td>
+</tr>
+<tr>
+<td>Disengagement ripple of one manager departure</td>
+<td>Up to ~15 crew; ~$45,000</td>
+<td>Disengagement of the team left behind</td>
+</tr>
+<tr>
+<td>Full-cycle manager turnover</td>
+<td>~$185,000</td>
+<td>Pre-departure through lost IP and relationships</td>
+</tr>
+<tr>
+<td>Per-store exposure</td>
+<td>~$100,000 per year</td>
+<td>~18 crew leavers per store per year at industry rates</td>
+</tr>
+</tbody></table>
+<h3 id="a9-persona-model">A9 — Persona model (2022 baseline, retained)</h3>
+<table>
+<thead>
+<tr>
+<th>Persona</th>
+<th>Typical share (illustrative)</th>
+<th>Intent</th>
+<th>Design response</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&ldquo;Here for the shift&rdquo;</td>
+<td>~30%</td>
+<td>Income around studies or other work; values flexibility</td>
+<td>Flexible hours; the roster conversation at week 2; no pressure to progress</td>
+</tr>
+<tr>
+<td>&ldquo;Here for a while&rdquo; (the settled majority)</td>
+<td>~50%</td>
+<td>Long-term part-time base; values team, recognition, mastery</td>
+<td>Buddy model; recognition during learning; station sign-offs; consistent hours</td>
+</tr>
+<tr>
+<td>&ldquo;Here to climb&rdquo;</td>
+<td>~25%</td>
+<td>Wants promotion to supervisor, assistant, manager</td>
+<td>Visible path: station → supervisor → assistant; capability-based progression</td>
+</tr>
+<tr>
+<td>&ldquo;At risk&rdquo;</td>
+<td>~10%</td>
+<td>Disengaged and vocal; early exit or negative word of mouth</td>
+<td>Early check-ins; escalation; honest exit capture</td>
+</tr>
+</tbody></table>
+<p>Splits overlap across roles; all new starters are treated as &ldquo;here for a while&rdquo; on entry, with formal identification of ambition within the first six months.</p>
+<h3 id="a10-sample-dataset">A10 — Sample dataset</h3>
+<p>Full file: <a href="data/employee-experience-sample.csv"><code>data/employee-experience-sample.csv</code></a> — a 16-row illustrative extract of the 2/6/12-week KPI tracking template: onboarding-milestone KPIs by tenure week with illustrative strong-agree baselines, pilot targets, and the evidence note on each row. No real restaurant, employee, or franchisee data.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">06 · Use cases</span><h2 id="sec-6-use-cases">Use cases</h2>
+<h3 id="use-case-a-the-first-12-weeks-of-a-restaurant-career">Use case A — The first 12 weeks of a restaurant career</h3>
+<p><strong>Scenario.</strong> A new crew member accepts an offer on a Tuesday and is scheduled for a first shift the following Monday. Under the current state, they arrive without a uniform (~59%), without a training schedule (~26%), and without system access (~18%); by week 2 only ~17% have had a manager check-in; by week 12 only ~14% can see a path forward. This is the pipeline the first-twelve-weeks model exists to blueprint and fix.</p>
+<p><strong>What was designed.</strong> A day-1 readiness standard (uniform, system access, training schedule, named buddy — all must pass before the first shift); check-ins at weeks 2, 6, and 12 with a scripted structure; the roster conversation in week 2 (hours, flexibility, skill ambitions); station training with sign-offs by week 6; recognition during learning; and an escalation path when hours collapse in weeks 3–6. The tracking template behind it is the sample CSV accompanying this article.</p>
+<p><strong>AI working session.</strong> Claude Code drafted the day-1 checklist from the 12-week evidence (the failures the checklist must prevent, each traced to a survey item), and generated the 2/6/12-week KPI template as a schema-checked CSV. Codex reviewed the escalation rules adversarially and caught that the original draft had no defined owner for the &ldquo;hours collapse&rdquo; path — fixed before the protocol was frozen. The pilot was designed to follow 30–50 new starters from pre-start to week 12 and link their voice to hire-to-first-shift time, roster consistency, training completion, station sign-offs, check-ins, absence, and 30/60/90-day retention.</p>
+<p><strong>Outcome (illustrative pilot targets, not results).</strong> Day-1 readiness ~40% → ≥ 85%; week-2 manager check-in ~17% → ≥ 70%; &ldquo;see a path forward&rdquo; at week 12 ~14% → ≥ 45%; 90-day retention to be baselined in the pilot cohort and compared against the high/low-attrition restaurant split.</p>
+<h3 id="use-case-b-the-healthy-shift">Use case B — The healthy shift</h3>
+<p><strong>Scenario.</strong> A Friday peak at a high-volume restaurant: three crew call in, the skill mix on the line is thin, a capable station worker carries the gap, and the shift supervisor spends the peak firefighting instead of coaching. The open text names it directly: the most-selected improvement across the workforce was &ldquo;enough people on shift&rdquo; (≈2,300 selections) and the second &ldquo;enough hours on the schedule&rdquo; (≈1,050).</p>
+<p><strong>What was designed.</strong> The healthy-shift model blueprints the recurring shift — opens, peaks, changeovers, closes, weekends, promotional shifts — and links voice to operating evidence: planned vs actual labour, roster changes, hours, skill coverage, call-outs, breaks, late finishes, equipment, training, customer results, attrition. The design lever is rostering allocation — the right people, at the right time, with the right capability — not simply adding hours or bodies.</p>
+<p><strong>AI working session.</strong> OpenCode built the linking pipeline that joins survey voice to roster and labour records at restaurant level, flagging zero-shift weeks, late cancellations, and skill-coverage gaps automatically; Claude Code drafted the shift-observation protocols. Codex challenged the design&#39;s scope boundary — &ldquo;this could become a review of every restaurant process&rdquo; — and the risk was carried into the decision paper verbatim, with the counter-discipline stated: depth where the evidence points, never even coverage.</p>
+<p><strong>Outcome (illustrative pilot targets, not results).</strong> Roster-consistency and skill-coverage rates baselined across the balanced restaurant cohort (8–12 restaurants across stronger/weaker experience, higher/lower turnover, metro/regional, equity/franchise); stress items and call-out rates measured shift-by-shift.</p>
+<h3 id="use-case-c-manager-enablement-the-squeezed-middle">Use case C — Manager enablement: the squeezed middle</h3>
+<p><strong>Scenario.</strong> Assistant managers — the &ldquo;squeezed middle&rdquo; — rate their experience below expectations more often than they exceed them, carry responsibility without consistent authority, and show ~25% unfavourable on &ldquo;believe survey action will occur.&rdquo; Their stress fixes are the same operating gaps as crew&#39;s: staffing, working equipment, shift-change ability, a supportive manager. The manager-role workstream exists because five unconnected frameworks leave the general-manager role defined by whatever the operating system around it demands.</p>
+<p><strong>What was designed.</strong> Manager enablement as a parallel workstream, not a competing first blueprint: support routines for assistants and general managers, clearer decision rights, escalation paths, and protection of people-leadership time — with the explicit thesis that the manager is the delivery mechanism for the employee value proposition: if the role is overloaded, the first experiences to drop are the same ones the promise makes.</p>
+<p><strong>AI working session.</strong> Claude Code mapped the five unconnected role frameworks onto the ~100-skill competency matrix (scored per role, illustrative means ~3.0 for supervisors, ~4.0 for assistants, ~4.6 for general managers, ~4.8 for area coaches) and produced a single role standard with four design moves: standardize the core job, flex support by complexity, protect people-leadership time, design the assistant and general-manager roles together. Codex reviewed the draft role profile and flagged two decision-rights gaps that had no owner — both resolved before the governance gate.</p>
+<p><strong>Outcome (illustrative, forward-planned).</strong> One role standard through franchise governance with approval gates across the year; manager-capacity measures added to the scorecard; learning-and-development handoff scheduled for the following year.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">07 · SOPs for AI</span><h2 id="sec-7-sops-for-ai-how-service-design-sops-are-best-used-by-agents">SOPs for AI — how service design SOPs are best used by agents</h2>
+<p><strong>Encoded SOPs.</strong> Four SOPs were encoded for agent execution, each following the same pattern: <em>method → numbered steps → output schema → acceptance criteria → review gate</em>.</p>
+<ol>
+<li><strong>Survey-export-to-evidence SOP</strong> (research). Output: structured evidence items with source file and measure. Acceptance: every item carries its export, item text, and population; the strong-agree coding note is attached to every headline. Gate: human spot-check of 10% before merge.</li>
+<li><strong>Topic-validation SOP</strong> (synthesis). The platform&#39;s AI topic tags are raw material, never conclusions. Sample 40 rows per topic, compare tag against raw comment, record agreement; any topic under 75% sampled agreement is human re-reviewed before citation. Gate: the validation record travels with the topic summary.</li>
+<li><strong>Finding-vs-artefact SOP</strong> (synthesis). Any surprising gap (the 25–35-point manager gap) is interrogated before it reaches a governance forum: is it a real finding or an instrument artefact? The SOP names the checks — population differences, item differences, response-rate effects — and the output is a one-paragraph disposition attached to the insight card. Gate: no gap is presented without its disposition.</li>
+<li><strong>Blueprint-change SOP</strong> (implementation). Every change to the blueprint is a PR containing: diff, linked journey stage, linked evidence items, named backstage owner, and the measure it moves. Acceptance: CI green (mermaid, markdown, CSV schema) plus required reviewers. Gate: CODEOWNERS routing — operations for operating routines, people function for crew-facing content, and the confidential-case-management path for serious-conduct comments, which are never absorbed into the blueprint.</li>
+</ol>
+<p>An example of the SOP-as-code pattern — the day-1 readiness standard (abridged, illustrative):</p>
+<div class="codeblock"><div class="codebar"><span>CONFIG</span></div><pre><code>sop: EX-DAY1-001
+name: Day-1 readiness standard for new crew members
+version: 0.4
+owner: onboarding_function
+status: draft_for_pilot
+scope: every new starter, offer accepted to first shift
+triggers:
+  - offer_accepted
+  - first_shift_scheduled
+checks (all must pass before the first shift):
+  - uniform_ready
+  - system_access_issued         # user id + learning access
+  - training_schedule_published  # first 2 weeks, station by station
+  - buddy_assigned               # a named peer, not a role label
+  - manager_checkin_booked       # weeks 2, 6 and 12
+measurements:
+  - day1_readiness_pct
+  - checkin_completion_pct       # strong-agree only
+  - station_signoffs_by_week_6
+  - roster_consistency_score     # hours kept vs planned
+  - retention_30_60_90
+exceptions:
+  - hours_collapse_weeks_3_to_6: escalate to scheduling owner
+  - serious_conduct_comment: route to confidential case management
+    # never absorbed into a general blueprint study
+review_cadence: fortnightly during pilot
+</code></pre></div>
+<p><strong>The meta-SOP.</strong> The engagement itself ran research → synthesize → map → ideate → prototype → measure → deliver, with a hard gate between stages: no insight before evidence passed the acid test; no blueprint stage without named owners; no option paper before both study designs reached field-ready depth; no pilot before the serious-conduct rule was written into the observation protocol; no readout without the strong-agree caveat. Each gate is a GitHub milestone with required reviews — process enforced by tooling, not memory.</p>
+<p><strong>Guardrails.</strong></p>
+<ul>
+<li><strong>Anonymity.</strong> The survey is anonymous by design; agents never attempt individual-level joins to exit or tenure records. All joins happen at cohort and restaurant level, and causation is never claimed from survey patterns alone — the pilot links voice to operating records instead.</li>
+<li><strong>Serious-conduct routing.</strong> Bullying, harassment, retaliation, and unsafe-work comments go to confidential case-management and escalation processes, never into a general blueprint study. Written into every protocol.</li>
+<li><strong>No zero-attrition goal.</strong> Agents and humans alike design for reducing avoidable early exits and for positive departures — not for retention at any cost.</li>
+<li><strong>Hallucination control.</strong> Every figure cited in a readout must be traceable to the evidence register; the CI check fails the build otherwise. AI topic summaries are validated against raw comments before citation.</li>
+<li><strong>Human sign-off points.</strong> Insight naming, the finding-vs-artefact dispositions, option sequencing, the four decisions, restaurant selection for pilots, and every governance submission.</li>
+</ul>
+<p><strong>Failure modes observed.</strong> (1) Over-clustering in the first synthesis pass — noun-bucket labels that would have quietly flattened the insight quality; fixed with the active-sentence naming rule. (2) A confident-but-wrong read of a survey item — drawn from a question that did not mean what the dashboard label suggested; fixed by requiring every claim to carry its question ID. (3) Topic-tag drift on the platform&#39;s AI summaries — early counts differed from the raw comments until the sampled-validation step was enforced. (4) The draft-versus-options tension — two documents reached different sequencing recommendations; surfaced as a named decision, not silently reconciled.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">08 · Value</span><h2 id="sec-8-value-creation-amp-measurement">Value creation &amp; measurement</h2>
+<p><strong>The economic frame.</strong> The cost-of-turnover model (A8) makes the value case without inventing post-pilot results: full-cycle manager turnover in the low six figures (~$185,000, illustrative), crew attrition in the thousands per leaver (~$5,000–6,000), ~$100,000 per store per year at ~18 leavers a store, and a disengagement ripple of up to ~15 crew around every manager departure (~$45,000). Every avoidable early exit avoided is a recruitment and training cost not spent; every month of productive tenure added is output recovered. The explicit design posture — reduce avoidable exits, not zero attrition — keeps the economics honest: the model counts only what the blueprint can actually move.</p>
+<p><strong>Causal logic (Service Profit Chain).</strong> The argument ran as Heskett, Sasser, and Schlesinger describe: internal service quality (manager capacity, role clarity, support routines) raises frontline capability; frontline capability produces the consistent experience — start ready, backed on shift, seen for effort, clear on next steps; that consistency raises engagement, which the scorecard now carries as a formal measure at restaurant and area level. The chain links employee experience to customer experience and business growth in the same scorecard, which is what makes the investment legible to a franchise network.</p>
+<table>
+<thead>
+<tr>
+<th>Scorecard line (illustrative)</th>
+<th>Weight</th>
+<th>Level</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Customer experience</td>
+<td>~40%</td>
+<td>Restaurant and area</td>
+</tr>
+<tr>
+<td>Team-member experience</td>
+<td>~30%</td>
+<td>Restaurant and area — the embedding change</td>
+</tr>
+<tr>
+<td>Business growth</td>
+<td>~30%</td>
+<td>Restaurant and area</td>
+</tr>
+<tr>
+<td>Team turnover + certification coverage</td>
+<td>~15% + ~10%</td>
+<td>Area-level lines</td>
+</tr>
+</tbody></table>
+<p><strong>KPI tree.</strong> North-star: <em>consistent, productive tenure</em> — fewer avoidable early exits, with even short-tenure leavers leaving with a positive view.</p>
+<ul>
+<li><strong>Leading drivers</strong> (the controllable chain, strong-agree only): day-1 readiness; check-in completion at 2/6/12 weeks; roster consistency (planned vs actual hours, zero-shift weeks, late cancellations); training completion and station sign-offs; recognition during learning; manager capacity (enablement routines, protected people-leadership time).</li>
+<li><strong>Lagging outcomes:</strong> engagement and experience-vs-expectations (strong-agree); intent to stay; retention by tenure (30/60/90); exit reasons; cost of avoidable attrition.</li>
+<li><strong>Honest boundary:</strong> the anonymous survey cannot be joined to individual exit records, so cohort-level voice is linked to operating records in the pilot; and intent-to-stay among managers (90%+) is treated as a masking risk — retention alone never counts as evidence of role health.</li>
+</ul>
+<p><strong>Measurement discipline.</strong> Every headline carries the strong-agree coding caveat; sub-40% scores are action thresholds; variation (best vs worst restaurant, franchise spread) is reported alongside averages; and the dashboard caveat is enforced in CI so no readout can quietly drop it.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">09 · AI tools</span><h2 id="sec-9-ai-tool-playbook">AI tool playbook</h2>
+<p><strong>Claude Code — orchestration, synthesis, artifact authoring.</strong> The engagement&#39;s operating system: evidence extraction from survey exports, the digital synthesis wall, all mermaid blueprint authoring, study-design drafts, the KPI tree, and the decision-paper drafting. Excels at structured extraction against a schema and consistency across dozens of files. Failed at judging which finding would land politically (the sequencing tension stayed a human call). Human took over: framing, gates, and every governance submission.</p>
+<p><strong>OpenCode — data pipelines and analysis scripts.</strong> Ran the score pipelines (strong-agree recomputation by item, role population, and area), the topic-validation sampling, and the roster/voice linking pipeline for the healthy-shift design. Excels at self-directed, repeatable analysis jobs. Failed at method intent when left un-leashed — the written SOP was the leash. Human took over: the strong-agree caveat (enforced in CI, never left to the agent&#39;s discretion).</p>
+<p><strong>Codex — deep research and adversarial review.</strong> Second-opinion engine, run via <code>codex exec --skip-git-repo-check</code> with an artifact plus a specific concern, never the whole repository. Delivered the insight challenge pass (candidate insights killed or upgraded), the blueprint review (real defects: the missing escalation path, the unowned hours-collapse case), the study-design risk flags (scope creep on the healthy-shift model), and the measurement-plan review (the anonymity trap). Excels at disagreeing productively — &ldquo;be adversarial&rdquo; is a load-bearing instruction. Every finding was verified against the register before action; reconcile by verifying, never by averaging.</p>
+<p><strong>Illustrative host command — emitted pack; live case execution unverified.</strong></p>
+<div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>codex exec --skip-git-repo-check "Read analysis/insight-cards.md and
+analysis/evidence-register.jsonl. For each insight: (1) verify every cited
+figure exists in the register, (2) argue the strongest alternative explanation
+for the observed behavior, (3) flag any implication the evidence does not
+actually imply, (4) check the finding-vs-artefact disposition is attached for
+the manager gap. Be adversarial."
+</code></pre></div>
+<p><strong>The survey platform&#39;s AI — raw material, validated.</strong> The chain&#39;s engagement platform provided built-in AI analytics (score computation, driver analysis) and AI topic tagging of open text. Both were treated as first-pass instruments: scores were recomputed from the exports under the strong-agree discipline, and tags were sampled and human-validated before any count was cited. The platform&#39;s five-step action-planning cycle (survey live → reports → communicate → define and commit → take action, monthly then quarterly check-ins) was adopted as the measurement cadence.</p>
+<p><strong>GitHub — the system of record.</strong> Issues as work items (blueprint stages, owners, blueprint-gap items), PRs as review gates (CODEOWNERS; confidential-case-management path), milestones as stage gates, and Actions as the artifact validator:</p>
+<p><strong>Illustrative GitHub Actions configuration — synthetic repository workflow; live execution unverified.</strong></p>
+<div class="codeblock"><div class="codebar"><span>CONFIG</span></div><pre><code>name: artifact-gate
+on: [pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint mermaid diagrams
+        run: npx @mermaid-js/mermaid-cli -i diagrams/all.md -o /tmp/out.svg
+      - name: Markdown lint
+        run: npx markdownlint-cli "**/*.md"
+      - name: CSV schema check
+        run: python scripts/check_schema.py data/
+      - name: Figure-vs-register check
+        run: python scripts/verify_figures.py analysis/   # every figure cited in the register
+      - name: Strong-agree caveat check
+        run: python scripts/check_caveat.py decks/        # every headline carries the caveat
+</code></pre></div>
+<p>Failed at nothing material; the board stays truthful only with a weekly human groom — the designer&#39;s Friday ritual.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">10 · Lessons</span><h2 id="sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</h2>
+<ul>
+<li><strong>One connected chain beat three siloed briefs.</strong> The core analytical move was refusing the client&#39;s problem framing: crew experience, manager-role definition, and retention were not three projects, they were one attrition chain with a shared backstage. Every subsequent artifact — blueprint, options, roadmap — hung off that single argument.</li>
+<li><strong>Publish the coding caveat everywhere.</strong> &ldquo;Many results look broadly positive until you examine how few people are strongly positive&rdquo; — the strong-agree-only discipline, enforced in every deck and eventually in CI, kept the analysis decision-ready and stopped inflated optics from being approved.</li>
+<li><strong>Resolving apparent paradoxes is the highest-value survey reading.</strong> &ldquo;More hours&rdquo; and &ldquo;more people on shift&rdquo; looked contradictory and resolved to one root cause: hours allocated to the right people, at the right time, with the right capability. Hypothesis-driven reading of survey data beat feature-listing every time.</li>
+<li><strong>Variation is the lens; averages hide the job.</strong> A ~6%-engaged and a ~64%-engaged restaurant under one brand standard — and a ~40-point franchise spread on manager engagement — reframed the manager role as defined by the operating system around it, not the job description. Report best vs worst, always.</li>
+<li><strong>Depth goes where the evidence points.</strong> The team rejected a whole-lifecycle blueprint to start: &ldquo;coverage is the failure mode.&rdquo; The first twelve weeks and the healthy shift were chosen as bounded, pilotable units — and duplicating another team&#39;s onboarding blueprint was cut for adding no new evidence.</li>
+<li><strong>Findings need interrogation before forums.</strong> The 25–35-point manager gap was held under a &ldquo;finding or artefact?&rdquo; discipline before it reached governance. The disposition attached to the insight card is what made the gap actionable rather than anecdotal.</li>
+<li><strong>Two documents disagreeing is evidence of process, not error.</strong> The earlier synthesis and the options paper reached different sequencing recommendations. Surfacing the tension — with the decision line (&ldquo;the first twelve weeks tells us how well we bring people in; the healthy shift tells us what they experience every time they come back&rdquo;) — made the governance meeting a decision, not a rubber stamp.</li>
+<li><strong>The manager is the delivery mechanism for the employee value proposition.</strong> If the role is overloaded, the first experiences to drop are the same ones the promise makes. Protecting the committed manager group is expected to improve assistant and crew experience downstream — the role-redesign workstream was never an optional add-on.</li>
+<li><strong>Name the evidence gaps explicitly.</strong> &ldquo;The end of the journey is evidence-free&rdquo; — fragmented exit data; an anonymous survey that exists but cannot be joined; a single junior-age bucket with gender-only cuts. The honest-constraint thread was the differentiator, and it shaped the pilot designs (cohort-level joins, exit capture, age-restricted training gating).</li>
+<li><strong>Retention masks strain.</strong> Intent to stay stayed strong across every manager cohort, so retention alone would have hidden role strain. The scorecard embedding and the manager-capacity measures exist because of this.</li>
+<li><strong>Done differently next time:</strong> baseline the exit-reason capture earlier (the pilot needed it and it had to be stood up from scratch), and involve the labour/rostering function at ideation rather than at design review — one scope negotiation was avoidable. Also: the healthy-shift scope guardrail should be written into the charter as a hard boundary before fieldwork, not managed reactively.</li>
+</ul>
+</section>
+<section class="art-sec"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2>
+<p>Service-design canon and knowledge library (this repository):</p>
+<ul>
+<li>Polaine, Løvlie &amp; Reason — <em>Service Design: From Insight to Implementation</em> — the governing arc: research to insight, ideas, prototyping, implementation</li>
+<li>Stickdorn, Hormess, Lawrence &amp; Schneider — <em>This Is Service Design Doing</em> — research methods, prototyping to learn, pilots and implementation</li>
+<li>Kalbach — <em>Mapping Experiences</em> — journey anatomy, service blueprints, the line of visibility</li>
+<li>Downe — <em>Good Services</em> — the 15 principles and scorecard method used for the future-state audit</li>
+<li>Heskett, Sasser &amp; Schlesinger — <em>The Service Profit Chain</em> — internal service quality → frontline capability → external value → retention economics</li>
+<li><code>books/03-service-design-from-insight-to-implementation/04-from-research-to-insight.md</code> — ecology-wide research; data→information→insight; insight cards</li>
+<li><code>books/03-service-design-from-insight-to-implementation/05-developing-ideas.md</code> — evidence-led option design; concept evaluation; decision framing</li>
+<li><code>books/03-service-design-from-insight-to-implementation/07-implementation.md</code> — pilots; blueprint-to-owners; frontline enablement triad</li>
+<li><code>books/01-this-is-service-design-doing/04-research-methods.md</code> — triangulation; affinity synthesis; ethics</li>
+<li><code>books/01-this-is-service-design-doing/07-implementation-and-piloting.md</code> — pilot vs rollout; KPI triangulation; failure demand</li>
+<li><code>books/09-mapping-experiences/05-service-blueprints.md</code> — blueprint lanes; three lines; fail-point annotations</li>
+<li><code>books/20-the-service-profit-chain/03-external-service-value.md</code> — the Service Value Equation</li>
+<li><code>books/05-good-services/02-the-fifteen-principles.md</code> — 15 principles; scorecard method</li>
+</ul>
+<p>External sources referenced: hospitality-sector turnover-cost research (industry benchmark literature, genericized); the chain&#39;s 2022 baseline role-design study by an external design consultancy (illustrative method); the chain&#39;s Q1 engagement-survey wave and its platform&#39;s action-planning cycle (genericized). All case figures are illustrative and transformed; no internal documents, URLs, or vendor materials are referenced.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-appendix-artifact-index">Appendix: artifact index</h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Section</th>
+<th>Format</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>20-week arc figure</td>
+<td>3</td>
+<td>fig-lane SVG</td>
+<td>Double Diamond mapped to decision gates</td>
+</tr>
+<tr>
+<td>Gated roadmap</td>
+<td>3</td>
+<td>fig-gantt</td>
+<td>Five phases, April–August, governance gates</td>
+</tr>
+<tr>
+<td>Phase-method-tool table</td>
+<td>3</td>
+<td>table</td>
+<td>SD method to AI execution map</td>
+</tr>
+<tr>
+<td>Attrition chain</td>
+<td>4.2, 5</td>
+<td>fig-lane SVG</td>
+<td>The reframe: three briefs → one problem</td>
+</tr>
+<tr>
+<td>Baseline readout + caveat</td>
+<td>4.1</td>
+<td>pipeline + note</td>
+<td>Strong-agree-only score computation</td>
+</tr>
+<tr>
+<td>Topic validation pass</td>
+<td>4.2</td>
+<td>prompt + record</td>
+<td>AI tags validated against raw comments</td>
+</tr>
+<tr>
+<td>Manager-perception gap</td>
+<td>5</td>
+<td>fig-xy + table</td>
+<td>Crew vs manager ratings, ~25–35 points</td>
+</tr>
+<tr>
+<td>Headline panel</td>
+<td>5</td>
+<td>table</td>
+<td>Engagement measures with reading rules</td>
+</tr>
+<tr>
+<td>First-12-weeks curves</td>
+<td>5</td>
+<td>fig-xy</td>
+<td>The flatline that drove the redesign</td>
+</tr>
+<tr>
+<td>Open-text topic volumes</td>
+<td>5</td>
+<td>fig-xy bars</td>
+<td>Illustrative counts, validated tags</td>
+</tr>
+<tr>
+<td>Journey spine × owners</td>
+<td>5</td>
+<td>fig-lane + table</td>
+<td>Frontstage stages, backstage owners, fail points</td>
+</tr>
+<tr>
+<td>Blueprint options matrix</td>
+<td>4.4, 5</td>
+<td>table</td>
+<td>First-12-weeks vs healthy-shift vs enablement</td>
+</tr>
+<tr>
+<td>Cost-of-turnover model</td>
+<td>5, 8</td>
+<td>table</td>
+<td>Illustrative economics of avoidable attrition</td>
+</tr>
+<tr>
+<td>Persona model</td>
+<td>5</td>
+<td>table</td>
+<td>Four archetypes with design responses</td>
+</tr>
+<tr>
+<td>Sample dataset</td>
+<td>5, data/</td>
+<td>CSV</td>
+<td>16-row onboarding-milestone KPI extract</td>
+</tr>
+<tr>
+<td>Day-1 readiness SOP</td>
+<td>7</td>
+<td>fenced config</td>
+<td>SOP-as-code for agent execution</td>
+</tr>
+<tr>
+<td>Use case flows</td>
+<td>6</td>
+<td>prose + targets</td>
+<td>First 12 weeks, healthy shift, enablement</td>
+</tr>
+<tr>
+<td>GitHub Actions workflow</td>
+<td>9</td>
+<td>fenced YAML</td>
+<td>Artifact validation gates</td>
+</tr>
+<tr>
+<td>KPI tree + scorecard</td>
+<td>8</td>
+<td>table + list</td>
+<td>Value creation and measurement logic</td>
+</tr>
+</tbody></table>
+</section>
+</article>
+</div>
+</main>
+<footer class="footer">
+  <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
+  <span><a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
+</footer>
+<script src="../../assets/site.js"></script>
+
+</body></html>
