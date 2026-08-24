@@ -1,0 +1,343 @@
+/* The Agentic Service Designer — article design system
+   Additive classes for case-study articles: stat blocks, key-insight
+   callouts, pull quotes, persona cards, designed figures, interactive
+   blueprints, data tables, customer-quote cards. */
+
+/* ---------- figure chrome ---------- */
+.fig { margin: 26px 0 30px; }
+.fig svg, .fig .fig-html {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--paper);
+}
+.fig .fig-html { padding: 18px; overflow-x: auto; }
+.fig figcaption {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.fig figcaption .fignum {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ---------- stat blocks ---------- */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 22px 0 26px;
+}
+.stat {
+  background: var(--dark);
+  color: var(--dark-ink);
+  border-radius: var(--radius-card);
+  padding: 18px 16px 14px;
+  min-height: 96px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.stat b {
+  font-size: 34px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  color: var(--dark-ink);
+  font-variant-numeric: tabular-nums;
+}
+.stat span {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #a9a9a3;
+  margin-top: 8px;
+  line-height: 1.4;
+}
+.stat.alt { background: var(--paper-tint); color: var(--ink); border: 1px solid var(--line); }
+.stat.alt b { color: var(--ink); }
+.stat.alt span { color: var(--muted); }
+.stat.accent { background: var(--lavender); }
+.stat.accent b { color: #3a2a5e; }
+.stat.accent span { color: #5c4a85; }
+
+/* ---------- key insight callout ---------- */
+.key-insight {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--ink);
+  border-radius: var(--radius-card);
+  padding: 20px 22px;
+  margin: 24px 0 28px;
+  background: var(--paper-tint);
+}
+.key-insight .ki-label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 8px;
+}
+.key-insight p {
+  font-size: 19px;
+  line-height: 1.45;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  margin: 0;
+  color: var(--ink);
+}
+.key-insight p em { font-style: italic; color: var(--ink-soft); }
+
+/* ---------- pull quote ---------- */
+.pullquote {
+  margin: 26px 0 30px;
+  padding: 22px 26px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+.pullquote p {
+  font-size: 22px;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  margin: 0;
+  color: var(--ink);
+}
+.pullquote p::before { content: "“"; }
+.pullquote p::after { content: "”"; }
+.pullquote cite {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-style: normal;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ---------- customer quote card ---------- */
+.quote-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  padding: 16px 18px 14px;
+  margin: 14px 0;
+  background: var(--paper);
+  position: relative;
+}
+.quote-card::before {
+  content: "“";
+  position: absolute;
+  top: -6px;
+  left: 12px;
+  font-size: 40px;
+  line-height: 1;
+  color: var(--line-strong);
+  font-family: Georgia, serif;
+}
+.quote-card p { margin: 6px 0 8px; font-size: 14.5px; font-style: italic; color: var(--ink); }
+.quote-card span {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ---------- persona cards ---------- */
+.persona-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin: 22px 0 26px;
+}
+.persona-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--paper);
+  overflow: hidden;
+}
+.persona-card .persona-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-tint);
+}
+.persona-card .persona-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--dark);
+  color: var(--dark-ink);
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  flex: none;
+}
+.persona-card .persona-name { font-weight: 600; font-size: 14.5px; }
+.persona-card .persona-role {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.persona-card .persona-body { padding: 12px 16px 14px; }
+.persona-card .persona-body h5 {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  margin: 10px 0 5px;
+  font-weight: 500;
+}
+.persona-card .persona-body h5:first-child { margin-top: 0; }
+.persona-card .persona-body p { margin: 0 0 4px; font-size: 13px; line-height: 1.5; }
+.persona-card .persona-body ul { margin: 0; padding-left: 16px; }
+.persona-card .persona-body li { font-size: 13px; line-height: 1.5; margin: 0 0 3px; }
+
+/* ---------- interactive blueprint ---------- */
+.blueprint {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  font-size: 13px;
+  background: var(--paper);
+}
+.blueprint caption {
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  padding: 0 0 8px;
+}
+.blueprint th {
+  background: var(--dark);
+  color: var(--dark-ink);
+  font-weight: 500;
+  font-size: 11.5px;
+  text-align: left;
+  padding: 9px 12px;
+  border: 1px solid #2a2b29;
+  letter-spacing: 0.02em;
+  position: sticky;
+  top: 0;
+}
+.blueprint td { border: 1px solid var(--line); padding: 8px 12px; vertical-align: top; }
+.blueprint tr.lane td:first-child {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+  background: var(--paper-tint);
+  white-space: nowrap;
+  font-weight: 500;
+}
+.blueprint .cell {
+  cursor: pointer;
+  transition: background var(--fast) var(--ease);
+}
+.blueprint .cell:hover { background: var(--butter); }
+.blueprint .cell.open { background: var(--sage); }
+.blueprint .cell-detail {
+  display: none;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--line-strong);
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+.blueprint details[open] .cell-detail { display: block; }
+.blueprint details[open] > summary::after { content: " ▴"; font-family: var(--mono); font-size: 10px; }
+.blueprint details:not([open]) > summary::after { content: " ▾"; font-family: var(--mono); font-size: 10px; color: var(--muted); }
+.blueprint summary { cursor: pointer; list-style: none; }
+.blueprint summary::-webkit-details-marker { display: none; }
+.blueprint .fail { background: #fdf3f2; }
+.blueprint .fail:hover { background: #fbeae8; }
+.blueprint .fail .cell-detail { color: #8a3b32; }
+.blueprint .fp {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #8a3b32;
+  border: 1px solid #e5b8b2;
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-left: 6px;
+}
+
+/* ---------- data table ---------- */
+.data-table { border-collapse: collapse; width: 100%; margin: 18px 0 24px; font-size: 13.5px; }
+.data-table th {
+  border-bottom: 2px solid var(--ink);
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12.5px;
+}
+.data-table td { border-bottom: 1px solid var(--line); padding: 8px 12px; vertical-align: top; }
+.data-table tbody tr:nth-child(even) { background: var(--paper-tint); }
+.data-table tbody tr:hover { background: var(--blue); }
+.data-table td.num, .data-table th.num { text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 13px; }
+
+/* ---------- metric chips ---------- */
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 22px; }
+.metric-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 14px;
+  background: var(--paper);
+  font-size: 13px;
+}
+.metric-chip b { font-size: 16px; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+.metric-chip.dark { background: var(--dark); color: var(--dark-ink); border-color: var(--dark); }
+.metric-chip.dark b { color: var(--dark-ink); }
+.metric-chip.dark span { color: #a9a9a3; }
+
+/* ---------- typography refinements ---------- */
+.art-body .lead { font-size: 16.5px; line-height: 1.6; color: var(--ink-soft); }
+.art-body strong { font-weight: 600; }
+.art-body .sec-kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 6px;
+}
+.art-body p { line-height: 1.68; }
+
+/* keep the old figure svg from overflowing */
+.fig { overflow-x: auto; }
+.fig svg { min-width: 0; }
