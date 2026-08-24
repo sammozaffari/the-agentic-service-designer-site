@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Service Blueprint — Nine Stages, Nine Lanes · The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --phys:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#1e293b; --mut:#64748b; --bg:#f8fafc; --line:#e2e8f0; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 22px 60px}
+      .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:0 0 6px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px}
+  .sub{color:var(--mut);margin:0 0 14px;font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mut)}
+  .chip.kind{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
+  nav.sibs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px;font-size:12.5px}
+  nav.sibs a{text-decoration:none;color:#334155;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  nav.sibs a.here{background:#1e293b;color:#fff;border-color:#1e293b}
+  h2{font-size:20px;margin:36px 0 10px;padding-top:10px;border-top:2px solid var(--line)}
+  h3{font-size:16px;margin:18px 0 6px}
+  p{margin:8px 0}
+  .legend{position:sticky;top:0;z-index:20;background:rgba(248,250,252,.96);backdrop-filter:blur(3px);
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-wrap:wrap;gap:12px;
+    font-size:11.5px;color:#334155;margin:0 0 20px}
+  .legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+  .n-wait{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px;
+    background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px)}
+  .n-fail{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid var(--fail);vertical-align:-1px;margin-right:4px}
+  .n-hand{display:inline-block;width:12px;height:12px;border:2px dashed #475569;border-radius:3px;vertical-align:-2px;margin-right:4px}
+  .n-dec{display:inline-block;width:9px;height:9px;background:#475569;transform:rotate(45deg);vertical-align:0;margin-right:6px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:12.5px;table-layout:fixed}
+  th{background:#f1f5f9;text-align:left;padding:8px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#475569;border-bottom:2px solid var(--line)}
+  th.stage{background:#1e293b;color:#fff;font-size:12px;letter-spacing:.02em;text-transform:none}
+  th.stage .t{display:block;font-size:10.5px;color:#cbd5e1;font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+  th.rowlab{width:118px}
+  td{padding:8px 8px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+  td:last-child{border-right:none}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#f8fafc}
+  td.rowlab{background:#f1f5f9;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .lane-cust td .a{color:var(--cust);font-weight:600}
+  .lane-front td .a{color:var(--front)}
+  .lane-back td .a{color:var(--back)}
+  .lane-phys td .a{color:var(--phys)}
+  .sys{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;
+    color:#0e7490;background:#ecfeff;border:1px solid #a5f3fc;border-radius:4px;padding:0 5px;margin:1px 1px}
+  .spark{display:flex;flex-direction:column;align-items:center;gap:3px}
+  .spark .bar{width:20px;border-radius:3px 3px 0 0}
+  .spark .sc{font-size:10px;font-weight:700;color:#64748b}
+  .chipnode{display:inline-block;font-size:10px;font-weight:700;border-radius:999px;padding:1px 7px;margin:1px 1px;white-space:nowrap}
+  .c-wait{background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px);color:#334155}
+  .c-fail{border:2px solid var(--fail);color:var(--fail);background:#fff}
+  .c-hand{border:2px dashed #475569;color:#334155;background:#fff}
+  .c-dec{border:1.5px solid #475569;color:#fff;background:#475569}
+  .ev{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;color:#0e7490}
+  .note{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:#0e7490;white-space:nowrap}
+  .note-desc{font-size:12.5px;color:#475569}
+  .rubric{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0;font-size:12px}
+  .rub{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px}
+  .rub .bar{width:14px;height:34px;border-radius:3px 3px 0 0;flex:0 0 auto}
+  footer{margin-top:40px;padding-top:14px;border-top:2px solid var(--line);font-size:12.5px;color:var(--mut)}
+  @media (max-width:900px){table{font-size:11px}th.rowlab{width:74px}.wrap{padding:14px}}
+  @media print{
+    body{background:#fff;font-size:10px}
+    .wrap{max-width:none;padding:0}
+    .legend{position:static;backdrop-filter:none}
+    nav.sibs{display:none}
+    tr{break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+    h2{break-after:avoid}
+    table{table-layout:auto}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">Crew Recruitment &amp; Onboarding · Global Quick-Service Chain · Artifact 05</p>
+  <h1>Service Blueprint — Nine Stages, Nine Lanes</h1>
+  <p class="sub">The layered current-state map of recruitment and onboarding across the network — frontstage experience, backstage machinery, and the fail points in between.</p>
+
+  <div class="chips"><span class="chip kind">Template kind 12 · service-blueprint</span><span class="chip">Phase: Mapping (weeks 6–10)</span><span class="chip">9 stages × 9 lanes · Fail points: 9</span></div>
+
+  <nav class="sibs"><a href="brief.html">Brief</a><a href="research-summary.html">Research</a><a href="persona-set.html">Personas</a><a href="journey-map.html">Journey</a><a href="service-blueprint.html" class="here">Blueprint</a><a href="proposals.html">Proposals</a></nav>
+
+  <div class="legend"><span><span class="sw" style="background:#2563eb"></span>Journey-subject actions</span><span><span class="sw" style="background:#16a34a"></span>Frontstage</span><span><span class="sw" style="background:#d97706"></span>Backstage</span><span><span class="sw" style="background:#0891b2"></span>Systems &amp; data</span><span><span class="sw" style="background:#64748b"></span>Physical evidence</span><span><span class="n-wait"></span>Wait</span><span><span class="n-fail"></span>Fail-risk</span><span><span class="n-hand"></span>Handoff</span><span><span class="n-dec"></span>Decision</span><span style="margin-left:auto">Emotion −2 … +2 (see rubric)</span></div><h2>The layered map</h2>
+<div style="overflow-x:auto"><table><thead><tr><th class="rowlab">Lane / stage</th><th class="stage">Identify<span class="t">first thinking</span></th><th class="stage">Search<span class="t">finding roles</span></th><th class="stage">Consider<span class="t">weighing the job</span></th><th class="stage">Apply<span class="t">the application</span></th><th class="stage">Interview<span class="t">first human touch</span></th><th class="stage">Offer<span class="t">paperwork starts</span></th><th class="stage">Accept<span class="t">documents &amp; consent</span></th><th class="stage">Onboard<span class="t">systems &amp; setup</span></th><th class="stage">Start<span class="t">first shift</span></th></tr></thead><tbody><tr class="lane-cust"><td class="rowlab">External</td><td>Consumer brand dominates; no employer voice <span class="chipnode c-fail">F-01</span></td><td>Listings via careers site; the app is not built for jobs</td><td>No separate employer story</td><td>Form live 24/7; no response SLA</td><td>Dining room or food court</td><td>Offer by email — can land in spam <span class="chipnode c-fail">F-04</span></td><td>Parental consent; first bank and tax setup <span class="chipnode c-fail">F-05</span></td><td>Guided document submission; identity checks</td><td>Uniform may not have arrived <span class="chipnode c-fail">F-07</span></td></tr><tr class="lane-front"><td class="rowlab">Frontstage (candidate)</td><td>Word of mouth; walk-ins; constant hiring</td><td>Browses roles; hours unclear <span class="chipnode c-wait">W-01</span></td><td>No one to ask</td><td>Fills unnecessary fields; repeats info across stores <span class="chipnode c-fail">F-02</span></td><td>Rushed interview; no rapport <span class="chipnode c-fail">F-03</span> <span class="chipnode c-wait">W-02</span></td><td>Signs the offer; starts the paperwork</td><td>Re-uploads documents; consent expiry <span class="chipnode c-hand">H-02</span></td><td>Cannot log in; record not in scheduling <span class="chipnode c-fail">F-06</span></td><td>Trainee in the way; no colleague introduction</td></tr><tr class="lane-back"><td class="rowlab">Backstage (people)</td><td>Hiring inside the manager’s day; no proactive recruiting <span class="note">Manager</span></td><td>Posts left live; roles never closed <span class="note">Manager</span></td><td>Reviews arrive in bursts <span class="note">Manager</span></td><td>Re-keys data across systems; texts candidates <span class="chipnode c-hand">H-01</span></td><td>No-shows; managers wait “just in case” <span class="note">Manager</span></td><td>Manual offer paperwork <span class="note">People function</span></td><td>Documents chased; wrong docs found at pay time <span class="note">Payroll</span></td><td>Payroll validates; full-pack push-back on failure; setup pushes at 12:00 and 18:00 <span class="note">Payroll</span></td><td>No data on who showed up <span class="chipnode c-fail">F-08</span></td></tr><tr class=""><td class="rowlab">Processes</td><td>Bench planning; expectation to hire every four weeks</td><td>Job-post workflow</td><td>—</td><td>Application review; rejection left unclicked</td><td>Interview guidance; rapport not guided</td><td>Offer preparation</td><td>Consent flow; expiry after 7 days</td><td>Record creation; two daily pushes</td><td>First-shift checklist; buddy model</td></tr><tr class=""><td class="rowlab">Systems</td><td><span class="sys">careers site</span></td><td><span class="sys">careers site</span> <span class="sys">recruiting platform</span></td><td><span class="sys">careers site</span></td><td><span class="sys">recruiting platform</span> <span class="sys">candidate records</span></td><td><span class="sys">interview calendar</span> <span class="sys">recruiting platform</span></td><td><span class="sys">recruiting platform</span> <span class="sys">payroll</span></td><td><span class="sys">work-rights check</span> <span class="sys">payroll</span></td><td><span class="sys">payroll</span> <span class="sys">time &amp; attendance</span> <span class="sys">employee records</span></td><td><span class="sys">learning</span> <span class="sys">uniform supply</span> <span class="sys">time &amp; attendance</span></td></tr><tr class=""><td class="rowlab">Integration</td><td>—</td><td>Careers site → recruiting platform</td><td>—</td><td>Platform → candidate record</td><td>Calendar invites; work-rights handoff <span class="chipnode c-hand">H-03</span></td><td>Onboarding form → payroll; confirmation back</td><td>Work-rights status → platform</td><td>Record creation; two daily pushes; validation with push-back</td><td>—</td></tr><tr class=""><td class="rowlab">Automation</td><td>—</td><td>—</td><td>—</td><td>Screening conversation; reminders at 24/48/72h <span class="chipnode c-dec">D-01</span></td><td>Auto-scheduled interviews <span class="chipnode c-dec">D-02</span></td><td>Automated offer; dispositioning after 10 days</td><td>Guided capture; human review lane</td><td>Automated employee-record setup</td><td>In-flow surveys after interview, decline, and hire</td></tr><tr class=""><td class="rowlab">Measures &amp; metrics</td><td>No funnel reporting</td><td>Time-to-hire not visible</td><td>—</td><td>Funnel drop-off (~45% baseline)</td><td>Application→interview days (≤ 2 target)</td><td>Interview→offer days</td><td>Consent expiry rate</td><td>Setup success; first-shift data (no data) <span class="chipnode c-fail">F-09</span></td><td>First-shift attendance; 90-day retention (no data)</td></tr></tbody></table></div><h2>Fail-point ledger (F-01…F-09)</h2>
+<table><thead><tr><th>ID</th><th>Stage</th><th>Failure</th><th>Owner</th></tr></thead><tbody><tr><td>F-01</td><td>Identify</td><td>No employer brand; no proactive recruitment</td><td>People function</td></tr><tr><td>F-02</td><td>Apply</td><td>~45% drop-off; unnecessary asks; information repeated across stores</td><td>Application product</td></tr><tr><td>F-03</td><td>Interview</td><td>Dining-room interviews; silent rejection at 7/14 days</td><td>Hiring-manager enablement</td></tr><tr><td>F-04</td><td>Offer</td><td>Offers lost to spam; work-rights check the hardest part of the experience</td><td>Payroll & HR admin</td></tr><tr><td>F-05</td><td>Accept</td><td>Parental-consent forms expire after 7 days; first-time bank, tax, and identity setup</td><td>Compliance</td></tr><tr><td>F-06</td><td>Onboard</td><td>Employee record not in scheduling by login time; wrong documents found at pay time</td><td>Technology</td></tr><tr><td>F-07</td><td>Start</td><td>Uniforms and name badges not arriving; hallway training; no chance to meet the team</td><td>Onboarding & supply</td></tr><tr><td>F-08</td><td>Start</td><td>No data on who actually attended a first shift</td><td>Data & measurement</td></tr><tr><td>F-09</td><td>Measures</td><td>No 90-day retention data; reports capped at 90 days</td><td>Data & measurement</td></tr></tbody></table><h2>Reading the blueprint</h2>
+<p>The line of visibility sits between the candidate’s experience and the machinery that produces it. Work-rights verification stays backstage, but the candidate always knows the check is running and what to do if it stalls. The two empty cells — first-shift attendance and 90-day retention — are drawn as explicit no-data cells with owners, not omitted.</p><p>The re-hire branch is a first-class path: candidates who previously worked for the same franchisee group skip the work-rights check and onboarding and transfer their existing record — training and credentials carried over; everyone else runs the full workflow with new records.</p>
+
+  <footer><span>Artifact 05 · service blueprint</span> · Figures consistent with the companion case article.</footer>
+</div>
+</body>
+</html>

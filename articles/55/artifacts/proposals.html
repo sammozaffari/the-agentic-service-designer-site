@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposals — Automation for the Application→Interview Core · The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --phys:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#1e293b; --mut:#64748b; --bg:#f8fafc; --line:#e2e8f0; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 22px 60px}
+      .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:0 0 6px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px}
+  .sub{color:var(--mut);margin:0 0 14px;font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mut)}
+  .chip.kind{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
+  nav.sibs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px;font-size:12.5px}
+  nav.sibs a{text-decoration:none;color:#334155;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  nav.sibs a.here{background:#1e293b;color:#fff;border-color:#1e293b}
+  h2{font-size:20px;margin:36px 0 10px;padding-top:10px;border-top:2px solid var(--line)}
+  h3{font-size:16px;margin:18px 0 6px}
+  p{margin:8px 0}
+  .legend{position:sticky;top:0;z-index:20;background:rgba(248,250,252,.96);backdrop-filter:blur(3px);
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-wrap:wrap;gap:12px;
+    font-size:11.5px;color:#334155;margin:0 0 20px}
+  .legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+  .n-wait{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px;
+    background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px)}
+  .n-fail{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid var(--fail);vertical-align:-1px;margin-right:4px}
+  .n-hand{display:inline-block;width:12px;height:12px;border:2px dashed #475569;border-radius:3px;vertical-align:-2px;margin-right:4px}
+  .n-dec{display:inline-block;width:9px;height:9px;background:#475569;transform:rotate(45deg);vertical-align:0;margin-right:6px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:12.5px;table-layout:fixed}
+  th{background:#f1f5f9;text-align:left;padding:8px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#475569;border-bottom:2px solid var(--line)}
+  th.stage{background:#1e293b;color:#fff;font-size:12px;letter-spacing:.02em;text-transform:none}
+  th.stage .t{display:block;font-size:10.5px;color:#cbd5e1;font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+  th.rowlab{width:118px}
+  td{padding:8px 8px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+  td:last-child{border-right:none}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#f8fafc}
+  td.rowlab{background:#f1f5f9;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .lane-cust td .a{color:var(--cust);font-weight:600}
+  .lane-front td .a{color:var(--front)}
+  .lane-back td .a{color:var(--back)}
+  .lane-phys td .a{color:var(--phys)}
+  .sys{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;
+    color:#0e7490;background:#ecfeff;border:1px solid #a5f3fc;border-radius:4px;padding:0 5px;margin:1px 1px}
+  .spark{display:flex;flex-direction:column;align-items:center;gap:3px}
+  .spark .bar{width:20px;border-radius:3px 3px 0 0}
+  .spark .sc{font-size:10px;font-weight:700;color:#64748b}
+  .chipnode{display:inline-block;font-size:10px;font-weight:700;border-radius:999px;padding:1px 7px;margin:1px 1px;white-space:nowrap}
+  .c-wait{background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px);color:#334155}
+  .c-fail{border:2px solid var(--fail);color:var(--fail);background:#fff}
+  .c-hand{border:2px dashed #475569;color:#334155;background:#fff}
+  .c-dec{border:1.5px solid #475569;color:#fff;background:#475569}
+  .ev{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;color:#0e7490}
+  .note{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:#0e7490;white-space:nowrap}
+  .note-desc{font-size:12.5px;color:#475569}
+  .rubric{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0;font-size:12px}
+  .rub{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px}
+  .rub .bar{width:14px;height:34px;border-radius:3px 3px 0 0;flex:0 0 auto}
+  footer{margin-top:40px;padding-top:14px;border-top:2px solid var(--line);font-size:12.5px;color:var(--mut)}
+  @media (max-width:900px){table{font-size:11px}th.rowlab{width:74px}.wrap{padding:14px}}
+  @media print{
+    body{background:#fff;font-size:10px}
+    .wrap{max-width:none;padding:0}
+    .legend{position:static;backdrop-filter:none}
+    nav.sibs{display:none}
+    tr{break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+    h2{break-after:avoid}
+    table{table-layout:auto}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">Crew Recruitment &amp; Onboarding · Global Quick-Service Chain · Artifact 06</p>
+  <h1>Proposals — Automation for the Application→Interview Core</h1>
+  <p class="sub">The concept direction “Hire in Days, Not Weeks”: five components, the screening decision logic, and a rollout that keeps the compliant path the easy path.</p>
+
+  <div class="chips"><span class="chip kind">Template kind 15 · proposals</span><span class="chip">Phase: Ideation → Implementation (weeks 9–16)</span><span class="chip">Components: 5 · DFV 4.5</span></div>
+
+  <nav class="sibs"><a href="brief.html">Brief</a><a href="research-summary.html">Research</a><a href="persona-set.html">Personas</a><a href="journey-map.html">Journey</a><a href="service-blueprint.html">Blueprint</a><a href="proposals.html" class="here">Proposals</a></nav>
+
+  <div class="rubric" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))"><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">≈1.6 days</span><span style="font-size:11px;color:#cbd5e1">application→interview, after (was days–weeks)</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">24/48/72h</span><span style="font-size:11px;color:#cbd5e1">incomplete-application reminders</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">10 days</span><span style="font-size:11px;color:#cbd5e1">no-action dispositioning</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">9 in 10</span><span style="font-size:11px;color:#cbd5e1">restaurant teams positive</span></div></div><h2>The concept direction — Hire in Days, Not Weeks</h2>
+<p>The convergence call: automate the application→interview core first, because that is where the funnel bleeds and where the chain controls the surface. Five components, scored desirability 4.5 · feasibility 4.1 · viability 4.3 (DFV, 1–5):</p><div class="rubric" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr))"><div class="rub" style="display:block;padding:12px 14px"><strong style="font-size:13.5px">AI assistant</strong><div style="margin-top:4px;font-size:12.5px;color:#334155">Screens with five conversational questions — age, work rights, availability, shifts per week, high-demand shift availability — and answers candidate questions day or night.</div></div><div class="rub" style="display:block;padding:12px 14px"><strong style="font-size:13.5px">Auto-scheduled interviews</strong><div style="margin-top:4px;font-size:12.5px;color:#334155">High-fit candidates get an interview invitation in the conversation itself; reminders at 24/48/72 hours; unreachable candidates dispositioned after 10 days of no action.</div></div><div class="rub" style="display:block;padding:12px 14px"><strong style="font-size:13.5px">Integrated work-rights verification</strong><div style="margin-top:4px;font-size:12.5px;color:#334155">Automated document, biometric, and registry checks with a human review lane; guided capture for candidates without photo identification.</div></div><div class="rub" style="display:block;padding:12px 14px"><strong style="font-size:13.5px">Automated employee-record setup</strong><div style="margin-top:4px;font-size:12.5px;color:#334155">Employee record created at offer; two daily pushes to scheduling; payroll validation with full-pack push-back on failure.</div></div><div class="rub" style="display:block;padding:12px 14px"><strong style="font-size:13.5px">Re-hire branch</strong><div style="margin-top:4px;font-size:12.5px;color:#334155">Same franchisee group: skip work-rights and onboarding, transfer the record. Different group or first job: full workflow with new records.</div></div></div><h2>Screening decision logic</h2>
+<table><thead><tr><th>Rule</th><th>Route</th></tr></thead><tbody><tr><td>Minimum-age gate</td><td>Under-18 branch: parental-consent flow runs first; never disposition before consent is attempted</td></tr><tr><td>Work-rights flag</td><td>Automated checks; failure → human review lane → accept or reject with the reason emailed</td></tr><tr><td>High-demand shift = YES and 3–5 shifts per week</td><td>AUTO-SCHEDULED interview</td></tr><tr><td>Any other combination</td><td>Availability in review — hiring-manager queue</td></tr><tr><td>Incomplete application</td><td>Reminders at 24/48/72 hours</td></tr><tr><td>No action after 10 days</td><td>Dispositioned; the loop is closed</td></tr></tbody></table><p>The logic was simulated against 1,000 seeded applicants before build, with the auto-scheduling rule held fixed even when the first pass showed only 61% of high-fit candidates confirming interviews — the fix was the reminder cadence, not a looser rule.</p><h2>Rollout plan</h2>
+<table><thead><tr><th>Phase</th><th>Timeline</th><th>Content</th></tr></thead><tbody><tr><td>Simulation</td><td>weeks 10–13</td><td>1,000 seeded applicants through the decision matrix; thresholds set before the run; the 61% first-pass confirmation rate drove the reminder cadence, not a looser rule</td></tr><tr><td>Pilot lanes</td><td>weeks 12–14</td><td>Two franchisee groups; manager walkthroughs; the review queue tuned so the oldest and borderline cases surface first</td></tr><tr><td>Go live</td><td>weeks 14–16</td><td>Sequence: screen → schedule → verify → set up; weekly steering with the people function; compliance-locked rules enforced in CI</td></tr><tr><td>Measure</td><td>week 15+</td><td>Dashboard pulls replace on-request reporting; in-flow surveys after interview, decline, and hire; the measurement gaps instrumented with owners</td></tr></tbody></table><h2>Safeguards &amp; controls</h2>
+<ul><li><strong>Compliance locked.</strong> Anything touching age, parental consent, or work rights carries a compliance label; merge is blocked without people-function and compliance sign-off.</li><li><strong>Human review lanes.</strong> Identity checks that cannot auto-confirm go to a person, with the reason given to the candidate.</li><li><strong>Candidate data privacy.</strong> Agents work on pseudonymized transcripts and fixed-seed sample data only; consent, age, and work-rights flows follow data minimization.</li><li><strong>Honest measurement.</strong> No first-shift or 90-day retention data exists yet — each gap is a documented finding with an owner and a target instrument.</li></ul><h2>Value model</h2>
+<table><thead><tr><th>KPI</th><th>Baseline</th><th>Target / after</th></tr></thead><tbody><tr><td>Application→interview confirmation</td><td>Erratic; days to weeks</td><td>0–2 days, avg ≈1.6</td></tr><tr><td>Interview→offer</td><td>Up to a week; manual paperwork</td><td>2–4 days, avg ≈3.5</td></tr><tr><td>Careers-site funnel drop-off</td><td>~45%</td><td>≤ 25%</td></tr><tr><td>Manager admin per hire</td><td>Hours; re-keying; texting candidates</td><td>Minutes; ~80% effort reduction</td></tr><tr><td>Restaurant-team feedback</td><td>Mixed; documented pain</td><td>9 in 10 positive</td></tr><tr><td>Crew fill, one franchisee group</td><td>Roughly full</td><td>Above target (+12 pts)</td></tr><tr><td>First-shift attendance / 90-day retention</td><td>No data</td><td>Instrumented; findings owned</td></tr></tbody></table><h2>Known friction, carried into the backlog</h2>
+<p>Document capture still fails for some candidates and requires a ticket; the manager review surface needs simplification; there is no bulk update, so candidates are actioned one by one; the platform date selector makes it easy to pick the wrong year. Each was logged as open work, not hidden.</p>
+
+  <footer><span>Artifact 06 · proposals</span> · Figures consistent with the companion case article.</footer>
+</div>
+</body>
+</html>

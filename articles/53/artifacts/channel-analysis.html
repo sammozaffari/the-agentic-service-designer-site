@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Channel Analysis — Installation Is Not Adoption · The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --phys:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#1e293b; --mut:#64748b; --bg:#f8fafc; --line:#e2e8f0; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 22px 60px}
+      .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:0 0 6px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px}
+  .sub{color:var(--mut);margin:0 0 14px;font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mut)}
+  .chip.kind{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
+  nav.sibs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px;font-size:12.5px}
+  nav.sibs a{text-decoration:none;color:#334155;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  nav.sibs a.here{background:#1e293b;color:#fff;border-color:#1e293b}
+  h2{font-size:20px;margin:36px 0 10px;padding-top:10px;border-top:2px solid var(--line)}
+  h3{font-size:16px;margin:18px 0 6px}
+  p{margin:8px 0}
+  .legend{position:sticky;top:0;z-index:20;background:rgba(248,250,252,.96);backdrop-filter:blur(3px);
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-wrap:wrap;gap:12px;
+    font-size:11.5px;color:#334155;margin:0 0 20px}
+  .legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+  .n-wait{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px;
+    background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px)}
+  .n-fail{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid var(--fail);vertical-align:-1px;margin-right:4px}
+  .n-hand{display:inline-block;width:12px;height:12px;border:2px dashed #475569;border-radius:3px;vertical-align:-2px;margin-right:4px}
+  .n-dec{display:inline-block;width:9px;height:9px;background:#475569;transform:rotate(45deg);vertical-align:0;margin-right:6px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:12.5px;table-layout:fixed}
+  th{background:#f1f5f9;text-align:left;padding:8px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#475569;border-bottom:2px solid var(--line)}
+  th.stage{background:#1e293b;color:#fff;font-size:12px;letter-spacing:.02em;text-transform:none}
+  th.stage .t{display:block;font-size:10.5px;color:#cbd5e1;font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+  th.rowlab{width:118px}
+  td{padding:8px 8px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+  td:last-child{border-right:none}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#f8fafc}
+  td.rowlab{background:#f1f5f9;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .lane-cust td .a{color:var(--cust);font-weight:600}
+  .lane-front td .a{color:var(--front)}
+  .lane-back td .a{color:var(--back)}
+  .lane-phys td .a{color:var(--phys)}
+  .sys{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;
+    color:#0e7490;background:#ecfeff;border:1px solid #a5f3fc;border-radius:4px;padding:0 5px;margin:1px 1px}
+  .spark{display:flex;flex-direction:column;align-items:center;gap:3px}
+  .spark .bar{width:20px;border-radius:3px 3px 0 0}
+  .spark .sc{font-size:10px;font-weight:700;color:#64748b}
+  .chipnode{display:inline-block;font-size:10px;font-weight:700;border-radius:999px;padding:1px 7px;margin:1px 1px;white-space:nowrap}
+  .c-wait{background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px);color:#334155}
+  .c-fail{border:2px solid var(--fail);color:var(--fail);background:#fff}
+  .c-hand{border:2px dashed #475569;color:#334155;background:#fff}
+  .c-dec{border:1.5px solid #475569;color:#fff;background:#475569}
+  .ev{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;color:#0e7490}
+  .note{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:#0e7490;white-space:nowrap}
+  .note-desc{font-size:12.5px;color:#475569}
+  .rubric{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0;font-size:12px}
+  .rub{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px}
+  .rub .bar{width:14px;height:34px;border-radius:3px 3px 0 0;flex:0 0 auto}
+  footer{margin-top:40px;padding-top:14px;border-top:2px solid var(--line);font-size:12.5px;color:var(--mut)}
+  @media (max-width:900px){table{font-size:11px}th.rowlab{width:74px}.wrap{padding:14px}}
+  @media print{
+    body{background:#fff;font-size:10px}
+    .wrap{max-width:none;padding:0}
+    .legend{position:static;backdrop-filter:none}
+    nav.sibs{display:none}
+    tr{break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+    h2{break-after:avoid}
+    table{table-layout:auto}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">Kiosk Channel Strategy · Self-Service Redesign · Artifact 02</p>
+  <h1>Channel Analysis — Installation Is Not Adoption</h1>
+  <p class="sub">Channel-mix and adoption evidence by store format — usage follows customer flow and floor support, not the presence of the machine.</p>
+
+  <div class="chips"><span class="chip kind">Template kind 04 · channel review</span><span class="chip">Phase: Research (weeks 1–8)</span><span class="chip">Evidence: channel-mix baseline</span><span class="chip">4 store formats + store-level clusters</span></div>
+
+  <nav class="sibs"><a href="brief.html">Brief</a><a href="channel-analysis.html" class="here">Channel</a><a href="benchmark-report.html">Benchmark</a><a href="journey-map.html">Journey Map</a><a href="service-blueprint.html">Blueprint</a><a href="analysis-report.html">Analysis</a></nav>
+
+  <h2>Headline evidence</h2>
+<div class="rubric" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))"><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">2×/yr</span><span style="font-size:11px;color:#cbd5e1">channel growth for three consecutive years</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">~15%</span><span style="font-size:11px;color:#cbd5e1">self-service share of in-store sales, network</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">~41%</span><span style="font-size:11px;color:#cbd5e1">share at inline-format stores</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">~9%</span><span style="font-size:11px;color:#cbd5e1">share at drive-thru-led stores</span></div></div><h2>Channel mix by store format</h2>
+<div style="overflow-x:auto"><table><thead><tr><th>Store format</th><th>Share of in-store sales</th><th>What drives it</th><th>Design implication</th></tr></thead><tbody><tr><td>Drive-thru-led</td><td>~9%</td><td>Counter flow dominates; the machine is present but not central</td><td>Differentiated expectations; targeted coaching; front-counter team strength kept parallel with the drive-thru</td></tr><tr><td>Mall</td><td>~30%</td><td>Dwell time and mall traffic drive usage</td><td>Staff kiosks to mall peaks; hourly high-touch-surface cleaning</td></tr><tr><td>Inline</td><td>~41%</td><td>The highest-usage standard format</td><td>The model deployment: zones, staffing, simplified menus</td></tr><tr><td>Highest-usage group</td><td>~70%</td><td>Years of a mature floor-role program</td><td>The ceiling the standard is built to reach</td></tr></tbody></table></div><p>Installation is uniform; adoption is not. The same machine and the same menu produced wildly different shares — usage follows customer flow and floor support, not the presence of the hardware.</p><h2>The adoption trajectory</h2>
+<div style="overflow-x:auto"><table><thead><tr><th>Period</th><th>Network share</th><th>Reading</th></tr></thead><tbody><tr><td>Year 1</td><td>Low single digits</td><td>Channel established; no operating model built around it</td></tr><tr><td>Year 2</td><td>~5%</td><td>Doubled year over year; still no training, rollout, or floor role</td></tr><tr><td>Year 3</td><td>~15%</td><td>Third consecutive doubling; growth outruns the operating model</td></tr><tr><td>New install, first 6 months</td><td>≥80% target</td><td>The floor-role standard trigger: the role is required until adoption reaches 80% of in-store sales</td></tr></tbody></table></div><h2>Store-level clusters: adoption is a design outcome, not luck</h2>
+<p>Store-level adoption tracking split same-format stores into clusters. In steady-flow clusters, kiosks stayed below ~15% of front-counter sales; in high-flow clusters they reached 30–60%+ of front-counter sales. The difference was not the machine: it was zone design, menu-board decisions, and whether staff were trained and rostered to support new users.</p><div style="overflow-x:auto"><table><thead><tr><th class="rowlab">Lane / stage</th><th class="stage">Steady-flow clusters<span class="t">machine present, counter flow wins</span></th><th class="stage">High-flow clusters<span class="t">machine wins the flow</span></th></tr></thead><tbody><tr class="lane-cust"><td class="rowlab">Zone design</td><td><span class="chipnode c-dec">decision</span> no defined order or pick-up zone</td><td><span class="chipnode c-dec">decision</span> defined order &amp; pick-up zones; order-ready screen</td></tr><tr class="lane-phys"><td class="rowlab">Menu boards</td><td>boards retained above the kiosks</td><td><span class="chipnode c-dec">decision</span> boards removed after the mirror study overturned them</td></tr><tr class="lane-back"><td class="rowlab">Staffing &amp;amp; training</td><td><span class="chipnode c-fail">fail</span> no one rostered to the foyer</td><td>staff trained and rostered to support new users</td></tr><tr class="lane-back"><td class="rowlab">Queue routing</td><td><span class="chipnode c-wait">wait</span> cash queue merges at the counter</td><td><span class="chipnode c-hand">hand</span> stealth register takes cash off the queue</td></tr><tr class="lane-front"><td class="rowlab">Result</td><td><span class="chipnode c-fail">fail</span> share below ~15%</td><td><span class="chipnode c-dec">decision</span> share 30–60%+ of front-counter sales</td></tr></tbody></table></div><h2>Channel mix 2023</h2>
+<p>In-store channel mix at the end of the period: drive-thru ~56%, delivery ~10%, front counter ~34%. Digital growth raised the bar for the front counter: the training and strength of team members on the front counter must run parallel with that of those on the drive-thru.</p><p><span class="sys">time &amp;amp; attendance platform — no foyer roster slot</span> <span class="sys">learning platform — no channel training</span> <span class="sys">guest feedback program — two-scale mining</span> <span class="sys">POS · kitchen display · collection screen</span> <span class="sys">kiosk menu — nightly refresh</span></p><h2>What this means for the design</h2>
+<p>Deploy per format with differentiated expectations; target coaching at low-adoption formats rather than treating one standard as uniform. The floor-role standard, the deployment cards, and the governance timeline all flow from this single chart.</p>
+
+  <footer><span>Artifact 02 · channel analysis</span></footer>
+</div>
+</body>
+</html>

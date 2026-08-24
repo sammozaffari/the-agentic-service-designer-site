@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Persona Set — Three Journeys Through Hiring · The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --phys:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#1e293b; --mut:#64748b; --bg:#f8fafc; --line:#e2e8f0; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 22px 60px}
+      .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:0 0 6px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px}
+  .sub{color:var(--mut);margin:0 0 14px;font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mut)}
+  .chip.kind{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
+  nav.sibs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px;font-size:12.5px}
+  nav.sibs a{text-decoration:none;color:#334155;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  nav.sibs a.here{background:#1e293b;color:#fff;border-color:#1e293b}
+  h2{font-size:20px;margin:36px 0 10px;padding-top:10px;border-top:2px solid var(--line)}
+  h3{font-size:16px;margin:18px 0 6px}
+  p{margin:8px 0}
+  .legend{position:sticky;top:0;z-index:20;background:rgba(248,250,252,.96);backdrop-filter:blur(3px);
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-wrap:wrap;gap:12px;
+    font-size:11.5px;color:#334155;margin:0 0 20px}
+  .legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+  .n-wait{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px;
+    background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px)}
+  .n-fail{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid var(--fail);vertical-align:-1px;margin-right:4px}
+  .n-hand{display:inline-block;width:12px;height:12px;border:2px dashed #475569;border-radius:3px;vertical-align:-2px;margin-right:4px}
+  .n-dec{display:inline-block;width:9px;height:9px;background:#475569;transform:rotate(45deg);vertical-align:0;margin-right:6px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:12.5px;table-layout:fixed}
+  th{background:#f1f5f9;text-align:left;padding:8px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#475569;border-bottom:2px solid var(--line)}
+  th.stage{background:#1e293b;color:#fff;font-size:12px;letter-spacing:.02em;text-transform:none}
+  th.stage .t{display:block;font-size:10.5px;color:#cbd5e1;font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+  th.rowlab{width:118px}
+  td{padding:8px 8px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+  td:last-child{border-right:none}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#f8fafc}
+  td.rowlab{background:#f1f5f9;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .lane-cust td .a{color:var(--cust);font-weight:600}
+  .lane-front td .a{color:var(--front)}
+  .lane-back td .a{color:var(--back)}
+  .lane-phys td .a{color:var(--phys)}
+  .sys{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;
+    color:#0e7490;background:#ecfeff;border:1px solid #a5f3fc;border-radius:4px;padding:0 5px;margin:1px 1px}
+  .spark{display:flex;flex-direction:column;align-items:center;gap:3px}
+  .spark .bar{width:20px;border-radius:3px 3px 0 0}
+  .spark .sc{font-size:10px;font-weight:700;color:#64748b}
+  .chipnode{display:inline-block;font-size:10px;font-weight:700;border-radius:999px;padding:1px 7px;margin:1px 1px;white-space:nowrap}
+  .c-wait{background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px);color:#334155}
+  .c-fail{border:2px solid var(--fail);color:var(--fail);background:#fff}
+  .c-hand{border:2px dashed #475569;color:#334155;background:#fff}
+  .c-dec{border:1.5px solid #475569;color:#fff;background:#475569}
+  .ev{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;color:#0e7490}
+  .note{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:#0e7490;white-space:nowrap}
+  .note-desc{font-size:12.5px;color:#475569}
+  .rubric{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0;font-size:12px}
+  .rub{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px}
+  .rub .bar{width:14px;height:34px;border-radius:3px 3px 0 0;flex:0 0 auto}
+  footer{margin-top:40px;padding-top:14px;border-top:2px solid var(--line);font-size:12.5px;color:var(--mut)}
+  @media (max-width:900px){table{font-size:11px}th.rowlab{width:74px}.wrap{padding:14px}}
+  @media print{
+    body{background:#fff;font-size:10px}
+    .wrap{max-width:none;padding:0}
+    .legend{position:static;backdrop-filter:none}
+    nav.sibs{display:none}
+    tr{break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+    h2{break-after:avoid}
+    table{table-layout:auto}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">Crew Recruitment &amp; Onboarding · Global Quick-Service Chain · Artifact 03</p>
+  <h1>Persona Set — Three Journeys Through Hiring</h1>
+  <p class="sub">Composite characters built from interview and survey evidence — each one a journey the design must survive.</p>
+
+  <div class="chips"><span class="chip kind">Template kind 09 · persona-set</span><span class="chip">Phase: Synthesis (weeks 4–7)</span><span class="chip">Personas: 12+ total · 3 journey cards</span></div>
+
+  <nav class="sibs"><a href="brief.html">Brief</a><a href="research-summary.html">Research</a><a href="persona-set.html" class="here">Personas</a><a href="journey-map.html">Journey</a><a href="service-blueprint.html">Blueprint</a><a href="proposals.html">Proposals</a></nav>
+
+  <h2>Three journeys, one funnel</h2>
+<div class="rubric" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))"><div class="rub" style="display:block;padding:0;overflow:hidden"><div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f1f5f9;border-bottom:1px solid #e2e8f0"><span style="width:38px;height:38px;border-radius:50%;background:#1e293b;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:800">JL</span><span><strong style="font-size:14px">The first-job school leaver</strong><br><span style="font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.05em">Crew candidate · under legal working age</span></span></div><div style="padding:10px 14px;font-size:13px"><p style="margin:0 0 8px"><strong>Context.</strong> First ever job; the family is in the loop on the paperwork. No bank account, tax number, or photo identification yet.</p><p style="margin:0 0 8px"><strong>Goals.</strong> A job close to home; a clear next step; parents satisfied the process is legitimate.</p><p style="margin:0 0 8px"><strong>Pains.</strong> The form asks for information the family does not have yet; identity validation becomes difficult and lengthy without photo ID; the parental-consent form expires after seven days; no human anywhere in the loop.</p><p style="margin:0"><strong>Design response.</strong> Minimal-ask conversation that works on a phone; guided document capture; a human review lane; the parental-consent flow runs before anything else proceeds.</p></div></div><div class="rub" style="display:block;padding:0;overflow:hidden"><div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f1f5f9;border-bottom:1px solid #e2e8f0"><span style="width:38px;height:38px;border-radius:50%;background:#1e293b;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:800">RC</span><span><strong style="font-size:14px">The returning crew member</strong><br><span style="font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.05em">Re-hire · transfer across the network</span></span></div><div style="padding:10px 14px;font-size:13px"><p style="margin:0 0 8px"><strong>Context.</strong> Worked at the chain before, left, and is coming back — sometimes to the same franchisee group, sometimes to a different one.</p><p style="margin:0 0 8px"><strong>Goals.</strong> Pick up where they left off; training and credentials carry over; no repeated paperwork.</p><p style="margin:0 0 8px"><strong>Pains.</strong> Treated like a brand-new applicant; the work-rights check and onboarding form repeated pointlessly; records never off-boarded, so the system does not even know they left.</p><p style="margin:0"><strong>Design response.</strong> A re-hire branch at the application stage: same franchisee group skips the work-rights check and onboarding and transfers the record; everyone else runs the full workflow with new records.</p></div></div><div class="rub" style="display:block;padding:0;overflow:hidden"><div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#f1f5f9;border-bottom:1px solid #e2e8f0"><span style="width:38px;height:38px;border-radius:50%;background:#1e293b;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:800">AM</span><span><strong style="font-size:14px">The manager hiring inside a full day</strong><br><span style="font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.05em">Assistant restaurant manager · hiring as one more duty</span></span></div><div style="padding:10px 14px;font-size:13px"><p style="margin:0 0 8px"><strong>Context.</strong> Carries recruitment inside a day of shifts, paperwork, and customer peaks.</p><p style="margin:0 0 8px"><strong>Goals.</strong> Fill shifts with good people, fast; admin in minutes, not hours; see candidate status without chasing.</p><p style="margin:0 0 8px"><strong>Pains.</strong> Re-enters candidate data across systems; texts applicants to arrange interviews; discovers wrong documents only at pay time; unreachable candidates are never closed off.</p><p style="margin:0"><strong>Design response.</strong> A review queue plus an auto-scheduled interview calendar; automated offers, reminders, and employee setup; unreachable candidates dispositioned after 10 days of no action.</p></div></div></div><h2>How the personas behave in the design</h2>
+<p>Each persona maps to a blueprint lane and a set of measures — a persona that does not change a design decision is cut.</p><table><thead><tr><th>Persona</th><th>Maps to</th><th>Measures</th></tr></thead><tbody><tr><td>The first-job school leaver</td><td>Apply, accept, and onboard stages; parental-consent and work-rights flows</td><td>Application completion · assisted-capture success · consent expiry rate</td></tr><tr><td>The returning crew member</td><td>Re-hire branch; employee-record transfer</td><td>Re-hire onboarding time · training carryover verified</td></tr><tr><td>The manager in a full day</td><td>Interview, offer, and start stages; the review queue</td><td>Admin minutes per hire · interview confirmation time · disposition rate</td></tr></tbody></table><h2>Evidence discipline</h2>
+<p>Twelve-plus personas in total, each composite and grounded in interview, observation, and survey evidence. The three above are the journeys the engagement follows end to end: the core candidate, the re-hire, and the manager who carries hiring inside an already full day.</p>
+
+  <footer><span>Artifact 03 · persona set</span> · Figures consistent with the companion case article.</footer>
+</div>
+</body>
+</html>

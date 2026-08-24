@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journey Map — From First Thought to First Shift · The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --phys:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#1e293b; --mut:#64748b; --bg:#f8fafc; --line:#e2e8f0; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 22px 60px}
+      .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:0 0 6px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px}
+  .sub{color:var(--mut);margin:0 0 14px;font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mut)}
+  .chip.kind{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
+  nav.sibs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px;font-size:12.5px}
+  nav.sibs a{text-decoration:none;color:#334155;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  nav.sibs a.here{background:#1e293b;color:#fff;border-color:#1e293b}
+  h2{font-size:20px;margin:36px 0 10px;padding-top:10px;border-top:2px solid var(--line)}
+  h3{font-size:16px;margin:18px 0 6px}
+  p{margin:8px 0}
+  .legend{position:sticky;top:0;z-index:20;background:rgba(248,250,252,.96);backdrop-filter:blur(3px);
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-wrap:wrap;gap:12px;
+    font-size:11.5px;color:#334155;margin:0 0 20px}
+  .legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+  .n-wait{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px;
+    background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px)}
+  .n-fail{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid var(--fail);vertical-align:-1px;margin-right:4px}
+  .n-hand{display:inline-block;width:12px;height:12px;border:2px dashed #475569;border-radius:3px;vertical-align:-2px;margin-right:4px}
+  .n-dec{display:inline-block;width:9px;height:9px;background:#475569;transform:rotate(45deg);vertical-align:0;margin-right:6px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:12.5px;table-layout:fixed}
+  th{background:#f1f5f9;text-align:left;padding:8px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#475569;border-bottom:2px solid var(--line)}
+  th.stage{background:#1e293b;color:#fff;font-size:12px;letter-spacing:.02em;text-transform:none}
+  th.stage .t{display:block;font-size:10.5px;color:#cbd5e1;font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+  th.rowlab{width:118px}
+  td{padding:8px 8px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+  td:last-child{border-right:none}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#f8fafc}
+  td.rowlab{background:#f1f5f9;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .lane-cust td .a{color:var(--cust);font-weight:600}
+  .lane-front td .a{color:var(--front)}
+  .lane-back td .a{color:var(--back)}
+  .lane-phys td .a{color:var(--phys)}
+  .sys{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;
+    color:#0e7490;background:#ecfeff;border:1px solid #a5f3fc;border-radius:4px;padding:0 5px;margin:1px 1px}
+  .spark{display:flex;flex-direction:column;align-items:center;gap:3px}
+  .spark .bar{width:20px;border-radius:3px 3px 0 0}
+  .spark .sc{font-size:10px;font-weight:700;color:#64748b}
+  .chipnode{display:inline-block;font-size:10px;font-weight:700;border-radius:999px;padding:1px 7px;margin:1px 1px;white-space:nowrap}
+  .c-wait{background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px);color:#334155}
+  .c-fail{border:2px solid var(--fail);color:var(--fail);background:#fff}
+  .c-hand{border:2px dashed #475569;color:#334155;background:#fff}
+  .c-dec{border:1.5px solid #475569;color:#fff;background:#475569}
+  .ev{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;color:#0e7490}
+  .note{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:#0e7490;white-space:nowrap}
+  .note-desc{font-size:12.5px;color:#475569}
+  .rubric{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0;font-size:12px}
+  .rub{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px}
+  .rub .bar{width:14px;height:34px;border-radius:3px 3px 0 0;flex:0 0 auto}
+  footer{margin-top:40px;padding-top:14px;border-top:2px solid var(--line);font-size:12.5px;color:var(--mut)}
+  @media (max-width:900px){table{font-size:11px}th.rowlab{width:74px}.wrap{padding:14px}}
+  @media print{
+    body{background:#fff;font-size:10px}
+    .wrap{max-width:none;padding:0}
+    .legend{position:static;backdrop-filter:none}
+    nav.sibs{display:none}
+    tr{break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+    h2{break-after:avoid}
+    table{table-layout:auto}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">Crew Recruitment &amp; Onboarding · Global Quick-Service Chain · Artifact 04</p>
+  <h1>Journey Map — From First Thought to First Shift</h1>
+  <p class="sub">The candidate’s experience in six stages — with the emotional journey and the controllable fail points attached.</p>
+
+  <div class="chips"><span class="chip kind">Template kind 11 · journey-map</span><span class="chip">Phase: Mapping (weeks 6–10)</span><span class="chip">Stages: 6 · Fail points: 6</span></div>
+
+  <nav class="sibs"><a href="brief.html">Brief</a><a href="research-summary.html">Research</a><a href="persona-set.html">Personas</a><a href="journey-map.html" class="here">Journey</a><a href="service-blueprint.html">Blueprint</a><a href="proposals.html">Proposals</a></nav>
+
+  <div class="legend"><span><span class="sw" style="background:#2563eb"></span>Journey-subject actions</span><span><span class="sw" style="background:#16a34a"></span>Frontstage</span><span><span class="sw" style="background:#d97706"></span>Backstage</span><span><span class="sw" style="background:#0891b2"></span>Systems &amp; data</span><span><span class="sw" style="background:#64748b"></span>Physical evidence</span><span><span class="n-wait"></span>Wait</span><span><span class="n-fail"></span>Fail-risk</span><span><span class="n-hand"></span>Handoff</span><span><span class="n-dec"></span>Decision</span><span style="margin-left:auto">Emotion −2 … +2 (see rubric)</span></div><div class="rubric"><div class="rub"><span class="bar" style="height:34px;background:#16a34a"></span>+2 delighted</div><div class="rub"><span class="bar" style="height:26px;background:#16a34a;opacity:.75"></span>+1 glad</div><div class="rub"><span class="bar" style="height:18px;background:#94a3b8"></span>0 neutral</div><div class="rub"><span class="bar" style="height:12px;background:#d97706"></span>−1 irritated</div><div class="rub"><span class="bar" style="height:8px;background:#dc2626"></span>−2 angry</div></div><h2>Six stages, one candidate</h2>
+<div style="overflow-x:auto"><table><thead><tr><th class="rowlab">Lane / stage</th><th class="stage">Recognise<span class="t">first thinking</span></th><th class="stage">Search<span class="t">finding roles</span></th><th class="stage">Consider<span class="t">weighing the job</span></th><th class="stage">Apply<span class="t">the application</span></th><th class="stage">Interview<span class="t">first human touch</span></th><th class="stage">First shifts<span class="t">start</span></th></tr></thead><tbody><tr class="lane-cust"><td class="rowlab">Journey subject</td><td>Wonders where jobs even are; no path from customer to crew <span class="chipnode c-fail">F-01</span></td><td>Browses roles; hours unclear <span class="chipnode c-wait">W-01</span></td><td>Weighs it against other options; expectations unclear <span class="chipnode c-dec">D-01</span></td><td>Fills the form; hits repeated asks; multi-applies <span class="chipnode c-fail">F-02</span> <span class="chipnode c-wait">W-02</span></td><td>Interview in the dining room; rushed <span class="chipnode c-fail">F-03</span> <span class="chipnode c-hand">H-01</span></td><td>Starts with no uniform; hallway training <span class="chipnode c-fail">F-04</span></td></tr><tr class="lane-front"><td class="rowlab">Frontstage</td><td>Word of mouth; walk-ins; restaurant signage</td><td>Role pages and store listings</td><td>No separate employer story</td><td>Multi-step form; the optional resume confuses</td><td>A table in the dining room or food court</td><td>Training in the hallway; no buddy introduced</td></tr><tr class="lane-back"><td class="rowlab">Backstage</td><td>No campaigns run — “too hard to coordinate” <span class="note">Restaurant manager</span></td><td>Job posts left live indefinitely <span class="note">Restaurant manager</span></td><td>No one answers candidate questions</td><td>Rejection left unclicked → auto-emails at 7 and 14 days <span class="note">Assistant manager</span></td><td>Baseline interview guidance only; rapport left to the local leader <span class="note">Local leader</span></td><td>Documents chased at pay time; consent expired <span class="note">Payroll</span></td></tr><tr class=""><td class="rowlab">Systems &amp; data</td><td><span class="sys">careers site</span> <span class="sys">app</span></td><td><span class="sys">careers site</span> <span class="sys">recruiting platform</span></td><td><span class="sys">careers site</span></td><td><span class="sys">recruiting platform</span> <span class="sys">candidate records</span></td><td><span class="sys">interview calendar</span> <span class="sys">work-rights check</span></td><td><span class="sys">payroll</span> <span class="sys">time &amp; attendance</span> <span class="sys">uniform supply</span></td></tr><tr class="lane-phys"><td class="rowlab">Physical evidence</td><td>Consumer branding only</td><td>Listing pages</td><td>Nothing to weigh</td><td>The form itself</td><td>Dining-room table</td><td>Hallway; missing uniform</td></tr><tr class="lane-cust"><td class="rowlab">Emotion</td><td><span class="spark"><div class="bar" style="height:17px;background:#16a34a"></div><span class="sc">1</span></span></td><td><span class="spark"><div class="bar" style="height:8px;background:#94a3b8"></div><span class="sc">0</span></span></td><td><span class="spark"><div class="bar" style="height:4px;background:#d97706"></div><span class="sc">-1</span></span></td><td><span class="spark"><div class="bar" style="height:4px;background:#d97706"></div><span class="sc">-2</span></span></td><td><span class="spark"><div class="bar" style="height:4px;background:#d97706"></div><span class="sc">-1</span></span></td><td><span class="spark"><div class="bar" style="height:4px;background:#d97706"></div><span class="sc">-2</span></span></td></tr><tr class="lane-cust"><td class="rowlab">Fail-risk</td><td><span class="chipnode c-fail">F-01</span> no employer brand</td><td><span class="chipnode c-fail">F-02</span> stale posts</td><td><span class="chipnode c-wait">W-01</span> unanswered questions</td><td><span class="chipnode c-fail">F-03</span> 45% drop-off; duplicate emails</td><td><span class="chipnode c-fail">F-04</span> rushed interview; silent rejection</td><td><span class="chipnode c-fail">F-05</span> no uniform; no start data</td></tr></tbody></table></div><h2>Reading the line</h2>
+<p>The emotion row starts flat and sinks at the application — exactly where the funnel data says candidates leave. The journey is admin-optimized, not human-optimized: every fail point below is owned by the design, not the candidate, and all of them are fixable.</p><h2>Fail-point ledger</h2>
+<table><thead><tr><th>ID</th><th>Stage</th><th>Failure</th><th>Owner</th></tr></thead><tbody><tr><td>F-01</td><td>Recognise</td><td>No employer brand; no path from customer to crew</td><td>People function</td></tr><tr><td>F-02</td><td>Search</td><td>Stale posts; hours unclear</td><td>Recruitment channels</td></tr><tr><td>F-03</td><td>Apply</td><td>~45% drop-off; repeated asks; duplicate emails across stores</td><td>Application product</td></tr><tr><td>F-04</td><td>Interview</td><td>Dining-room interviews; silent rejection at 7/14 days</td><td>Hiring-manager enablement</td></tr><tr><td>F-05</td><td>First shifts</td><td>Uniforms missing; hallway training; no buddy</td><td>Onboarding & supply</td></tr><tr><td>F-06</td><td>Measures</td><td>No first-shift or 90-day retention data</td><td>Data & measurement</td></tr></tbody></table><p>The ledger is the prioritization spine: each failure carries an owner, and each owner’s work traces into the service blueprint and the proposals artifact.</p>
+
+  <footer><span>Artifact 04 · journey map</span> · Figures consistent with the companion case article.</footer>
+</div>
+</body>
+</html>

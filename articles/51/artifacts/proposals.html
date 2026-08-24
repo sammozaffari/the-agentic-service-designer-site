@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposals — One Framework, Staged Rollout · The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --phys:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#1e293b; --mut:#64748b; --bg:#f8fafc; --line:#e2e8f0; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 22px 60px}
+      .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:0 0 6px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px}
+  .sub{color:var(--mut);margin:0 0 14px;font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mut)}
+  .chip.kind{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
+  nav.sibs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px;font-size:12.5px}
+  nav.sibs a{text-decoration:none;color:#334155;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  nav.sibs a.here{background:#1e293b;color:#fff;border-color:#1e293b}
+  h2{font-size:20px;margin:36px 0 10px;padding-top:10px;border-top:2px solid var(--line)}
+  h3{font-size:16px;margin:18px 0 6px}
+  p{margin:8px 0}
+  .legend{position:sticky;top:0;z-index:20;background:rgba(248,250,252,.96);backdrop-filter:blur(3px);
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-wrap:wrap;gap:12px;
+    font-size:11.5px;color:#334155;margin:0 0 20px}
+  .legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+  .n-wait{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px;
+    background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px)}
+  .n-fail{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid var(--fail);vertical-align:-1px;margin-right:4px}
+  .n-hand{display:inline-block;width:12px;height:12px;border:2px dashed #475569;border-radius:3px;vertical-align:-2px;margin-right:4px}
+  .n-dec{display:inline-block;width:9px;height:9px;background:#475569;transform:rotate(45deg);vertical-align:0;margin-right:6px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:12.5px;table-layout:fixed}
+  th{background:#f1f5f9;text-align:left;padding:8px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#475569;border-bottom:2px solid var(--line)}
+  th.stage{background:#1e293b;color:#fff;font-size:12px;letter-spacing:.02em;text-transform:none}
+  th.stage .t{display:block;font-size:10.5px;color:#cbd5e1;font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+  th.rowlab{width:118px}
+  td{padding:8px 8px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+  td:last-child{border-right:none}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#f8fafc}
+  td.rowlab{background:#f1f5f9;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .lane-cust td .a{color:var(--cust);font-weight:600}
+  .lane-front td .a{color:var(--front)}
+  .lane-back td .a{color:var(--back)}
+  .lane-phys td .a{color:var(--phys)}
+  .sys{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;
+    color:#0e7490;background:#ecfeff;border:1px solid #a5f3fc;border-radius:4px;padding:0 5px;margin:1px 1px}
+  .spark{display:flex;flex-direction:column;align-items:center;gap:3px}
+  .spark .bar{width:20px;border-radius:3px 3px 0 0}
+  .spark .sc{font-size:10px;font-weight:700;color:#64748b}
+  .chipnode{display:inline-block;font-size:10px;font-weight:700;border-radius:999px;padding:1px 7px;margin:1px 1px;white-space:nowrap}
+  .c-wait{background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px);color:#334155}
+  .c-fail{border:2px solid var(--fail);color:var(--fail);background:#fff}
+  .c-hand{border:2px dashed #475569;color:#334155;background:#fff}
+  .c-dec{border:1.5px solid #475569;color:#fff;background:#475569}
+  .ev{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;color:#0e7490}
+  .note{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:#0e7490;white-space:nowrap}
+  .note-desc{font-size:12.5px;color:#475569}
+  .rubric{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0;font-size:12px}
+  .rub{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px}
+  .rub .bar{width:14px;height:34px;border-radius:3px 3px 0 0;flex:0 0 auto}
+  footer{margin-top:40px;padding-top:14px;border-top:2px solid var(--line);font-size:12.5px;color:var(--mut)}
+  @media (max-width:900px){table{font-size:11px}th.rowlab{width:74px}.wrap{padding:14px}}
+  @media print{
+    body{background:#fff;font-size:10px}
+    .wrap{max-width:none;padding:0}
+    .legend{position:static;backdrop-filter:none}
+    nav.sibs{display:none}
+    tr{break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+    h2{break-after:avoid}
+    table{table-layout:auto}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">The Speed Trap · Customer-Experience Analytics · Artifact 05</p>
+  <h1>Proposals — One Framework, Staged Rollout</h1>
+  <p class="sub">The values framework, per-station standards, recognition ladder, and gated rollout plan.</p>
+
+  <div class="chips"><span class="chip kind">Template kind 18 · proposals</span><span class="chip">Phase: Ideation + Implementation (weeks 12–16)</span><span class="chip">3 pillars · 7 stations</span><span class="chip">6 rollout tiers · 3 phases</span></div>
+
+  <nav class="sibs"><a href="brief.html">Brief</a><a href="insight-register.html">Insights</a><a href="channel-analysis.html">Channels</a><a href="journey-map.html">Journey Map</a><a href="proposals.html" class="here">Proposals</a><a href="analysis-report.html">Analysis</a></nav>
+
+  <h2>One framework instead of four</h2>
+<p>Four competing customer-experience frameworks coexisted in the field, none focused enough on hospitality — teams cannot execute a value they cannot name. The proposal consolidates them into one memorable framework with three pillars, each with behavioural standards, per-station decomposition, and example scripts. The acronym debate settled by the data: operations argued for putting speed back in, and the decomposition kept it out.</p><div class="rubric" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))"><div class="rub" style="display:block;padding:0;overflow:hidden"><div style="padding:10px 14px;background:#f1f5f9;border-bottom:1px solid #e2e8f0"><strong style="font-size:14px">Hospitality</strong><br><span style="font-size:11.5px;color:#64748b">Be proactive, be safe, be you</span></div><div style="padding:10px 14px;font-size:13px"><p style="margin:0 0 8px"><strong>Standard.</strong> Acknowledge every guest within seconds; never leave a guest unanswered at the till or the window; own the interaction from greeting to goodbye.</p><p style="margin:0 0 8px"><strong>Script.</strong> A verbal confirmation at the speaker: "that's two boxes and two drinks — correct?" and a recovery line for a frustrated guest: "we heard you — here is what happens next."</p><p style="margin:0"><strong>Ownership.</strong> the hospitality programme; per-station standards for order taker, pay window, tap-and-go, pickup, kiosk, delivery, and parked cars</p></div></div><div class="rub" style="display:block;padding:0;overflow:hidden"><div style="padding:10px 14px;background:#f1f5f9;border-bottom:1px solid #e2e8f0"><strong style="font-size:14px">Accuracy</strong><br><span style="font-size:11.5px;color:#64748b">Know it all, make sure the guest gets it all</span></div><div style="padding:10px 14px;font-size:13px"><p style="margin:0 0 8px"><strong>Standard.</strong> Pack-check at handoff; visual checklists at drive-thru and delivery pickup; fast refund and remake script for missed items.</p><p style="margin:0 0 8px"><strong>Script.</strong> "Here is everything — boxes, sides, sauces." On a miss: remake and refund without friction, and confirm the replacement before the guest leaves.</p><p style="margin:0"><strong>Ownership.</strong> operations; accuracy is the largest complaint cluster and the highest-churn accuracy theme</p></div></div><div class="rub" style="display:block;padding:0;overflow:hidden"><div style="padding:10px 14px;background:#f1f5f9;border-bottom:1px solid #e2e8f0"><strong style="font-size:14px">Taste</strong><br><span style="font-size:11.5px;color:#64748b">Looks good, tastes good</span></div><div style="padding:10px 14px;font-size:13px"><p style="margin:0 0 8px"><strong>Standard.</strong> Presentation check before handoff; temperature and build check at the pack screen; remake standard for anything that does not pass.</p><p style="margin:0 0 8px"><strong>Script.</strong> Kitchen line: "re-fire that box — it does not pass the look check." Handoff: "fresh from the kitchen — enjoy."</p><p style="margin:0"><strong>Ownership.</strong> operations; taste drives a large share of formal complaints and must be protected at pack</p></div></div></div><h2>Per-station standards</h2>
+<table><thead><tr><th>Station</th><th>Standard</th><th>Example script</th></tr></thead><tbody><tr><td>Drive-thru order taker</td><td>Verbal confirmation of the whole order before payment</td><td>"That's two boxes and two drinks — correct?"</td></tr><tr><td>Pay window</td><td>Acknowledgment; tap-and-go readiness; never silent queue abandonment</td><td>"We've got you — your order is being packed now."</td></tr><tr><td>Counter</td><td>Greet within seconds; acknowledge even during a rush</td><td>"Welcome — what can we get you today?"</td></tr><tr><td>Kiosk</td><td>Suggest self-service only for card payers without special discounts; never make a guest feel wrong for the counter</td><td>Kiosk pitch line plus the standing counter-first rule for cash, seniors, and staff discounts</td></tr><tr><td>Pickup / handoff</td><td>Pack-check in front of the guest; count the bag</td><td>"Here is everything — boxes, sides, sauces."</td></tr><tr><td>Delivery pickup</td><td>Visual checklist; verify the bag before the driver leaves</td><td>"Bag verified — items and sauces in."</td></tr><tr><td>Parked cars</td><td>Waiting board by plate; name the wait explicitly</td><td>"We'll bring it out when it's ready — plate 42."</td></tr></tbody></table><p>Station stickers link to short scenario videos showing good and bad examples; placement guides cover both order-entry and pack screens, on both sides of the line of visibility.</p><h2>Recognition ladder</h2>
+<table><thead><tr><th>Tier</th><th>Mechanic</th><th>Awarded by</th><th>Design intent</th></tr></thead><tbody><tr><td>1</td><td>Bingo hooks on training behaviours</td><td>Self + manager</td><td>Daily gamification of the new standards</td></tr><tr><td>2</td><td>Hospitality hero pins</td><td>Restaurant managers</td><td>Visible, immediate recognition</td></tr><tr><td>3</td><td>Hero socks</td><td>Area leaders</td><td>Cross-store visibility; area reinforcement</td></tr><tr><td>4</td><td>Team competitions</td><td>Programme leads</td><td>Social proof at group level</td></tr><tr><td>5</td><td>National team scoring</td><td>System competition</td><td>Hospitality enters the score that already drives behaviour</td></tr><tr><td>6</td><td>Quarterly service and taste awards</td><td>Support centre</td><td>Sustained, calendar-driven cadence</td></tr></tbody></table><p>Surprise physical awards for top performers were chosen deliberately <strong>to avoid gaming the numbers</strong>; the "what's in it for me" logic was written for both managers (easier restaurant, retention, bonuses, career advancement) and crew.</p><h2>Rollout plan</h2>
+<table><thead><tr><th>Phase</th><th>Window</th><th>Deliverable</th><th>Gate</th></tr></thead><tbody><tr><td>1 — Hospitality programme launch</td><td>Q4 2025</td><td>Training kit, station stickers with scenario videos, recognition mechanics, parked-car waiting board</td><td>Area-leader sign-off; crew trained within the quarter</td></tr><tr><td>2 — Values framework launch</td><td>Q1 2026 (leadership forum)</td><td>One framework replaces four; per-station standards and scripts; capability checks live</td><td>Executive approval gate</td></tr><tr><td>3 — System-wide sustainability</td><td>2026</td><td>Scorecard alignment; monitoring dashboard; quarterly award cadence</td><td>Proceed / escalate / pause / cancel / revisit with status on timeline, cost, resource, quality, risk</td></tr></tbody></table><p>The rollout was rephased once when competing system rollouts absorbed the same field capacity — the plan was rephased, not rushed. Each gate carried explicit options and status, enforced by tooling, not memory.</p><h2>Measurement design</h2>
+<p>Success is tracked on <strong>verified guest feedback only</strong> — responses attributable to a real transaction — deliberately kept off the chain's balanced scorecard, with that alignment gap named as an open issue rather than hidden. Capability checks run on digital observation forms (five-minute checks) feeding a real-time dashboard with automated weekly reports to area leaders; high-scoring crew earn recognition, and managers sustaining high team averages receive small bonuses. A manual observation instrument managers distrusted was killed and redesigned into this form rather than defended.</p>
+
+  <footer><span>Artifact 05 · proposals</span></footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Summary — 60+ Interviews and the Funnel Numbers · The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --phys:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#1e293b; --mut:#64748b; --bg:#f8fafc; --line:#e2e8f0; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 22px 60px}
+      .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:0 0 6px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px}
+  .sub{color:var(--mut);margin:0 0 14px;font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mut)}
+  .chip.kind{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
+  nav.sibs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px;font-size:12.5px}
+  nav.sibs a{text-decoration:none;color:#334155;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  nav.sibs a.here{background:#1e293b;color:#fff;border-color:#1e293b}
+  h2{font-size:20px;margin:36px 0 10px;padding-top:10px;border-top:2px solid var(--line)}
+  h3{font-size:16px;margin:18px 0 6px}
+  p{margin:8px 0}
+  .legend{position:sticky;top:0;z-index:20;background:rgba(248,250,252,.96);backdrop-filter:blur(3px);
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-wrap:wrap;gap:12px;
+    font-size:11.5px;color:#334155;margin:0 0 20px}
+  .legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+  .n-wait{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px;
+    background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px)}
+  .n-fail{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid var(--fail);vertical-align:-1px;margin-right:4px}
+  .n-hand{display:inline-block;width:12px;height:12px;border:2px dashed #475569;border-radius:3px;vertical-align:-2px;margin-right:4px}
+  .n-dec{display:inline-block;width:9px;height:9px;background:#475569;transform:rotate(45deg);vertical-align:0;margin-right:6px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:12.5px;table-layout:fixed}
+  th{background:#f1f5f9;text-align:left;padding:8px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#475569;border-bottom:2px solid var(--line)}
+  th.stage{background:#1e293b;color:#fff;font-size:12px;letter-spacing:.02em;text-transform:none}
+  th.stage .t{display:block;font-size:10.5px;color:#cbd5e1;font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+  th.rowlab{width:118px}
+  td{padding:8px 8px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+  td:last-child{border-right:none}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#f8fafc}
+  td.rowlab{background:#f1f5f9;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .lane-cust td .a{color:var(--cust);font-weight:600}
+  .lane-front td .a{color:var(--front)}
+  .lane-back td .a{color:var(--back)}
+  .lane-phys td .a{color:var(--phys)}
+  .sys{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;
+    color:#0e7490;background:#ecfeff;border:1px solid #a5f3fc;border-radius:4px;padding:0 5px;margin:1px 1px}
+  .spark{display:flex;flex-direction:column;align-items:center;gap:3px}
+  .spark .bar{width:20px;border-radius:3px 3px 0 0}
+  .spark .sc{font-size:10px;font-weight:700;color:#64748b}
+  .chipnode{display:inline-block;font-size:10px;font-weight:700;border-radius:999px;padding:1px 7px;margin:1px 1px;white-space:nowrap}
+  .c-wait{background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px);color:#334155}
+  .c-fail{border:2px solid var(--fail);color:var(--fail);background:#fff}
+  .c-hand{border:2px dashed #475569;color:#334155;background:#fff}
+  .c-dec{border:1.5px solid #475569;color:#fff;background:#475569}
+  .ev{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;color:#0e7490}
+  .note{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:#0e7490;white-space:nowrap}
+  .note-desc{font-size:12.5px;color:#475569}
+  .rubric{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0;font-size:12px}
+  .rub{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px}
+  .rub .bar{width:14px;height:34px;border-radius:3px 3px 0 0;flex:0 0 auto}
+  footer{margin-top:40px;padding-top:14px;border-top:2px solid var(--line);font-size:12.5px;color:var(--mut)}
+  @media (max-width:900px){table{font-size:11px}th.rowlab{width:74px}.wrap{padding:14px}}
+  @media print{
+    body{background:#fff;font-size:10px}
+    .wrap{max-width:none;padding:0}
+    .legend{position:static;backdrop-filter:none}
+    nav.sibs{display:none}
+    tr{break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+    h2{break-after:avoid}
+    table{table-layout:auto}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">Crew Recruitment &amp; Onboarding · Global Quick-Service Chain · Artifact 02</p>
+  <h1>Research Summary — 60+ Interviews and the Funnel Numbers</h1>
+  <p class="sub">Triangulated fieldwork: interviews, document review, observations, a field survey, and the funnel data that made the leak visible.</p>
+
+  <div class="chips"><span class="chip kind">Template kind 05 · research-summary</span><span class="chip">Phase: Research (weeks 1–4)</span><span class="chip">Evidence: 60+ interviews · 100+ documents · 200+ survey</span></div>
+
+  <nav class="sibs"><a href="brief.html">Brief</a><a href="research-summary.html" class="here">Research</a><a href="persona-set.html">Personas</a><a href="journey-map.html">Journey</a><a href="service-blueprint.html">Blueprint</a><a href="proposals.html">Proposals</a></nav>
+
+  <div class="rubric" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))"><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">60+</span><span style="font-size:11px;color:#cbd5e1">interviews</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">100+</span><span style="font-size:11px;color:#cbd5e1">documents reviewed</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">200+</span><span style="font-size:11px;color:#cbd5e1">field survey responses</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">45%</span><span style="font-size:11px;color:#cbd5e1">careers-site drop-off</span></div></div><h2>Triangulated evidence</h2>
+<p>Fieldwork stayed human — consent, rapport, and observing a real interview are not delegable. Everything after the recording was agent-amplified: transcripts pseudonymized and processed by an extraction team with verbatim quote verification, survey open-text triaged, and the funnel pipeline normalized into a single leakage view.</p><table><thead><tr><th>Method</th><th>What it produced</th></tr></thead><tbody><tr><td>Episodic interviews</td><td>60+ across support-office, franchisee, and restaurant roles; 30 in-restaurant, 30+ above-store and support-office</td></tr><tr><td>Site visits & observations</td><td>Restaurant observations, including a live interview and a promotion-board review</td></tr><tr><td>Document review</td><td>More than 100 operational, recruitment, and technology artifacts</td></tr><tr><td>Field survey</td><td>200+ responses across the network</td></tr><tr><td>Funnel & turnover data</td><td>Careers-site funnel, recruitment pipeline, and manager turnover series</td></tr><tr><td>In-flow feedback surveys</td><td>Candidate feedback at application, interview, and hire touchpoints</td></tr></tbody></table><h2>Interview sample</h2>
+<table><thead><tr><th>Role</th><th>Interviews</th></tr></thead><tbody><tr><td>Restaurant managers</td><td>6</td></tr><tr><td>Assistant managers</td><td>5</td></tr><tr><td>Shift supervisors</td><td>3</td></tr><tr><td>Crew</td><td>11</td></tr><tr><td>Trainees</td><td>3</td></tr><tr><td>Above-store & support-office</td><td>30+ — people function, technology, operations, marketing, finance, data, franchisee leaders</td></tr></tbody></table><p class="note-desc">60+ interviews in total; the in-restaurant split (30) is shown in full.</p><h2>The careers-site funnel</h2>
+<table><thead><tr><th>Stage</th><th>Visitors</th><th>Step change</th></tr></thead><tbody><tr><td>Visitors</td><td>34,000</td><td>baseline</td></tr><tr><td>Browse roles</td><td>30,500</td><td>−10%</td></tr><tr><td>Open application</td><td>28,000</td><td>−8%</td></tr><tr><td>Start application</td><td>25,500</td><td>−9%</td></tr><tr><td>Enter details</td><td>23,500</td><td>−8%</td></tr><tr><td>Upload documents</td><td>22,000</td><td>−6%</td></tr><tr><td>Review application</td><td>20,500</td><td>−7%</td></tr><tr><td>Application completed</td><td>18,500</td><td>−10% · 45% cumulative drop-off</td></tr></tbody></table><p>The funnel reads like an autopsy: the biggest losses sit in the middle of the form — start to details to upload — where candidates hit unnecessary asks and repeated requests. “Effort to complete the application” was logged as the leading volume-loss driver. The design implication was minimal-ask: every field had to survive the question <em>does this change a decision?</em></p><h2>The pipeline, with honest gaps</h2>
+<table><thead><tr><th>Stage</th><th>Count</th><th>Note</th></tr></thead><tbody><tr><td>Applications completed</td><td>18,500</td><td>monthly baseline</td></tr><tr><td>Interviews scheduled</td><td>6,400</td><td>35% of completed applications</td></tr><tr><td>Interviews confirmed</td><td>5,600</td><td>88% of scheduled</td></tr><tr><td>Offers sent</td><td>3,100</td><td>55% of confirmed interviews</td></tr><tr><td>Offers accepted</td><td>2,850</td><td>92%</td></tr><tr><td>Onboarding completed</td><td>2,550</td><td>89%</td></tr><tr><td>First shift attended</td><td>—</td><td>NO DATA — documented finding, owner attached</td></tr><tr><td>Retained &gt;90 days</td><td>—</td><td>NO DATA — documented finding, owner attached</td></tr></tbody></table><p>The two no-data stages are the point. The chain knew how many people applied and how many got offers; it could not tell you how many new hires actually showed up for a first shift, or who was still there at 90 days. “Anecdotal evidence runs supreme in this business because the data is just too hard to get your hands on.” Making the missing data visible, with owners attached, was a first-class deliverable.</p><h2>Manager tenure pressure</h2>
+<table><thead><tr><th>Annual turnover</th><th>2019</th><th>2020</th><th>2021</th><th>2022</th><th>2023</th></tr></thead><tbody><tr><td>Assistant managers</td><td>18%</td><td>17%</td><td>23%</td><td>29%</td><td>27%</td></tr><tr><td>Restaurant managers</td><td>13%</td><td>10%</td><td>12%</td><td>17%</td><td>17%</td></tr></tbody></table><p>The top of the pipeline eroded as the bottom leaked: the six-plus-year tenure path from crew to restaurant manager compressed, and only about a quarter of crew expressed interest in stepping up to shift supervisor. The manager competency framework was the response.</p><h2>Synthesis inputs</h2>
+<p>The evidence converged into 12+ evidence-based personas, the seven moments that matter, and seven graded insights — carried into the journey map, the service blueprint, and the proposals artifacts.</p>
+
+  <footer><span>Artifact 02 · research summary</span> · Figures consistent with the companion case article.</footer>
+</div>
+</body>
+</html>

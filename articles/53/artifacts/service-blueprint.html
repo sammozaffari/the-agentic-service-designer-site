@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Service Blueprint — The Floor Role × Order Journey · The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --phys:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#1e293b; --mut:#64748b; --bg:#f8fafc; --line:#e2e8f0; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 22px 60px}
+      .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:0 0 6px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px}
+  .sub{color:var(--mut);margin:0 0 14px;font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mut)}
+  .chip.kind{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
+  nav.sibs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px;font-size:12.5px}
+  nav.sibs a{text-decoration:none;color:#334155;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  nav.sibs a.here{background:#1e293b;color:#fff;border-color:#1e293b}
+  h2{font-size:20px;margin:36px 0 10px;padding-top:10px;border-top:2px solid var(--line)}
+  h3{font-size:16px;margin:18px 0 6px}
+  p{margin:8px 0}
+  .legend{position:sticky;top:0;z-index:20;background:rgba(248,250,252,.96);backdrop-filter:blur(3px);
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-wrap:wrap;gap:12px;
+    font-size:11.5px;color:#334155;margin:0 0 20px}
+  .legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+  .n-wait{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px;
+    background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px)}
+  .n-fail{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid var(--fail);vertical-align:-1px;margin-right:4px}
+  .n-hand{display:inline-block;width:12px;height:12px;border:2px dashed #475569;border-radius:3px;vertical-align:-2px;margin-right:4px}
+  .n-dec{display:inline-block;width:9px;height:9px;background:#475569;transform:rotate(45deg);vertical-align:0;margin-right:6px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:12.5px;table-layout:fixed}
+  th{background:#f1f5f9;text-align:left;padding:8px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#475569;border-bottom:2px solid var(--line)}
+  th.stage{background:#1e293b;color:#fff;font-size:12px;letter-spacing:.02em;text-transform:none}
+  th.stage .t{display:block;font-size:10.5px;color:#cbd5e1;font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+  th.rowlab{width:118px}
+  td{padding:8px 8px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+  td:last-child{border-right:none}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#f8fafc}
+  td.rowlab{background:#f1f5f9;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .lane-cust td .a{color:var(--cust);font-weight:600}
+  .lane-front td .a{color:var(--front)}
+  .lane-back td .a{color:var(--back)}
+  .lane-phys td .a{color:var(--phys)}
+  .sys{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;
+    color:#0e7490;background:#ecfeff;border:1px solid #a5f3fc;border-radius:4px;padding:0 5px;margin:1px 1px}
+  .spark{display:flex;flex-direction:column;align-items:center;gap:3px}
+  .spark .bar{width:20px;border-radius:3px 3px 0 0}
+  .spark .sc{font-size:10px;font-weight:700;color:#64748b}
+  .chipnode{display:inline-block;font-size:10px;font-weight:700;border-radius:999px;padding:1px 7px;margin:1px 1px;white-space:nowrap}
+  .c-wait{background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px);color:#334155}
+  .c-fail{border:2px solid var(--fail);color:var(--fail);background:#fff}
+  .c-hand{border:2px dashed #475569;color:#334155;background:#fff}
+  .c-dec{border:1.5px solid #475569;color:#fff;background:#475569}
+  .ev{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;color:#0e7490}
+  .note{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:#0e7490;white-space:nowrap}
+  .note-desc{font-size:12.5px;color:#475569}
+  .rubric{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0;font-size:12px}
+  .rub{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px}
+  .rub .bar{width:14px;height:34px;border-radius:3px 3px 0 0;flex:0 0 auto}
+  footer{margin-top:40px;padding-top:14px;border-top:2px solid var(--line);font-size:12.5px;color:var(--mut)}
+  @media (max-width:900px){table{font-size:11px}th.rowlab{width:74px}.wrap{padding:14px}}
+  @media print{
+    body{background:#fff;font-size:10px}
+    .wrap{max-width:none;padding:0}
+    .legend{position:static;backdrop-filter:none}
+    nav.sibs{display:none}
+    tr{break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+    h2{break-after:avoid}
+    table{table-layout:auto}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">Kiosk Channel Strategy · Self-Service Redesign · Artifact 05</p>
+  <h1>Service Blueprint — The Floor Role × Order Journey</h1>
+  <p class="sub">The future-state blueprint: a named floor role frontstage, a 60-second backstage chain, and the systems that must roster, train, and recover it.</p>
+
+  <div class="chips"><span class="chip kind">Template kind 12 · blueprint</span><span class="chip">Phase: Mapping (weeks 13–15)</span><span class="chip">7 lanes × 5 stages</span><span class="chip">Future state</span></div>
+
+  <nav class="sibs"><a href="brief.html">Brief</a><a href="channel-analysis.html">Channel</a><a href="benchmark-report.html">Benchmark</a><a href="journey-map.html">Journey Map</a><a href="service-blueprint.html" class="here">Blueprint</a><a href="analysis-report.html">Analysis</a></nav>
+
+  <h2>Golden rules</h2>
+<div class="rubric" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))"><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">5 min</span><span style="font-size:11px;color:#cbd5e1">guest through the system, queue to order</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">60 sec</span><span style="font-size:11px;color:#cbd5e1">order to collect, front counter</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">1:1</span><span style="font-size:11px;color:#cbd5e1">packer/presenter per cashier</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">60</span><span style="font-size:11px;color:#cbd5e1">till capacity — transactions per cashier</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">1:60</span><span style="font-size:11px;color:#cbd5e1">self-service orders redeploy one cashier to pack/present</span></div></div><h2>The blueprint</h2>
+<div style="overflow-x:auto"><table><thead><tr><th class="rowlab">Lane / stage</th><th class="stage">Enter &amp;amp; greet<span class="t">host at the door</span></th><th class="stage">Order<span class="t">guided first order</span></th><th class="stage">Pay<span class="t">cash path designed</span></th><th class="stage">Prepare<span class="t">pack &amp;amp; flip</span></th><th class="stage">Collect &amp;amp; enjoy<span class="t">60-second hand-off</span></th></tr></thead><tbody><tr class="lane-cust"><td class="rowlab">Guest (frontstage)</td><td>Arrives; greeted within seconds<span class="chipnode c-dec">decision</span> cash or card?</td><td>Guided first order; navigates with help<span class="chipnode c-hand">hand</span> assist</td><td>Pays by card at the pin pad<span class="chipnode c-wait">wait</span> pin pad</td><td>Waits at the collection screen<span class="chipnode c-wait">wait</span> queue</td><td>Order verified and handed over</td></tr><tr class="lane-front"><td class="rowlab">Foyer host (frontstage)</td><td>Greets within seconds; asks cash or card first<span class="note">script 1</span></td><td>Assists without judgment; the counter an equal path<span class="note">script 2</span></td><td>Directs cash guests to the counter queue<span class="note">script 3</span></td><td>Checks the collection screen; pre-peak checks done</td><td>Parting recognition</td></tr><tr class="lane-back"><td class="rowlab">Counter &amp;amp; backstage</td><td><span class="chipnode c-fail">fail</span> no roster slot in the time &amp; attendance platform</td><td><span class="chipnode c-fail">fail</span> out-of-stock mismatch with the kiosk menu</td><td><span class="chipnode c-hand">hand</span> stealth register takes cash guests</td><td>POS → kitchen display → packer</td><td><span class="chipnode c-fail">fail</span> order forgotten at the ready flip</td></tr><tr class="lane-back"><td class="rowlab">Kitchen &amp;amp; packer</td><td>—</td><td>Order hits the kitchen display after payment</td><td>—</td><td>Ticket at the packer station; packed to order</td><td>Presenter flips to ready within 60 seconds</td></tr><tr class="lane-data"><td class="rowlab">Systems &amp;amp; data</td><td><span class="sys">time &amp;amp; attendance platform</span><span class="sys">learning platform</span></td><td><span class="sys">kiosk menu</span><span class="sys">nightly refresh</span><span class="sys">express kiosks</span></td><td><span class="sys">POS</span><span class="sys">pin pad</span><span class="sys">cash register</span></td><td><span class="sys">kitchen display</span><span class="sys">collection screen</span></td><td><span class="sys">guest feedback program</span><span class="sys">error-code catalogue</span></td></tr><tr class="lane-phys"><td class="rowlab">Physical evidence</td><td>door · kiosk bank</td><td>touchscreen · menu tiles</td><td>pin pad · receipt</td><td>collection screen · tray</td><td>tray · bag</td></tr><tr class="lane-cust"><td class="rowlab">Measures &amp;amp; fail points</td><td><span class="note">greet within 5 seconds</span><span class="chipnode c-fail">fail</span> no host rostered</td><td><span class="note">5-minute system rule</span><span class="chipnode c-fail">fail</span> first-timer abandon</td><td><span class="note">cash wait near zero</span><span class="chipnode c-fail">fail</span> payment timeout</td><td><span class="note">60-second order-to-collect</span><span class="chipnode c-fail">fail</span> order not flipped</td><td><span class="note">feedback absence = success</span><span class="chipnode c-fail">fail</span> machine blamed</td></tr></tbody></table></div><h2>Line of visibility</h2>
+<p>The kiosk and the collection screen are the visible face; the POS, kitchen display, and packer chain are deliberately backstage. The foyer host's greeting is a frontstage act that must never be backstage: a guest must never have to ask who to talk to.</p><h2>Fail points → owners → measures</h2>
+<div style="overflow-x:auto"><table><thead><tr><th>Fail point</th><th>Stage</th><th>Owner</th><th>Measure</th></tr></thead><tbody><tr><td>No host rostered at the door</td><td>Enter &amp; greet</td><td>Restaurant manager + time &amp; attendance platform</td><td>Host rostered at peak; greet within 5 seconds</td></tr><tr><td>First-timer struggle at the kiosk</td><td>Order</td><td>Foyer host</td><td>Guided first order; assist script</td></tr><tr><td>Cash-guest wait</td><td>Pay</td><td>Counter team</td><td>Stealth-register path; counter queue inside the 5-minute rule</td></tr><tr><td>Payment timeout / &ldquo;checking kitchen&rdquo;</td><td>Pay &amp; wait</td><td>Team — first-line ladder</td><td>Error-code catalogue; first-line recovery rate</td></tr><tr><td>Order not flipped to ready</td><td>Prepare</td><td>Presenter</td><td>60-second order-to-collect</td></tr><tr><td>Feedback absence misread</td><td>Reflect</td><td>Channel lead</td><td>Two-scale feedback read quarterly</td></tr></tbody></table></div><h2>The huddle loop</h2>
+<p>The training ecosystem that makes the blueprint runnable: a 30-minute shift-huddle built around practice, competition, and recognition — the opposite of the passive e-learning that had never covered the channel. The knowledge check is the manager's evidence that the shift can run the channel alone.</p>
+
+  <footer><span>Artifact 05 · service blueprint</span></footer>
+</div>
+</body>
+</html>

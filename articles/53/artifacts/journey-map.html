@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guest Journey Map — The Kiosk Order (Current State) · The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --phys:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#1e293b; --mut:#64748b; --bg:#f8fafc; --line:#e2e8f0; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 22px 60px}
+      .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:0 0 6px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px}
+  .sub{color:var(--mut);margin:0 0 14px;font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mut)}
+  .chip.kind{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
+  nav.sibs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px;font-size:12.5px}
+  nav.sibs a{text-decoration:none;color:#334155;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  nav.sibs a.here{background:#1e293b;color:#fff;border-color:#1e293b}
+  h2{font-size:20px;margin:36px 0 10px;padding-top:10px;border-top:2px solid var(--line)}
+  h3{font-size:16px;margin:18px 0 6px}
+  p{margin:8px 0}
+  .legend{position:sticky;top:0;z-index:20;background:rgba(248,250,252,.96);backdrop-filter:blur(3px);
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-wrap:wrap;gap:12px;
+    font-size:11.5px;color:#334155;margin:0 0 20px}
+  .legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+  .n-wait{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px;
+    background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px)}
+  .n-fail{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid var(--fail);vertical-align:-1px;margin-right:4px}
+  .n-hand{display:inline-block;width:12px;height:12px;border:2px dashed #475569;border-radius:3px;vertical-align:-2px;margin-right:4px}
+  .n-dec{display:inline-block;width:9px;height:9px;background:#475569;transform:rotate(45deg);vertical-align:0;margin-right:6px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:12.5px;table-layout:fixed}
+  th{background:#f1f5f9;text-align:left;padding:8px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#475569;border-bottom:2px solid var(--line)}
+  th.stage{background:#1e293b;color:#fff;font-size:12px;letter-spacing:.02em;text-transform:none}
+  th.stage .t{display:block;font-size:10.5px;color:#cbd5e1;font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+  th.rowlab{width:118px}
+  td{padding:8px 8px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+  td:last-child{border-right:none}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#f8fafc}
+  td.rowlab{background:#f1f5f9;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .lane-cust td .a{color:var(--cust);font-weight:600}
+  .lane-front td .a{color:var(--front)}
+  .lane-back td .a{color:var(--back)}
+  .lane-phys td .a{color:var(--phys)}
+  .sys{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;
+    color:#0e7490;background:#ecfeff;border:1px solid #a5f3fc;border-radius:4px;padding:0 5px;margin:1px 1px}
+  .spark{display:flex;flex-direction:column;align-items:center;gap:3px}
+  .spark .bar{width:20px;border-radius:3px 3px 0 0}
+  .spark .sc{font-size:10px;font-weight:700;color:#64748b}
+  .chipnode{display:inline-block;font-size:10px;font-weight:700;border-radius:999px;padding:1px 7px;margin:1px 1px;white-space:nowrap}
+  .c-wait{background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px);color:#334155}
+  .c-fail{border:2px solid var(--fail);color:var(--fail);background:#fff}
+  .c-hand{border:2px dashed #475569;color:#334155;background:#fff}
+  .c-dec{border:1.5px solid #475569;color:#fff;background:#475569}
+  .ev{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;color:#0e7490}
+  .note{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:#0e7490;white-space:nowrap}
+  .note-desc{font-size:12.5px;color:#475569}
+  .rubric{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0;font-size:12px}
+  .rub{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px}
+  .rub .bar{width:14px;height:34px;border-radius:3px 3px 0 0;flex:0 0 auto}
+  footer{margin-top:40px;padding-top:14px;border-top:2px solid var(--line);font-size:12.5px;color:var(--mut)}
+  @media (max-width:900px){table{font-size:11px}th.rowlab{width:74px}.wrap{padding:14px}}
+  @media print{
+    body{background:#fff;font-size:10px}
+    .wrap{max-width:none;padding:0}
+    .legend{position:static;backdrop-filter:none}
+    nav.sibs{display:none}
+    tr{break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+    h2{break-after:avoid}
+    table{table-layout:auto}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">Kiosk Channel Strategy · Self-Service Redesign · Artifact 04</p>
+  <h1>Guest Journey Map — The Kiosk Order (Current State)</h1>
+  <p class="sub">Five phases defined by guest goals, from the door to the collection point — emotion flat, pains strictly separated from opportunities.</p>
+
+  <div class="chips"><span class="chip kind">Template kind 11 · journey map</span><span class="chip">Phase: Mapping (weeks 13–15)</span><span class="chip">5 phases · 5 fail points · 3 scripts</span><span class="chip">Current state</span></div>
+
+  <nav class="sibs"><a href="brief.html">Brief</a><a href="channel-analysis.html">Channel</a><a href="benchmark-report.html">Benchmark</a><a href="journey-map.html" class="here">Journey Map</a><a href="service-blueprint.html">Blueprint</a><a href="analysis-report.html">Analysis</a></nav>
+
+  <div class="legend"><span><span class="sw" style="background:#2563eb"></span>Journey-subject actions</span><span><span class="sw" style="background:#16a34a"></span>Frontstage</span><span><span class="sw" style="background:#d97706"></span>Backstage</span><span><span class="sw" style="background:#0891b2"></span>Systems &amp; data</span><span><span class="sw" style="background:#64748b"></span>Physical evidence</span><span><span class="n-wait"></span>Wait</span><span><span class="n-fail"></span>Fail-risk</span><span><span class="n-hand"></span>Handoff</span><span><span class="n-dec"></span>Decision</span><span style="margin-left:auto">Emotion −2 … +2 (see rubric)</span></div><div style="overflow-x:auto"><table><thead><tr><th class="rowlab">Lane / stage</th><th class="stage">Arrive<span class="t">enter &amp;amp; greet</span></th><th class="stage">Order<span class="t">place &amp;amp; pay</span></th><th class="stage">Pay &amp;amp; wait<span class="t">queue at collection</span></th><th class="stage">Collect &amp;amp; enjoy<span class="t">presenter hand-off</span></th><th class="stage">Reflect<span class="t">feedback</span></th></tr></thead><tbody><tr class="lane-cust"><td class="rowlab">Guest actions</td><td><span class="a">Walks in; scans the room; chooses a queue</span><span class="chipnode c-dec">decision</span> cash or card?</td><td><span class="a">Navigates the kiosk; first-timers struggle</span><span class="chipnode c-hand">hand</span> assist</td><td><span class="a">Card pays at the pin pad; cash guest joins the counter queue</span><span class="chipnode c-wait">wait</span> queue</td><td><span class="a">Waits at the collection screen; order handed over</span></td><td><span class="a">Feedback link lands on the receipt</span></td></tr><tr class="lane-front"><td class="rowlab">Emotion</td><td><span class="spark"><div class="bar" style="height:8px;background:#94a3b8"></div><span class="sc">0</span></span></td><td><span class="spark"><div class="bar" style="height:4px;background:#d97706"></div><span class="sc">-1</span></span></td><td><span class="spark"><div class="bar" style="height:8px;background:#94a3b8"></div><span class="sc">0</span></span></td><td><span class="spark"><div class="bar" style="height:17px;background:#16a34a"></div><span class="sc">1</span></span></td><td><span class="spark"><div class="bar" style="height:8px;background:#94a3b8"></div><span class="sc">0</span></span></td></tr><tr class="lane-phys"><td class="rowlab">Pain points</td><td><span class="chipnode c-fail">fail</span> no one owns the space between the door and the machine</td><td><span class="chipnode c-fail">fail</span> express kiosks exclude specific pieces; out-of-stock mismatches</td><td><span class="chipnode c-fail">fail</span> cash guests queue at the counter; payment timeouts</td><td><span class="chipnode c-fail">fail</span> order not flipped to ready; forgotten in the queue</td><td><span class="chipnode c-fail">fail</span> feedback ignored — or the machine gets the blame</td></tr><tr class="lane-back"><td class="rowlab">Systems &amp;amp; evidence</td><td><span class="sys">time &amp;amp; attendance platform</span><span class="sys">foyer</span></td><td><span class="sys">kiosk menu</span><span class="sys">nightly refresh</span><span class="sys">express kiosks</span></td><td><span class="sys">POS</span><span class="sys">pin pad</span><span class="sys">kitchen display</span></td><td><span class="sys">packer chain</span><span class="sys">ready flip</span><span class="sys">collection screen</span></td><td><span class="sys">guest feedback program</span><span class="sys">receipt QR link</span></td></tr><tr class="lane-phys"><td class="rowlab">Physical evidence</td><td>door · queue split · kiosk bank</td><td>touchscreen · menu tiles</td><td>pin pad · collection screen</td><td>tray · bag · presenter</td><td>receipt · QR feedback link</td></tr></tbody></table></div><div class="rubric"><div class="rub"><span class="bar" style="height:34px;background:#16a34a"></span>+2 delighted</div><div class="rub"><span class="bar" style="height:26px;background:#16a34a;opacity:.75"></span>+1 glad</div><div class="rub"><span class="bar" style="height:18px;background:#94a3b8"></span>0 neutral</div><div class="rub"><span class="bar" style="height:12px;background:#d97706"></span>−1 irritated</div><div class="rub"><span class="bar" style="height:8px;background:#dc2626"></span>−2 angry</div></div><h2>Phase-by-phase evidence</h2>
+<div style="overflow-x:auto"><table><thead><tr><th>Phase</th><th>Guest goal</th><th>Frontstage</th><th>Backstage</th><th>Pain point</th></tr></thead><tbody><tr><td>Arrive</td><td>&ldquo;I want to be welcomed and find the fastest way to order&rdquo;</td><td>Foyer, queue split, kiosks</td><td>Rostering, cleanliness</td><td>No one owns the space between door and machine; nobody greets</td></tr><tr><td>Order</td><td>&ldquo;I want help if I need it, without judgment&rdquo;</td><td>Kiosk screens, staff nearby</td><td>Menu sync, item availability</td><td>First-timers struggle; specific pieces impossible on express kiosks; out-of-stock mismatches</td></tr><tr><td>Pay &amp; wait</td><td>&ldquo;I want my order taken correctly and to know what's next&rdquo;</td><td>Pin pad, collection screen</td><td>POS, kitchen display, packer</td><td>Cash guests queued at counter; &ldquo;checking kitchen&rdquo; delays; payment timeouts</td></tr><tr><td>Collect &amp; enjoy</td><td>&ldquo;I want to be recognised and enjoy my meal&rdquo;</td><td>Presenter hand-off</td><td>Ready flip within 60 seconds</td><td>Order not flipped; forgotten in the queue; no parting recognition</td></tr><tr><td>Reflect</td><td>&ldquo;I want my feedback to matter&rdquo;</td><td>Feedback link via receipt</td><td>Feedback analysis</td><td>Feedback ignored — or the machine gets the blame for a service failure</td></tr></tbody></table></div><h2>Where the human appears</h2>
+<p>The order workflow embeds three scripts at the exact moments the evidence says guests give up:</p><div style="overflow-x:auto"><table><thead><tr><th>Script</th><th>Moment</th><th>Paraphrase</th></tr></thead><tbody><tr><td>Greeting</td><td>The door</td><td>&ldquo;Hi, I'm [name], your ordering host. Would you like faster, cashless ordering at the kiosk?&rdquo;</td></tr><tr><td>Assist</td><td>The kiosk</td><td>Help navigate, never judge; the counter is an equal path</td></tr><tr><td>Direct</td><td>Cash and specific pieces</td><td>To the counter queue, never abandoned at the machine</td></tr></tbody></table></div><h2>Read</h2>
+<p>Emotion is flat between the door and the collection point (2–3 of 5); the pains cluster exactly where no one is rostered to act. The fail points are the training and standards agenda — each one maps to a floor-role behaviour or a designed exception path.</p>
+
+  <footer><span>Artifact 04 · journey map</span></footer>
+</div>
+</body>
+</html>

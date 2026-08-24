@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benchmark Report — Floor-Role Programs Across Markets · The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --phys:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#1e293b; --mut:#64748b; --bg:#f8fafc; --line:#e2e8f0; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 22px 60px}
+      .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:0 0 6px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px}
+  .sub{color:var(--mut);margin:0 0 14px;font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mut)}
+  .chip.kind{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
+  nav.sibs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px;font-size:12.5px}
+  nav.sibs a{text-decoration:none;color:#334155;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  nav.sibs a.here{background:#1e293b;color:#fff;border-color:#1e293b}
+  h2{font-size:20px;margin:36px 0 10px;padding-top:10px;border-top:2px solid var(--line)}
+  h3{font-size:16px;margin:18px 0 6px}
+  p{margin:8px 0}
+  .legend{position:sticky;top:0;z-index:20;background:rgba(248,250,252,.96);backdrop-filter:blur(3px);
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-wrap:wrap;gap:12px;
+    font-size:11.5px;color:#334155;margin:0 0 20px}
+  .legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+  .n-wait{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px;
+    background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px)}
+  .n-fail{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid var(--fail);vertical-align:-1px;margin-right:4px}
+  .n-hand{display:inline-block;width:12px;height:12px;border:2px dashed #475569;border-radius:3px;vertical-align:-2px;margin-right:4px}
+  .n-dec{display:inline-block;width:9px;height:9px;background:#475569;transform:rotate(45deg);vertical-align:0;margin-right:6px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:12.5px;table-layout:fixed}
+  th{background:#f1f5f9;text-align:left;padding:8px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#475569;border-bottom:2px solid var(--line)}
+  th.stage{background:#1e293b;color:#fff;font-size:12px;letter-spacing:.02em;text-transform:none}
+  th.stage .t{display:block;font-size:10.5px;color:#cbd5e1;font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+  th.rowlab{width:118px}
+  td{padding:8px 8px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+  td:last-child{border-right:none}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#f8fafc}
+  td.rowlab{background:#f1f5f9;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .lane-cust td .a{color:var(--cust);font-weight:600}
+  .lane-front td .a{color:var(--front)}
+  .lane-back td .a{color:var(--back)}
+  .lane-phys td .a{color:var(--phys)}
+  .sys{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;
+    color:#0e7490;background:#ecfeff;border:1px solid #a5f3fc;border-radius:4px;padding:0 5px;margin:1px 1px}
+  .spark{display:flex;flex-direction:column;align-items:center;gap:3px}
+  .spark .bar{width:20px;border-radius:3px 3px 0 0}
+  .spark .sc{font-size:10px;font-weight:700;color:#64748b}
+  .chipnode{display:inline-block;font-size:10px;font-weight:700;border-radius:999px;padding:1px 7px;margin:1px 1px;white-space:nowrap}
+  .c-wait{background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px);color:#334155}
+  .c-fail{border:2px solid var(--fail);color:var(--fail);background:#fff}
+  .c-hand{border:2px dashed #475569;color:#334155;background:#fff}
+  .c-dec{border:1.5px solid #475569;color:#fff;background:#475569}
+  .ev{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;color:#0e7490}
+  .note{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:#0e7490;white-space:nowrap}
+  .note-desc{font-size:12.5px;color:#475569}
+  .rubric{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0;font-size:12px}
+  .rub{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px}
+  .rub .bar{width:14px;height:34px;border-radius:3px 3px 0 0;flex:0 0 auto}
+  footer{margin-top:40px;padding-top:14px;border-top:2px solid var(--line);font-size:12.5px;color:var(--mut)}
+  @media (max-width:900px){table{font-size:11px}th.rowlab{width:74px}.wrap{padding:14px}}
+  @media print{
+    body{background:#fff;font-size:10px}
+    .wrap{max-width:none;padding:0}
+    .legend{position:static;backdrop-filter:none}
+    nav.sibs{display:none}
+    tr{break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+    h2{break-after:avoid}
+    table{table-layout:auto}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">Kiosk Channel Strategy · Self-Service Redesign · Artifact 03</p>
+  <h1>Benchmark Report — Floor-Role Programs Across Markets</h1>
+  <p class="sub">Four franchisee groups designed four different humans. The benchmarking job: converge them into one floor-role standard without flattening what made each work.</p>
+
+  <div class="chips"><span class="chip kind">Template kind 05 · benchmark</span><span class="chip">Phase: Research (weeks 1–8)</span><span class="chip">4 franchisee programs + global scan</span><span class="chip">Convergence → one standard</span></div>
+
+  <nav class="sibs"><a href="brief.html">Brief</a><a href="channel-analysis.html">Channel</a><a href="benchmark-report.html" class="here">Benchmark</a><a href="journey-map.html">Journey Map</a><a href="service-blueprint.html">Blueprint</a><a href="analysis-report.html">Analysis</a></nav>
+
+  <h2>Why benchmark</h2>
+<p>The benchmarking interviews found no single corporate answer: four franchisee groups running floor-role programs had designed four different humans, with four different theories of where the human belongs in a self-service channel. The standards program's job was to converge them into one floor-role standard without flattening what made each work.</p><h2>The four archetypes</h2>
+<div style="overflow-x:auto"><table><thead><tr><th>Archetype</th><th>Training &amp;amp; enablement</th><th>Presence</th><th>What it moved</th></tr></thead><tbody><tr><td><strong>Foyer greeter-host</strong></td><td>Face-to-face roleplay training + a one-page training card; special apron for recognition; &ldquo;no customer enters without being greeted&rdquo;</td><td>Rostered lunch and dinner peaks; secondary duties: dining-room and restroom cleanliness</td><td>Adoption at high-volume stores; staff-recognition feedback became the top positive theme</td></tr><tr><td><strong>Customer-experience champion</strong></td><td>Half-day face-to-face for managers cascading to supervisors; 8-hour team curriculum with a skill assessment; learner guide with QR-linked videos; kiosks built into the role</td><td>Champion visible on the floor; feedback + conversion targets per shift</td><td>Brand-standards score +8 points; &ldquo;huge increase&rdquo; in kiosk sales and back-of-house quality</td></tr><tr><td><strong>Customer specialist</strong></td><td>Team-member self-nomination; name badges; recognition cards; coaching card for customer recovery</td><td>In design at benchmarking time (work in progress)</td><td>Feedback-response quality; still maturing</td></tr><tr><td><strong>Service champion</strong> (behaviour standard)</td><td>30-minute shift-huddle training; knowledge check; recognition cards; &ldquo;make it stick&rdquo;</td><td>Greet within 5 seconds; station near kiosks at peak; order-fulfilment duty</td><td>~10–15% higher check averages on the channel; staff do &ldquo;the upselling for us&rdquo;</td></tr></tbody></table></div><h2>Global scan: markets with older kiosk footprints</h2>
+<div style="overflow-x:auto"><table><thead><tr><th>Region</th><th>Floor-role maturity</th><th>What it offers the standard</th></tr></thead><tbody><tr><td>Region 1</td><td>Kiosks installed ~7 years; tacit knowledge passed down; no formal training continuum</td><td>Maturity without enablement leaves knowledge with a few people</td></tr><tr><td>Region 2</td><td>Short e-learning lesson on the benefits of kiosk use</td><td>Awareness-level content baseline</td></tr><tr><td>Region 3</td><td>Structured course on helping guests use kiosks and driving adoption</td><td>Role behaviours, but no deployment to the foyer as a rostered position</td></tr><tr><td>Region 4</td><td>Full suite: shift-huddle guide, implementation playbook, troubleshooting FAQ</td><td>The practice + competition + recognition model that later won the pilot</td></tr><tr><td>Region 5</td><td>Rollout guide with a named assist role and formal escalation matrix</td><td>The support-ecosystem pattern: the team, not the help desk, as first line of recovery</td></tr></tbody></table></div><h2>Convergence: what the four designs share</h2>
+<p>Across the four archetypes, five behaviours recurred:</p><ul><li><strong>Greet</strong> within seconds at the door — all four</li><li><strong>Assist</strong> without judgment at the kiosk — all four</li><li><strong>Direct</strong> cash and specific-piece requests to the counter — three of four</li><li><strong>Clean</strong>: foyer and high-touch surfaces as a secondary duty — three of four</li><li><strong>Roster</strong> to lunch and dinner peaks — all four</li></ul><p>These five shared behaviours became the floor-role standard: greet, assist, direct, clean, and roster — with the role required during peak hours for the first six months of any kiosk installation, or until adoption reaches 80% of in-store sales.</p><h2>The honest failure capture</h2>
+<div class="rubric" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))"><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">4</span><span style="font-size:11px;color:#cbd5e1">franchisee programs benchmarked</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">3 of 3</span><span style="font-size:11px;color:#cbd5e1">sampled restaurants unaware of the flagship program</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">+8 pts</span><span style="font-size:11px;color:#cbd5e1">brand-standards score at the customer-experience-led group</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">~10–15%</span><span style="font-size:11px;color:#cbd5e1">higher check averages on the channel</span></div></div><p>A post-implementation phone check called three sampled restaurants: none had implemented — or heard of — the flagship foyer program. A great role design is worthless without rollout, rostering, and coaching. That finding, not the successes, drove the governance design: every standard paired with an interim rollout process and audit-linked enforcement.</p>
+
+  <footer><span>Artifact 03 · benchmark report</span></footer>
+</div>
+</body>
+</html>

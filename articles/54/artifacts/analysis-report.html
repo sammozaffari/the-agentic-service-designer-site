@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analysis Report — Two Pilots, One Honest Answer · The Agentic Service Designer</title>
+<style>
+  :root{
+    --cust:#2563eb; --front:#16a34a; --back:#d97706; --sup:#9333ea; --data:#0891b2; --phys:#64748b;
+    --wait:#94a3b8; --fail:#dc2626; --ink:#1e293b; --mut:#64748b; --bg:#f8fafc; --line:#e2e8f0; --card:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.55}
+  .wrap{max-width:1240px;margin:0 auto;padding:20px 22px 60px}
+      .kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);font-weight:700;margin:0 0 6px}
+  h1{font-size:30px;line-height:1.2;margin:0 0 6px}
+  .sub{color:var(--mut);margin:0 0 14px;font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mut)}
+  .chip.kind{background:#eef2ff;border-color:#c7d2fe;color:#3730a3}
+  nav.sibs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px;font-size:12.5px}
+  nav.sibs a{text-decoration:none;color:#334155;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  nav.sibs a.here{background:#1e293b;color:#fff;border-color:#1e293b}
+  h2{font-size:20px;margin:36px 0 10px;padding-top:10px;border-top:2px solid var(--line)}
+  h3{font-size:16px;margin:18px 0 6px}
+  p{margin:8px 0}
+  .legend{position:sticky;top:0;z-index:20;background:rgba(248,250,252,.96);backdrop-filter:blur(3px);
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;flex-wrap:wrap;gap:12px;
+    font-size:11.5px;color:#334155;margin:0 0 20px}
+  .legend .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+  .n-wait{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px;
+    background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px)}
+  .n-fail{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid var(--fail);vertical-align:-1px;margin-right:4px}
+  .n-hand{display:inline-block;width:12px;height:12px;border:2px dashed #475569;border-radius:3px;vertical-align:-2px;margin-right:4px}
+  .n-dec{display:inline-block;width:9px;height:9px;background:#475569;transform:rotate(45deg);vertical-align:0;margin-right:6px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:12.5px;table-layout:fixed}
+  th{background:#f1f5f9;text-align:left;padding:8px 8px;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:#475569;border-bottom:2px solid var(--line)}
+  th.stage{background:#1e293b;color:#fff;font-size:12px;letter-spacing:.02em;text-transform:none}
+  th.stage .t{display:block;font-size:10.5px;color:#cbd5e1;font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+  th.rowlab{width:118px}
+  td{padding:8px 8px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+  td:last-child{border-right:none}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:#f8fafc}
+  td.rowlab{background:#f1f5f9;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .lane-cust td .a{color:var(--cust);font-weight:600}
+  .lane-front td .a{color:var(--front)}
+  .lane-back td .a{color:var(--back)}
+  .lane-phys td .a{color:var(--phys)}
+  .sys{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;
+    color:#0e7490;background:#ecfeff;border:1px solid #a5f3fc;border-radius:4px;padding:0 5px;margin:1px 1px}
+  .spark{display:flex;flex-direction:column;align-items:center;gap:3px}
+  .spark .bar{width:20px;border-radius:3px 3px 0 0}
+  .spark .sc{font-size:10px;font-weight:700;color:#64748b}
+  .chipnode{display:inline-block;font-size:10px;font-weight:700;border-radius:999px;padding:1px 7px;margin:1px 1px;white-space:nowrap}
+  .c-wait{background:repeating-linear-gradient(45deg,#94a3b8 0 3px,#e2e8f0 3px 6px);color:#334155}
+  .c-fail{border:2px solid var(--fail);color:var(--fail);background:#fff}
+  .c-hand{border:2px dashed #475569;color:#334155;background:#fff}
+  .c-dec{border:1.5px solid #475569;color:#fff;background:#475569}
+  .ev{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;color:#0e7490}
+  .note{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:#0e7490;white-space:nowrap}
+  .note-desc{font-size:12.5px;color:#475569}
+  .rubric{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0;font-size:12px}
+  .rub{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px}
+  .rub .bar{width:14px;height:34px;border-radius:3px 3px 0 0;flex:0 0 auto}
+  footer{margin-top:40px;padding-top:14px;border-top:2px solid var(--line);font-size:12.5px;color:var(--mut)}
+  @media (max-width:900px){table{font-size:11px}th.rowlab{width:74px}.wrap{padding:14px}}
+  @media print{
+    body{background:#fff;font-size:10px}
+    .wrap{max-width:none;padding:0}
+    .legend{position:static;backdrop-filter:none}
+    nav.sibs{display:none}
+    tr{break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+    h2{break-after:avoid}
+    table{table-layout:auto}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">Human-Connection Programme · Drive-Thru Hospitality Engagement · Artifact 04</p>
+  <h1>Analysis Report — Two Pilots, One Honest Answer</h1>
+  <p class="sub">Satisfaction +~14, service +~7, order accuracy +~3.5 in the intervention hour — and a null finding the team refused to bury.</p>
+
+  <div class="chips"><span class="chip kind">Template kind 28+32 · analysis-report</span><span class="chip">Phase: Decision (week 14)</span><span class="chip">Deltas: 7 · Null finding: 1</span><span class="chip">Adversarial review: passed</span></div>
+
+  <nav class="sibs"><a href="brief.html">Brief</a><a href="experiment-design.html">Experiment Design</a><a href="journey-map.html">Journey Map</a><a href="analysis-report.html" class="here">Analysis Report</a><a href="proposals.html">Proposals</a></nav>
+
+  <h2>Executive read</h2>
+<p>Pilot 1’s four-touchpoint hospitality behaviours become the foundation of the drive-thru operating standard, rolled out nationally through the annual operating calendar. Pilot 2’s delight hour becomes a periodic engagement driver rather than a daily standard. The headline is not a gadget story: the tokens never appeared in customer comments — the interaction was the gift. Expansion is proposed to the front counter, delivery and self-service channels with consistent human-connection metrics.</p><h2>Headline evidence</h2>
+<div class="rubric" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))"><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">+~14 pts</span><span style="font-size:11px;color:#cbd5e1">overall drive-thru satisfaction score · 68 → 82</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">+~7 pts</span><span style="font-size:11px;color:#cbd5e1">service satisfaction · 54 → 61</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">+~3.5 pts</span><span style="font-size:11px;color:#cbd5e1">order accuracy, intervention hour vs national</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">+~4 pts</span><span style="font-size:11px;color:#cbd5e1">friendliness mentions, hour vs national</span></div><div class="rub" style="background:#1e293b;color:#f8fafc;border-color:#1e293b"><span style="font-size:22px;font-weight:800;color:#fff">−~2.5 pts</span><span style="font-size:11px;color:#cbd5e1">negative comments, hour vs national</span></div></div><h2>Before / after (test group of 10 restaurants, both pilots)</h2>
+<table><thead><tr><th>Metric</th><th>Baseline</th><th>End of both pilots</th><th>Delta</th></tr></thead><tbody><tr><td>Overall drive-thru satisfaction score (top-box share)</td><td>~68%</td><td>~82%</td><td>+~14 pts</td></tr><tr><td>Service satisfaction</td><td>~54%</td><td>~61%</td><td>+~7 pts</td></tr><tr><td>Friendliness (drive-thru comments)</td><td>~92%</td><td>~95%</td><td>+~3 pts</td></tr><tr><td>Negative-experience share (all channels)</td><td>~22%</td><td>~18%</td><td>−~4 pts</td></tr><tr><td>Negative-experience share (drive-thru only)</td><td>~9%</td><td>~6%</td><td>−~3 pts</td></tr><tr><td>Crew trained</td><td>—</td><td>~200 across 10 restaurants (~50 by day one)</td><td>Training at scale proven</td></tr></tbody></table><h2>Intervention-hour deltas (test vs national)</h2>
+<table><thead><tr><th>Metric</th><th>Test vs national</th></tr></thead><tbody><tr><td>Service satisfaction</td><td>+~1.5</td></tr><tr><td>Service quality</td><td>+~2</td></tr><tr><td>Order accuracy</td><td>+~3.5</td></tr><tr><td>Order speed</td><td>~0 (flat — no speed cost)</td></tr><tr><td>Positive sentiment</td><td>+~3</td></tr><tr><td>Friendliness mentions</td><td>+~4</td></tr><tr><td>Negative comments</td><td>−~2.5</td></tr></tbody></table><p>Restricted to the intervention hour only. The defensive effect deserves its own line: negative-experience share fell overall (−~4 all channels, −~3 drive-thru), and the programme’s value is at least as much about preventing dissatisfaction as about delight.</p><h2>The honest null finding</h2>
+<p>Across both arms, the giveaway tokens and handwritten notes appeared in almost no customer comments. The gift sat below the threshold of what customers mention; the interaction around the token is what moved feedback — the ritual, the line, the surprise moment at the window. The giveaway arm edged the note arm on average, leaving a real cost-vs-outcome tension for scaling: the notes cost nothing and trailed slightly; the merchandise cost a little and led. The team kept the null finding in the after-action review instead of burying it — the review gate protected it — and it became the programme’s most useful lesson.</p><p style="background:#fff;border-left:4px solid #1e293b;padding:10px 14px;border-radius:6px"><strong>The interaction was the gift.</strong> <span style="color:#64748b">— the programme’s honest null finding</span></p><h2>Crew confidence</h2>
+<p>The week-1 crew survey rated the training materials useful, and customer-interaction confidence lifted from the ~4.1/5 baseline toward the ≥ 4.5 target. Managers reported visibly higher willingness to engage at the windows. The crew-first mechanic — managers surprising crew with tokens for a week before the customer hour — acted as a training mechanic that feels like a perk: crew experienced the gesture before they delivered it.</p><h2>Attribution honesty</h2>
+<ul><li>Period-over-period cuts separate pilot 1’s effect from pilot 2’s; test-vs-national comparisons are restricted to the intervention hour.</li><li>Hourly-level reporting was requested from the feedback platform and never fully delivered; most stores returned thin afternoon samples, so the gap is reported openly.</li><li>The voice-AI experience question drew zero responses — the automation’s direct effect was never measured; the team measured around it.</li><li>The tokens’ absence from comments is reported as a null finding, not dressed as a win; the after-action review says “metrics to be refined” where that is true.</li></ul><h2>Recommendation</h2>
+<ol><li>Adopt pilot 1’s hospitality behaviours as the foundation of the drive-thru operating standard — national rollout through the annual operating calendar.</li><li>Hold pilot 2’s delight hour as a periodic engagement driver, not a daily standard.</li><li>Extend consistent human-connection metrics to front counter, delivery and self-service channels.</li><li>Pre-register hourly-level reporting before the next pilot; score future baselines against the good-services principles from week 1.</li></ol><p><strong>Decision:</strong> adopted at the week-14 gate, pending promo-calendar alignment.</p>
+
+  <footer><span>Artifact 04 · analysis report</span> · Measurement &amp; decision · week 14</footer>
+</div>
+</body>
+</html>
