@@ -274,7 +274,7 @@ sd_method_list(phase, producesKind)              sd_method_run(methodId, project
 sd_review(projectId, artifactId, verdict, rows)  sd_review_list(projectId, status)
 sd_export_report(projectId, kind)                sd_export_artifact(projectId, artifactId, width?)
 sd_knowledge(query, phase, source, type)         sd_factcheck(projectId)
-</code></pre></div>
+</code></pre>
 <p>Inside Claude Code the same 29 ship as MCP tools from the plugin&#39;s vendored server (<code>mcp__asd__sd_*</code>); on the CLI both the full names and dashed aliases work (<code>asd project-create</code>, <code>asd method-list --phase research</code>). One engine, multiple surfaces; host execution is not asserted here.</p>
 <h3 id="35-gates-and-status-the-lifecycle-the-engine-actually-enforces">3.5 Gates and status — the lifecycle the engine actually enforces</h3>
 <ul>
@@ -292,13 +292,13 @@ sd_knowledge(query, phase, source, type)         sd_factcheck(projectId)
 <h3 id="41-session-1-discover-weeks-15">4.1 Session 1 — Discover (weeks 1–5)</h3>
 <p><strong>Drive.</strong> In Claude Code:</p>
 <pre><code>/asd
-</code></pre></div>
+</code></pre>
 <p>The <code>/asd</code> command plans from the brief and dispatches the platform order. Then the designer sends the Researcher out:</p>
 <pre><code>@researcher run the contextual-inquiry skill for lighthouse-transit: plan
 the research (ride-alongs on 14 routes incl. night shift, 32 commuter
 interviews, 6 drivers), then add every field note and every verbatim
 quote to the project evidence register via sd_evidence_add.
-</code></pre></div>
+</code></pre>
 <p><strong>Illustrative evidence-capture sequence.</strong> In the represented workflow, the Researcher&#39;s instructions constrain every row to <code>{ source, kind, body }</code>, content-addressed by sha-256. Evidence kinds are exactly <code>quote</code>, <code>telemetry</code>, and <code>document</code>. The following synthetic transcript demonstrates the pack-local argument contract by trying an unsupported fourth kind:</p>
 <div class="codeblock"><div class="codebar"><span>NOTE</span></div><pre><code>$ asd evidence-add --projectId &lt;PROJECT_ID&gt; --source int-07 \
     --kind observation --body &quot;Riders leave 18 minutes early …&quot;
@@ -321,7 +321,7 @@ running `asd help` shows usage        (exit code 1)
 <pre><code>@mapper run journey-from-transcripts over the register and write the
 current-state journey-map artifact for lighthouse-transit.
 @critic review the journey-map before it can go final.
-</code></pre></div>
+</code></pre>
 <p><strong>Illustrative engine behavior.</strong> The skill&#39;s own SOP (plain text in <code>skills/journey-from-transcripts/SKILL.md</code>): the Researcher extracts every distinct customer action, channel and breakdown with its verbatim quote; the Mapper orders stages and gives each an emotion drawn from the quotes, never inferred; the Critic rejects any stage whose emotion or pain point is not supported by a quoted line. The first write fails the machine gate — and the rejection is represented below as a draft:</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;accepted&quot;: false, &quot;status&quot;: &quot;draft&quot;,
   &quot;artifact&quot;: { &quot;id&quot;: &quot;2f537689386e439abd3ae43769ab710c&quot;, &quot;kind&quot;: &quot;journey-map&quot;,
@@ -350,7 +350,7 @@ hmw-formulation, diverge first, converge, then author the concept-set.
 each storyboard names its assumption, fidelity, subjects, pass/fail criteria.
 @mapper run service-blueprinting (then evidence-gated-blueprint) for the
 future state.
-</code></pre></div>
+</code></pre>
 <p><strong>Illustrative engine behavior.</strong> Ideator and Prototyper follow their role instructions (concepts carry insight→HMW→concept→hypothesis→KPI lineage; prototypes are experiments with criteria, not demos) and write structured artifact records. Per-kind runtime typed schemas remain a Phase 2 boundary. The knowledge base source tells us which methods produce the blueprint (<code>asd knowledge --query blueprint</code>, excerpt):</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;methods&quot;: [
   { &quot;id&quot;: &quot;evidence-gated-blueprint&quot;, &quot;phase&quot;: &quot;delivery&quot;, &quot;produces&quot;: &quot;service-blueprint&quot;,
@@ -372,7 +372,7 @@ kpi-tree-design: each row names its driver, experience link, business
 link, baseline, and source.
 @presenter assemble the executive report from final artifacts only.
 @librarian produce the handover pack with full provenance.
-</code></pre></div>
+</code></pre>
 <p><strong>Illustrative engine behavior.</strong> Measurer writes the kpi-tree; the Librarian checks provenance and corpus drift; the Presenter adds no new evidence — both renders are engine calls represented below (no hand-drawn Mermaid is required in the pipeline):</p>
 <div class="codeblock"><div class="codebar"><span>DATA</span></div><pre><code>{ &quot;path&quot;: &quot;…/lighthouse-transit-f7e5f8a2/renders/report.executive-summary.html&quot;,
   &quot;kind&quot;: &quot;executive-summary&quot;, &quot;bytes&quot;: 2777 }
