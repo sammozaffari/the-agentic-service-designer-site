@@ -305,13 +305,6 @@
     if (reduceMotion) return;
     requestAnimationFrame(loop);
   });
-// ---------- smooth scroll for anchors ----------
-  ready(function () {
-    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-      a.addEventListener('click', function (e) {
-        var t = document.querySelector(a.getAttribute('href'));
-        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
-      });
-    });
-  });
+// Anchor smooth-scrolling is handled by `html { scroll-behavior: smooth }` in CSS,
+// which also respects prefers-reduced-motion; no JS needed.
 })();

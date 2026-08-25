@@ -1255,7 +1255,10 @@ void main() {
 
   if (!window.THREE) {
     const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    // Self-hosted (assets/three.min.js, r128) — no third-party request.
+    script.src = (document.currentScript && document.currentScript.src)
+      ? new URL('./three.min.js', document.currentScript.src).href
+      : 'assets/three.min.js';
     script.onload = () => {
       const container = document.querySelector('.particles-container');
       if (container) {
