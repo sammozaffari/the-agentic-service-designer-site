@@ -27,7 +27,7 @@
         c.style.display = show ? '' : 'none';
         if (show) { c.style.setProperty('--i', n); n++; }
       });
-      if (countEl) countEl.textContent = 'Showing ' + n + ' of ' + cards.length;
+      if (countEl) countEl.textContent = (state.q || state.cat || state.tracks.length) ? 'Showing ' + n + ' of ' + cards.length : '';
       if (emptyEl) emptyEl.hidden = n !== 0;
       if (qClear) qClear.hidden = !state.q;
     }
