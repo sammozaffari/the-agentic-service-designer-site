@@ -258,6 +258,8 @@
     });
 
     draw();
+    var fallback = stage.querySelector('.portrait-fallback');
+    if (fallback) fallback.style.display = 'none';
     if (reduceMotion) return;
     // gentle idle shimmer
     setInterval(function () {
