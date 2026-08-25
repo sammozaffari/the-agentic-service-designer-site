@@ -1,59 +1,142 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Sam Mozaffari — applied AI for service design, software and enterprise transformation. CV: HR/P&C AI transformation, engineering experience transformation, service design and UX.">
-<title>Sam Mozaffari — CV — The Agentic Service Designer</title>
+<meta name="description" content="Sam Mozaffari · applied AI for service design, software and enterprise transformation. CV: HR/P&C AI transformation, engineering experience transformation, service design and UX.">
+<title>Sam Mozaffari · CV · The Agentic Service Designer</title>
 <link rel="stylesheet" href="./assets/style.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
 <style>
-  /* One-page CV: tight screen layout, print-clean */
-  .cv { max-width: 760px; margin: 0 auto; padding: 8px 24px 48px; }
-  .cv h2 {
-    font-size: 13px; text-transform: uppercase; letter-spacing: .1em;
-    color: #6e6e69; margin: 22px 0 8px; padding-bottom: 4px; border-bottom: 2px solid #111110;
+  /* ---------- CV page: screen layout ---------- */
+  .cv-contact {
+    margin: 22px 0 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
   }
-  .cv h2:first-of-type { margin-top: 8px; }
-  .cv p { margin: 0 0 10px; font-size: 13.5px; line-height: 1.55; }
-  .cv ul { margin: 0 0 10px; padding-left: 18px; }
-  .cv li { font-size: 13px; line-height: 1.5; margin: 0 0 4px; }
-  .cv-item { display: grid; grid-template-columns: 128px 1fr; gap: 12px; margin: 0 0 12px; }
-  .cv-item .when { font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace; font-size: 11px; color: #6e6e69; padding-top: 2px; }
-  .cv-item h3 { font-size: 14px; margin: 0 0 2px; }
-  .cv-item .org { font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace; font-size: 11px; color: #555555; margin: 0 0 4px; }
-  .cv-item p { font-size: 12.5px; line-height: 1.5; margin: 0 0 3px; }
-  .cv-item ul { padding-left: 16px; margin: 2px 0 0; }
-  .cv-item li { font-size: 12.5px; line-height: 1.5; margin: 0 0 3px; }
-  .contact { font-size: 13.5px; margin: 12px 0 0; }
-  .contact a { color: #111110; text-decoration: underline; text-underline-offset: 3px; }
-  .portfolio-link { font-weight: 700; background: #171817; color: #f8f8f5; padding: 2px 8px; border-radius: 4px; text-decoration: none !important; }
-  .page-hero { padding-bottom: 4px; }
-  .page-hero .lede { max-width: 760px; margin: 0 auto; padding: 0 24px; }
-  @page { size: A4; margin: 10mm 12mm; }
+  .cv-contact a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+  .cv-contact .sep { color: var(--muted); }
+  .portfolio-link {
+    font-weight: 700;
+    background: var(--dark);
+    color: var(--dark-ink) !important;
+    padding: 6px 14px;
+    border-radius: 7px;
+    text-decoration: none !important;
+    letter-spacing: 0.01em;
+    border: 1px solid var(--dark);
+    transition: opacity var(--fast) var(--ease);
+  }
+  .portfolio-link:hover { opacity: 0.8; }
+
+  .cv-signature { max-width: 1180px; margin: 0 auto; padding: 8px var(--pad-d) 56px; }
+  .cv-signature .sec-head { margin: 0 auto 22px; }
+  .cv-signature .sec-head p { color: var(--ink-soft); max-width: 62ch; font-size: 14px; line-height: 1.6; margin: 0; }
+  .sig-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .sig-more { margin: 18px 0 0; font-size: 13px; }
+  .sig-more a { text-decoration: underline; text-underline-offset: 3px; }
+  .sig-print { display: none; }
+
+  .cv-body { max-width: 1180px; margin: 0 auto; padding: 0 var(--pad-d) 64px; }
+  .cv-grid { display: grid; grid-template-columns: 220px 1fr; gap: 48px; }
+  .cv-side { position: sticky; top: 24px; align-self: start; }
+  .cv-side .kicker { display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+  .cv-side p { color: var(--ink-soft); font-size: 12.5px; line-height: 1.55; margin: 0; }
+
+  .cv-main h2 {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(22px, 2.2vw, 30px);
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+  }
+  .cv-main h2 .kicker {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 8px;
+    font-weight: 400;
+  }
+  .cv-section { padding: 34px 0 8px; }
+  .cv-section:first-of-type { padding-top: 0; }
+  .cv-section > p { color: var(--ink-soft); font-size: 15px; line-height: 1.7; margin: 0; }
+
+  .exp-item {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 28px;
+    padding: 22px 0;
+    border-top: 1px solid var(--line);
+  }
+  .exp-item:last-child { border-bottom: 1px solid var(--line); }
+  .exp-item .when { font-family: var(--mono); font-size: 11px; color: var(--muted); padding-top: 3px; }
+  .exp-item h3 { font-family: var(--sans); font-weight: 700; font-size: 17px; letter-spacing: -0.01em; margin: 0 0 3px; }
+  .exp-item .org { font-family: var(--mono); font-size: 11px; color: var(--muted); margin: 0 0 10px; }
+  .exp-item ul { margin: 0; padding-left: 18px; }
+  .exp-item li { font-size: 13.5px; line-height: 1.6; color: var(--ink-soft); margin: 0 0 6px; }
+  .exp-item li b { color: var(--ink); font-weight: 600; }
+
+  .cap-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 18px; }
+  .cap-grid .tile { padding: 18px; }
+  .cap-grid .tile h3 { font-size: 14.5px; margin: 0 0 6px; }
+  .cap-grid .tile p { font-size: 12.5px; line-height: 1.55; }
+
+  .edu-band { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+  .edu-band .tile { padding: 18px; }
+  .edu-band .tile h3 { font-size: 14.5px; margin: 0 0 6px; }
+  .edu-band .tile p { font-size: 12.5px; line-height: 1.55; }
+
+  @media (max-width: 980px) {
+    .sig-grid { grid-template-columns: repeat(2, 1fr); }
+    .cv-grid { grid-template-columns: 1fr; gap: 20px; }
+    .cv-side { position: static; }
+  }
+
+  /* ---------- print: the one-page PDF ---------- */
+  @page { size: A4; margin: 8mm 10mm; }
   @media print {
-    .site-head, .main-nav, .footer, .page-hero { display: none; }
-    body { font-size: 9.5px; }
-    .cv { max-width: 100%; padding: 0; }
-    .cv h2 { font-size: 10px; margin: 9px 0 4px; }
-    .cv p, .cv li { font-size: 9.5px; }
-    .cv-item { margin: 0 0 5px; }
-    .cv-item .when { font-size: 8.5px; }
-    .cv-item h3 { font-size: 10.5px; }
-    .cv-item .org { font-size: 8.5px; }
-    .cv-item p, .cv-item li { font-size: 9px; }
-    .contact { font-size: 9.5px; }
-    .cv-signature { margin: 0 0 4px; }
-    .sig-row { grid-template-columns: 150px 1fr; gap: 8px; margin: 0 0 3px; }
-    .sig-row a { font-size: 9.5px; }
-    .sig-row span { font-size: 8.5px; }
-
-    .portfolio-link { background: none; color: #111110; padding: 0; border-radius: 0; }
-    a { color: #111110; text-decoration: underline; }
+    .site-head, .main-nav, .footer, .cv-side, .sig-grid, .sig-more { display: none !important; }
+    .page-hero { padding: 0 0 4px !important; }
+    .page-hero .kicker { font-size: 8.5px; margin-bottom: 2px; }
+    .page-hero h1 { font-size: 24px; margin: 0 0 4px; }
+    .page-hero .lede { font-size: 10px; line-height: 1.4; margin: 0; }
+    .cv-contact { margin: 8px 0 0; font-size: 9px; gap: 4px 8px; }
+    .portfolio-link { padding: 1px 6px; border-radius: 3px; font-size: 9px; }
+    .cv-signature { padding: 0; }
+    .cv-signature .sec-head { display: none; }
+    .sig-print { display: block; margin: 10px 0 2px; }
+    .sig-print h2 { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #6e6e69; margin: 0 0 4px; border-bottom: 1.5px solid #111110; padding-bottom: 2px; }
+    .sig-print .sig-row { display: grid; grid-template-columns: 1fr 1fr; column-gap: 14px; row-gap: 3px; }
+    .sig-print .sig-item { display: grid; grid-template-columns: 150px 1fr; gap: 6px; font-size: 8px; line-height: 1.35; }
+    .sig-print .sig-item a { font-weight: 700; color: #111110; text-decoration: none; }
+    .sig-print .sig-item span { color: #444; }
+    .cv-body { padding: 0; }
+    .cv-grid { display: block; }
+    .cv-section { padding: 8px 0 0; }
+    .cv-main h2 { font-size: 10px; margin: 0 0 2px; }
+    .cv-section > p { font-size: 9px; line-height: 1.45; }
+    .exp-item { grid-template-columns: 92px 1fr; gap: 10px; padding: 7px 0; border-top: 1px solid #bbb; }
+    .exp-item:last-child { border-bottom: 1px solid #bbb; }
+    .exp-item .when { font-size: 8px; padding-top: 1px; }
+    .exp-item h3 { font-size: 10.5px; margin: 0 0 1px; }
+    .exp-item .org { font-size: 8px; margin: 0 0 3px; }
+    .exp-item ul { padding-left: 12px; margin: 0; }
+    .exp-item li { font-size: 8.5px; line-height: 1.4; margin: 0 0 2px; color: #222; }
+    .cap-grid { display: block; margin-top: 6px; }
+    .cap-grid .tile, .edu-band .tile { padding: 0; border: none; margin: 0; background: none; box-shadow: none; }
+    .cap-grid .tile { margin-bottom: 3px; }
+    .cap-grid .tile h3, .edu-band .tile h3 { display: inline; font-size: 8.5px; margin: 0; }
+    .cap-grid .tile p, .edu-band .tile p { display: inline; font-size: 8.5px; line-height: 1.35; color: #222; }
+    .cap-grid .tile h3::after { content: ": "; }
+    .edu-band { display: block; margin-top: 6px; }
+    .edu-band .tile { margin-bottom: 3px; }
+    a { color: #111110; }
   }
-
-  .cv-signature { margin: 0 0 8px; }
-  .sig-row { display: grid; grid-template-columns: 210px 1fr; gap: 10px; margin: 0 0 6px; }
-  .sig-row a { font-weight: 600; font-size: 13px; }
-  .sig-row span { font-size: 12px; color: #555555; line-height: 1.45; }
 </style>
 </head><body>
 <header class="site-head">
@@ -76,88 +159,142 @@
 <section class="page-hero">
   <span class="kicker">Curriculum vitae</span>
   <h1>Sam Mozaffari</h1>
-  <p class="lede">Applied AI — service design, software and enterprise transformation. Sydney, Australia · remote-friendly.</p>
+  <p class="lede">Applied AI: service design, software and enterprise transformation. Sydney, Australia · remote-friendly.</p>
+  <p class="cv-contact">
+    <a class="portfolio-link" href="https://sammozaffari.github.io/the-agentic-service-designer-site/" target="_blank" rel="noopener">Portfolio → the-agentic-service-designer-site</a>
+    <span class="sep">·</span> <span>sammymoz@gmail.com</span>
+    <span class="sep">·</span> <span>+61 466 006 127</span>
+    <span class="sep">·</span> <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a>
+  </p>
 </section>
 
-<div class="cv">
-
-  <p class="contact">
-    sammymoz@gmail.com &nbsp;·&nbsp; +61 466 006 127 &nbsp;·&nbsp; Sydney, NSW &nbsp;·&nbsp;
-    <a class="portfolio-link" href="https://sammozaffari.github.io/the-agentic-service-designer-site/" target="_blank" rel="noopener">Portfolio → the-agentic-service-designer-site</a>
-    &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a>
-  </p>
-
-  <h2>Profile</h2>
-  <p>Five-plus years across enterprise research, product design and service design — the last three and a half deliberately integrating AI into all of it: software development, research, prototyping and UI. The taste comes from a design background; the working method is agents — Claude Code, OpenCode, Codex, Gemini and a ten-role harness of my own design, with an adversarial critic on every gate. I work horizontally across the full lifecycle of enterprise problem-solving: research and synthesis, service mapping and blueprinting, building software and working prototypes, measurement and rollout. Hireable for HR and P&amp;C AI transformation, engineering experience transformation, service design and UX — a team of one, plus as many agents as the job needs.</p>
-
-  <h2>Experience</h2>
-
-  <div class="cv-item"><span class="when">Jul 2024 – now</span><div>
-    <h3>Lead UX Designer / Researcher</h3>
-    <p class="org">KFC South Pacific — 800+ restaurant network, franchise + equity + corporate</p>
-    <ul>
-      <li>Research operations with AI-integrated pipelines: 80+ stakeholder interviews, 590+ survey respondents, 400+ AI-extracted insights across 14 user types; safety-incident research (60+ interviews, 430 surveys, 232 AI-categorised insights) completed in days, not months, with 7 working prototypes.</li>
-      <li>Workforce-management platform research: 20 interviews, 160+ surveys with AI-designed conditional-logic branching, 10 site visits; 16-stage / 10-lane service blueprint, 175 pain points, 15+ prioritised recommendations with impact sizing.</li>
-      <li>Leading FLG Hospitality, a company-wide CX program (launch Q2 2026): training systems, service touchpoint frameworks, recognition programs across all channels.</li>
-      <li>Built a custom Flask/SQLite research platform for journey mapping, insight visualisation and service blueprinting.</li>
-    </ul>
-  </div></div>
-
-  <div class="cv-item"><span class="when">Jul 2021 – Jul 2024</span><div>
-    <h3>Product Designer</h3>
-    <p class="org">ZETR — electrical hardware and digital products</p>
-    <ul>
-      <li>Product onboarding redesign: +12% new-customer conversion, −35% sales support inquiries, WCAG 2.1 throughout.</li>
-      <li>Electrical fast-charging system from concept to launch: $1M+ sales in the first quarter; three years of user testing with tradespeople and architects.</li>
-    </ul>
-  </div></div>
-
-  <div class="cv-item"><span class="when">Nov 2020 – Aug 2023</span><div>
-    <h3>UX Design Intern</h3>
-    <p class="org">Service NSW</p>
-    <ul>
-      <li>Mobile app redesign for financial-assistance applications, W3C/WCAG compliant.</li>
-    </ul>
-  </div></div>
-
-  <div class="cv-item"><span class="when">Aug 2019 – Jun 2021</span><div>
-    <h3>Product Designer (part-time)</h3>
-    <p class="org">Black Lab Design — Woolworths, Wesfarmers, ANZ</p>
-    <ul>
-      <li>Checkout systems and fresh-produce displays for Woolworths; point-of-sale solutions for Wesfarmers and ANZ, accessibility-first.</li>
-    </ul>
-  </div></div>
-
-
-  <h2>Signature work</h2>
-  <div class="cv-signature">
-    <div class="sig-row"><a href="./articles/50/index.html" style="text-decoration:underline">The Manager Makes or Breaks It</a><span>Employee experience and the first-12-weeks blueprint — 20,000+ survey responses, one attrition chain, two competing options, a gated roadmap.</span></div>
-    <div class="sig-row"><a href="./articles/51/index.html" style="text-decoration:underline">The Speed Trap</a><span>Service-quality analytics at 100,000+ guest comments: the competence-vs-speed decomposition that re-pointed the program.</span></div>
-    <div class="sig-row"><a href="./articles/52/index.html" style="text-decoration:underline">The Alignment Problem</a><span>Time &amp; attendance: 20 interviews and 160-respondent survey turning a stalled vendor backlog into a prioritised roadmap.</span></div>
-    <div class="sig-row"><a href="./articles/53/index.html" style="text-decoration:underline">The Foyer Host Effect</a><span>Self-service channel strategy — designing the human half of the kiosk, from guest feedback to floor-role standards.</span></div>
-    <div class="sig-row"><a href="./articles/54/index.html" style="text-decoration:underline">Where Humans Matter Most</a><span>Two sequenced pilots for human connection in an automated drive-thru, with an honest null finding.</span></div>
-    <div class="sig-row"><a href="./articles/55/index.html" style="text-decoration:underline">Hiring in Days, Not Weeks</a><span>End-to-end recruitment and onboarding blueprint — 60+ interviews, nine stages, application-to-interview under two days.</span></div>
-    <div class="sig-row"><a href="./articles/56/index.html" style="text-decoration:underline">The Learning Platform Is a Safety System</a><span>Retiring a legacy LMS: quantified business case, compliance-driven redesign, pilot at zero tickets and 1,000+ completions.</span></div>
+<section class="cv-signature">
+  <div class="sec-head">
+    <span class="kicker">Signature work</span>
+    <h2>Recent case studies</h2>
+    <p>Seven full engagements, published openly with every artifact: research instruments, evidence registers, blueprints, prototypes, pilot readouts. The four below are the most recent.</p>
   </div>
+  <div class="sig-grid">
+    <div class="card dark">
+      <div class="card-top">
+        <span class="category-label">Case 50</span>
+        <h3 class="card-title"><a href="./articles/50/index.html">The Manager Makes or Breaks It</a></h3>
+        <p class="card-desc">First-12-weeks employee experience: 20,000+ survey responses, one attrition chain, two competing options, a gated roadmap.</p>
+      </div>
+      <a class="card-cta" href="./articles/50/index.html">Read the case →</a>
+    </div>
+    <div class="card dark">
+      <div class="card-top">
+        <span class="category-label">Case 51</span>
+        <h3 class="card-title"><a href="./articles/51/index.html">The Speed Trap</a></h3>
+        <p class="card-desc">Service-quality analytics at 100,000+ guest comments: the competence-versus-speed decomposition that re-pointed the program.</p>
+      </div>
+      <a class="card-cta" href="./articles/51/index.html">Read the case →</a>
+    </div>
+    <div class="card dark">
+      <div class="card-top">
+        <span class="category-label">Case 54</span>
+        <h3 class="card-title"><a href="./articles/54/index.html">Where Humans Matter Most</a></h3>
+        <p class="card-desc">Two sequenced pilots for human connection in an automated drive-thru, with an honest null finding.</p>
+      </div>
+      <a class="card-cta" href="./articles/54/index.html">Read the case →</a>
+    </div>
+    <div class="card dark">
+      <div class="card-top">
+        <span class="category-label">Case 56</span>
+        <h3 class="card-title"><a href="./articles/56/index.html">The Learning Platform Is a Safety System</a></h3>
+        <p class="card-desc">Retiring a legacy LMS: quantified business case, compliance-driven redesign, pilot at zero tickets and 1,000+ completions.</p>
+      </div>
+      <a class="card-cta" href="./articles/56/index.html">Read the case →</a>
+    </div>
+  </div>
+  <p class="sig-more"><a href="./articles.html">All 56 case studies in the archive →</a></p>
 
-  <h2>Capabilities</h2>
-  <ul>
-    <li><b>Research &amp; synthesis:</b> interview programs at scale, mixed methods, evidence registers, insight formulation, personas from evidence, co-design facilitation.</li>
-    <li><b>Service design &amp; mapping:</b> full lifecycle, multi-layer journey maps, service blueprints (including agent/LLM lanes), problem framing, prototyping and pilots, systems thinking.</li>
-    <li><b>AI &amp; engineering:</b> agent orchestration and human-in-the-loop design, prompt frameworks, structured content models, MCP integration, evaluation and QA for agent output, Flask, SQLite, Python, HTML/CSS/JS.</li>
-    <li><b>Design craft:</b> interaction design, rapid prototyping, wireframing, UI design, UX writing, information architecture, accessibility (WCAG 2.1), Figma, Miro, Framer.</li>
-    <li><b>Delivery:</b> agile delivery, stakeholder engagement to executive level, wave-gated rollouts, KPI trees and measurement rigs.</li>
-  </ul>
+  <div class="sig-print">
+    <h2>Signature work</h2>
+    <div class="sig-row">
+      <div class="sig-item"><a href="./articles/50/index.html">The Manager Makes or Breaks It</a><span>First-12-weeks employee experience: 20,000+ survey responses, one attrition chain, a gated roadmap.</span></div>
+      <div class="sig-item"><a href="./articles/51/index.html">The Speed Trap</a><span>Service-quality analytics at 100,000+ guest comments: competence versus speed.</span></div>
+      <div class="sig-item"><a href="./articles/52/index.html">The Alignment Problem</a><span>Time and attendance: 20 interviews and a 160-respondent survey, from stalled backlog to prioritised roadmap.</span></div>
+      <div class="sig-item"><a href="./articles/53/index.html">The Foyer Host Effect</a><span>Self-service channel strategy: designing the human half of the kiosk.</span></div>
+      <div class="sig-item"><a href="./articles/54/index.html">Where Humans Matter Most</a><span>Two sequenced pilots for human connection in an automated drive-thru.</span></div>
+      <div class="sig-item"><a href="./articles/55/index.html">Hiring in Days, Not Weeks</a><span>End-to-end recruitment and onboarding blueprint: 60+ interviews, nine stages.</span></div>
+      <div class="sig-item"><a href="./articles/56/index.html">The Learning Platform Is a Safety System</a><span>Retiring a legacy LMS: business case to pilot, zero tickets, 1,000+ completions.</span></div>
+    </div>
+  </div>
+</section>
 
-  <h2>Education</h2>
-  <p>University of Technology Sydney — Product Design (2020–2022) · Creative Intelligence &amp; Innovation (2020–2023)</p>
+<section class="cv-body">
+  <div class="cv-grid">
+    <aside class="cv-side">
+      <span class="kicker">Profile</span>
+      <p>Applied AI across the full lifecycle of enterprise problem-solving: research, synthesis, service mapping, blueprinting, software, prototypes, measurement.</p>
+    </aside>
+    <div class="cv-main">
+      <div class="cv-section">
+        <p>Five-plus years across enterprise research, product design and service design; the last three and a half deliberately integrating AI into all of it: software development, research, prototyping and UI. The taste comes from a design background; the working method is agents: Claude Code, OpenCode, Codex, Gemini and a ten-role harness of my own design, with an adversarial critic on every gate. I work horizontally across the full lifecycle of enterprise problem-solving: research and synthesis, service mapping and blueprinting, building software and working prototypes, measurement and rollout. Hireable for HR and P&amp;C AI transformation, engineering experience transformation, service design and UX. A team of one, plus as many agents as the job needs.</p>
+      </div>
 
-  <h2>Awards</h2>
-  <p>Product Designer of the Year — Bright Awards (2018)</p>
+      <div class="cv-section">
+        <h2><span class="kicker">Where I've worked</span>Experience</h2>
+        <div class="exp-item"><span class="when">Jul 2024 – now</span><div>
+          <h3>Lead UX Designer / Researcher</h3>
+          <p class="org">KFC South Pacific: 800+ restaurant network, franchise + equity + corporate</p>
+          <ul>
+            <li>Research operations with AI-integrated pipelines: <b>80+ stakeholder interviews</b>, <b>590+ survey respondents</b>, <b>400+ AI-extracted insights</b> across 14 user types; safety-incident research (60+ interviews, 430 surveys, 232 AI-categorised insights) completed in days, not months, with 7 working prototypes.</li>
+            <li>Workforce-management platform research: 20 interviews, 160+ surveys with AI-designed conditional-logic branching, 10 site visits; a 16-stage / 10-lane service blueprint, <b>175 pain points</b>, 15+ prioritised recommendations with impact sizing.</li>
+            <li>Leading FLG Hospitality, a company-wide CX program (launch Q2 2026): training systems, service touchpoint frameworks, recognition programs across all channels.</li>
+            <li>Built a custom <b>Flask/SQLite research platform</b> for journey mapping, insight visualisation and service blueprinting.</li>
+          </ul>
+        </div></div>
+        <div class="exp-item"><span class="when">Jul 2021 – Jul 2024</span><div>
+          <h3>Product Designer</h3>
+          <p class="org">ZETR: electrical hardware and digital products</p>
+          <ul>
+            <li>Product onboarding redesign: <b>+12% new-customer conversion</b>, −35% sales support inquiries, WCAG 2.1 throughout.</li>
+            <li>Electrical fast-charging system from concept to launch: <b>$1M+ sales in the first quarter</b>; three years of user testing with tradespeople and architects.</li>
+          </ul>
+        </div></div>
+        <div class="exp-item"><span class="when">Nov 2020 – Aug 2023</span><div>
+          <h3>UX Design Intern</h3>
+          <p class="org">Service NSW</p>
+          <ul>
+            <li>Mobile app redesign for financial-assistance applications, W3C/WCAG compliant.</li>
+          </ul>
+        </div></div>
+        <div class="exp-item"><span class="when">Aug 2019 – Jun 2021</span><div>
+          <h3>Product Designer</h3>
+          <p class="org">Black Lab Design: Woolworths, Wesfarmers, ANZ</p>
+          <ul>
+            <li>Checkout systems and fresh-produce displays for Woolworths; point-of-sale solutions for Wesfarmers and ANZ, accessibility-first.</li>
+          </ul>
+        </div></div>
+      </div>
 
-</div>
+      <div class="cv-section">
+        <h2><span class="kicker">What I bring</span>Capabilities</h2>
+        <div class="cap-grid">
+          <div class="tile"><h3>Research &amp; synthesis</h3><p>Interview programs at scale, mixed methods, evidence registers, insight formulation, personas from evidence, co-design facilitation.</p></div>
+          <div class="tile"><h3>Service design &amp; mapping</h3><p>Full lifecycle, multi-layer journey maps, service blueprints including agent/LLM lanes, problem framing, prototyping and pilots, systems thinking.</p></div>
+          <div class="tile"><h3>AI &amp; engineering</h3><p>Agent orchestration and human-in-the-loop design, prompt frameworks, structured content models, MCP integration, evaluation and QA for agent output. Flask, SQLite, Python, HTML/CSS/JS.</p></div>
+          <div class="tile"><h3>Design craft</h3><p>Interaction design, rapid prototyping, wireframing, UI design, UX writing, information architecture, accessibility (WCAG 2.1). Figma, Miro, Framer.</p></div>
+          <div class="tile"><h3>Delivery</h3><p>Agile delivery, stakeholder engagement to executive level, wave-gated rollouts, KPI trees and measurement rigs.</p></div>
+        </div>
+      </div>
+
+      <div class="cv-section">
+        <h2><span class="kicker">Background</span>Education &amp; awards</h2>
+        <div class="edu-band">
+          <div class="tile"><h3>University of Technology Sydney</h3><p>Product Design (2020–2022) · Creative Intelligence &amp; Innovation (2020–2023)</p></div>
+          <div class="tile"><h3>Bright Awards</h3><p>Product Designer of the Year (2018)</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer class="footer">
-  <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
+  <span>Sam Mozaffari · The Agentic Service Designer. An archive of an emerging design practice.</span>
   <span><a href="./llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
 </footer>
 <script src="./assets/site.js"></script>
