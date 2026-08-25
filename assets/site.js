@@ -137,6 +137,19 @@
     var lum = new Uint8Array(grid.lum);
     var N = COLS * ROWS;
 
+    // ASCII code-portrait: density ramp of glyphs, per-cell random pick + slow flicker
+    var RAMP = [' ', '.', ',:;-', '~=+!?', '/\\|<>{}[]', 'cvxznrst', 'oaepqdbgu', 'AXYZSRG094', 'OWQB$&#%86', '@#MW$%&B08', '@#$%&WMB8N'];
+    var baseGlyphs = new Array(N);
+    var flickerPhase = new Array(N), flickerInterval = new Array(N);
+    var frame = 0;
+    for (var gi = 0; gi < N; gi++) {
+      var lv = lum[gi];
+      var cs = RAMP[lv];
+      baseGlyphs[gi] = (lv === 0) ? ' ' : cs[Math.floor(Math.random() * cs.length)];
+      flickerPhase[gi] = Math.floor(Math.random() * 600);
+      flickerInterval[gi] = 300 + Math.floor(Math.random() * 900);
+    }
+
     // spring state per cell (x displacement in cell units, y, vx, vy)
     var dx = new Float32Array(N), dy = new Float32Array(N);
     var vx = new Float32Array(N), vy = new Float32Array(N);
@@ -213,25 +226,33 @@
       ctx.clearRect(0, 0, dim.w, dim.h);
       var accent = ACCENTS[accentIdx];
       var cellH = dim.ch, cellW = dim.cw;
-      var shade;
-      var i, gx, gy, px, py, s, r, g, b;
+      var fs = Math.max(4, Math.round(cellW * 1.67));
+      ctx.font = '400 ' + fs + 'px "IBM Plex Mono", Menlo, Consolas, monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      frame++;
+      var i, gx, gy, px, py, s, lv, glyph, cs;
       for (gy = 0; gy < ROWS; gy++) {
         for (gx = 0; gx < COLS; gx++) {
           i = gy * COLS + gx;
-          if (!lum[i]) continue;
-          s = lum[i] / 9; // 0..1 darkness weight (higher = darker)
-          px = (gx + dx[i]) * cellW;
-          py = (gy + dy[i]) * cellH;
-          var size = cellW * (0.42 + s * 0.5);
+          lv = lum[i];
+          if (!lv) continue;
+          s = lv / 9; // 0..1 darkness weight (higher = darker)
+          px = (gx + dx[i]) * cellW + cellW / 2;
+          py = (gy + dy[i]) * cellH + cellH / 2;
+          if ((frame + flickerPhase[i]) % flickerInterval[i] === 0) {
+            cs = RAMP[lv];
+            baseGlyphs[i] = cs[Math.floor(Math.random() * cs.length)];
+          }
+          glyph = baseGlyphs[i];
           if (heat[i] > 0.02) {
             var h = heat[i];
             var base = mix(accent, INK, s * 0.85);
             ctx.fillStyle = 'rgba(' + base[0] + ',' + base[1] + ',' + base[2] + ',' + (0.55 + h * 0.45).toFixed(2) + ')';
           } else {
-            var g = 200 + s * 55;
-            ctx.fillStyle = 'rgba(' + g + ',' + g + ',' + (g - 4) + ',0.95)';
+            ctx.fillStyle = 'rgba(212,212,212,' + (0.30 + s * 0.70).toFixed(2) + ')';
           }
-          ctx.fillRect(px, py, Math.max(1.2, size), Math.max(1.6, cellH * (0.62 + s * 0.38)));
+          ctx.fillText(glyph, px, py);
         }
       }
     }
