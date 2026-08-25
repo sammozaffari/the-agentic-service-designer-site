@@ -228,8 +228,8 @@
             var base = mix(accent, INK, s * 0.85);
             ctx.fillStyle = 'rgba(' + base[0] + ',' + base[1] + ',' + base[2] + ',' + (0.55 + h * 0.45).toFixed(2) + ')';
           } else {
-            var g = 175 + s * 60;
-            ctx.fillStyle = 'rgba(' + g + ',' + g + ',' + (g - 4) + ',0.92)';
+            var g = 200 + s * 55;
+            ctx.fillStyle = 'rgba(' + g + ',' + g + ',' + (g - 4) + ',0.95)';
           }
           ctx.fillRect(px, py, Math.max(1.2, size), Math.max(1.6, cellH * (0.62 + s * 0.38)));
         }
