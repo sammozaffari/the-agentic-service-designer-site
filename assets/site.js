@@ -123,7 +123,10 @@
     });
   });
 
-  // ---------- About page: interactive dot portrait ----------
+    // ---------- About page: interactive code portrait ----------
+  // Photo-derived ASCII portrait. The image itself stays static; hovering
+  // reveals each cell's true photo colour, and clicking spreads colour
+  // across the portrait (or back to mono). After timothymaurer.nl.
   ready(function () {
     var canvas = document.getElementById('portrait');
     if (!canvas) return;
@@ -135,37 +138,36 @@
 
     var COLS = grid.cols, ROWS = grid.rows;
     var lum = new Uint8Array(grid.lum);
+    var rgb = grid.rgb || null;
     var N = COLS * ROWS;
 
-    // ASCII code-portrait: density ramp of glyphs, per-cell random pick + slow flicker
+    // ASCII density ramp, per-cell random glyphs, slow flicker
     var RAMP = [' ', '.', ',:;-', '~=+!?', '/\\|<>{}[]', 'cvxznrst', 'oaepqdbgu', 'AXYZSRG094', 'OWQB$&#%86', '@#MW$%&B08', '@#$%&WMB8N'];
+    var OPACITY = [0, 0.30, 0.30, 0.30, 0.65, 0.65, 0.65, 1.0, 1.0, 1.0, 1.0];
     var baseGlyphs = new Array(N);
     var flickerPhase = new Array(N), flickerInterval = new Array(N);
     var frame = 0;
-    for (var gi = 0; gi < N; gi++) {
-      var lv = lum[gi];
-      var cs = RAMP[lv];
+    var gi, lv, cs;
+    for (gi = 0; gi < N; gi++) {
+      lv = lum[gi];
+      cs = RAMP[lv];
       baseGlyphs[gi] = (lv === 0) ? ' ' : cs[Math.floor(Math.random() * cs.length)];
       flickerPhase[gi] = Math.floor(Math.random() * 600);
       flickerInterval[gi] = 300 + Math.floor(Math.random() * 900);
     }
 
-    // spring state per cell (x displacement in cell units, y, vx, vy)
-    var dx = new Float32Array(N), dy = new Float32Array(N);
-    var vx = new Float32Array(N), vy = new Float32Array(N);
-    var heat = new Float32Array(N); // 0..1 hover heat
-    var accentIdx = 0;
-    var ACCENTS = [
-      [232, 222, 250], // lavender
-      [232, 238, 229], // sage
-      [255, 242, 187], // butter
-      [233, 241, 247], // powder blue
-    ];
-    var INK = [23, 24, 23];
-    var GREY = [190, 189, 184];
+    // virus spread state: 0 = mono, 1 = coloured
+    var infected = new Uint8Array(N);
+    var spreading = false;
+    var spreadDir = 'color';
+    var frontier = [];
+    var spreadTimer = 0;
+    var cellNoise = new Array(N);
+    for (gi = 0; gi < N; gi++) cellNoise[gi] = Math.random();
+    var isAllColored = false;
 
-    var mouse = { x: -1000, y: -1000, inside: false, gridX: -1, gridY: -1 };
-    var R = 26; // hover radius in cell units
+    var mouseX = -1000, mouseY = -1000;
+    var HOVER_RADIUS = 70;
 
     function resize() {
       var w = stage.clientWidth, h = stage.clientHeight;
@@ -182,113 +184,128 @@
     var dim = resize();
     window.addEventListener('resize', function () { dim = resize(); draw(); });
 
-    function lerp(a, b, t) { return a + (b - a) * t; }
-    function mix(c1, c2, t) { return [lerp(c1[0], c2[0], t) | 0, lerp(c1[1], c2[1], t) | 0, lerp(c1[2], c2[2], t) | 0]; }
-
-    var springK = 0.05, damp = 0.78;
-    var running = false;
-
-    function step() {
-      var i, gx, gy, x, y, d, f;
-      var energy = 0;
-      for (gy = 0; gy < ROWS; gy++) {
-        for (gx = 0; gx < COLS; gx++) {
-          i = gy * COLS + gx;
-          if (!lum[i]) { dx[i] = dy[i] = vx[i] = vy[i] = 0; continue; }
-          // repulsion impulse from cursor
-          d = Math.max(0.001, Math.hypot(mouse.gridX - gx, mouse.gridY - gy));
-          if (mouse.inside && d < R) {
-            f = (1 - d / R) * 0.24;
-            vx[i] += ((gx - mouse.gridX) / d) * f + (Math.random() - 0.5) * 0.06;
-            vy[i] += ((gy - mouse.gridY) / d) * f + (Math.random() - 0.5) * 0.06;
-            heat[i] = Math.min(1, heat[i] + 0.35);
-          } else {
-            heat[i] = Math.max(0, heat[i] - 0.08);
+    function startSpread(fromX, fromY, dir) {
+      spreading = true;
+      spreadDir = dir;
+      var cx = Math.floor(fromX / dim.cw);
+      var cy = Math.floor(fromY / dim.ch);
+      frontier = [];
+      for (var dy = -2; dy <= 2; dy++) {
+        for (var dx = -2; dx <= 2; dx++) {
+          var nx = cx + dx, ny = cy + dy;
+          if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS) {
+            var idx = ny * COLS + nx;
+            var target = dir === 'color' ? 1 : 0;
+            if (infected[idx] !== target) { infected[idx] = target; frontier.push(idx); }
           }
-          vx[i] -= springK * dx[i]; vy[i] -= springK * dy[i];
-          vx[i] *= damp; vy[i] *= damp;
-          dx[i] += vx[i]; dy[i] += vy[i];
-          dx[i] *= 0.985; dy[i] *= 0.985;
-          energy += Math.abs(vx[i]) + Math.abs(vy[i]) + heat[i];
         }
       }
-      if (energy > 60) { draw(); requestAnimationFrame(step); }
-      else { running = false; draw(); }
+      spreadTimer = 0;
     }
 
-    function kick() {
-      if (reduceMotion) return;
-      if (!running) { running = true; requestAnimationFrame(step); }
+    function stepSpread() {
+      if (!spreading || frontier.length === 0) { spreading = false; return; }
+      spreadTimer++;
+      if (spreadTimer % 5 >= 3) return; // burst-pause pacing
+      var target = spreadDir === 'color' ? 1 : 0;
+      var newFrontier = [];
+      var batch = Math.min(15 + Math.floor(Math.random() * 20), frontier.length);
+      for (var b = 0; b < batch; b++) {
+        if (frontier.length === 0) break;
+        var pick = Math.floor(Math.random() * frontier.length);
+        var idx = frontier[pick];
+        frontier[pick] = frontier[frontier.length - 1];
+        frontier.pop();
+        var x = idx % COLS;
+        var y = (idx - x) / COLS;
+        var dirs = [[0,-1],[0,1],[-1,0],[1,0]];
+        if (Math.random() < 0.25) dirs.push([-1,-1],[1,-1],[-1,1],[1,1]);
+        if (Math.random() < 0.05) dirs.push([Math.floor((Math.random()-0.5)*12), Math.floor((Math.random()-0.5)*8)]);
+        for (var di = 0; di < dirs.length; di++) {
+          var ddx = dirs[di][0], ddy = dirs[di][1];
+          var nx = x + ddx, ny = y + ddy;
+          if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS) {
+            var ni = ny * COLS + nx;
+            if (infected[ni] !== target) {
+              if (Math.random() > cellNoise[ni] * 0.55) { infected[ni] = target; newFrontier.push(ni); }
+              else { newFrontier.push(idx); }
+            }
+          }
+        }
+      }
+      frontier = frontier.concat(newFrontier);
+      if (frontier.length === 0) spreading = false;
     }
 
     function draw() {
       var ctx = canvas.getContext('2d');
       ctx.clearRect(0, 0, dim.w, dim.h);
-      var accent = ACCENTS[accentIdx];
       var cellH = dim.ch, cellW = dim.cw;
       var fs = Math.max(4, Math.round(cellW * 1.67));
       ctx.font = '400 ' + fs + 'px "IBM Plex Mono", Menlo, Consolas, monospace';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       frame++;
-      var i, gx, gy, px, py, s, lv, glyph, cs;
+      var i, gx, gy, px, py, s, lv2, glyph, alpha;
       for (gy = 0; gy < ROWS; gy++) {
         for (gx = 0; gx < COLS; gx++) {
           i = gy * COLS + gx;
-          lv = lum[i];
-          if (!lv) continue;
-          s = lv / 9; // 0..1 darkness weight (higher = darker)
-          px = (gx + dx[i]) * cellW + cellW / 2;
-          py = (gy + dy[i]) * cellH + cellH / 2;
+          lv2 = lum[i];
+          if (!lv2) continue;
+          s = lv2 / 9;
+          px = (gx + 0.5) * cellW;
+          py = (gy + 0.5) * cellH;
+          var dxm = px - mouseX, dym = py - mouseY;
+          var dist = Math.sqrt(dxm * dxm + dym * dym);
+          var inHover = dist < HOVER_RADIUS * (0.35 + cellNoise[i] * 0.65);
           if ((frame + flickerPhase[i]) % flickerInterval[i] === 0) {
-            cs = RAMP[lv];
+            cs = RAMP[lv2];
             baseGlyphs[i] = cs[Math.floor(Math.random() * cs.length)];
           }
           glyph = baseGlyphs[i];
-          if (heat[i] > 0.02) {
-            var h = heat[i];
-            var base = mix(accent, INK, s * 0.85);
-            ctx.fillStyle = 'rgba(' + base[0] + ',' + base[1] + ',' + base[2] + ',' + (0.55 + h * 0.45).toFixed(2) + ')';
+          alpha = OPACITY[lv2];
+          if (infected[i] === 1 || inHover) {
+            if (rgb) {
+              var o = i * 3;
+              ctx.fillStyle = 'rgba(' + rgb[o] + ',' + rgb[o+1] + ',' + rgb[o+2] + ',' + alpha + ')';
+            } else {
+              ctx.fillStyle = 'rgba(212,212,212,' + alpha + ')';
+            }
           } else {
-            ctx.fillStyle = 'rgba(212,212,212,' + (0.30 + s * 0.70).toFixed(2) + ')';
+            ctx.fillStyle = 'rgba(212,212,212,' + alpha + ')';
           }
           ctx.fillText(glyph, px, py);
         }
       }
     }
 
-    function toGrid(ev) {
-      var rect = canvas.getBoundingClientRect();
-      mouse.gridX = ((ev.clientX - rect.left) / rect.width) * COLS;
-      mouse.gridY = ((ev.clientY - rect.top) / rect.height) * ROWS;
+    function loop() {
+      stepSpread();
+      draw();
+      requestAnimationFrame(loop);
     }
+
     canvas.addEventListener('mousemove', function (ev) {
-      mouse.inside = true;
-      toGrid(ev);
-      kick();
+      var rect = canvas.getBoundingClientRect();
+      mouseX = ev.clientX - rect.left;
+      mouseY = ev.clientY - rect.top;
     });
-    canvas.addEventListener('mouseleave', function () {
-      mouse.inside = false;
-      mouse.gridX = mouse.gridY = -1000;
-      kick();
-    });
+    canvas.addEventListener('mouseleave', function () { mouseX = -1000; mouseY = -1000; });
     canvas.addEventListener('click', function (ev) {
-      toGrid(ev);
-      accentIdx = (accentIdx + 1) % ACCENTS.length;
-      kick();
+      var rect = canvas.getBoundingClientRect();
+      var cx = ev.clientX - rect.left;
+      var cy = ev.clientY - rect.top;
+      isAllColored = !isAllColored;
+      startSpread(cx, cy, isAllColored ? 'color' : 'mono');
     });
 
     draw();
     var fallback = stage.querySelector('.portrait-fallback');
     if (fallback) fallback.style.display = 'none';
     if (reduceMotion) return;
-    // gentle idle shimmer
-    setInterval(function () {
-      if (!running && mouse.inside === false && Math.random() < 0.3) kick();
-    }, 1400);
+    requestAnimationFrame(loop);
   });
-
-  // ---------- smooth scroll for anchors ----------
+// ---------- smooth scroll for anchors ----------
   ready(function () {
     document.querySelectorAll('a[href^="#"]').forEach(function (a) {
       a.addEventListener('click', function (e) {
