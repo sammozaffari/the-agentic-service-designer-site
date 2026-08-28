@@ -1,114 +1,16 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8">
+<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shift &amp; break-compliance alert — design system preview</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="ds-tokens.css">
-<style>
-  .compliance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-4); align-items: start; }
-  @media (max-width: 900px) { .compliance-grid { grid-template-columns: 1fr; } }
-  .threshold-table { width: 100%; border-collapse: collapse; font-size: var(--ds-fs-small); }
-  .threshold-table th { text-align: left; font-family: var(--ds-font-mono); font-size: var(--ds-fs-micro); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ds-muted); padding: var(--ds-2) var(--ds-3); border-bottom: 1px solid var(--ds-line-strong); }
-  .threshold-table td { padding: var(--ds-2) var(--ds-3); border-bottom: 1px solid var(--ds-line); }
-  .countup { display: flex; align-items: baseline; gap: 6px; }
-  .countup b { font-size: 30px; font-family: var(--ds-font-mono); font-variant-numeric: tabular-nums; }
-</style>
-</head><body>
-<div class="app ds-stage">
-  <aside class="app-side">
-    <div class="brandmark"><div class="bm-sq">W</div><div><div class="bm-name">Workforce OS</div><div class="bm-sub">Time &amp; attendance</div></div></div>
-    <div class="nav-label">Workspace</div>
-    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM13 3v4h8V3zM3 21h8v-4H3z"/></svg>Dashboard</div>
-    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Roster</div>
-    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Approvals<span class="n-count">9</span></div>
-    <div class="nav-item on"><svg class="n-ic" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V6z"/></svg>Compliance<span class="n-count">3</span></div>
-    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Leave &amp; availability</div>
-    <div class="nav-label">Back office</div>
-    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Payroll</div>
-    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 3 5-6"/></svg>Reports</div>
-    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.4 1a7 7 0 0 0-1.7-1L14.5 3h-5l-.3 2.5a7 7 0 0 0-1.7 1l-2.4-1-2 3.5 2 1.5a7 7 0 0 0 0 2l-2 1.5 2 3.5 2.4-1a7 7 0 0 0 1.7 1l.3 2.5h5l.3-2.5a7 7 0 0 0 1.7-1l2.4 1 2-3.5-2-1.5c.06-.33.1-.66.1-1z"/></svg>Settings</div>
-    <div class="nav-spacer"></div>
-    <div class="side-foot">Live compliance rules · every 30 sec<br>Restaurant 134</div>
-  </aside>
-  <div class="app-main">
-    <div class="app-topbar">
-      <div class="page-title">Shift &amp; break compliance</div>
-      <div class="tb-right">
-        <span class="chip success"><span class="dot"></span>Rules live</span>
-        <span class="chip warn"><span class="dot"></span>3 open alerts</span>
-        <div class="avatar dark">RM</div>
-      </div>
-    </div>
-    <div class="app-content">
-
-      <div class="alert danger">
-        <svg class="a-ic" viewBox="0 0 24 24" style="color:var(--ds-danger-ink)"><path d="M12 3l9 16H3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9v5M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        <div class="a-body">
-          <h4>Break required — Z. Khan</h4>
-          <p>5h 12m worked on an 8.0h shift. A 30 minute break is due now. This is a visible warning, not a hard stop: if you act now there is no compliance breach.</p>
-          <div class="row mt-2 wrap"><span class="chip danger"><span class="dot"></span>Due now</span><span class="chip outline">Entitlement · 30m</span><span class="muted small">Threshold met at 5h 00m</span></div>
-        </div>
-        <div style="align-self:center"><button class="btn btn-primary">Send reminder</button></div>
-      </div>
-
-      <div class="compliance-grid mt-4">
-        <div class="card">
-          <div class="card-hd"><h3>Real-time shift monitor</h3><span class="sub">Dynamic entitlement · 4 active shifts</span><div class="hd-right"><span class="chip lavender">Live</span></div></div>
-          <div class="card-bd">
-            <div class="col">
-              <div class="mblock" style="border:none;padding:0">
-                <div class="row between"><span class="muted small started">Crew · Z. Khan</span><span class="chip danger">Due now</span></div>
-                <div class="countup mt-1"><b>5:12</b><span class="muted small">hrs worked</span></div>
-                <div class="progress mt-2"><span class="danger" style="width:78%"></span></div>
-                <div class="row between mt-2"><span class="mono micro muted">Threshold 5h 00m</span><span class="mono micro muted">Shift end 8h 00m</span></div>
-                <div class="row mt-3"><button class="btn btn-secondary btn-sm">Mark taken</button><button class="btn btn-ghost btn-sm">Delay 10 min</button></div>
-                <div class="line mt-3"></div>
-              </div>
-              <div class="list">
-                <div class="list-row"><div class="lr-main"><div class="lr-title">M. Kaur · 3h 40m worked</div><div class="lr-sub">Threshold at 5h · break due in 1h 20m</div></div><span class="chip warn"><span class="dot"></span>Warning</span></div>
-                <div class="list-row"><div class="lr-main"><div class="lr-title">L. Silva · 2h 10m worked</div><div class="lr-sub">Threshold at 5h · no action yet</div></div><span class="chip success"><span class="dot"></span>On track</span></div>
-                <div class="list-row"><div class="lr-main"><div class="lr-title">J. Chen · 5h 58m worked</div><div class="lr-sub">Shift set to end 18:00 · break 30m logged</div></div><span class="chip success"><span class="dot"></span>Compliant</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-hd"><h3>Role-based break thresholds</h3><span class="sub">Enterprise agreement &amp; local rules</span></div>
-          <div class="card-bd flush">
-            <table class="threshold-table">
-              <thead><tr><th>Role</th><th>Threshold</th><th>Entitlement</th><th>State</th></tr></thead>
-              <tbody>
-                <tr><td data-label="Role">Crew</td><td data-label="Threshold">5h 00m</td><td data-label="Entitlement">30 min</td><td data-label="State"><span class="chip success">Live</span></td></tr>
-                <tr><td data-label="Role">Shift supervisor</td><td data-label="Threshold">6h 00m</td><td data-label="Entitlement">45 min</td><td data-label="State"><span class="chip success">Live</span></td></tr>
-                <tr><td data-label="Role">Under 18</td><td data-label="Threshold">4h 30m</td><td data-label="Entitlement">30 min</td><td data-label="State"><span class="chip warn">Review</span></td></tr>
-                <tr class="row-disabled"><td data-label="Role">Overnight crew</td><td data-label="Threshold">6h 00m</td><td data-label="Entitlement">30 min</td><td data-label="State"><span class="chip outline">Disabled</span></td></tr>
-              </tbody>
-            </table>
-            <div class="alert info mt-3" style="margin:var(--ds-4)">
-              <svg class="a-ic" viewBox="0 0 24 24" style="color:var(--ds-info)"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M12 11v5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <div class="a-body"><h4>Severity is never colour alone</h4><p>Every status carries a text label (Warning, Compliant, Due now). Colours reinforce, they never carry the message on their own. Contrast is checked to AA.</p></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card mt-4">
-        <div class="card-hd"><h3>This screen vs the old errors list</h3><span class="sub">Design principle D5 — few hard stops, visible warnings</span></div>
-        <div class="card-bd">
-          <div class="row wrap">
-            <div class="alert warn" style="flex:1;min-width:260px">
-              <svg class="a-ic" viewBox="0 0 24 24" style="color:var(--ds-warn-ink)"><path d="M12 3l9 16H3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9v5M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <div class="a-body"><h4>Before: 214 warnings, cleared daily</h4><p>The old warnings list piled up so high managers stopped actioning it. It read as noise, so it produced no behaviour change.</p></div>
-            </div>
-            <div class="alert success" style="flex:1;min-width:260px">
-              <svg class="a-ic" viewBox="0 0 24 24" style="color:var(--ds-success-ink)"><path d="M20 6L9 17l-5-5"/></svg>
-              <div class="a-body"><h4>After: one actionable alert, timed</h4><p>One live entitlement, one countdown, one action. The compliant path is cheaper than the workaround, which is the design principle that protects 100,000+ boundary shifts.</p></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-</body></html>
+<link rel="stylesheet" href="ds-screen.css">
+</head><body><div class="shell">
+<div class="appbar"><span class="brand">LIFELENZ</span><span class="crumb">/ workforce / roster dashboard</span>
+<div class="right"><span class="chip">Week 35</span><span class="chip blue">Live data</span></div></div>
+<div class="frame-head"><span class="tag">COMPONENT</span><span class="title">Break compliance alert (new)</span><span class="meta">recreated · product tokens</span></div>
+<div class="card">
+<table><thead><tr><th>Employee</th><th>Shift</th><th>Scheduled break</th><th>Actual (live)</th><th>Status</th></tr></thead><tbody>
+<tr><td class="name">Denise A. · AR</td><td>08:00–16:00 → 16:45</td><td>11:00</td><td class="num">14:05</td><td><span class="tag danger">BREAK DUE</span></td></tr>
+<tr><td class="name">Priya S. · Crew</td><td>10:00–18:00</td><td>13:00</td><td class="num">13:00</td><td><span class="tag ok">Taken</span></td></tr>
+<tr><td class="name">Jack N. · Crew</td><td>06:00–14:00</td><td>09:30</td><td class="num">09:32</td><td><span class="tag ok">Taken (2 min late)</span></td></tr></tbody></table></div>
+<div class="alert"><div class="h">Planned vs actual — the gap the research found</div>
+<p>The rules engine monitors actual shift duration, so entitlements recalculate when a shift extends; role-based thresholds keep the list short enough to action.</p></div>
+<div class="hint">recreated design-system screen · tokens: ground #f5f5f6 · primary #4d62da · amber #f7a42c · sampled from published product screens</div>
+</div></body></html>

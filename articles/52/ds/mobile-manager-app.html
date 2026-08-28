@@ -1,164 +1,18 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8">
+<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mobile manager app — design system preview</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="ds-tokens.css">
-<style>
-  body { background: var(--ds-paper-3); }
-  .phone-row { display: flex; gap: var(--ds-5); align-items: flex-start; justify-content: center; padding: var(--ds-6); flex-wrap: wrap; }
-  .phone-title { text-align:center; font-family: var(--ds-font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ds-muted); width: 100%; margin-bottom: var(--ds-4); }
-  @media (min-width: 901px) {
-    .phone-row { align-items: center; }
-    .phone { width: 300px; height: 620px; transform: none; }
-  }
-  @media (max-width: 900px) {
-    .phone-row { flex-direction: column; align-items: center; padding: var(--ds-3); }
-    .phone { width: 350px; height: 750px; }
-    .phone-row .phone ~ .phone { display: none; }
-  }
-  .phone { margin: 0 auto; }
-  .app-head { padding: 10px; }
-  .app-badge { display:inline-flex; align-items:center; gap:6px; height:24px; padding:0 8px; border-radius:4px; background:var(--ds-warn-tint); color:var(--ds-warn-ink); font-family:var(--ds-font-mono); font-size:11px; font-weight:500; }
-  .pbtn { display:inline-flex; align-items:center; justify-content:center; height:36px; padding:0 12px; border-radius:5px; border:1px solid transparent; font-size:13px; font-weight:500; background:var(--ds-dark); color:var(--ds-dark-ink); width:100%; }
-  .pbtn.secondary { background:var(--ds-paper); color:var(--ds-ink); border-color:var(--ds-line-strong); }
-</style>
-</head><body>
-<div class="ds-stage">
-  <div class="phone-row">
-    <div class="phone-title">Mobile manager app · Today, Approve, Compliance, Leave &amp; availability</div>
-
-    <!-- Screen 1: Today -->
-    <div class="phone">
-      <div class="pscreen">
-        <div class="phead">
-          <div class="phtop"><span class="p-clock">14:32</span><span class="p-icons">•••</span></div>
-          <h1>Today</h1><p>Crossroads 134 · Thu 28 Aug</p>
-        </div>
-        <div class="pbody">
-          <div class="mblock" style="border-color:var(--ds-warn-tint);background:var(--ds-warn-tint)">
-            <div class="row between"><div><h4>Break due — Z. Khan</h4><span class="mono micro" style="color:var(--ds-warn-ink)">5h 12m · 30m due</span></div><span class="app-badge">Due now</span></div>
-          </div>
-          <div class="mblock">
-            <div class="row between"><h4 style="margin:0">Approvals</h4><span class="app-badge">3</span></div>
-            <div class="mrow"><div class="row between grow"><span>A. Rivera · leave 28–30</span><span class="mono micro muted">> </span></div></div>
-            <div class="mrow"><div class="row between grow"><span>M. Kaur · swap</span><span class="mono micro muted">> </span></div></div>
-            <div class="mrow"><div class="row between grow"><span>P. Moore · correction</span><span class="mono micro muted">> </span></div></div>
-          </div>
-          <div class="mblock">
-            <h4>On shift now</h4>
-            <div class="mrow"><span>Z. Khan</span><span class="chip danger" style="margin-left:auto">Break due</span></div>
-            <div class="mrow"><span>P. Moore</span><span class="chip success" style="margin-left:auto">On shift</span></div>
-            <div class="mrow"><span>L. Silva</span><span class="chip success" style="margin-left:auto">On shift</span></div>
-          </div>
-          <button class="pbtn">Open roster</button>
-        </div>
-        <div class="pnav">
-          <div class="pn on"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM13 3v4h8V3zM3 21h8v-4H3z"/></svg>Today</div>
-          <div class="pn"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Approve</div>
-          <div class="pn"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V6z"/></svg>Compliance</div>
-          <div class="pn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Leave</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Screen 2: Approval queue -->
-    <div class="phone">
-      <div class="pscreen">
-        <div class="phead">
-          <div class="phtop"><span class="p-clock">14:32</span><span class="p-icons">•••</span></div>
-          <h1>Approvals</h1><p>3 waiting on you</p>
-        </div>
-        <div class="pbody">
-          <div class="mblock">
-            <div class="row between"><div><h4 style="margin:0">A. Rivera</h4><span class="mono micro muted">Leave · 28–30 Aug · 3 shifts</span></div><span class="chip lavender">Leave</span></div>
-            <div class="row mt-2"><button class="pbtn" style="width:auto;flex:1">Approve</button><button class="pbtn secondary" style="width:auto;flex:1">Decline</button></div>
-          </div>
-          <div class="mblock">
-            <div class="row between"><div><h4 style="margin:0">M. Kaur → J. Chen</h4><span class="mono micro muted">Swap · 29 Aug · 07:00–15:00</span></div><span class="chip info">Swap</span></div>
-            <div class="row mt-2"><button class="pbtn" style="width:auto;flex:1">Approve</button><button class="pbtn secondary" style="width:auto;flex:1">Decline</button></div>
-          </div>
-          <div class="mblock" style="border-color:var(--ds-danger-tint);background:var(--ds-danger-tint)">
-            <div class="row between"><div><h4 style="margin:0">P. Moore</h4><span class="mono micro muted" style="color:var(--ds-danger-ink)">Correction · +2.0h · review</span></div><span class="chip danger">Review</span></div>
-            <div class="row mt-2"><button class="pbtn secondary" style="width:auto;flex:1">Review</button><button class="pbtn" style="width:auto;flex:1;background:var(--ds-danger)">Reject</button></div>
-          </div>
-          <div class="mblock">
-            <div class="empty" style="padding:var(--ds-4)"><div class="em-ic"><svg class="ic" viewBox="0 0 24 24" style="width:20px;height:20px"><path d="M20 6L9 17l-5-5"/></svg></div><h4>That's everything</h4><p>No other requests waiting.</p></div>
-          </div>
-        </div>
-        <div class="pnav">
-          <div class="pn"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM13 3v4h8V3zM3 21h8v-4H3z"/></svg>Today</div>
-          <div class="pn on"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Approve</div>
-          <div class="pn"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V6z"/></svg>Compliance</div>
-          <div class="pn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Leave</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Screen 3: Compliance alert -->
-    <div class="phone">
-      <div class="pscreen">
-        <div class="phead">
-          <div class="phtop"><span class="p-clock">14:32</span><span class="p-icons">•••</span></div>
-          <h1>Compliance</h1><p>Live break watch</p>
-        </div>
-        <div class="pbody">
-          <div class="mblock" style="border-color:var(--ds-danger-tint);background:var(--ds-danger-tint)">
-            <h4 style="color:var(--ds-danger-ink)">Break required — Z. Khan</h4>
-            <div class="countup"><b style="font-size:24px">5:12</b><span class="mono micro" style="color:var(--ds-danger-ink)">hrs worked</span></div>
-            <div class="progress mt-2"><span class="danger" style="width:64%"></span></div>
-            <div class="row between mt-2"><span class="mono micro" style="color:var(--ds-danger-ink)">Threshold 5h 00m</span><span class="mono micro" style="color:var(--ds-danger-ink)">8h 00m end</span></div>
-            <div class="row mt-3"><button class="pbtn" style="width:auto;flex:1">Send reminder</button><button class="pbtn secondary" style="width:auto;flex:1">Mark taken</button></div>
-          </div>
-          <div class="mblock">
-            <h4>Other shifts</h4>
-            <div class="mrow"><span>M. Kaur</span><span class="chip warn" style="margin-left:auto">Warning</span></div>
-            <div class="mrow"><span>L. Silva</span><span class="chip success" style="margin-left:auto">On track</span></div>
-            <div class="mrow"><span>J. Chen</span><span class="chip success" style="margin-left:auto">Compliant</span></div>
-          </div>
-          <div class="mblock"><p class="muted small">Severity always carries a text label. Colour is reinforcement, not the message.</p></div>
-        </div>
-        <div class="pnav">
-          <div class="pn"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM13 3v4h8V3zM3 21h8v-4H3z"/></svg>Today</div>
-          <div class="pn"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Approve</div>
-          <div class="pn on"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V6z"/></svg>Compliance</div>
-          <div class="pn"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Leave</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Screen 4: Leave & availability -->
-    <div class="phone">
-      <div class="pscreen">
-        <div class="phead">
-          <div class="phtop"><span class="p-clock">14:32</span><span class="p-icons">•••</span></div>
-          <h1>Leave &amp; availability</h1><p>A. Rivera · balance live</p>
-        </div>
-        <div class="pbody">
-          <div class="mblock">
-            <div class="row between"><h4 style="margin:0">Leave balance</h4><span class="chip success">Live</span></div>
-            <div class="countup mt-1"><b style="font-size:26px">18.5</b><span class="muted small">h remaining</span></div>
-            <div class="progress mt-2"><span class="ok" style="width:62%"></span></div>
-          </div>
-          <div class="mblock">
-            <h4>Approved leave</h4>
-            <div class="mrow"><span>28–30 Aug</span><span class="chip lavender" style="margin-left:auto">3 shifts</span></div>
-            <div class="mrow"><span>Paid</span><span class="chip success" style="margin-left:auto">With pay</span></div>
-          </div>
-          <div class="mblock">
-            <div class="row between"><h4 style="margin:0">Availability</h4><div class="toggle on"></div></div>
-            <p class="muted small mt-2">Weekly hours capped at 20h. Leave shifts auto-populate onto the schedule.</p>
-            <button class="pbtn mt-2">Update availability</button>
-          </div>
-        </div>
-        <div class="pnav">
-          <div class="pn"><svg viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM13 3v4h8V3zM3 21h8v-4H3z"/></svg>Today</div>
-          <div class="pn"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Approve</div>
-          <div class="pn"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V6z"/></svg>Compliance</div>
-          <div class="pn on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Leave</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-</body></html>
+<link rel="stylesheet" href="ds-screen.css">
+</head><body><div class="shell">
+<div class="appbar"><span class="brand">LIFELENZ</span><span class="crumb">/ workforce / roster dashboard</span>
+<div class="right"><span class="chip">Week 35</span><span class="chip blue">Live data</span></div></div>
+<div class="frame-head"><span class="tag">COMPONENT</span><span class="title">Mobile manager (actionable)</span><span class="meta">recreated · product tokens</span></div>
+<div class="card" style="max-width:420px;margin:0 auto;border:0;background:var(--paper)">
+<div class="appbar" style="border:0;padding:0 0 14px"><span class="brand" style="font-size:13px">LIFELENZ · manager</span><span class="crumb" style="font-size:11.5px">Shift now</span></div>
+<div class="dateband" style="margin:0 0 12px">BREAK DUE — Z. Khan · 14:05</div>
+<div class="card" style="margin-bottom:10px"><b style="font-size:13px">Approvals</b><span style="float:right;font-size:10.5px;color:var(--muted)">3</span>
+<p style="font-size:12px;color:var(--ink-soft);margin-top:6px">Leave · swap · correction</p></div>
+<div class="card" style="margin-bottom:10px"><b style="font-size:13px">On shift now</b>
+<p style="font-size:12px;color:var(--ink-soft);margin-top:6px"><span class="tag ok">6</span> across 2 stores</p></div>
+<button class="btn" style="width:100%">Open roster</button>
+<div style="display:flex;justify-content:space-between;margin-top:14px;font-size:11px;color:var(--muted)"><span>Today</span><span>Roster</span><span style="color:var(--navy);font-weight:600">Shift</span><span>Pay</span></div></div>
+<div class="hint">recreated design-system screen · tokens: ground #f5f5f6 · primary #4d62da · amber #f7a42c · sampled from published product screens</div>
+</div></body></html>
