@@ -1,57 +1,19 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8">
+<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Manager daily check-in card · design system</title>
-<link rel="stylesheet" href="base.css">
-<style>
-  .checkin{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
-  .checkin .summary{background:var(--band);border:1px solid var(--line);border-radius:12px;padding:16px}
-  .checkin .summary b{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);display:block;margin:0 0 6px}
-  .checkin .summary .big{font-size:30px;font-weight:700;letter-spacing:-.02em}
-  .checks{display:flex;flex-direction:column;gap:10px}
-  .chk{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;cursor:pointer}
-  .chk:hover{border-color:var(--line-strong)}
-  .chk input{width:18px;height:18px;margin-top:2px;accent-color:var(--ink)}
-  .chk input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-  .chk .t b{display:block;font-size:14px;font-weight:600}
-  .chk .t span{font-size:12px;color:var(--muted)}
-  .added{display:flex;align-items:flex-start;gap:10px;background:var(--paper);border:1px solid var(--line);
-    border-radius:10px;padding:10px 12px;margin-top:4px}
-  .added .sevdot{width:10px;height:10px;border-radius:50%;background:var(--ink);flex:none;margin-top:5px}
-  .added .tx{font-size:13px}
-  .added .tx .sev{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
-  @media (max-width:760px){.checkin{grid-template-columns:1fr}}
-</style></head>
-<body>
-<header class="frame-head">
-  <span class="tag">Design system · spec</span>
-  <h1>Manager daily check-in card</h1>
-  <p class="meta">Fits the existing shift handover · systematic incident capture</p>
-  <div class="rule"></div>
-</header>
-<main class="canvas">
-  <div class="component">
-    <span class="cap">Component · manager daily check-in</span>
-    <div class="checkin">
-      <div class="summary">
-        <b>This shift</b>
-        <div class="big">1 incident logged</div>
-        <p class="hint" style="margin:10px 0 0">Reports from crew this shift. Follow up before you hand over.</p>
-        <div class="added" aria-label="Logged incident summary">
-          <span class="sevdot" aria-hidden="true"></span>
-          <span class="tx"><span class="sev">2 · Moderate</span><br>Cut from a broken tray edge, kitchen. First aid given. Follow-up owner: A. Diaz.</span>
-        </div>
-      </div>
-      <div>
-        <p class="hint" style="margin:0 0 12px">Answer three questions at handover. Takes about a minute.</p>
-        <div class="checks">
-          <label class="chk"><input type="checkbox" aria-describedby="c1t"><span class="t"><b id="c1t">Any incidents or near misses today?</b><span>If yes, the report is already prefilled.</span></span></label>
-          <label class="chk"><input type="checkbox" aria-describedby="c2t"><span class="t"><b id="c2t">Any hazard that needs fixing?</b><span>Lock the area or add a warning if it is unsafe.</span></span></label>
-          <label class="chk"><input type="checkbox" aria-describedby="c3t"><span class="t"><b id="c3t">Who is following up?</b><span>Name a person, not a team, so it does not go missing.</span></span></label>
-        </div>
-      </div>
-    </div>
-    <p class="a11y-note">Severity is shown by number, label, and icon, never colour alone. The severity dot here is a summary accent only; the full text is present. Each answer has a clear label above or beside its control, and keyboard focus is always visible.</p>
-  </div>
-</main>
-</body></html>
+<link rel="stylesheet" href="ds-screen.css">
+</head><body><div class="app">
+<aside class="side"><div class="brand">SAFETY <span>· EHS Suite</span></div><a class="on">Dashboard</a><a class="">Incidents</a><a class="">Hazard reports</a><a class="">Check-ins</a><a class="">Thresholds</a><a class="">Knowledge</a><a class="">Reports</a><div class="spacer"></div><div class="who"><b>R. Morgan</b><span>Area safety leader · Store 210</span></div></aside>
+<div class="main">
+<div class="topbar"><h1>Manager daily check-in</h1><div class="filter"><span class="chip">Store 210</span><span class="chip live">LIVE</span></div></div>
+<div class="frame-head"><span class="tag">COMPONENT</span><span class="title">daily-checkin</span><span class="meta">recreated · sampled from product screens</span></div>
+<div class="card" style="display:grid;grid-template-columns:200px 1fr;gap:20px">
+<div style="border:1px solid var(--line-strong);border-radius:5px;height:120px;background:repeating-linear-gradient(45deg,#f2f2f2 0 6px,#fff 6px 12px);display:flex;align-items:center;justify-content:center;color:var(--muted)">QR</div>
+<div><label class="label">Manager daily check-in — shift handover</label>
+<p style="font-size:12.5px;color:var(--ink-soft);margin-bottom:10px">One scan. Three questions. Fits the existing handover ritual.</p>
+<div class="input" style="margin-bottom:8px">1 · Any incidents or hazards you followed up on? (text)</div>
+<div class="input" style="margin-bottom:8px">2 · Was anything fixed, escalated or still open? (text)</div>
+<div class="input">3 · Who was told? (select)</div>
+<button class="btn green">Complete check-in</button></div></div>
+<div class="alert"><div class="h">The ritual, not a new form</div><p>Docks into the shift handover managers already run — no new habit to teach.</p></div>
+<div class="hint">tokens sampled from the live product: chrome #47704c · ground #f7f7f7 · actions #0c7cc0 · status red #fc1451 fills / dark text · amber #fec737</div>
+</div></div></body></html>

@@ -1,109 +1,24 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8">
+<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Incident report form, severity first · design system</title>
-<link rel="stylesheet" href="base.css">
-<style>
-  .top-form{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
-  .top-form .left,.top-form .right{min-width:0}
-  .chip-sev{display:flex;gap:8px;flex-wrap:wrap}
-  .chip-sev .cs{display:flex;align-items:center;gap:7px;border:1.5px solid var(--line);border-radius:10px;
-    padding:7px 10px;font-size:12px;font-weight:600;background:var(--paper)}
-  .chip-sev .cs .n{width:18px;height:18px;flex:none;border-radius:6px;background:var(--band);
-    display:grid;place-items:center;font-size:11px;font-weight:700}
-  .chip-sev .cs.checked{border-color:var(--ink);background:var(--band)}
-  .chip-sev .cs.erase{border-color:var(--danger);background:var(--danger-bg)}
-  .chip-sev .cs.focuson{outline:3px solid var(--focus);outline-offset:2px}
-  .chip-sev .cs.validated{border-color:var(--ok)}
-  .state-card{padding:12px;min-height:0}
-  .state-card .st{margin-bottom:8px}
-  .state-card .hint{margin:9px 0 0}
-  .ok-tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--ok);
-    font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em}
-  @media (max-width:760px){.top-form{grid-template-columns:1fr}}
-</style></head>
-<body>
-<header class="frame-head">
-  <span class="tag">Design system · spec</span>
-  <h1>Incident report form, severity first</h1>
-  <p class="meta">Severity and mechanism split · states: empty, valid, error, focus</p>
-  <div class="rule"></div>
-</header>
-<main class="canvas">
-  <div class="component">
-    <span class="cap">Component · severity-first incident form</span>
-    <div class="top-form">
-      <div class="left">
-        <div class="field">
-          <span class="lbl">How severe was it? <span class="how">Choose the highest that fits</span></span>
-          <div class="sev-grid">
-            <label class="sev"><input type="radio" name="sev" value="1"><span class="card">
-              <span class="ic">1</span><span class="txt"><b><span class="num">1</span>Minor</b><span>A spill, a scrape, a near miss that did not hurt anyone.</span></span></span></label>
-            <label class="sev"><input type="radio" name="sev" value="2"><span class="card">
-              <span class="ic">2</span><span class="txt"><b><span class="num">2</span>Moderate</b><span>First aid was given. A cut, a minor burn, a bruise.</span></span></span></label>
-            <label class="sev"><input type="radio" name="sev" value="3"><span class="card">
-              <span class="ic">3</span><span class="txt"><b><span class="num">3</span>Serious</b><span>Injury or hazard needing attention today.</span></span></span></label>
-            <label class="sev"><input type="radio" name="sev" value="4"><span class="card">
-              <span class="ic">4</span><span class="txt"><b><span class="num">4</span>Critical</b><span>Emergency. Someone may need urgent medical help.</span></span></span></label>
-          </div>
-        </div>
-      </div>
-      <div class="right">
-        <div class="field">
-          <label for="mech">What kind of incident was it? <span class="how">Select one</span></label>
-          <select id="mech">
-            <option value="">Choose the closest match</option>
-            <option value="burn">Burn, hot surface or hot liquid</option>
-            <option value="slip">Slip, trip or fall</option>
-            <option value="cut">Cut or laceration</option>
-            <option value="chemical">Chemical splash or exposure</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="desc">Briefly what happened <span class="how">One sentence is fine</span></label>
-          <input type="text" id="desc">
-        </div>
-        <button type="button" class="btn primary">Submit report</button>
-        <div class="ok-tag" style="margin-top:16px">Severity drives what the form asks next</div>
-      </div>
-    </div>
-    <p class="a11y-note">Severity is conveyed by text, icon, and number order, never colour alone. Contrast is at least 4.5:1. The focused option keeps a visible outline. Every input has a label above it, not a placeholder. Errors are plain language and name the fix.</p>
-  </div>
-
-  <div class="states">
-    <div class="state-card">
-      <span class="st">Empty</span>
-      <div class="chip-sev">
-        <span class="cs"><span class="n">1</span>Minor</span><span class="cs"><span class="n">2</span>Moderate</span>
-        <span class="cs"><span class="n">3</span>Serious</span><span class="cs"><span class="n">4</span>Critical</span>
-      </div>
-      <p class="hint">Nothing selected yet.</p>
-    </div>
-    <div class="state-card">
-      <span class="st">Valid</span>
-      <div class="chip-sev">
-        <span class="cs"><span class="n">1</span>Minor</span><span class="cs validated"><span class="n">2</span>Moderate</span>
-        <span class="cs"><span class="n">3</span>Serious</span><span class="cs"><span class="n">4</span>Critical</span>
-      </div>
-      <p class="hint">Moderate selected. The form is ready to continue.</p>
-    </div>
-    <div class="state-card error">
-      <span class="st">Error</span>
-      <div class="chip-sev">
-        <span class="cs erase"><span class="n">1</span>Minor</span><span class="cs"><span class="n">2</span>Moderate</span>
-        <span class="cs"><span class="n">3</span>Serious</span><span class="cs"><span class="n">4</span>Critical</span>
-      </div>
-      <p class="err-msg" role="alert" style="margin:9px 0 0">Please choose how severe this was, then we can ask the right questions.</p>
-    </div>
-    <div class="state-card">
-      <span class="st">Focus</span>
-      <div class="chip-sev">
-        <span class="cs"><span class="n">1</span>Minor</span><span class="cs"><span class="n">2</span>Moderate</span>
-        <span class="cs focuson"><span class="n">3</span>Serious</span><span class="cs"><span class="n">4</span>Critical</span>
-      </div>
-      <p class="hint">Keyboard focus lands on Serious with a visible outline.</p>
-    </div>
-  </div>
-</main>
-</body></html>
+<link rel="stylesheet" href="ds-screen.css">
+</head><body><div class="app">
+<aside class="side"><div class="brand">SAFETY <span>· EHS Suite</span></div><a class="on">Dashboard</a><a class="">Incidents</a><a class="">Hazard reports</a><a class="">Check-ins</a><a class="">Thresholds</a><a class="">Knowledge</a><a class="">Reports</a><div class="spacer"></div><div class="who"><b>R. Morgan</b><span>Area safety leader · Store 210</span></div></aside>
+<div class="main">
+<div class="topbar"><h1>Incident form — severity first</h1><div class="filter"><span class="chip">Store 210</span><span class="chip live">LIVE</span></div></div>
+<div class="frame-head"><span class="tag">COMPONENT</span><span class="title">incident-form</span><span class="meta">recreated · sampled from product screens</span></div>
+<div class="card">
+<label class="label">1 · How serious was it? (severity first)</label><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">
+<div style="border:2px solid var(--danger);border-radius:5px;padding:10px 12px;background:var(--danger-tint)"><b style="color:var(--danger-ink)">Critical</b><p style="font-size:10.5px;color:var(--ink-soft);margin:3px 0 0">Emergency response</p></div>
+<div style="border:1px solid var(--line-strong);border-radius:5px;padding:10px 12px"><b style="color:var(--warn)">Serious</b><p style="font-size:10.5px;color:var(--ink-soft);margin:3px 0 0">Medical attention</p></div>
+<div style="border:1px solid var(--line-strong);border-radius:5px;padding:10px 12px"><b style="color:var(--blue)">Notable</b><p style="font-size:10.5px;color:var(--ink-soft);margin:3px 0 0">Needs recording</p></div>
+<div style="border:1px solid var(--line-strong);border-radius:5px;padding:10px 12px"><b style="color:var(--muted)">Minor</b><p style="font-size:10.5px;color:var(--ink-soft);margin:3px 0 0">Paper cut class</p></div>
+</div>
+<label class="label">2 · What was the mechanism?</label>
+<div class="input">Burn · cut · chemical · slip/trip · near miss…</div>
+<label class="label">3 · What happened? (plain language)</label>
+<div class="input warn">Describe the harm, the equipment, what you were doing…</div>
+<div style="display:flex;gap:10px;align-items:center"><button class="btn">Submit report</button><span style="font-size:11.5px;color:var(--muted)">Delayed reporting accepted after serious incidents — the system asks, never blocks.</span></div>
+</div>
+<div class="alert"><div class="h">Error state, not a dead end</div><p>Errors state the problem and the fix; the input keeps its label. Status is always text + icon + order — never colour alone.</p></div>
+<div class="hint">tokens sampled from the live product: chrome #47704c · ground #f7f7f7 · actions #0c7cc0 · status red #fc1451 fills / dark text · amber #fec737</div>
+</div></div></body></html>
