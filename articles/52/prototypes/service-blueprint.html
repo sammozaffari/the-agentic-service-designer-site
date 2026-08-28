@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Service Blueprint: Time &amp; Attendance Platform</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --muted: #8b949e;
+    --red: #f85149;
+    --amber: #d29922;
+    --green: #3fb950;
+    --blue: #58a6ff;
+    --gray: #30363d;
+    --red-bg: rgba(248,81,73,0.12);
+    --amber-bg: rgba(210,153,34,0.12);
+    --green-bg: rgba(63,185,80,0.10);
+    --blue-bg: rgba(88,166,255,0.10);
+    --gray-bg: rgba(48,54,61,0.25);
+    --sidebar-w: 260px;
+    --header-h: 100px;
+  }
+
+  html { font-size: 14px; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Header ─────────────────────────────────── */
+  .header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .header-left h1 {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #e6edf3;
+    letter-spacing: -0.02em;
+  }
+  .header-left p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .legend {
+    display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.78rem; color: var(--muted);
+  }
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0;
+  }
+
+  /* ── Layout ─────────────────────────────────── */
+  .layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ── Sidebar ────────────────────────────────── */
+  .sidebar {
+    width: var(--sidebar-w);
+    min-width: var(--sidebar-w);
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 20px 16px;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  .sidebar h2 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .filter-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 0.82rem;
+    line-height: 1.35;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s ease;
+    margin-bottom: 4px;
+    font-family: inherit;
+  }
+  .filter-btn:hover {
+    background: rgba(88,166,255,0.06);
+    border-color: var(--border);
+  }
+  .filter-btn.active {
+    background: rgba(88,166,255,0.10);
+    border-color: var(--blue);
+    color: var(--blue);
+  }
+  .filter-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    background: var(--border);
+    color: var(--muted);
+    font-size: 0.7rem;
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .filter-btn.active .filter-num {
+    background: rgba(88,166,255,0.2);
+    color: var(--blue);
+  }
+  .filter-count {
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-top: 2px;
+    display: block;
+  }
+  .filter-btn.active .filter-count { color: rgba(88,166,255,0.6); }
+
+  .clear-btn {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--muted);
+    font-size: 0.78rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s ease;
+  }
+  .clear-btn:hover { border-color: var(--text); color: var(--text); }
+
+  .sidebar-stats {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .sidebar-stats h2 { margin-bottom: 10px; }
+  .stat-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 5px 0;
+    font-size: 0.78rem;
+  }
+  .stat-label { color: var(--muted); }
+  .stat-value { font-weight: 600; }
+  .stat-value.red { color: var(--red); }
+  .stat-value.amber { color: var(--amber); }
+  .stat-value.green { color: var(--green); }
+  .stat-value.blue { color: var(--blue); }
+
+  /* ── Grid Container ─────────────────────────── */
+  .grid-wrap {
+    flex: 1;
+    overflow: auto;
+    padding: 24px;
+  }
+  .grid-scroll {
+    min-width: 1100px;
+  }
+
+  /* ── Column Headers ─────────────────────────── */
+  .col-headers {
+    display: grid;
+    grid-template-columns: 180px repeat(6, 1fr);
+    gap: 6px;
+    margin-bottom: 6px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .col-header-spacer { background: transparent; }
+  .col-header {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    text-align: center;
+  }
+  .col-header .stage-num {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+  .col-header .stage-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #e6edf3;
+  }
+  .col-header .stage-desc {
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-top: 3px;
+    line-height: 1.3;
+  }
+
+  /* ── Swim-lane Rows ─────────────────────────── */
+  .swim-row {
+    display: grid;
+    grid-template-columns: 180px repeat(6, 1fr);
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .row-label {
+    display: flex;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-weight: 600;
+    font-size: 0.82rem;
+    color: #e6edf3;
+    position: sticky;
+    left: 0;
+    z-index: 5;
+  }
+  .row-label .role-abbr {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 400;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ── Section Headers & Lines of Visibility ──── */
+  .section-header {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 6px;
+    margin-top: 20px;
+    margin-bottom: 8px;
+  }
+  .section-header:first-of-type {
+    margin-top: 0;
+  }
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    background: var(--bg);
+  }
+  .section-line {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  .section-line::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--border);
+  }
+  .section-line.visibility::before {
+    background: repeating-linear-gradient(
+      90deg,
+      var(--muted) 0,
+      var(--muted) 8px,
+      transparent 8px,
+      transparent 16px
+    );
+    height: 2px;
+  }
+  .section-line.internal::before {
+    background: repeating-linear-gradient(
+      90deg,
+      var(--border) 0,
+      var(--border) 4px,
+      transparent 4px,
+      transparent 8px
+    );
+  }
+  .line-label {
+    position: relative;
+    z-index: 1;
+    background: var(--bg);
+    padding: 2px 10px;
+    font-size: 0.65rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* ── Cells ──────────────────────────────────── */
+  .cell {
+    border-radius: 8px;
+    padding: 12px 14px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.18s ease;
+    position: relative;
+    min-height: 72px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .cell:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    z-index: 2;
+  }
+  .cell.red    { background: var(--red-bg);   border-color: rgba(248,81,73,0.25); }
+  .cell.amber  { background: var(--amber-bg); border-color: rgba(210,153,34,0.25); }
+  .cell.green  { background: var(--green-bg); border-color: rgba(63,185,80,0.20); }
+  .cell.blue   { background: var(--blue-bg);  border-color: rgba(88,166,255,0.20); }
+  .cell.gray   { background: var(--gray-bg);  border-color: var(--border); }
+
+  .cell:hover.red   { border-color: var(--red); }
+  .cell:hover.amber { border-color: var(--amber); }
+  .cell:hover.green { border-color: var(--green); }
+  .cell:hover.blue  { border-color: var(--blue); }
+  .cell:hover.gray  { border-color: var(--muted); }
+
+  .cell.dimmed {
+    opacity: 0.12;
+    pointer-events: none;
+  }
+  .cell.highlighted {
+    box-shadow: 0 0 0 2px var(--blue), 0 4px 20px rgba(88,166,255,0.15);
+    z-index: 3;
+  }
+
+  .cell-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+  .cell-status-dot {
+    width: 7px; height: 7px; border-radius: 2px;
+  }
+  .cell.red .cell-status    { color: var(--red); }
+  .cell.amber .cell-status  { color: var(--amber); }
+  .cell.green .cell-status  { color: var(--green); }
+  .cell.blue .cell-status   { color: var(--blue); }
+  .cell.gray .cell-status   { color: var(--muted); }
+  .cell.red .cell-status-dot    { background: var(--red); }
+  .cell.amber .cell-status-dot  { background: var(--amber); }
+  .cell.green .cell-status-dot  { background: var(--green); }
+  .cell.blue .cell-status-dot   { background: var(--blue); }
+  .cell.gray .cell-status-dot   { background: var(--muted); }
+
+  .cell-title {
+    font-size: 0.78rem;
+    color: var(--text);
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .cell-theme {
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .cell-theme-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--blue);
+    flex-shrink: 0;
+  }
+
+  /* ── Popup / Modal ──────────────────────────── */
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+  .overlay.open { display: flex; }
+
+  .popup {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    max-width: 560px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 28px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+    position: relative;
+    animation: popIn 0.2s ease;
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.95) translateY(8px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .popup-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--muted);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    font-family: inherit;
+  }
+  .popup-close:hover { border-color: var(--text); color: var(--text); }
+
+  .popup-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+  .popup-badge.red    { background: var(--red-bg);   color: var(--red);   border: 1px solid rgba(248,81,73,0.3); }
+  .popup-badge.amber  { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(210,153,34,0.3); }
+  .popup-badge.green  { background: var(--green-bg); color: var(--green); border: 1px solid rgba(63,185,80,0.25); }
+  .popup-badge.blue   { background: var(--blue-bg);  color: var(--blue);  border: 1px solid rgba(88,166,255,0.25); }
+  .popup-badge.gray   { background: var(--gray-bg);  color: var(--muted); border: 1px solid var(--border); }
+  .popup-badge-dot { width: 7px; height: 7px; border-radius: 2px; }
+  .popup-badge.red .popup-badge-dot    { background: var(--red); }
+  .popup-badge.amber .popup-badge-dot  { background: var(--amber); }
+  .popup-badge.green .popup-badge-dot  { background: var(--green); }
+  .popup-badge.blue .popup-badge-dot   { background: var(--blue); }
+  .popup-badge.gray .popup-badge-dot   { background: var(--muted); }
+
+  .popup-header {
+    margin-bottom: 16px;
+  }
+  .popup-stakeholder {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+  .popup-stage {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #e6edf3;
+  }
+
+  .popup-desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  .popup-quote {
+    background: var(--bg);
+    border-left: 3px solid var(--blue);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-style: italic;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .popup-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .popup-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .popup-tag.theme-tag {
+    border-color: rgba(88,166,255,0.3);
+    color: var(--blue);
+  }
+  .popup-severity {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+  .popup-severity strong { color: var(--text); }
+
+  /* ── Responsive ─────────────────────────────── */
+  @media (max-width: 900px) {
+    .sidebar { width: 220px; min-width: 220px; }
+    .header { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .legend { gap: 10px; }
+  }
+  @media (max-width: 700px) {
+    .layout { flex-direction: column; }
+    .sidebar {
+      width: 100%; min-width: 100%;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      max-height: 200px;
+      padding: 14px;
+    }
+    .sidebar h2 { margin-bottom: 8px; }
+    .filter-btn { padding: 6px 8px; font-size: 0.75rem; }
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- ── Header ────────────────────────────────── -->
+<header class="header">
+  <div class="header-left">
+    <h1>Service Blueprint: Time &amp; Attendance Platform</h1>
+    <p>9 Stakeholder Types &times; 6 Lifecycle Stages</p>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div>Pain Point</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div>Workaround</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Working Well</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Opportunity</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--gray)"></div>N/A</div>
+  </div>
+</header>
+
+<!-- ── Main Layout ───────────────────────────── -->
+<div class="layout">
+
+  <!-- Sidebar filters -->
+  <aside class="sidebar" id="sidebar">
+    <h2>Filter by Finding Theme</h2>
+    <div id="filterList"></div>
+    <button class="clear-btn" id="clearBtn">Clear Filter</button>
+
+    <div class="sidebar-stats">
+      <h2>Summary</h2>
+      <div id="statsContainer"></div>
+    </div>
+  </aside>
+
+  <!-- Grid -->
+  <main class="grid-wrap">
+    <div class="grid-scroll" id="grid"></div>
+  </main>
+</div>
+
+<!-- ── Popup Overlay ─────────────────────────── -->
+<div class="overlay" id="overlay">
+  <div class="popup" id="popup"></div>
+</div>
+
+<script>
+// ── Data ──────────────────────────────────────
+const stages = [
+  { id: 'pre', name: 'Pre-Employment', desc: 'Recruitment, Registration' },
+  { id: 'onboard', name: 'Onboarding', desc: 'System Access, Training, Account Setup' },
+  { id: 'daily', name: 'Daily Operations', desc: 'Rostering, Time Clock, Breaks, Deployment' },
+  { id: 'payroll', name: 'Payroll', desc: 'Pay Period Review, Approval Chain, Processing' },
+  { id: 'compliance', name: 'Compliance', desc: 'Rules Engine, Warnings, Break Monitoring, Audit' },
+  { id: 'offboard', name: 'Offboarding', desc: 'Termination, Final Pay, System Removal' }
+];
+
+const stakeholderSections = [
+  {
+    name: 'Frontstage',
+    desc: 'Customer-facing actions visible to team members',
+    lineType: null,
+    stakeholders: [
+      { id: 'tm', name: 'Team Members', abbr: 'TM' },
+      { id: 'ss', name: 'Shift Supervisors', abbr: 'SS' }
+    ]
+  },
+  {
+    name: 'Backstage',
+    desc: 'Management actions not directly visible',
+    lineType: 'visibility',
+    lineLabel: 'Line of Visibility',
+    stakeholders: [
+      { id: 'arm', name: 'Assistant Restaurant Managers', abbr: 'ARM' },
+      { id: 'rgm', name: 'Restaurant General Managers', abbr: 'RGM' },
+      { id: 'ac', name: 'Area Coaches', abbr: 'AC' }
+    ]
+  },
+  {
+    name: 'Support Processes',
+    desc: 'Back-office systems and operations',
+    lineType: 'internal',
+    lineLabel: 'Line of Internal Interaction',
+    stakeholders: [
+      { id: 'it', name: 'IT / Support Team', abbr: 'IT' },
+      { id: 'ps', name: 'People Systems', abbr: 'PS' },
+      { id: 'pay', name: 'Payroll Teams', abbr: 'PAY' },
+      { id: 'fr', name: 'Franchisees', abbr: 'FR' }
+    ]
+  }
+];
+
+// Flat list for compatibility
+const stakeholders = stakeholderSections.flatMap(s => s.stakeholders);
+
+const themes = [
+  { id: 'shadow', name: 'Shadow System', num: 1 },
+  { id: 'blindspot', name: 'Real-Time Blindspot', num: 2 },
+  { id: 'compliance', name: 'Compliance Design Gap', num: 3 },
+  { id: 'propagation', name: 'Propagation Delay', num: 4 },
+  { id: 'onboarding', name: 'Onboarding Friction', num: 5 },
+  { id: 'payroll', name: 'Payroll Chain Reaction', num: 6 },
+  { id: 'adaptation', name: 'Adaptation Pattern', num: 7 }
+];
+
+const severityLabels = { red: 'Critical', amber: 'Moderate', green: 'Low', blue: 'Informational', gray: 'None' };
+
+// ── Cell Data: key = "stakeholderId-stageId" ──
+const cells = {
+  // ── Team Members ──
+  'tm-pre': {
+    color: 'green',
+    title: 'Minimal pre-hire platform interaction',
+    desc: 'Apply through the recruitment system. Minimal interaction with the time & attendance platform at this stage; recruitment data feeds into People Systems for downstream onboarding.',
+    quote: null,
+    theme: null,
+    severity: 'Low'
+  },
+  'tm-onboard': {
+    color: 'red',
+    title: 'Up to 2-week wait to exist in platform',
+    desc: 'New team members can wait up to 2 weeks before they exist in the platform. During this time, managers use screenshots and WhatsApp to share schedules. First-day experience is often paper-based.',
+    quote: 'I had to ask my manager to text me my shifts for the first two weeks because I couldn\'t log in to anything.',
+    theme: 'onboarding',
+    severity: 'Critical'
+  },
+  'tm-daily': {
+    color: 'amber',
+    title: 'WhatsApp used for last-minute changes',
+    desc: 'Use WhatsApp for last-minute shift changes because platform messaging is unreliable. Team members often miss push notifications and rely on informal group chats to learn about shift swaps or coverage needs.',
+    quote: 'For last-minute changes, WhatsApp is the go-to option.',
+    theme: 'shadow',
+    severity: 'Moderate'
+  },
+  'tm-payroll': {
+    color: 'green',
+    title: 'Payslip access works well',
+    desc: 'View payslips through the platform; rarely need to contact payroll directly. Self-service access is adequate for most routine pay inquiries.',
+    quote: null,
+    theme: null,
+    severity: 'Low'
+  },
+  'tm-compliance': {
+    color: 'amber',
+    title: '1-minute break tolerance creates friction',
+    desc: '1-minute break tolerance creates friction \u2014 managers must approve if clocking back even slightly late. Team members feel anxious about break timing and occasionally skip breaks to avoid the approval process.',
+    quote: 'I rush back from break because if I\'m even one minute over, it creates a whole thing for my supervisor.',
+    theme: 'compliance',
+    severity: 'Moderate'
+  },
+  'tm-offboard': {
+    color: 'green',
+    title: 'Smooth automated termination',
+    desc: 'Termination processed through payroll; platform access removed automatically. Team members receive final pay on the next regular cycle without manual intervention.',
+    quote: null,
+    theme: null,
+    severity: 'Low'
+  },
+
+  // ── Shift Supervisors ──
+  'ss-pre': {
+    color: 'gray',
+    title: 'No involvement in recruitment',
+    desc: 'Shift supervisors are not involved in pre-employment activities. Recruitment is handled by management and HR teams.',
+    quote: null,
+    theme: null,
+    severity: 'None'
+  },
+  'ss-onboard': {
+    color: 'amber',
+    title: 'Train new hires without system access',
+    desc: 'Must train new team members who don\'t yet have platform access. Supervisors resort to verbal instructions and printed schedules during the onboarding gap, creating inconsistent training experiences.',
+    quote: 'I end up printing the roster and taping it to the wall because the new starter can\'t see it on their phone yet.',
+    theme: 'onboarding',
+    severity: 'Moderate'
+  },
+  'ss-daily': {
+    color: 'amber',
+    title: 'Whiteboards used to track breaks',
+    desc: 'Use whiteboards above the time clock to track breaks because the platform display is inadequate. Supervisors manually write break start/end times and visually scan them to manage floor coverage.',
+    quote: 'The whiteboard is our real break tracker \u2014 the system doesn\'t show me at a glance who\'s on break right now.',
+    theme: 'shadow',
+    severity: 'Moderate'
+  },
+  'ss-payroll': {
+    color: 'green',
+    title: 'Limited payroll responsibility',
+    desc: 'Shift supervisors have minimal direct payroll involvement. They verify their own hours but do not participate in the approval chain for others.',
+    quote: null,
+    theme: null,
+    severity: 'Low'
+  },
+  'ss-compliance': {
+    color: 'amber',
+    title: 'Must manually approve break overruns',
+    desc: 'Required to approve break overrun exceptions in real time while managing floor operations. The interruption to workflow from 1-minute tolerance alerts creates cognitive overload during peak periods.',
+    quote: 'During lunch rush I get five break alerts and I just approve them all because I don\'t have time to investigate.',
+    theme: 'compliance',
+    severity: 'Moderate'
+  },
+  'ss-offboard': {
+    color: 'gray',
+    title: 'Minimal offboarding involvement',
+    desc: 'Shift supervisors may assist with shift coverage when a team member departs but are not directly involved in system offboarding processes.',
+    quote: null,
+    theme: null,
+    severity: 'None'
+  },
+
+  // ── ARMs ──
+  'arm-pre': {
+    color: 'green',
+    title: 'Support recruitment interviews',
+    desc: 'Assist restaurant general managers with recruitment interviews and candidate screening. May input initial availability preferences into planning tools.',
+    quote: null,
+    theme: null,
+    severity: 'Low'
+  },
+  'arm-onboard': {
+    color: 'amber',
+    title: 'Bridge the onboarding gap manually',
+    desc: 'Responsible for training new hires during the system gap. Must maintain personal tracking of new starters who aren\'t yet in the platform, often duplicating effort across paper and digital systems.',
+    quote: 'I keep a notebook with all the new starters and their shifts until they finally appear in the system.',
+    theme: 'onboarding',
+    severity: 'Moderate'
+  },
+  'arm-daily': {
+    color: 'amber',
+    title: 'Adjust rosters with incomplete data',
+    desc: 'Manage daily deployment and real-time roster adjustments with SPH data that is at least a day old. Must make staffing decisions based on gut feeling rather than current demand signals.',
+    quote: 'By the time the data updates, the lunch rush is already over and the damage is done.',
+    theme: 'blindspot',
+    severity: 'Moderate'
+  },
+  'arm-payroll': {
+    color: 'amber',
+    title: 'First-pass pay period review',
+    desc: 'Conduct initial review of time records and flag discrepancies before RGM approval. Often catch errors from missed clock-ins that require manual correction in the system.',
+    quote: null,
+    theme: 'payroll',
+    severity: 'Moderate'
+  },
+  'arm-compliance': {
+    color: 'amber',
+    title: 'Monitor break compliance in real time',
+    desc: 'Responsible for floor-level break compliance but lack real-time visibility into who is approaching break limits. Rely on the whiteboard system set up by shift supervisors.',
+    quote: null,
+    theme: 'compliance',
+    severity: 'Moderate'
+  },
+  'arm-offboard': {
+    color: 'green',
+    title: 'Coordinate final shift coverage',
+    desc: 'Assist with coordinating shift coverage when team members depart and ensure knowledge transfer of any informal processes the departing employee managed.',
+    quote: null,
+    theme: null,
+    severity: 'Low'
+  },
+
+  // ── RGMs ──
+  'rgm-pre': {
+    color: 'green',
+    title: 'Lead recruitment decisions',
+    desc: 'Own hiring decisions and initiate the onboarding process. Submit new hire requests through recruitment system which triggers downstream People Systems workflows.',
+    quote: null,
+    theme: null,
+    severity: 'Low'
+  },
+  'rgm-onboard': {
+    color: 'red',
+    title: 'Roster new hires outside the system',
+    desc: 'Must schedule new team members who don\'t exist in the platform yet. Create manual workarounds including paper rosters, WhatsApp groups, and personal spreadsheets to bridge the 2-week gap.',
+    quote: 'I screenshot the roster and send it via WhatsApp because the new person can\'t access anything yet.',
+    theme: 'propagation',
+    severity: 'Critical'
+  },
+  'rgm-daily': {
+    color: 'red',
+    title: 'SPH data a day behind',
+    desc: 'Sales-per-hour data is a day old, forcing labour decisions on stale information. Overstaffing during quiet periods and understaffing during surges directly impacts P&L.',
+    quote: 'We often find ourselves overstaffed during quiet periods, directly impacting labour costs.',
+    theme: 'blindspot',
+    severity: 'Critical'
+  },
+  'rgm-payroll': {
+    color: 'amber',
+    title: 'Approval bottleneck delays franchise payroll',
+    desc: 'Must approve pay period on time or delay entire franchise payroll. The sequential dependency means one store\'s delay cascades to every other store under the same franchise.',
+    quote: 'One store 10 minutes late means payroll for the entire franchise is 10 minutes late.',
+    theme: 'payroll',
+    severity: 'Moderate'
+  },
+  'rgm-compliance': {
+    color: 'amber',
+    title: 'Rules differ by state, hard to configure',
+    desc: 'Workforce rules vary by state and employee classification, but the platform configuration is rigid. RGMs in multi-classification environments struggle to ensure the correct rules apply to each team member.',
+    quote: 'I have staff on three different classifications and the system treats them all the same.',
+    theme: 'compliance',
+    severity: 'Moderate'
+  },
+  'rgm-offboard': {
+    color: 'green',
+    title: 'Initiate termination process',
+    desc: 'Submit termination requests through the system. Final pay is calculated by payroll and system access removal is automated once the termination is processed.',
+    quote: null,
+    theme: null,
+    severity: 'Low'
+  },
+
+  // ── Area Coaches ──
+  'ac-pre': {
+    color: 'gray',
+    title: 'Oversight of hiring targets',
+    desc: 'Provide guidance on headcount targets and staffing ratios but are not directly involved in individual recruitment activities.',
+    quote: null,
+    theme: null,
+    severity: 'None'
+  },
+  'ac-onboard': {
+    color: 'blue',
+    title: 'Opportunity for onboarding dashboards',
+    desc: 'Currently have no visibility into onboarding progress across their restaurant portfolio. A dashboard showing new hire pipeline status could help identify bottlenecks early.',
+    quote: null,
+    theme: 'onboarding',
+    severity: 'Informational'
+  },
+  'ac-daily': {
+    color: 'amber',
+    title: 'Build personal spreadsheets for reporting',
+    desc: 'Build personal spreadsheets because platform figures don\'t match payroll. Area coaches spend hours each week manually reconciling data across systems to get an accurate picture of labour performance.',
+    quote: 'I personally generate this manually with formulas in the background.',
+    theme: 'adaptation',
+    severity: 'Moderate'
+  },
+  'ac-payroll': {
+    color: 'blue',
+    title: 'Opportunity for cross-store payroll visibility',
+    desc: 'Lack consolidated payroll overview across their portfolio of restaurants. Must request data from each RGM individually, delaying labour cost analysis by days.',
+    quote: 'I\'d love a single screen that shows me payroll status for all my stores.',
+    theme: 'adaptation',
+    severity: 'Informational'
+  },
+  'ac-compliance': {
+    color: 'blue',
+    title: 'Opportunity for compliance risk dashboard',
+    desc: 'No proactive alerting across their portfolio. Break management gaps are discovered retroactively rather than prevented through real-time monitoring.',
+    quote: 'I only find out about break management issues when someone flags them months later.',
+    theme: 'compliance',
+    severity: 'Informational'
+  },
+  'ac-offboard': {
+    color: 'gray',
+    title: 'Minimal offboarding involvement',
+    desc: 'Area coaches are not involved in individual offboarding processes. They may review turnover metrics at a portfolio level.',
+    quote: null,
+    theme: null,
+    severity: 'None'
+  },
+
+  // ── IT / Support ──
+  'it-pre': {
+    color: 'gray',
+    title: 'No pre-employment involvement',
+    desc: 'IT support is not engaged during the recruitment phase. System provisioning begins only after People Systems creates the employee record.',
+    quote: null,
+    theme: null,
+    severity: 'None'
+  },
+  'it-onboard': {
+    color: 'amber',
+    title: 'Account provisioning depends on People Systems',
+    desc: 'Cannot create platform accounts until the People Systems record is complete. IT queues build up at the start of each month when bulk onboarding occurs, creating further delays.',
+    quote: 'We can\'t provision anything until the record comes through from People Systems \u2014 our hands are tied.',
+    theme: 'propagation',
+    severity: 'Moderate'
+  },
+  'it-daily': {
+    color: 'amber',
+    title: 'Enhancement requests stalled since 2021',
+    desc: 'Enhancement requests stall in the pipeline, some dating back to 2021. Support tickets for known issues receive templated responses, eroding user trust in the platform and the support process.',
+    quote: 'We log the same issues over and over. Some of these tickets are from 2021 and they\'re still open.',
+    theme: 'propagation',
+    severity: 'Moderate'
+  },
+  'it-payroll': {
+    color: 'green',
+    title: 'System integrations generally stable',
+    desc: 'Payroll integrations run on established batch processes that are generally reliable. Occasional sync failures are caught by automated monitoring and resolved quickly.',
+    quote: null,
+    theme: null,
+    severity: 'Low'
+  },
+  'it-compliance': {
+    color: 'blue',
+    title: 'Opportunity to automate compliance rules deployment',
+    desc: 'Rule configuration changes are manually applied per franchise. An opportunity exists to build a rules engine that auto-propagates regulatory updates across all tenants.',
+    quote: null,
+    theme: 'compliance',
+    severity: 'Informational'
+  },
+  'it-offboard': {
+    color: 'green',
+    title: 'Automated deprovisioning works reliably',
+    desc: 'Account deprovisioning is triggered automatically by termination records from People Systems. Access revocation completes within 24 hours of termination processing.',
+    quote: null,
+    theme: null,
+    severity: 'Low'
+  },
+
+  // ── People Systems ──
+  'ps-pre': {
+    color: 'green',
+    title: 'Receive recruitment data feeds',
+    desc: 'Receive candidate data from the recruitment system once an offer is accepted. This triggers the employee record creation workflow.',
+    quote: null,
+    theme: null,
+    severity: 'Low'
+  },
+  'ps-onboard': {
+    color: 'red',
+    title: 'Status changes take up to 14 days to propagate',
+    desc: 'Employment status changes take up to 14 days to propagate through downstream systems. The sequential nature of record creation means the T&A platform is often the last system updated.',
+    quote: 'Until payroll completes the record, the platform doesn\'t know this person exists.',
+    theme: 'propagation',
+    severity: 'Critical'
+  },
+  'ps-daily': {
+    color: 'green',
+    title: 'Stable employee data management',
+    desc: 'Day-to-day employee master data management is stable. Role changes and transfer records are maintained accurately, though propagation to downstream systems can still be slow.',
+    quote: null,
+    theme: null,
+    severity: 'Low'
+  },
+  'ps-payroll': {
+    color: 'amber',
+    title: 'Record updates can disrupt pay runs',
+    desc: 'Mid-cycle employee record changes (role changes, transfers) can cause payroll calculation errors if the timing overlaps with a pay period close. Coordination with payroll teams is manual.',
+    quote: 'If a transfer goes through mid-pay-period, it can split someone\'s pay record across two cost centres incorrectly.',
+    theme: 'payroll',
+    severity: 'Moderate'
+  },
+  'ps-compliance': {
+    color: 'green',
+    title: 'Maintain employee classifications',
+    desc: 'Maintain employee classification data that drives workforce rules. Regular reviews ensure data accuracy, though the lag to downstream systems can create temporary gaps.',
+    quote: null,
+    theme: null,
+    severity: 'Low'
+  },
+  'ps-offboard': {
+    color: 'green',
+    title: 'Termination records trigger downstream cleanup',
+    desc: 'Process termination records that trigger automated downstream cleanup including payroll final calculations and IT deprovisioning. The process is well-established and reliable.',
+    quote: null,
+    theme: null,
+    severity: 'Low'
+  },
+
+  // ── Payroll Teams ──
+  'pay-pre': {
+    color: 'gray',
+    title: 'No pre-employment involvement',
+    desc: 'Payroll teams are not engaged during recruitment. They receive new employee records from People Systems once onboarding is initiated.',
+    quote: null,
+    theme: null,
+    severity: 'None'
+  },
+  'pay-onboard': {
+    color: 'amber',
+    title: 'Must complete records before platform access',
+    desc: 'Payroll record completion is a prerequisite for platform provisioning. Bulk onboarding periods create processing backlogs that contribute directly to the 14-day propagation delay.',
+    quote: 'We process them as fast as we can, but during peak hiring months, the queue backs up.',
+    theme: 'propagation',
+    severity: 'Moderate'
+  },
+  'pay-daily': {
+    color: 'green',
+    title: 'Monitor time data feeds',
+    desc: 'Monitor automated time data feeds from the platform. Routine operations run smoothly; issues are flagged through exception reports reviewed each morning.',
+    quote: null,
+    theme: null,
+    severity: 'Low'
+  },
+  'pay-payroll': {
+    color: 'red',
+    title: 'Sequential dependencies delay everything',
+    desc: 'Sequential dependencies mean one late store delays the entire franchise\'s payroll. Corrections are tracked in email threads rather than a centralised system, creating audit risk and manual overhead.',
+    quote: 'When one store is late, we can\'t start processing anyone else in that franchise. Then the corrections come in via email and we\'re chasing threads for days.',
+    theme: 'payroll',
+    severity: 'Critical'
+  },
+  'pay-compliance': {
+    color: 'amber',
+    title: 'Workarounds to avoid reopening pay periods',
+    desc: 'Some franchise groups add missed pay as empty shifts to avoid reopening pay periods. This technically works but creates phantom records that complicate auditing and reporting.',
+    quote: 'We add an empty shift with the missing amount rather than reopen the entire pay period. It\'s ugly but it works.',
+    theme: 'adaptation',
+    severity: 'Moderate'
+  },
+  'pay-offboard': {
+    color: 'green',
+    title: 'Final pay calculation is reliable',
+    desc: 'Final pay calculations including accrued leave, notice period pay, and any adjustments are processed through established workflows. Automated checks catch most common errors.',
+    quote: null,
+    theme: null,
+    severity: 'Low'
+  },
+
+  // ── Franchisees ──
+  'fr-pre': {
+    color: 'blue',
+    title: 'Opportunity for recruitment cost visibility',
+    desc: 'Franchisees lack consolidated visibility into recruitment costs and time-to-hire metrics across their restaurant portfolio. This data exists in silos across multiple systems.',
+    quote: null,
+    theme: null,
+    severity: 'Informational'
+  },
+  'fr-onboard': {
+    color: 'red',
+    title: 'Onboarding delays impact store operations',
+    desc: 'The 14-day onboarding propagation delay directly impacts franchisees\' ability to staff newly opened stores or respond to seasonal demand. Each day of delay is a day of suboptimal scheduling.',
+    quote: 'When I open a new store, I need 40 people on the platform immediately, not in two weeks. We end up running on paper for the first month.',
+    theme: 'onboarding',
+    severity: 'Critical'
+  },
+  'fr-daily': {
+    color: 'amber',
+    title: 'Labour cost visibility is fragmented',
+    desc: 'Daily labour cost visibility requires pulling data from multiple sources. The platform\'s reporting does not align with payroll actuals, forcing franchisees to maintain parallel tracking systems.',
+    quote: 'I have three different numbers for labour cost depending on which system I look at. None of them match.',
+    theme: 'shadow',
+    severity: 'Moderate'
+  },
+  'fr-payroll': {
+    color: 'red',
+    title: 'Entire franchise held up by one late store',
+    desc: 'A single store\'s late approval holds up payroll processing for every store in the franchise. Franchisees bear the operational and reputational risk of late employee payments.',
+    quote: 'I have 15 stores and 600 employees waiting for their pay because one manager forgot to approve on time.',
+    theme: 'payroll',
+    severity: 'Critical'
+  },
+  'fr-compliance': {
+    color: 'amber',
+    title: 'Workarounds create data inconsistency',
+    desc: 'The accumulated workarounds (empty shifts for corrections, manual spreadsheets for tracking) create data inconsistencies. Franchisees recognize the need for cleaner system processes to replace manual workarounds.',
+    quote: 'Those empty shift records are not ideal. We need a proper correction workflow.',
+    theme: 'adaptation',
+    severity: 'Moderate'
+  },
+  'fr-offboard': {
+    color: 'blue',
+    title: 'Opportunity for turnover analytics',
+    desc: 'Offboarding data is not aggregated into actionable turnover analytics. Franchisees cannot easily identify patterns in attrition across stores, roles, or time periods.',
+    quote: null,
+    theme: null,
+    severity: 'Informational'
+  }
+};
+
+// ── Theme cell counts ──
+function countThemeCells(themeId) {
+  let c = 0;
+  for (const k in cells) { if (cells[k].theme === themeId) c++; }
+  return c;
+}
+
+// ── Build sidebar filters ──
+let activeTheme = null;
+
+function buildFilters() {
+  const list = document.getElementById('filterList');
+  themes.forEach(t => {
+    const count = countThemeCells(t.id);
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.dataset.theme = t.id;
+    btn.innerHTML = '<span class="filter-num">' + t.num + '</span><span><span>' + t.name + '</span><span class="filter-count">' + count + ' cell' + (count !== 1 ? 's' : '') + '</span></span>';
+    btn.addEventListener('click', () => toggleTheme(t.id));
+    list.appendChild(btn);
+  });
+}
+
+function toggleTheme(themeId) {
+  if (activeTheme === themeId) {
+    activeTheme = null;
+  } else {
+    activeTheme = themeId;
+  }
+  applyFilter();
+}
+
+function applyFilter() {
+  // Update buttons
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.theme === activeTheme);
+  });
+
+  // Update cells
+  document.querySelectorAll('.cell').forEach(el => {
+    const key = el.dataset.key;
+    const data = cells[key];
+    if (!activeTheme) {
+      el.classList.remove('dimmed', 'highlighted');
+    } else if (data && data.theme === activeTheme) {
+      el.classList.remove('dimmed');
+      el.classList.add('highlighted');
+    } else {
+      el.classList.add('dimmed');
+      el.classList.remove('highlighted');
+    }
+  });
+}
+
+document.getElementById('clearBtn').addEventListener('click', () => {
+  activeTheme = null;
+  applyFilter();
+});
+
+// ── Build stats ──
+function buildStats() {
+  const container = document.getElementById('statsContainer');
+  // Research totals from Pain Point and Opportunity Catalog (not cell counts)
+  const stats = [
+    { label: 'Pain Points', value: 175, color: 'red' },
+    { label: 'Tech Limitations', value: 85, color: 'amber' },
+    { label: 'Compliance Issues', value: 40, color: 'green' },
+    { label: 'Experience Gaps', value: 45, color: 'blue' }
+  ];
+  for (const s of stats) {
+    const row = document.createElement('div');
+    row.className = 'stat-row';
+    row.innerHTML = '<span class="stat-label">' + s.label + '</span><span class="stat-value ' + s.color + '">' + s.value + '</span>';
+    container.appendChild(row);
+  }
+}
+
+// ── Build grid ──
+function buildGrid() {
+  const grid = document.getElementById('grid');
+
+  // Column headers
+  const hdr = document.createElement('div');
+  hdr.className = 'col-headers';
+  hdr.innerHTML = '<div class="col-header-spacer"></div>';
+  stages.forEach((s, i) => {
+    hdr.innerHTML += '<div class="col-header"><div class="stage-num">Stage ' + (i + 1) + '</div><div class="stage-name">' + s.name + '</div><div class="stage-desc">' + s.desc + '</div></div>';
+  });
+  grid.appendChild(hdr);
+
+  // Sections with stakeholder rows
+  stakeholderSections.forEach(section => {
+    // Section header with line of visibility/interaction
+    const sectionHeader = document.createElement('div');
+    sectionHeader.className = 'section-header';
+
+    let lineHtml = '';
+    if (section.lineType) {
+      lineHtml = '<div class="section-line ' + section.lineType + '"><span class="line-label">' + section.lineLabel + '</span></div>';
+    } else {
+      lineHtml = '<div class="section-line"></div>';
+    }
+
+    sectionHeader.innerHTML = '<div class="section-label">' + section.name + '</div>' + lineHtml;
+    grid.appendChild(sectionHeader);
+
+    // Stakeholder rows within section
+    section.stakeholders.forEach(sh => {
+      const row = document.createElement('div');
+      row.className = 'swim-row';
+
+      const label = document.createElement('div');
+      label.className = 'row-label';
+      label.innerHTML = '<div>' + sh.name + '<span class="role-abbr">' + sh.abbr + '</span></div>';
+      row.appendChild(label);
+
+      stages.forEach(st => {
+        const key = sh.id + '-' + st.id;
+        const data = cells[key];
+        const cell = document.createElement('div');
+        cell.className = 'cell ' + (data ? data.color : 'gray');
+        cell.dataset.key = key;
+
+        if (data) {
+          const statusLabel = { red: 'Pain Point', amber: 'Workaround', green: 'Working Well', blue: 'Opportunity', gray: 'N/A' };
+          let html = '<div class="cell-status"><span class="cell-status-dot"></span>' + statusLabel[data.color] + '</div>';
+          html += '<div class="cell-title">' + data.title + '</div>';
+          if (data.theme) {
+            const themeName = themes.find(t => t.id === data.theme);
+            html += '<div class="cell-theme"><span class="cell-theme-dot"></span>' + (themeName ? themeName.name : '') + '</div>';
+          }
+          cell.innerHTML = html;
+          cell.addEventListener('click', () => openPopup(key, sh, st));
+        } else {
+          cell.innerHTML = '<div class="cell-status"><span class="cell-status-dot"></span>N/A</div><div class="cell-title">Minimal interaction</div>';
+        }
+
+        row.appendChild(cell);
+      });
+
+      grid.appendChild(row);
+    });
+  });
+}
+
+// ── Popup ──
+function openPopup(key, stakeholder, stage) {
+  const data = cells[key];
+  if (!data) return;
+
+  const overlay = document.getElementById('overlay');
+  const popup = document.getElementById('popup');
+
+  const themeName = data.theme ? themes.find(t => t.id === data.theme) : null;
+
+  let html = '<button class="popup-close" onclick="closePopup()">&times;</button>';
+
+  html += '<div class="popup-badge ' + data.color + '"><span class="popup-badge-dot"></span>' + severityLabels[data.color] + '</div>';
+
+  html += '<div class="popup-header">';
+  html += '<div class="popup-stakeholder">' + stakeholder.name + '</div>';
+  html += '<div class="popup-stage">' + stage.name + '</div>';
+  html += '</div>';
+
+  html += '<div class="popup-desc">' + data.desc + '</div>';
+
+  if (data.quote) {
+    html += '<div class="popup-quote">\u201C' + data.quote + '\u201D</div>';
+  }
+
+  html += '<div class="popup-meta">';
+  html += '<span class="popup-tag">' + stage.desc + '</span>';
+  if (themeName) {
+    html += '<span class="popup-tag theme-tag">Theme ' + themeName.num + ': ' + themeName.name + '</span>';
+  }
+  html += '</div>';
+
+  if (data.severity && data.severity !== 'None') {
+    html += '<div class="popup-severity">Pain point severity: <strong>' + data.severity + '</strong></div>';
+  }
+
+  popup.innerHTML = html;
+  overlay.classList.add('open');
+}
+
+function closePopup() {
+  document.getElementById('overlay').classList.remove('open');
+}
+
+document.getElementById('overlay').addEventListener('click', function(e) {
+  if (e.target === this) closePopup();
+});
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closePopup();
+});
+
+// ── Init ──
+buildFilters();
+buildStats();
+buildGrid();
+</script>
+</body>
+</html>

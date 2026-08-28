@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leave automation flow — design system preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ds-tokens.css">
+<style>
+  .leave-cols { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--ds-4); align-items: start; }
+  @media (max-width: 900px) { .leave-cols { grid-template-columns: 1fr; } }
+  .week { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; }
+  .day { border: 1px solid var(--ds-line); border-radius: var(--ds-radius); padding: 8px; min-height: 64px; background: var(--ds-paper); }
+  .day .dow { font-family: var(--ds-font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ds-muted); }
+  .day .dn { font-size: 13px; font-weight: 600; }
+  .day.shift { background: var(--ds-info-tint); border-color: #d2e2ec; }
+  .day:hover { box-shadow: var(--ds-shadow); }
+  .day .leave-chip { margin-top: 4px; }
+</style>
+</head><body>
+<div class="app ds-stage">
+  <aside class="app-side">
+    <div class="brandmark"><div class="bm-sq">W</div><div><div class="bm-name">Workforce OS</div><div class="bm-sub">Time &amp; attendance</div></div></div>
+    <div class="nav-label">Workspace</div>
+    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM13 3v4h8V3zM3 21h8v-4H3z"/></svg>Dashboard</div>
+    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Roster</div>
+    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Approvals<span class="n-count">9</span></div>
+    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V6z"/></svg>Compliance<span class="n-count">3</span></div>
+    <div class="nav-item on"><svg class="n-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Leave &amp; availability</div>
+    <div class="nav-label">Back office</div>
+    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Payroll</div>
+    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 3 5-6"/></svg>Reports</div>
+    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.4 1a7 7 0 0 0-1.7-1L14.5 3h-5l-.3 2.5a7 7 0 0 0-1.7 1l-2.4-1-2 3.5 2 1.5a7 7 0 0 0 0 2l-2 1.5 2 3.5 2.4-1a7 7 0 0 0 1.7 1l.3 2.5h5l.3-2.5a7 7 0 0 0 1.7-1l2.4 1 2-3.5-2-1.5c.06-.33.1-.66.1-1z"/></svg>Settings</div>
+    <div class="nav-spacer"></div>
+    <div class="side-foot">Leave auto-populated onto the schedule<br>Restaurant 134</div>
+  </aside>
+  <div class="app-main">
+    <div class="app-topbar">
+      <div class="page-title">Leave automation</div>
+      <div class="tb-right">
+        <span class="chip success"><span class="dot"></span>Auto-populate on</span>
+        <div class="avatar dark">RM</div>
+      </div>
+    </div>
+    <div class="app-content">
+
+      <div class="card">
+        <div class="card-hd"><h3>Leave request — A. Rivera</h3><span class="sub">28 Aug – 30 Aug · 3 shifts · approved</span><div class="hd-right"><span class="chip success">Approved</span></div></div>
+        <div class="card-bd">
+          <div class="stepper">
+            <div class="step"><span class="st-dot done">1</span><span class="st-txt done">Request</span></div><div class="step-connector done"></div>
+            <div class="step"><span class="st-dot done">2</span><span class="st-txt done">Approve</span></div><div class="step-connector done"></div>
+            <div class="step"><span class="st-dot cur">3</span><span class="st-txt cur">Consent</span></div><div class="step-connector"></div>
+            <div class="step"><span class="st-dot">4</span><span class="st-txt">Scheduled</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="leave-cols mt-4">
+        <div class="card">
+          <div class="card-hd"><h3>Digital consent</h3><span class="sub">With or without pay · captured, not assumed</span></div>
+          <div class="card-bd">
+            <div class="alert info mb-3">
+              <svg class="a-ic" viewBox="0 0 24 24" style="color:var(--ds-info)"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M12 11v5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <div class="a-body"><h4>Consent replaces the blurry line</h4><p>The crew member agrees in the app to how the leave is paid. No more "did they agree to that?" questions at pay period review.</p></div>
+            </div>
+            <div class="mblock">
+              <div class="row between"><span>Leave paid</span><span class="chip success">With pay</span></div>
+              <div class="row between mt-2"><span style="flex:1">Unpaid for dropped shifts</span><div class="toggle on"></div></div>
+              <div class="field mt-3">
+                <label>Leave balance (real-time)</label>
+                <div class="row between"><b class="num" style="font-size:22px">18.5 h</b><span class="chip neutral">updates live</span></div>
+                <div class="progress mt-2"><span class="ok" style="width:62%"></span></div>
+                <div class="help">3 shifts × 5.0 h = 15.0 h to deduct · 3.5 h remains</div>
+              </div>
+              <div class="row mt-3">
+                <button class="btn btn-primary">Capture consent</button>
+                <button class="btn btn-ghost">Remind later</button>
+              </div>
+              <div class="field mt-3">
+                <label>Consent status</label>
+                <div class="input is-error">Awaiting member response</div>
+                <div class="help error">Consent is mandatory before shifts are written. The request is approved but not yet scheduled.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card">
+            <div class="card-hd"><h3>Week of 26 Aug</h3><span class="sub">Leave shifts auto-populated</span><div class="hd-right"><button class="btn btn-ghost btn-sm">Edit</button></div></div>
+            <div class="card-bd">
+              <div class="week">
+                <div class="day"><div class="dow">Mon</div><div class="dn">26</div></div>
+                <div class="day"><div class="dow">Tue</div><div class="dn">27</div></div>
+                <div class="day shift"><div class="dow">Wed</div><div class="dn">28</div><span class="chip lavender leave-chip">Leave</span></div>
+                <div class="day shift"><div class="dow">Thu</div><div class="dn">29</div><span class="chip lavender leave-chip">Leave</span></div>
+                <div class="day shift"><div class="dow">Fri</div><div class="dn">30</div><span class="chip lavender leave-chip">Leave</span></div>
+                <div class="day"><div class="dow">Sat</div><div class="dn">31</div></div>
+                <div class="day"><div class="dow">Sun</div><div class="dn">01</div></div>
+              </div>
+              <div class="row mt-3"><span class="chip success"><span class="dot"></span>3 shifts auto-created</span><span class="muted small">No manual entry</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><h3>Where the ROI lands</h3><span class="sub">4 of 10 Top-10 items trace here</span></div>
+            <div class="card-bd">
+              <div class="list">
+                <div class="list-row"><div class="lr-main"><div class="lr-title">Auto-populate leave</div><div class="lr-sub">Top-10 #7</div></div><span class="chip lavender">Built</span></div>
+                <div class="list-row"><div class="lr-main"><div class="lr-title">Digital consent</div><div class="lr-sub">Top-10 #8</div></div><span class="chip lavender">Built</span></div>
+                <div class="list-row"><div class="lr-main"><div class="lr-title">Real-time balance</div><div class="lr-sub">Driver metric</div></div><span class="chip lavender">Built</span></div>
+                <div class="list-row"><div class="lr-main"><div class="lr-title">Leave on mobile</div><div class="lr-sub">Top-10 #9</div></div><span class="chip lavender">Built</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body></html>

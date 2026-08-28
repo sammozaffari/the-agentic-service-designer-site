@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident report · severity-first prototype</title>
+<style>
+  :root{
+    --bg:#f6f5f2; --paper:#ffffff; --ink:#17181a; --ink-soft:#4a4d52;
+    --muted:#5a5e63; --line:#e2e2e0; --line-strong:#c7c7c4; --band:#efeee9;
+    --focus:#1f5fbf; --ok:#137a4a; --warn:#8a5a00; --danger:#b42318;
+    --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+    --sans:ui-sans-serif,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:32px 20px 56px}
+  .proto-top{display:flex;align-items:center;gap:12px;justify-content:space-between;
+    flex-wrap:wrap;margin-bottom:18px}
+  .proto-top .tag{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted)}
+  .proto-top h1{font-size:19px;font-weight:650;margin:0;letter-spacing:-.01em}
+  .proto-top p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+  /* progress */
+  .steps{display:flex;gap:6px;margin:0 0 20px}
+  .steps .s{flex:1;height:4px;border-radius:99px;background:var(--line)}
+  .steps .s.on{background:var(--focus)}
+  .step-live{font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+  /* panel */
+  .panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;
+    padding:22px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  .panel h2{font-size:20px;font-weight:650;margin:0 0 6px;letter-spacing:-.01em}
+  .panel .hint{font-size:14px;color:var(--muted);margin:0 0 18px}
+  fieldset{border:0;margin:0;padding:0}
+  legend{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--muted);margin:0 0 10px;padding:0}
+  .sev-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .sev{position:relative;display:block;cursor:pointer}
+  .sev input{position:absolute;opacity:0;width:1px;height:1px}
+  .sev .card{display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--line);
+    border-radius:12px;padding:14px;background:var(--paper);transition:.15s}
+  .sev:hover .card{border-color:var(--line-strong)}
+  .sev input:focus-visible + .card{outline:3px solid var(--focus);outline-offset:2px}
+  .sev input:checked + .card{border-color:var(--ink);background:var(--band)}
+  .sev input:checked + .card::before{content:"Selected";font-family:var(--mono);
+    font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--focus);
+    position:absolute;top:10px;right:12px}
+  .sev .ic{width:30px;height:30px;flex:none;border-radius:8px;display:grid;place-items:center;
+    font-weight:700;font-size:15px;color:var(--ink);background:var(--band)}
+  .sev .ic svg{width:18px;height:18px}
+  .sev .txt b{display:block;font-size:15px;font-weight:650}
+  .sev .txt b .num{font-family:var(--mono);font-size:12px;color:var(--muted);
+    font-weight:600;margin-right:6px}
+  .sev .txt span{display:block;font-size:12.5px;color:var(--muted);line-height:1.45}
+  /* form fields */
+  .field{margin-bottom:18px}
+  .field label,.field .lbl{display:block;font-size:13.5px;font-weight:600;margin:0 0 6px}
+  .field .how{font-size:12.5px;color:var(--muted);font-weight:400;margin:0 6px}
+  input[type=text],textarea,select{width:100%;padding:11px 12px;border:1.5px solid var(--line);
+    border-radius:10px;background:var(--paper);color:var(--ink);font:inherit;font-size:15px}
+  input:focus-visible,textarea:focus-visible,select:focus-visible{
+    outline:3px solid var(--focus);outline-offset:1px;border-color:var(--focus)}
+  textarea{min-height:96px;resize:vertical}
+  .inrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .radio-row{display:flex;gap:10px;flex-wrap:wrap}
+  .radio-row .opt{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);
+    border-radius:999px;padding:8px 14px;cursor:pointer;font-size:14px}
+  .radio-row .opt:hover{border-color:var(--line-strong)}
+  .radio-row .opt input{accent-color:var(--focus)}
+  /* buttons */
+  .actions{display:flex;gap:12px;margin-top:22px;justify-content:space-between;flex-wrap:wrap}
+  .btn{border:0;border-radius:10px;padding:12px 22px;font:inherit;font-size:15px;
+    font-weight:600;cursor:pointer}
+  .btn.secondary{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+  .btn.secondary:hover{border-color:var(--line-strong);background:var(--paper)}
+  .btn.primary{background:var(--ink);color:var(--paper)}
+  .btn.primary:hover{background:#000}
+  .btn:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+  .btn[disabled]{opacity:.45;cursor:not-allowed}
+  /* review */
+  .review{background:var(--band);border:1px solid var(--line);border-radius:12px;
+    padding:16px 18px;margin:0 0 18px}
+  .review .row{display:flex;gap:8px;font-size:14.5px;padding:7px 0;
+    border-bottom:1px solid var(--line)}
+  .review .row:last-child{border-bottom:0}
+  .review .k{width:150px;flex:none;color:var(--muted);font-size:13px}
+  /* success */
+  .success{text-align:center;padding:10px 0}
+  .success .ok{width:64px;height:64px;border-radius:50%;background:var(--ok);color:#fff;
+    display:grid;place-items:center;margin:0 auto 16px;font-size:30px;font-weight:700}
+  .success h2{margin:0 0 6px}
+  .success .ref{font-family:var(--mono);font-size:13px;color:var(--muted)}
+  .next{text-align:left;margin:18px 0 0;background:var(--paper);border:1px solid var(--line);
+    border-radius:12px;padding:16px 18px}
+  .next b{font-size:13.5px;display:block;margin:0 0 8px}
+  .next ol{margin:0;padding-left:18px;font-size:14px;color:var(--ink-soft)}
+  .next li{margin-bottom:6px}
+  .note{font-size:12.5px;color:var(--muted);margin:16px 0 0}
+  @media (max-width:600px){.sev-grid{grid-template-columns:1fr}.inrow{grid-template-columns:1fr}}
+</style></head>
+<body>
+<div class="wrap">
+  <div class="proto-top">
+    <div>
+      <span class="tag">Interactive prototype</span>
+      <h1>Safety incident report, severity first</h1>
+      <p>Severity drives the path. Minor events are quick to capture; serious or critical events get the depth the risk demands.</p>
+    </div>
+  </div>
+
+  <div class="steps" aria-label="Step progress">
+    <div class="s" data-step="1"></div><div class="s" data-step="2"></div>
+    <div class="s" data-step="3"></div><div class="s" data-step="4"></div>
+  </div>
+  <p class="step-live" id="stepLive">Step 1 of 4 · How severe was it?</p>
+
+  <form id="form" novalidate>
+    <!-- STEP 1 -->
+    <section class="panel" data-panel="1" aria-label="Step 1: severity">
+      <h2>How severe was it?</h2>
+      <p class="hint">Start with how bad, not what happened. The level you choose sets how much the system asks next. Choose the highest level that fits.</p>
+      <fieldset>
+        <legend>Severity level</legend>
+        <div class="sev-grid">
+          <label class="sev">
+            <input type="radio" name="severity" value="minor">
+            <span class="card">
+              <span class="ic">1</span>
+              <span class="txt"><b><span class="num">1</span>Minor</b>
+                <span>A small issue, no first aid. A spill, a scrape, a near miss that did not hurt anyone.</span></span>
+            </span>
+          </label>
+          <label class="sev">
+            <input type="radio" name="severity" value="moderate">
+            <span class="card">
+              <span class="ic">2</span>
+              <span class="txt"><b><span class="num">2</span>Moderate</b>
+                <span>First aid was given. A cut that needed a plaster, a minor burn, a bruise.</span></span>
+            </span>
+          </label>
+          <label class="sev">
+            <input type="radio" name="severity" value="serious">
+            <span class="card">
+              <span class="ic">3</span>
+              <span class="txt"><b><span class="num">3</span>Serious</b>
+                <span>Injury or hazard needing attention today. A burn, a deep cut, a chemical splash, a dangerous condition.</span></span>
+            </span>
+          </label>
+          <label class="sev">
+            <input type="radio" name="severity" value="critical">
+            <span class="card">
+              <span class="ic">4</span>
+              <span class="txt"><b><span class="num">4</span>Critical</b>
+                <span>Emergency. Someone may need urgent medical help. A severe burn, a fall from height, an unconscious person.</span></span>
+            </span>
+          </label>
+        </div>
+      </fieldset>
+      <div class="actions">
+        <span></span>
+        <button type="button" class="btn primary" id="toStep2" disabled>Next</button>
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="panel" data-panel="2" hidden aria-label="Step 2: what happened">
+      <h2>What happened?</h2>
+      <p class="hint">Keep the mechanism separate from the severity. Saying what happened should not re-open the question of how bad it was.</p>
+      <div class="field">
+        <label for="mech">What kind of incident was it? <span class="how">Select one</span></label>
+        <select id="mech" name="mech">
+          <option value="">Choose the closest match</option>
+          <option value="burn">Burn, hot surface or hot liquid</option>
+          <option value="slip">Slip, trip or fall</option>
+          <option value="cut">Cut or laceration</option>
+          <option value="chemical">Chemical splash or exposure</option>
+          <option value="manual">Manual handling or lifting</option>
+          <option value="electrical">Electrical contact</option>
+          <option value="struck">Struck by or against an object</option>
+          <option value="other">Other</option>
+        </select>
+        <p id="mechErr" role="alert" style="display:none;color:var(--danger);font-size:12.5px;margin:6px 0 0"></p>
+      </div>
+      <div class="field" id="descWrap">
+        <label for="desc">Briefly what happened <span class="how" id="descHow"></span></label>
+        <input type="text" id="desc" name="desc">
+        <p id="descErr" class="how" aria-live="polite" style="display:none;color:var(--danger);margin:6px 0 0"></p>
+      </div>
+      <div id="extraWrap" hidden>
+        <div class="field">
+          <span class="lbl">Was any first aid given? <span class="how">Optional</span></span>
+          <div class="radio-row">
+            <label class="opt"><input type="radio" name="firstaid" value="yes"> Yes</label>
+            <label class="opt"><input type="radio" name="firstaid" value="no"> No</label>
+          </div>
+        </div>
+        <div class="field">
+          <span class="lbl">Were emergency services called? <span class="how">Optional</span></span>
+          <div class="radio-row">
+            <label class="opt"><input type="radio" name="emergency" value="yes"> Yes</label>
+            <label class="opt"><input type="radio" name="emergency" value="no"> No</label>
+          </div>
+        </div>
+        <div class="field">
+          <label for="delay">If reporting was delayed after the incident, why? <span class="how">Only if relevant</span></label>
+          <textarea id="delay" name="delay"></textarea>
+          <p class="how">Some serious incidents are impossible to report at the moment they happen. Saying why keeps the report compliant without treating an emergency as a breach.</p>
+        </div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn secondary" id="back1">Back</button>
+        <button type="button" class="btn primary" id="toStep3">Next</button>
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="panel" data-panel="3" hidden aria-label="Step 3: when and where">
+      <h2>When and where?</h2>
+      <p class="hint">The safety team needs a place to go. Basic context only, no personal detail needed here.</p>
+      <div class="inrow">
+        <div class="field">
+          <label for="where">Where did it happen? <span class="how">Store or area</span></label>
+          <input type="text" id="where" name="where">
+        </div>
+        <div class="field">
+          <label for="when">When did it happen?</label>
+          <input type="text" id="when" name="when" placeholder="e.g. today, about 3:30pm">
+        </div>
+      </div>
+      <div class="field">
+        <span class="lbl">Were you involved? <span class="how">Optional</span></span>
+        <div class="radio-row">
+          <label class="opt"><input type="radio" name="involved" value="yes"> Yes, I was involved</label>
+          <label class="opt"><input type="radio" name="involved" value="no"> No, I saw it or heard about it</label>
+        </div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn secondary" id="back2">Back</button>
+        <button type="button" class="btn primary" id="toStep4">Review</button>
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="panel" data-panel="4" hidden aria-label="Step 4: review">
+      <h2>Review and submit</h2>
+      <p class="hint">Check the summary. You can go back and change anything.</p>
+      <div class="review" id="reviewBox"></div>
+      <div class="actions">
+        <button type="button" class="btn secondary" id="back3">Back</button>
+        <button type="button" class="btn primary" id="submit">Submit report</button>
+      </div>
+    </section>
+  </form>
+
+  <div id="success" class="panel success" hidden>
+    <div class="ok">&#10003;</div>
+    <h2>Report submitted</h2>
+    <p class="ref">Reference INC-28471</p>
+    <div class="next">
+      <b>What happens next</b>
+      <ol>
+        <li>Your manager is notified before the end of this shift.</li>
+        <li>The safety team reviews it within 24 hours and sets a follow-up owner.</li>
+        <li>You get a reply when it is closed, with any fix or action that came out of it.</li>
+      </ol>
+    </div>
+    <p class="note">This prototype is a concept. Reference numbers, timing and wording are illustrative and anonymised.</p>
+    <button type="button" class="btn secondary" id="again" style="margin-top:18px">Start another report</button>
+  </div>
+
+  <p class="note">Keyboard: Tab to move, Space or Enter to select, buttons to move between steps. Every step announces itself to screen readers.</p>
+</div>
+
+<div class="sr" aria-live="polite" style="position:absolute;height:1px;width:1px;overflow:hidden;clip:rect(0 0 0 0)"></div>
+
+<script>
+(function(){
+  var form=document.getElementById('form');
+  var steps=[1,2,3,4];
+  var panels=[1,2,3,4].map(function(n){return form.querySelector('[data-panel="'+n+'"]');});
+  var bars=document.querySelectorAll('.steps .s');
+  var live=document.getElementById('stepLive');
+  var sr=document.querySelector('.sr');
+  var current=1;
+
+  var sev=function(){var els=document.querySelectorAll('input[name=severity]');for(var i=0;i<els.length;i++){if(els[i].checked)return els[i].value;}return '';};
+  var setSev=function(v){var els=document.querySelectorAll('input[name=severity]');for(var i=0;i<els.length;i++){els[i].checked=(els[i].value===v);} };
+
+  function show(n){
+    current=n;
+    panels.forEach(function(p,i){ if(p) p.hidden=(i!==n-1); });
+    bars.forEach(function(b,i){ b.className='s'+(i<n?' on':''); });
+    var labels=['How severe was it?','What happened?','When and where?','Review and submit'];
+    live.textContent='Step '+n+' of 4 \u00b7 '+labels[n-1];
+    sr.textContent='Step '+n+' of 4. '+labels[n-1];
+    window.scrollTo({top:0,behavior:'smooth'});
+    var f=panels[n-1].querySelector('input,select,textarea,button'); if(f) f.focus({preventScroll:true});
+  }
+
+  // step 1 enable next
+  var toStep2=document.getElementById('toStep2');
+  document.querySelectorAll('input[name=severity]').forEach(function(el){
+    el.addEventListener('change',function(){ toStep2.disabled=!sev(); adaptSeverity(); });
+  });
+  function adaptSeverity(){
+    var s=sev(); var extra=document.getElementById('extraWrap');
+    var desc=document.getElementById('desc');
+    var descHow=document.getElementById('descHow');
+    var b=document.getElementById('desc');
+    if(s==='minor'){ extra.hidden=true; descHow.textContent='One short sentence is fine'; desc.placeholder='e.g. a cup of water spilled, no one hurt'; }
+    else { descHow.textContent='A sentence or two of what happened'; desc.placeholder='e.g. a hot tray was left on the pass'; }
+    if(s==='serious'||s==='critical'){ extra.hidden=false; } else { extra.hidden=true; }
+  }
+  document.getElementById('toStep2').addEventListener('click',function(){ show(2); });
+  document.getElementById('back1').addEventListener('click',function(){ show(1); });
+  document.getElementById('toStep3').addEventListener('click',function(){
+    var m=document.getElementById('mech').value; var d=document.getElementById('desc').value.trim();
+    var err=document.getElementById('descErr'); var mechErr=document.getElementById('mechErr');
+    if(!m){ mechErr.textContent='Please choose the kind of incident.'; mechErr.style.display='block'; document.getElementById('mech').setAttribute('aria-invalid','true'); document.getElementById('mech').focus(); return; }
+    mechErr.style.display='none'; document.getElementById('mech').removeAttribute('aria-invalid');
+    if(!d){ err.textContent='We need a short description so the safety team can follow up.'; err.style.display='block'; document.getElementById('desc').setAttribute('aria-invalid','true'); document.getElementById('desc').focus(); return; }
+    err.style.display='none'; document.getElementById('desc').removeAttribute('aria-invalid'); show(3);
+  });
+  document.getElementById('back2').addEventListener('click',function(){ show(2); });
+  document.getElementById('toStep4').addEventListener('click',function(){ buildReview(); show(4); });
+  document.getElementById('back3').addEventListener('click',function(){ show(3); });
+  document.getElementById('submit').addEventListener('click',function(){
+    document.getElementById('form').hidden=true;
+    document.getElementById('success').hidden=false;
+    document.getElementById('success').scrollIntoView({behavior:'smooth'});
+  });
+  document.getElementById('again').addEventListener('click',function(){
+    form.reset(); adaptSeverity(); toStep2.disabled=true;
+    document.getElementById('success').hidden=true; document.getElementById('form').hidden=false;
+    show(1);
+  });
+
+  function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+  function buildReview(){
+    var s=sev(); var names={minor:'1 \u00b7 Minor',moderate:'2 \u00b7 Moderate',serious:'3 \u00b7 Serious',critical:'4 \u00b7 Critical'};
+    var parts=[];
+    parts.push(row('Severity', names[s]||'\u2014'));
+    parts.push(row('Mechanism', mechLabel(document.getElementById('mech').value)));
+    parts.push(row('What happened', document.getElementById('desc').value.trim()));
+    var fa=document.querySelector('input[name=firstaid]:checked'); if(fa) parts.push(row('First aid', fa.value==='yes'?'Yes':'No'));
+    var em=document.querySelector('input[name=emergency]:checked'); if(em) parts.push(row('Emergency services', em.value==='yes'?'Yes':'No'));
+    var dl=document.getElementById('delay').value.trim(); if(dl) parts.push(row('Why delayed', dl));
+    if(document.getElementById('where').value.trim()) parts.push(row('Where', document.getElementById('where').value.trim()));
+    if(document.getElementById('when').value.trim()) parts.push(row('When', document.getElementById('when').value.trim()));
+    var inv=document.querySelector('input[name=involved]:checked');
+    if(inv) parts.push(row('Involved', inv.value==='yes'?'Yes, I was involved':'No, I saw or heard about it'));
+    document.getElementById('reviewBox').innerHTML=parts.join('');
+    function row(k,v){ return '<div class="row"><span class="k">'+k+'</span><span>'+esc(v)+'</span></div>'; }
+  }
+  function mechLabel(v){ var o=document.getElementById('mech').options; for(var i=0;i<o.length;i++){ if(o[i].value===v) return o[i].text; } return ''; }
+
+  adaptSeverity();
+})();
+</script>
+</body></html>

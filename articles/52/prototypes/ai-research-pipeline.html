@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Augmented Research Pipeline</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --muted: #8b949e;
+    --cyan: #58a6ff;
+    --orange: #d29922;
+    --cyan-dim: rgba(88,166,255,0.08);
+    --orange-dim: rgba(210,153,34,0.08);
+    --cyan-glow: rgba(88,166,255,0.25);
+    --orange-glow: rgba(210,153,34,0.25);
+  }
+
+  html { font-size: 15px; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ── Outer wrapper ── */
+  .wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 2rem;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 2.25rem;
+  }
+  .header h1 {
+    font-size: 1.85rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: #e6edf3;
+    margin-bottom: 0.35rem;
+  }
+  .header h1 .accent { color: var(--cyan); }
+  .header p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .legend-dot.ai { background: var(--cyan); box-shadow: 0 0 6px var(--cyan-glow); }
+  .legend-dot.researcher { background: var(--orange); box-shadow: 0 0 6px var(--orange-glow); }
+
+  /* ── Top progress rail ── */
+  .progress-rail {
+    position: relative;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 2.25rem;
+    overflow: visible;
+  }
+  .progress-fill {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--cyan), var(--orange));
+    width: 0%;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .progress-rail .node {
+    position: absolute;
+    top: 50%;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    transform: translate(-50%, -50%);
+    transition: border-color 0.5s, background 0.5s, box-shadow 0.5s;
+    z-index: 2;
+  }
+  .progress-rail .node.reached {
+    border-color: var(--cyan);
+    background: var(--cyan);
+    box-shadow: 0 0 8px var(--cyan-glow);
+  }
+  .progress-rail .node:nth-child(1) { left: 0%; }
+  .progress-rail .node:nth-child(2) { left: 25%; }
+  .progress-rail .node:nth-child(3) { left: 50%; }
+  .progress-rail .node:nth-child(4) { left: 75%; }
+  .progress-rail .node:nth-child(5) { left: 100%; }
+
+  /* ── Pipeline row ── */
+  .pipeline {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    align-items: start;
+    position: relative;
+  }
+
+  /* ── SVG arrow layer ── */
+  .arrow-layer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: visible;
+  }
+
+  /* ── Stage card ── */
+  .stage {
+    position: relative;
+    z-index: 1;
+    padding: 0 0.55rem;
+  }
+  .stage-inner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  .stage-inner.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .stage-inner:hover {
+    border-color: #484f58;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+    transform: translateY(-2px);
+  }
+  .stage-inner.expanded {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 1px var(--cyan), 0 8px 32px rgba(0,0,0,0.45);
+  }
+
+  /* card header */
+  .stage-header {
+    padding: 1.1rem 1rem 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    user-select: none;
+  }
+  .stage-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--bg);
+    background: linear-gradient(135deg, var(--cyan), #3d8bfd);
+    flex-shrink: 0;
+  }
+  .stage-title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #e6edf3;
+    line-height: 1.25;
+  }
+  .expand-icon {
+    margin-left: auto;
+    width: 20px; height: 20px;
+    color: var(--muted);
+    transition: transform 0.3s, color 0.3s;
+    flex-shrink: 0;
+  }
+  .stage-inner.expanded .expand-icon {
+    transform: rotate(180deg);
+    color: var(--cyan);
+  }
+
+  /* summary (shown when collapsed) */
+  .stage-summary {
+    padding: 0 1rem 1rem;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--muted);
+    display: block;
+  }
+  .stage-inner.expanded .stage-summary { display: none; }
+
+  /* detail sections */
+  .stage-detail {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .stage-inner.expanded .stage-detail {
+    max-height: 1200px;
+  }
+
+  .role-section {
+    padding: 0.75rem 1rem;
+    margin: 0 0.65rem 0.65rem;
+    border-radius: 8px;
+    position: relative;
+  }
+  .role-section:first-child { margin-top: 0.15rem; }
+  .role-section.ai {
+    background: var(--cyan-dim);
+    border-left: 3px solid var(--cyan);
+  }
+  .role-section.researcher {
+    background: var(--orange-dim);
+    border-left: 3px solid var(--orange);
+  }
+  .role-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.45rem;
+  }
+  .role-section.ai .role-label { color: var(--cyan); }
+  .role-section.researcher .role-label { color: var(--orange); }
+
+  .role-section ul {
+    list-style: none;
+    padding: 0;
+  }
+  .role-section li {
+    position: relative;
+    padding-left: 0.85rem;
+    font-size: 0.75rem;
+    line-height: 1.55;
+    color: var(--text);
+    margin-bottom: 0.35rem;
+  }
+  .role-section li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+  }
+  .role-section.ai li::before { background: var(--cyan); }
+  .role-section.researcher li::before { background: var(--orange); }
+
+  /* bottom padding inside card */
+  .stage-detail-pad { height: 0.35rem; }
+
+  /* ── Stats bar ── */
+  .stats-bar {
+    margin-top: 2.5rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 0.5rem;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.35rem 1.5rem;
+    position: relative;
+  }
+  .stat:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 15%; height: 70%;
+    width: 1px;
+    background: var(--border);
+  }
+  .stat-num {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #e6edf3;
+    line-height: 1.2;
+  }
+  .stat-num .counted { display: inline; }
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 0.15rem;
+    white-space: nowrap;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 1100px) {
+    .pipeline { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .arrow-layer { display: none; }
+  }
+  @media (max-width: 700px) {
+    .pipeline { grid-template-columns: 1fr; gap: 1rem; }
+    .wrapper { padding: 1.5rem 1rem 1.5rem; }
+    .header h1 { font-size: 1.4rem; }
+    .stats-bar { flex-direction: column; align-items: center; gap: 0.5rem; padding: 1rem; }
+    .stat::after { display: none !important; }
+  }
+
+  /* ── Pulse keyframes for SVG arrows ── */
+  @keyframes dashFlow {
+    to { stroke-dashoffset: -24; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <h1><span class="accent">AI-Augmented</span> Research Pipeline</h1>
+    <p>How AI and the researcher collaborated across 5 stages of mixed-methods research</p>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot ai"></span>AI Contribution</div>
+    <div class="legend-item"><span class="legend-dot researcher"></span>Researcher Contribution</div>
+  </div>
+
+  <!-- Progress rail -->
+  <div class="progress-rail" id="progressRail">
+    <div class="progress-fill" id="progressFill"></div>
+    <span class="node"></span>
+    <span class="node"></span>
+    <span class="node"></span>
+    <span class="node"></span>
+    <span class="node"></span>
+  </div>
+
+  <!-- Pipeline -->
+  <div class="pipeline" id="pipeline">
+
+    <!-- SVG arrow layer -->
+    <svg class="arrow-layer" id="arrowSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+
+    <!-- Stage 1 -->
+    <div class="stage" data-stage="1">
+      <div class="stage-inner">
+        <div class="stage-header">
+          <div class="stage-num">1</div>
+          <div class="stage-title">Research Design</div>
+          <svg class="expand-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+        </div>
+        <div class="stage-summary">AI designed 7 conditional-logic survey frameworks while the researcher defined methodology, ethics, and sample strategy.</div>
+        <div class="stage-detail">
+          <div class="role-section ai">
+            <div class="role-label">What AI Did</div>
+            <ul>
+              <li>Designed 7 conditional-logic survey frameworks adapting questions by role</li>
+              <li>Generated role-specific interview protocol variations</li>
+              <li>Analyzed stakeholder landscape to identify coverage gaps</li>
+            </ul>
+          </div>
+          <div class="role-section researcher">
+            <div class="role-label">What the Researcher Did</div>
+            <ul>
+              <li>Defined research methodology and ethical boundaries</li>
+              <li>Selected mixed-methods approach</li>
+              <li>Determined sample sizes and role prioritization</li>
+              <li>Established the 7 role categories</li>
+            </ul>
+          </div>
+          <div class="stage-detail-pad"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 2 -->
+    <div class="stage" data-stage="2">
+      <div class="stage-inner">
+        <div class="stage-header">
+          <div class="stage-num">2</div>
+          <div class="stage-title">Data Collection</div>
+          <svg class="expand-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+        </div>
+        <div class="stage-summary">AI built adaptive branching logic and detected real-time patterns while the researcher conducted 20 interviews and 8 feedback sessions.</div>
+        <div class="stage-detail">
+          <div class="role-section ai">
+            <div class="role-label">What AI Did</div>
+            <ul>
+              <li>Powered adaptive branching logic in survey frameworks so different roles see different question paths</li>
+              <li>Processed survey responses in real-time for emerging pattern detection</li>
+            </ul>
+          </div>
+          <div class="role-section researcher">
+            <div class="role-label">What the Researcher Did</div>
+            <ul>
+              <li>Conducted all 20 stakeholder interviews personally</li>
+              <li>Facilitated 8 dashboard feedback sessions</li>
+              <li>Managed survey distribution across the stakeholder network</li>
+              <li>Adapted questioning based on emerging themes</li>
+            </ul>
+          </div>
+          <div class="stage-detail-pad"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 3 -->
+    <div class="stage" data-stage="3">
+      <div class="stage-inner">
+        <div class="stage-header">
+          <div class="stage-num">3</div>
+          <div class="stage-title">AI Analysis</div>
+          <svg class="expand-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+        </div>
+        <div class="stage-summary">AI processed 160 survey responses and identified 175 pain points across 7 themes while the researcher validated patterns and ensured ethical framing.</div>
+        <div class="stage-detail">
+          <div class="role-section ai">
+            <div class="role-label">What AI Did</div>
+            <ul>
+              <li>Processed 160 survey responses for cross-role pattern identification</li>
+              <li>Extracted pain point themes from interview transcripts</li>
+              <li>Calculated role distribution, satisfaction scores, and feature usage percentages</li>
+              <li>Identified 175 discrete pain points</li>
+              <li>Clustered findings into 7 structural themes</li>
+            </ul>
+          </div>
+          <div class="role-section researcher">
+            <div class="role-label">What the Researcher Did</div>
+            <ul>
+              <li>Validated AI-identified patterns against interview context</li>
+              <li>Interpreted ambiguous findings</li>
+              <li>Made judgment calls on compliance-sensitive findings</li>
+              <li>Ensured anonymization and ethical framing</li>
+            </ul>
+          </div>
+          <div class="stage-detail-pad"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 4 -->
+    <div class="stage" data-stage="4">
+      <div class="stage-inner">
+        <div class="stage-header">
+          <div class="stage-num">4</div>
+          <div class="stage-title">Blueprint Synthesis</div>
+          <svg class="expand-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+        </div>
+        <div class="stage-summary">AI mapped 175 pain points across 9 stakeholder types and 6 lifecycle stages while the researcher built the service blueprint and prioritized 186 enhancements.</div>
+        <div class="stage-detail">
+          <div class="role-section ai">
+            <div class="role-label">What AI Did</div>
+            <ul>
+              <li>Mapped 175 pain points across 9 stakeholder types and 6 lifecycle stages</li>
+              <li>Generated visualization frameworks</li>
+              <li>Cross-referenced interview quotes with survey data for triangulation</li>
+              <li>Identified system integration bottlenecks</li>
+            </ul>
+          </div>
+          <div class="role-section researcher">
+            <div class="role-label">What the Researcher Did</div>
+            <ul>
+              <li>Constructed the multi-layer service blueprint architecture</li>
+              <li>Designed the stakeholder ecosystem model</li>
+              <li>Synthesized cross-system structural patterns</li>
+              <li>Made prioritization decisions on the 186-item enhancement backlog</li>
+            </ul>
+          </div>
+          <div class="stage-detail-pad"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 5 -->
+    <div class="stage" data-stage="5">
+      <div class="stage-inner">
+        <div class="stage-header">
+          <div class="stage-num">5</div>
+          <div class="stage-title">Stakeholder Validation</div>
+          <svg class="expand-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+        </div>
+        <div class="stage-summary">AI generated visual artifacts and role-specific summaries while the researcher facilitated workshops and built cross-functional consensus.</div>
+        <div class="stage-detail">
+          <div class="role-section ai">
+            <div class="role-label">What AI Did</div>
+            <ul>
+              <li>Generated visual artifacts for workshop review</li>
+              <li>Prepared data-backed talking points for each recommendation</li>
+              <li>Created role-specific finding summaries for targeted stakeholder communication</li>
+            </ul>
+          </div>
+          <div class="role-section researcher">
+            <div class="role-label">What the Researcher Did</div>
+            <ul>
+              <li>Facilitated cross-functional workshops</li>
+              <li>Managed stakeholder dynamics and conflicting priorities</li>
+              <li>Built consensus across IT, operations, payroll, and franchise leadership</li>
+              <li>Presented findings and defended methodology</li>
+            </ul>
+          </div>
+          <div class="stage-detail-pad"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /pipeline -->
+
+  <!-- Stats bar -->
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num" data-target="20">0</span><span class="stat-label">Interviews</span></div>
+    <div class="stat"><span class="stat-num" data-target="160">0</span><span class="stat-label">Surveys</span></div>
+    <div class="stat"><span class="stat-num" data-target="175">0</span><span class="stat-label">Pain Points</span></div>
+    <div class="stat"><span class="stat-num" data-target="186">0</span><span class="stat-label">Enhancements</span></div>
+    <div class="stat"><span class="stat-num" data-target="9">0</span><span class="stat-label">Stakeholder Types</span></div>
+    <div class="stat"><span class="stat-num" data-target="7">0</span><span class="stat-label">Research Frameworks</span></div>
+  </div>
+
+</div><!-- /wrapper -->
+
+<script>
+(function(){
+  'use strict';
+
+  /* ── Helpers ── */
+  var stages = document.querySelectorAll('.stage-inner');
+  var nodes  = document.querySelectorAll('.progress-rail .node');
+  var fill   = document.getElementById('progressFill');
+
+  /* ── Entrance animation ── */
+  function revealCards(){
+    stages.forEach(function(card, i){
+      setTimeout(function(){
+        card.classList.add('visible');
+        nodes[i].classList.add('reached');
+        fill.style.width = ((i) / 4 * 100) + '%';
+      }, 200 + i * 180);
+    });
+  }
+
+  /* ── Expand / collapse ── */
+  stages.forEach(function(card){
+    card.addEventListener('click', function(e){
+      // Close others
+      stages.forEach(function(c){ if(c !== card) c.classList.remove('expanded'); });
+      card.classList.toggle('expanded');
+      // Redraw arrows after transition
+      setTimeout(drawArrows, 550);
+    });
+  });
+
+  /* ── Draw SVG connector arrows ── */
+  var arrowSvg = document.getElementById('arrowSvg');
+
+  function drawArrows(){
+    // Only on wide screens
+    if(window.innerWidth < 1100){ arrowSvg.innerHTML = ''; return; }
+
+    var stageEls = document.querySelectorAll('.stage');
+    var pipeRect = document.getElementById('pipeline').getBoundingClientRect();
+    var paths = '';
+
+    for(var i = 0; i < stageEls.length - 1; i++){
+      var a = stageEls[i].querySelector('.stage-inner').getBoundingClientRect();
+      var b = stageEls[i+1].querySelector('.stage-inner').getBoundingClientRect();
+
+      var x1 = a.right - pipeRect.left;
+      var y1 = a.top + a.height * 0.5 - pipeRect.top;
+      var x2 = b.left - pipeRect.left;
+      var y2 = b.top + b.height * 0.5 - pipeRect.top;
+      var cpx = (x1 + x2) / 2;
+
+      // Connector path
+      paths += '<path d="M'+x1+','+y1+' C'+cpx+','+y1+' '+cpx+','+y2+' '+x2+','+y2+'"'
+            + ' fill="none" stroke="#30363d" stroke-width="1.5" />';
+
+      // Animated dashed overlay
+      paths += '<path d="M'+x1+','+y1+' C'+cpx+','+y1+' '+cpx+','+y2+' '+x2+','+y2+'"'
+            + ' fill="none" stroke="url(#arrowGrad)" stroke-width="1.5"'
+            + ' stroke-dasharray="6 6"'
+            + ' style="animation: dashFlow 1.8s linear infinite;" />';
+
+      // Arrowhead
+      var angle = Math.atan2(y2 - y1, x2 - cpx);
+      var ax = x2 - 7 * Math.cos(angle - 0.45);
+      var ay = y2 - 7 * Math.sin(angle - 0.45);
+      var bx = x2 - 7 * Math.cos(angle + 0.45);
+      var by = y2 - 7 * Math.sin(angle + 0.45);
+      paths += '<polygon points="'+x2+','+y2+' '+ax+','+ay+' '+bx+','+by+'" fill="var(--cyan)" opacity="0.5" />';
+    }
+
+    arrowSvg.innerHTML =
+      '<defs><linearGradient id="arrowGrad" x1="0%" y1="0%" x2="100%" y2="0%">'
+      + '<stop offset="0%" stop-color="var(--cyan)" stop-opacity="0.6"/>'
+      + '<stop offset="100%" stop-color="var(--orange)" stop-opacity="0.6"/>'
+      + '</linearGradient></defs>'
+      + paths;
+  }
+
+  /* ── Count-up animation for stats ── */
+  function animateCounters(){
+    document.querySelectorAll('.stat-num[data-target]').forEach(function(el){
+      var target = parseInt(el.getAttribute('data-target'), 10);
+      var duration = 1400;
+      var start = null;
+      function step(ts){
+        if(!start) start = ts;
+        var progress = Math.min((ts - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target);
+        if(progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  /* ── Intersection observer for stats ── */
+  var statsBar = document.querySelector('.stats-bar');
+  var statsCounted = false;
+  var statsObserver = new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting && !statsCounted){
+      statsCounted = true;
+      animateCounters();
+    }
+  }, { threshold: 0.3 });
+  statsObserver.observe(statsBar);
+
+  /* ── Init ── */
+  window.addEventListener('load', function(){
+    revealCards();
+    setTimeout(drawArrows, 1200);
+  });
+  window.addEventListener('resize', drawArrows);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Integration Map</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --muted: #8b949e;
+    --green: #238636;
+    --green-dim: rgba(35,134,54,0.25);
+    --red: #f85149;
+    --red-dim: rgba(248,81,73,0.15);
+    --red-glow: rgba(248,81,73,0.45);
+    --blue: #58a6ff;
+    --orange: #d29922;
+    --purple: #bc8cff;
+    --cyan: #39d2c0;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ────────────────────────────────────── */
+  .header {
+    text-align: center;
+    padding: 32px 24px 0;
+  }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: #e6edf3;
+  }
+  .header p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 6px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+  }
+
+  /* ── STATS BAR ─────────────────────────────────── */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 18px 24px 0;
+    flex-wrap: wrap;
+  }
+  .stat-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    transition: all 0.5s ease;
+  }
+  .stat-chip .val { color: var(--red); font-weight: 600; }
+  body.as-designed .stat-chip {
+    opacity: 0.35;
+    filter: grayscale(1);
+  }
+
+  /* ── TOGGLE ────────────────────────────────────── */
+  .toggle-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 20px 24px 8px;
+  }
+  .toggle-container {
+    display: flex;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .toggle-btn {
+    padding: 10px 22px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    transition: all 0.35s ease;
+    position: relative;
+    font-family: inherit;
+  }
+  .toggle-btn.active {
+    background: var(--green);
+    color: #fff;
+  }
+  .toggle-btn.active-red {
+    background: var(--red);
+    color: #fff;
+  }
+
+  /* ── DIAGRAM CONTAINER ─────────────────────────── */
+  .diagram-wrap {
+    width: 100%;
+    max-width: 1200px;
+    margin: 10px auto 0;
+    padding: 0 16px;
+    position: relative;
+  }
+  svg.diagram {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ── SVG SHARED ────────────────────────────────── */
+  .node-group { cursor: pointer; }
+  .node-group:hover .node-bg { filter: brightness(1.15); }
+  .node-label { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; }
+
+  /* ── FLOW DOTS ANIMATION ───────────────────────── */
+  @keyframes flowDot {
+    0% { offset-distance: 0%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { offset-distance: 100%; opacity: 0; }
+  }
+
+  /* ── BOTTLENECK PULSE ──────────────────────────── */
+  @keyframes bottleneckPulse {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 0.85; }
+  }
+
+  /* ── DETAIL PANEL ──────────────────────────────── */
+  .detail-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(4px);
+    justify-content: center;
+    align-items: center;
+  }
+  .detail-overlay.open { display: flex; }
+  .detail-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 32px;
+    max-width: 520px;
+    width: 90%;
+    position: relative;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  .detail-panel h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #e6edf3;
+    margin-bottom: 4px;
+  }
+  .detail-panel .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .detail-panel .section-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin: 16px 0 6px;
+    font-weight: 600;
+  }
+  .detail-panel ul {
+    list-style: none;
+    padding: 0;
+  }
+  .detail-panel ul li {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--text);
+    padding-left: 14px;
+    position: relative;
+  }
+  .detail-panel ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+  .detail-panel .bottleneck-item::before { background: var(--red); }
+  .detail-panel .connection-info {
+    background: rgba(88,166,255,0.08);
+    border: 1px solid rgba(88,166,255,0.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--blue);
+    line-height: 1.5;
+  }
+  .detail-panel .bottleneck-box {
+    background: var(--red-dim);
+    border: 1px solid rgba(248,81,73,0.3);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--red);
+    line-height: 1.5;
+    transition: opacity 0.5s;
+  }
+  body.as-designed .detail-panel .bottleneck-box { opacity: 0.15; }
+  .close-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    color: var(--muted);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+  }
+  .close-btn:hover { background: var(--border); color: var(--text); }
+
+  /* ── ARROW TOOLTIP ─────────────────────────────── */
+  .arrow-tooltip {
+    display: none;
+    position: fixed;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--text);
+    z-index: 90;
+    pointer-events: none;
+    max-width: 280px;
+    line-height: 1.55;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .arrow-tooltip.visible { display: block; }
+  .arrow-tooltip .tt-title { font-weight: 600; color: #e6edf3; margin-bottom: 4px; }
+  .arrow-tooltip .tt-latency { color: var(--orange); font-weight: 500; }
+  .arrow-tooltip .tt-latency.red { color: var(--red); }
+
+  /* ── LEGEND ────────────────────────────────────── */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 12px 24px 32px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .legend-swatch {
+    width: 24px;
+    height: 3px;
+    border-radius: 2px;
+  }
+  .legend-swatch.normal { background: var(--border); }
+  .legend-swatch.bottleneck { background: var(--red); box-shadow: 0 0 6px var(--red-glow); }
+  .legend-swatch.shadow { background: var(--red); border: none; stroke-dasharray: 6 4; height: 0; border-top: 2px dashed var(--red); width: 24px; }
+  .legend-swatch.bidir { background: var(--blue); }
+
+  /* ── TRANSITIONS ───────────────────────────────── */
+  .bottleneck-el { transition: opacity 0.6s ease, filter 0.6s ease; }
+  body.as-designed .bottleneck-el { opacity: 0; pointer-events: none; }
+  .shadow-el { transition: opacity 0.6s ease; }
+  body.as-designed .shadow-el { opacity: 0.15; }
+  .designed-flow { transition: opacity 0.6s ease; }
+  body:not(.as-designed) .designed-flow { opacity: 0.2; }
+  body.as-designed .designed-flow { opacity: 1; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header h1 { font-size: 22px; }
+    .stats-bar { gap: 4px; }
+    .stat-chip { font-size: 11px; padding: 5px 10px; }
+    .detail-panel { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>System Integration Map</h1>
+  <p>Data flows between 5+ interconnected systems &mdash; as designed vs. as experienced</p>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-chip"><span class="val">14-day</span> propagation delay</div>
+  <div class="stat-chip"><span class="val">2-hour</span> forecast lag</div>
+  <div class="stat-chip"><span class="val">Sequential</span> approval chain</div>
+  <div class="stat-chip"><span class="val">37.4%</span> use external messaging</div>
+  <div class="stat-chip"><span class="val">33-day</span> report limit</div>
+</div>
+
+<!-- TOGGLE -->
+<div class="toggle-wrap">
+  <div class="toggle-container">
+    <button class="toggle-btn" id="btn-designed" onclick="setView('designed')">As Designed</button>
+    <button class="toggle-btn active-red" id="btn-experienced" onclick="setView('experienced')">As Experienced</button>
+  </div>
+</div>
+
+<!-- SVG DIAGRAM -->
+<div class="diagram-wrap">
+<svg class="diagram" viewBox="0 0 1100 700" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Arrowhead normal -->
+    <marker id="arrow-normal" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#484f58" />
+    </marker>
+    <!-- Arrowhead blue (bidirectional) -->
+    <marker id="arrow-blue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#58a6ff" />
+    </marker>
+    <marker id="arrow-blue-rev" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
+      <path d="M8,0 L0,3 L8,6" fill="#58a6ff" />
+    </marker>
+    <!-- Arrowhead red -->
+    <marker id="arrow-red" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#f85149" />
+    </marker>
+    <!-- Glow filter for bottleneck -->
+    <filter id="glow-red" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glow-green" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Dot for flow animation -->
+    <circle id="flow-dot" r="2.5" fill="#58a6ff" opacity="0.8"/>
+    <circle id="flow-dot-red" r="3" fill="#f85149" opacity="0.9"/>
+  </defs>
+
+  <!-- ═══════════════════════════════════════════════
+       CONNECTION LINES (drawn first, behind nodes)
+       ═══════════════════════════════════════════════ -->
+
+  <!-- === "AS DESIGNED" FLOWS (show when designed, dim when experienced) === -->
+
+  <!-- HRIS ↔ Platform (designed: clean bidirectional) -->
+  <path class="conn designed-flow" id="conn-hris-designed"
+        d="M 295,195 Q 370,240 430,295"
+        fill="none" stroke="#58a6ff" stroke-width="1.8" opacity="0.7"
+        marker-end="url(#arrow-blue)" marker-start="url(#arrow-blue-rev)"/>
+
+  <!-- Platform → Payroll (designed: clean) -->
+  <path class="conn designed-flow" id="conn-payroll-designed"
+        d="M 670,295 Q 730,240 805,195"
+        fill="none" stroke="#484f58" stroke-width="1.5" opacity="0.6"
+        marker-end="url(#arrow-normal)"/>
+
+  <!-- Time Clock → Platform (designed: clean) -->
+  <path class="conn designed-flow" id="conn-timeclock-designed"
+        d="M 270,475 Q 350,420 430,385"
+        fill="none" stroke="#484f58" stroke-width="1.5" opacity="0.6"
+        marker-end="url(#arrow-normal)"/>
+
+  <!-- Mobile ↔ Platform (designed: clean) -->
+  <path class="conn designed-flow" id="conn-mobile-designed"
+        d="M 550,505 L 550,405"
+        fill="none" stroke="#484f58" stroke-width="1.5" opacity="0.6"
+        marker-end="url(#arrow-normal)"/>
+
+  <!-- Platform → Reporting (designed: clean) -->
+  <path class="conn designed-flow" id="conn-reporting-designed"
+        d="M 670,340 Q 730,340 800,340"
+        fill="none" stroke="#484f58" stroke-width="1.5" opacity="0.6"
+        marker-end="url(#arrow-normal)"/>
+
+  <!-- Platform ↔ External Forecasting (designed: clean) -->
+  <path class="conn designed-flow" id="conn-forecast-designed"
+        d="M 670,310 Q 780,260 920,240"
+        fill="none" stroke="#484f58" stroke-width="1.5" opacity="0.6"
+        marker-end="url(#arrow-normal)"/>
+
+
+  <!-- === "AS EXPERIENCED" FLOWS (bottleneck overlays) === -->
+
+  <!-- HRIS ↔ Platform BOTTLENECK -->
+  <g class="bottleneck-el">
+    <path class="conn-bottleneck" id="conn-hris-bottleneck"
+          d="M 295,195 Q 370,240 430,295"
+          fill="none" stroke="#f85149" stroke-width="3" opacity="0.7"
+          marker-end="url(#arrow-red)" filter="url(#glow-red)"/>
+    <!-- Animated pulse overlay -->
+    <path d="M 295,195 Q 370,240 430,295"
+          fill="none" stroke="#f85149" stroke-width="6" opacity="0"
+          style="animation: bottleneckPulse 2s ease-in-out infinite;"/>
+    <!-- Label -->
+    <rect x="280" y="225" width="140" height="22" rx="4" fill="#0d1117" stroke="#f85149" stroke-width="1" opacity="0.95"/>
+    <text x="350" y="240" text-anchor="middle" fill="#f85149" font-size="10" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif">14-day delay</text>
+    <!-- Flow dots -->
+    <circle r="3" fill="#f85149" opacity="0">
+      <animateMotion dur="3s" repeatCount="indefinite" begin="0s">
+        <mpath href="#conn-hris-bottleneck"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="0;0.9;0.9;0" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="2.5" fill="#f85149" opacity="0">
+      <animateMotion dur="3s" repeatCount="indefinite" begin="1.5s">
+        <mpath href="#conn-hris-bottleneck"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="0;0.7;0.7;0" dur="3s" repeatCount="indefinite" begin="1.5s"/>
+    </circle>
+  </g>
+
+  <!-- Platform → Payroll BOTTLENECK -->
+  <g class="bottleneck-el">
+    <path class="conn-bottleneck" id="conn-payroll-bottleneck"
+          d="M 670,295 Q 730,240 805,195"
+          fill="none" stroke="#f85149" stroke-width="3" opacity="0.7"
+          marker-end="url(#arrow-red)" filter="url(#glow-red)"/>
+    <path d="M 670,295 Q 730,240 805,195"
+          fill="none" stroke="#f85149" stroke-width="6" opacity="0"
+          style="animation: bottleneckPulse 2.2s ease-in-out infinite 0.3s;"/>
+    <rect x="680" y="220" width="140" height="22" rx="4" fill="#0d1117" stroke="#f85149" stroke-width="1" opacity="0.95"/>
+    <text x="750" y="235" text-anchor="middle" fill="#f85149" font-size="10" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif">Sequential approval</text>
+    <circle r="3" fill="#f85149" opacity="0">
+      <animateMotion dur="2.8s" repeatCount="indefinite" begin="0.2s">
+        <mpath href="#conn-payroll-bottleneck"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="0;0.9;0.9;0" dur="2.8s" repeatCount="indefinite" begin="0.2s"/>
+    </circle>
+  </g>
+
+  <!-- Time Clock → Platform flow (experienced) -->
+  <g class="bottleneck-el">
+    <path class="conn-bottleneck" id="conn-timeclock-bottleneck"
+          d="M 270,475 Q 350,420 430,385"
+          fill="none" stroke="#d29922" stroke-width="2" opacity="0.6"
+          marker-end="url(#arrow-normal)"/>
+    <rect x="280" y="428" width="110" height="22" rx="4" fill="#0d1117" stroke="#d29922" stroke-width="1" opacity="0.95"/>
+    <text x="335" y="443" text-anchor="middle" fill="#d29922" font-size="10" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif">Sync delays</text>
+    <circle r="2.5" fill="#d29922" opacity="0">
+      <animateMotion dur="2.5s" repeatCount="indefinite">
+        <mpath href="#conn-timeclock-bottleneck"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="0;0.8;0.8;0" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Mobile ↔ Platform (experienced: limited) -->
+  <g class="bottleneck-el">
+    <path class="conn-bottleneck" id="conn-mobile-bottleneck"
+          d="M 550,505 L 550,405"
+          fill="none" stroke="#d29922" stroke-width="2" opacity="0.6"
+          marker-end="url(#arrow-normal)"/>
+    <rect x="558" y="448" width="100" height="22" rx="4" fill="#0d1117" stroke="#d29922" stroke-width="1" opacity="0.95"/>
+    <text x="608" y="463" text-anchor="middle" fill="#d29922" font-size="10" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif">Limited API</text>
+  </g>
+
+  <!-- Platform → Reporting (experienced: day-old) -->
+  <g class="bottleneck-el">
+    <path class="conn-bottleneck" id="conn-reporting-bottleneck"
+          d="M 670,340 Q 730,340 800,340"
+          fill="none" stroke="#d29922" stroke-width="2" opacity="0.6"
+          marker-end="url(#arrow-normal)"/>
+    <rect x="700" y="348" width="110" height="22" rx="4" fill="#0d1117" stroke="#d29922" stroke-width="1" opacity="0.95"/>
+    <text x="755" y="363" text-anchor="middle" fill="#d29922" font-size="10" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif">Day-old data</text>
+  </g>
+
+  <!-- Platform ↔ External Forecasting BOTTLENECK -->
+  <g class="bottleneck-el">
+    <path class="conn-bottleneck" id="conn-forecast-bottleneck"
+          d="M 670,310 Q 780,260 920,240"
+          fill="none" stroke="#f85149" stroke-width="3" opacity="0.7"
+          marker-end="url(#arrow-red)" filter="url(#glow-red)"/>
+    <path d="M 670,310 Q 780,260 920,240"
+          fill="none" stroke="#f85149" stroke-width="6" opacity="0"
+          style="animation: bottleneckPulse 2.4s ease-in-out infinite 0.6s;"/>
+    <rect x="740" y="262" width="120" height="22" rx="4" fill="#0d1117" stroke="#f85149" stroke-width="1" opacity="0.95"/>
+    <text x="800" y="277" text-anchor="middle" fill="#f85149" font-size="10" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif">2-hour data delay</text>
+    <circle r="3" fill="#f85149" opacity="0">
+      <animateMotion dur="3.2s" repeatCount="indefinite" begin="0.5s">
+        <mpath href="#conn-forecast-bottleneck"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="0;0.9;0.9;0" dur="3.2s" repeatCount="indefinite" begin="0.5s"/>
+    </circle>
+  </g>
+
+  <!-- Communication Systems SHADOW (dashed red, no integration) -->
+  <g class="bottleneck-el shadow-conn-el">
+    <line x1="820" y1="510" x2="670" y2="400"
+          stroke="#f85149" stroke-width="2" stroke-dasharray="8 5" opacity="0.5"/>
+    <rect x="700" y="440" width="110" height="22" rx="4" fill="#0d1117" stroke="#f85149" stroke-width="1" opacity="0.95"/>
+    <text x="755" y="455" text-anchor="middle" fill="#f85149" font-size="10" font-weight="600" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif">No integration</text>
+  </g>
+
+  <!-- Normal flow dots on designed paths -->
+  <g class="designed-flow">
+    <circle r="2" fill="#58a6ff" opacity="0">
+      <animateMotion dur="4s" repeatCount="indefinite">
+        <mpath href="#conn-hris-designed"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="0;0.6;0.6;0" dur="4s" repeatCount="indefinite"/>
+    </circle>
+    <circle r="2" fill="#484f58" opacity="0">
+      <animateMotion dur="3.5s" repeatCount="indefinite" begin="0.5s">
+        <mpath href="#conn-payroll-designed"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="0;0.5;0.5;0" dur="3.5s" repeatCount="indefinite" begin="0.5s"/>
+    </circle>
+    <circle r="2" fill="#484f58" opacity="0">
+      <animateMotion dur="3s" repeatCount="indefinite" begin="1s">
+        <mpath href="#conn-reporting-designed"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="0;0.5;0.5;0" dur="3s" repeatCount="indefinite" begin="1s"/>
+    </circle>
+  </g>
+
+
+  <!-- ═══════════════════════════════════════════════
+       SYSTEM NODES
+       ═══════════════════════════════════════════════ -->
+
+  <!-- 1. WORKFORCE MANAGEMENT PLATFORM (center) -->
+  <g class="node-group" data-system="platform" onclick="showDetail('platform')">
+    <rect class="node-bg" x="430" y="280" width="240" height="130" rx="12"
+          fill="#161b22" stroke="#238636" stroke-width="2.5" filter="url(#glow-green)"/>
+    <!-- Inner accent line -->
+    <rect x="430" y="280" width="240" height="4" rx="2" fill="#238636" opacity="0.5"/>
+    <text class="node-label" x="550" y="308" text-anchor="middle" fill="#e6edf3" font-size="13" font-weight="700">Workforce Management</text>
+    <text class="node-label" x="550" y="324" text-anchor="middle" fill="#e6edf3" font-size="13" font-weight="700">Platform</text>
+    <text class="node-label" x="550" y="348" text-anchor="middle" fill="#8b949e" font-size="10">Rostering &bull; Time Clock &bull; Breaks</text>
+    <text class="node-label" x="550" y="364" text-anchor="middle" fill="#8b949e" font-size="10">Compliance &bull; Shift Management</text>
+    <!-- Badge -->
+    <rect x="495" y="378" width="110" height="20" rx="10" fill="rgba(35,134,54,0.2)" stroke="#238636" stroke-width="0.5"/>
+    <text x="550" y="392" text-anchor="middle" fill="#238636" font-size="9" font-weight="600">5 of 9 Stakeholders</text>
+  </g>
+
+  <!-- 2. HRIS / Employee Records (top-left) -->
+  <g class="node-group" data-system="hris" onclick="showDetail('hris')">
+    <rect class="node-bg" x="120" y="120" width="180" height="80" rx="10"
+          fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+    <rect x="120" y="120" width="180" height="3" rx="2" fill="#58a6ff" opacity="0.5"/>
+    <text class="node-label" x="210" y="150" text-anchor="middle" fill="#e6edf3" font-size="12" font-weight="600">HRIS / Employee Records</text>
+    <text class="node-label" x="210" y="168" text-anchor="middle" fill="#8b949e" font-size="10">Master data &bull; Roles</text>
+    <text class="node-label" x="210" y="183" text-anchor="middle" fill="#8b949e" font-size="10">Employment status</text>
+  </g>
+
+  <!-- 3. PAYROLL SYSTEM (top-right) -->
+  <g class="node-group" data-system="payroll" onclick="showDetail('payroll')">
+    <rect class="node-bg" x="800" y="120" width="180" height="80" rx="10"
+          fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+    <rect x="800" y="120" width="180" height="3" rx="2" fill="#bc8cff" opacity="0.5"/>
+    <text class="node-label" x="890" y="150" text-anchor="middle" fill="#e6edf3" font-size="12" font-weight="600">Payroll System</text>
+    <text class="node-label" x="890" y="168" text-anchor="middle" fill="#8b949e" font-size="10">Pay processing &bull; Compliance</text>
+    <text class="node-label" x="890" y="183" text-anchor="middle" fill="#8b949e" font-size="10">Leave &bull; Reporting</text>
+  </g>
+
+  <!-- 4. TIME CLOCK HARDWARE (bottom-left) -->
+  <g class="node-group" data-system="timeclock" onclick="showDetail('timeclock')">
+    <rect class="node-bg" x="100" y="450" width="175" height="80" rx="10"
+          fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+    <rect x="100" y="450" width="175" height="3" rx="2" fill="#d29922" opacity="0.5"/>
+    <text class="node-label" x="187" y="480" text-anchor="middle" fill="#e6edf3" font-size="12" font-weight="600">Time Clock Hardware</text>
+    <text class="node-label" x="187" y="498" text-anchor="middle" fill="#8b949e" font-size="10">Clock-in/out &bull; Breaks</text>
+    <text class="node-label" x="187" y="513" text-anchor="middle" fill="#8b949e" font-size="10">Shift attestation</text>
+  </g>
+
+  <!-- 5. MOBILE APP (bottom-center) -->
+  <g class="node-group" data-system="mobile" onclick="showDetail('mobile')">
+    <rect class="node-bg" x="460" y="500" width="180" height="80" rx="10"
+          fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+    <rect x="460" y="500" width="180" height="3" rx="2" fill="#39d2c0" opacity="0.5"/>
+    <text class="node-label" x="550" y="530" text-anchor="middle" fill="#e6edf3" font-size="12" font-weight="600">Mobile App</text>
+    <text class="node-label" x="550" y="548" text-anchor="middle" fill="#8b949e" font-size="10">Shifts &bull; Availability &bull; Swap</text>
+    <text class="node-label" x="550" y="563" text-anchor="middle" fill="#8b949e" font-size="10">Limited time clock</text>
+  </g>
+
+  <!-- 6. REPORTING / ANALYTICS (right) -->
+  <g class="node-group" data-system="reporting" onclick="showDetail('reporting')">
+    <rect class="node-bg" x="800" y="310" width="180" height="80" rx="10"
+          fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+    <rect x="800" y="310" width="180" height="3" rx="2" fill="#d29922" opacity="0.5"/>
+    <text class="node-label" x="890" y="340" text-anchor="middle" fill="#e6edf3" font-size="12" font-weight="600">Reporting / Analytics</text>
+    <text class="node-label" x="890" y="358" text-anchor="middle" fill="#8b949e" font-size="10">Labour costs &bull; SPH</text>
+    <text class="node-label" x="890" y="373" text-anchor="middle" fill="#8b949e" font-size="10">Compliance &bull; Dashboard</text>
+  </g>
+
+  <!-- 7. EXTERNAL FORECASTING (far right, dimmer) -->
+  <g class="node-group shadow-el" data-system="forecasting" onclick="showDetail('forecasting')" opacity="0.7">
+    <rect class="node-bg" x="910" y="205" width="170" height="75" rx="10"
+          fill="#161b22" stroke="#30363d" stroke-width="1"/>
+    <rect x="910" y="205" width="170" height="3" rx="2" fill="#8b949e" opacity="0.3"/>
+    <text class="node-label" x="995" y="233" text-anchor="middle" fill="#c9d1d9" font-size="12" font-weight="600">External Forecasting</text>
+    <text class="node-label" x="995" y="251" text-anchor="middle" fill="#8b949e" font-size="10">Sales forecasting</text>
+    <text class="node-label" x="995" y="266" text-anchor="middle" fill="#8b949e" font-size="10">Labour demand prediction</text>
+  </g>
+
+  <!-- 8. COMMUNICATION SYSTEMS (bottom-right, dimmer) -->
+  <g class="node-group shadow-el" data-system="comms" onclick="showDetail('comms')" opacity="0.6">
+    <rect class="node-bg" x="760" y="480" width="185" height="90" rx="10"
+          fill="#161b22" stroke="#f85149" stroke-width="1" stroke-dasharray="6 4"/>
+    <rect x="760" y="480" width="185" height="3" rx="2" fill="#f85149" opacity="0.3"/>
+    <text class="node-label" x="852" y="510" text-anchor="middle" fill="#c9d1d9" font-size="12" font-weight="600">Communication Systems</text>
+    <text class="node-label" x="852" y="528" text-anchor="middle" fill="#8b949e" font-size="10">WhatsApp &bull; Yammer &bull; SMS</text>
+    <text class="node-label" x="852" y="543" text-anchor="middle" fill="#8b949e" font-size="10">Phone calls</text>
+    <!-- Shadow system badge -->
+    <rect x="800" y="550" width="105" height="18" rx="9" fill="rgba(248,81,73,0.15)" stroke="#f85149" stroke-width="0.5"/>
+    <text x="852" y="563" text-anchor="middle" fill="#f85149" font-size="9" font-weight="600">Shadow System</text>
+  </g>
+
+  <!-- Invisible hover targets for connections -->
+  <path class="conn-hover" data-conn="hris"
+        d="M 295,195 Q 370,240 430,295"
+        fill="none" stroke="transparent" stroke-width="18" style="cursor:pointer"
+        onmouseenter="showTooltip(event,'hris')" onmouseleave="hideTooltip()" onmousemove="moveTooltip(event)"/>
+  <path class="conn-hover" data-conn="payroll"
+        d="M 670,295 Q 730,240 805,195"
+        fill="none" stroke="transparent" stroke-width="18" style="cursor:pointer"
+        onmouseenter="showTooltip(event,'payroll')" onmouseleave="hideTooltip()" onmousemove="moveTooltip(event)"/>
+  <path class="conn-hover" data-conn="timeclock"
+        d="M 270,475 Q 350,420 430,385"
+        fill="none" stroke="transparent" stroke-width="18" style="cursor:pointer"
+        onmouseenter="showTooltip(event,'timeclock')" onmouseleave="hideTooltip()" onmousemove="moveTooltip(event)"/>
+  <path class="conn-hover" data-conn="mobile"
+        d="M 550,505 L 550,405"
+        fill="none" stroke="transparent" stroke-width="18" style="cursor:pointer"
+        onmouseenter="showTooltip(event,'mobile')" onmouseleave="hideTooltip()" onmousemove="moveTooltip(event)"/>
+  <path class="conn-hover" data-conn="reporting"
+        d="M 670,340 Q 730,340 800,340"
+        fill="none" stroke="transparent" stroke-width="18" style="cursor:pointer"
+        onmouseenter="showTooltip(event,'reporting')" onmouseleave="hideTooltip()" onmousemove="moveTooltip(event)"/>
+  <path class="conn-hover" data-conn="forecasting"
+        d="M 670,310 Q 780,260 920,240"
+        fill="none" stroke="transparent" stroke-width="18" style="cursor:pointer"
+        onmouseenter="showTooltip(event,'forecasting')" onmouseleave="hideTooltip()" onmousemove="moveTooltip(event)"/>
+  <line class="conn-hover" data-conn="comms"
+        x1="820" y1="510" x2="670" y2="400"
+        stroke="transparent" stroke-width="18" style="cursor:pointer"
+        onmouseenter="showTooltip(event,'comms')" onmouseleave="hideTooltip()" onmousemove="moveTooltip(event)"/>
+
+</svg>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-swatch normal"></div>
+    <span>Standard flow</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-swatch bidir"></div>
+    <span>Bidirectional sync</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-swatch bottleneck"></div>
+    <span>Bottleneck</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-swatch shadow"></div>
+    <span>Shadow system (no integration)</span>
+  </div>
+</div>
+
+<!-- ARROW TOOLTIP -->
+<div class="arrow-tooltip" id="arrow-tooltip"></div>
+
+<!-- DETAIL OVERLAY -->
+<div class="detail-overlay" id="detail-overlay" onclick="closeDetail(event)">
+  <div class="detail-panel" id="detail-panel" onclick="event.stopPropagation()">
+    <button class="close-btn" onclick="closeDetail()">&times;</button>
+    <div id="detail-content"></div>
+  </div>
+</div>
+
+<script>
+// ── VIEW TOGGLE ──────────────────────────────────
+function setView(mode) {
+  const body = document.body;
+  const btnD = document.getElementById('btn-designed');
+  const btnE = document.getElementById('btn-experienced');
+
+  btnD.className = 'toggle-btn';
+  btnE.className = 'toggle-btn';
+
+  if (mode === 'designed') {
+    body.classList.add('as-designed');
+    btnD.classList.add('active');
+  } else {
+    body.classList.remove('as-designed');
+    btnE.classList.add('active-red');
+  }
+}
+
+// ── SYSTEM DATA ──────────────────────────────────
+const systemData = {
+  platform: {
+    name: 'Workforce Management Platform',
+    subtitle: 'Central hub for rostering and time & attendance',
+    color: '#238636',
+    functions: [
+      'Rostering and shift scheduling',
+      'Time clock (web-based)',
+      'Break management and compliance',
+      'Compliance engine (workforce rule interpretation)',
+      'Shift management and approvals'
+    ],
+    connections: [
+      'Bidirectional sync with HRIS via secure folder transfer (2x daily)',
+      'CSV export to Payroll after approval chain completion',
+      'Real-time sync with Time Clock hardware',
+      'API connection to Mobile App (limited feature set)',
+      'Data warehouse feed to Reporting (day-old data)',
+      'Manual data transfer to/from External Forecasting'
+    ],
+    bottlenecks: [
+      'Primary interface for 5 of 9 stakeholder types',
+      'Web-first design means mobile experience is degraded',
+      'Approval chains create sequential dependencies',
+      'No direct integration with communication systems used by 37.4% of staff'
+    ]
+  },
+  hris: {
+    name: 'HRIS / Employee Records',
+    subtitle: 'Source of truth for employee master data',
+    color: '#58a6ff',
+    functions: [
+      'Employee master data management',
+      'Employment status tracking',
+      'Role and position assignments',
+      'Organizational hierarchy'
+    ],
+    connections: [
+      'Bidirectional sync with Platform via secure folder transfer',
+      'Transfers occur 2x daily at 12pm and 6pm',
+      'File-based transfer (not real-time API)'
+    ],
+    bottlenecks: [
+      '14-day propagation delay for employment status changes',
+      'Terminated employees remain active in Platform for up to 2 weeks',
+      'File-based transfer introduces fragility and latency',
+      'No real-time validation of employee status'
+    ]
+  },
+  payroll: {
+    name: 'Payroll System',
+    subtitle: 'Pay processing and compliance calculations',
+    color: '#bc8cff',
+    functions: [
+      'Pay processing and calculations',
+      'Compliance and classification calculations',
+      'Leave management',
+      'Payroll reporting and reconciliation'
+    ],
+    connections: [
+      'Receives CSV export from Platform',
+      'Export triggered only after full approval chain completes',
+      'Sequential: Store Manager \u2192 Area Coach \u2192 Payroll team'
+    ],
+    bottlenecks: [
+      'Sequential approval chain means one late store delays all',
+      'CSV export format introduces data integrity risks',
+      'No automated validation between systems',
+      'Payroll team must manually reconcile discrepancies'
+    ]
+  },
+  timeclock: {
+    name: 'Time Clock Hardware',
+    subtitle: 'Physical time tracking devices in-store',
+    color: '#d29922',
+    functions: [
+      'Physical clock-in and clock-out',
+      'Break tracking and recording',
+      'Shift attestation at end of shift',
+      'Biometric or PIN-based identification'
+    ],
+    connections: [
+      'Real-time sync with Platform (with noted lag)',
+      'Data flows one-way: Clock \u2192 Platform',
+      'Requires network connectivity to sync'
+    ],
+    bottlenecks: [
+      'Time clock sync delays between hardware and Platform',
+      'Keyboard/mouse input friction for corrections',
+      'Physical hardware failures require manual workarounds',
+      'Clock attestation can be missed or bypassed'
+    ]
+  },
+  mobile: {
+    name: 'Mobile App',
+    subtitle: 'Employee self-service mobile interface',
+    color: '#39d2c0',
+    functions: [
+      'Shift viewing and schedule access',
+      'Availability submission',
+      'Shift drop and swap requests',
+      'Limited time clock functionality'
+    ],
+    connections: [
+      'API connection to Platform',
+      'Limited feature set compared to web interface',
+      'Read-heavy with limited write capabilities'
+    ],
+    bottlenecks: [
+      'Cannot see own clock times, breaks, or punch history',
+      'Time zone errors affect displayed shift times',
+      'Feature parity gap vs. web interface',
+      'Shift swap workflows incomplete on mobile'
+    ]
+  },
+  reporting: {
+    name: 'Reporting / Analytics',
+    subtitle: 'Business intelligence and compliance reporting',
+    color: '#d29922',
+    functions: [
+      'Labour cost reporting',
+      'Sales Per Hour (SPH) dashboards',
+      'Compliance reporting',
+      'Operational dashboards'
+    ],
+    connections: [
+      'Data warehouse feed from Platform',
+      'Data is day-old (not real-time)',
+      'Single-store level reports'
+    ],
+    bottlenecks: [
+      '2-hour delay from external forecasting data',
+      'Reports limited to single-store level (no multi-store rollup)',
+      '33-day date range limit on queries',
+      'Day-old data prevents real-time labour management'
+    ]
+  },
+  forecasting: {
+    name: 'External Forecasting',
+    subtitle: 'Third-party sales and labour forecasting',
+    color: '#8b949e',
+    functions: [
+      'Sales volume forecasting',
+      'Labour demand prediction',
+      'Scheduling optimization recommendations'
+    ],
+    connections: [
+      'Data copied from Platform to External system',
+      'Overnight processing cycle',
+      'Results copied back to Platform next day',
+      'Requires manual data transfer steps'
+    ],
+    bottlenecks: [
+      '2-hour data delay in forecasting calculations',
+      'Requires manual data transfer between systems',
+      'Overnight processing means predictions are always day-old',
+      'No real-time adjustment capability'
+    ]
+  },
+  comms: {
+    name: 'Communication Systems',
+    subtitle: 'Shadow systems used for shift coordination',
+    color: '#f85149',
+    functions: [
+      'WhatsApp group messaging (8.9%)',
+      'Yammer / Viva Engage (37.4%)',
+      'Text / SMS messaging (30.8%)',
+      'Phone calls for urgent issues'
+    ],
+    connections: [
+      'NO platform integration whatsoever',
+      'Completely disconnected shadow systems',
+      'Staff self-organize outside official tools'
+    ],
+    bottlenecks: [
+      '37.4% use Yammer/Viva Engage for shift coordination',
+      '30.8% use text/SMS for schedule communication',
+      '8.9% use WhatsApp for team messaging',
+      'No audit trail for shift changes made via messaging',
+      'Indicates Platform communication features are insufficient'
+    ]
+  }
+};
+
+// ── TOOLTIP DATA ─────────────────────────────────
+const connData = {
+  hris: {
+    title: 'HRIS \u2194 Platform',
+    direction: 'Bidirectional',
+    dataType: 'Employee records, status changes, role assignments',
+    method: 'Secure folder transfer (2x daily at 12pm & 6pm)',
+    latency: '14-day propagation delay',
+    isRed: true
+  },
+  payroll: {
+    title: 'Platform \u2192 Payroll',
+    direction: 'One-way (after approval)',
+    dataType: 'Timesheet data, hours, compliance calculations',
+    method: 'CSV export after sequential approval chain',
+    latency: 'Sequential: Store \u2192 Area Coach \u2192 Payroll',
+    isRed: true
+  },
+  timeclock: {
+    title: 'Time Clock \u2192 Platform',
+    direction: 'One-way (real-time with lag)',
+    dataType: 'Clock-in/out events, break records, attestation',
+    method: 'Real-time sync over network',
+    latency: 'Intermittent sync delays',
+    isRed: false
+  },
+  mobile: {
+    title: 'Mobile App \u2194 Platform',
+    direction: 'Bidirectional (limited)',
+    dataType: 'Shifts, availability, swap requests',
+    method: 'REST API (limited feature set)',
+    latency: 'Near real-time but feature-limited',
+    isRed: false
+  },
+  reporting: {
+    title: 'Platform \u2192 Reporting',
+    direction: 'One-way (batch)',
+    dataType: 'Labour costs, SPH, compliance metrics',
+    method: 'Data warehouse (batch load)',
+    latency: 'Day-old data; 33-day query limit',
+    isRed: false
+  },
+  forecasting: {
+    title: 'Platform \u2194 External Forecasting',
+    direction: 'Bidirectional (manual)',
+    dataType: 'Sales data, labour demand predictions',
+    method: 'Manual data copy \u2192 Overnight processing \u2192 Return',
+    latency: '2-hour data delay; overnight processing',
+    isRed: true
+  },
+  comms: {
+    title: 'Communication Systems',
+    direction: 'No integration',
+    dataType: 'Shift coordination, schedule changes, urgent comms',
+    method: 'Shadow systems (WhatsApp, Yammer, SMS, Phone)',
+    latency: 'No platform connection',
+    isRed: true
+  }
+};
+
+// ── DETAIL PANEL ─────────────────────────────────
+function showDetail(systemId) {
+  const data = systemData[systemId];
+  if (!data) return;
+
+  const isExperienced = !document.body.classList.contains('as-designed');
+
+  let html = `<h2 style="color:${data.color}">${data.name}</h2>`;
+  html += `<div class="subtitle">${data.subtitle}</div>`;
+
+  html += `<div class="section-title">Functions</div><ul>`;
+  data.functions.forEach(f => { html += `<li>${f}</li>`; });
+  html += `</ul>`;
+
+  html += `<div class="section-title">Connections</div>`;
+  html += `<div class="connection-info">${data.connections.join('<br>')}</div>`;
+
+  if (data.bottlenecks.length) {
+    html += `<div class="section-title" style="color:${isExperienced ? '#f85149' : 'var(--muted)'}">Bottlenecks &amp; Pain Points</div>`;
+    html += `<div class="bottleneck-box"><ul style="margin:0;padding:0;">`;
+    data.bottlenecks.forEach(b => { html += `<li class="bottleneck-item">${b}</li>`; });
+    html += `</ul></div>`;
+  }
+
+  document.getElementById('detail-content').innerHTML = html;
+  document.getElementById('detail-overlay').classList.add('open');
+}
+
+function closeDetail(e) {
+  if (e && e.target && !e.target.classList.contains('detail-overlay') && e.type === 'click') return;
+  document.getElementById('detail-overlay').classList.remove('open');
+}
+
+// Close on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeDetail();
+});
+
+// ── ARROW TOOLTIPS ───────────────────────────────
+const tooltipEl = document.getElementById('arrow-tooltip');
+
+function showTooltip(event, connId) {
+  const data = connData[connId];
+  if (!data) return;
+
+  const isExperienced = !document.body.classList.contains('as-designed');
+  const latencyClass = data.isRed && isExperienced ? 'red' : '';
+
+  tooltipEl.innerHTML = `
+    <div class="tt-title">${data.title}</div>
+    <div style="margin-bottom:3px"><strong>Direction:</strong> ${data.direction}</div>
+    <div style="margin-bottom:3px"><strong>Data:</strong> ${data.dataType}</div>
+    <div style="margin-bottom:3px"><strong>Method:</strong> ${data.method}</div>
+    <div class="tt-latency ${latencyClass}"><strong>Latency:</strong> ${data.latency}</div>
+  `;
+  tooltipEl.classList.add('visible');
+  moveTooltip(event);
+}
+
+function moveTooltip(event) {
+  const tt = tooltipEl;
+  const x = event.clientX + 16;
+  const y = event.clientY - 10;
+  const maxX = window.innerWidth - 300;
+  const maxY = window.innerHeight - 180;
+  tt.style.left = Math.min(x, maxX) + 'px';
+  tt.style.top = Math.min(y, maxY) + 'px';
+}
+
+function hideTooltip() {
+  tooltipEl.classList.remove('visible');
+}
+
+// ── INIT ─────────────────────────────────────────
+// Default to "As Experienced" view
+setView('experienced');
+</script>
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registration-repair flow — design system preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ds-tokens.css">
+<style>
+  .repair-cols { display: grid; grid-template-columns: 1fr 1fr; gap: var(--ds-4); align-items: stretch; }
+  @media (max-width: 900px) { .repair-cols { grid-template-columns: 1fr; } }
+  .flow-card { border-radius: var(--ds-radius); border: 1px solid var(--ds-line); background: var(--ds-paper); }
+  .flow-card .fc-hd { padding: var(--ds-3) var(--ds-4); border-bottom: 1px solid var(--ds-line); display:flex; align-items:center; gap:var(--ds-2); }
+  .flow-card .fc-bd { padding: var(--ds-4); }
+  .sso-btn { display:flex; align-items:center; justify-content:center; gap:10px; height:40px; width:100%; border-radius:5px; border:1px solid var(--ds-line-strong); background:var(--ds-paper); font-size:13px; font-weight:600; }
+  .sso-btn .g { width:16px; height:16px; }
+</style>
+</head><body>
+<div class="app ds-stage">
+  <aside class="app-side">
+    <div class="brandmark"><div class="bm-sq">W</div><div><div class="bm-name">Workforce OS</div><div class="bm-sub">Time &amp; attendance</div></div></div>
+    <div class="nav-label">Workspace</div>
+    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><path d="M3 13h8V3H3zM13 21h8V11h-8zM13 3v4h8V3zM3 21h8v-4H3z"/></svg>Dashboard</div>
+    <div class="nav-item on"><svg class="n-ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Roster</div>
+    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Approvals<span class="n-count">9</span></div>
+    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V6z"/></svg>Compliance<span class="n-count">3</span></div>
+    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>Leave &amp; availability</div>
+    <div class="nav-label">Back office</div>
+    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Payroll</div>
+    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 3 5-6"/></svg>Reports</div>
+    <div class="nav-item"><svg class="n-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.4 1a7 7 0 0 0-1.7-1L14.5 3h-5l-.3 2.5a7 7 0 0 0-1.7 1l-2.4-1-2 3.5 2 1.5a7 7 0 0 0 0 2l-2 1.5 2 3.5 2.4-1a7 7 0 0 0 1.7 1l.3 2.5h5l.3-2.5a7 7 0 0 0 1.7-1l2.4 1 2-3.5-2-1.5c.06-.33.1-.66.1-1z"/></svg>Settings</div>
+    <div class="nav-spacer"></div>
+    <div class="side-foot">Registration chasm · largest mobile support cluster<br>Restaurant 134</div>
+  </aside>
+  <div class="app-main">
+    <div class="app-topbar">
+      <div class="page-title">Registration repair</div>
+      <div class="tb-right">
+        <span class="chip lavender">Onboarding · stage 1</span>
+        <div class="avatar dark">RM</div>
+      </div>
+    </div>
+    <div class="app-content">
+
+      <div class="alert warn">
+        <svg class="a-ic" viewBox="0 0 24 24" style="color:var(--ds-warn-ink)"><path d="M12 3l9 16H3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9v5M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <div class="a-body"><h4>The &ldquo;invite pending&rdquo; registration chasm</h4><p>A mis-typed email could look like a successful sign-up while silently blocking all shift visibility. Multiplied by every new starter, it was the support queue's largest mobile cluster, and it kept the crew member invisible in the platform.</p></div>
+      </div>
+
+      <div class="card mt-4">
+        <div class="card-hd"><h3>Onboarding registration</h3><span class="sub">Wireframe → mid-fi → hi-fi, this is the shipped hi-fi pattern</span><div class="hd-right"><span class="chip success">Single sign-on</span></div></div>
+        <div class="card-bd">
+          <div class="stepper">
+            <div class="step"><span class="st-dot done">1</span><span class="st-txt done">Welcome</span></div><div class="step-connector done"></div>
+            <div class="step"><span class="st-dot done">2</span><span class="st-txt done">Sign in</span></div><div class="step-connector done"></div>
+            <div class="step"><span class="st-dot done">3</span><span class="st-txt done">Record synced</span></div><div class="step-connector done"></div>
+            <div class="step"><span class="st-dot cur">4</span><span class="st-txt cur">Shifts visible</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="repair-cols mt-4">
+        <div class="flow-card" style="border-color:var(--ds-danger-tint)">
+          <div class="fc-hd"><span class="chip danger">Before</span><span class="soft small">Fragile email registration</span></div>
+          <div class="fc-bd">
+            <div class="field"><label>Email</label><div class="input is-error">dana.rivera@gmai.com</div><div class="help error">This email isn't on the employee record. An invite is pending but no one can see it.</div></div>
+            <div class="field"><label>Password</label><div class="input">••••••••</div></div>
+            <button class="btn btn-primary btn-block" disabled>Create account</button>
+            <div class="row mt-3"><span class="chip danger"><span class="dot"></span>Invite pending</span><span class="muted small">Stuck, silently</span></div>
+            <div class="alert danger mt-3">
+              <svg class="a-ic" viewBox="0 0 24 24" style="color:var(--ds-danger-ink)"><path d="M12 3l9 16H3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9v5M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <div class="a-body"><h4>Failure class: &ldquo;can't see my shifts&rdquo;</h4><p>No error surfaced at sign-up, so the crew member believed they were registered. Shift visibility silently blank until support intervened.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-card" style="border-color:var(--ds-success-tint)">
+          <div class="fc-hd"><span class="chip success">After</span><span class="soft small">Single sign-on from the employee record</span></div>
+          <div class="fc-bd">
+            <button class="sso-btn"><span class="g"><svg viewBox="0 0 24 24" width="16" height="16"><path fill="#4285F4" d="M21.35 11.1H12v3.6h5.4c-.5 2.3-2.4 3.6-5.4 3.6a6 6 0 1 1 0-12c1.5 0 2.8.5 3.9 1.5l2.7-2.7A9.6 9.6 0 0 0 12 2a10 10 0 1 0 0 20c5.5 0 9.4-3.9 9.4-9.4 0-.5 0-.9-.05-1.5z"/></svg></span>Sign in with your work account</button>
+            <div class="line mt-3"></div>
+            <div class="mblock mt-3" style="border:none;padding:0">
+              <div class="row between"><span class="soft small">Roles</span><span class="chip lavender">Crew · serving</span></div>
+              <div class="row between mt-2"><span class="soft small">Restaurant</span><span class="chip lavender">134</span></div>
+              <div class="row between mt-2"><span class="soft small">Shifts</span><span class="chip success">12 upcoming</span></div>
+              <div class="row between mt-2"><span class="soft small">Punch history</span><span class="chip success">Synced</span></div>
+            </div>
+            <button class="btn btn-primary btn-block mt-3">Continue to roster</button>
+            <div class="row mt-3"><span class="chip success"><span class="dot"></span>No re-entry · no typing</span><span class="muted small">94.4% mobile-first</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-4">
+        <div class="card-hd"><h3>From support noise to a single fix</h3><span class="sub">Support-queue analysis over six months</span></div>
+        <div class="card-bd">
+          <div class="row wrap">
+            <div class="stat warn" style="flex:1;min-width:220px"><b>~200</b><span>mobile-app tickets analysed</span></div>
+            <div class="stat danger" style="flex:1;min-width:220px"><b>#1</b><span>cluster: registration / no shifts</span></div>
+            <div class="stat success" style="flex:1;min-width:220px"><b>root</b><span>fix: single sign-on</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body></html>

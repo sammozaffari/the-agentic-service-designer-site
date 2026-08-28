@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stakeholder Ecosystem</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --muted: #8b949e;
+    --cyan: #58a6ff;
+    --orange: #d29922;
+    --purple: #bc8cff;
+    --red: #f85149;
+    --cyan-dim: rgba(88,166,255,0.08);
+    --orange-dim: rgba(210,153,34,0.08);
+    --purple-dim: rgba(188,140,255,0.08);
+    --cyan-glow: rgba(88,166,255,0.25);
+    --orange-glow: rgba(210,153,34,0.25);
+    --purple-glow: rgba(188,140,255,0.25);
+  }
+
+  html { font-size: 15px; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ── Outer wrapper ── */
+  .wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 2rem;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  .header h1 {
+    font-size: 1.85rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: #e6edf3;
+    margin-bottom: 0.35rem;
+  }
+  .header p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .legend-dot.daily { background: var(--cyan); box-shadow: 0 0 6px var(--cyan-glow); }
+  .legend-dot.weekly { background: var(--orange); box-shadow: 0 0 6px var(--orange-glow); }
+  .legend-dot.periodic { background: var(--purple); box-shadow: 0 0 6px var(--purple-glow); }
+
+  /* ── Tier sections ── */
+  .tier-section {
+    margin-bottom: 1.5rem;
+  }
+  .tier-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+    padding-left: 0.25rem;
+  }
+
+  /* ── Card grid ── */
+  .card-grid {
+    display: grid;
+    gap: 1rem;
+  }
+  .card-grid.three-col { grid-template-columns: repeat(3, 1fr); }
+  .card-grid.two-col { grid-template-columns: repeat(2, 1fr); }
+  .card-grid.four-col { grid-template-columns: repeat(4, 1fr); }
+
+  /* ── Stakeholder card ── */
+  .stakeholder-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  .stakeholder-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .stakeholder-card:hover {
+    border-color: #484f58;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+    transform: translateY(-2px);
+  }
+  .stakeholder-card.expanded {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+  }
+  .stakeholder-card[data-tier="inner"].expanded { border-color: var(--cyan); }
+  .stakeholder-card[data-tier="middle"].expanded { border-color: var(--orange); }
+  .stakeholder-card[data-tier="outer"].expanded { border-color: var(--purple); }
+
+  /* card header */
+  .card-header {
+    padding: 1rem 1rem 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    user-select: none;
+  }
+  .tier-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .tier-badge.daily {
+    background: var(--cyan-dim);
+    color: var(--cyan);
+  }
+  .tier-badge.weekly {
+    background: var(--orange-dim);
+    color: var(--orange);
+  }
+  .tier-badge.periodic {
+    background: var(--purple-dim);
+    color: var(--purple);
+  }
+  .card-title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #e6edf3;
+    line-height: 1.25;
+    flex: 1;
+  }
+  .expand-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--muted);
+    transition: transform 0.3s, color 0.3s;
+    flex-shrink: 0;
+  }
+  .stakeholder-card.expanded .expand-icon {
+    transform: rotate(180deg);
+  }
+  .stakeholder-card[data-tier="inner"].expanded .expand-icon { color: var(--cyan); }
+  .stakeholder-card[data-tier="middle"].expanded .expand-icon { color: var(--orange); }
+  .stakeholder-card[data-tier="outer"].expanded .expand-icon { color: var(--purple); }
+
+  /* summary (shown when collapsed) */
+  .card-summary {
+    padding: 0 1rem 1rem;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--muted);
+    display: block;
+  }
+  .stakeholder-card.expanded .card-summary { display: none; }
+
+  /* detail sections */
+  .card-detail {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .stakeholder-card.expanded .card-detail {
+    max-height: 800px;
+  }
+
+  .detail-section {
+    padding: 0.75rem 1rem;
+    margin: 0 0.65rem 0.65rem;
+    border-radius: 8px;
+    background: var(--bg);
+    border-left: 3px solid var(--border);
+  }
+  .detail-section:first-child { margin-top: 0.15rem; }
+
+  .stakeholder-card[data-tier="inner"] .detail-section { border-left-color: var(--cyan); }
+  .stakeholder-card[data-tier="middle"] .detail-section { border-left-color: var(--orange); }
+  .stakeholder-card[data-tier="outer"] .detail-section { border-left-color: var(--purple); }
+
+  .detail-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.45rem;
+    color: var(--muted);
+  }
+  .stakeholder-card[data-tier="inner"] .detail-label { color: var(--cyan); }
+  .stakeholder-card[data-tier="middle"] .detail-label { color: var(--orange); }
+  .stakeholder-card[data-tier="outer"] .detail-label { color: var(--purple); }
+
+  .detail-section .usage-text {
+    font-size: 0.8rem;
+    color: var(--text);
+  }
+
+  .detail-section ul {
+    list-style: none;
+    padding: 0;
+  }
+  .detail-section li {
+    position: relative;
+    padding-left: 0.85rem;
+    font-size: 0.75rem;
+    line-height: 1.55;
+    color: var(--text);
+    margin-bottom: 0.35rem;
+  }
+  .detail-section li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--red);
+  }
+
+  .quote-block {
+    font-size: 0.75rem;
+    font-style: italic;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+  .quote-block::before { content: '"'; }
+  .quote-block::after { content: '"'; }
+
+  .interaction-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text);
+    margin-bottom: 0.35rem;
+  }
+  .interaction-item::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--muted);
+    flex-shrink: 0;
+  }
+  .conflict-badge {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--red);
+    background: rgba(248, 81, 73, 0.12);
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-left: auto;
+  }
+
+  /* bottom padding inside card */
+  .card-detail-pad { height: 0.35rem; }
+
+  /* ── Stats bar ── */
+  .stats-bar {
+    margin-top: 2.5rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 0.5rem;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.35rem 1.5rem;
+    position: relative;
+  }
+  .stat:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 15%;
+    height: 70%;
+    width: 1px;
+    background: var(--border);
+  }
+  .stat-num {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #e6edf3;
+    line-height: 1.2;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 0.15rem;
+    white-space: nowrap;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .card-grid.three-col { grid-template-columns: repeat(2, 1fr); }
+    .card-grid.four-col { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .card-grid.three-col,
+    .card-grid.two-col,
+    .card-grid.four-col { grid-template-columns: 1fr; }
+    .wrapper { padding: 1.5rem 1rem 1.5rem; }
+    .header h1 { font-size: 1.4rem; }
+    .legend { gap: 1rem; }
+    .stats-bar { flex-direction: column; align-items: center; gap: 0.5rem; padding: 1rem; }
+    .stat::after { display: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>Stakeholder Ecosystem</h1>
+    <p>9 roles interacting with the workforce management platform across daily, weekly, and periodic usage patterns</p>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot daily"></span>Daily Users</div>
+    <div class="legend-item"><span class="legend-dot weekly"></span>Weekly Users</div>
+    <div class="legend-item"><span class="legend-dot periodic"></span>Periodic Users</div>
+  </div>
+
+  <!-- Inner Tier: Daily Users -->
+  <div class="tier-section">
+    <div class="tier-label">Daily Users</div>
+    <div class="card-grid three-col" id="innerTier"></div>
+  </div>
+
+  <!-- Middle Tier: Weekly Users -->
+  <div class="tier-section">
+    <div class="tier-label">Weekly Users</div>
+    <div class="card-grid two-col" id="middleTier"></div>
+  </div>
+
+  <!-- Outer Tier: Periodic Users -->
+  <div class="tier-section">
+    <div class="tier-label">Periodic Users</div>
+    <div class="card-grid four-col" id="outerTier"></div>
+  </div>
+
+  <!-- Stats bar -->
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num" data-target="9">0</span><span class="stat-label">Stakeholders</span></div>
+    <div class="stat"><span class="stat-num" data-target="27">0</span><span class="stat-label">Pain Points</span></div>
+    <div class="stat"><span class="stat-num" data-target="3">0</span><span class="stat-label">Usage Tiers</span></div>
+    <div class="stat"><span class="stat-num" data-target="4">0</span><span class="stat-label">Conflict Points</span></div>
+  </div>
+
+</div><!-- /wrapper -->
+
+<script>
+(function(){
+  'use strict';
+
+  /* ================================================================
+     DATA
+     ================================================================ */
+  const STAKEHOLDERS = [
+    /* Inner tier – daily */
+    {
+      id: 'team-members',
+      label: 'Team Members',
+      tier: 'inner',
+      desc: 'Clock in/out, view shifts, manage availability, drop/swap shifts',
+      usage: 'Multiple times daily',
+      pains: [
+        '1-minute break tolerance forces manager approval for minor delays',
+        'Cannot see own clock times on mobile app',
+        'WhatsApp used as primary channel for shift coordination'
+      ],
+      quote: 'Having only 1 minute allowance before having to get a manager to approve getting back late from breaks',
+      interactions: [
+        { target: 'Shift Supervisors', label: 'Break compliance, clock approvals', conflict: true },
+        { target: 'ARMs', label: 'Shift swap requests, availability' },
+        { target: 'RGMs', label: 'Escalated schedule issues' }
+      ]
+    },
+    {
+      id: 'shift-supervisors',
+      label: 'Shift Supervisors',
+      tier: 'inner',
+      desc: 'Time clock management, break scheduling, deployment during shifts',
+      usage: 'Every shift',
+      pains: [
+        'Break tracking inadequate — resort to whiteboards',
+        'Cannot clock staff in/out via mobile',
+        'Unclear overtime flags and warning thresholds'
+      ],
+      quote: 'Not fully understanding the whole system and not really understanding when a shift gets flagged to overtime',
+      interactions: [
+        { target: 'Team Members', label: 'Break enforcement, clock corrections', conflict: true },
+        { target: 'ARMs', label: 'Escalate deployment gaps' },
+        { target: 'RGMs', label: 'Overtime alerts' }
+      ]
+    },
+    {
+      id: 'arms',
+      label: 'ARMs',
+      tier: 'inner',
+      desc: 'Shift management, break compliance, team member requests, rostering assistance',
+      usage: 'Daily',
+      pains: [
+        'Editing existing shifts is unintuitive and slow',
+        'Managing break compliance manually across teams',
+        'No clear view of team member roles / cross-training'
+      ],
+      quote: 'Team members clocking off on breaks within an hour of clocking on and not waiting an hour for the second break',
+      interactions: [
+        { target: 'Team Members', label: 'Shift requests, availability' },
+        { target: 'Shift Supervisors', label: 'Deployment coordination' },
+        { target: 'RGMs', label: 'Rostering input, labour concerns' }
+      ]
+    },
+
+    /* Middle tier – weekly */
+    {
+      id: 'rgms',
+      label: 'RGMs',
+      tier: 'middle',
+      desc: 'Rostering, labour cost management, pay period approval, compliance monitoring',
+      usage: 'Daily for operations, weekly for rostering cycle',
+      pains: [
+        'Spend-per-hour data is day-old, hindering real-time decisions',
+        'Budget tracking done in separate spreadsheets',
+        'Compliance warning fatigue from excessive alerts'
+      ],
+      quote: 'Our spend-per-hour data is only updated from the previous day, making it difficult to make timely staffing decisions',
+      interactions: [
+        { target: 'Payroll Teams', label: 'Pay period approval, data reconciliation', conflict: true },
+        { target: 'Area Coaches', label: 'Performance reviews, labour targets' },
+        { target: 'ARMs', label: 'Rostering delegation' },
+        { target: 'Shift Supervisors', label: 'Overtime management' }
+      ]
+    },
+    {
+      id: 'area-coaches',
+      label: 'Area Coaches',
+      tier: 'middle',
+      desc: 'Multi-store oversight, labour cost comparison, performance management across restaurants',
+      usage: 'Weekly reviews',
+      pains: [
+        'Data discrepancies between platform and payroll',
+        'Build own reporting spreadsheets to compensate',
+        'Limited cross-store comparison views'
+      ],
+      quote: 'The figures payroll sends me are not the figures I see in the platform',
+      interactions: [
+        { target: 'RGMs', label: 'Performance benchmarking' },
+        { target: 'Franchisees', label: 'Strategic reporting' },
+        { target: 'Payroll Teams', label: 'Data validation queries' }
+      ]
+    },
+
+    /* Outer tier – periodic */
+    {
+      id: 'it-support',
+      label: 'IT / Support',
+      tier: 'outer',
+      desc: 'Platform configuration, enhancement pipeline, technical support, user access management',
+      usage: 'As needed / enhancement cycles',
+      pains: [
+        'Enhancement requests stalling since 2021',
+        'Post-update support ticket surges',
+        'Visa / calendar edge cases unsupported'
+      ],
+      quote: 'Some enhancement requests have been going since 2021',
+      interactions: [
+        { target: 'Franchisees', label: 'Enhancement request pipeline', conflict: true },
+        { target: 'People Systems', label: 'System integration support' },
+        { target: 'RGMs', label: 'Config changes, access management' }
+      ]
+    },
+    {
+      id: 'people-systems',
+      label: 'People Systems',
+      tier: 'outer',
+      desc: 'Employee data management, employment status changes, system integration oversight',
+      usage: 'On employee lifecycle events',
+      pains: [
+        '14-day propagation delay between systems',
+        'Payroll dependency for onboarding completion',
+        'Corrections managed via email threads'
+      ],
+      quote: 'Status changes take up to 14 days to propagate between systems',
+      interactions: [
+        { target: 'Payroll Teams', label: 'Onboarding handoff, status sync', conflict: true },
+        { target: 'IT / Support', label: 'Integration troubleshooting' },
+        { target: 'RGMs', label: 'Employee record corrections' }
+      ]
+    },
+    {
+      id: 'payroll',
+      label: 'Payroll Teams',
+      tier: 'outer',
+      desc: 'Pay period processing, compliance calculations, corrections, franchise-specific configurations',
+      usage: 'Weekly pay cycle',
+      pains: [
+        'Sequential processing chain — one store delays all',
+        'Store-by-store reporting with no aggregation',
+        'Corrections handled via email, not in system'
+      ],
+      quote: "If one store hasn't approved, it delays the whole process for the entire franchise",
+      interactions: [
+        { target: 'RGMs', label: 'Pay period approval, discrepancies', conflict: true },
+        { target: 'People Systems', label: 'Onboarding data, status changes', conflict: true },
+        { target: 'Franchisees', label: 'Franchise-specific config' }
+      ]
+    },
+    {
+      id: 'franchisees',
+      label: 'Franchisees',
+      tier: 'outer',
+      desc: 'Multi-store oversight, standardisation vs flexibility, financial integration, compliance risk management',
+      usage: 'Strategic / periodic',
+      pains: [
+        'Different processes per franchise with no visibility',
+        'Cannot customize platform without vendor approval',
+        'Lack of cross-franchise benchmarking'
+      ],
+      quote: "Every franchise has its own process. I don't even know which ones are the same and which ones are not",
+      interactions: [
+        { target: 'IT / Support', label: 'Enhancement requests, customisation', conflict: true },
+        { target: 'Area Coaches', label: 'Strategic reviews' },
+        { target: 'Payroll Teams', label: 'Franchise pay config' }
+      ]
+    }
+  ];
+
+  /* ================================================================
+     HELPERS
+     ================================================================ */
+  function getTierClass(tier) {
+    if (tier === 'inner') return 'daily';
+    if (tier === 'middle') return 'weekly';
+    return 'periodic';
+  }
+
+  function getTierLabel(tier) {
+    if (tier === 'inner') return 'Daily';
+    if (tier === 'middle') return 'Weekly';
+    return 'Periodic';
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  /* ================================================================
+     BUILD CARDS
+     ================================================================ */
+  function buildCard(s) {
+    const tierClass = getTierClass(s.tier);
+    const tierLabel = getTierLabel(s.tier);
+
+    const painsHtml = s.pains.map(p => `<li>${escapeHtml(p)}</li>`).join('');
+
+    const interactionsHtml = s.interactions.map(int => {
+      const conflictBadge = int.conflict ? '<span class="conflict-badge">Friction</span>' : '';
+      return `<div class="interaction-item">${escapeHtml(int.target)} — ${escapeHtml(int.label)}${conflictBadge}</div>`;
+    }).join('');
+
+    return `
+      <div class="stakeholder-card" data-tier="${s.tier}" data-id="${s.id}">
+        <div class="card-header">
+          <div class="tier-badge ${tierClass}">${tierLabel}</div>
+          <div class="card-title">${escapeHtml(s.label)}</div>
+          <svg class="expand-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <div class="card-summary">${escapeHtml(s.desc)}</div>
+        <div class="card-detail">
+          <div class="detail-section">
+            <div class="detail-label">Usage</div>
+            <div class="usage-text">${escapeHtml(s.usage)}</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">Pain Points</div>
+            <ul>${painsHtml}</ul>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">Quote</div>
+            <div class="quote-block">${escapeHtml(s.quote)}</div>
+          </div>
+          <div class="detail-section">
+            <div class="detail-label">Interactions</div>
+            ${interactionsHtml}
+          </div>
+          <div class="card-detail-pad"></div>
+        </div>
+      </div>
+    `;
+  }
+
+  /* ================================================================
+     RENDER
+     ================================================================ */
+  const innerTier = document.getElementById('innerTier');
+  const middleTier = document.getElementById('middleTier');
+  const outerTier = document.getElementById('outerTier');
+
+  STAKEHOLDERS.forEach(s => {
+    const html = buildCard(s);
+    if (s.tier === 'inner') {
+      innerTier.insertAdjacentHTML('beforeend', html);
+    } else if (s.tier === 'middle') {
+      middleTier.insertAdjacentHTML('beforeend', html);
+    } else {
+      outerTier.insertAdjacentHTML('beforeend', html);
+    }
+  });
+
+  /* ================================================================
+     ANIMATIONS
+     ================================================================ */
+  const cards = document.querySelectorAll('.stakeholder-card');
+
+  /* Entrance animation */
+  function revealCards() {
+    cards.forEach(function(card, i) {
+      setTimeout(function() {
+        card.classList.add('visible');
+      }, 100 + i * 80);
+    });
+  }
+
+  /* Expand / collapse */
+  cards.forEach(function(card) {
+    card.addEventListener('click', function() {
+      const wasExpanded = card.classList.contains('expanded');
+      // Close all others
+      cards.forEach(function(c) { c.classList.remove('expanded'); });
+      // Toggle this one
+      if (!wasExpanded) {
+        card.classList.add('expanded');
+      }
+    });
+  });
+
+  /* ================================================================
+     COUNT-UP ANIMATION FOR STATS
+     ================================================================ */
+  function animateCounters() {
+    document.querySelectorAll('.stat-num[data-target]').forEach(function(el) {
+      var target = parseInt(el.getAttribute('data-target'), 10);
+      var duration = 1200;
+      var start = null;
+      function step(ts) {
+        if (!start) start = ts;
+        var progress = Math.min((ts - start) / duration, 1);
+        var eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target);
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  /* Intersection observer for stats */
+  var statsBar = document.querySelector('.stats-bar');
+  var statsCounted = false;
+  var statsObserver = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting && !statsCounted) {
+      statsCounted = true;
+      animateCounters();
+    }
+  }, { threshold: 0.3 });
+  statsObserver.observe(statsBar);
+
+  /* ================================================================
+     INIT
+     ================================================================ */
+  window.addEventListener('load', function() {
+    revealCards();
+  });
+
+  /* Hide header when embedded — the parent page provides the title */
+  if (window !== window.top) {
+    document.querySelector('.header').style.display = 'none';
+  }
+
+})();
+</script>
+</body>
+</html>

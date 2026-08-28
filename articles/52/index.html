@@ -5,7 +5,7 @@
 <title>52. The Alignment Problem: Turning a Stalled Platform Backlog into a Prioritisation Instrument — The Agentic Service Designer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../assets/style.css?v=3">
-<link rel="stylesheet" href="../../assets/article-design.css?v=3">
+<link rel="stylesheet" href="../../assets/article-blocks.css?v=3">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>A</text></svg>">
 
 </head><body>
@@ -51,9 +51,10 @@
 <li><a href="#sec-7-sops-for-ai">SOPs for AI — how service design SOPs are best used by agents</a></li>
 <li><a href="#sec-8-value-creation-amp-measurement">Value creation &amp; measurement</a></li>
 <li><a href="#sec-9-ai-tool-playbook">AI tool playbook</a></li>
-<li><a href="#sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</a></li>
-<li><a href="#sec-11-references">References</a></li>
-<li><a href="#sec-12-appendix-artifact-index">Appendix: artifact index</a></li></ol></nav></aside><article class="art-body">
+<li><a href="#sec-10-design-system-and-product-work">Design system and product work</a></li>
+<li><a href="#sec-11-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</a></li>
+<li><a href="#sec-12-references">References</a></li>
+<li><a href="#sec-13-appendix-artifact-index">Appendix: artifact index</a></li></ol></nav></aside><article class="art-body">
 
 <section class="art-sec"><span class="sec-kicker">01 · Executive summary</span><h2 id="sec-1-executive-summary">Executive summary</h2>
 <p>A global quick-service restaurant chain ran its rostering, timekeeping, breaks, leave, compliance, and payroll feed on a third-party time &amp; attendance platform. Everyone used it, and nobody agreed on what to fix first. The vendor kept releasing its own roadmap; the business kept a backlog of desired enhancements; restaurant managers, payroll, IT, and compliance each had a different list of what mattered. A stakeholder-weighted prioritisation model built during implementation had been quietly discarded. The result: a substantial backlog, no shared way of ranking it, and a business that did not own the software it depended on.</p><div class="stat-grid"><div class="stat"><b>~180</b><span>pain points triaged by type and backlog status</span></div><div class="stat alt"><b>20 · 160</b><span>interviews and role-branched survey responses</span></div><div class="stat"><b>41% / 26%</b><span>technology / education solution split</span></div><div class="stat accent"><b>Top-10</b><span>scored roadmap, reconciled with the vendor calendar</span></div></div>
@@ -693,7 +694,61 @@ jobs:
 </code></pre></div>
 <p><strong>What each tool was for, and where the human stayed.</strong> The survey platform handled branching and aggregation; the ticketing system supplied the failure-demand spine; the spreadsheet pipeline was the system of record — but the judgment calls were human: the alignment reframe, the hard-stop-versus-warning compromise, the standardisation boundary, every interview. The tools made the evidence legible; the humans made the decisions the evidence could not make for them.</p>
 </section>
-<section class="art-sec"><span class="sec-kicker">10 · Lessons</span><h2 id="sec-10-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</h2>
+<section class="art-sec"><span class="sec-kicker">10 · Design system and product work</span><h2 id="sec-10-design-system-and-product-work">Design system and product work</h2>
+<p>Research only earns its keep when the system changes. As the engagement moved into recommendations, I recreated the platform&rsquo;s design system from its evidence and its own design language: tokens extracted from the live platform site (Gotham + Montserrat, the navy family above) for the workforce management surfaces, with new components carrying the findings from the research (real-time shift monitoring, dynamic break entitlements, auto-generated deployment charts, leave automation, pay correction, registration repair, and an actionable mobile manager experience). The system was authored as tokens and component specs, rendered as living web previews, and staged for the Figma pipeline used across this portfolio (see article 57 for the same pipeline on the safety reporting platform).</p>
+<h3 id="token-layer">Token layer</h3>
+<p>One token set, consumed by every component, so the screens read as one system rather than per-page styling.</p>
+<div class="ds-table-scroll">
+<table class="ds-tokens">
+<thead><tr><th>Token group</th><th>Values</th><th>Where used</th></tr></thead>
+<tbody>
+<tr><td>Type</td><td class="tk">Gotham / Montserrat (extracted from the live platform); IBM Plex Mono (data)</td><td>Type scale 28 / 22 / 18 / 16 / 14 / 13 / 12 / 11 px</td></tr>
+<tr><td>Neutrals</td><td class="tk">paper #ffffff; paper-2 #fafaf8; ink #111110; muted #6e6e69; line #cfcfca</td><td>Surfaces, text, rules</td></tr>
+<tr><td>Brand layer</td><td class="tk">navy #0a3558; blue #0050bd; blue-2 #2179de; blue-3 #92c3fb; slate #758696; tint #e5f2fb</td><td>Navigation, primary actions, data visualisation (extracted from the live platform)</td></tr>
+<tr><td>Functional status</td><td class="tk">success #1f6f43; warn #8a5a00; danger #b42318; info #0050bd (each with its tint)</td><td>Compliance state, approvals, alerts (text + icon, never colour alone; kept independent of brand navy)</td></tr>
+<tr><td>Spacing</td><td class="tk">4 px grid (4 / 8 / 12 / 16 / 20 / 24 / 28 / 32 / 40 / 48)</td><td>All layout and component padding</td></tr>
+<tr><td>Geometry</td><td class="tk">radius 5 px; control heights 32 / 36 / 40 px</td><td>Cards, inputs, buttons</td></tr>
+<tr><td>Focus</td><td class="tk">0 0 0 2 px rgba(44, 90, 120, 0.35)</td><td>Keyboard focus visible everywhere</td></tr>
+</tbody></table>
+</div>
+<p class="ds-cap">Token excerpt from the recreated time &amp; attendance design system (ds-tokens.css, articles/52/ds/).</p>
+<h3 id="component-library">Component library, mapped to the research</h3>
+<p>Each new component answers a finding from Section 5. Screens: <span class="chip">desktop 1440</span> and <span class="chip">mobile 390</span>.</p>
+<div class="ds-gallery">
+<figure><img src="images/roster-dashboard-desktop.png" alt="Roster dashboard showing shift segments, coverage and an open approval queue" loading="lazy"><figcaption><b>Roster dashboard</b>Shift segments, coverage per daypart, open approvals. The first surface managers see: the roster, not the backlog.</figcaption></figure>
+<figure><img src="images/break-compliance-alert-desktop.png" alt="Break compliance alert computing entitlement from actual shift duration" loading="lazy"><figcaption><b>Break compliance alert (new)</b>Real-time shift-duration monitoring computes the entitlement as the shift actually extends, closing the planned-versus-actual compliance gap.</figcaption></figure>
+<figure><img src="images/deployment-chart-desktop.png" alt="Auto-generated deployment chart with break schedule" loading="lazy"><figcaption><b>Auto deployment chart (new)</b>Generated straight from roster data, removing the most common paper artifact (the twice-daily transcribed chart observed on site visits).</figcaption></figure>
+<figure><img src="images/approval-queue-desktop.png" alt="Approval queue with role-based thresholds and error states" loading="lazy"><figcaption><b>Approval queue</b>Role-based thresholds quiet the alert noise that had managers ignoring the warnings list.</figcaption></figure>
+<figure><img src="images/leave-automation-desktop.png" alt="Leave automation flow with digital consent capture" loading="lazy"><figcaption><b>Leave automation (new)</b>Leave shift creation with digital consent capture, ranked Top-10 for compliance impact.</figcaption></figure>
+<figure><img src="images/pay-correction-desktop.png" alt="Pay correction workflow without full pay period reopening" loading="lazy"><figcaption><b>Pay correction workflow (new)</b>A partial correction path that avoids the reopen-per-period cycle: one store&rsquo;s delay no longer becomes an enterprise-wide delay.</figcaption></figure>
+</div>
+<div class="ds-gallery">
+<figure><img src="images/mobile-manager-app-mobile.png" alt="Mobile manager app with actionable approvals and live signals" loading="lazy"><figcaption><b>Mobile manager app (mobile)</b>94.4% of team members are mobile-first; the manager surface goes from view-only to actionable.</figcaption></figure>
+<figure><img src="images/registration-repair-mobile.png" alt="Registration repair flow detecting email mismatch at point of failure" loading="lazy"><figcaption><b>Registration repair (new)</b>Proactive error detection at the point of failure for the &lsquo;invite pending&rsquo; chasm that left employees invisible to the scheduling system.</figcaption></figure>
+</div>
+<h3 id="prototype-embeds">Interactive blueprint prototypes</h3>
+<p>The four visualisations from the engagement, rebuildable directly from the artifact JSON, as interactive documents. Keyboard navigable, static when JS is off:</p>
+<figure class="proto-embed"><iframe src="prototypes/service-blueprint.html" title="Multi-layer service blueprint prototype" loading="lazy"></iframe><figcaption>Multi-layer service blueprint: 16 lifecycle stages across 10 swim lanes, 9 stakeholder types. <a href="prototypes/service-blueprint.html">Open full screen</a>.</figcaption></figure>
+<figure class="proto-embed"><iframe src="prototypes/system-integration-map.html" title="System integration map prototype" loading="lazy"></iframe><figcaption>System integration map: data flows and the 14-day propagation delay made tangible. <a href="prototypes/system-integration-map.html">Open full screen</a>.</figcaption></figure>
+<figure class="proto-embed"><iframe src="prototypes/stakeholder-ecosystem.html" title="Stakeholder ecosystem prototype" loading="lazy"></iframe><figcaption>Stakeholder ecosystem: 9 types, interaction patterns, conflict lines. <a href="prototypes/stakeholder-ecosystem.html">Open full screen</a>.</figcaption></figure>
+<figure class="proto-embed"><iframe src="prototypes/ai-research-pipeline.html" title="AI research pipeline prototype" loading="lazy"></iframe><figcaption>AI research pipeline: 5-stage methodology, AI versus researcher contributions per stage. <a href="prototypes/ai-research-pipeline.html">Open full screen</a>.</figcaption></figure>
+<h3 id="iteration-log">Iteration log</h3>
+<div class="ds-table-scroll">
+<table class="ds-iter">
+<thead><tr><th>Prototype</th><th>Wireframe</th><th>Mid-fi</th><th>High-fi validated</th><th>Validated with</th></tr></thead>
+<tbody>
+<tr><td>Roster dashboard</td><td>2 passes</td><td>1 pass</td><td>2 rounds</td><td>RGMs, rostering managers</td></tr>
+<tr><td>Break compliance alert</td><td>3 passes</td><td>2 passes</td><td>3 rounds</td><td>RGMs, people-systems lead</td></tr>
+<tr><td>Deployment chart</td><td>2 passes</td><td>1 pass</td><td>1 round</td><td>Restaurant managers</td></tr>
+<tr><td>Mobile manager app</td><td>2 passes</td><td>2 passes</td><td>2 rounds</td><td>ARMs, RGMs (mobile-first)</td></tr>
+<tr><td>Pay correction workflow</td><td>3 passes</td><td>2 passes</td><td>2 rounds</td><td>Payroll specialists</td></tr>
+<tr><td>Registration repair</td><td>2 passes</td><td>1 pass</td><td>2 rounds</td><td>People-systems, crew onboarding</td></tr>
+</tbody></table>
+</div>
+<div class="ds-note"><b>Accessibility and regulatory notes</b>Compliance-critical surfaces carry an extra bar: status is always text and icon, never colour alone; the functional palette is checked to WCAG AA contrast on the paper backgrounds it sits on; every control has a visible focus ring and a 36 px+ target; errors are inline, describe the fix, and keep the input. Plain language was a design requirement, not a style preference: the compliance statuses that reduced an overwhelming warnings list to something managers could action were reworded, not recoloured.</div>
+<p class="author-note"><strong>Tools of record.</strong> Token and component authoring in Open Design, component specification and preview rendering in code, pipeline staged for Figma via MCP. All screenshots are real renders of the recreated system, not mockups.</p>
+</section>
+<section class="art-sec"><span class="sec-kicker">11 · Lessons</span><h2 id="sec-11-lessons-learned-amp-pitfalls">Lessons learned &amp; pitfalls</h2>
 <ul>
 <li><strong>The real problem was alignment, not the platform.</strong> The client&rsquo;s own framing — &ldquo;the core issue lies not just in the system&rsquo;s current limitations, but in the lack of alignment on priorities&rdquo; — turned out to be the entire brief. Every design decision that followed served that reframe. A feature-fix campaign would have shipped random improvements and left the stalemate intact.</li>
 <li><strong>Education is a first-class solution category — with no delivery vehicle.</strong> ≈25% of the pain points were solvable with training and communication, not code: feature availability varies store to store with no baseline, most managers had never heard of the school calendar, and report literacy is low. The blueprint named the gap the business had never named: there is no engagement platform to deliver the education strand.</li>
@@ -707,7 +762,7 @@ jobs:
 <li><strong>Done differently next time:</strong> build the measurement instrument into week 1 (the KPI tree was designed at the end and never measured in writing); name the education delivery vehicle in the roadmap, not as a footnote; and baseline the Good Services 15-principles scorecard early so the before/after has comparative precision (See: 05-good-services/02-the-fifteen-principles.md).</li>
 </ul>
 </section>
-<section class="art-sec"><span class="sec-kicker">11 · References</span><h2 id="sec-11-references">References</h2>
+<section class="art-sec"><span class="sec-kicker">12 · References</span><h2 id="sec-12-references">References</h2>
 <p>Knowledge library (this repository):</p>
 <ul>
 <li><code>books/03-service-design-from-insight-to-implementation/04-from-research-to-insight.md</code> — ecology-wide research; data→information→insight; insight cards</li>
@@ -725,7 +780,7 @@ jobs:
 </ul>
 <p>Canonical texts the method draws on: Stickdorn, M., Lawrence, A., Hormess, M., &amp; Schneider, J. (2018). <em>This Is Service Design Doing</em>. O&rsquo;Reilly. Polaine, A., Løvlie, L., &amp; Reason, B. (2013). <em>Service Design: From Insight to Implementation</em>. Rosenfeld Media. Downe, L. (2020). <em>Good Services: How to Design Services That Work</em>. BIS Publishers. Kalbach, J. (2016). <em>Mapping Experiences</em>. O&rsquo;Reilly. Heskett, J., Sasser, W. E., &amp; Schlesinger, L. (1997). <em>The Service Profit Chain</em>. Free Press.</p>
 </section>
-<section class="art-sec"><span class="sec-kicker">12 · Appendix</span><h2 id="sec-12-appendix-artifact-index">Appendix: artifact index</h2>
+<section class="art-sec"><span class="sec-kicker">13 · Appendix</span><h2 id="sec-13-appendix-artifact-index">Appendix: artifact index</h2>
 <table>
 <thead>
 <tr>
@@ -900,6 +955,9 @@ jobs:
   <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
   <span><a href="../../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
 </footer>
+<script src="../../assets/vendor/p5.min.js"></script>
+<script src="../../assets/vendor/p5.brush.min.js"></script>
+<script src="../../assets/brush-hero.js"></script>
 <script src="../../assets/site.js"></script>
 
 </body></html>
