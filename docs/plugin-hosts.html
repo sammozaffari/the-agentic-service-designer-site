@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8">
+<html lang="en-AU"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="How one canonical Service Design tree emits twelve deterministic targets for the CLI, MCP, coding agents, BUZZ, and DSH.">
 <title>Host packs and the compiler — The Agentic Service Designer</title>
@@ -10,15 +10,14 @@
 </head><body>
 <header class="site-head">
   <a class="brand" href="../index.html">
-    <div class="brand-title">The Agentic Service Designer</div>
-    <div class="brand-sub">Sam Mozaffari</div>
+    <div class="brand-title">Sam Mozaffari</div>
+    <div class="brand-sub">Experience Designer</div>
   </a>
   <nav class="main-nav">
     <a href="../index.html" class="">Home</a>
     <a href="../articles.html" class="">Work</a>
     <a href="../about.html" class="">About</a>
     <a href="../cv.html" class="">CV</a>
-    <a href="../library.html" class="on">Library</a>
   </nav>
 </header>
 <main class="art">
@@ -32,7 +31,7 @@
   <div class="art-layout"><aside class="art-rail"><nav class="docs-nav" aria-label="Docs"><b>Surfaces</b><ol><li><a href="./plugin-claude-code.html">The Claude Code plugin</a></li><li><a href="./plugin-hosts.html" class="on">Host packs and the compiler</a></li><li><a href="./mcp.html">The MCP server</a></li><li><a href="./cli.html">The CLI</a></li><li><a href="./dsh-workbench.html">The DeepSeek Harness workbench</a></li><li><a href="./buzz.html">BUZZ integration</a></li></ol></nav><nav class="toc" aria-label="On this page"><b>On this page</b><ol><li><a href="#emit-and-validate">Emit and validate</a></li><li><a href="#pack-matrix">Pack matrix</a></li><li><a href="#claude-code">Claude Code</a></li><li><a href="#opencode">OpenCode</a></li><li><a href="#codex">Codex</a></li><li><a href="#kimi">Kimi</a></li><li><a href="#prompt-only-and-neutral-targets">Prompt-only and neutral targets</a></li><li><a href="#buzz-and-dsh">BUZZ and DSH</a></li><li><a href="#regeneration-rule">Regeneration rule</a></li></ol></nav></aside><article class="art-body"><h1 id="host-packs-and-the-compiler">Host packs and the compiler</h1>
 <p><code>platform/</code> is the source of truth. <code>platform/compiler/compile.mjs</code> builds the
 canonical inventory; <code>generate-skills.mjs</code> renders 74 executable method skills
-from 75 sources; <code>emit-packs.mjs</code> projects the same ten roles, metadata, and
+from 74 method skills; <code>emit-packs.mjs</code> projects the same ten roles, metadata, and
 vendored runtime into twelve host targets. A pack is a distribution boundary,
 not a second implementation.</p>
 <figure class="fig fig-flow"><svg class="fgsvg flow" viewBox="0 0 903 221" role="img" aria-hidden="true"><defs><marker id="arr-1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 1 L 9 5 L 0 9" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path d="M 186,31.5 219.6,31.5 302.5746835443038,89" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 186,110.5 219.6,110.5 245.60000000000002,110.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 193.6,189.5 219.6,189.5 302.5746835443038,132" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 421.6,110.5 447.6,110.5 473.6,110.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 623.321212121212,89 660.4,77.5 701.5999999999999,77.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><path d="M 623.321212121212,132 660.4,143.5 686.3999999999999,143.5" fill="none" stroke="#171817" stroke-width="1.2" marker-end="url(#arr-1)"/><rect x="17.599999999999994" y="10" width="168.4" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="101.8" y="29" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">platform/agents\n10</text><text x="101.8" y="42" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">roles</text><rect x="245.60000000000002" y="89" width="176" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="333.6" y="108" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">compiler\nmanifest +</text><text x="333.6" y="121" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">capabilities</text><rect x="17.599999999999994" y="89" width="168.4" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="101.8" y="108" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">platform/skills\n75</text><text x="101.8" y="121" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">sources</text><rect x="10" y="168" width="183.6" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="101.8" y="187" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">platform/templates\n6</text><text x="101.8" y="200" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">authored</text><rect x="473.6" y="89" width="160.79999999999998" height="43" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="554" y="108" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">platform/packs\n12</text><text x="554" y="121" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">targets</text><rect x="701.5999999999999" y="62.5" width="176" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="789.5999999999999" y="81.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">host-specific layout</text><rect x="686.3999999999999" y="128.5" width="206.39999999999998" height="30" rx="4" fill="none" stroke="currentColor" stroke-width="1"/><text x="789.5999999999999" y="147.5" font-family="Inter, "Helvetica Neue", Helvetica, Arial, sans-serif" font-size="10.5" fill="#22221e" font-weight="400" text-anchor="middle" letter-spacing="0">pack-local MCP\n29 tools</text></svg></figure>
@@ -44,9 +43,9 @@ node platform/compiler/emit-packs.mjs --output /tmp/asd-packs
 </code></pre></div>
 <p>Use <code>--output</code> for a disposable emission. A release emission boots the emitted
 CLI and six MCP targets in isolated HOME/PATH/cwd/workspaces, then checks
-determinism and pack drift. The current receipt records 12 targets and fresh
+determinism and pack drift. The current receipt records 10 targets and fresh
 stdio evidence for <code>buzz</code>, <code>claude-code</code>, <code>codex</code>, <code>kimi</code>, <code>mcp</code>, and <code>opencode</code>:
-each reported 29 tools, 232 paginated resources, 10 prompts, a clean project →
+each reported 29 tools, 232 paginated resources, , a clean project →
 evidence → artifact → evidence-cited review → factcheck workflow, and no ambient
 executable invocation. This does not prove a native host UI loaded a pack.</p>
 <div class="codeblock"><div class="codebar"><span>TERMINAL</span></div><pre><code>npm run test:scripts
@@ -223,8 +222,8 @@ parity with the canonical inventory.</p>
   <button class="backtop" id="backtop" type="button">Back to top</button>
 </main>
 <footer class="footer">
-  <span>Sam Mozaffari — The Agentic Service Designer. An archive of an emerging design practice.</span>
-  <span><a href="../llms.txt">llms.txt for AI recruiters</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
+  <span>Sam Mozaffari · Experience Designer, Sydney.</span>
+  <span><a href="../library.html">Library</a> · <a href="../llms.txt">llms.txt</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
 </footer>
 <script src="../assets/site.js"></script>
 
