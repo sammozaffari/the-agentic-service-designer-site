@@ -9,7 +9,7 @@ Usage: blueprint_poster.py spec.json out.svg
 import json, sys, textwrap
 
 INK = "#111110"; SOFT = "#4a4a46"; MUTED = "#6e6e69"; LINE = "#bdbdb7"; TINT = "#f4f3ee"; FAIL = "#b3261e"
-LANE_BG = ["#ffffff", "#fbfaf6", "#f4f3ee", "#eeede7", "#fdf3f2"]
+LANE_BG = ["#ffffff", "#fbfaf6", "#f4f3ee", "#eeede7"]; FAIL_BG = "#fdf3f2"
 
 def esc(s): return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
@@ -49,8 +49,8 @@ def render(spec):
             if lines.get(key) == li:
                 out.append(f'<line x1="20" y1="{y}" x2="{W-20}" y2="{y}" stroke="{INK}" stroke-width="1.5" stroke-dasharray="6 4"/>')
                 out.append(f'<text x="{W-24}" y="{y-4}" text-anchor="end" font-family="Inter, Helvetica, Arial, sans-serif" font-size="11" fill="{SOFT}">{lbl}</text>')
-        bg = LANE_BG[min(li, len(LANE_BG) - 1)]
         is_fail = lane["name"].lower().startswith("fail")
+        bg = FAIL_BG if is_fail else LANE_BG[li % len(LANE_BG)]
         out.append(f'<rect x="20" y="{y}" width="{label_w}" height="{rh}" fill="{bg}" stroke="{LINE}"/>')
         for k, ln in enumerate(wrap(lane["name"], 20)):
             out.append(f'<text x="30" y="{y+22+k*16}" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="{FAIL if is_fail else INK}">{esc(ln)}</text>')
