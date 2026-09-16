@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Mechanism-first incident and hazard reporting form: an interactive concept prototype with states, built from the December 2025 safety reporting research.">
+<title>Mechanism-first incident form · Sam Mozaffari</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#111110;--ink-soft:#4a4a46;--muted:#6e6e69;--line:#bdbdb7;--paper:#fff;--tint:#f4f3ee;--focus:#1d4ed8;--err:#b3261e;--ok:#1f6b3a;--okbg:#eaf4ec;--errbg:#fbeae8}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--tint);color:var(--ink);font:15px/1.5 Inter,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:#fff;padding:8px 12px}
+.skip:focus{left:8px;top:8px;z-index:9}
+header.top{background:var(--paper);border-bottom:1px solid var(--line)}
+header.top .row{max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:baseline}
+header.top h1{font-size:18px;margin:0;font-weight:700}
+header.top .note{color:var(--muted);font-size:13px}
+header.top a.back{margin-left:auto;font-size:13px;color:var(--ink-soft)}
+main{max-width:1180px;margin:0 auto;padding:24px}
+.intro{max-width:74ch;margin:0 0 18px}
+.intro p{margin:0 0 8px;color:var(--ink-soft)}
+.intro b{color:var(--ink)}
+nav.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 20px}
+nav.tabs button{font:inherit;font-size:14px;font-weight:500;padding:8px 12px;border:1px solid var(--line);background:var(--paper);border-radius:6px;cursor:pointer;color:var(--ink)}
+nav.tabs button[aria-selected=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.stage{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:860px){.stage{grid-template-columns:1fr}}
+.phone{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:18px 16px 20px;min-height:640px;box-shadow:0 10px 40px rgba(0,0,0,.06);position:relative}
+.phone .bar{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:12px}
+.phone h2{font-size:20px;line-height:1.2;margin:0 0 4px;font-weight:700;letter-spacing:-.01em}
+.phone h2:focus{outline:none}
+.phone .step{font-size:12.5px;color:var(--muted);margin:0 0 14px}
+fieldset{border:0;padding:0;margin:0 0 14px;min-width:0}
+legend{font-weight:600;font-size:15px;margin:0 0 4px;padding:0}
+.hint{font-size:13px;color:var(--muted);margin:0 0 8px}
+label.field{display:block;font-weight:600;font-size:14px;margin:12px 0 4px}
+label.field small{display:block;font-weight:400;color:var(--muted);font-size:12.5px}
+input[type=text],input[type=time],input[type=date],select,textarea{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+textarea{min-height:76px;resize:vertical}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choices.one{grid-template-columns:1fr}
+.choice{position:relative}
+.choice input{position:absolute;opacity:0;width:1px;height:1px}
+.choice label{display:block;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer;font-size:14px;line-height:1.3}
+.choice label b{display:block;font-weight:600}
+.choice label span{color:var(--muted);font-size:12.5px}
+.choice input:checked+label{border-color:var(--ink);background:var(--ink);color:#fff}
+.choice input:checked+label span{color:#d8d8d3}
+.choice input:focus-visible+label,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.photo{border:1px dashed var(--line);border-radius:8px;padding:14px;text-align:center;color:var(--muted);font-size:13.5px;background:var(--tint)}
+.actions{display:flex;gap:8px;justify-content:space-between;margin-top:18px}
+button.primary,button.secondary{font:inherit;font-size:15px;font-weight:600;padding:11px 16px;border-radius:8px;cursor:pointer;border:1px solid var(--ink)}
+button.primary{background:var(--ink);color:#fff}
+button.secondary{background:#fff;color:var(--ink)}
+button.primary:disabled{opacity:.45;cursor:not-allowed}
+.error{display:none;background:var(--errbg);border-left:4px solid var(--err);color:#5a1a14;padding:8px 12px;border-radius:0 8px 8px 0;font-size:13.5px;margin:0 0 12px}
+.error.show{display:block}
+.field-error{color:var(--err);font-size:13px;margin:4px 0 0;display:none}
+.field-error.show{display:block}
+.invalid{border-color:var(--err)!important}
+.success{background:var(--okbg);border:1px solid #bfe0c7;border-radius:12px;padding:16px}
+.success h3{margin:0 0 6px;font-size:17px;color:var(--ok)}
+.success p,.success li{font-size:14px;margin:0 0 6px}
+.success ul{padding-left:18px;margin:6px 0 0}
+.summary{background:var(--tint);border-radius:10px;padding:12px 14px;font-size:14px;margin:0 0 14px}
+.summary dl{margin:0;display:grid;grid-template-columns:110px 1fr;gap:4px 10px}
+.summary dt{color:var(--muted)}.summary dd{margin:0}
+.chk{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid #eee;font-size:14px}
+.chk input{width:18px;height:18px;margin:2px 0 0}
+.side h2{font-size:17px;margin:0 0 6px}
+.side h3{font-size:14px;margin:16px 0 4px}
+.side p,.side li{font-size:14px;color:var(--ink-soft);margin:0 0 6px}
+.side ul{padding-left:18px;margin:0}
+.side .card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+.side .ev{font-size:12.5px;color:var(--muted)}
+.pill{display:inline-block;font-size:12px;border:1px solid var(--line);border-radius:999px;padding:2px 8px;margin:0 6px 6px 0;color:var(--ink-soft);background:#fff}
+.current .old{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#fff;margin:8px 0}
+.current .old p{margin:0;font-size:13.5px;color:var(--ink-soft)}
+.current .flag{font-size:12.5px;color:var(--err);margin:4px 0 0}
+[hidden]{display:none!important}
+footer{max-width:1180px;margin:30px auto 0;padding:14px 24px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+@media (prefers-reduced-motion:no-preference){.phone{transition:none}}
+</style></head>
+<body>
+<a class="skip" href="#main">Skip to the prototype</a>
+<header class="top"><div class="row">
+  <h1>Mechanism-first incident form</h1>
+  <span class="note">Concept prototype, built September 2026 from the December 2025 research</span>
+  <a class="back" href="../index.html">Back to the case</a>
+</div></header>
+<main id="main">
+  <div class="intro">
+    <p><b>What you are looking at.</b> The incident and hazard reporting flow the safety research proposed, working, with its states. The research found that the live form asked the reporter two things they could not know in the moment: what the outcome of the injury would be, and whether the event was notifiable to the regulator. This design asks what happened in the reporter's own words and moves severity and the regulatory question to the manager's review, after the welfare check.</p>
+    <p>Use the tabs to compare the current form with the proposal, then walk the incident flow, the hazard flow and the manager's review. Field names in the current form are generalised from the research notes; the vendor's product is not reproduced.</p>
+  </div>
+  <nav class="tabs" role="tablist" aria-label="Prototype views">
+    <button role="tab" data-view="current" aria-selected="true">Current form</button>
+    <button role="tab" data-view="entry" aria-selected="false">Proposed: start</button>
+    <button role="tab" data-view="incident" aria-selected="false">Incident flow</button>
+    <button role="tab" data-view="hazard" aria-selected="false">Hazard flow</button>
+    <button role="tab" data-view="manager" aria-selected="false">Manager review</button>
+  </nav>
+
+  <div class="stage">
+    <div class="phone" id="phone" aria-live="polite">
+
+      <!-- CURRENT -->
+      <section data-panel="current" class="current">
+        <div class="bar"><span>Current form (generalised)</span><span>1 screen, 14 fields</span></div>
+        <h2>Report an incident</h2>
+        <p class="step">As the research found it: outcome first, regulator second, what happened last.</p>
+        <label class="field" for="c-type">Incident type <small>Required</small></label>
+        <select id="c-type"><option>Select…</option><option>Injury: first aid only</option><option>Injury: medical treatment, no lost time</option><option>Injury: medical treatment, lost time under one shift</option><option>Injury: medical treatment, lost time over one shift</option><option>Near miss</option><option>Property damage</option><option>Attempted physical assault</option><option>Verbal abuse</option><option>Environmental</option><option>Vehicle</option><option>Illness</option><option>Other</option></select>
+        <p class="flag">Asks the reporter to predict the outcome while their hand is under the cold tap.</p>
+        <label class="field" for="c-notif">Is this notifiable to the regulator? <small>Required. See the compliance matrix.</small></label>
+        <select id="c-notif"><option>Select…</option><option>Yes</option><option>No</option><option>Unsure</option></select>
+        <p class="flag">Even area safety leads said they asked the restaurant's safety champion which option to pick.</p>
+        <label class="field" for="c-cat">Hazard category</label>
+        <select id="c-cat"><option>Select…</option><option>Slip, trip, fall</option><option>Manual handling</option><option>Electrical</option><option>Verbal abuse</option><option>Attempted physical assault</option><option>Chemical</option><option>Other</option></select>
+        <p class="flag">Events mixed into a list that should hold conditions only.</p>
+        <label class="field" for="c-desc">Description</label>
+        <textarea id="c-desc" placeholder="Describe what happened"></textarea>
+        <label class="field" for="c-when">Date and time</label>
+        <input type="text" id="c-when" placeholder="DD/MM/YYYY HH:MM">
+        <div class="actions"><span></span><button class="primary" type="button" disabled>Submit</button></div>
+      </section>
+
+      <!-- ENTRY -->
+      <section data-panel="entry" hidden>
+        <div class="bar"><span>Proposed</span><span>Start</span></div>
+        <h2>What would you like to report?</h2>
+        <p class="step">One starting point. No need to know the terminology.</p>
+        <div class="error" id="entry-error" role="alert">Choose one option to continue.</div>
+        <fieldset>
+          <legend class="visually-hidden" style="position:absolute;left:-9999px">Report type</legend>
+          <div class="choices one">
+            <div class="choice"><input type="radio" name="entry" id="e-inc" value="incident"><label for="e-inc"><b>Something happened</b><span>An injury, a near miss or an event that occurred</span></label></div>
+            <div class="choice"><input type="radio" name="entry" id="e-haz" value="hazard"><label for="e-haz"><b>I spotted a hazard</b><span>A condition that could cause harm</span></label></div>
+          </div>
+        </fieldset>
+        <p class="hint"><b>Not sure?</b> "I burned my hand on the fryer" and "a customer slipped" are incidents. "The floor is wet" and "the exit is blocked by boxes" are hazards.</p>
+        <div class="actions"><span></span><button class="primary" type="button" id="entry-next">Continue</button></div>
+      </section>
+
+      <!-- INCIDENT -->
+      <section data-panel="incident" hidden>
+        <div class="bar"><span>Proposed</span><span id="inc-count">Step 1 of 4</span></div>
+        <h2>Report an incident</h2>
+        <p class="step" id="inc-step-label">What happened?</p>
+        <div class="error" id="inc-error" role="alert"></div>
+        <form id="inc-form" novalidate>
+          <div data-step="1">
+            <fieldset><legend>What happened?</legend><p class="hint">Pick the closest. The manager classifies severity later.</p>
+              <div class="choices" id="mech"></div>
+              <p class="field-error" id="mech-err">Choose what happened.</p>
+            </fieldset>
+          </div>
+          <div data-step="2" hidden>
+            <fieldset><legend>How did it happen?</legend><p class="hint" id="how-hint">Only the causes that fit what you chose.</p>
+              <div class="choices" id="how"></div>
+              <p class="field-error" id="how-err">Choose how it happened.</p>
+            </fieldset>
+          </div>
+          <div data-step="3" hidden>
+            <label class="field" for="body">Where on the body? <small>If it applies</small></label>
+            <select id="body"><option value="">Select…</option><option>Hand or fingers</option><option>Arm</option><option>Leg</option><option>Foot</option><option>Back</option><option>Head or face</option><option>Torso or chest</option><option>Multiple areas</option><option>Not applicable</option></select>
+            <label class="field" for="equip">Equipment involved <small>Optional. Leave blank if none.</small></label>
+            <input type="text" id="equip" placeholder="For example, fryer 2">
+          </div>
+          <div data-step="4" hidden>
+            <label class="field" for="when">When did this happen? <small>Required</small></label>
+            <input type="time" id="when">
+            <p class="field-error" id="when-err">Enter the time, roughly is fine.</p>
+            <label class="field" for="where">Where did this happen? <small>Required</small></label>
+            <select id="where"><option value="">Select…</option><option>Kitchen</option><option>Front counter</option><option>Drive-thru</option><option>Dining area</option><option>Back of house</option><option>Car park</option><option>Office</option><option>Other</option></select>
+            <p class="field-error" id="where-err">Choose where it happened.</p>
+            <label class="field" for="more">Anything else to add? <small>Optional</small></label>
+            <textarea id="more"></textarea>
+            <label class="field">Add a photo <small>Optional</small></label>
+            <div class="photo">Tap to take or upload a photo</div>
+          </div>
+          <div data-step="5" hidden>
+            <div class="success"><h3>Report submitted</h3>
+              <p>Your manager has been notified and will check on you shortly.</p>
+              <p><b>What happens next</b></p>
+              <ul><li>Welfare check with your manager</li><li>The manager classifies severity from what actually happened</li><li>Regulatory questions are answered at the manager's review, not by you</li><li>You are told what changed as a result</li></ul>
+            </div>
+            <div class="summary" style="margin-top:14px"><dl id="inc-summary"></dl></div>
+          </div>
+        </form>
+        <div class="actions"><button class="secondary" type="button" id="inc-back">Back</button><button class="primary" type="button" id="inc-next">Next</button></div>
+      </section>
+
+      <!-- HAZARD -->
+      <section data-panel="hazard" hidden>
+        <div class="bar"><span>Proposed</span><span id="haz-count">Step 1 of 3</span></div>
+        <h2>Report a hazard</h2>
+        <p class="step" id="haz-step-label">What kind of hazard?</p>
+        <div class="error" id="haz-error" role="alert"></div>
+        <form id="haz-form" novalidate>
+          <div data-step="1">
+            <fieldset><legend>What type of hazard did you spot?</legend><p class="hint">Hazards are conditions that could cause harm. Events go in an incident report.</p>
+              <div class="choices" id="hz"></div>
+              <p class="field-error" id="hz-err">Choose the type of hazard.</p>
+            </fieldset>
+          </div>
+          <div data-step="2" hidden>
+            <label class="field" for="hz-where">Where is this hazard? <small>Required</small></label>
+            <select id="hz-where"><option value="">Select…</option><option>Kitchen</option><option>Front counter</option><option>Drive-thru</option><option>Dining area</option><option>Back of house</option><option>Car park</option><option>Office</option><option>Other</option></select>
+            <p class="field-error" id="hz-where-err">Choose where the hazard is.</p>
+            <label class="field" for="hz-desc">Describe the hazard <small>Required</small></label>
+            <textarea id="hz-desc" placeholder="What is it, and who could it hurt?"></textarea>
+            <p class="field-error" id="hz-desc-err">Say what the hazard is.</p>
+            <label class="field">Add a photo <small>Recommended. A photo helps others fix it faster.</small></label>
+            <div class="photo">Tap to take or upload a photo</div>
+          </div>
+          <div data-step="3" hidden>
+            <div class="success"><h3>Hazard reported</h3>
+              <p>Your manager has been notified.</p>
+              <p><b>What happens next</b></p>
+              <ul><li>The manager reviews the hazard</li><li>Immediate action if it is needed</li><li>Tracked until it is resolved</li><li>You are told when it is fixed</li></ul>
+            </div>
+          </div>
+        </form>
+        <div class="actions"><button class="secondary" type="button" id="haz-back">Back</button><button class="primary" type="button" id="haz-next">Next</button></div>
+      </section>
+
+      <!-- MANAGER -->
+      <section data-panel="manager" hidden>
+        <div class="bar"><span>Proposed</span><span>Manager review</span></div>
+        <h2>Incident assessment</h2>
+        <p class="step">After the welfare check. Severity from what happened, not from a guess.</p>
+        <div class="summary"><b style="font-size:13px;color:var(--muted)">Team member's report</b>
+          <dl id="mgr-summary"><dt>What happened</dt><dd>Burn</dd><dt>How</dt><dd>Oil splash while filtering</dd><dt>Body part</dt><dd>Hand or fingers</dd><dt>Equipment</dt><dd>Fryer 2</dd><dt>When</dt><dd>10:45</dd><dt>Where</dt><dd>Kitchen</dd></dl>
+        </div>
+        <div class="error" id="mgr-error" role="alert"></div>
+        <form id="mgr-form" novalidate>
+          <fieldset><legend>Welfare check</legend>
+            <label class="chk"><input type="checkbox"> First aid provided</label>
+            <label class="chk"><input type="checkbox"> Fit to continue work</label>
+            <label class="chk"><input type="checkbox"> Sent for medical treatment</label>
+            <label class="chk"><input type="checkbox"> Sent home to rest</label>
+          </fieldset>
+          <label class="field" for="outcome">Outcome classification <small>Based on the treatment actually required</small></label>
+          <select id="outcome"><option value="">Select…</option><option>First aid only, treated on site</option><option>Medical treatment, no lost time</option><option>Medical treatment, lost time under one shift</option><option>Medical treatment, lost time over one shift</option><option>Notifiable to the regulator</option></select>
+          <p class="field-error" id="outcome-err">Classify the outcome.</p>
+          <label class="field" for="actions">Immediate actions taken</label>
+          <textarea id="actions"></textarea>
+          <label class="field" for="cause">Preliminary root cause</label>
+          <select id="cause"><option value="">Select…</option><option>Procedure not followed</option><option>Training gap</option><option>Equipment issue</option><option>Environmental factor</option><option>Time pressure or rushing</option><option>Fatigue</option><option>Other</option></select>
+        </form>
+        <div class="success" id="mgr-done" hidden style="margin-top:14px"><h3>Assessment submitted</h3><p>The reporter will be told what was decided and what changes.</p></div>
+        <div class="actions"><span></span><button class="primary" type="button" id="mgr-submit">Submit assessment</button></div>
+      </section>
+    </div>
+
+    <aside class="side" id="side"></aside>
+  </div>
+</main>
+<footer>Concept prototype by Sam Mozaffari, September 2026, from the safety reporting research of December 2025. It runs in the browser and saves nothing. The employer's system is not reproduced; the current-form fields are generalised from research notes.</footer>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const MECH=[['burn','Burn'],['cut','Cut'],['slip','Slip, trip or fall'],['hit','Hit by or against'],['manual','Manual handling'],['chem','Chemical'],['elec','Electrical'],['vehicle','Vehicle'],['person','Person issue'],['ill','Illness'],['prop','Property'],['other','Other']];
+const HOW={burn:['Oil splash while filtering or draining','Contact with a hot surface','Steam from equipment','Hot liquid spill','Other'],cut:['Using a knife','Opening packaging or boxes','Broken equipment or glass','Sharp edge on equipment','Other'],slip:['Wet or greasy floor','Obstacle in a walkway','Uneven surface','Rushing','Other'],manual:['Lifting a heavy item','Repetitive motion','Awkward posture','Carrying or moving stock','Other'],hit:['Hit by a falling object','Walked into an object','Struck by a door or equipment','Caught between objects','Other']};
+const HOW_DEFAULT=['During normal work','During cleaning','During a delivery','Other'];
+const HZ=['Hot surface','Sharp edge','Slip or trip risk','Electrical','Chemical','Equipment','Security risk','Manual handling','Fire risk','Poor lighting','Blocked exit','Other'];
+const SIDE={
+ current:`<div class="card"><h2>What the research found in the current form</h2><ul><li>Incident type came first, with options like first aid or lost time that nobody can predict in the moment. A burn that looks minor can need treatment later.</li><li>The regulator question sent people to a compliance matrix. Even area safety leads asked the restaurant's safety champion which option to choose.</li><li>Hazard categories mixed events (verbal abuse, attempted assault) into a list that should hold conditions only, so people did not know which form to use.</li><li>Misclassified reports were sent back, and newer managers struggled with the categories.</li></ul><p class="ev">Evidence in the case: dropdown options do not describe what happens in a kitchen; regulatory questions a team member cannot answer; classification errors are common and get sent back; severity assessment varies by manager.</p></div><div class="card"><h3>Alternative considered</h3><p>Help text on each field. Rejected: the categories themselves were the problem, an industrial taxonomy applied to a kitchen. Explaining a wrong question does not make it answerable.</p></div>`,
+ entry:`<div class="card"><h2>What changed</h2><ul><li>One starting point for every safety report.</li><li>Plain language instead of the platform's terms.</li><li>Examples show the difference between an incident and a hazard where the confusion actually happens: near misses.</li></ul><h3>Why</h3><p>Team members hesitated at the start because the incident-versus-hazard distinction was not clear to them, especially for near misses. Removing the choice of form removes the first place people gave up.</p><p class="ev">Sources: two team-member interviews and restaurant visit observation.</p></div>`,
+ incident:`<div class="card"><h2>What changed</h2><ul><li>Mechanism first: what happened (burn, cut, slip), not what the outcome will be.</li><li>Progressive disclosure: only the causes that fit the mechanism appear at step two.</li><li>Three or four taps replace a fifteen-option dropdown.</li><li>Severity and the regulator question move to the manager's review.</li></ul><h3>Why</h3><p>Team members know what happened. They do not know whether it is first aid or lost time, and the live form made them guess. Guesses became misclassified reports that were sent back, and the data lost its meaning.</p><h3>States shown</h3><p>Default, focus, validation error (try Next with nothing chosen), and the submitted state with a summary of what the manager will see.</p><p class="ev">Sources: the central safety team, two team-member interviews, the field-by-field walkthroughs.</p></div>`,
+ hazard:`<div class="card"><h2>What changed</h2><ul><li>Hazards are conditions only. Events belong in an incident report.</li><li>Three steps: what, where, describe and photo.</li><li>A photo is encouraged, not required, because it helps whoever has to fix it.</li></ul><h3>Why</h3><p>"The floor is wet" is a hazard. "Someone slipped" is an incident. The live hazard list included attempted assault and verbal abuse, which are events, so people did not know which form to use.</p><p class="ev">Sources: two team-member interviews and restaurant visit observation.</p></div>`,
+ manager:`<div class="card"><h2>What changed</h2><ul><li>Severity is classified by the manager from the treatment actually required.</li><li>The welfare check is a step in the process, not an assumption.</li><li>Root cause is captured at the point of knowledge.</li><li>The reporter is told what was decided.</li></ul><h3>Why</h3><p>Accurate severity data comes from what happened, not from a prediction. Managers have the context for cause; team members have the context for mechanism. Each form asks the person who knows.</p><p class="ev">Sources: the central safety team, an area safety lead, two team-member interviews.</p></div><div class="card"><h3>Status</h3><p>Proposed in the December 2025 findings report as the strategic recommendation, with a quick-report flow for time-pressured situations as the pilot. Implementation sat with the platform owner.</p></div>`
+};
+function choices(el,name,items){el.innerHTML=items.map((it,i)=>{const [v,l]=Array.isArray(it)?it:[it,it];const id=name+'-'+i;return `<div class="choice"><input type="radio" name="${name}" id="${id}" value="${v}"><label for="${id}">${l}</label></div>`}).join('')}
+choices($('#mech'),'mech',MECH); choices($('#hz'),'hz',HZ);
+function show(view){$$('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.view===view));$$('[data-panel]').forEach(p=>p.hidden=p.dataset.panel!==view);$('#side').innerHTML=SIDE[view];history.replaceState(null,'','#'+view);const h=$('[data-panel="'+view+'"] h2');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}
+$$('nav.tabs button').forEach(b=>b.addEventListener('click',()=>show(b.dataset.view)));
+// entry
+$('#entry-next').addEventListener('click',()=>{const v=document.querySelector('input[name=entry]:checked');if(!v){$('#entry-error').classList.add('show');return}$('#entry-error').classList.remove('show');show(v.value==='incident'?'incident':'hazard')});
+$$('input[name=entry]').forEach(r=>r.addEventListener('change',()=>$('#entry-error').classList.remove('show')));
+// incident
+let step=1; const LABELS={1:'What happened?',2:'How did it happen?',3:'Body part and equipment',4:'When and where',5:'Submitted'};
+function inc(n){step=n;$$('#inc-form [data-step]').forEach(d=>d.hidden=+d.dataset.step!==n);$('#inc-count').textContent=n<5?`Step ${n} of 4`:'Done';$('#inc-step-label').textContent=LABELS[n];$('#inc-back').hidden=n===1||n===5;$('#inc-next').textContent=n===4?'Submit report':n===5?'Start a new report':'Next';$('#inc-error').classList.remove('show');$$('.field-error').forEach(e=>e.classList.remove('show'));$$('.invalid').forEach(e=>e.classList.remove('invalid'))}
+function err(msg,fieldErr,field){$('#inc-error').textContent=msg;$('#inc-error').classList.add('show');if(fieldErr)$(fieldErr).classList.add('show');if(field)$(field).classList.add('invalid');const f=field?$(field):null;if(f)f.focus()}
+$('#inc-next').addEventListener('click',()=>{
+ if(step===1){const m=document.querySelector('input[name=mech]:checked');if(!m)return err('Choose what happened before continuing.','#mech-err');const how=HOW[m.value]||HOW_DEFAULT;choices($('#how'),'how',how);$('#how-hint').textContent=`Causes that fit "${MECH.find(x=>x[0]===m.value)[1].toLowerCase()}".`;return inc(2)}
+ if(step===2){if(!document.querySelector('input[name=how]:checked'))return err('Choose how it happened.','#how-err');return inc(3)}
+ if(step===3)return inc(4);
+ if(step===4){let bad=false;if(!$('#when').value){$('#when-err').classList.add('show');$('#when').classList.add('invalid');bad=true}if(!$('#where').value){$('#where-err').classList.add('show');$('#where').classList.add('invalid');bad=true}if(bad)return err('Two required fields are missing: when and where.');
+   const m=document.querySelector('input[name=mech]:checked'),h=document.querySelector('input[name=how]:checked');
+   $('#inc-summary').innerHTML=[['What happened',MECH.find(x=>x[0]===m.value)[1]],['How',h.value],['Body part',$('#body').value||'Not given'],['Equipment',$('#equip').value||'None'],['When',$('#when').value],['Where',$('#where').value]].map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('');
+   $('#mgr-summary').innerHTML=$('#inc-summary').innerHTML; return inc(5)}
+ if(step===5){$('#inc-form').reset();inc(1)}
+});
+$('#inc-back').addEventListener('click',()=>inc(Math.max(1,step-1)));
+inc(1);
+// hazard
+let hs=1; const HL={1:'What kind of hazard?',2:'Where, and what is it?',3:'Reported'};
+function haz(n){hs=n;$$('#haz-form [data-step]').forEach(d=>d.hidden=+d.dataset.step!==n);$('#haz-count').textContent=n<3?`Step ${n} of 3`:'Done';$('#haz-step-label').textContent=HL[n];$('#haz-back').hidden=n===1||n===3;$('#haz-next').textContent=n===2?'Report hazard':n===3?'Report another hazard':'Next';$('#haz-error').classList.remove('show');$$('#haz-form .field-error').forEach(e=>e.classList.remove('show'));$$('#haz-form .invalid').forEach(e=>e.classList.remove('invalid'))}
+$('#haz-next').addEventListener('click',()=>{
+ if(hs===1){if(!document.querySelector('input[name=hz]:checked')){$('#haz-error').textContent='Choose the type of hazard.';$('#haz-error').classList.add('show');$('#hz-err').classList.add('show');return}return haz(2)}
+ if(hs===2){let bad=false;if(!$('#hz-where').value){$('#hz-where-err').classList.add('show');$('#hz-where').classList.add('invalid');bad=true}if(!$('#hz-desc').value.trim()){$('#hz-desc-err').classList.add('show');$('#hz-desc').classList.add('invalid');bad=true}if(bad){$('#haz-error').textContent='Where the hazard is and what it is are both required.';$('#haz-error').classList.add('show');return}return haz(3)}
+ if(hs===3){$('#haz-form').reset();haz(1)}
+});
+$('#haz-back').addEventListener('click',()=>haz(Math.max(1,hs-1)));
+haz(1);
+// manager
+$('#mgr-submit').addEventListener('click',()=>{if(!$('#outcome').value){$('#mgr-error').textContent='Classify the outcome from the treatment required.';$('#mgr-error').classList.add('show');$('#outcome-err').classList.add('show');$('#outcome').classList.add('invalid');$('#outcome').focus();return}$('#mgr-error').classList.remove('show');$('#outcome-err').classList.remove('show');$('#outcome').classList.remove('invalid');$('#mgr-done').hidden=false;$('#mgr-submit').disabled=true});
+const h=location.hash.replace('#','');show(SIDE[h]?h:'current');
+})();
+</script>
+</body></html>
