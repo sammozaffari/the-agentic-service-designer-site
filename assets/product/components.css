@@ -248,3 +248,47 @@ table.p-table { width: 100%; border-collapse: collapse; font-size: var(--p-fs-2)
 .p-right { text-align: right; }
 .p-nowrap { white-space: nowrap; }
 .p-w-100 { width: 100%; }
+
+/* ---------------------------------------------------------------
+   Promoted from the module screens. Each of these was written as
+   local CSS in a screen first, then lifted here once a second
+   screen needed it. New class names only, so no existing screen
+   changes when this file is loaded.
+   --------------------------------------------------------------- */
+
+/* Drawer: a panel that sits under the topbar rather than over it */
+.p-drawer-wrap { position: fixed; inset: var(--p-topbar-h) 0 0 auto; width: 420px; max-width: 100%; display: flex; flex-direction: column; background: var(--p-panel); border-left: 1px solid var(--p-line); box-shadow: -12px 0 32px -20px rgba(15,20,25,.45); z-index: var(--p-z-drawer, 40); }
+.p-drawer-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--p-s-3); padding: var(--p-s-4); border-bottom: 1px solid var(--p-line); }
+.p-drawer-head h2 { font-size: var(--p-fs-4); }
+.p-drawer-head .p-meta { display: block; margin-top: 2px; }
+.p-drawer-body { flex: 1; padding: var(--p-s-4); display: flex; flex-direction: column; gap: var(--p-s-4); }
+.p-drawer-foot { display: flex; gap: var(--p-s-2); padding: var(--p-s-3) var(--p-s-4); border-top: 1px solid var(--p-line); background: var(--p-panel); }
+.p-drawer-foot .p-btn { flex: 1; }
+
+/* A page that fills the viewport, so a board or a grid reaches the bottom edge */
+.p-page-fill { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.p-page-fill > .p-kanban, .p-page-fill > .p-card { flex: 1; min-height: 0; }
+
+/* The one oversized search field, for a page whose whole job is search */
+.p-search-lg { display: flex; align-items: center; gap: var(--p-s-3); height: 52px; padding: 0 var(--p-s-4); border: 1px solid var(--p-line-strong); border-radius: var(--p-r-2); background: var(--p-panel); color: var(--p-ink-3); font-size: var(--p-fs-4); width: 100%; }
+.p-search-lg .p-ico { width: 18px; height: 18px; }
+
+/* Numbered steps, for "what happens next" */
+.p-steps { counter-reset: s; display: grid; gap: 2px; }
+.p-steps li { display: grid; grid-template-columns: 22px 1fr; gap: var(--p-s-3); align-items: start; padding: var(--p-s-2) 0; border-bottom: 1px solid var(--p-line); font-size: var(--p-fs-3); }
+.p-steps li:last-child { border-bottom: 0; }
+.p-steps li::before { counter-increment: s; content: counter(s); width: 22px; height: 22px; border-radius: 50%; background: var(--p-success-bg); color: var(--p-success); display: grid; place-items: center; font-size: var(--p-fs-1); font-weight: 700; }
+
+/* Two definitions side by side, for a distinction people get wrong */
+.p-compare { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--p-s-4); }
+.p-compare > div { border: 1px solid var(--p-line); border-radius: var(--p-r-2); padding: var(--p-s-4); background: var(--p-panel-2); }
+.p-compare h4 { font-size: var(--p-fs-3); margin-bottom: var(--p-s-2); }
+.p-compare ul { display: grid; gap: var(--p-s-2); font-size: var(--p-fs-2); color: var(--p-ink-2); }
+.p-compare li::before { content: "“"; }
+.p-compare li::after { content: "”"; }
+
+/* A note that belongs to the row above it, spanning the table */
+.p-table tr.p-note-row td { background: var(--p-danger-bg); border-left: 3px solid var(--p-danger); color: var(--p-danger); font-size: var(--p-fs-2); padding-top: var(--p-s-2); padding-bottom: var(--p-s-2); }
+
+/* Alias, because a bare .sm modifier collides with any screen-local .sm rule */
+.p-avatar-sm { width: 22px; height: 22px; font-size: 10px; }

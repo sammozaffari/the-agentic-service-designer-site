@@ -69,8 +69,9 @@ def notes_block(d):
     o = ['<div class="notes">']
     for m in d["markers"]:
         o.append(f'<div class="note"><span class="n">{m["n"]}</span><div>')
-        o.append(f'<h4>{e(m["title"])}</h4>')
-        if m.get("finding"):
+        dd = str(m.get("finding", "")).strip().lower() in ("design decision", "design decision.")
+        o.append(f'<h4>{e(m["title"])}{" <span class=\'dd\'>Design decision</span>" if dd else ""}</h4>')
+        if m.get("finding") and not dd:
             o.append(f'<p><b>Finding</b>{e(m["finding"])}</p>')
         if m.get("decision"):
             o.append(f'<p><b>Decision</b>{e(m["decision"])}</p>')
@@ -128,10 +129,17 @@ for mod in spec["modules"]:
     states = [s for s in mod.get("states", []) if (SC / s["img"]).exists()]
     if states:
         parts.append(f'<h3>{e(mod.get("statesTitle", "The states that matter"))}</h3>')
+        state_notes = []
         parts.append('<div class="states phones">' if mod.get("phone") else '<div class="states">')
         for s in states:
-            parts.append(f'<figure>{shot(s["img"], None, mod.get("phone"))}<figcaption><b>{e(s["title"])}</b>{md_inline(s["cap"])}</figcaption></figure>')
+            sd = load_notes(s["annotations"]) if s.get("annotations") else None
+            parts.append(f'<figure>{shot(s["img"], sd["markers"] if sd else None, mod.get("phone"))}<figcaption><b>{e(s["title"])}</b>{md_inline(s["cap"])}</figcaption></figure>')
+            if sd:
+                state_notes.append((s["title"], sd))
         parts.append("</div>")
+        for title, sd in state_notes:
+            parts.append(f'<h3>{e(title)}, decision by decision</h3>')
+            parts.append(notes_block(sd))
     parts.append("</div></section>")
 
 refs = md_tables([SC / "references.md"] + sorted((SC / "refs").glob("*.md")))

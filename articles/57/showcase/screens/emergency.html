@@ -66,7 +66,13 @@ body[data-state="print"] .print-head p{color:var(--p-ink-3);margin-top:4px;font-
 body[data-state="print"] .print-head .stamp{text-align:right;font-size:var(--p-fs-2);color:var(--p-ink-2);line-height:1.5}
 body[data-state="print"] .p-page-head{display:none}
 body[data-state="print"] .p-card{box-shadow:none;border-color:var(--p-ink)}
-body[data-state="print"] .p-grid-8-4{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:var(--p-s-5)}
+body[data-state="print"] .p-grid-8-4{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:var(--p-s-5);align-items:start}
+/* the printed card re-flows into two balanced columns: plan on the left, the things you dial or do on the right */
+body[data-state="print"] .p-grid-8-4 > .p-grid{display:contents}
+body[data-state="print"] .card-plan{grid-column:1;grid-row:1 / span 3}
+body[data-state="print"] .card-call{grid-column:2;grid-row:1}
+body[data-state="print"] .card-hosp{grid-column:2;grid-row:2}
+body[data-state="print"] .card-assembly{grid-column:2;grid-row:3}
 body[data-state="print"] .key{grid-template-columns:repeat(2,minmax(0,1fr))}
 body[data-state="print"] .print-foot{display:flex;justify-content:space-between;margin-top:20px;font-size:var(--p-fs-1);color:var(--p-ink-3);border-top:1px solid var(--p-line);padding-top:10px}
 .print-head,.print-foot{display:none}
@@ -107,7 +113,8 @@ body[data-state="print"] .print-foot{display:flex;justify-content:space-between;
       </div>
 
       <div class="p-grid p-grid-8-4">
-        <div class="p-card">
+        <div class="p-grid" style="gap:var(--p-s-4)">
+        <div class="p-card card-plan">
           <div class="p-card-head"><h2>Where things are</h2><div class="checkmeta"><span>12 items · all present at the last check</span><span class="p-badge p-badge-success p-badge-plain">Checked 12 Sep</span></div></div>
           <div class="p-card-body">
             <svg class="floor-svg" viewBox="0 0 760 420" role="img" aria-label="Floor sketch of Riverside with numbered markers for fire, first-aid and exit equipment">
@@ -193,8 +200,22 @@ body[data-state="print"] .print-foot{display:flex;justify-content:space-between;
           </div>
         </div>
 
+          <div class="p-card card-assembly">
+            <div class="p-card-head"><h2>Assembly point</h2></div>
+            <div class="assembly">
+              <div class="where"><i>9</i>Car park, far corner by the sign</div>
+              <ol>
+                <li>Walk, do not run. Leave bags and food.</li>
+                <li>The manager on duty takes the visitor sheet from the office only if the way is clear.</li>
+                <li>Count everyone, including customers and contractors signed in today.</li>
+                <li>Nobody goes back inside until the fire brigade says so.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
         <div class="p-grid" style="gap:var(--p-s-4)">
-          <div class="p-card">
+          <div class="p-card card-call">
             <div class="p-card-head"><h2>Call</h2><span class="p-meta">Tap to dial from the office phone</span></div>
             <div class="call">
               <a href="#"><span class="ico hot"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 3h3l1.5 3.5L6.5 8a9 9 0 004 4l1.5-2L15.5 11.5V14.5a1 1 0 01-1 1A12 12 0 013 4a1 1 0 011-1z"/></svg></span><span class="num big">000</span><span class="who"><b>Police, fire, ambulance</b><span>Say the restaurant address first: 42 Riverside Parade</span></span></a>
@@ -204,7 +225,7 @@ body[data-state="print"] .print-foot{display:flex;justify-content:space-between;
             </div>
           </div>
 
-          <div class="p-card">
+          <div class="p-card card-hosp">
             <div class="p-card-head"><h2>Nearest hospital</h2><a href="#" class="p-meta only-app">Open directions</a></div>
             <div class="hosp">
               <b>Riverside District Hospital</b>
@@ -222,18 +243,6 @@ body[data-state="print"] .print-foot{display:flex;justify-content:space-between;
             <div class="p-alert p-alert-warning" role="alert"><b>No first aider rostered 15:00 to 16:00.</b> Ask Jordan T. to start early, or call the area manager to cover.</div>
           </div>
 
-          <div class="p-card">
-            <div class="p-card-head"><h2>Assembly point</h2></div>
-            <div class="assembly">
-              <div class="where"><i>9</i>Car park, far corner by the sign</div>
-              <ol>
-                <li>Walk, do not run. Leave bags and food.</li>
-                <li>The manager on duty takes the visitor sheet from the office only if the way is clear.</li>
-                <li>Count everyone, including customers and contractors signed in today.</li>
-                <li>Nobody goes back inside until the fire brigade says so.</li>
-              </ol>
-            </div>
-          </div>
         </div>
       </div>
       <div class="print-foot"><span>Safety reporting concept · Riverside, restaurant 0412</span><span>If anything on this card is out of date, report it as a hazard so it gets fixed and the card gets reprinted.</span></div>

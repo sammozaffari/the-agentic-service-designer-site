@@ -12,14 +12,15 @@ html,body{width:1440px;min-height:900px}
 .quick .p-chip.warn:not(.on){border-color:var(--p-warning-line);background:var(--p-warning-bg);color:var(--p-warning)}
 .quick .p-chip.bad:not(.on){border-color:var(--p-danger-line);background:var(--p-danger-bg);color:var(--p-danger)}
 .bar{display:flex;align-items:center;gap:var(--p-s-2);margin-bottom:var(--p-s-4)}
-.bar .p-input{width:280px;height:36px}
+.bar .p-input{width:280px;height:36px;flex:none}
 .bar .p-select{width:190px;height:36px;background-position:calc(100% - 18px) 15px, calc(100% - 13px) 15px}
 .bar .p-spacer{flex:1}
 table.p-table{table-layout:fixed}
 .p-table th,.p-table td{padding-left:14px;padding-right:14px}
 .p-table td{vertical-align:top;padding-top:12px;padding-bottom:12px}
-.p-table tbody tr.sel td{background:var(--p-info-bg)}
-.p-table tbody tr.sel td:first-child{box-shadow:inset 3px 0 0 var(--p-info)}
+/* a row only reads as selected while its panel is open */
+body[data-state="panel"] .p-table tbody tr.sel td{background:var(--p-info-bg)}
+body[data-state="panel"] .p-table tbody tr.sel td:first-child{box-shadow:inset 3px 0 0 var(--p-info)}
 .ppe{display:flex;flex-wrap:wrap;gap:4px}
 .ppe span{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px 0 6px;border:1px solid var(--p-line);border-radius:var(--p-r-pill);font-size:11px;font-weight:500;color:var(--p-ink-2);background:var(--p-panel-2);white-space:nowrap}
 .ppe span svg{width:12px;height:12px}
@@ -34,7 +35,7 @@ table.p-table{table-layout:fixed}
 .p-drawer{display:none}
 body[data-state="panel"] .p-main{display:grid;grid-template-columns:minmax(0,1fr) 400px;grid-template-rows:auto 1fr}
 body[data-state="panel"] .p-topbar{grid-column:1/-1}
-body[data-state="panel"] .p-drawer{display:block;width:400px;padding:0;min-height:calc(900px - var(--p-topbar-h));overflow:hidden}
+body[data-state="panel"] .p-drawer{display:block;width:400px;padding:0;min-height:calc(100vh - var(--p-topbar-h));overflow:hidden}
 body[data-state="panel"] .col-opt{display:none}
 .dr-head{padding:var(--p-s-4) var(--p-s-5) var(--p-s-3);border-bottom:1px solid var(--p-line)}
 .dr-head .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
@@ -108,7 +109,7 @@ body[data-state="panel"] .col-opt{display:none}
       <div class="bar">
         <input class="p-input" placeholder="Search product or supplier">
         <select class="p-select"><option>Location: all</option><option>Chemical store</option><option>Kitchen</option><option>Front of house</option><option>Toilets</option></select>
-        <select class="p-select"><option>Hazard class: all</option><option>Corrosive</option><option>Irritant</option><option>Flammable</option></select>
+        <select class="p-select col-opt"><option>Hazard class: all</option><option>Corrosive</option><option>Irritant</option><option>Flammable</option></select>
         <span class="p-spacer"></span>
         <span class="p-meta">Last audit 2 Sep by Priya M. · 14 of 14 products sighted</span>
       </div>
