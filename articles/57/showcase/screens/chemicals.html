@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chemical register · Safety reporting concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../../assets/product/tokens.css"><link rel="stylesheet" href="../../../../assets/product/components.css">
+<style>
+html,body{width:1440px;min-height:900px}
+.p-page{max-width:none}
+.p-main{position:relative}
+.quick{display:flex;gap:var(--p-s-2);margin-bottom:var(--p-s-3);flex-wrap:wrap}
+.quick .p-chip .n{font-weight:600;margin-left:2px}
+.quick .p-chip.warn:not(.on){border-color:var(--p-warning-line);background:var(--p-warning-bg);color:var(--p-warning)}
+.quick .p-chip.bad:not(.on){border-color:var(--p-danger-line);background:var(--p-danger-bg);color:var(--p-danger)}
+.bar{display:flex;align-items:center;gap:var(--p-s-2);margin-bottom:var(--p-s-4)}
+.bar .p-input{width:280px;height:36px}
+.bar .p-select{width:190px;height:36px;background-position:calc(100% - 18px) 15px, calc(100% - 13px) 15px}
+.bar .p-spacer{flex:1}
+table.p-table{table-layout:fixed}
+.p-table th,.p-table td{padding-left:14px;padding-right:14px}
+.p-table td{vertical-align:top;padding-top:12px;padding-bottom:12px}
+.p-table tbody tr.sel td{background:var(--p-info-bg)}
+.p-table tbody tr.sel td:first-child{box-shadow:inset 3px 0 0 var(--p-info)}
+.ppe{display:flex;flex-wrap:wrap;gap:4px}
+.ppe span{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px 0 6px;border:1px solid var(--p-line);border-radius:var(--p-r-pill);font-size:11px;font-weight:500;color:var(--p-ink-2);background:var(--p-panel-2);white-space:nowrap}
+.ppe span svg{width:12px;height:12px}
+.ppe .none{color:var(--p-ink-3);font-size:var(--p-fs-1)}
+.sds{display:block}
+.sds .p-badge{margin-bottom:3px}
+.sds small{display:block;font-size:var(--p-fs-1);color:var(--p-ink-3)}
+.mono{font-family:var(--p-font-mono);font-size:var(--p-fs-1);color:var(--p-ink-3)}
+.p-table-foot .p-meta{color:var(--p-ink-3)}
+
+/* Drawer state */
+.p-drawer{display:none}
+body[data-state="panel"] .p-main{display:grid;grid-template-columns:minmax(0,1fr) 400px;grid-template-rows:auto 1fr}
+body[data-state="panel"] .p-topbar{grid-column:1/-1}
+body[data-state="panel"] .p-drawer{display:block;width:400px;padding:0;min-height:calc(900px - var(--p-topbar-h));overflow:hidden}
+body[data-state="panel"] .col-opt{display:none}
+.dr-head{padding:var(--p-s-4) var(--p-s-5) var(--p-s-3);border-bottom:1px solid var(--p-line)}
+.dr-head .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.dr-head .top span{font-size:var(--p-fs-1);color:var(--p-ink-3);font-family:var(--p-font-mono)}
+.dr-head .close{width:28px;height:28px;border-radius:50%;border:1px solid var(--p-line);display:grid;place-items:center;color:var(--p-ink-2);background:var(--p-panel)}
+.dr-head h2{font-size:var(--p-fs-5);margin:0 0 2px;letter-spacing:-.01em}
+.dr-head p{font-size:var(--p-fs-2);color:var(--p-ink-3)}
+.dr-head .p-badge{margin-top:10px}
+.dr-body{padding:var(--p-s-4) var(--p-s-5) var(--p-s-5);display:flex;flex-direction:column;gap:var(--p-s-4)}
+.dr-body h3{font-size:11px;text-transform:uppercase;letter-spacing:var(--p-tracking-caps);color:var(--p-ink-3);margin-bottom:8px;font-weight:600}
+.dr-body .p-kv{grid-template-columns:96px 1fr}
+.picto{display:flex;gap:var(--p-s-2)}
+.picto div{display:flex;align-items:center;gap:8px;padding:6px 10px 6px 6px;border:1px solid var(--p-line-strong);border-radius:var(--p-r-1);font-size:var(--p-fs-2);font-weight:500}
+.picto i{width:28px;height:28px;display:grid;place-items:center;background:var(--p-danger-bg);color:var(--p-danger);border-radius:6px;font-style:normal}
+.picto i svg{width:16px;height:16px}
+.aid dl{margin:0;display:grid;grid-template-columns:78px 1fr;gap:6px 10px;font-size:var(--p-fs-2)}
+.aid dt{font-weight:600;color:var(--p-ink)} .aid dd{margin:0;color:var(--p-ink-2)}
+.steps{margin:0;padding:0;list-style:none;counter-reset:s}
+.steps li{display:flex;gap:10px;font-size:var(--p-fs-2);color:var(--p-ink-2);padding:6px 0;border-bottom:1px solid var(--p-line)}
+.steps li:last-child{border:0}
+.steps li::before{counter-increment:s;content:counter(s);width:20px;height:20px;border-radius:50%;background:var(--p-ink);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;flex:none}
+.file{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--p-warning-line);background:var(--p-warning-bg);border-radius:var(--p-r-1);font-size:var(--p-fs-2)}
+.file .fi{width:30px;height:30px;border-radius:6px;background:#fff;border:1px solid var(--p-warning-line);display:grid;place-items:center;color:var(--p-warning);flex:none}
+.file .fn{flex:1;min-width:0}
+.file .fn b{display:block;font-weight:500;color:var(--p-ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file .fn span{display:block;font-size:var(--p-fs-1);color:#5f3d00}
+.trained .p-list-row{padding:8px 0}
+.trained .p-list-row:last-child{border-bottom:0}
+</style>
+</head>
+<body class="p-app">
+<div class="p-shell">
+  <aside class="p-sidebar">
+    <div class="p-brand"><div class="p-brand-mark">R</div><div><b>Riverside</b><span>Restaurant 0412 · KFC South Pacific</span></div></div>
+    <div class="p-quick-add"><button class="p-btn p-btn-primary p-btn-block"><svg class="p-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>Report something</button></div>
+    <nav class="p-nav">
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>Dashboard</a>
+      <div class="p-nav-label">Reporting</div>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2l7 13H2z"/><path d="M9 7v4M9 13h.01"/></svg>Incidents<span class="p-count">3</span></a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="7"/><path d="M9 5v5M9 13h.01"/></svg>Hazards<span class="p-count">1</span></a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l4 4 8-8"/></svg>Corrective actions<span class="p-count">5</span></a>
+      <div class="p-nav-label">Restaurant</div>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2v14M2 9h14"/></svg>Emergency information</a>
+      <a href="#" aria-current="page"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2h6v4l3 8H3l3-8z"/></svg>Chemical register</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="12" height="11" rx="1"/><path d="M6 4V2h6v2"/></svg>Contractors</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 3h10v12H4z"/><path d="M7 7h4M7 10h4"/></svg>Knowledge base</a>
+    </nav>
+    <div class="p-sidebar-foot"><span class="p-avatar sm">PM</span><div><div style="color:var(--p-ink-on-sidebar)">Priya M.</div><div>Restaurant manager</div></div></div>
+  </aside>
+  <div class="p-main">
+    <header class="p-topbar">
+      <div class="p-crumbs"><span>Riverside</span><span>/</span><b>Chemical register</b></div>
+      <div class="p-spacer"></div>
+      <div class="p-search"><svg class="p-ico" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>Search reports, people, chemicals<kbd>/</kbd></div>
+      <button class="p-btn p-btn-secondary p-btn-sm">This period</button>
+      <span class="p-avatar">PM</span>
+    </header>
+    <main class="p-page">
+      <div class="p-page-head">
+        <div><h1>Chemical register</h1><p>14 products · 2 SDS expiring within 30 days · 1 missing</p></div>
+        <div class="p-actions"><button class="p-btn p-btn-secondary">Print register</button><button class="p-btn p-btn-primary"><svg class="p-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>Add product</button></div>
+      </div>
+
+      <div class="quick">
+        <button class="p-chip on">All <span class="n">14</span></button>
+        <button class="p-chip warn">SDS expiring <span class="n">2</span></button>
+        <button class="p-chip bad">SDS missing <span class="n">1</span></button>
+        <button class="p-chip">Needs PPE <span class="n">9</span></button>
+        <button class="p-chip">By location <svg class="p-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4.5l3 3 3-3"/></svg></button>
+      </div>
+      <div class="bar">
+        <input class="p-input" placeholder="Search product or supplier">
+        <select class="p-select"><option>Location: all</option><option>Chemical store</option><option>Kitchen</option><option>Front of house</option><option>Toilets</option></select>
+        <select class="p-select"><option>Hazard class: all</option><option>Corrosive</option><option>Irritant</option><option>Flammable</option></select>
+        <span class="p-spacer"></span>
+        <span class="p-meta">Last audit 2 Sep by Priya M. · 14 of 14 products sighted</span>
+      </div>
+
+      <div class="p-table-wrap">
+        <table class="p-table">
+          <colgroup><col style="width:23%"><col style="width:13%"><col class="col-opt" style="width:16%"><col style="width:15%"><col style="width:17%"><col class="col-opt" style="width:8%"><col class="col-opt" style="width:8%"></colgroup>
+          <thead><tr><th>Product</th><th>Kept in</th><th class="col-opt">Used for</th><th>PPE required</th><th>Safety data sheet</th><th class="col-opt">Spill steps</th><th class="col-opt">Audited</th></tr></thead>
+          <tbody>
+            <tr><td class="p-primary-cell">Fryer boil-out cleaner<span class="p-sub">Clearwater Chemicals · 5 L</span></td><td>Chemical store</td><td class="col-opt">Fryer boil-out, weekly</td><td><div class="ppe"><span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 1.5h5v5l1.5 1.5v2.5h-7v-4z"/></svg>Gloves</span><span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="3.5" cy="6" r="2.2"/><circle cx="8.5" cy="6" r="2.2"/><path d="M5.7 6h.6"/></svg>Goggles</span><span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 1.5v3l-2 2v4h8v-4l-2-2v-3"/></svg>Apron</span></div></td><td><span class="sds"><span class="p-badge p-badge-success p-badge-plain">On file</span><small>Valid to 14 Mar 2027</small></span></td><td class="col-opt"><a href="#">Open</a></td><td class="col-opt mono">2 Sep</td></tr>
+            <tr><td class="p-primary-cell">Sanitiser concentrate<span class="p-sub">Clearwater Chemicals · 2 L</span></td><td>Kitchen, under sink</td><td class="col-opt">Food-contact surfaces</td><td><div class="ppe"><span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 1.5h5v5l1.5 1.5v2.5h-7v-4z"/></svg>Gloves</span></div></td><td><span class="sds"><span class="p-badge p-badge-success p-badge-plain">On file</span><small>Valid to 30 Jun 2027</small></span></td><td class="col-opt"><a href="#">Open</a></td><td class="col-opt mono">2 Sep</td></tr>
+            <tr class="sel"><td class="p-primary-cell">Heavy-duty degreaser<span class="p-sub">Northline Supply · 5 L</span></td><td>Chemical store</td><td class="col-opt">Hood, filters, cook line</td><td><div class="ppe"><span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 1.5h5v5l1.5 1.5v2.5h-7v-4z"/></svg>Gloves</span><span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="3.5" cy="6" r="2.2"/><circle cx="8.5" cy="6" r="2.2"/><path d="M5.7 6h.6"/></svg>Goggles</span></div></td><td><span class="sds"><span class="p-badge p-badge-warning">Expires 3 Oct</span><small>16 days · ask the supplier for the new sheet</small></span></td><td class="col-opt"><a href="#">Open</a></td><td class="col-opt mono">2 Sep</td></tr>
+            <tr><td class="p-primary-cell">Dishwasher detergent<span class="p-sub">Northline Supply · 10 L</span></td><td>Kitchen, dish area</td><td class="col-opt">Dish machine</td><td><div class="ppe"><span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 1.5h5v5l1.5 1.5v2.5h-7v-4z"/></svg>Gloves</span><span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="3.5" cy="6" r="2.2"/><circle cx="8.5" cy="6" r="2.2"/><path d="M5.7 6h.6"/></svg>Goggles</span></div></td><td><span class="sds"><span class="p-badge p-badge-success p-badge-plain">On file</span><small>Valid to 8 Jan 2027</small></span></td><td class="col-opt"><a href="#">Open</a></td><td class="col-opt mono">2 Sep</td></tr>
+            <tr><td class="p-primary-cell">Rinse aid<span class="p-sub">Northline Supply · 5 L</span></td><td>Kitchen, dish area</td><td class="col-opt">Dish machine</td><td><div class="ppe"><span class="none">None for normal use</span></div></td><td><span class="sds"><span class="p-badge p-badge-success p-badge-plain">On file</span><small>Valid to 8 Jan 2027</small></span></td><td class="col-opt"><a href="#">Open</a></td><td class="col-opt mono">2 Sep</td></tr>
+            <tr><td class="p-primary-cell">Drain cleaner<span class="p-sub">Clearwater Chemicals · 1 L · manager only</span></td><td>Chemical store, locked shelf</td><td class="col-opt">Blocked drains</td><td><div class="ppe"><span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 1.5h5v5l1.5 1.5v2.5h-7v-4z"/></svg>Gloves</span><span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="3.5" cy="6" r="2.2"/><circle cx="8.5" cy="6" r="2.2"/><path d="M5.7 6h.6"/></svg>Goggles</span><span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 1.5v3l-2 2v4h8v-4l-2-2v-3"/></svg>Apron</span></div></td><td><span class="sds"><span class="p-badge p-badge-warning">Expires 11 Oct</span><small>24 days · ask the supplier for the new sheet</small></span></td><td class="col-opt"><a href="#">Open</a></td><td class="col-opt mono">2 Sep</td></tr>
+            <tr><td class="p-primary-cell">Floor cleaner<span class="p-sub">Harbour Hygiene · 5 L</span></td><td>Chemical store</td><td class="col-opt">Floors, nightly</td><td><div class="ppe"><span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 1.5h5v5l1.5 1.5v2.5h-7v-4z"/></svg>Gloves</span></div></td><td><span class="sds"><span class="p-badge p-badge-success p-badge-plain">On file</span><small>Valid to 22 Nov 2027</small></span></td><td class="col-opt"><a href="#">Open</a></td><td class="col-opt mono">2 Sep</td></tr>
+            <tr><td class="p-primary-cell">Glass cleaner<span class="p-sub">Harbour Hygiene · 750 mL spray</span></td><td>Front of house</td><td class="col-opt">Windows, drive-thru</td><td><div class="ppe"><span class="none">None for normal use</span></div></td><td><span class="sds"><span class="p-badge p-badge-danger">Missing</span><small>Added 28 Aug without a sheet</small></span></td><td class="col-opt"><span class="p-meta">Not on file</span></td><td class="col-opt mono">—</td></tr>
+            <tr><td class="p-primary-cell">Hand sanitiser<span class="p-sub">Harbour Hygiene · 1 L pump</span></td><td>Front of house</td><td class="col-opt">Hands, every station</td><td><div class="ppe"><span class="none">None</span></div></td><td><span class="sds"><span class="p-badge p-badge-success p-badge-plain">On file</span><small>Valid to 5 May 2027</small></span></td><td class="col-opt"><a href="#">Open</a></td><td class="col-opt mono">2 Sep</td></tr>
+            <tr><td class="p-primary-cell">Descaler<span class="p-sub">Northline Supply · 1 L</span></td><td>Kitchen, beverage station</td><td class="col-opt">Coffee and ice machines</td><td><div class="ppe"><span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 1.5h5v5l1.5 1.5v2.5h-7v-4z"/></svg>Gloves</span><span><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="3.5" cy="6" r="2.2"/><circle cx="8.5" cy="6" r="2.2"/><path d="M5.7 6h.6"/></svg>Goggles</span></div></td><td><span class="sds"><span class="p-badge p-badge-success p-badge-plain">On file</span><small>Valid to 19 Feb 2027</small></span></td><td class="col-opt"><a href="#">Open</a></td><td class="col-opt mono">2 Sep</td></tr>
+          </tbody>
+        </table>
+        <div class="p-table-foot"><span>Showing 10 of 14 products</span><span class="p-pager"><button aria-current="page">1</button><button>2</button></span></div>
+      </div>
+    </main>
+
+    <aside class="p-drawer" aria-label="Product details">
+      <div class="dr-head">
+        <div class="top"><span>CHEM-0412-07</span><span class="close" aria-label="Close"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 2l8 8M10 2l-8 8"/></svg></span></div>
+        <h2>Heavy-duty degreaser</h2>
+        <p>Northline Supply · 5 L · chemical store, middle shelf</p>
+        <span class="p-badge p-badge-warning">SDS expires 3 Oct · 16 days</span>
+      </div>
+      <div class="dr-body">
+        <div>
+          <h3>Hazard class</h3>
+          <div class="picto">
+            <div><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3l3 2v3l-3 3M13 3l-3 2v3l3 3M6 13h4"/></svg></i>Corrosive</div>
+            <div><i><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 2v7M8 12h.01"/></svg></i>Irritant</div>
+          </div>
+        </div>
+        <div>
+          <h3>Wear</h3>
+          <div class="ppe"><span>Nitrile gloves</span><span>Goggles</span><span>Long sleeves</span></div>
+        </div>
+        <div class="aid">
+          <h3>First aid, in plain words</h3>
+          <dl>
+            <dt>On skin</dt><dd>Take off wet clothing. Rinse under running water for 15 minutes.</dd>
+            <dt>In eyes</dt><dd>Eyewash station in the chemical store (marker 6). Rinse for 15 minutes, hold the eyelids open, then call 13 11 26.</dd>
+            <dt>Swallowed</dt><dd>Do not make them vomit. Rinse the mouth, then call 13 11 26.</dd>
+          </dl>
+        </div>
+        <div>
+          <h3>If it spills</h3>
+          <ol class="steps">
+            <li>Keep people away. Put on gloves and goggles before you touch anything.</li>
+            <li>Soak it up with the spill kit by the chemical store door (marker 12), then bag and label the waste.</li>
+            <li>Tell the manager and report it as a hazard so the cause gets fixed.</li>
+          </ol>
+        </div>
+        <div>
+          <h3>Safety data sheet</h3>
+          <div class="file"><span class="fi"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 1.5h5l3 3v8H3z"/><path d="M8 1.5v3h3"/></svg></span><span class="fn"><b>degreaser-sds-2021.pdf</b><span>Issued 3 Oct 2021 · sheets are valid for five years</span></span><button class="p-btn p-btn-secondary p-btn-sm">Replace SDS</button></div>
+        </div>
+        <div class="trained">
+          <h3>Who has been shown how to use it</h3>
+          <div class="p-list">
+            <div class="p-list-row"><span class="p-avatar sm">PM</span><div class="p-grow"><b>Priya M.</b><span class="p-sub">Signed off 4 Mar 2026</span></div></div>
+            <div class="p-list-row"><span class="p-avatar sm">ML</span><div class="p-grow"><b>Mei L.</b><span class="p-sub">Signed off 4 Mar 2026</span></div></div>
+            <div class="p-list-row"><span class="p-avatar sm">JT</span><div class="p-grow"><b>Jordan T.</b><span class="p-sub">Signed off 22 Jul 2026</span></div></div>
+            <div class="p-list-row"><div class="p-grow"><span class="p-meta">3 of 5 people who work the cook line · <a href="#">add a sign-off</a></span></div></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+<script>document.body.dataset.state=new URLSearchParams(location.search).get('state')||'default';</script>
+</body></html>

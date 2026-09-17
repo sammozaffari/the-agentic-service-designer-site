@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard, area manager · Safety reporting concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../../assets/product/tokens.css"><link rel="stylesheet" href="../../../../assets/product/components.css">
+<style>
+html,body{width:1440px;min-height:1000px}
+.p-nav a{white-space:nowrap}
+/* screen-local: compared table */
+.cmp td{padding:8px 12px}
+.cmp th:nth-child(2){width:150px}
+.cmp tr.flag td{background:var(--p-warning-bg)}
+.cmp tr.flag:hover td{background:var(--p-warning-bg);filter:brightness(.97)}
+.cmp tr.flag td.p-primary-cell::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--p-warning);margin-right:8px;vertical-align:2px}
+.rep{display:flex;align-items:center;gap:8px}
+.rep b{font-weight:500;min-width:16px;text-align:right;font-variant-numeric:tabular-nums}
+.rep i{display:block;height:8px;border-radius:2px;background:var(--p-ink-2);flex:none}
+.rep i[style="width:0%"]{width:2px !important;background:var(--p-line-strong)}
+.cmp td.p-num{font-variant-numeric:tabular-nums}
+/* screen-local: small multiples */
+.smgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.smp{border:1px solid var(--p-line);border-radius:var(--p-r-1);padding:10px 12px 8px;background:var(--p-panel)}
+.smp.quiet{background:var(--p-warning-bg);border-color:var(--p-warning-line)}
+.sm-head{display:flex;flex-direction:column;gap:1px;margin-bottom:6px}
+.sm-head b{font-size:var(--p-fs-2);font-weight:600;color:var(--p-ink)}
+.sm-head span{font-size:var(--p-fs-1);color:var(--p-ink-3)}
+.smp svg{width:100%;height:auto}
+.why p{font-size:var(--p-fs-2);color:var(--p-ink-2);padding:10px 0;border-bottom:1px solid var(--p-line)}
+.why p:last-child{border:0}
+.why p b{display:block;color:var(--p-ink);font-weight:600;margin-bottom:2px}
+/* screen-local: drawer state */
+.scrim,.rdrawer{display:none}
+body[data-show="restaurant"] .scrim{display:block;position:fixed;inset:0;background:rgba(15,20,25,.32);z-index:calc(var(--p-z-drawer) - 1)}
+body[data-show="restaurant"] .rdrawer{display:flex;flex-direction:column;gap:var(--p-s-4);position:fixed;top:0;right:0;bottom:0;width:420px;z-index:var(--p-z-drawer);overflow:hidden}
+.rdrawer .dhead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.rdrawer .dhead h2{margin:0 0 2px;font-size:var(--p-fs-5)}
+.rdrawer .dclose{width:30px;height:30px;border-radius:50%;border:1px solid var(--p-line);background:var(--p-panel);display:grid;place-items:center;font-size:16px;color:var(--p-ink-2);flex:none}
+.rdrawer .p-kv{grid-template-columns:132px 1fr}
+.rdrawer h3{font-size:11px;text-transform:uppercase;letter-spacing:var(--p-tracking-caps);color:var(--p-ink-3);margin:0 0 8px}
+.rdrawer .mini{display:flex;flex-direction:column}
+.rdrawer .mini div{display:flex;justify-content:space-between;gap:10px;font-size:var(--p-fs-2);padding:7px 0;border-bottom:1px solid var(--p-line)}
+.rdrawer .mini div:last-child{border:0}
+.rdrawer .mini span:last-child{color:var(--p-ink-3);white-space:nowrap}
+.note{background:var(--p-panel-2);border:1px solid var(--p-line);border-radius:var(--p-r-1);padding:10px 12px;font-size:var(--p-fs-2);color:var(--p-ink-2);line-height:1.5}
+.note b{color:var(--p-ink);font-weight:600}
+.rdrawer .dfoot{margin-top:auto;display:grid;gap:8px}
+</style>
+</head>
+<body class="p-app">
+<div class="p-shell">
+  <aside class="p-sidebar">
+    <div class="p-brand"><div class="p-brand-mark">N</div><div><b>North Sydney area</b><span>12 restaurants · KFC South Pacific</span></div></div>
+    <div class="p-quick-add"><button class="p-btn p-btn-primary p-btn-block"><svg class="p-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>Report something</button></div>
+    <nav class="p-nav">
+      <a href="#" aria-current="page"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>Dashboard</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8l7-5 7 5"/><path d="M4 7v8h10V7"/><path d="M8 15v-4h2v4"/></svg>Restaurants</a>
+      <div class="p-nav-label">Reporting</div>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2l7 13H2z"/><path d="M9 7v4M9 13h.01"/></svg>Incidents<span class="p-count">14</span></a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="7"/><path d="M9 5v5M9 13h.01"/></svg>Hazards<span class="p-count">9</span></a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l4 4 8-8"/></svg>Corrective actions<span class="p-count">23</span></a>
+      <div class="p-nav-label">Restaurant</div>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2v14M2 9h14"/></svg>Emergency information</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2h6v4l3 8H3l3-8z"/></svg>Chemical register</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="12" height="11" rx="1"/><path d="M6 4V2h6v2"/></svg>Contractors</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 3h10v12H4z"/><path d="M7 7h4M7 10h4"/></svg>Knowledge base</a>
+    </nav>
+    <div class="p-sidebar-foot"><span class="p-avatar sm">DK</span><div><div style="color:var(--p-ink-on-sidebar)">Daniel K.</div><div>Area manager</div></div></div>
+  </aside>
+  <div class="p-main">
+    <header class="p-topbar">
+      <div class="p-crumbs"><span>North Sydney area</span><span>/</span><b>Dashboard</b></div>
+      <div class="p-spacer"></div>
+      <div class="p-search"><svg class="p-ico" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>Search restaurants, reports, people<kbd>/</kbd></div>
+      <button class="p-btn p-btn-secondary p-btn-sm">Period 10</button>
+      <span class="p-avatar">DK</span>
+    </header>
+    <main class="p-page">
+      <div class="p-page-head">
+        <div><h1>Good morning, Daniel</h1><p>Period 10, week 3 · 12 restaurants · 3 need a conversation this week</p></div>
+        <div class="p-actions"><button class="p-btn p-btn-secondary">Period review</button><button class="p-btn p-btn-primary">Report something</button></div>
+      </div>
+
+      <div class="p-grid p-grid-4 p-mb-4">
+        <div class="p-card p-stat p-stat-accent warning"><div class="p-stat-label">Restaurants reporting this week <a href="#" class="p-meta">Show</a></div><div class="p-stat-value">9 <span style="font-size:var(--p-fs-5);color:var(--p-ink-3);font-weight:500">of 12</span></div><div class="p-stat-delta"><b>3 have not reported in 14 days</b></div></div>
+        <div class="p-card p-stat"><div class="p-stat-label">Open incidents <a href="#" class="p-meta">Open</a></div><div class="p-stat-value">14</div><div class="p-stat-delta">5 awaiting classification, 2 flagged for the regulator check</div></div>
+        <div class="p-card p-stat p-stat-accent danger"><div class="p-stat-label">Overdue actions <a href="#" class="p-meta">Open</a></div><div class="p-stat-value">6</div><div class="p-stat-delta">Riverside 2, <b>Harbourside 3</b>, Westfield 1</div></div>
+        <div class="p-card p-stat p-stat-accent success"><div class="p-stat-label">Fixed this period <a href="#" class="p-meta">Show</a></div><div class="p-stat-value">41</div><div class="p-stat-delta"><b class="up">29 from team reports</b>, 12 from audits</div></div>
+      </div>
+
+      <div class="p-card p-mb-4">
+        <div class="p-card-head"><div><h2>Restaurants compared</h2><p class="p-meta">Period 10 to date · sorted so the restaurants that need a conversation sit first</p></div><div class="p-seg"><button aria-pressed="true">Period</button><button>8 weeks</button><button>Year</button></div></div>
+        <div class="p-table-wrap" style="border:0;box-shadow:none;border-top:1px solid var(--p-line);border-radius:0 0 var(--p-r-2) var(--p-r-2)">
+          <table class="p-table cmp">
+            <thead><tr><th>Restaurant</th><th>Reports this period</th><th class="p-num">Hazards</th><th class="p-num">Incidents</th><th>Reporting ratio</th><th class="p-num">Overdue actions</th><th>Last report</th><th>Manager</th><th></th></tr></thead>
+            <tbody>
+<tr class="flag"><td class="p-primary-cell">Harbourside<span class="p-sub">Restaurant 0418</span></td><td><span class="rep"><b>2</b><i style="width:18%"></i></span></td><td class="p-num">1</td><td class="p-num">1</td><td><span class="p-badge p-badge-warning p-badge-plain">1.0 · watch</span></td><td class="p-num"><span class="p-badge p-badge-danger p-badge-plain">3</span></td><td class="p-nowrap"><span class="p-badge p-badge-warning p-badge-plain">14 days</span></td><td><span class="p-person"><span class="p-avatar sm">TB</span>Tom B.</span></td><td class="p-right"><button class="p-btn p-btn-secondary p-btn-sm">Talk this week</button></td></tr>
+<tr class="flag"><td class="p-primary-cell">Westfield<span class="p-sub">Restaurant 0421</span></td><td><span class="rep"><b>3</b><i style="width:27%"></i></span></td><td class="p-num">1</td><td class="p-num">2</td><td><span class="p-badge p-badge-danger p-badge-plain">0.5 · low</span></td><td class="p-num"><span class="p-badge p-badge-danger p-badge-plain">1</span></td><td class="p-nowrap"><span class="p-badge p-badge-warning p-badge-plain">15 days</span></td><td><span class="p-person"><span class="p-avatar sm">AR</span>Ana R.</span></td><td class="p-right"><button class="p-btn p-btn-secondary p-btn-sm">Talk this week</button></td></tr>
+<tr class="flag"><td class="p-primary-cell">Crossroads<span class="p-sub">Restaurant 0433</span></td><td><span class="rep"><b>1</b><i style="width:9%"></i></span></td><td class="p-num">0</td><td class="p-num">1</td><td><span class="p-badge p-badge-danger p-badge-plain">0.0 · low</span></td><td class="p-num"><span class="p-muted">0</span></td><td class="p-nowrap"><span class="p-badge p-badge-warning p-badge-plain">19 days</span></td><td><span class="p-person"><span class="p-avatar sm">LP</span>Leo P.</span></td><td class="p-right"><button class="p-btn p-btn-secondary p-btn-sm">Talk this week</button></td></tr>
+<tr class=""><td class="p-primary-cell">Riverside<span class="p-sub">Restaurant 0412</span></td><td><span class="rep"><b>11</b><i style="width:100%"></i></span></td><td class="p-num">8</td><td class="p-num">3</td><td><span class="p-badge p-badge-success p-badge-plain">2.7 · healthy</span></td><td class="p-num"><span class="p-badge p-badge-danger p-badge-plain">2</span></td><td class="p-nowrap">today</td><td><span class="p-person"><span class="p-avatar sm">PM</span>Priya M.</span></td><td class="p-right"></td></tr>
+<tr class=""><td class="p-primary-cell">Northgate<span class="p-sub">Restaurant 0415</span></td><td><span class="rep"><b>10</b><i style="width:91%"></i></span></td><td class="p-num">7</td><td class="p-num">3</td><td><span class="p-badge p-badge-success p-badge-plain">2.3 · healthy</span></td><td class="p-num"><span class="p-muted">0</span></td><td class="p-nowrap">1 day</td><td><span class="p-person"><span class="p-avatar sm">GO</span>Grace O.</span></td><td class="p-right"></td></tr>
+<tr class=""><td class="p-primary-cell">Station Street<span class="p-sub">Restaurant 0409</span></td><td><span class="rep"><b>9</b><i style="width:82%"></i></span></td><td class="p-num">6</td><td class="p-num">3</td><td><span class="p-badge p-badge-success p-badge-plain">2.0 · healthy</span></td><td class="p-num"><span class="p-muted">0</span></td><td class="p-nowrap">2 days</td><td><span class="p-person"><span class="p-avatar sm">WZ</span>Wei Z.</span></td><td class="p-right"></td></tr>
+<tr class=""><td class="p-primary-cell">Parkside<span class="p-sub">Restaurant 0427</span></td><td><span class="rep"><b>8</b><i style="width:73%"></i></span></td><td class="p-num">5</td><td class="p-num">3</td><td><span class="p-badge p-badge-warning p-badge-plain">1.7 · watch</span></td><td class="p-num"><span class="p-muted">0</span></td><td class="p-nowrap">1 day</td><td><span class="p-person"><span class="p-avatar sm">HS</span>Hana S.</span></td><td class="p-right"></td></tr>
+<tr class=""><td class="p-primary-cell">Bayview<span class="p-sub">Restaurant 0430</span></td><td><span class="rep"><b>7</b><i style="width:64%"></i></span></td><td class="p-num">5</td><td class="p-num">2</td><td><span class="p-badge p-badge-success p-badge-plain">2.5 · healthy</span></td><td class="p-num"><span class="p-muted">0</span></td><td class="p-nowrap">3 days</td><td><span class="p-person"><span class="p-avatar sm">MD</span>Marcus D.</span></td><td class="p-right"></td></tr>
+<tr class=""><td class="p-primary-cell">Marketplace<span class="p-sub">Restaurant 0402</span></td><td><span class="rep"><b>6</b><i style="width:55%"></i></span></td><td class="p-num">4</td><td class="p-num">2</td><td><span class="p-badge p-badge-success p-badge-plain">2.0 · healthy</span></td><td class="p-num"><span class="p-muted">0</span></td><td class="p-nowrap">2 days</td><td><span class="p-person"><span class="p-avatar sm">IF</span>Isla F.</span></td><td class="p-right"></td></tr>
+<tr class=""><td class="p-primary-cell">Lakeside<span class="p-sub">Restaurant 0436</span></td><td><span class="rep"><b>6</b><i style="width:55%"></i></span></td><td class="p-num">3</td><td class="p-num">3</td><td><span class="p-badge p-badge-warning p-badge-plain">1.0 · watch</span></td><td class="p-num"><span class="p-muted">0</span></td><td class="p-nowrap">4 days</td><td><span class="p-person"><span class="p-avatar sm">RN</span>Ravi N.</span></td><td class="p-right"></td></tr>
+<tr class=""><td class="p-primary-cell">Hilltop<span class="p-sub">Restaurant 0440</span></td><td><span class="rep"><b>5</b><i style="width:45%"></i></span></td><td class="p-num">4</td><td class="p-num">1</td><td><span class="p-badge p-badge-success p-badge-plain">4.0 · healthy</span></td><td class="p-num"><span class="p-muted">0</span></td><td class="p-nowrap">5 days</td><td><span class="p-person"><span class="p-avatar sm">CW</span>Chloe W.</span></td><td class="p-right"></td></tr>
+<tr class=""><td class="p-primary-cell">Airport<span class="p-sub">Restaurant 0444</span></td><td><span class="rep"><b>4</b><i style="width:36%"></i></span></td><td class="p-num">2</td><td class="p-num">2</td><td><span class="p-badge p-badge-warning p-badge-plain">1.0 · watch</span></td><td class="p-num"><span class="p-muted">0</span></td><td class="p-nowrap">6 days</td><td><span class="p-person"><span class="p-avatar sm">NJ</span>Noah J.</span></td><td class="p-right"></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="p-table-foot"><span>Reporting ratio is hazards per incident. Healthy is 2 or more; watch is between 1 and 2; low is under 1.</span><span>12 restaurants</span></div>
+      </div>
+
+      <div class="p-grid p-grid-8-4" style="align-items:start">
+        <div class="p-card">
+          <div class="p-card-head"><div><h2>Reporting over time by restaurant</h2><p class="p-meta">Reports a week, last 8 weeks · same scale on every panel, 0 to 8</p></div><div class="p-legend" style="margin:0"><span><i style="background:var(--p-warning)"></i>Hazards, solid</span><span><i style="background:var(--p-danger);height:0;border-top:3px dashed var(--p-danger);width:14px;border-radius:0;vertical-align:1px"></i>Incidents, dashed</span></div></div>
+          <div class="p-card-body"><div class="smgrid">
+<div class="smp quiet"><div class="sm-head"><b>Harbourside</b><span>1 hazard · 1 incident</span></div>
+<svg viewBox="0 0 180 60" class="p-chart" role="img" aria-label="Harbourside: hazards and incidents a week for eight weeks">
+<line class="grid" x1="6" y1="8" x2="174" y2="8"/><line class="axis" x1="6" y1="50" x2="174" y2="50"/>
+<path d="M6.0 34.2 L30.0 39.5 L54.0 29.0 L78.0 39.5 L102.0 44.8 L126.0 44.8 L150.0 50.0 L174.0 50.0" fill="none" stroke="var(--p-warning)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M6.0 44.8 L30.0 50.0 L54.0 44.8 L78.0 44.8 L102.0 50.0 L126.0 44.8 L150.0 50.0 L174.0 50.0" fill="none" stroke="var(--p-danger)" stroke-width="2" stroke-dasharray="4 3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="174.0" cy="50.0" r="4" fill="var(--p-warning)" stroke="#fff" stroke-width="2"/><circle cx="174.0" cy="50.0" r="4" fill="var(--p-danger)" stroke="#fff" stroke-width="2"/>
+</svg></div>
+<div class="smp quiet"><div class="sm-head"><b>Westfield</b><span>1 hazard · 2 incidents</span></div>
+<svg viewBox="0 0 180 60" class="p-chart" role="img" aria-label="Westfield: hazards and incidents a week for eight weeks">
+<line class="grid" x1="6" y1="8" x2="174" y2="8"/><line class="axis" x1="6" y1="50" x2="174" y2="50"/>
+<path d="M6.0 39.5 L30.0 34.2 L54.0 39.5 L78.0 44.8 L102.0 39.5 L126.0 44.8 L150.0 50.0 L174.0 50.0" fill="none" stroke="var(--p-warning)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M6.0 44.8 L30.0 44.8 L54.0 50.0 L78.0 44.8 L102.0 44.8 L126.0 39.5 L150.0 50.0 L174.0 50.0" fill="none" stroke="var(--p-danger)" stroke-width="2" stroke-dasharray="4 3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="174.0" cy="50.0" r="4" fill="var(--p-warning)" stroke="#fff" stroke-width="2"/><circle cx="174.0" cy="50.0" r="4" fill="var(--p-danger)" stroke="#fff" stroke-width="2"/>
+</svg></div>
+<div class="smp quiet"><div class="sm-head"><b>Crossroads</b><span>0 hazards · 1 incident</span></div>
+<svg viewBox="0 0 180 60" class="p-chart" role="img" aria-label="Crossroads: hazards and incidents a week for eight weeks">
+<line class="grid" x1="6" y1="8" x2="174" y2="8"/><line class="axis" x1="6" y1="50" x2="174" y2="50"/>
+<path d="M6.0 29.0 L30.0 34.2 L54.0 34.2 L78.0 39.5 L102.0 44.8 L126.0 50.0 L150.0 50.0 L174.0 50.0" fill="none" stroke="var(--p-warning)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M6.0 44.8 L30.0 50.0 L54.0 44.8 L78.0 50.0 L102.0 50.0 L126.0 44.8 L150.0 50.0 L174.0 50.0" fill="none" stroke="var(--p-danger)" stroke-width="2" stroke-dasharray="4 3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="174.0" cy="50.0" r="4" fill="var(--p-warning)" stroke="#fff" stroke-width="2"/><circle cx="174.0" cy="50.0" r="4" fill="var(--p-danger)" stroke="#fff" stroke-width="2"/>
+</svg></div>
+<div class="smp"><div class="sm-head"><b>Riverside</b><span>8 hazards · 3 incidents</span></div>
+<svg viewBox="0 0 180 60" class="p-chart" role="img" aria-label="Riverside: hazards and incidents a week for eight weeks">
+<line class="grid" x1="6" y1="8" x2="174" y2="8"/><line class="axis" x1="6" y1="50" x2="174" y2="50"/>
+<path d="M6.0 29.0 L30.0 23.8 L54.0 34.2 L78.0 18.5 L102.0 13.2 L126.0 39.5 L150.0 34.2 L174.0 34.2" fill="none" stroke="var(--p-warning)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M6.0 39.5 L30.0 44.8 L54.0 39.5 L78.0 44.8 L102.0 34.2 L126.0 44.8 L150.0 44.8 L174.0 44.8" fill="none" stroke="var(--p-danger)" stroke-width="2" stroke-dasharray="4 3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="174.0" cy="34.2" r="4" fill="var(--p-warning)" stroke="#fff" stroke-width="2"/><circle cx="174.0" cy="44.8" r="4" fill="var(--p-danger)" stroke="#fff" stroke-width="2"/>
+</svg></div>
+<div class="smp"><div class="sm-head"><b>Northgate</b><span>7 hazards · 3 incidents</span></div>
+<svg viewBox="0 0 180 60" class="p-chart" role="img" aria-label="Northgate: hazards and incidents a week for eight weeks">
+<line class="grid" x1="6" y1="8" x2="174" y2="8"/><line class="axis" x1="6" y1="50" x2="174" y2="50"/>
+<path d="M6.0 34.2 L30.0 29.0 L54.0 29.0 L78.0 23.8 L102.0 29.0 L126.0 39.5 L150.0 39.5 L174.0 34.2" fill="none" stroke="var(--p-warning)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M6.0 44.8 L30.0 39.5 L54.0 44.8 L78.0 44.8 L102.0 39.5 L126.0 44.8 L150.0 44.8 L174.0 44.8" fill="none" stroke="var(--p-danger)" stroke-width="2" stroke-dasharray="4 3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="174.0" cy="34.2" r="4" fill="var(--p-warning)" stroke="#fff" stroke-width="2"/><circle cx="174.0" cy="44.8" r="4" fill="var(--p-danger)" stroke="#fff" stroke-width="2"/>
+</svg></div>
+<div class="smp"><div class="sm-head"><b>Station Street</b><span>6 hazards · 3 incidents</span></div>
+<svg viewBox="0 0 180 60" class="p-chart" role="img" aria-label="Station Street: hazards and incidents a week for eight weeks">
+<line class="grid" x1="6" y1="8" x2="174" y2="8"/><line class="axis" x1="6" y1="50" x2="174" y2="50"/>
+<path d="M6.0 23.8 L30.0 29.0 L54.0 34.2 L78.0 29.0 L102.0 23.8 L126.0 39.5 L150.0 39.5 L174.0 39.5" fill="none" stroke="var(--p-warning)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M6.0 39.5 L30.0 44.8 L54.0 44.8 L78.0 39.5 L102.0 44.8 L126.0 44.8 L150.0 44.8 L174.0 44.8" fill="none" stroke="var(--p-danger)" stroke-width="2" stroke-dasharray="4 3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="174.0" cy="39.5" r="4" fill="var(--p-warning)" stroke="#fff" stroke-width="2"/><circle cx="174.0" cy="44.8" r="4" fill="var(--p-danger)" stroke="#fff" stroke-width="2"/>
+</svg></div>
+<div class="smp"><div class="sm-head"><b>Parkside</b><span>5 hazards · 3 incidents</span></div>
+<svg viewBox="0 0 180 60" class="p-chart" role="img" aria-label="Parkside: hazards and incidents a week for eight weeks">
+<line class="grid" x1="6" y1="8" x2="174" y2="8"/><line class="axis" x1="6" y1="50" x2="174" y2="50"/>
+<path d="M6.0 39.5 L30.0 34.2 L54.0 34.2 L78.0 29.0 L102.0 34.2 L126.0 39.5 L150.0 44.8 L174.0 39.5" fill="none" stroke="var(--p-warning)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M6.0 44.8 L30.0 44.8 L54.0 39.5 L78.0 44.8 L102.0 44.8 L126.0 44.8 L150.0 44.8 L174.0 44.8" fill="none" stroke="var(--p-danger)" stroke-width="2" stroke-dasharray="4 3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="174.0" cy="39.5" r="4" fill="var(--p-warning)" stroke="#fff" stroke-width="2"/><circle cx="174.0" cy="44.8" r="4" fill="var(--p-danger)" stroke="#fff" stroke-width="2"/>
+</svg></div>
+<div class="smp"><div class="sm-head"><b>Bayview</b><span>5 hazards · 2 incidents</span></div>
+<svg viewBox="0 0 180 60" class="p-chart" role="img" aria-label="Bayview: hazards and incidents a week for eight weeks">
+<line class="grid" x1="6" y1="8" x2="174" y2="8"/><line class="axis" x1="6" y1="50" x2="174" y2="50"/>
+<path d="M6.0 34.2 L30.0 34.2 L54.0 29.0 L78.0 34.2 L102.0 29.0 L126.0 39.5 L150.0 39.5 L174.0 44.8" fill="none" stroke="var(--p-warning)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M6.0 44.8 L30.0 44.8 L54.0 44.8 L78.0 50.0 L102.0 44.8 L126.0 44.8 L150.0 50.0 L174.0 44.8" fill="none" stroke="var(--p-danger)" stroke-width="2" stroke-dasharray="4 3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="174.0" cy="44.8" r="4" fill="var(--p-warning)" stroke="#fff" stroke-width="2"/><circle cx="174.0" cy="44.8" r="4" fill="var(--p-danger)" stroke="#fff" stroke-width="2"/>
+</svg></div>
+<div class="smp"><div class="sm-head"><b>Marketplace</b><span>4 hazards · 2 incidents</span></div>
+<svg viewBox="0 0 180 60" class="p-chart" role="img" aria-label="Marketplace: hazards and incidents a week for eight weeks">
+<line class="grid" x1="6" y1="8" x2="174" y2="8"/><line class="axis" x1="6" y1="50" x2="174" y2="50"/>
+<path d="M6.0 39.5 L30.0 39.5 L54.0 34.2 L78.0 34.2 L102.0 39.5 L126.0 44.8 L150.0 39.5 L174.0 44.8" fill="none" stroke="var(--p-warning)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M6.0 44.8 L30.0 50.0 L54.0 44.8 L78.0 44.8 L102.0 44.8 L126.0 50.0 L150.0 44.8 L174.0 44.8" fill="none" stroke="var(--p-danger)" stroke-width="2" stroke-dasharray="4 3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="174.0" cy="44.8" r="4" fill="var(--p-warning)" stroke="#fff" stroke-width="2"/><circle cx="174.0" cy="44.8" r="4" fill="var(--p-danger)" stroke="#fff" stroke-width="2"/>
+</svg></div>
+<div class="smp"><div class="sm-head"><b>Lakeside</b><span>3 hazards · 3 incidents</span></div>
+<svg viewBox="0 0 180 60" class="p-chart" role="img" aria-label="Lakeside: hazards and incidents a week for eight weeks">
+<line class="grid" x1="6" y1="8" x2="174" y2="8"/><line class="axis" x1="6" y1="50" x2="174" y2="50"/>
+<path d="M6.0 39.5 L30.0 44.8 L54.0 39.5 L78.0 39.5 L102.0 44.8 L126.0 44.8 L150.0 44.8 L174.0 44.8" fill="none" stroke="var(--p-warning)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M6.0 44.8 L30.0 44.8 L54.0 44.8 L78.0 39.5 L102.0 44.8 L126.0 44.8 L150.0 44.8 L174.0 44.8" fill="none" stroke="var(--p-danger)" stroke-width="2" stroke-dasharray="4 3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="174.0" cy="44.8" r="4" fill="var(--p-warning)" stroke="#fff" stroke-width="2"/><circle cx="174.0" cy="44.8" r="4" fill="var(--p-danger)" stroke="#fff" stroke-width="2"/>
+</svg></div>
+<div class="smp"><div class="sm-head"><b>Hilltop</b><span>4 hazards · 1 incident</span></div>
+<svg viewBox="0 0 180 60" class="p-chart" role="img" aria-label="Hilltop: hazards and incidents a week for eight weeks">
+<line class="grid" x1="6" y1="8" x2="174" y2="8"/><line class="axis" x1="6" y1="50" x2="174" y2="50"/>
+<path d="M6.0 34.2 L30.0 39.5 L54.0 34.2 L78.0 39.5 L102.0 34.2 L126.0 44.8 L150.0 39.5 L174.0 44.8" fill="none" stroke="var(--p-warning)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M6.0 50.0 L30.0 44.8 L54.0 50.0 L78.0 44.8 L102.0 50.0 L126.0 50.0 L150.0 44.8 L174.0 50.0" fill="none" stroke="var(--p-danger)" stroke-width="2" stroke-dasharray="4 3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="174.0" cy="44.8" r="4" fill="var(--p-warning)" stroke="#fff" stroke-width="2"/><circle cx="174.0" cy="50.0" r="4" fill="var(--p-danger)" stroke="#fff" stroke-width="2"/>
+</svg></div>
+<div class="smp"><div class="sm-head"><b>Airport</b><span>2 hazards · 2 incidents</span></div>
+<svg viewBox="0 0 180 60" class="p-chart" role="img" aria-label="Airport: hazards and incidents a week for eight weeks">
+<line class="grid" x1="6" y1="8" x2="174" y2="8"/><line class="axis" x1="6" y1="50" x2="174" y2="50"/>
+<path d="M6.0 44.8 L30.0 39.5 L54.0 44.8 L78.0 39.5 L102.0 44.8 L126.0 44.8 L150.0 44.8 L174.0 50.0" fill="none" stroke="var(--p-warning)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M6.0 44.8 L30.0 50.0 L54.0 44.8 L78.0 44.8 L102.0 50.0 L126.0 44.8 L150.0 44.8 L174.0 50.0" fill="none" stroke="var(--p-danger)" stroke-width="2" stroke-dasharray="4 3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="174.0" cy="50.0" r="4" fill="var(--p-warning)" stroke="#fff" stroke-width="2"/><circle cx="174.0" cy="50.0" r="4" fill="var(--p-danger)" stroke="#fff" stroke-width="2"/>
+</svg></div>
+          </div><div class="p-legend"><span>Tinted panels are the three quiet restaurants. The reminder email sent this same story as one number.</span></div></div>
+        </div>
+        <div class="p-grid" style="gap:var(--p-s-4)">
+          <div class="p-card">
+            <div class="p-card-head"><h2>Why the ratio replaces the reminder email</h2></div>
+            <div class="p-card-body why">
+              <p><b>Many hazards, few incidents is the good sign.</b> That restaurant is finding problems before they hurt someone.</p>
+              <p><b>No reports does not mean no hazards.</b> A quiet restaurant is a question, not a result, so it sits at the top of the table rather than the bottom.</p>
+              <p><b>The reminder email went to everyone and told no one anything.</b> Three named conversations replace it.</p>
+            </div>
+          </div>
+          <div class="p-card">
+            <div class="p-card-head"><h2>This week's conversations</h2><span class="p-meta">3</span></div>
+            <div class="p-list">
+              <div class="p-list-row"><div class="p-grow"><b>Harbourside</b><span class="p-sub">No reports for 14 days; three actions overdue</span></div><button class="p-btn p-btn-ghost p-btn-sm">Open restaurant</button></div>
+              <div class="p-list-row"><div class="p-grow"><b>Westfield</b><span class="p-sub">One report in three weeks, logged from the office at end of shift</span></div><button class="p-btn p-btn-ghost p-btn-sm">Open restaurant</button></div>
+              <div class="p-list-row"><div class="p-grow"><b>Crossroads</b><span class="p-sub">New manager since August; no hazard reported since</span></div><button class="p-btn p-btn-ghost p-btn-sm">Open restaurant</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="scrim"></div>
+<aside class="p-drawer rdrawer" aria-label="Harbourside">
+  <div class="dhead"><div><h2>Harbourside</h2><span class="p-meta">Restaurant 0418 · Tom B. · 24 team members</span></div><button class="dclose" aria-label="Close">×</button></div>
+  <div class="p-alert p-alert-warning" style="margin:0"><b>Quiet for 14 days.</b> Last report 3 September. Before that, Harbourside reported about three hazards a week.</div>
+  <div>
+    <h3>At a glance</h3>
+    <dl class="p-kv" style="margin:0">
+      <dt>Reports this period</dt><dd>2 · 1 hazard, 1 incident</dd>
+      <dt>Reporting ratio</dt><dd><span class="p-badge p-badge-warning p-badge-plain">1.0 · watch</span></dd>
+      <dt>Overdue actions</dt><dd><span class="p-badge p-badge-danger p-badge-plain">3</span></dd>
+      <dt>Last safety visit</dt><dd>21 August, area safety lead</dd>
+      <dt>QR poster check</dt><dd>Not confirmed this period</dd>
+    </dl>
+  </div>
+  <div>
+    <h3>Open items</h3>
+    <div class="mini">
+      <div><span>Fryer 1 splash guard, replace</span><span>6 days overdue</span></div>
+      <div><span>Cool-room door seal</span><span>4 days overdue</span></div>
+      <div><span>Anti-slip mat, back door</span><span>2 days overdue</span></div>
+    </div>
+  </div>
+  <div>
+    <h3>Last three reports</h3>
+    <div class="mini">
+      <div><span>Burn, hot oil during filtering</span><span>3 Sep</span></div>
+      <div><span>Wet floor near the drive-thru window</span><span>28 Aug</span></div>
+      <div><span>Boxes stacked in front of the fire exit</span><span>26 Aug</span></div>
+    </div>
+  </div>
+  <div>
+    <h3>Note to Tom</h3>
+    <div class="note"><b>Hi Tom,</b> Harbourside has been quiet for two weeks and three actions are overdue. That usually means the team is flat out, not that the restaurant is unsafe. Can we find ten minutes this week to go through the three actions together and check the QR poster is up by the office? Thanks, Daniel</div>
+  </div>
+  <div class="dfoot"><button class="p-btn p-btn-primary">Send a note to Harbourside</button><button class="p-btn p-btn-secondary">Book a visit instead</button></div>
+</aside>
+<script>var s=new URLSearchParams(location.search).get('state');if(s)document.body.dataset.show=s;</script>
+</body></html>

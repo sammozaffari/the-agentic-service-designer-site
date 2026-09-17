@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corrective actions · Safety reporting concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../../assets/product/tokens.css"><link rel="stylesheet" href="../../../../assets/product/components.css">
+<style>
+html,body{width:1440px;min-height:900px}
+.p-main{position:relative}
+/* the page is a column so the board can run to the bottom edge, the way a real board does */
+.p-page{display:flex;flex-direction:column;flex:1;min-height:0}
+/* view switching */
+[data-view]{display:none}
+body[data-show="board"] [data-view="board"]{display:flex;flex-direction:column;flex:1;min-height:0}
+body[data-show="list"] [data-view="list"]{display:flex;flex-direction:column;flex:1;min-height:0}
+[data-view="list"] .p-table-wrap{display:flex;flex-direction:column;flex:1;min-height:0}
+[data-view="list"] .p-table-foot{margin-top:auto}
+/* board */
+.p-kanban{grid-template-columns:repeat(4,minmax(0,1fr));flex:1;min-height:0;align-items:stretch}
+.p-col-head .p-count{font-variant-numeric:tabular-nums}
+.p-col.closed{background:transparent;border-style:dashed}
+.p-col.closed .p-kcard{box-shadow:none;background:var(--p-panel-2);border-color:transparent}
+.p-col.closed .p-kcard b{font-weight:500;color:var(--p-ink-2)}
+.p-kcard{padding:12px 14px}
+.p-kcard.overdue{border-left:3px solid var(--p-danger);padding-left:12px}
+.p-kcard .p-link-ref{display:flex;gap:6px;align-items:center;margin-top:2px}
+.p-kcard .p-link-ref .p-mono{color:var(--p-ink-2)}
+.p-kcard .p-kmeta{margin-top:10px}
+.p-kcard .p-kmeta .p-person{color:var(--p-ink-2);font-size:var(--p-fs-1);font-weight:500}
+.p-kcard .due{font-variant-numeric:tabular-nums}
+.p-kcard .due.late{color:var(--p-danger);font-weight:600}
+.p-kcard .done{display:flex;gap:6px;align-items:center;color:var(--p-success);font-size:var(--p-fs-1);font-weight:500}
+.p-evidence{margin-top:10px;border:1px solid var(--p-line);border-radius:var(--p-r-1);overflow:hidden;background:var(--p-panel-2)}
+.p-evidence .ph{height:84px;display:grid;place-items:center;color:var(--p-ink-3);background:linear-gradient(180deg,#e7eaef,#d9dde4)}
+.p-evidence .cap{display:flex;justify-content:space-between;align-items:center;padding:6px 10px;font-size:var(--p-fs-1);color:var(--p-ink-3);border-top:1px solid var(--p-line);background:var(--p-panel)}
+.p-kcard .p-btn{margin-top:10px}
+.more{display:block;text-align:center;font-size:var(--p-fs-2);padding:8px 0 4px;color:var(--p-link)}
+.notice{display:flex;align-items:center;gap:10px}
+.notice b{font-weight:600}
+.notice a{color:inherit;text-decoration:underline;text-underline-offset:2px;font-weight:600}
+.notice .p-spacer{flex:1}
+/* list: names, dates and evidence stay on one line; the two text columns take the slack */
+.p-table td.p-primary-cell{font-size:var(--p-fs-3)}
+.p-table th:nth-child(1),.p-table td:nth-child(1){width:27%}
+.p-table th:nth-child(2),.p-table td:nth-child(2){width:29%}
+.p-table th:nth-child(3),.p-table td:nth-child(3),
+.p-table th:nth-child(4),.p-table td:nth-child(4),
+.p-table th:nth-child(6),.p-table td:nth-child(6){white-space:nowrap;width:1%}
+.p-table .ev{display:inline-flex;align-items:center;gap:6px;color:var(--p-ink-3);white-space:nowrap}
+.p-table .ev.yes{color:var(--p-success);font-weight:500}
+.p-table td .due.late{color:var(--p-danger);font-weight:600}
+.p-table .p-person{font-size:var(--p-fs-2);color:var(--p-ink)}
+/* drawer */
+.scrim{display:none;position:absolute;inset:0;background:rgba(15,20,25,.38);z-index:var(--p-z-drawer)}
+.p-drawer{display:none;position:absolute;top:0;right:0;bottom:0;width:440px;z-index:calc(var(--p-z-drawer) + 1);overflow:auto}
+body[data-state="close"] .scrim{display:block}
+body[data-state="close"] .p-drawer{display:flex;flex-direction:column}
+.p-drawer .kicker{font-size:var(--p-fs-1);text-transform:uppercase;letter-spacing:var(--p-tracking-caps);color:var(--p-ink-3);font-weight:600;margin-bottom:6px}
+.p-drawer h2{font-size:var(--p-fs-5);margin-bottom:4px;letter-spacing:-.01em}
+.p-drawer .ctx{font-size:var(--p-fs-2);color:var(--p-ink-3);margin-bottom:var(--p-s-5);display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.p-drawer .p-textarea{min-height:96px}
+.upload{display:grid;grid-template-columns:1fr 1fr;gap:var(--p-s-2)}
+.upload .tile{border:1px solid var(--p-line);border-radius:var(--p-r-1);overflow:hidden;background:var(--p-panel-2)}
+.upload .tile .ph{height:74px;display:grid;place-items:center;background:linear-gradient(180deg,#e7eaef,#d9dde4);color:var(--p-ink-3)}
+.upload .tile .cap{display:flex;justify-content:space-between;padding:6px 10px;font-size:var(--p-fs-1);color:var(--p-ink-3);background:var(--p-panel);border-top:1px solid var(--p-line)}
+.upload .add{border:1px dashed var(--p-line-strong);border-radius:var(--p-r-1);display:grid;place-items:center;text-align:center;font-size:var(--p-fs-1);color:var(--p-ink-2);padding:10px;min-height:106px;line-height:1.35}
+.upload .add b{display:block;font-weight:600;color:var(--p-ink);font-size:var(--p-fs-2)}
+.preview{margin:8px 0 0 30px;padding:10px 12px;background:var(--p-panel-2);border:1px solid var(--p-line);border-radius:var(--p-r-1);font-size:var(--p-fs-2);color:var(--p-ink-2);line-height:1.45}
+.preview .to{display:block;font-size:var(--p-fs-1);color:var(--p-ink-3);margin-bottom:4px}
+.p-check.top{border-bottom:0;align-items:flex-start;padding:6px 0 0}
+.p-check.top .lbl b{display:block;font-weight:600}
+.p-check.top .lbl span{display:block;font-size:var(--p-fs-1);color:var(--p-ink-3);margin-top:2px}
+.auto{display:flex;gap:8px;align-items:flex-start;font-size:var(--p-fs-1);color:var(--p-ink-3);margin:var(--p-s-4) 0 0}
+.auto svg{flex:none;margin-top:1px}
+.drawer-actions{display:flex;gap:var(--p-s-2);justify-content:flex-end;margin-top:auto;padding-top:var(--p-s-4);border-top:1px solid var(--p-line)}
+.close-x{position:absolute;top:18px;right:18px;width:30px;height:30px;border-radius:50%;border:1px solid var(--p-line);background:var(--p-panel);display:grid;place-items:center;color:var(--p-ink-2)}
+</style>
+</head>
+<body class="p-app" data-show="board">
+<div class="p-shell">
+  <aside class="p-sidebar">
+    <div class="p-brand"><div class="p-brand-mark">R</div><div><b>Riverside</b><span>Restaurant 0412 · KFC South Pacific</span></div></div>
+    <div class="p-quick-add"><button class="p-btn p-btn-primary p-btn-block"><svg class="p-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>Report something</button></div>
+    <nav class="p-nav">
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>Dashboard</a>
+      <div class="p-nav-label">Reporting</div>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2l7 13H2z"/><path d="M9 7v4M9 13h.01"/></svg>Incidents<span class="p-count">3</span></a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="7"/><path d="M9 5v5M9 13h.01"/></svg>Hazards<span class="p-count">1</span></a>
+      <a href="#" aria-current="page"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l4 4 8-8"/></svg>Corrective actions<span class="p-count">5</span></a>
+      <div class="p-nav-label">Restaurant</div>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2v14M2 9h14"/></svg>Emergency information</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2h6v4l3 8H3l3-8z"/></svg>Chemical register</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="12" height="11" rx="1"/><path d="M6 4V2h6v2"/></svg>Contractors</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 3h10v12H4z"/><path d="M7 7h4M7 10h4"/></svg>Knowledge base</a>
+    </nav>
+    <div class="p-sidebar-foot"><span class="p-avatar sm">PM</span><div><div style="color:var(--p-ink-on-sidebar)">Priya M.</div><div>Restaurant manager</div></div></div>
+  </aside>
+  <div class="p-main">
+    <header class="p-topbar">
+      <div class="p-crumbs"><span>Riverside</span><span>/</span><b>Corrective actions</b></div>
+      <div class="p-spacer"></div>
+      <div class="p-search"><svg class="p-ico" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>Search reports, people, chemicals<kbd>/</kbd></div>
+      <button class="p-btn p-btn-secondary p-btn-sm">This period</button>
+      <span class="p-avatar">PM</span>
+    </header>
+    <main class="p-page">
+      <div class="p-page-head">
+        <div><h1>Corrective actions</h1><p>5 open · 2 overdue · 9 closed this period</p></div>
+        <div class="p-actions"><button class="p-btn p-btn-secondary">Print this month's fixes</button><button class="p-btn p-btn-primary"><svg class="p-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>New action</button></div>
+      </div>
+
+      <div class="p-alert p-alert-warning notice" role="status"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" style="flex:none"><path d="M8 2l6.5 11.5h-13z"/><path d="M8 6.5v3M8 12h.01"/></svg><span><b>2 actions are overdue.</b> The oldest, fryer 2 splash guard, is linked to a hazard reported on 9 Sep. A burn on the same fryer was reported this morning.</span><span class="p-spacer"></span><a href="#">Open INC-0412-031</a></div>
+
+      <div class="p-filters">
+        <button class="p-chip">Owner: anyone<svg class="p-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4.5l3 3 3-3"/></svg></button>
+        <button class="p-chip">Area: all<svg class="p-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4.5l3 3 3-3"/></svg></button>
+        <button class="p-chip">Due: any time<svg class="p-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4.5l3 3 3-3"/></svg></button>
+        <button class="p-chip">Linked to: incidents and hazards<svg class="p-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4.5l3 3 3-3"/></svg></button>
+        <span class="p-spacer"></span>
+        <div class="p-seg"><button id="seg-board" aria-pressed="true">Board</button><button id="seg-list">List</button></div>
+      </div>
+
+      <!-- Board -->
+      <div data-view="board">
+        <div class="p-kanban">
+          <div class="p-col">
+            <div class="p-col-head"><span>To do</span><span class="p-count">2</span></div>
+            <div class="p-kcard overdue">
+              <b>Re-fix the anti-slip mat at the back door</b>
+              <div class="p-link-ref"><span class="p-mono">HAZ-0412-118</span><span>· Back of house</span></div>
+              <div class="p-kmeta"><span class="p-person"><span class="p-avatar sm">AR</span>Aiden R.</span><span class="p-badge p-badge-danger p-badge-plain">Overdue 2 days</span></div>
+            </div>
+            <div class="p-kcard">
+              <b>Swap box cutters for safety cutters at the carton station</b>
+              <div class="p-link-ref"><span class="p-mono">INC-0412-030</span><span>· Back of house</span></div>
+              <div class="p-kmeta"><span class="p-person"><span class="p-avatar sm">PM</span>Priya M.</span><span class="due">Due Sat 20 Sep</span></div>
+            </div>
+          </div>
+          <div class="p-col">
+            <div class="p-col-head"><span>In progress</span><span class="p-count">2</span></div>
+            <div class="p-kcard overdue">
+              <b>Replace fryer 2 splash guard</b>
+              <div class="p-link-ref"><span class="p-mono">HAZ-0412-112</span><span>· Kitchen</span></div>
+              <div class="p-kmeta"><span class="p-person"><span class="p-avatar sm">PM</span>Priya M.</span><span class="p-badge p-badge-danger p-badge-plain">Overdue 4 days</span></div>
+            </div>
+            <div class="p-kcard">
+              <b>Electrician booked for the cool-room light</b>
+              <div class="p-link-ref"><span class="p-mono">HAZ-0412-115</span><span>· Back of house</span></div>
+              <div class="p-kmeta"><span class="p-person"><span class="p-avatar sm">AR</span>Aiden R.</span><span class="due">Due Thu 18 Sep</span></div>
+            </div>
+          </div>
+          <div class="p-col">
+            <div class="p-col-head"><span>Awaiting sign-off</span><span class="p-count">1</span></div>
+            <div class="p-kcard">
+              <b>Clear the fire exit and mark a no-stack zone</b>
+              <div class="p-link-ref"><span class="p-mono">HAZ-0412-117</span><span>· Back of house</span></div>
+              <div class="p-evidence"><div class="ph"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></div><div class="cap"><span>Photo, 14:02</span><span>Aiden R.</span></div></div>
+              <div class="p-kmeta"><span class="p-person"><span class="p-avatar sm">AR</span>Aiden R.</span><span class="done"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3 3 7-7"/></svg>Done today</span></div>
+              <button class="p-btn p-btn-secondary p-btn-sm p-btn-block">Sign off</button>
+            </div>
+          </div>
+          <div class="p-col closed">
+            <div class="p-col-head"><span>Closed this period</span><span class="p-count">9</span></div>
+            <div class="p-kcard">
+              <b>Anti-slip mat placed at the back door</b>
+              <div class="p-kmeta"><span class="p-person"><span class="p-avatar sm">ML</span>Mei L. reported</span><span class="done">Same day</span></div>
+            </div>
+            <div class="p-kcard">
+              <b>Drive-thru window latch repaired</b>
+              <div class="p-kmeta"><span class="p-person"><span class="p-avatar sm">AR</span>Aiden R. reported</span><span class="done">6 days</span></div>
+            </div>
+            <div class="p-kcard">
+              <b>Wet-floor signs added at the drive-thru pad</b>
+              <div class="p-kmeta"><span class="p-person"><span class="p-avatar sm">JT</span>Jordan T. reported</span><span class="done">1 day</span></div>
+            </div>
+            <a href="#" class="more">6 more · print this month's fixes</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- List -->
+      <div data-view="list">
+        <div class="p-table-wrap">
+          <table class="p-table">
+            <thead><tr><th>Action</th><th>Linked report</th><th>Owner</th><th>Due</th><th>Status</th><th>Evidence</th></tr></thead>
+            <tbody>
+              <tr class="p-overdue"><td class="p-primary-cell">Replace fryer 2 splash guard<span class="p-sub">Kitchen · created 9 Sep</span></td><td><span class="p-mono">HAZ-0412-112</span><span class="p-sub">Cracked splash guard on fryer 2 · Jordan T.</span></td><td><span class="p-person"><span class="p-avatar sm">PM</span>Priya M.</span></td><td class="p-nowrap"><span class="due late">13 Sep · 4 days late</span></td><td><span class="p-badge p-badge-info p-badge-plain">In progress</span></td><td><span class="ev">None yet</span></td></tr>
+              <tr class="p-overdue"><td class="p-primary-cell">Re-fix the anti-slip mat at the back door<span class="p-sub">Back of house · created 12 Sep</span></td><td><span class="p-mono">HAZ-0412-118</span><span class="p-sub">Wet floor at the back door after deliveries · Mei L.</span></td><td><span class="p-person"><span class="p-avatar sm">AR</span>Aiden R.</span></td><td class="p-nowrap"><span class="due late">15 Sep · 2 days late</span></td><td><span class="p-badge p-badge-neutral p-badge-plain">To do</span></td><td><span class="ev">None yet</span></td></tr>
+              <tr><td class="p-primary-cell">Electrician booked for the cool-room light<span class="p-sub">Back of house · created 11 Sep</span></td><td><span class="p-mono">HAZ-0412-115</span><span class="p-sub">Cool-room light flickering · Aiden R.</span></td><td><span class="p-person"><span class="p-avatar sm">AR</span>Aiden R.</span></td><td class="p-nowrap">Thu 18 Sep</td><td><span class="p-badge p-badge-info p-badge-plain">In progress</span></td><td><span class="ev">Booking ref</span></td></tr>
+              <tr><td class="p-primary-cell">Swap box cutters for safety cutters at the carton station<span class="p-sub">Back of house · created 15 Sep</span></td><td><span class="p-mono">INC-0412-030</span><span class="p-sub">Cut, opening cartons with a box cutter · Sam K.</span></td><td><span class="p-person"><span class="p-avatar sm">PM</span>Priya M.</span></td><td class="p-nowrap">Sat 20 Sep</td><td><span class="p-badge p-badge-neutral p-badge-plain">To do</span></td><td><span class="ev">None yet</span></td></tr>
+              <tr><td class="p-primary-cell">Clear the fire exit and mark a no-stack zone<span class="p-sub">Back of house · created 15 Sep</span></td><td><span class="p-mono">HAZ-0412-117</span><span class="p-sub">Blocked fire exit, boxes from the dry store · Priya M.</span></td><td><span class="p-person"><span class="p-avatar sm">AR</span>Aiden R.</span></td><td class="p-nowrap">Wed 17 Sep</td><td><span class="p-badge p-badge-success p-badge-plain">Awaiting sign-off</span></td><td><span class="ev yes"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Photo, 14:02</span></td></tr>
+            </tbody>
+          </table>
+          <div class="p-table-foot"><span>5 open actions · sorted by due date, overdue first</span><a href="#">Show the 9 closed this period</a></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Close drawer -->
+    <div class="scrim"></div>
+    <aside class="p-drawer" aria-label="Close action">
+      <button class="close-x" aria-label="Close"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 2l8 8M10 2l-8 8"/></svg></button>
+      <div class="kicker">Close action</div>
+      <h2>Replace fryer 2 splash guard</h2>
+      <div class="ctx"><span class="p-mono">HAZ-0412-112</span><span>·</span><span>Reported by Jordan T., Tue 9 Sep</span><span>·</span><span>Kitchen, fryer 2</span><span>·</span><span class="p-badge p-badge-danger p-badge-plain">Overdue 4 days</span></div>
+
+      <div class="p-field"><label>What was done</label><span class="p-hint">Plain words. This line goes to the reporter and onto the fixes notice.</span><div class="p-textarea">New splash guard fitted to fryer 2 and checked during the 14:00 filter. The cracked guard has been binned.</div></div>
+
+      <div class="p-field"><label>Evidence</label><span class="p-hint">One photo of the fix. It stays on the record.</span>
+        <div class="upload">
+          <div class="tile"><div class="ph"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></div><div class="cap"><span>Photo, 14:02</span><a href="#">Remove</a></div></div>
+          <div class="add"><span><b>Add another</b>Drag a photo here or take one on your phone</span></div>
+        </div>
+      </div>
+
+      <div class="p-check on top"><span class="p-box"></span><span class="lbl"><b>Tell Jordan T. what changed</b><span>Sent to the reporter when you close this. Edit it if you like.</span></span></div>
+      <div class="preview"><span class="to">To Jordan T. · from Priya M.</span>Your report on Tuesday 9 Sep led to this: the fryer 2 splash guard was replaced on 17 Sep. Thanks for flagging it.</div>
+
+      <div class="auto"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8.5l3 3 7-7"/></svg><span>Added to this month's fixes notice automatically. Nothing to type twice.</span></div>
+
+      <div class="drawer-actions"><button class="p-btn p-btn-ghost">Cancel</button><button class="p-btn p-btn-primary">Close and notify</button></div>
+    </aside>
+  </div>
+</div>
+<script>
+(function(){var q=new URLSearchParams(location.search),v=q.get('view'),s=q.get('state');
+if(v==='list'){document.body.dataset.show='list';document.getElementById('seg-board').removeAttribute('aria-pressed');document.getElementById('seg-list').setAttribute('aria-pressed','true');}
+if(s){document.body.dataset.state=s;}})();
+</script>
+</body></html>

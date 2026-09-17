@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incident record INC-0412-031 · Safety reporting concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../../assets/product/tokens.css"><link rel="stylesheet" href="../../../../assets/product/components.css">
+<style>
+html,body{width:1440px;min-height:1100px}
+[hidden]{display:none!important}
+.back{display:inline-flex;align-items:center;gap:6px;font-size:var(--p-fs-2);color:var(--p-ink-3);margin-bottom:var(--p-s-3)}
+.p-record-head{align-items:flex-start;justify-content:space-between}
+.p-record-head .t{display:flex;flex-direction:column;gap:6px}
+.p-record-head .t .p-row{gap:8px}
+.p-record{grid-template-columns:minmax(0,1fr) 340px;gap:var(--p-s-5)}
+/* pipeline */
+.pipe{display:flex;gap:6px;margin-bottom:var(--p-s-4);background:var(--p-panel);border:1px solid var(--p-line);border-radius:var(--p-r-2);padding:6px;box-shadow:var(--p-shadow-1)}
+.pipe > div{flex:1;display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--p-r-1);font-size:var(--p-fs-2);color:var(--p-ink-3);position:relative}
+.pipe > div i{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--p-line-strong);display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:600;color:var(--p-ink-3);flex:none;background:var(--p-panel)}
+.pipe > div b{display:block;font-weight:500;color:var(--p-ink-2)}
+.pipe > div small{display:block;font-size:11px;color:var(--p-ink-3)}
+.pipe > div.done i{background:var(--p-success);border-color:var(--p-success);color:#fff}
+.pipe > div.done b{color:var(--p-ink)}
+.pipe > div.now{background:var(--p-info-bg)}
+.pipe > div.now i{background:var(--p-info);border-color:var(--p-info);color:#fff}
+.pipe > div.now b{color:#163a9c;font-weight:600} .pipe > div.now small{color:#163a9c}
+/* cards */
+.card{margin-bottom:var(--p-s-4)}
+.card .p-card-head h2{display:flex;align-items:center;gap:10px}
+.card .p-card-head h2 .step{font-size:11px;font-weight:600;letter-spacing:var(--p-tracking-caps);text-transform:uppercase;color:var(--p-info);background:var(--p-info-bg);border:1px solid var(--p-info-line);border-radius:var(--p-r-pill);padding:2px 8px}
+.card .p-card-head h2 .step.lock{color:var(--p-ink-3);background:var(--p-neutral-bg);border-color:var(--p-neutral-line)}
+.card .p-card-head h2 .step.ok{color:var(--p-success);background:var(--p-success-bg);border-color:var(--p-success-line)}
+.facts{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:var(--p-s-4)}
+.facts .p-kv{grid-template-columns:130px 1fr;align-content:start}
+.facts .p-kv dd{font-weight:500}
+.photo{border:1px solid var(--p-line);border-radius:var(--p-r-2);overflow:hidden;background:var(--p-panel-2)}
+.photo .ph{height:132px;background:linear-gradient(160deg,#dfe3e8,#c9cfd6);display:grid;place-items:center;color:var(--p-ink-3);font-size:var(--p-fs-1)}
+.photo figcaption{padding:8px 10px;font-size:11px;color:var(--p-ink-3);line-height:1.35}
+.desc{margin-top:var(--p-s-3);padding:10px 12px;background:var(--p-panel-2);border:1px solid var(--p-line);border-radius:var(--p-r-1);font-size:var(--p-fs-2);color:var(--p-ink-2)}
+.desc b{color:var(--p-ink);font-weight:500}
+.wform .p-fieldset{margin-bottom:var(--p-s-3)}
+.wform .p-legend{font-size:var(--p-fs-2);margin-bottom:6px}
+.wform .p-choice label{min-height:40px;padding:8px 12px;font-size:var(--p-fs-2);border-radius:var(--p-r-1)}
+.wform .p-textarea{min-height:64px}
+.wform .actions{display:flex;align-items:center;gap:12px;margin-top:var(--p-s-3)}
+.wform .actions .p-meta{max-width:420px}
+.cls{opacity:.55}
+.cls .p-choices{grid-template-columns:repeat(4,minmax(0,1fr))}
+.cls .p-choice label{min-height:52px;font-size:var(--p-fs-2);padding:8px 12px;flex-direction:column;align-items:flex-start;gap:2px}
+.cls .p-choice label b{font-size:var(--p-fs-2)}
+.cls .p-choice label span{font-size:11px;margin:0}
+.cls-done .p-choice label{min-height:52px;font-size:var(--p-fs-2);padding:8px 12px;flex-direction:column;align-items:flex-start;gap:2px}
+.cls-done .p-choices{grid-template-columns:repeat(4,minmax(0,1fr))}
+.cls-done .p-choice label span{font-size:11px;margin:0}
+.hint{display:flex;gap:8px;align-items:flex-start;font-size:var(--p-fs-1);color:var(--p-ink-3);margin-top:var(--p-s-3);line-height:1.4}
+.hint svg{flex:none;margin-top:2px}
+.rc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--p-s-3)}
+.rc > div{padding:10px 12px;border:1px solid var(--p-line);border-radius:var(--p-r-1);background:var(--p-panel-2);font-size:var(--p-fs-2)}
+.rc > div span{display:block;font-size:11px;text-transform:uppercase;letter-spacing:var(--p-tracking-caps);color:var(--p-ink-3);margin-bottom:4px;font-weight:600}
+.rc > div b{font-weight:500;color:var(--p-ink);display:block}
+.rc > div small{display:block;color:var(--p-ink-3);font-size:var(--p-fs-1);margin-top:2px}
+.acts .p-table td{height:52px}
+.acts .p-table th:first-child,.acts .p-table td:first-child{padding-left:var(--p-s-4)}
+.acts .p-table th:last-child,.acts .p-table td:last-child{padding-right:var(--p-s-4)}
+.late{color:var(--p-danger);font-weight:600}
+.tl .p-timeline{padding-top:2px}
+.tl .p-tl-item.todo{color:var(--p-ink-3)} .tl .p-tl-item.todo b{color:var(--p-ink-3);font-weight:400}
+.tl .p-tl-item.todo::before{border-style:dashed}
+/* right column */
+.side .p-card{margin-bottom:var(--p-s-4)}
+.side .p-kv{grid-template-columns:112px 1fr;gap:10px 12px}
+.side .p-kv dd{font-weight:500}
+.side .p-card-body{padding-top:2px}
+.sw{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;border-top:1px solid var(--p-line);font-size:var(--p-fs-2)}
+.sw i{width:34px;height:20px;border-radius:10px;background:var(--p-ink);position:relative;display:inline-block;flex:none;margin-top:1px}
+.sw i::after{content:"";position:absolute;top:2px;left:16px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.sw b{display:block;font-weight:500;color:var(--p-ink)}
+.sw span{display:block;color:var(--p-ink-3);font-size:var(--p-fs-1);margin-top:2px}
+/* rail: message preview, station pattern, regulator */
+.msg{display:flex;gap:10px;align-items:flex-start}
+.msg .bub{background:var(--p-panel-2);border:1px solid var(--p-line);border-radius:4px 14px 14px 14px;padding:10px 12px;flex:1;min-width:0}
+.msg .bub p{font-size:var(--p-fs-2);line-height:1.5;color:var(--p-ink)}
+.msg .bub .t{display:block;margin-top:6px;font-size:11px;color:var(--p-ink-3)}
+.note{margin-top:10px;font-size:11px;color:var(--p-ink-3);line-height:1.45}
+.reg{font-size:var(--p-fs-2);line-height:1.5;color:var(--p-ink-2)}
+.reg b{color:var(--p-ink);font-weight:600}
+.stat-row{display:flex;align-items:baseline;gap:8px;margin-bottom:12px}
+.stat-row b{font-size:var(--p-fs-6);font-weight:600;letter-spacing:-.02em}
+.stat-row span{font-size:var(--p-fs-1);color:var(--p-ink-3);line-height:1.35}
+.bars{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+.bar{display:flex;align-items:center;gap:8px;font-size:var(--p-fs-1)}
+.bar span{width:52px;color:var(--p-ink-2);flex:none}
+.bar i{height:10px;border-radius:2px;display:block;flex:none}
+.bar em{font-style:normal;color:var(--p-ink-3);font-variant-numeric:tabular-nums}
+.ppl .p-list-row{padding:10px 16px}
+.ppl .p-list-row b{font-size:var(--p-fs-2)}
+.lnk .p-list-row{padding:10px 16px}
+.lnk .p-list-row b{font-size:var(--p-fs-2);color:var(--p-link)}
+.lnk .glyph{width:26px;height:26px;border-radius:6px;display:grid;place-items:center;flex:none;font-size:11px;font-weight:600}
+.done-sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--p-s-3)}
+.done-sum > div{padding:10px 12px;border:1px solid var(--p-line);border-radius:var(--p-r-1);font-size:var(--p-fs-2)}
+.done-sum > div span{display:block;font-size:11px;color:var(--p-ink-3);margin-bottom:2px}
+.done-sum > div b{font-weight:500;color:var(--p-ink)}
+</style>
+</head>
+<body class="p-app" data-show="open">
+<div class="p-shell">
+  <aside class="p-sidebar">
+    <div class="p-brand"><div class="p-brand-mark">R</div><div><b>Riverside</b><span>Restaurant 0412 · KFC South Pacific</span></div></div>
+    <div class="p-quick-add"><button class="p-btn p-btn-primary p-btn-block"><svg class="p-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>Report something</button></div>
+    <nav class="p-nav">
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>Dashboard</a>
+      <div class="p-nav-label">Reporting</div>
+      <a href="#" aria-current="page"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2l7 13H2z"/><path d="M9 7v4M9 13h.01"/></svg>Incidents<span class="p-count">3</span></a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="7"/><path d="M9 5v5M9 13h.01"/></svg>Hazards<span class="p-count">1</span></a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l4 4 8-8"/></svg>Corrective actions<span class="p-count">5</span></a>
+      <div class="p-nav-label">Restaurant</div>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2v14M2 9h14"/></svg>Emergency information</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2h6v4l3 8H3l3-8z"/></svg>Chemical register</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="12" height="11" rx="1"/><path d="M6 4V2h6v2"/></svg>Contractors</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 3h10v12H4z"/><path d="M7 7h4M7 10h4"/></svg>Knowledge base</a>
+    </nav>
+    <div class="p-sidebar-foot"><span class="p-avatar sm">PM</span><div><div style="color:var(--p-ink-on-sidebar)">Priya M.</div><div>Restaurant manager</div></div></div>
+  </aside>
+  <div class="p-main">
+    <header class="p-topbar">
+      <div class="p-crumbs"><span>Riverside</span><span>/</span><span>Incidents and hazards</span><span>/</span><b>INC-0412-031</b></div>
+      <div class="p-spacer"></div>
+      <div class="p-search"><svg class="p-ico" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>Search reports, people, chemicals<kbd>/</kbd></div>
+      <button class="p-btn p-btn-secondary p-btn-sm">This period</button>
+      <span class="p-avatar">PM</span>
+    </header>
+    <main class="p-page">
+      <a href="#" class="back"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7.5 2.5L4 6l3.5 3.5"/></svg>Incidents and hazards</a>
+      <div class="p-record-head">
+        <div class="t">
+          <span class="p-record-id">INC-0412-031</span>
+          <h1>Burn, oil splash while filtering</h1>
+          <div class="p-row"><span class="p-badge p-badge-danger">Incident</span><span class="p-badge p-badge-info p-badge-plain" data-state="open">Welfare check due</span><span class="p-badge p-badge-success p-badge-plain" data-state="closed">Closed · reporter told</span><span class="p-meta">Reported today 10:45 by Jordan T. · Kitchen, fryer 2</span></div>
+        </div>
+        <div class="p-actions" data-state="open"><button class="p-btn p-btn-secondary">Print</button><button class="p-btn p-btn-secondary">Escalate to area lead</button><button class="p-btn p-btn-primary">Record welfare check</button></div>
+        <div class="p-actions" data-state="closed"><button class="p-btn p-btn-secondary">Print</button><button class="p-btn p-btn-secondary">Reopen</button></div>
+      </div>
+
+      <div class="pipe" data-state="open">
+        <div class="done"><i>✓</i><div><b>Reported</b><small>Today 10:45 · Jordan T.</small></div></div>
+        <div class="now"><i>2</i><div><b>Welfare check</b><small>Due before 15:00</small></div></div>
+        <div><i>3</i><div><b>Classify</b><small>After the welfare check</small></div></div>
+        <div><i>4</i><div><b>Actions</b><small>1 proposed</small></div></div>
+        <div><i>5</i><div><b>Closed</b><small>Reporter is told what changed</small></div></div>
+      </div>
+      <div class="pipe" data-state="closed">
+        <div class="done"><i>✓</i><div><b>Reported</b><small>17 Sep 10:45 · Jordan T.</small></div></div>
+        <div class="done"><i>✓</i><div><b>Welfare check</b><small>17 Sep 11:20 · Priya M.</small></div></div>
+        <div class="done"><i>✓</i><div><b>Classified</b><small>First aid · 17 Sep 11:24</small></div></div>
+        <div class="done"><i>✓</i><div><b>Actions</b><small>2 of 2 done</small></div></div>
+        <div class="done"><i>✓</i><div><b>Closed</b><small>20 Sep · Jordan told</small></div></div>
+      </div>
+
+      <div class="p-alert p-alert-warning" data-state="open"><b>Welfare check due.</b> Speak to Jordan before the end of the shift at 15:00. Record the treatment given and whether they continued working; severity is set afterwards from what happened.</div>
+      <div class="p-alert p-alert-success" data-state="closed"><b>Closed 20 Sep.</b> Jordan T. was told: splash guard replaced on fryer 2 and filtering moved to after close.</div>
+
+      <div class="p-record">
+        <div>
+          <div class="p-card card">
+            <div class="p-card-head"><h2>What the reporter told us</h2><span class="p-meta">55 seconds on the phone form · nothing was asked that Jordan could not answer</span></div>
+            <div class="p-card-body">
+              <div class="facts">
+                <dl class="p-kv"><dt>What happened</dt><dd>Burn</dd><dt>How it happened</dt><dd>Oil splash while filtering</dd><dt>Body part</dt><dd>Hand or fingers, right</dd><dt>Equipment</dt><dd>Fryer 2, filter station</dd><dt>When and where</dt><dd>Today 10:45 · Kitchen</dd><dt>Anyone else</dt><dd>No</dd></dl>
+                <figure class="photo"><div class="ph">Photo · fryer 2 filter station</div><figcaption>Taken by Jordan at 10:47. The splash guard is missing from the filter pot.</figcaption></figure>
+              </div>
+              <div class="desc"><b>In Jordan's words.</b> Oil came over the edge of the filter pot when the pot was lifted. It got the back of the right hand. Ran it under the cold tap straight away.</div>
+            </div>
+          </div>
+
+          <div class="p-card card" data-state="open">
+            <div class="p-card-head"><h2>Welfare check <span class="step">Current step</span></h2><span class="p-meta">Recorded by you, not by the reporter</span></div>
+            <div class="p-card-body wform">
+              <fieldset class="p-fieldset"><span class="p-legend">Have you spoken to Jordan?</span>
+                <div class="p-choices three"><div class="p-choice"><input type="radio" name="s" id="s1" checked><label for="s1">Yes, in person</label></div><div class="p-choice"><input type="radio" name="s" id="s2"><label for="s2">Yes, by phone</label></div><div class="p-choice"><input type="radio" name="s" id="s3"><label for="s3">Not yet</label></div></div>
+              </fieldset>
+              <fieldset class="p-fieldset"><span class="p-legend">Treatment given</span>
+                <div class="p-choices"><div class="p-choice"><input type="radio" name="t" id="t1" checked><label for="t1">Cool running water, 20 minutes</label></div><div class="p-choice"><input type="radio" name="t" id="t2"><label for="t2">First-aid kit, dressing applied</label></div><div class="p-choice"><input type="radio" name="t" id="t3"><label for="t3">Sent for medical treatment</label></div><div class="p-choice"><input type="radio" name="t" id="t4"><label for="t4">None needed</label></div></div>
+              </fieldset>
+              <fieldset class="p-fieldset"><span class="p-legend">Able to continue the shift?</span>
+                <div class="p-choices three"><div class="p-choice"><input type="radio" name="c" id="c1" checked><label for="c1">Yes, continued working</label></div><div class="p-choice"><input type="radio" name="c" id="c2"><label for="c2">Went home</label></div><div class="p-choice"><input type="radio" name="c" id="c3"><label for="c3">Off the floor, light duties</label></div></div>
+              </fieldset>
+              <label class="p-field"><span style="display:block;font-size:var(--p-fs-2);font-weight:600;margin-bottom:6px">Notes</span><textarea class="p-textarea" placeholder="What Jordan said, what you saw, anything the area lead needs to know"></textarea></label>
+              <div class="actions"><button class="p-btn p-btn-primary">Save welfare check</button><span class="p-meta">Saving unlocks classification. The regulator question is asked on that step, only if it applies.</span></div>
+            </div>
+          </div>
+          <div class="p-card card" data-state="closed">
+            <div class="p-card-head"><h2>Welfare check <span class="step ok">Done</span></h2><span class="p-meta">Priya M. · 17 Sep 11:20</span></div>
+            <div class="p-card-body"><div class="done-sum"><div><span>Spoken to</span><b>Yes, in person</b></div><div><span>Treatment</span><b>Cool running water, 20 minutes</b></div><div><span>Shift</span><b>Continued working</b></div></div></div>
+          </div>
+
+          <div class="p-card card" data-state="open">
+            <div class="p-card-head"><h2>Classification <span class="step lock">After the welfare check</span></h2><span class="p-meta">Set by you from the outcome</span></div>
+            <div class="p-card-body">
+              <div class="cls"><div class="p-choices"><div class="p-choice"><input type="radio" name="k" id="k1" disabled><label for="k1"><b>First aid</b><span>Treated on site, kept working</span></label></div><div class="p-choice"><input type="radio" name="k" id="k2" disabled><label for="k2"><b>Medical treatment</b><span>Seen by a doctor or clinic</span></label></div><div class="p-choice"><input type="radio" name="k" id="k3" disabled><label for="k3"><b>Lost time</b><span>Missed a shift or more</span></label></div><div class="p-choice"><input type="radio" name="k" id="k4" disabled><label for="k4"><b>Near miss</b><span>Nobody hurt this time</span></label></div></div></div>
+              <div class="hint"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="6.5"/><path d="M8 7v4M8 5h.01"/></svg><span>The reporter was never asked this. Severity is a judgement about the outcome, made here from the welfare check. If you choose medical treatment or lost time, the regulator question appears with the matrix answered for you.</span></div>
+            </div>
+          </div>
+          <div class="p-card card" data-state="closed">
+            <div class="p-card-head"><h2>Classification <span class="step ok">First aid</span></h2><span class="p-meta">Priya M. · 17 Sep 11:24 · not notifiable</span></div>
+            <div class="p-card-body"><div class="cls-done"><div class="p-choices"><div class="p-choice"><input type="radio" name="k" id="q1" checked><label for="q1"><b>First aid</b><span>Treated on site, kept working</span></label></div><div class="p-choice"><input type="radio" name="k" id="q2"><label for="q2"><b>Medical treatment</b><span>Seen by a doctor or clinic</span></label></div><div class="p-choice"><input type="radio" name="k" id="q3"><label for="q3"><b>Lost time</b><span>Missed a shift or more</span></label></div><div class="p-choice"><input type="radio" name="k" id="q4"><label for="q4"><b>Near miss</b><span>Nobody hurt this time</span></label></div></div></div></div>
+          </div>
+
+          <div class="p-card card">
+            <div class="p-card-head"><h2>Root cause and controls</h2><span class="p-meta">Fix first, then record what fixed it</span></div>
+            <div class="p-card-body"><div class="rc">
+              <div><span>Cause</span><b>Splash guard missing from fryer 2</b><small>Removed for cleaning on Monday, not refitted</small></div>
+              <div><span>Contributing</span><b>Filtering during the lunch build-up</b><small>10:45, one person on fryers</small></div>
+              <div><span>Controls</span><b>Refit the guard; filter after close</b><small>Both recorded as actions below</small></div>
+            </div></div>
+          </div>
+
+          <div class="p-card card acts">
+            <div class="p-card-head"><h2>Corrective actions</h2><button class="p-btn p-btn-secondary p-btn-sm" data-state="open">Add action</button><span class="p-meta" data-state="closed">2 of 2 done</span></div>
+            <div class="p-table-wrap" style="border:0;box-shadow:none;border-top:1px solid var(--p-line);border-radius:0 0 var(--p-r-2) var(--p-r-2)">
+              <table class="p-table">
+                <thead><tr><th>Action</th><th>Owner</th><th>Due</th><th>Status</th></tr></thead>
+                <tbody data-state="open">
+                  <tr><td class="p-primary-cell">Refit the splash guard on fryer 2<span class="p-sub">ACT-0412-071 · evidence photo required on close</span></td><td><span class="p-person"><span class="p-avatar sm">PM</span>Priya M.</span></td><td class="p-nowrap">Fri 19 Sep</td><td><span class="p-badge p-badge-info p-badge-plain">Open</span></td></tr>
+                  <tr><td class="p-primary-cell">Move oil filtering to after close<span class="p-sub">ACT-0412-072 · routine change, shift plan</span></td><td><span class="p-person"><span class="p-avatar sm">PM</span>Priya M.</span></td><td class="p-nowrap">Mon 22 Sep</td><td><span class="p-badge p-badge-neutral p-badge-plain">Proposed</span></td></tr>
+                </tbody>
+                <tbody data-state="closed">
+                  <tr><td class="p-primary-cell">Refit the splash guard on fryer 2<span class="p-sub">ACT-0412-071 · evidence photo attached</span></td><td><span class="p-person"><span class="p-avatar sm">PM</span>Priya M.</span></td><td class="p-nowrap">Fri 19 Sep</td><td><span class="p-badge p-badge-success p-badge-plain">Done 18 Sep</span></td></tr>
+                  <tr><td class="p-primary-cell">Move oil filtering to after close<span class="p-sub">ACT-0412-072 · shift plan updated</span></td><td><span class="p-person"><span class="p-avatar sm">PM</span>Priya M.</span></td><td class="p-nowrap">Mon 22 Sep</td><td><span class="p-badge p-badge-success p-badge-plain">Done 20 Sep</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="p-card card tl">
+            <div class="p-card-head"><h2>Activity</h2><span class="p-meta">Every step is timestamped, including the message to the reporter</span></div>
+            <div class="p-card-body">
+              <div class="p-timeline" data-state="open">
+                <div class="p-tl-item done"><b>Reported by Jordan T. from the phone form</b><time>Today 10:45 · 55 seconds, 6 questions</time></div>
+                <div class="p-tl-item done"><b>Priya M. notified by push and SMS</b><time>Today 10:46</time></div>
+                <div class="p-tl-item done"><b>Priya M. opened the report</b><time>Today 10:52</time></div>
+                <div class="p-tl-item now"><b>Welfare check due</b><time>Before 15:00 · reminder at 14:30 if not recorded</time></div>
+                <div class="p-tl-item todo"><b>Classification</b><time>Unlocks after the welfare check</time></div>
+                <div class="p-tl-item todo"><b>Jordan is told what changed</b><time>Sent automatically when the report closes</time></div>
+              </div>
+              <div class="p-timeline" data-state="closed">
+                <div class="p-tl-item done"><b>Reported by Jordan T. from the phone form</b><time>17 Sep 10:45</time></div>
+                <div class="p-tl-item done"><b>Priya M. notified by push and SMS</b><time>17 Sep 10:46</time></div>
+                <div class="p-tl-item done"><b>Welfare check recorded</b><time>17 Sep 11:20 · Priya M.</time></div>
+                <div class="p-tl-item done"><b>Classified first aid, not notifiable</b><time>17 Sep 11:24 · Priya M.</time></div>
+                <div class="p-tl-item done"><b>Splash guard refitted, photo attached</b><time>18 Sep 09:10 · Priya M.</time></div>
+                <div class="p-tl-item done"><b>Filtering moved to after close</b><time>20 Sep 16:00 · Priya M.</time></div>
+                <div class="p-tl-item done"><b>Jordan T. told what changed</b><time>20 Sep 16:02 · sent by Priya M., opened 16:40</time><div class="p-tl-note">Because you reported the burn on Wednesday, the splash guard is back on fryer 2 and filtering now happens after close. Thanks, Jordan.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="side">
+          <div class="p-card">
+            <div class="p-card-head"><h2>Key facts</h2></div>
+            <div class="p-card-body"><dl class="p-kv"><dt>Reporter</dt><dd>Jordan T. <span class="p-meta">· team member, 3 months</span></dd><dt>Restaurant</dt><dd>Riverside 0412</dd><dt>Area</dt><dd>Kitchen, fryer 2</dd><dt>Shift</dt><dd>09:00 to 15:00</dd><dt>Reported via</dt><dd>Phone, QR code on the poster</dd><dt>Notified</dt><dd>Priya M., 10:46</dd><dt>Owner</dt><dd>Priya M.</dd><dt>Area lead</dt><dd>Dev R. <span class="p-meta">· watching</span></dd></dl></div>
+            <label class="sw"><i></i><div><b>Tell the reporter what changed</b><span data-state="open">When this closes, Jordan gets a one-line message naming the fix.</span><span data-state="closed">Jordan was sent the message naming the fix when this closed.</span></div></label>
+          </div>
+          <div class="p-card ppl">
+            <div class="p-card-head"><h2>People</h2></div>
+            <div class="p-list">
+              <div class="p-list-row"><span class="p-avatar">JT</span><div class="p-grow"><b>Jordan T.</b><span class="p-sub">Reporter · team member</span></div></div>
+              <div class="p-list-row"><span class="p-avatar">PM</span><div class="p-grow"><b>Priya M.</b><span class="p-sub">Owner · restaurant manager</span></div></div>
+              <div class="p-list-row"><span class="p-avatar">DR</span><div class="p-grow"><b>Dev R.</b><span class="p-sub">Area safety lead · sees this if it escalates</span></div></div>
+            </div>
+          </div>
+          <div class="p-card lnk">
+            <div class="p-card-head"><h2>Linked</h2></div>
+            <div class="p-list">
+              <div class="p-list-row"><span class="glyph" style="background:var(--p-warning-bg);color:var(--p-warning)">H</span><div class="p-grow"><b>HAZ-0412-116 Oil on the floor near fryer 2</b><span class="p-sub">Closed 3 Sep · same station</span></div></div>
+              <div class="p-list-row"><span class="glyph" style="background:var(--p-info-bg);color:var(--p-info)">K</span><div class="p-grow"><b>Fryer oil filtering, step by step</b><span class="p-sub">Knowledge base · last reviewed Aug</span></div></div>
+              <div class="p-list-row"><span class="glyph" style="background:var(--p-neutral-bg);color:var(--p-ink-2)">C</span><div class="p-grow"><b>Fryer oil · safety data sheet</b><span class="p-sub">Chemical register · burns first aid</span></div></div>
+            </div>
+          </div>
+
+          <div class="p-card">
+            <div class="p-card-head"><h2 data-state="open">What Jordan will see</h2><h2 data-state="closed">What Jordan was sent</h2><span class="p-meta" data-state="open">Draft</span><span class="p-meta" data-state="closed">Sent 20 Sep</span></div>
+            <div class="p-card-body">
+              <div class="msg">
+                <span class="p-avatar sm">PM</span>
+                <div class="bub">
+                  <p data-state="open">Your report on Wednesday led to this: the splash guard on fryer 2 was refitted and filtering moved to after close. Thanks for telling us.</p>
+                  <p data-state="closed">Your report on Wednesday led to this: the splash guard on fryer 2 was refitted and filtering moved to after close. Thanks for telling us.</p>
+                  <span class="t" data-state="open">Sends when the report closes</span>
+                  <span class="t" data-state="closed">Delivered 20 Sep, 16:12 · read</span>
+                </div>
+              </div>
+              <p class="note" data-state="open">Written from the corrective actions. You can edit it on close.</p>
+              <p class="note" data-state="closed">Written from the corrective actions and edited by Priya M. before sending.</p>
+            </div>
+          </div>
+
+          <div class="p-card">
+            <div class="p-card-head"><h2>This station</h2><span class="p-meta">Last 8 weeks</span></div>
+            <div class="p-card-body">
+              <div class="stat-row"><b>3</b><span>reports at fryer 2, of 11 at Riverside</span></div>
+              <div class="bars">
+                <div class="bar"><span>Fryer 2</span><i style="width:132px;background:var(--p-warning)"></i><em>3</em></div>
+                <div class="bar"><span>Fryer 1</span><i style="width:44px;background:var(--p-line-strong)"></i><em>1</em></div>
+                <div class="bar"><span>Grill</span><i style="width:44px;background:var(--p-line-strong)"></i><em>1</em></div>
+              </div>
+              <a href="#" class="p-meta" style="color:var(--p-link)">Open the fryer pattern</a>
+            </div>
+          </div>
+
+          <div class="p-card">
+            <div class="p-card-head"><h2>Regulator</h2></div>
+            <div class="p-card-body">
+              <p class="reg" data-state="open"><b>Not asked yet.</b> The notifiable question appears on classification, and only when the outcome is medical treatment or lost time. The matrix is answered from the record, not by the reporter.</p>
+              <p class="reg" data-state="closed"><b>Not notifiable.</b> First aid, treated on site, no lost shift. Answered from the record on 17 Sep and kept with it.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+var q=new URLSearchParams(location.search);var st=q.get('state')==='closed'?'closed':'open';document.body.dataset.show=st;
+document.querySelectorAll('[data-state]').forEach(function(el){el.hidden=el.dataset.state!==st;});
+</script>
+</body></html>

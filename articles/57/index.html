@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="en-AU"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Safety incident reporting at KFC South Pacific: a platform built for direct reporting, used through managers. Research, a five-stage blueprint, three proposals, and the tool that holds the evidence. By Sam Mozaffari.">
+<meta name="description" content="Safety incident reporting at KFC South Pacific: a platform built for direct reporting, used through managers. The research, the tool I built to hold it, what the tool saved against building the board by hand, and the ideal-state product designed from the findings. By Sam Mozaffari.">
 <title>Safety incident reporting: a system built for one workflow and used by another · Sam Mozaffari</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/style.css?v=8">
-<link rel="stylesheet" href="../../assets/article-design.css?v=8">
-<link rel="stylesheet" href="../../assets/article-blocks.css?v=8">
+<link rel="stylesheet" href="../../assets/style.css?v=9">
+<link rel="stylesheet" href="../../assets/article-design.css?v=9">
+<link rel="stylesheet" href="../../assets/article-blocks.css?v=9">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>S</text></svg>">
 <style>
   .brief { border: 1px solid var(--line); border-radius: var(--radius-card); padding: 18px 22px; margin: 0 0 28px; display: grid; grid-template-columns: 140px 1fr; gap: 8px 16px; font-size: 14.5px; }
@@ -17,7 +17,36 @@
   .trail p { margin: 0 0 8px; }
   .trail .step { font-family: var(--mono); font-size: 11.5px; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-soft); }
   .fig img { width: 100%; height: auto; border: 1px solid var(--line); border-radius: var(--radius-card); }
-  @media (max-width: 640px) { .brief { grid-template-columns: 1fr; } }
+
+  /* the estimate panel */
+  .est { border: 1px solid var(--ink); border-radius: var(--radius-card); overflow: hidden; margin: 26px 0 30px; }
+  .est-head { background: var(--ink); color: var(--paper); padding: 14px 20px; }
+  .est-head b { display: block; font-size: 16px; font-weight: 600; }
+  .est-head span { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .07em; text-transform: uppercase; opacity: .72; margin-top: 3px; }
+  .est-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .est-grid > div { padding: 16px 20px 18px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .est-grid > div:last-child { border-right: 0; }
+  .est-grid h5 { margin: 0 0 8px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  .est-grid ul { margin: 0; padding: 0; list-style: none; font-size: 13.5px; line-height: 1.5; }
+  .est-grid li { padding: 4px 0; border-bottom: 1px dotted var(--line); }
+  .est-grid li:last-child { border-bottom: 0; }
+  .est-grid li b { font-variant-numeric: tabular-nums; }
+  .est-sum { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); background: var(--paper-tint); }
+  .est-sum > div { padding: 16px 20px 18px; border-right: 1px solid var(--line); }
+  .est-sum > div:last-child { border-right: 0; }
+  .est-sum .n { font-size: 26px; font-weight: 600; letter-spacing: -.02em; font-variant-numeric: tabular-nums; display: block; }
+  .est-sum .l { font-size: 13px; color: var(--ink-soft); line-height: 1.45; display: block; margin-top: 3px; }
+  .est-note { padding: 14px 20px 16px; font-size: 13px; line-height: 1.55; color: var(--ink-soft); }
+  .est-note b { color: var(--ink); }
+
+  /* module index into the showcase */
+  .mods { display: grid; grid-template-columns: repeat(auto-fill, minmax(238px, 1fr)); gap: 0; border-top: 1px solid var(--line); margin: 20px 0 28px; }
+  .mods a { display: block; padding: 13px 16px 15px; border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); text-decoration: none; }
+  .mods a:hover { background: var(--paper-tint); }
+  .mods .k { font-family: var(--mono); font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+  .mods .t { display: block; font-size: 14.5px; font-weight: 600; margin: 3px 0 3px; color: var(--ink); }
+  .mods .d { display: block; font-size: 12.5px; line-height: 1.45; color: var(--ink-soft); }
+  @media (max-width: 640px) { .brief { grid-template-columns: 1fr; } .est-grid > div, .est-sum > div { border-right: 0; } }
 </style>
 </head><body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -39,53 +68,103 @@
       <span class="art-meta-item"><span class="chip">Employment work</span></span><span class="art-meta-item"><span class="chip">Safety and compliance</span></span><span class="art-meta-item"><span class="chip">Quick-service restaurant network</span></span><span class="art-meta-item"><span class="chip">October 2025 to January 2026</span></span>
     </div>
     <h1>Safety incident reporting: a system built for one workflow and used by another</h1>
-    <p class="deck">The reporting platform assumed frontline team members would log incidents themselves. In practice they told their manager, who logged it, or did not. Interviews, a survey and restaurant visits became a five-stage service blueprint, a set of linked insights and three proposals, held in a tool I built so the evidence stayed within reach of the people deciding.</p>
-    <div class="art-stats"><span><b>5</b> stages, 11 substages</span><span><b>232</b> linked insight records</span><span><b>3</b> proposals featured</span><span><b>1</b> internal tool</span></div>
+    <p class="deck">The reporting platform assumed frontline team members would log incidents themselves. In practice they told their manager, who logged it, or did not. I designed the research to test why reporting varied by restaurant, built a tool to hold the evidence when the synthesis outgrew the documents, and turned the findings into three proposals and a ten-module product concept.</p>
+    <div class="art-stats"><span><b>5</b> stages, 11 substages</span><span><b>232</b> linked insight records</span><span><b>3</b> proposals delivered</span><span><b>10</b> modules designed</span></div>
     <div class="author-block">
       <div class="author-id">
         <div class="author-avatar">SM</div>
         <div><b>Sam Mozaffari</b><span>Experience Designer</span></div>
       </div>
-      <p class="author-note">I led the research and design. I ran interviews and restaurant visits, designed the sampling, built the blueprint and the insight tool, wrote the findings report and drafted the proposals. The safety team, the training team and area safety leads were the collaborators and the audience.</p>
+      <p class="author-note">I led the research and design. I ran interviews and restaurant visits, designed the sampling, built the blueprint and the insight tool, wrote the findings report, drafted the proposals and designed the concept. The safety team, the training team and area safety leads were the collaborators and the audience.</p>
     </div>
   </header></div><div class="art-layout art-layout--body"><aside class="art-rail"><nav class="toc" aria-label="In this article"><b>In this article</b><ol>
 <li><a href="#brief">In brief</a></li>
 <li><a href="#sec-1">The problem</a></li>
-<li><a href="#sec-2">What I did</a></li>
-<li><a href="#sec-3">What the research found</a></li>
-<li><a href="#sec-4">Three decisions</a></li>
-<li><a href="#sec-5">What was delivered and what happened next</a></li>
-<li><a href="#sec-6">The tool, and how AI was used</a></li>
-<li><a href="#sec-7">What this shows</a></li></ol></nav></aside><article class="art-body">
+<li><a href="#sec-2">How I approached it</a></li>
+<li><a href="#sec-3">Why I built a tool</a></li>
+<li><a href="#sec-4">What the tool saved</a></li>
+<li><a href="#sec-5">What the research found</a></li>
+<li><a href="#sec-6">Three decisions</a></li>
+<li><a href="#sec-7">The ideal state, module by module</a></li>
+<li><a href="#sec-8">Delivered, and what happened next</a></li>
+<li><a href="#sec-9">How AI was used, and where it stopped</a></li></ol></nav></aside><article class="art-body">
 
 <div class="brief" id="brief">
-  <b>Context</b><p>A safety incident and hazard reporting platform used across several hundred restaurants. Reporting consistency varied widely between sites and nobody could say why.</p>
-  <b>My role</b><p>Experience Designer. Led the research and design work; built the tool that holds the evidence.</p>
+  <b>Context</b><p>A safety incident and hazard reporting platform used across several hundred KFC South Pacific restaurants. Reporting consistency varied widely between sites and nobody could say why.</p>
+  <b>My role</b><p>Experience Designer. Led the research and design work, built the tool that holds the evidence, designed the product concept.</p>
   <b>Collaborators</b><p>Central safety team, training team, area safety leads, restaurant managers and team members as participants.</p>
   <b>Constraints</b><p>The platform was a configured vendor product, not something we could rebuild. Phone policies differed by restaurant. Research had to fit around peak trade.</p>
   <b>Key decision</b><p>Recommend changes to what the form asks and to manager routines, rather than a new system. The evidence pointed at the workflow and the culture around it, not at the software.</p>
-  <b>Status</b><p>Delivered December 2025: findings report, service blueprint, prioritised three-phase roadmap and form prototypes, refined through a stakeholder validation session. Implementation sits with the platform, safety and training teams.</p>
-  <b>Anonymisation</b><p>Organisation, vendor, sites and people removed. Research counts are as the December 2025 findings report records them.</p>
+  <b>Status</b><p>Delivered December 2025: findings report, service blueprint, prioritised three-phase roadmap and form prototypes, refined through a stakeholder validation session. Implementation sits with the platform, safety and training teams. The ten-module concept was designed in September 2026 from the same findings.</p>
+  <b>Anonymisation</b><p>Vendor, sites and people removed. Research counts are as the December 2025 findings report records them. Every name and number on the concept screens is invented.</p>
 </div>
 
 <section class="art-sec" id="sec-1"><span class="sec-kicker">01</span><h2>The problem</h2>
-<p>The platform was configured for one workflow: a team member notices a hazard or has an incident, scans a QR code on the safety poster, fills in the form. The research found a different one in almost every restaurant. The team member tells the manager. The manager decides whether it is worth logging, logs it if so, and sometimes closes it without telling anyone. In restaurants that ban phones on shift, the QR code was not even an option, so the manager became the reporter by default without anyone deciding that.</p>
+<p><strong>A platform configured for one workflow, used through another.</strong> The intended path was simple: a team member notices a hazard or has an incident, scans the QR code on the safety poster, fills in the form. The research found a different path in almost every restaurant. The team member tells the manager. The manager decides whether it is worth logging, logs it if so, and sometimes closes it without telling anyone. In restaurants that ban phones on shift, the QR code was not even an option, so the manager became the reporter by default without anyone deciding that.</p>
 <div class="key-insight"><span class="ki-label">Why it mattered</span><p>Reporting volume varied a lot between restaurants. Low volume could mean a safe restaurant or a silent one, and the platform's data could not tell the difference. The safety team wanted to know what was getting in the way.</p></div>
 </section>
 
-<section class="art-sec" id="sec-2"><span class="sec-kicker">02</span><h2>What I did</h2>
-<p>I designed the research to test an explanation rather than to collect complaints. The working assumption in the business was that location explained reporting differences: rougher suburbs, rougher safety culture. So the restaurant sample was deliberately mixed: eight restaurants across high- and low-reporting sites, higher- and lower-crime suburbs, metropolitan and regional.</p>
+<section class="art-sec" id="sec-2"><span class="sec-kicker">02</span><h2>How I approached it</h2>
+<p><strong>Design the sample to test the explanation, not to collect complaints.</strong> The working assumption in the business was that location explained reporting differences: rougher suburbs, rougher safety culture. If that was true, the sample had to be able to show it. So the restaurant sample was deliberately mixed: eight restaurants across high- and low-reporting sites, higher- and lower-crime suburbs, metropolitan and regional.</p>
 <ul class="art-list">
   <li>Thirteen in-depth interviews with team members, restaurant managers, area safety leads, a franchisee and the central safety team, mostly in the restaurants, some by phone.</li>
   <li>A team survey with 55 responses on awareness, training, ease of reporting and what happens after a report.</li>
   <li>Restaurant visits, watching how a report actually gets made during a shift and looking at the posters, the first-aid cabinet and the office setup.</li>
   <li>Two walkthroughs of the platform's forms with the safety team, field by field.</li>
 </ul>
-<p>Every observation became a typed record: a pain point, an action people already take, a decision point, a behaviour, a process gap or an opportunity. Each record was tied to a stage and substage of the incident journey and to the role it concerned. That structure is what let the findings report point at exact places in the service rather than at themes.</p>
-<figure class="fig"><img src="images/explorer-blueprint.png" alt="The service blueprint: five stages across the top, eleven substages, and lanes for the team member, the manager, backstage roles and systems, with coloured markers showing where insights were recorded" loading="lazy"><figcaption><span class="fignum">Figure 1</span>The blueprint as it appears in the read-only portfolio edition of the tool. Five stages from onboarding to data analysis; four lanes; coloured markers where insights were recorded. Vendor and site names removed.</figcaption></figure>
+<p><strong>Every observation became a typed record.</strong> A pain point, an action people already take, a decision point, a behaviour, a process gap or an opportunity. Each record was tied to a stage and substage of the incident journey and to the role it concerned. That structure is what let the findings report point at exact places in the service rather than at themes.</p>
+<figure class="fig fig-wide"><a href="images/explorer-blueprint.png"><img src="images/explorer-blueprint.png" alt="The service blueprint: five stages across the top, eleven substages, and lanes for the team member, the manager, backstage roles and systems, with coloured markers showing where insights were recorded" loading="lazy"></a><figcaption><span class="fignum">Figure 1</span>The blueprint as it appears in the read-only portfolio edition of the tool. Five stages from onboarding to data analysis, four lanes, coloured markers where insights were recorded. Vendor and site names removed.</figcaption></figure>
 </section>
 
-<section class="art-sec" id="sec-3"><span class="sec-kicker">03</span><h2>What the research found</h2>
+<section class="art-sec" id="sec-3"><span class="sec-kicker">03</span><h2>Why I built a tool</h2>
+<p><strong>The synthesis outgrew the documents, and then it outgrew the board.</strong> The blueprint had lived on a Miro board: one sticky per item, coloured by type, placed by hand in a role-by-stage grid. That worked until the synthesis started moving. Every new batch of interviews reclassified items, moved them between substages and split them, and every move had to be made twice, once in the record and once on the board. The findings report was then retyped from the board a third time.</p>
+<p><strong>So I made the records the source and everything else an output.</strong> The tool is a Flask application over SQLite with a vanilla JavaScript front end: 50 HTTP routes, 2,674 lines in the server, 37 Python scripts around it, 318 commits between 27 October 2025 and 22 January 2026. It holds the blueprint, the typed records and the trail between them, and it renders the board, the report and the evidence views from the same data.</p>
+<figure class="fig fig-wide"><a href="images/tool-pipeline.svg"><img src="images/tool-pipeline.svg" alt="Pipeline diagram of the research tool: capture, extract, place and use, with machine steps, human review steps, stores and outputs, and the links between them" loading="lazy"></a><figcaption><span class="fignum">Figure 2</span>How the tool works end to end. Every machine step has a human step after it, and every import is tagged in git before it runs so a bad batch is one command to undo.</figcaption></figure>
+<p><strong>The Miro board is still there, and the migrator is what proves what the manual version was.</strong> Two scripts in the repository push the blueprint out to Miro as stage frames with colour-coded stickies grouped by role, and a third pulls changes back and merges them. Reading the migrator is the clearest description of the work it replaced: for each cell in the role-by-stage grid, for each item in that cell, create a sticky with the category's colour and icon at a computed position. That loop ran 184 times in a second. By hand it is a day.</p>
+</section>
+
+<section class="art-sec" id="sec-4"><span class="sec-kicker">04</span><h2>What the tool saved</h2>
+<p>This is an estimate, and it is built from counted work rather than from a stopwatch. I did not time the manual version, because the manual version is the thing the tool replaced. The counts come from the tool's own database and the December 2025 findings report. The one number I assumed is the minutes it takes to write, colour and place a single sticky, and it is visible below so anyone can change it.</p>
+
+<div class="est">
+  <div class="est-head"><b>Building the blueprint board: by hand in Miro, against the tool</b><span>Estimate, from counted units and one stated assumption</span></div>
+  <div class="est-grid">
+    <div>
+      <h5>Counted</h5>
+      <ul>
+        <li><b>184</b> blueprint items to place</li>
+        <li><b>5</b> stages, <b>11</b> substages, <b>4</b> role lanes</li>
+        <li><b>232</b> insight records linked behind them</li>
+        <li><b>6</b> record types, each with its own colour</li>
+      </ul>
+    </div>
+    <div>
+      <h5>Assumed</h5>
+      <ul>
+        <li><b>3 minutes</b> to write, colour and place one sticky</li>
+        <li><b>4</b> rebuilds as the synthesis changed</li>
+        <li>Reading and retyping the report from the board is excluded</li>
+      </ul>
+    </div>
+    <div>
+      <h5>With the tool</h5>
+      <ul>
+        <li>One command runs the migrator</li>
+        <li>The board is rebuilt from the records, not edited</li>
+        <li>Changes made on the board are pulled back and merged</li>
+      </ul>
+    </div>
+  </div>
+  <div class="est-sum">
+    <div><span class="n">9 hrs</span><span class="l">to place the board once, by hand</span></div>
+    <div><span class="n">37 hrs</span><span class="l">across four rebuilds, by hand</span></div>
+    <div><span class="n">Minutes</span><span class="l">per rebuild with the migrator</span></div>
+  </div>
+  <p class="est-note"><b>Change the assumption and the arithmetic changes.</b> At two minutes a sticky the four rebuilds are 25 hours; at five minutes they are 61. The saving is not the real argument. The real argument is that a board rebuilt from the records cannot drift from them, and the report generated from the same records cannot either, which is what went wrong when all three were maintained separately.</p>
+</div>
+</section>
+
+<section class="art-sec" id="sec-5"><span class="sec-kicker">05</span><h2>What the research found</h2>
 <p><strong>Location did not predict safety culture. The manager did.</strong> Across the mixed sample there was no difference that tracked the suburb. Where a manager talked about safety, thanked people for reports and showed the system on the first shift, reporting was strong regardless of where the restaurant was. This was the finding that reorganised the recommendations.</p>
 <p><strong>People reported to a person, not a platform.</strong> Team members described telling the manager first, almost without exception. They trusted their managers; nobody described feeling embarrassed or afraid to report, even when they had been doing the wrong thing. The barrier was not fear. It was the form, the phone and the threshold.</p>
 <p><strong>The form asked questions the reporter could not answer.</strong> Incident type came first, with options like first aid or lost time that nobody can predict while their hand is under the cold tap. The notifiable-to-the-regulator question sent people to a compliance matrix. Even area safety leads admitted asking the restaurant's safety champion which option to choose. Misclassified reports got sent back from above, and everyone learned that reporting was a way to get something wrong.</p>
@@ -93,7 +172,7 @@
 <p><strong>Time pressure was real but smaller than it felt.</strong> Managers said a report takes one to three minutes. The cost people felt was stepping off the floor during a rush, and needing the manager's permission to do it.</p>
 </section>
 
-<section class="art-sec" id="sec-4"><span class="sec-kicker">04</span><h2>Three decisions</h2>
+<section class="art-sec" id="sec-6"><span class="sec-kicker">06</span><h2>Three decisions</h2>
 <p>The findings report carried a prioritised roadmap. These are the three proposals I would defend in an interview, with the alternative each one rejected.</p>
 
 <div class="trail">
@@ -101,8 +180,7 @@
   <h4>Ask what happened first; let the manager classify the outcome later</h4>
   <p><b>Evidence.</b> Dropdown options that do not describe kitchen incidents; a regulator question no team member can answer; classification errors flagged from above; hazard categories that contain events rather than conditions.</p>
   <p><b>Alternative considered.</b> Add help text and examples to each field. Rejected because the categories themselves were the problem: an industrial taxonomy applied to a kitchen, in an order that asks for the outcome before the event.</p>
-  <p><b>Proposal.</b> One entry point ("something happened" or "I spotted a hazard"), then the mechanism (burn, cut, slip) in the reporter's own words, then the manager sets severity after the welfare check. Regulatory questions move to the manager's review. The safety team supported mechanism-first because it also gives them cleaner data. A clickable form prototype was built to make the argument concrete; the working version below was rebuilt in September 2026 from the same research, with its states.</p>
-  <figure class="fig"><iframe src="./prototype/index.html#incident" title="Mechanism-first incident form, interactive prototype" loading="lazy" style="width:100%;height:760px;border:1px solid var(--line);border-radius:var(--radius-card);background:#fff"></iframe><figcaption><span class="fignum">Figure 2</span>The mechanism-first incident and hazard form as an interactive prototype: the current form for comparison, one entry point, the four-step incident flow with validation, the hazard flow and the manager's review. <a href="./prototype/index.html">Open it full size</a>. A six-artboard Figma import kit and component spec sit <a href="./prototype/figma/README.md">alongside it</a>.</figcaption></figure>
+  <p><b>Proposal.</b> One entry point, then the mechanism in the reporter's own words, then the manager sets severity after the welfare check. Regulatory questions move to the manager's review. The safety team supported mechanism-first because it also gives them cleaner data. A clickable form prototype made the argument concrete: <a href="./prototype/index.html">open the prototype</a>, or see <a href="./showcase/index.html#quick-add">the full reporting flow with its states</a> in the concept.</p>
 </div>
 
 <div class="trail">
@@ -110,7 +188,7 @@
   <h4>Standardise what the manager does on the first shift and every day after</h4>
   <p><b>Evidence.</b> The manager finding above; induction that varied from a full demonstration to nothing; no check that a new starter understood; survey respondents who had never been trained on the platform; team members who found the form easy once someone had encouraged them.</p>
   <p><b>Alternative considered.</b> A platform fix, such as simpler login or a guest mode. Kept on the roadmap, but pushed to a later phase, because the cheapest lever was the manager's routine and the research said it was also the strongest one.</p>
-  <p><b>Proposal.</b> An onboarding checklist with a mandatory QR demonstration, a short template for the manager's own explanation of why reporting matters, a daily check-in card (ask about hazards, thank people, explain patterns), and a plain-language guide to what counts. Concept cards were drafted with AI assistance and edited. Placed in the quick-wins phase.</p>
+  <p><b>Proposal.</b> An onboarding checklist with a mandatory QR demonstration, a short template for the manager's own explanation of why reporting matters, a daily check-in card and a plain-language guide to what counts. In the concept this becomes part of the product rather than a separate pack: <a href="./showcase/index.html#dashboard">the manager's dashboard carries the routine</a> and <a href="./showcase/index.html#knowledge">the knowledge base answers the threshold question</a>.</p>
 </div>
 
 <div class="trail">
@@ -118,28 +196,44 @@
   <h4>Close the loop between a report and what changed</h4>
   <p><b>Evidence.</b> Survey and interview accounts of never hearing back; minor reports closed silently; the same-day equipment fix that everybody remembered; managers who already share fixes in shift briefings.</p>
   <p><b>Alternative considered.</b> Recognition programmes that reward report counts, which some restaurant groups already ran. The safety team's view was blunt: put an incentive on hazard reports and you get reports, not hazards. The field evidence agreed.</p>
-  <p><b>Proposal.</b> Recognise outcomes rather than volume. A monthly "fixes from your reports" notice, a template message to the reporter when a report is resolved, and, later, automatic outcome notifications from the platform.</p>
+  <p><b>Proposal.</b> Recognise outcomes rather than volume. A monthly notice of fixes that came from reports, a template message to the reporter when a report is resolved, and, later, automatic outcome notifications. In the concept, <a href="./showcase/index.html#actions">closing an action asks for evidence and offers to tell the reporter</a>, with the message already written.</p>
 </div>
 </section>
 
-<section class="art-sec" id="sec-5"><span class="sec-kicker">05</span><h2>What was delivered and what happened next</h2>
+<section class="art-sec" id="sec-7"><span class="sec-kicker">07</span><h2>The ideal state, module by module</h2>
+<p><strong>The delivered work stopped where the constraint was.</strong> The platform was a configured vendor product, so the recommendations were about the form and the routines. The question that leaves open is the one an employer actually asks: what would the service look like if the software followed the evidence? So in September 2026 I designed it, module by module, following the navigation of the product the restaurants used.</p>
+<p>Ten screens on one design system, each shown whole with numbered notes naming the finding, the decision and the alternative rejected. Every component was checked against shipped products before it was drawn, and the references are cited on the page.</p>
+<figure class="fig fig-wide"><a href="./showcase/index.html#dashboard"><img src="./showcase/img/dashboard-manager.png" alt="The concept dashboard for a restaurant manager: counts of what needs review, overdue actions and fixes this period, a weekly chart of hazards against incidents, the open reports table, and panels for fixes from the team's reports, hazards by area and today's shift" loading="lazy"></a><figcaption><span class="fignum">Figure 3</span>The restaurant manager's dashboard from the concept. Not a reporting console: a shift tool built around the finding that the manager, not the location, predicted whether a restaurant reported. <a href="./showcase/index.html#dashboard">See it annotated</a>.</figcaption></figure>
+<div class="mods">
+  <a href="./showcase/index.html#quick-add"><span class="k">Module 01</span><span class="t">Quick Add</span><span class="d">Reporting from the floor, mechanism first, one thumb.</span></a>
+  <a href="./showcase/index.html#dashboard"><span class="k">Module 02</span><span class="t">Dashboard, restaurant</span><span class="d">What needs a person today, and the routine that drives reporting.</span></a>
+  <a href="./showcase/index.html#dashboard-area"><span class="k">Module 03</span><span class="t">Dashboard, area</span><span class="d">Twelve restaurants compared on the ratio, not the count.</span></a>
+  <a href="./showcase/index.html#register"><span class="k">Module 04</span><span class="t">Incidents and hazards</span><span class="d">One register, with status written as the next human act.</span></a>
+  <a href="./showcase/index.html#incident-record"><span class="k">Module 05</span><span class="t">The incident record</span><span class="d">Welfare check first, classification after, reporter told at the end.</span></a>
+  <a href="./showcase/index.html#actions"><span class="k">Module 06</span><span class="t">Corrective actions</span><span class="d">The half of the service nobody outside the office could see.</span></a>
+  <a href="./showcase/index.html#emergency"><span class="k">Module 07</span><span class="t">Emergency information</span><span class="d">A picture of the restaurant, not a list of records.</span></a>
+  <a href="./showcase/index.html#chemicals"><span class="k">Module 08</span><span class="t">Chemical register</span><span class="d">What is expiring, first aid in plain language.</span></a>
+  <a href="./showcase/index.html#contractors"><span class="k">Module 09</span><span class="t">Contractors</span><span class="d">Sign-in that tells them the open hazards, on the record.</span></a>
+  <a href="./showcase/index.html#knowledge"><span class="k">Module 10</span><span class="t">Knowledge base</span><span class="d">The threshold question, answered with restaurant examples.</span></a>
+</div>
+<p><a href="./showcase/index.html">Open the full concept</a>, with the design system, the tokens and the pattern references.</p>
+</section>
+
+<section class="art-sec" id="sec-8"><span class="sec-kicker">08</span><h2>Delivered, and what happened next</h2>
 <ul class="art-list">
-  <li>A findings report with the four themes, the evidence behind each, proposals by theme, form-redesign prototypes and a three-phase roadmap (quick wins, process and culture, system evolution).</li>
+  <li>A findings report with the four themes, the evidence behind each, proposals by theme, form-redesign prototypes and a three-phase roadmap: quick wins, process and culture, system evolution.</li>
   <li>A five-stage, eleven-substage service blueprint with lanes for the team member, the manager, backstage roles and the platform.</li>
   <li>The insight tool: typed records linked to substages, filterable by stakeholder, type, theme and source, with the report generated from the same data.</li>
   <li>Concept mockups for the incident form, the onboarding checklist, the daily check-in card and a reporting-threshold reference.</li>
 </ul>
 <p>The report records that the recommendations were refined through a stakeholder discussion and that the roadmap was updated afterwards. Implementation of the form change sat with the platform owner; the manager routines sat with the safety and training teams.</p>
+<figure class="fig fig-wide"><a href="images/explorer-start.png"><img src="images/explorer-start.png" alt="The portfolio edition's start page: three trails from evidence to a proposal, each showing the number of evidence records and the proposal's status" loading="lazy"></a><figcaption><span class="fignum">Figure 4</span>The read-only edition of the tool opens on three evidence trails rather than on the full archive, so a reader can follow one finding to the substage where it happens, the decision it led to and the proposal.</figcaption></figure>
 </section>
 
-<section class="art-sec" id="sec-6"><span class="sec-kicker">06</span><h2>The tool, and how AI was used</h2>
-<p>I built the tool because the research kept outgrowing the documents. It is a small web application: a Python and SQLite backend, a JavaScript front end, and a static export for sharing. I wrote it with AI coding assistance over about three months alongside the research.</p>
-<p>AI did three jobs inside it. It transcribed interviews. It extracted candidate insights from transcripts and classified them by type, stakeholder and theme. And it drafted the first versions of the concept mockups from an opportunity record. None of that counted until I had reviewed it. Every one of the 232 records was read, corrected where the extraction had flattened what someone meant, and placed on the blueprint by hand. The mockups were edited before they went into the report.</p>
-<figure class="fig"><img src="images/explorer-start.png" alt="The portfolio edition's start page: three trails from evidence to a proposal, each showing the number of evidence records and the proposal's status" loading="lazy"><figcaption><span class="fignum">Figure 3</span>The portfolio edition opens on three evidence trails rather than on the full archive. A reader can follow one finding to the substage where it happens, the decision it led to, and the proposal.</figcaption></figure>
-</section>
-
-<section class="art-sec" id="sec-7"><span class="sec-kicker">07</span><h2>What this shows</h2>
-<p>It shows research designed to test an explanation, and a finding that overturned it. It shows a service blueprint used to locate problems rather than decorate a report. It shows three design decisions with the alternatives they rejected, and an internal tool built to keep evidence usable. It shows AI used inside a research workflow with a human review step that I can describe field by field.</p>
+<section class="art-sec" id="sec-9"><span class="sec-kicker">09</span><h2>How AI was used, and where it stopped</h2>
+<p><strong>Three jobs, each with a gate after it.</strong> AI transcribed the interviews. It extracted candidate insights from transcripts and classified them by type, stakeholder and theme, through a Claude Code command whose output is validated against a schema before it can be imported, with a git tag written first so a batch can be rolled back whole. And an Anthropic SDK endpoint drafts recommendations from five templates, storing the prompt alongside its output so any draft can be traced to what produced it.</p>
+<p><strong>None of it counted until I had reviewed it.</strong> Every one of the 232 records was read against the transcript, corrected where the extraction had flattened what someone meant, and placed on the blueprint by hand. The drafted mockups and recommendations were edited before they went into the report. That review step is the part I can describe field by field, and it is the part that makes the rest of it usable.</p>
+<p>The same discipline produced this page. The concept screens were designed and written by me on a design system I built, checked against shipped products, and measured by a contrast script and a lint gate that fail the build rather than warn about it.</p>
 </section>
 
 <div class="cross-links"><a class="xlink" href="../56/index.html"><span class="lbl">← Previous case</span><span class="ttl">Replacing a learning platform that could not prove who had learned what</span></a><a class="xlink" href="../52/index.html"><span class="lbl">Next case</span><span class="ttl">Turning a stalled backlog into a list both sides could defend</span></a></div>
@@ -148,5 +242,5 @@
   <span>Sam Mozaffari · Experience Designer, Sydney.</span>
   <span><a href="../../library.html">Library</a> · <a href="../../llms.txt">llms.txt</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>
 </footer>
-<script src="../../assets/site.js?v=8"></script>
+<script src="../../assets/site.js?v=9"></script>
 </body></html>

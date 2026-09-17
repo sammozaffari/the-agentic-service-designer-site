@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knowledge base · Safety reporting concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../../assets/product/tokens.css"><link rel="stylesheet" href="../../../../assets/product/components.css">
+<style>
+html,body{width:1440px;min-height:1000px}
+.kb-search{display:flex;align-items:center;gap:12px;height:52px;padding:0 18px;background:var(--p-panel);border:1px solid var(--p-line-strong);border-radius:var(--p-r-2);box-shadow:var(--p-shadow-1);font-size:var(--p-fs-5);color:var(--p-ink-3);margin-bottom:var(--p-s-2)}
+.kb-search .term{color:var(--p-ink);font-weight:500}
+.kb-search .caret{width:1px;height:22px;background:var(--p-ink);margin-left:-6px}
+.kb-search kbd{margin-left:auto;font:500 12px var(--p-font);border:1px solid var(--p-line);border-radius:4px;padding:2px 7px;color:var(--p-ink-3)}
+.kb-search .clr{margin-left:auto;width:24px;height:24px;border-radius:50%;background:var(--p-neutral-bg);color:var(--p-ink-2);display:grid;place-items:center;font-size:13px;line-height:1}
+.kb-hint{font-size:var(--p-fs-2);color:var(--p-ink-3);margin-bottom:var(--p-s-5)}
+.kb-cols{display:grid;grid-template-columns:244px minmax(0,1fr) 206px;gap:var(--p-s-4);align-items:start}
+.kb-topics .p-list-row{padding:9px var(--p-s-4);gap:10px}
+.kb-topics .p-list-row b{font-size:var(--p-fs-3);font-weight:500}
+.kb-topics .p-list-row .n{color:var(--p-ink-3);font-size:var(--p-fs-1);font-variant-numeric:tabular-nums}
+.kb-topics .kids{display:flex;flex-direction:column;border-bottom:1px solid var(--p-line)}
+.kb-topics .kids a{padding:7px var(--p-s-4) 7px 42px;font-size:var(--p-fs-2);color:var(--p-ink-2);text-decoration:none;border-left:2px solid transparent}
+.kb-topics .kids a[aria-current="page"]{color:var(--p-ink);font-weight:600;background:var(--p-panel-2);border-left-color:var(--p-ink)}
+.kb-topics .p-ico{width:16px;height:16px;flex:none;color:var(--p-ink-3)}
+.art{padding:var(--p-s-5) var(--p-s-5) var(--p-s-5)}
+.art .eyebrow{font-size:11px;font-weight:600;letter-spacing:var(--p-tracking-caps);text-transform:uppercase;color:var(--p-ink-3)}
+.art h1{font-size:var(--p-fs-6);letter-spacing:-.02em;margin:6px 0 8px}
+.art .lead{font-size:var(--p-fs-4);color:var(--p-ink-2);line-height:1.45;margin-bottom:var(--p-s-5)}
+.art h2{font-size:var(--p-fs-4);margin:var(--p-s-5) 0 var(--p-s-3)}
+.compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--p-s-3)}
+.cbox{border:1px solid var(--p-line);border-radius:var(--p-r-2);overflow:hidden;display:flex;flex-direction:column}
+.cbox .ch{padding:12px 14px;border-bottom:1px solid var(--p-line);min-height:92px;flex:none}
+.cbox .ch b{display:block;font-size:var(--p-fs-4);font-weight:600}
+.cbox .ch span{display:block;font-size:var(--p-fs-2);margin-top:2px}
+.cbox.inc .ch{background:var(--p-danger-bg);border-bottom-color:var(--p-danger-line)}
+.cbox.inc .ch b{color:#6d1913} .cbox.inc .ch span{color:#6d1913;opacity:.85}
+.cbox.haz .ch{background:var(--p-warning-bg);border-bottom-color:var(--p-warning-line)}
+.cbox.haz .ch b{color:#5f3d00} .cbox.haz .ch span{color:#5f3d00;opacity:.85}
+.cbox ul{padding:10px 14px 12px}
+.cbox li{font-size:var(--p-fs-3);color:var(--p-ink);padding:6px 0 6px 16px;position:relative;line-height:1.4}
+.cbox li::before{content:"";position:absolute;left:2px;top:13px;width:5px;height:5px;border-radius:50%;background:var(--p-ink-3)}
+.steps{counter-reset:s;display:flex;flex-direction:column;gap:2px}
+.steps li{counter-increment:s;display:flex;gap:12px;align-items:flex-start;font-size:var(--p-fs-3);padding:9px 0;border-bottom:1px solid var(--p-line);line-height:1.45}
+.steps li:last-child{border-bottom:0}
+.steps li::before{content:counter(s);width:22px;height:22px;border-radius:50%;background:var(--p-neutral-bg);color:var(--p-ink-2);font-size:12px;font-weight:600;display:grid;place-items:center;flex:none;margin-top:1px}
+.rel{display:flex;flex-direction:column;gap:8px}
+.rel a{font-size:var(--p-fs-3)}
+.rail .p-card{padding:var(--p-s-4);margin-bottom:var(--p-s-3)}
+.rail b{display:block;font-size:var(--p-fs-3);margin-bottom:10px}
+.thumbs{display:flex;gap:8px}
+.thumbs button{flex:1;height:34px;border:1px solid var(--p-line-strong);border-radius:var(--p-r-1);background:var(--p-panel);display:grid;place-items:center;color:var(--p-ink-2);cursor:pointer}
+.rail dl{display:grid;gap:10px;font-size:var(--p-fs-2);margin:0}
+.rail dt{color:var(--p-ink-3)} .rail dd{margin:2px 0 0;color:var(--p-ink)}
+.res{display:flex;flex-direction:column}
+.res a{display:block;padding:14px var(--p-s-5);border-bottom:1px solid var(--p-line);text-decoration:none}
+.res a:last-child{border-bottom:0}
+.res b{display:block;font-size:var(--p-fs-4);font-weight:600;color:var(--p-ink)}
+.res span{display:block;font-size:var(--p-fs-2);color:var(--p-ink-3);margin-top:3px}
+.res mark{background:var(--p-warning-bg);color:inherit;padding:0 2px;border-radius:2px}
+[data-view]{display:none}
+body:not([data-show="results"]) [data-view="article"]{display:block}
+body[data-show="results"] [data-view="results"]{display:block}
+body[data-show="results"] .kb-hint{display:none}
+</style>
+</head>
+<body class="p-app">
+<div class="p-shell">
+  <aside class="p-sidebar">
+    <div class="p-brand"><div class="p-brand-mark">R</div><div><b>Riverside</b><span>Restaurant 0412 · KFC South Pacific</span></div></div>
+    <div class="p-quick-add"><button class="p-btn p-btn-primary p-btn-block"><svg class="p-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>Report something</button></div>
+    <nav class="p-nav">
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>Dashboard</a>
+      <div class="p-nav-label">Reporting</div>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2l7 13H2z"/><path d="M9 7v4M9 13h.01"/></svg>Incidents<span class="p-count">3</span></a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="7"/><path d="M9 5v5M9 13h.01"/></svg>Hazards<span class="p-count">1</span></a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l4 4 8-8"/></svg>Corrective actions<span class="p-count">5</span></a>
+      <div class="p-nav-label">Restaurant</div>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2v14M2 9h14"/></svg>Emergency information</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2h6v4l3 8H3l3-8z"/></svg>Chemical register</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="12" height="11" rx="1"/><path d="M6 4V2h6v2"/></svg>Contractors</a>
+      <a href="#" aria-current="page"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 3h10v12H4z"/><path d="M7 7h4M7 10h4"/></svg>Knowledge base</a>
+    </nav>
+    <div class="p-sidebar-foot"><span class="p-avatar sm">PM</span><div><div style="color:var(--p-ink-on-sidebar)">Priya M.</div><div>Restaurant manager</div></div></div>
+  </aside>
+  <div class="p-main">
+    <header class="p-topbar">
+      <div class="p-crumbs"><span>Riverside</span><span>/</span><b>Knowledge base</b></div>
+      <div class="p-spacer"></div>
+      <div class="p-search"><svg class="p-ico" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>Search reports, people, chemicals<kbd>/</kbd></div>
+      <button class="p-btn p-btn-secondary p-btn-sm">This period</button>
+      <span class="p-avatar">PM</span>
+    </header>
+    <main class="p-page">
+      <div class="p-page-head" style="margin-bottom:var(--p-s-4)">
+        <div><h1>What do you need to know?</h1></div>
+        <div class="p-actions"><button class="p-btn p-btn-secondary">Print for the break room</button></div>
+      </div>
+
+      <div data-view="article">
+        <div class="kb-search"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>Try: is a wet floor a hazard or an incident?<kbd>/</kbd></div>
+      </div>
+      <div data-view="results">
+        <div class="kb-search"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg><span class="term">wet floor</span><span class="caret"></span><span class="clr">×</span></div>
+      </div>
+      <p class="kb-hint">Written in the words people use on shift. Every page says what to do, not what the policy is called.</p>
+
+      <div class="kb-cols">
+        <div class="p-card kb-topics">
+          <div class="p-card-head" style="padding-bottom:var(--p-s-2)"><h2>Topics</h2></div>
+          <div class="p-list">
+            <div class="p-list-row"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 3h10v12H4z"/><path d="M7 7h4M7 10h4"/></svg><div class="p-grow"><b>Reporting</b></div><span class="n">4</span></div>
+            <div class="kids">
+              <a href="#">What counts as a report</a>
+              <a href="#" aria-current="page">Incident or hazard? How to tell</a>
+              <a href="#">What happens after you report</a>
+              <a href="#">The welfare check</a>
+            </div>
+            <div class="p-list-row"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12h12M4 12V7h10v5M6 7V4M12 7V4"/></svg><div class="p-grow"><b>Kitchen</b></div><span class="n">3</span></div>
+            <div class="p-list-row"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 14h14M5 14V6l4-3 4 3v8"/></svg><div class="p-grow"><b>Floors and doors</b></div><span class="n">2</span></div>
+            <div class="p-list-row"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2h6v4l3 8H3l3-8z"/></svg><div class="p-grow"><b>Chemicals</b></div><span class="n">4</span></div>
+            <div class="p-list-row"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2v14M2 9h14"/></svg><div class="p-grow"><b>Emergencies</b></div><span class="n">3</span></div>
+            <div class="p-list-row"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="12" height="11" rx="1"/><path d="M6 4V2h6v2"/></svg><div class="p-grow"><b>Contractors</b></div><span class="n">2</span></div>
+            <div class="p-list-row"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="6" r="3"/><path d="M3 15c0-3 2.7-5 6-5s6 2 6 5"/></svg><div class="p-grow"><b>New starters</b></div><span class="n">3</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="p-card art" data-view="article">
+            <span class="eyebrow">Reporting</span>
+            <h1>Incident or hazard? How to tell</h1>
+            <p class="lead">Both go to the same place, so the word never stops you reporting. This page is here for the moment you want to be sure.</p>
+
+            <div class="compare">
+              <div class="cbox inc">
+                <div class="ch"><b>Something happened</b><span>An incident. Someone was hurt, or nearly was.</span></div>
+                <ul>
+                  <li>I burned my hand on the fryer</li>
+                  <li>A customer slipped in the dining room</li>
+                  <li>A box fell off the top shelf and hit Sam</li>
+                </ul>
+              </div>
+              <div class="cbox haz">
+                <div class="ch"><b>A condition that could cause harm</b><span>A hazard. Nobody is hurt yet.</span></div>
+                <ul>
+                  <li>The floor is wet at the back door</li>
+                  <li>The fire exit is blocked</li>
+                  <li>The splash guard is missing on fryer 2</li>
+                </ul>
+              </div>
+            </div>
+
+            <h2>What if I am not sure?</h2>
+            <div class="p-alert p-alert-info" style="margin-bottom:0">Report it as whatever it looks like to you. Your manager works out the classification from what actually happened, not from your guess. Picking the wrong one is not a mistake you can make here.</div>
+
+            <h2>What happens after you report</h2>
+            <ol class="steps">
+              <li>Your manager is told straight away and checks that you are alright.</li>
+              <li>They record what happened and how serious it turned out to be.</li>
+              <li>Anything that needs fixing becomes an action with an owner and a due date.</li>
+              <li>You are told what changed because you reported it.</li>
+            </ol>
+
+            <h2>Related</h2>
+            <div class="rel">
+              <a href="#">The welfare check: what your manager will ask</a>
+              <a href="#">Near misses count too, and why we want them</a>
+              <a href="#">What the manager does with your report</a>
+            </div>
+          </div>
+
+          <div class="p-card" data-view="results">
+            <div class="p-card-head"><h2>3 results for “wet floor”</h2><span class="p-meta">Sorted by what people open</span></div>
+            <div class="res" style="border-top:1px solid var(--p-line)">
+              <a href="#"><b>Incident or hazard? How to tell</b><span>A <mark>wet floor</mark> is a hazard: a condition that could cause harm before anyone is hurt. If someone has already slipped, report it as an incident.</span></a>
+              <a href="#"><b>Wet floors and mats: what to do first</b><span>Cone, mop, then report. Where the mats live and who replaces a worn one. Covers the back door after deliveries and the drive-thru window in rain.</span></a>
+              <a href="#"><b>Report a hazard from your phone</b><span>Scan the QR at the back door, or ask your manager to log it. Two taps if you have the app, 90 seconds if you do not.</span></a>
+            </div>
+            <div class="p-table-foot"><span>Nothing here answers it? Ask Priya M., or report it anyway.</span><a href="#">Browse all 21 pages</a></div>
+          </div>
+        </div>
+
+        <div class="rail">
+          <div class="p-card">
+            <b>Was this useful?</b>
+            <div class="thumbs">
+              <button aria-label="Yes"><svg width="17" height="17" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 15V8l3.5-5c.9 0 1.6.8 1.4 1.7L10.4 7H14a1.4 1.4 0 0 1 1.3 1.8l-1.4 5A1.6 1.6 0 0 1 12.4 15H6z"/><path d="M6 8H3v7h3"/></svg></button>
+              <button aria-label="No"><svg width="17" height="17" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v7l-3.5 5c-.9 0-1.6-.8-1.4-1.7L7.6 11H4a1.4 1.4 0 0 1-1.3-1.8l1.4-5A1.6 1.6 0 0 1 5.6 3H12z"/><path d="M12 10h3V3h-3"/></svg></button>
+            </div>
+          </div>
+          <div class="p-card">
+            <dl>
+              <div><dt>Last reviewed</dt><dd>12 September 2026</dd></div>
+              <div><dt>Read this period</dt><dd>31 people</dd></div>
+              <div><dt>Owner</dt><dd>Area safety lead</dd></div>
+            </dl>
+          </div>
+          <div class="p-card">
+            <b>Still stuck?</b>
+            <p style="font-size:var(--p-fs-2);color:var(--p-ink-2);line-height:1.5;margin-bottom:12px">Report it and let your manager sort the wording out.</p>
+            <button class="p-btn p-btn-primary p-btn-sm p-btn-block">Report something</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script>const s=new URLSearchParams(location.search).get('state');if(s)document.body.dataset.show=s;</script>
+</body></html>

@@ -4,7 +4,7 @@
 Spec: {"title": str, "subtitle": str, "stages": [str], "lanes": [{"name": str, "cells": [str]}],
        "fails": [{"id": "F-01", "stage": 0, "text": str}], "lines": {"visibility": lane_index, "internal": lane_index}}
 Each cell string may contain " || " to separate a short label from a one-line note.
-Usage: blueprint_poster.py spec.json out.svg
+Usage: blueprint_poster.py spec.json out.svg [width]   (width defaults to 1100 so the poster reads at 100% inside a bleed figure)
 """
 import json, sys, textwrap
 
@@ -15,14 +15,14 @@ def esc(s): return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&g
 
 def wrap(s, width): return textwrap.wrap(s, width) or [""]
 
-def render(spec):
+def render(spec, W=1100):
     stages = spec["stages"]; lanes = spec["lanes"]; fails = spec.get("fails", [])
-    W = 1600; label_w = 170; col_w = (W - label_w - 40) / len(stages); pad = 10
+    label_w = 150 if W < 1400 else 170; col_w = (W - label_w - 40) / len(stages); pad = 10
     y = 20
     out = []
     out.append(f'<text x="20" y="{y+26}" font-family="Inter, Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="{INK}">{esc(spec["title"])}</text>')
     y += 40
-    for i, ln in enumerate(wrap(spec.get("subtitle", ""), 150)):
+    for i, ln in enumerate(wrap(spec.get("subtitle", ""), int(W / 10.5))):
         out.append(f'<text x="20" y="{y+14}" font-family="Inter, Helvetica, Arial, sans-serif" font-size="13" fill="{MUTED}">{esc(ln)}</text>'); y += 18
     y += 14
     # stage header
@@ -69,5 +69,5 @@ def render(spec):
 
 if __name__ == "__main__":
     spec = json.load(open(sys.argv[1]))
-    open(sys.argv[2], "w").write(render(spec))
+    open(sys.argv[2], "w").write(render(spec, int(sys.argv[3]) if len(sys.argv) > 3 else 1100))
     print("wrote", sys.argv[2])

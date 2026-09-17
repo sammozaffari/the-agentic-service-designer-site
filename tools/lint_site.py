@@ -2,7 +2,7 @@
 """Site lint: fails on self-sabotage strings, blocked names, wrong tooling counts,
 em dashes in prose, missing en-AU, stray Library nav, appended arrows and numbered kickers,
 and on any local href or src that does not resolve. Run from the site root."""
-import re, sys, pathlib, glob, html
+import re, sys, pathlib, glob, html, struct
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 BANNED = ['under review', 'unconfirmed', 'illustrative', 'not verified', 'cannot confirm', 'would be fabrication',
           'being confirmed', 'being re-checked', 'Failed at nothing', 'Friday ritual', 'client engagements', 'practice studies',
@@ -29,6 +29,27 @@ for f in pages:
     if n_dash and str(rel).startswith(('index','articles.html','about','cv','library','writing')) : errors.append(f'{rel}: {n_dash} em dashes in prose')
     if str(rel).startswith('articles/57') and n_dash: errors.append(f'{rel}: {n_dash} em dashes in prose')
     if re.search(r'<span class="kicker">0\d\s*[—·]', s): errors.append(f'{rel}: numbered kicker')
+
+    # v9: artefacts must not be cropped or scroll inside their container
+    for m in re.finditer(r'<iframe[^>]*height:\s*\d+px', s):
+        errors.append(f'{rel}: iframe with a fixed pixel height')
+    for m in re.finditer(r'<(?:div|figure)[^>]*overflow-x:\s*auto[^>]*>\s*<(?:img|svg|table)', s):
+        errors.append(f'{rel}: scrolling wrapper around an artefact')
+    for m in re.finditer(r'<figure[^>]*class="([^"]*)"', s):
+        cls = m.group(1)
+        if str(rel).startswith('articles/') and 'fig-wide' not in cls and 'fig-bleed' not in cls:
+            errors.append(f'{rel}: figure is not a bleed figure (class="{cls}")')
+    col = 1400 if 'showcase' in str(rel) else 1100
+    for m in re.finditer(r'<img[^>]+src="([^"]+\.png)"', s):
+        src = p.parent / m.group(1).split('?')[0]
+        if not src.exists():
+            continue
+        try:
+            w = struct.unpack('>I', src.read_bytes()[16:20])[0] // 2
+        except Exception:
+            continue
+        if w > col / 0.6:
+            errors.append(f'{rel}: {m.group(1)} is {w}px wide and would render at {col*100//w} per cent in a {col}px column')
     for m in re.finditer(r'(?:href|src)="([^"#:]+?)(?:#[^"]*)?"', s):
         tgt = m.group(1)
         if tgt.startswith(('http', 'mailto', 'tel', 'data:')): continue

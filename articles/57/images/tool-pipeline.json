@@ -1,0 +1,205 @@
+{
+ "title": "How the research tool works",
+ "subtitle": "A transcript goes in one end and a placed, reviewed record comes out the other. Every machine step has a human step after it, and every import can be rolled back to the checkpoint it started from.",
+ "width": 1100,
+ "lanes": [
+  {
+   "name": "Capture",
+   "note": "Interviews, survey, visits",
+   "steps": [
+    {
+     "id": "i1",
+     "kind": "input",
+     "label": "Interview recording",
+     "note": "13 interviews, mostly in restaurants"
+    },
+    {
+     "id": "i2",
+     "kind": "machine",
+     "label": "Transcription",
+     "note": "Speech to text, speaker separated"
+    },
+    {
+     "id": "i3",
+     "kind": "input",
+     "label": "Survey and field notes",
+     "note": "55 responses, 8 restaurant visits, 2 form walkthroughs"
+    },
+    {
+     "id": "i4",
+     "kind": "store",
+     "label": "Source of record",
+     "note": "Every record keeps a link back to the transcript line it came from"
+    }
+   ]
+  },
+  {
+   "name": "Extract",
+   "note": "Claude Code command",
+   "steps": [
+    {
+     "id": "e1",
+     "kind": "machine",
+     "label": "/synthesise",
+     "note": "Reads the transcript and emits candidate insights as JSON"
+    },
+    {
+     "id": "e2",
+     "kind": "machine",
+     "label": "Schema validation",
+     "note": "Type, stakeholder, stage, substage and theme must all resolve or the batch is refused"
+    },
+    {
+     "id": "e3",
+     "kind": "machine",
+     "label": "Git checkpoint",
+     "note": "Tag pre-import-{batch}, so a bad batch is one command to undo"
+    },
+    {
+     "id": "e4",
+     "kind": "human",
+     "label": "Review, record by record",
+     "note": "Read against the transcript, corrected where the extraction flattened what someone meant"
+    }
+   ]
+  },
+  {
+   "name": "Place",
+   "note": "Blueprint and evidence",
+   "steps": [
+    {
+     "id": "p1",
+     "kind": "store",
+     "label": "Typed record",
+     "note": "Pain point, action, decision, behaviour, process gap or opportunity"
+    },
+    {
+     "id": "p2",
+     "kind": "human",
+     "label": "Placed on the blueprint",
+     "note": "Tied to one of 5 stages, 11 substages and the role it concerns"
+    },
+    {
+     "id": "p3",
+     "kind": "store",
+     "label": "184 blueprint items",
+     "note": "The service as a role by stage grid, in SQLite"
+    },
+    {
+     "id": "p4",
+     "kind": "store",
+     "label": "Evidence trail",
+     "note": "Finding, to substage, to decision, to proposal"
+    }
+   ]
+  },
+  {
+   "name": "Use",
+   "note": "What comes out",
+   "steps": [
+    {
+     "id": "o1",
+     "kind": "output",
+     "label": "Findings report",
+     "note": "Generated from the records rather than retyped from a board"
+    },
+    {
+     "id": "o2",
+     "kind": "output",
+     "label": "Miro board",
+     "note": "Frames per stage, colour coded stickies per role, pushed by the migrator"
+    },
+    {
+     "id": "o3",
+     "kind": "machine",
+     "label": "Drafted recommendations",
+     "note": "Anthropic SDK, five templates; the prompt is stored with its output"
+    },
+    {
+     "id": "o4",
+     "kind": "human",
+     "label": "Edited before use",
+     "note": "Nothing reaches the report or a stakeholder unedited"
+    }
+   ]
+  }
+ ],
+ "links": [
+  [
+   "i1",
+   "i2",
+   ""
+  ],
+  [
+   "i2",
+   "i3",
+   ""
+  ],
+  [
+   "i3",
+   "i4",
+   ""
+  ],
+  [
+   "e1",
+   "e2",
+   ""
+  ],
+  [
+   "e2",
+   "e3",
+   ""
+  ],
+  [
+   "e3",
+   "e4",
+   ""
+  ],
+  [
+   "p1",
+   "p2",
+   ""
+  ],
+  [
+   "p2",
+   "p3",
+   ""
+  ],
+  [
+   "p3",
+   "p4",
+   ""
+  ],
+  [
+   "o1",
+   "o2",
+   ""
+  ],
+  [
+   "o2",
+   "o3",
+   ""
+  ],
+  [
+   "o3",
+   "o4",
+   ""
+  ],
+  [
+   "i4",
+   "e1",
+   "transcripts"
+  ],
+  [
+   "e4",
+   "p1",
+   "approved batch"
+  ],
+  [
+   "p4",
+   "o1",
+   "same data"
+  ]
+ ],
+ "footer": "Python, Flask and SQLite with a vanilla JavaScript front end; 50 HTTP routes and 2,674 lines in the server; 318 commits between 27 October 2025 and 22 January 2026. Counts are from the tool's own database and the December 2025 findings report."
+}

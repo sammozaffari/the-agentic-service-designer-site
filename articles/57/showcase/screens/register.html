@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incidents and hazards register · Safety reporting concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../../assets/product/tokens.css"><link rel="stylesheet" href="../../../../assets/product/components.css">
+<style>
+html,body{width:1440px;min-height:900px}
+.p-main{position:relative}
+/* quick filters */
+.qf{display:flex;gap:var(--p-s-2);margin-bottom:var(--p-s-4);flex-wrap:wrap}
+.qf .p-chip{height:34px;gap:8px;padding:0 12px}
+.qf .p-chip .n{font-weight:600;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--p-neutral-bg);color:var(--p-ink);display:inline-grid;place-items:center;font-size:11px}
+.qf .p-chip[aria-pressed="true"] .n{background:rgba(255,255,255,.18);color:#fff}
+.qf .p-chip.danger .n{background:var(--p-danger-bg);color:var(--p-danger)}
+.qf .p-chip.warning .n{background:var(--p-warning-bg);color:var(--p-warning)}
+/* filter bar */
+.fsearch{display:flex;align-items:center;gap:8px;height:34px;width:280px;padding:0 10px;border:1px solid var(--p-line-strong);border-radius:var(--p-r-1);background:var(--p-panel);color:var(--p-ink-3);font-size:var(--p-fs-2)}
+.p-filters .p-chip .k{color:var(--p-ink-3);font-weight:400}
+.p-filters .p-chip .v{font-weight:500}
+.sw{display:inline-flex;align-items:center;gap:8px;font-size:var(--p-fs-2);color:var(--p-ink-2);cursor:pointer}
+.sw i{width:34px;height:20px;border-radius:10px;background:var(--p-line-strong);position:relative;display:inline-block;flex:none}
+.sw i::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.sw.on i{background:var(--p-ink)} .sw.on i::after{left:16px}
+/* table */
+.p-table th:first-child,.p-table td:first-child{padding-left:var(--p-s-4)}
+.p-table th:last-child,.p-table td:last-child{padding-right:var(--p-s-4)}
+.p-table td{height:64px}
+.p-table td.p-primary-cell{font-size:var(--p-fs-3)}
+.p-table tr.selected td{background:var(--p-info-bg)}
+.p-table tr.selected td:first-child{box-shadow:inset 3px 0 0 var(--p-info)}
+.out{color:var(--p-ink-2)} .out.muted{color:var(--p-ink-3);font-style:normal}
+.due{display:flex;flex-direction:column;gap:2px;line-height:1.25}
+.due b{font-weight:500;color:var(--p-ink)}
+.due .late{color:var(--p-danger);font-weight:600}
+.due .ok{color:var(--p-success);font-weight:500}
+.p-table tr.closed td{color:var(--p-ink-3)} .p-table tr.closed td.p-primary-cell{color:var(--p-ink-2);font-weight:400}
+.sel{width:18px;height:18px;border:1.5px solid var(--p-line-strong);border-radius:4px;display:inline-block;vertical-align:middle;background:var(--p-panel)}
+.selected .sel{background:var(--p-ink);border-color:var(--p-ink);position:relative}
+.selected .sel::after{content:"";position:absolute;left:5px;top:2px;width:5px;height:9px;border:2px solid #fff;border-top:0;border-left:0;transform:rotate(45deg)}
+/* states */
+[hidden]{display:none!important}
+body[data-show="closed"] .sw{color:var(--p-ink)} body[data-show="closed"] .sw i{background:var(--p-ink)} body[data-show="closed"] .sw i::after{left:16px}
+body[data-show="panel"] tr[data-id="INC-0412-031"]{background:var(--p-info-bg)}
+body[data-show="panel"] tr[data-id="INC-0412-031"] td{background:var(--p-info-bg)}
+body[data-show="panel"] tr[data-id="INC-0412-031"] td:first-child{box-shadow:inset 3px 0 0 var(--p-info)}
+body[data-show="panel"] tr[data-id="INC-0412-031"] .sel{background:var(--p-ink);border-color:var(--p-ink);position:relative}
+body[data-show="panel"] tr[data-id="INC-0412-031"] .sel::after{content:"";position:absolute;left:5px;top:2px;width:5px;height:9px;border:2px solid #fff;border-top:0;border-left:0;transform:rotate(45deg)}
+/* drawer overlay */
+.p-drawer{position:absolute;top:var(--p-topbar-h);right:0;bottom:0;width:400px;z-index:20;display:flex;flex-direction:column;gap:var(--p-s-4);overflow:hidden}
+/* the panel narrows the page rather than covering the list */
+body[data-show="panel"] .p-page{padding-right:calc(400px + var(--p-s-5))}
+body[data-show="panel"] .p-page-head{flex-wrap:nowrap}
+/* with the record open beside it the list keeps only what identifies a row;
+   the rest of the columns are on the record itself */
+body[data-show="panel"] .p-table th:nth-child(4),body[data-show="panel"] .p-table td:nth-child(4),
+body[data-show="panel"] .p-table th:nth-child(5),body[data-show="panel"] .p-table td:nth-child(5),
+body[data-show="panel"] .p-table th:nth-child(7),body[data-show="panel"] .p-table td:nth-child(7),
+body[data-show="panel"] .p-table th:nth-child(8),body[data-show="panel"] .p-table td:nth-child(8){display:none}
+body[data-show="panel"] .qf{margin-bottom:var(--p-s-3)}
+/* nothing open: the module badges go, they count open work */
+body[data-show="empty"] .p-nav .p-count{display:none}
+.p-drawer .dh{display:flex;align-items:flex-start;gap:var(--p-s-3)}
+.p-drawer .dh h2{margin:4px 0 2px;font-size:var(--p-fs-5)}
+.p-drawer .x{margin-left:auto;width:28px;height:28px;border-radius:50%;border:1px solid var(--p-line);display:grid;place-items:center;color:var(--p-ink-3);flex:none;font-size:16px}
+.p-drawer .p-kv{grid-template-columns:110px 1fr}
+.p-drawer .next{border:1px solid var(--p-info-line);background:var(--p-info-bg);border-radius:var(--p-r-2);padding:12px 14px}
+.p-drawer .next b{display:block;color:#163a9c;margin-bottom:4px}
+.p-drawer .next p{font-size:var(--p-fs-2);color:#163a9c}
+.p-drawer .steps{display:flex;gap:4px;margin:6px 0 2px}
+.p-drawer .steps span{flex:1;height:4px;border-radius:2px;background:var(--p-line)}
+.p-drawer .steps span.done{background:var(--p-ink)} .p-drawer .steps span.now{background:var(--p-info)}
+.p-drawer .stepl{display:flex;justify-content:space-between;font-size:11px;color:var(--p-ink-3)}
+.p-drawer .p-section{margin-bottom:0}
+.p-drawer .p-tl-item{padding-bottom:12px}
+.p-drawer .foot{margin-top:auto;display:flex;gap:8px}
+/* closed and saved-view cards */
+.p-mt-4{margin-top:var(--p-s-4)}
+.tick{width:22px;height:22px;border-radius:50%;background:var(--p-success-bg);color:var(--p-success);border:1px solid var(--p-success-line);display:grid;place-items:center;font-size:12px;font-weight:700;flex:none}
+.told{font-size:var(--p-fs-1);color:var(--p-success);font-weight:500;white-space:nowrap}
+.cnt{font-size:var(--p-fs-2);color:var(--p-ink-3);font-variant-numeric:tabular-nums}
+.cnt.danger{color:var(--p-danger);font-weight:600}
+.p-list-row.on{background:var(--p-panel-2)}
+.p-list-row.on b{font-weight:600}
+.p-empty{padding:72px 24px}
+.p-empty svg{margin-bottom:12px}
+.p-empty p{max-width:420px;margin:0 auto 16px}
+</style>
+</head>
+<body class="p-app" data-show="default">
+<div class="p-shell">
+  <aside class="p-sidebar">
+    <div class="p-brand"><div class="p-brand-mark">R</div><div><b>Riverside</b><span>Restaurant 0412 · KFC South Pacific</span></div></div>
+    <div class="p-quick-add"><button class="p-btn p-btn-primary p-btn-block"><svg class="p-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>Report something</button></div>
+    <nav class="p-nav">
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>Dashboard</a>
+      <div class="p-nav-label">Reporting</div>
+      <a href="#" aria-current="page"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2l7 13H2z"/><path d="M9 7v4M9 13h.01"/></svg>Incidents<span class="p-count">3</span></a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="7"/><path d="M9 5v5M9 13h.01"/></svg>Hazards<span class="p-count">1</span></a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l4 4 8-8"/></svg>Corrective actions<span class="p-count">5</span></a>
+      <div class="p-nav-label">Restaurant</div>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2v14M2 9h14"/></svg>Emergency information</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2h6v4l3 8H3l3-8z"/></svg>Chemical register</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="12" height="11" rx="1"/><path d="M6 4V2h6v2"/></svg>Contractors</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 3h10v12H4z"/><path d="M7 7h4M7 10h4"/></svg>Knowledge base</a>
+    </nav>
+    <div class="p-sidebar-foot"><span class="p-avatar sm">PM</span><div><div style="color:var(--p-ink-on-sidebar)">Priya M.</div><div>Restaurant manager</div></div></div>
+  </aside>
+  <div class="p-main">
+    <header class="p-topbar">
+      <div class="p-crumbs"><span>Riverside</span><span>/</span><b>Incidents and hazards</b></div>
+      <div class="p-spacer"></div>
+      <div class="p-search"><svg class="p-ico" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>Search reports, people, chemicals<kbd>/</kbd></div>
+      <button class="p-btn p-btn-secondary p-btn-sm">This period</button>
+      <span class="p-avatar">PM</span>
+    </header>
+    <main class="p-page">
+      <div class="p-page-head">
+        <div><h1>Incidents and hazards</h1><p>One list for both, because a reporter does not have to know which one they have. You sort it out on review.</p></div>
+        <div class="p-actions"><button class="p-btn p-btn-secondary">Export</button><button class="p-btn p-btn-primary">Report something</button></div>
+      </div>
+
+      <div class="qf" data-state="default">
+        <button class="p-chip danger">Needs review <span class="n">2</span></button>
+        <button class="p-chip warning">Overdue actions <span class="n">2</span></button>
+        <button class="p-chip" aria-pressed="true">Open <span class="n">4</span></button>
+        <button class="p-chip">Closed this period <span class="n">9</span></button>
+        <button class="p-chip">All <span class="n">20</span></button>
+      </div>
+      <div class="qf" data-state="empty">
+        <button class="p-chip">Needs review <span class="n">0</span></button>
+        <button class="p-chip">Overdue actions <span class="n">0</span></button>
+        <button class="p-chip" aria-pressed="true">Open <span class="n">0</span></button>
+        <button class="p-chip">Closed this period <span class="n">9</span></button>
+        <button class="p-chip">All <span class="n">20</span></button>
+      </div>
+
+      <div class="p-filters">
+        <div class="fsearch"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>Search by title, reference or person</div>
+        <button class="p-chip"><span class="k">Type</span><span class="v">All</span><svg class="p-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4.5l3 3 3-3"/></svg></button>
+        <button class="p-chip"><span class="k">Status</span><span class="v">Open</span><svg class="p-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4.5l3 3 3-3"/></svg></button>
+        <button class="p-chip"><span class="k">Area</span><span class="v">All</span><svg class="p-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4.5l3 3 3-3"/></svg></button>
+        <button class="p-chip"><span class="k">Reported</span><span class="v">Period 10</span><svg class="p-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 4.5l3 3 3-3"/></svg></button>
+        <span class="p-spacer"></span>
+        <label class="sw"><i></i>Show closed</label>
+        <button class="p-chip"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 1.5l1.4 2.9 3.1.4-2.3 2.2.6 3.1L6 8.6 3.2 10.1l.6-3.1L1.5 4.8l3.1-.4z"/></svg>Saved view: My open reports</button>
+      </div>
+
+      <div class="p-table-wrap">
+        <table class="p-table">
+          <thead><tr><th style="width:36px"><span class="sel"></span></th><th>Report</th><th>Type</th><th>Reported</th><th>Outcome</th><th>Status</th><th>Owner</th><th>Actions due</th></tr></thead>
+          <tbody data-state="default">
+            <tr data-id="INC-0412-031"><td><span class="sel"></span></td><td class="p-primary-cell">Burn, oil splash while filtering<span class="p-sub">INC-0412-031 · Jordan T. · Kitchen, fryer 2</span></td><td><span class="p-badge p-badge-danger">Incident</span></td><td class="p-nowrap">Today 10:45</td><td><span class="out muted">Not yet classified</span></td><td><span class="p-badge p-badge-info p-badge-plain">Welfare check due</span></td><td><span class="p-person"><span class="p-avatar sm">PM</span>Priya M.</span></td><td><div class="due"><b>1 action</b><span>Due Fri 19 Sep</span></div></td></tr>
+            <tr data-id="HAZ-0412-118"><td><span class="sel"></span></td><td class="p-primary-cell">Wet floor at the back door after deliveries<span class="p-sub">HAZ-0412-118 · Mei L. · Back of house</span></td><td><span class="p-badge p-badge-warning">Hazard</span></td><td class="p-nowrap">Yesterday 16:20</td><td><span class="out">Slip risk</span></td><td><span class="p-badge p-badge-info p-badge-plain">Action assigned</span></td><td><span class="p-person"><span class="p-avatar sm">PM</span>Priya M.</span></td><td><div class="due"><b>1 action</b><span class="late">Overdue 1 day</span></div></td></tr>
+            <tr data-id="HAZ-0412-117"><td><span class="sel"></span></td><td class="p-primary-cell">Blocked fire exit, boxes from the dry store<span class="p-sub">HAZ-0412-117 · Priya M. · Back of house</span></td><td><span class="p-badge p-badge-warning">Hazard</span></td><td class="p-nowrap">Mon 08:05</td><td><span class="out">Blocked exit</span></td><td><span class="p-badge p-badge-success p-badge-plain">Fixed, awaiting sign-off</span></td><td><span class="p-person"><span class="p-avatar sm">PM</span>Priya M.</span></td><td><div class="due"><b>1 action</b><span class="ok">Done, sign off</span></div></td></tr>
+            <tr data-id="INC-0412-030"><td><span class="sel"></span></td><td class="p-primary-cell">Cut, opening cartons with a box cutter<span class="p-sub">INC-0412-030 · Sam K. · Back of house</span></td><td><span class="p-badge p-badge-danger">Incident</span></td><td class="p-nowrap">Sat 19:10</td><td><span class="out">First aid</span></td><td><span class="p-badge p-badge-neutral p-badge-plain">Actions in progress</span></td><td><span class="p-person"><span class="p-avatar sm">PM</span>Priya M.</span></td><td><div class="due"><b>2 actions</b><span class="late">1 overdue 2 days</span></div></td></tr>
+          </tbody>
+          <tbody data-state="closed">
+            <tr class="closed"><td><span class="sel"></span></td><td class="p-primary-cell">Oil on the floor near fryer 2<span class="p-sub">HAZ-0412-116 · Aiden R. · Kitchen</span></td><td><span class="p-badge p-badge-warning">Hazard</span></td><td class="p-nowrap">2 Sep</td><td><span class="out">Slip risk</span></td><td><span class="p-badge p-badge-neutral p-badge-plain">Closed · reporter told</span></td><td><span class="p-person"><span class="p-avatar sm">PM</span>Priya M.</span></td><td><div class="due"><b>1 action</b><span class="ok">Done 3 Sep</span></div></td></tr>
+            <tr class="closed"><td><span class="sel"></span></td><td class="p-primary-cell">Drive-thru window latch loose<span class="p-sub">HAZ-0412-115 · Aiden R. · Drive-thru</span></td><td><span class="p-badge p-badge-warning">Hazard</span></td><td class="p-nowrap">28 Aug</td><td><span class="out">Pinch risk</span></td><td><span class="p-badge p-badge-neutral p-badge-plain">Closed · reporter told</span></td><td><span class="p-person"><span class="p-avatar sm">PM</span>Priya M.</span></td><td><div class="due"><b>1 action</b><span class="ok">Done 3 Sep</span></div></td></tr>
+            <tr class="closed"><td><span class="sel"></span></td><td class="p-primary-cell">Slip on the back step in the rain<span class="p-sub">INC-0412-029 · Mei L. · Back of house</span></td><td><span class="p-badge p-badge-danger">Incident</span></td><td class="p-nowrap">26 Aug</td><td><span class="out">First aid</span></td><td><span class="p-badge p-badge-neutral p-badge-plain">Closed · reporter told</span></td><td><span class="p-person"><span class="p-avatar sm">PM</span>Priya M.</span></td><td><div class="due"><b>1 action</b><span class="ok">Done 26 Aug</span></div></td></tr>
+          </tbody>
+        </table>
+        <div class="p-empty" data-state="empty">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="var(--p-success)" stroke-width="2"><circle cx="20" cy="20" r="17" fill="var(--p-success-bg)"/><path d="M12 20.5l5.5 5.5L28 15"/></svg>
+          <b>No open reports</b>
+          <p>The last one was fixed on Monday and Jordan T. was told. Nine reports were closed this period; open them with Show closed.</p>
+          <button class="p-btn p-btn-secondary p-btn-sm">Show closed reports</button>
+        </div>
+        <div class="p-table-foot" data-state="default"><span><b style="color:var(--p-ink);font-weight:500">4 open</b> · 9 closed this period are hidden · every open report has an owner</span><span class="p-pager"><button aria-current="page">1</button></span></div>
+        <div class="p-table-foot" data-state="empty"><span>0 open · 9 closed this period</span><span class="p-pager"><button aria-current="page">1</button></span></div>
+      </div>
+
+      <div class="p-grid p-grid-8-4 p-mt-4">
+        <div class="p-card">
+          <div class="p-card-head"><h2>Closed this period</h2><a href="#" class="p-meta">See all 9</a></div>
+          <div class="p-list">
+            <div class="p-list-row"><span class="tick">✓</span><div class="p-grow"><b>Cold room door seal replaced</b><span class="p-sub">HAZ-0412-110 · Aiden R. · fixed in 2 days</span></div><span class="told">Reporter told</span></div>
+            <div class="p-list-row"><span class="tick">✓</span><div class="p-grow"><b>Chip scoop handle replaced</b><span class="p-sub">HAZ-0412-108 · Tomas W. · fixed same day</span></div><span class="told">Reporter told</span></div>
+            <div class="p-list-row"><span class="tick">✓</span><div class="p-grow"><b>Extra mat at the drive-thru window</b><span class="p-sub">HAZ-0412-104 · Mei L. · fixed in 4 days</span></div><span class="told">Reporter told</span></div>
+          </div>
+        </div>
+        <div class="p-card">
+          <div class="p-card-head"><h2>Saved views</h2><a href="#" class="p-meta">New view</a></div>
+          <div class="p-list">
+            <div class="p-list-row on"><div class="p-grow"><b>My open reports</b></div><span class="cnt">4</span></div>
+            <div class="p-list-row"><div class="p-grow"><b>Needs my review</b></div><span class="cnt">2</span></div>
+            <div class="p-list-row"><div class="p-grow"><b>Overdue actions</b></div><span class="cnt danger">2</span></div>
+            <div class="p-list-row"><div class="p-grow"><b>Everything this period</b></div><span class="cnt">20</span></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <aside class="p-drawer" data-state="panel" aria-label="Report INC-0412-031">
+      <div class="dh"><div><span class="p-record-id">INC-0412-031</span><h2>Burn, oil splash while filtering</h2><div class="p-row p-gap-2"><span class="p-badge p-badge-danger">Incident</span><span class="p-badge p-badge-info p-badge-plain">Welfare check due</span></div></div><span class="x">×</span></div>
+      <div>
+        <div class="steps"><span class="done"></span><span class="now"></span><span></span><span></span><span></span></div>
+        <div class="stepl"><span>Reported</span><span>Welfare</span><span>Classify</span><span>Actions</span><span>Closed</span></div>
+      </div>
+      <div class="next"><b>Next: welfare check</b><p>Speak to Jordan before the end of the shift at 15:00, then record treatment and whether they continued working. Severity is set after that, from what happened.</p></div>
+      <div class="p-section"><h3>What Jordan told us</h3>
+        <dl class="p-kv"><dt>What happened</dt><dd>Burn</dd><dt>How</dt><dd>Oil splash while filtering</dd><dt>Body part</dt><dd>Hand or fingers</dd><dt>Equipment</dt><dd>Fryer 2</dd><dt>When, where</dt><dd>Today 10:45, kitchen</dd><dt>Reported via</dt><dd>Phone, QR code · 55 seconds</dd></dl>
+      </div>
+      <div class="p-section"><h3>Activity</h3>
+        <div class="p-timeline">
+          <div class="p-tl-item done"><b>Reported by Jordan T.</b><time>Today 10:45</time></div>
+          <div class="p-tl-item done"><b>Priya M. notified by push and SMS</b><time>Today 10:46</time></div>
+          <div class="p-tl-item now"><b>Welfare check due</b><time>Before 15:00</time></div>
+        </div>
+      </div>
+      <div class="foot"><button class="p-btn p-btn-primary" style="flex:1">Record welfare check</button><button class="p-btn p-btn-secondary">Open report</button></div>
+    </aside>
+  </div>
+</div>
+<script>
+var q=new URLSearchParams(location.search);var st=q.get('state')||q.get('view')||'default';document.body.dataset.show=st;
+var vis={default:['default'],panel:['default','panel'],empty:['empty'],closed:['default','closed']}[st]||['default'];
+document.querySelectorAll('[data-state]').forEach(function(el){el.hidden=vis.indexOf(el.dataset.state)<0;});
+</script>
+</body></html>

@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emergency information · Safety reporting concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../../assets/product/tokens.css"><link rel="stylesheet" href="../../../../assets/product/components.css">
+<style>
+html,body{width:1440px;min-height:1000px}
+.p-page{max-width:none}
+.floor-svg{width:100%;height:auto;display:block;font-family:var(--p-font)}
+.floor-svg .room{fill:var(--p-panel);stroke:var(--p-line-strong);stroke-width:1.2}
+.floor-svg .room.soft{fill:var(--p-panel-2)}
+.floor-svg .outside{fill:#eceff3;stroke:var(--p-line-strong);stroke-width:1.2;stroke-dasharray:4 3}
+.floor-svg .lbl{font-size:11px;fill:var(--p-ink-2);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.floor-svg .lbl2{font-size:10px;fill:var(--p-ink-3)}
+.floor-svg .fix{fill:none;stroke:var(--p-line-strong);stroke-width:1}
+.floor-svg .door{stroke:var(--p-ink);stroke-width:3;stroke-linecap:round}
+.floor-svg .pin circle{stroke:#fff;stroke-width:2}
+.floor-svg .pin text{font-size:11px;font-weight:700;fill:#fff;text-anchor:middle;dominant-baseline:central}
+.floor-svg .pin.fire circle{fill:var(--p-danger)}
+.floor-svg .pin.aid circle{fill:var(--p-success)}
+.floor-svg .pin.exit circle{fill:var(--p-info)}
+.floor-svg .pin.iso circle{fill:var(--p-warning)}
+.floor-svg .pin.meet circle{fill:var(--p-ink)}
+.key{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px 20px;padding:var(--p-s-3) var(--p-s-4) var(--p-s-4);border-top:1px solid var(--p-line)}
+.key-row{display:flex;align-items:flex-start;gap:10px;padding:6px 0;font-size:var(--p-fs-2)}
+.key-row i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:#fff;font-style:normal;font-size:11px;font-weight:700;flex:none;margin-top:1px}
+.key-row i.fire{background:var(--p-danger)} .key-row i.aid{background:var(--p-success)} .key-row i.exit{background:var(--p-info)} .key-row i.iso{background:var(--p-warning)} .key-row i.meet{background:var(--p-ink)}
+.key-row b{display:block;font-weight:500;color:var(--p-ink)}
+.key-row span{display:block;color:var(--p-ink-3);font-size:var(--p-fs-1)}
+.key-head{display:flex;gap:var(--p-s-4);padding:0 var(--p-s-4) var(--p-s-2);font-size:var(--p-fs-1);color:var(--p-ink-3)}
+.key-head i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.call{display:flex;flex-direction:column}
+.call a{display:flex;align-items:center;gap:var(--p-s-3);padding:12px var(--p-s-4);border-bottom:1px solid var(--p-line);color:var(--p-ink);text-decoration:none}
+.call a:last-child{border-bottom:0}
+.call a:hover{background:var(--p-panel-2);text-decoration:none}
+.call .num{font-family:var(--p-font-mono);font-size:20px;font-weight:500;letter-spacing:.01em;min-width:132px;color:var(--p-ink)}
+.call .num.big{font-size:26px;font-weight:500}
+.call .who{flex:1;min-width:0}
+.call .who b{display:block;font-weight:500;font-size:var(--p-fs-3)}
+.call .who span{display:block;font-size:var(--p-fs-1);color:var(--p-ink-3)}
+.call .ico{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--p-neutral-bg);color:var(--p-ink-2)}
+.call .ico.hot{background:var(--p-danger-bg);color:var(--p-danger)}
+.hosp{padding:0 var(--p-s-4) var(--p-s-4)}
+.hosp b{display:block;font-size:var(--p-fs-4);font-weight:600}
+.hosp .facts{display:flex;gap:var(--p-s-4);margin:8px 0 6px;font-size:var(--p-fs-2);color:var(--p-ink-2)}
+.hosp .facts strong{display:block;font-size:var(--p-fs-5);font-weight:600;color:var(--p-ink);letter-spacing:-.01em}
+.hosp p{font-size:var(--p-fs-2);color:var(--p-ink-3)}
+.aiders .p-list-row .p-badge{margin-left:auto}
+.aiders .p-alert{margin:0 var(--p-s-4) var(--p-s-4)}
+.assembly{padding:0 var(--p-s-4) var(--p-s-4);font-size:var(--p-fs-3);color:var(--p-ink-2)}
+.assembly .where{display:flex;align-items:center;gap:10px;margin-bottom:8px;color:var(--p-ink);font-weight:500}
+.assembly .where i{width:22px;height:22px;border-radius:50%;background:var(--p-ink);color:#fff;display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:700;flex:none}
+.assembly ol{margin:0;padding-left:18px;font-size:var(--p-fs-2)}
+.assembly li{margin:4px 0}
+.checkmeta{display:flex;gap:var(--p-s-4);font-size:var(--p-fs-1);color:var(--p-ink-3);align-items:center}
+.checkmeta .p-badge{height:20px}
+
+/* Print card state: white page, no shell, two columns */
+body[data-state="print"] .p-sidebar, body[data-state="print"] .p-topbar, body[data-state="print"] .p-actions, body[data-state="print"] .aiders, body[data-state="print"] .only-app{display:none}
+body[data-state="print"]{background:#fff}
+body[data-state="print"] .p-shell{display:block}
+body[data-state="print"] .p-page{padding:40px 56px 32px;max-width:none}
+body[data-state="print"] .print-head{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2px solid var(--p-ink);padding-bottom:12px;margin-bottom:20px}
+body[data-state="print"] .print-head h1{font-size:26px;letter-spacing:-.02em}
+body[data-state="print"] .print-head p{color:var(--p-ink-3);margin-top:4px;font-size:var(--p-fs-3)}
+body[data-state="print"] .print-head .stamp{text-align:right;font-size:var(--p-fs-2);color:var(--p-ink-2);line-height:1.5}
+body[data-state="print"] .p-page-head{display:none}
+body[data-state="print"] .p-card{box-shadow:none;border-color:var(--p-ink)}
+body[data-state="print"] .p-grid-8-4{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:var(--p-s-5)}
+body[data-state="print"] .key{grid-template-columns:repeat(2,minmax(0,1fr))}
+body[data-state="print"] .print-foot{display:flex;justify-content:space-between;margin-top:20px;font-size:var(--p-fs-1);color:var(--p-ink-3);border-top:1px solid var(--p-line);padding-top:10px}
+.print-head,.print-foot{display:none}
+</style>
+</head>
+<body class="p-app">
+<div class="p-shell">
+  <aside class="p-sidebar">
+    <div class="p-brand"><div class="p-brand-mark">R</div><div><b>Riverside</b><span>Restaurant 0412 · KFC South Pacific</span></div></div>
+    <div class="p-quick-add"><button class="p-btn p-btn-primary p-btn-block"><svg class="p-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>Report something</button></div>
+    <nav class="p-nav">
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>Dashboard</a>
+      <div class="p-nav-label">Reporting</div>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2l7 13H2z"/><path d="M9 7v4M9 13h.01"/></svg>Incidents<span class="p-count">3</span></a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="7"/><path d="M9 5v5M9 13h.01"/></svg>Hazards<span class="p-count">1</span></a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l4 4 8-8"/></svg>Corrective actions<span class="p-count">5</span></a>
+      <div class="p-nav-label">Restaurant</div>
+      <a href="#" aria-current="page"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2v14M2 9h14"/></svg>Emergency information</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2h6v4l3 8H3l3-8z"/></svg>Chemical register</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="12" height="11" rx="1"/><path d="M6 4V2h6v2"/></svg>Contractors</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 3h10v12H4z"/><path d="M7 7h4M7 10h4"/></svg>Knowledge base</a>
+    </nav>
+    <div class="p-sidebar-foot"><span class="p-avatar sm">PM</span><div><div style="color:var(--p-ink-on-sidebar)">Priya M.</div><div>Restaurant manager</div></div></div>
+  </aside>
+  <div class="p-main">
+    <header class="p-topbar">
+      <div class="p-crumbs"><span>Riverside</span><span>/</span><b>Emergency information</b></div>
+      <div class="p-spacer"></div>
+      <div class="p-search"><svg class="p-ico" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>Search reports, people, chemicals<kbd>/</kbd></div>
+      <button class="p-btn p-btn-secondary p-btn-sm">This period</button>
+      <span class="p-avatar">PM</span>
+    </header>
+    <main class="p-page">
+      <div class="print-head"><div><h1>Emergency information · Riverside</h1><p>Restaurant 0412 · KFC South Pacific · keep this card by the office phone and at the front counter</p></div><div class="stamp">Printed 17 Sep 2026<br>Checked 12 Sep by Priya M.<br>Next check due Friday 19 Sep</div></div>
+      <div class="p-page-head">
+        <div><h1>Emergency information</h1><p>Checked 12 Sep by Priya M. · next check due Friday</p></div>
+        <div class="p-actions"><button class="p-btn p-btn-secondary"><svg class="p-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6V2h8v4M4 12H2V7h12v5h-2M4 10h8v4H4z"/></svg>Print the card</button><button class="p-btn p-btn-primary"><svg class="p-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8l3.5 3.5L13 5"/></svg>Mark as checked</button></div>
+      </div>
+
+      <div class="p-grid p-grid-8-4">
+        <div class="p-card">
+          <div class="p-card-head"><h2>Where things are</h2><div class="checkmeta"><span>12 items · all present at the last check</span><span class="p-badge p-badge-success p-badge-plain">Checked 12 Sep</span></div></div>
+          <div class="p-card-body">
+            <svg class="floor-svg" viewBox="0 0 760 420" role="img" aria-label="Floor sketch of Riverside with numbered markers for fire, first-aid and exit equipment">
+              <!-- outside: car park -->
+              <rect class="outside" x="616" y="40" width="124" height="360" rx="6"/>
+              <text class="lbl" x="628" y="60">Car park</text>
+              <text class="lbl2" x="628" y="75">Customer parking</text>
+              <!-- building -->
+              <rect class="room" x="20" y="20" width="580" height="380"/>
+              <!-- kitchen -->
+              <rect class="room" x="20" y="20" width="320" height="200"/>
+              <text class="lbl" x="32" y="120">Kitchen</text>
+              <!-- fryer line -->
+              <rect class="room soft" x="40" y="34" width="260" height="34" rx="3"/>
+              <text class="lbl2" x="48" y="55">Fryer line · 4 vats</text>
+              <rect class="fix" x="62" y="130" width="120" height="30" rx="2"/><text class="lbl2" x="70" y="149">Prep bench</text>
+              <rect class="fix" x="200" y="130" width="90" height="30" rx="2"/><text class="lbl2" x="208" y="149">Cook line</text>
+              <rect class="fix" x="40" y="176" width="70" height="26" rx="2"/><text class="lbl2" x="46" y="193">Dish area</text>
+              <!-- dry store -->
+              <rect class="room" x="340" y="20" width="110" height="100"/>
+              <text class="lbl" x="350" y="40">Dry store</text>
+              <!-- chemical store -->
+              <rect class="room soft" x="340" y="120" width="110" height="100"/>
+              <text class="lbl" x="350" y="140">Chemical</text><text class="lbl" x="350" y="154">store</text>
+              <!-- office -->
+              <rect class="room" x="450" y="20" width="150" height="100"/>
+              <text class="lbl" x="462" y="40">Office</text>
+              <rect class="fix" x="462" y="84" width="60" height="22" rx="2"/><text class="lbl2" x="468" y="99">Desk</text>
+              <!-- toilets -->
+              <rect class="room" x="450" y="120" width="150" height="100"/>
+              <text class="lbl" x="462" y="140">Toilets</text>
+              <!-- front counter -->
+              <rect class="room soft" x="20" y="220" width="320" height="60"/>
+              <text class="lbl" x="32" y="256">Front counter</text>
+              <!-- dining -->
+              <rect class="room" x="20" y="280" width="320" height="120"/>
+              <text class="lbl" x="32" y="300">Dining</text>
+              <rect class="fix" x="60" y="320" width="40" height="40" rx="2"/><rect class="fix" x="130" y="320" width="40" height="40" rx="2"/><rect class="fix" x="200" y="320" width="40" height="40" rx="2"/><rect class="fix" x="270" y="320" width="40" height="40" rx="2"/>
+              <!-- drive-thru -->
+              <rect class="room" x="340" y="220" width="260" height="80"/>
+              <text class="lbl" x="352" y="240">Drive-thru window</text>
+              <text class="lbl2" x="352" y="255">Order and pay</text>
+              <!-- back corridor -->
+              <rect class="room soft" x="340" y="300" width="260" height="100"/>
+              <text class="lbl" x="352" y="320">Back door and deliveries</text>
+              <!-- doors -->
+              <line class="door" x1="150" y1="400" x2="200" y2="400"/>
+              <text class="lbl2" x="146" y="414">Front entrance</text>
+              <line class="door" x1="600" y1="345" x2="600" y2="385"/>
+              <line class="door" x1="600" y1="240" x2="600" y2="280"/>
+              <!-- assembly point -->
+              <circle cx="678" cy="300" r="34" fill="none" stroke="var(--p-ink)" stroke-width="1.5" stroke-dasharray="4 3"/>
+              <text class="lbl2" x="650" y="352">Far corner, by the sign</text>
+              <!-- pins -->
+              <g class="pin fire"><circle cx="58" cy="96" r="12"/><text x="58" y="96">1</text></g>
+              <g class="pin fire"><circle cx="318" cy="250" r="12"/><text x="318" y="250">2</text></g>
+              <g class="pin fire"><circle cx="560" cy="360" r="12"/><text x="560" y="360">3</text></g>
+              <g class="pin fire"><circle cx="230" cy="96" r="12"/><text x="230" y="96">4</text></g>
+              <g class="pin aid"><circle cx="575" cy="62" r="12"/><text x="575" y="62">5</text></g>
+              <g class="pin aid"><circle cx="425" cy="176" r="12"/><text x="425" y="176">6</text></g>
+              <g class="pin exit"><circle cx="175" cy="384" r="12"/><text x="175" y="384">7</text></g>
+              <g class="pin exit"><circle cx="584" cy="382" r="12"/><text x="584" y="382">8</text></g>
+              <g class="pin meet"><circle cx="678" cy="300" r="12"/><text x="678" y="300">9</text></g>
+              <g class="pin iso"><circle cx="318" cy="96" r="12"/><text x="318" y="96">10</text></g>
+              <g class="pin iso"><circle cx="368" cy="380" r="12"/><text x="368" y="380">11</text></g>
+              <g class="pin aid"><circle cx="360" cy="204" r="12"/><text x="360" y="204">12</text></g>
+            </svg>
+          </div>
+          <div class="key-head"><span><i style="background:var(--p-danger)"></i>Fire</span><span><i style="background:var(--p-success)"></i>First aid and spills</span><span><i style="background:var(--p-info)"></i>Exits</span><span><i style="background:var(--p-warning)"></i>Isolation points</span><span><i style="background:var(--p-ink)"></i>Assembly</span></div>
+          <div class="key">
+            <div class="key-row"><i class="fire">1</i><div><b>Fire extinguisher, wet chemical</b><span>Kitchen, wall beside fryer 1 · checked 12 Sep</span></div></div>
+            <div class="key-row"><i class="fire">2</i><div><b>Fire extinguisher, CO₂</b><span>Front counter, end of the pass · checked 12 Sep</span></div></div>
+            <div class="key-row"><i class="fire">3</i><div><b>Fire extinguisher, dry powder</b><span>Back corridor, beside the switchboard · checked 12 Sep</span></div></div>
+            <div class="key-row"><i class="fire">4</i><div><b>Fire blanket</b><span>Kitchen, end of the fryer line · checked 12 Sep</span></div></div>
+            <div class="key-row"><i class="aid">5</i><div><b>First-aid cabinet</b><span>Office, wall by the door · restocked 12 Sep</span></div></div>
+            <div class="key-row"><i class="aid">6</i><div><b>Eyewash station</b><span>Chemical store, above the sink · checked 12 Sep</span></div></div>
+            <div class="key-row"><i class="exit">7</i><div><b>Emergency exit, front</b><span>Dining, main entrance · clear at last check</span></div></div>
+            <div class="key-row"><i class="exit">8</i><div><b>Emergency exit, back door</b><span>Back corridor, delivery door · clear at last check</span></div></div>
+            <div class="key-row"><i class="meet">9</i><div><b>Assembly point</b><span>Car park, far corner by the sign</span></div></div>
+            <div class="key-row"><i class="iso">10</i><div><b>Gas isolation valve</b><span>Kitchen, end of the fryer line, yellow handle</span></div></div>
+            <div class="key-row"><i class="iso">11</i><div><b>Electrical switchboard</b><span>Back corridor, beside the back door</span></div></div>
+            <div class="key-row"><i class="aid">12</i><div><b>Spill kit</b><span>Chemical store, floor by the door · restocked 12 Sep</span></div></div>
+          </div>
+        </div>
+
+        <div class="p-grid" style="gap:var(--p-s-4)">
+          <div class="p-card">
+            <div class="p-card-head"><h2>Call</h2><span class="p-meta">Tap to dial from the office phone</span></div>
+            <div class="call">
+              <a href="#"><span class="ico hot"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 3h3l1.5 3.5L6.5 8a9 9 0 004 4l1.5-2L15.5 11.5V14.5a1 1 0 01-1 1A12 12 0 013 4a1 1 0 011-1z"/></svg></span><span class="num big">000</span><span class="who"><b>Police, fire, ambulance</b><span>Say the restaurant address first: 42 Riverside Parade</span></span></a>
+              <a href="#"><span class="ico"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h6v4l3 8H3l3-8z"/></svg></span><span class="num">13 11 26</span><span class="who"><b>Poisons Information Centre</b><span>Chemical splash or swallowed, 24 hours</span></span></a>
+              <a href="#"><span class="ico"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="6" r="3"/><path d="M3 16a6 6 0 0112 0"/></svg></span><span class="num">0491 570 156</span><span class="who"><b>Area manager, on call</b><span>Any serious injury, fire or police attendance</span></span></a>
+              <a href="#"><span class="ico"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 3l5 5-7 7-5-5z"/><path d="M3 15l3-3"/></svg></span><span class="num">1800 160 401</span><span class="who"><b>Maintenance line</b><span>Gas smell, power loss, fryer fault, 24 hours</span></span></a>
+            </div>
+          </div>
+
+          <div class="p-card">
+            <div class="p-card-head"><h2>Nearest hospital</h2><a href="#" class="p-meta only-app">Open directions</a></div>
+            <div class="hosp">
+              <b>Riverside District Hospital</b>
+              <div class="facts"><div><strong>2.1 km</strong>from the back door</div><div><strong>6 min</strong>by car, via Station Road</div><div><strong>24 h</strong>emergency department</div></div>
+              <p>14 Hospital Road, Riverside. Drive a burn or a deep cut yourself only if the person is steady and someone else can come along; otherwise call 000.</p>
+            </div>
+          </div>
+
+          <div class="p-card aiders">
+            <div class="p-card-head"><h2>First aiders on today</h2><a href="#" class="p-meta">Roster</a></div>
+            <div class="p-list">
+              <div class="p-list-row"><span class="p-avatar">PM</span><div class="p-grow"><b>Priya M.</b><span class="p-sub">Restaurant manager · until 15:00</span></div><span class="p-badge p-badge-success">On now</span></div>
+              <div class="p-list-row"><span class="p-avatar">ML</span><div class="p-grow"><b>Mei L.</b><span class="p-sub">Shift supervisor · from 16:00 to close</span></div><span class="p-badge p-badge-neutral p-badge-plain">Later</span></div>
+            </div>
+            <div class="p-alert p-alert-warning" role="alert"><b>No first aider rostered 15:00 to 16:00.</b> Ask Jordan T. to start early, or call the area manager to cover.</div>
+          </div>
+
+          <div class="p-card">
+            <div class="p-card-head"><h2>Assembly point</h2></div>
+            <div class="assembly">
+              <div class="where"><i>9</i>Car park, far corner by the sign</div>
+              <ol>
+                <li>Walk, do not run. Leave bags and food.</li>
+                <li>The manager on duty takes the visitor sheet from the office only if the way is clear.</li>
+                <li>Count everyone, including customers and contractors signed in today.</li>
+                <li>Nobody goes back inside until the fire brigade says so.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="print-foot"><span>Safety reporting concept · Riverside, restaurant 0412</span><span>If anything on this card is out of date, report it as a hazard so it gets fixed and the card gets reprinted.</span></div>
+    </main>
+  </div>
+</div>
+<script>document.body.dataset.state=new URLSearchParams(location.search).get('state')||'default';</script>
+</body></html>

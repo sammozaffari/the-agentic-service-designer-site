@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contractors · Safety reporting concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../../assets/product/tokens.css"><link rel="stylesheet" href="../../../../assets/product/components.css">
+<style>
+html,body{width:1440px;min-height:900px}
+.onsite{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--p-s-4)}
+.onsite .p-card{padding:var(--p-s-4)}
+.onsite-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--p-s-3);margin-bottom:var(--p-s-3)}
+.onsite-who{display:flex;align-items:flex-start;gap:10px}
+.onsite-who b{display:block;font-size:var(--p-fs-4);font-weight:600;line-height:1.25}
+.onsite-who span{display:block;font-size:var(--p-fs-2);color:var(--p-ink-3);margin-top:1px}
+.onsite .p-kv{grid-template-columns:92px 1fr;padding-top:var(--p-s-3);border-top:1px solid var(--p-line)}
+.onsite-foot{display:flex;align-items:center;justify-content:space-between;gap:var(--p-s-3);margin-top:var(--p-s-3);padding-top:var(--p-s-3);border-top:1px solid var(--p-line)}
+.onsite-foot .p-meta{min-width:0}
+.p-table td.p-primary-cell b{display:block;font-weight:500}
+tr.rownote td{background:var(--p-danger-bg);color:#6d1913;font-size:var(--p-fs-1);padding-top:8px;padding-bottom:9px}
+tr.rownote td span{display:inline-flex;align-items:center;gap:7px}
+tr.blocked td{background:#fef6f5}
+tr.blocked td:first-child{box-shadow:inset 3px 0 0 var(--p-danger)}
+tr.blocked td,tr.blocked+tr.rownote td{border-bottom-color:var(--p-danger-line)}
+.drawer-wrap{display:none;position:fixed;inset:0;z-index:30;background:rgba(15,20,25,.30);justify-content:flex-end}
+body[data-show="signin"] .drawer-wrap{display:flex}
+.drawer-wrap .p-drawer{width:452px;overflow-y:auto;padding:0}
+.drawer-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--p-s-3);padding:var(--p-s-5) var(--p-s-5) var(--p-s-4);border-bottom:1px solid var(--p-line)}
+.drawer-head h2{margin:0;font-size:var(--p-fs-5)}
+.drawer-head p{font-size:var(--p-fs-2);color:var(--p-ink-3);margin-top:3px}
+.drawer-x{width:30px;height:30px;border-radius:var(--p-r-1);border:1px solid var(--p-line);background:var(--p-panel);color:var(--p-ink-2);display:grid;place-items:center;font-size:16px;line-height:1;flex:none;cursor:pointer}
+.drawer-body{padding:var(--p-s-5)}
+.drawer-foot{position:sticky;bottom:0;background:var(--p-panel);border-top:1px solid var(--p-line);padding:var(--p-s-4) var(--p-s-5) var(--p-s-5)}
+.picked{display:flex;align-items:center;gap:10px;border:1px solid var(--p-line-strong);border-radius:var(--p-r-1);padding:7px 10px 7px 8px;background:var(--p-panel-2)}
+.picked b{font-weight:600;font-size:var(--p-fs-3)}
+.picked span{display:block;font-size:var(--p-fs-1);color:var(--p-ink-3)}
+.picked .rm{margin-left:auto;color:var(--p-ink-3);font-size:15px;line-height:1;padding:2px 4px}
+.p-check .ref{color:var(--p-ink-3);font-size:var(--p-fs-1);display:block;margin-top:1px}
+.p-check .p-grow{flex:1;min-width:0}
+.hazsrc{font-size:var(--p-fs-1);color:var(--p-ink-3);margin:8px 0 0}
+</style>
+</head>
+<body class="p-app">
+<div class="p-shell">
+  <aside class="p-sidebar">
+    <div class="p-brand"><div class="p-brand-mark">R</div><div><b>Riverside</b><span>Restaurant 0412 · KFC South Pacific</span></div></div>
+    <div class="p-quick-add"><button class="p-btn p-btn-primary p-btn-block"><svg class="p-ico" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>Report something</button></div>
+    <nav class="p-nav">
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="10" y="2" width="6" height="6" rx="1"/><rect x="2" y="10" width="6" height="6" rx="1"/><rect x="10" y="10" width="6" height="6" rx="1"/></svg>Dashboard</a>
+      <div class="p-nav-label">Reporting</div>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2l7 13H2z"/><path d="M9 7v4M9 13h.01"/></svg>Incidents<span class="p-count">3</span></a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="7"/><path d="M9 5v5M9 13h.01"/></svg>Hazards<span class="p-count">1</span></a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 9l4 4 8-8"/></svg>Corrective actions<span class="p-count">5</span></a>
+      <div class="p-nav-label">Restaurant</div>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 2v14M2 9h14"/></svg>Emergency information</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 2h6v4l3 8H3l3-8z"/></svg>Chemical register</a>
+      <a href="#" aria-current="page"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="12" height="11" rx="1"/><path d="M6 4V2h6v2"/></svg>Contractors</a>
+      <a href="#"><svg class="p-ico" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 3h10v12H4z"/><path d="M7 7h4M7 10h4"/></svg>Knowledge base</a>
+    </nav>
+    <div class="p-sidebar-foot"><span class="p-avatar sm">PM</span><div><div style="color:var(--p-ink-on-sidebar)">Priya M.</div><div>Restaurant manager</div></div></div>
+  </aside>
+  <div class="p-main">
+    <header class="p-topbar">
+      <div class="p-crumbs"><span>Riverside</span><span>/</span><b>Contractors</b></div>
+      <div class="p-spacer"></div>
+      <div class="p-search"><svg class="p-ico" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>Search reports, people, chemicals<kbd>/</kbd></div>
+      <button class="p-btn p-btn-secondary p-btn-sm">This period</button>
+      <span class="p-avatar">PM</span>
+    </header>
+    <main class="p-page">
+      <div class="p-page-head">
+        <div><h1>Contractors</h1><p>2 on site now · 1 induction expired · 1 insurance expiring</p></div>
+        <div class="p-actions"><button class="p-btn p-btn-secondary">Add contractor</button><button class="p-btn p-btn-primary">Sign a contractor in</button></div>
+      </div>
+
+      <div class="p-section">
+        <h3>On site now</h3>
+        <div class="onsite">
+          <div class="p-card">
+            <div class="onsite-head">
+              <div class="onsite-who"><span class="p-avatar">DR</span><div><b>Dane R.</b><span>Northline Refrigeration</span></div></div>
+              <span class="p-badge p-badge-warning">Hot work permit</span>
+            </div>
+            <dl class="p-kv">
+              <dt>Here for</dt><dd>Walk-in cooler compressor</dd>
+              <dt>Area</dt><dd>Back of house, cool room</dd>
+              <dt>Signed in</dt><dd>09:12 by Priya M.</dd>
+              <dt>Induction</dt><dd>Valid until 3 Mar 2027</dd>
+            </dl>
+            <div class="onsite-foot"><span class="p-meta">Told about 2 open hazards on sign-in</span><button class="p-btn p-btn-secondary p-btn-sm">Sign out</button></div>
+          </div>
+          <div class="p-card">
+            <div class="onsite-head">
+              <div class="onsite-who"><span class="p-avatar">CO</span><div><b>Chris O.</b><span>Haldon Fire Services</span></div></div>
+              <span class="p-badge p-badge-neutral p-badge-plain">No permit needed</span>
+            </div>
+            <dl class="p-kv">
+              <dt>Here for</dt><dd>Six-monthly extinguisher and blanket check</dd>
+              <dt>Area</dt><dd>Whole restaurant</dd>
+              <dt>Signed in</dt><dd>10:05 by Priya M.</dd>
+              <dt>Induction</dt><dd>Valid until 14 Nov 2026</dd>
+            </dl>
+            <div class="onsite-foot"><span class="p-meta">Told about 2 open hazards on sign-in</span><button class="p-btn p-btn-secondary p-btn-sm">Sign out</button></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-card">
+        <div class="p-card-head"><h2>Contractor register</h2><span class="p-meta">8 contractors approved for this restaurant</span></div>
+        <div style="padding:0 var(--p-s-4) var(--p-s-3)">
+          <div class="p-filters" style="margin-bottom:0">
+            <div class="p-search" style="min-width:230px;height:30px"><svg class="p-ico" width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>Search contractors</div>
+            <button class="p-chip">Trade<svg class="p-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 5l3 3 3-3"/></svg></button>
+            <button class="p-chip">Status<svg class="p-chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 5l3 3 3-3"/></svg></button>
+            <button class="p-chip">Needs attention<span style="color:var(--p-danger);font-weight:600;margin-left:2px">2</span></button>
+            <span class="p-spacer"></span>
+            <button class="p-btn p-btn-ghost p-btn-sm">Export</button>
+          </div>
+        </div>
+        <div class="p-table-wrap" style="border:0;box-shadow:none;border-top:1px solid var(--p-line);border-radius:0 0 var(--p-r-2) var(--p-r-2)">
+          <table class="p-table">
+            <thead><tr><th>Contractor</th><th>Trade</th><th>Induction</th><th>Insurance</th><th>Last on site</th><th>Permits held</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="p-primary-cell"><b>Dane R.</b><span class="p-sub">Northline Refrigeration</span></td>
+                <td>Refrigeration</td>
+                <td><span class="p-badge p-badge-success p-badge-plain">Valid to 3 Mar 2027</span></td>
+                <td><span class="p-badge p-badge-success p-badge-plain">Current to 30 Jun 2027</span></td>
+                <td class="p-nowrap">On site now</td>
+                <td>Hot work</td>
+                <td><span class="p-badge p-badge-success">On site</span></td>
+              </tr>
+              <tr>
+                <td class="p-primary-cell"><b>Chris O.</b><span class="p-sub">Haldon Fire Services</span></td>
+                <td>Fire equipment</td>
+                <td><span class="p-badge p-badge-success p-badge-plain">Valid to 14 Nov 2026</span></td>
+                <td><span class="p-badge p-badge-success p-badge-plain">Current to 31 Dec 2026</span></td>
+                <td class="p-nowrap">On site now</td>
+                <td>None</td>
+                <td><span class="p-badge p-badge-success">On site</span></td>
+              </tr>
+              <tr class="blocked">
+                <td class="p-primary-cell"><b>Leon P.</b><span class="p-sub">Kerrick Plumbing</span></td>
+                <td>Plumbing</td>
+                <td><span class="p-badge p-badge-danger">Expired 2 Sep</span></td>
+                <td><span class="p-badge p-badge-success p-badge-plain">Current to 4 Apr 2027</span></td>
+                <td class="p-nowrap">28 Aug</td>
+                <td>None</td>
+                <td><span class="p-badge p-badge-danger">Blocked</span></td>
+              </tr>
+              <tr class="rownote"><td colspan="7"><span><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="8" r="6.5"/><path d="M8 5v4M8 11h.01"/></svg>Cannot be signed in until re-inducted. The induction takes 15 minutes and can be done at the office tablet.</span></td></tr>
+              <tr>
+                <td class="p-primary-cell"><b>Marco V.</b><span class="p-sub">Baystate Electrical</span></td>
+                <td>Electrical</td>
+                <td><span class="p-badge p-badge-success p-badge-plain">Valid to 9 Jan 2027</span></td>
+                <td><span class="p-badge p-badge-warning">Expires 29 Sep</span></td>
+                <td class="p-nowrap">11 Sep</td>
+                <td>Electrical</td>
+                <td><span class="p-badge p-badge-neutral p-badge-plain">Off site</span></td>
+              </tr>
+              <tr>
+                <td class="p-primary-cell"><b>Bianca L.</b><span class="p-sub">Tilford Grease Services</span></td>
+                <td>Grease trap</td>
+                <td><span class="p-badge p-badge-warning">Due in 9 days</span></td>
+                <td><span class="p-badge p-badge-success p-badge-plain">Current to 12 Oct 2026</span></td>
+                <td class="p-nowrap">Yesterday</td>
+                <td>None</td>
+                <td><span class="p-badge p-badge-neutral p-badge-plain">Off site</span></td>
+              </tr>
+              <tr>
+                <td class="p-primary-cell"><b>Nadia S.</b><span class="p-sub">Clearline Glazing</span></td>
+                <td>Glazing</td>
+                <td><span class="p-badge p-badge-success p-badge-plain">Valid to 22 Jul 2027</span></td>
+                <td><span class="p-badge p-badge-success p-badge-plain">Current to 18 Feb 2027</span></td>
+                <td class="p-nowrap">3 Sep</td>
+                <td>Working at height</td>
+                <td><span class="p-badge p-badge-neutral p-badge-plain">Off site</span></td>
+              </tr>
+              <tr>
+                <td class="p-primary-cell"><b>Rhys T.</b><span class="p-sub">Ambrose Pest Control</span></td>
+                <td>Pest control</td>
+                <td><span class="p-badge p-badge-success p-badge-plain">Valid to 5 May 2027</span></td>
+                <td><span class="p-badge p-badge-success p-badge-plain">Current to 5 May 2027</span></td>
+                <td class="p-nowrap">1 Sep</td>
+                <td>None</td>
+                <td><span class="p-badge p-badge-neutral p-badge-plain">Off site</span></td>
+              </tr>
+              <tr>
+                <td class="p-primary-cell"><b>Hamish G.</b><span class="p-sub">Verity Air Conditioning</span></td>
+                <td>Air conditioning</td>
+                <td><span class="p-badge p-badge-success p-badge-plain">Valid to 1 Feb 2027</span></td>
+                <td><span class="p-badge p-badge-success p-badge-plain">Current to 1 Feb 2027</span></td>
+                <td class="p-nowrap">21 Aug</td>
+                <td>Hot work</td>
+                <td><span class="p-badge p-badge-neutral p-badge-plain">Off site</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="p-table-foot"><span>Showing all 8</span><span>Induction and insurance dates come from the area contractor list and cannot be edited here.</span></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="drawer-wrap">
+  <aside class="p-drawer">
+    <div class="drawer-head">
+      <div><h2>Sign a contractor in</h2><p>Riverside · Wednesday 17 September, 11:04</p></div>
+      <button class="drawer-x" aria-label="Close">×</button>
+    </div>
+    <div class="drawer-body">
+      <div class="p-field">
+        <label>Contractor</label>
+        <div class="picked"><span class="p-avatar sm">MV</span><div><b>Marco V.</b><span>Baystate Electrical · Electrical</span></div><span class="rm">×</span></div>
+      </div>
+      <div class="p-field"><label for="why">Reason for visit</label><select class="p-select" id="why"><option>Drive-thru window latch, power to the sign</option></select></div>
+      <div class="p-field"><label for="area">Area they will work in</label><select class="p-select" id="area"><option>Drive-thru and external signage</option></select></div>
+
+      <fieldset class="p-fieldset">
+        <legend class="p-legend">Hazards they are told about today</legend>
+        <div class="p-check on"><span class="p-box"></span><span class="p-grow">Wet floor at the back door after deliveries<span class="ref">HAZ-0412-118 · reported yesterday 16:20</span></span></div>
+        <div class="p-check on"><span class="p-box"></span><span class="p-grow">Blocked fire exit, boxes from the dry store<span class="ref">HAZ-0412-117 · fixed Monday, awaiting sign-off</span></span></div>
+        <p class="hazsrc">Filled in from the hazards open at this restaurant. Untick anything that does not affect their work.</p>
+      </fieldset>
+
+      <fieldset class="p-fieldset">
+        <legend class="p-legend">Permit to work</legend>
+        <div class="p-choices">
+          <div class="p-choice"><input type="radio" name="permit" id="p1"><label for="p1">Hot work</label></div>
+          <div class="p-choice"><input type="radio" name="permit" id="p2" checked><label for="p2">Electrical</label></div>
+          <div class="p-choice"><input type="radio" name="permit" id="p3"><label for="p3">Working at height</label></div>
+          <div class="p-choice"><input type="radio" name="permit" id="p4"><label for="p4">None needed</label></div>
+        </div>
+      </fieldset>
+
+      <div class="p-alert p-alert-success"><b>Induction valid until 9 January 2027.</b> Marco can be signed in today.</div>
+      <div class="p-alert p-alert-warning" style="margin-bottom:0"><b>Insurance expires 29 September, in 12 days.</b> A renewal has been requested from the area contractor list.</div>
+    </div>
+    <div class="drawer-foot"><button class="p-btn p-btn-primary p-btn-lg p-btn-block">Sign in and print the visitor tag</button></div>
+  </aside>
+</div>
+<script>const s=new URLSearchParams(location.search).get('state');if(s)document.body.dataset.show=s;</script>
+</body></html>
