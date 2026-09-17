@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en-AU"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Responsible AI governance in a design practice, stated as the guardrails that actually run: schema validation, checkpoints and rollback, mandatory human review, critic gates on the write path, fact-check replay, and what tiered autonomy looks like in practice.">
+<title>Governance you can point at · Sam Mozaffari</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css?v=8">
+<link rel="stylesheet" href="../../assets/article-design.css?v=8">
+<link rel="stylesheet" href="../../assets/article-blocks.css?v=8">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>S</text></svg>">
+<style>.post { max-width: 1180px; margin: 0 auto; padding: 0 var(--pad-d) 64px; } .post > * { max-width: 74ch; }  .post {  font-size: 17px; line-height: 1.65; } .post p { margin: 0 0 18px; } .post h2 { font-size: 22px; margin: 32px 0 10px; } .post .meta { font-size: 13.5px; color: var(--muted); margin: 0 0 22px; } .post .q { border-left: 3px solid var(--ink); padding: 8px 18px; margin: 28px 0 0; font-size: 17px; } .post .back { font-size: 14px; } table.plain { width: 100%; border-collapse: collapse; font-size: 14.5px; margin: 8px 0 22px; } table.plain th, table.plain td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; } table.plain th { background: var(--paper-tint); font-weight: 600; } .post code { font-size: 14px; }</style>
+</head><body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-head">
+  <a class="brand" href="../../index.html"><div class="brand-title">Sam Mozaffari</div><div class="brand-sub">Experience Designer</div></a>
+  <nav class="main-nav"><a href="../../index.html" class="">Home</a><a href="../../articles.html" class="">Work</a><a href="../../about.html" class="">About</a><a href="../../cv.html" class="">CV</a><a href="../index.html" class="on">Writing</a></nav>
+</header>
+<main id="main">
+<section class="page-hero"><span class="kicker">Writing</span><h1>Governance you can point at</h1><p class="lede">Responsible AI in a design practice, stated as the guardrails that actually run, with a file behind each one.</p></section>
+<article class="post">
+<p class="meta">September 2026 · The mechanisms below are in repositories I own; the safety research platform was built at KFC South Pacific in 2025, the rest are personal tooling</p>
+<p>Job postings for applied-AI roles ask for responsible AI governance, guardrails, tiered autonomy and lifecycle management. Most answers to that are policy documents. This is the other kind of answer: the controls that run in workflows I built, what each one prevents, and where it lives. Every row is a thing a reviewer can open.</p>
+<h2>The principle underneath</h2>
+<p>Nothing an AI produces counts until a gate it cannot pass on its own has passed it. The gates are mechanical wherever they can be, human where they must be, and the record of what passed is bound to the thing that passed, so editing after approval sends it back to draft. Autonomy is tiered by consequence: a model may draft freely, may write to a database only through a validator, and may never mark its own work final.</p>
+<h2>The controls</h2>
+<table class="plain">
+<tr><th>Control</th><th>What it prevents</th><th>Where it runs</th></tr>
+<tr><td>Schema validation before import</td><td>A model writing a record type, stage or priority that the data model does not allow</td><td>The safety research platform: a Python importer validates every extracted JSON record against the SQLite schema before it can land</td></tr>
+<tr><td>Checkpoint before every write, rollback by batch</td><td>An extraction batch that turns out to be wrong contaminating the record with no way back</td><td>The same platform: a git tag before each import and a batch ID on every row, so one batch can be reversed without touching the rest</td></tr>
+<tr><td>Mandatory human review of every record</td><td>Flattened or overstated extractions being treated as evidence</td><td>The same platform: every extracted insight was read against its transcript passage and placed on the blueprint by a person before it counted</td></tr>
+<tr><td>Prompt persisted with its output</td><td>A generated recommendation nobody can trace back to what it was asked</td><td>The same platform: the recommendation endpoint stores the full prompt alongside each result</td></tr>
+<tr><td>One-use token critic gate</td><td>A drafting agent marking its own work as reviewed</td><td>My job-application pipeline: the critic is a separate headless run that alone receives a one-use token; the drafter cannot file a report</td></tr>
+<tr><td>Hash-bound approval</td><td>Editing a document after it passed review and keeping the pass</td><td>The same pipeline: a report binds to the artefact's content hash; any edit returns it to draft</td></tr>
+<tr><td>Fail-closed queue gate</td><td>Content reaching a publish queue on a status string the drafter wrote</td><td>My content system: a Python gate admits a post only if a critic report file exists and carries a pass verdict; front matter is not accepted as evidence</td></tr>
+<tr><td>Evaluation fixtures</td><td>A critic that has quietly stopped catching the failures it exists for</td><td>The same system: three deliberately bad drafts the critic must reject, run as tests</td></tr>
+<tr><td>Acceptance rules on the write path</td><td>An artefact with no evidence behind its nodes being marked final</td><td>The Agentic Service Designer runtime: machine-checked rules such as minimum evidence per node and forbidden field values, evaluated when an artefact is written</td></tr>
+<tr><td>Fact-check replay</td><td>A citation to evidence that no longer exists or never did</td><td>The same runtime: every evidence reference in every artefact is resolved again before publication, with a per-artefact pass or fail a CI job can stop on</td></tr>
+<tr><td>Critic role on the method contract</td><td>A method declaring itself complete without adversarial review</td><td>The same runtime: any method that declares a critic gate cannot be final without a critic verdict</td></tr>
+<tr><td>Drift check in CI</td><td>Compiled agent packs silently diverging from the canonical source</td><td>The same runtime: CI recompiles the packs and fails on any diff</td></tr>
+<tr><td>Calibration</td><td>Confident predictions that are never scored</td><td>The job pipeline: a prediction is frozen when an application is sent and scored against the outcome later</td></tr>
+<tr><td>Allow and deny lists on tool use</td><td>An autonomous run editing files or running commands outside its lane</td><td>The job pipeline: headless runs get an explicit allowed-tools list; file edits, git and destructive shell commands are denied</td></tr>
+</table>
+<h2>Tiered autonomy, in practice</h2>
+<p>Tier one: the model drafts. Transcripts into structured records, opportunity records into mockups, a job description into a cover letter. Nothing here is visible to anyone but me. Tier two: the model writes to a store, but only through a validator, in a batch that can be reversed, with the prompt kept. Tier three: a person decides. Every research record, every published post, every application, every artefact marked final. There is no tier four. Nothing I have built lets a model act on the world without a person having passed it, and the gates above are how that stays true when I am tired or in a hurry.</p>
+<h2>Lifecycle</h2>
+<p>Build: the schema and the acceptance rules are written before the first prompt. Test: fixtures that must fail, and a fact-check that replays citations. Deploy: a checkpoint before every write. Monitor: calibration on predictions, and the review rate on extractions, which is the number I most want to publish once it is checked. Retire: batch rollback and the drift check, so removing something is as safe as adding it.</p>
+<h2>What this does not claim</h2>
+<p>None of this is a production AI feature serving customers, and none of it is an enterprise governance framework with a risk committee behind it. It is the working governance of one designer's practice, and it is auditable, which is the property I would want first in any larger one.</p>
+<p class="q">Where is the review step in your pipeline, and what stops the drafter from passing it?</p>
+<p class="back" style="margin-top:28px"><a href="../index.html">More writing</a></p>
+</article>
+</main>
+<footer class="footer"><span>Sam Mozaffari · Experience Designer, Sydney.</span><span><a href="../../library.html">Library</a> · <a href="../../llms.txt">llms.txt</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span></footer>
+</body></html>
