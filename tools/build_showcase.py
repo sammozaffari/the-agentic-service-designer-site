@@ -150,16 +150,19 @@ def story_block(mod, notes):
     o.append(f'<div class="st-rail"><div class="st-stage" data-devices="{len(stages)}">')
     for si, st_dev in enumerate(stages):
         dv = st_dev.get("device", "phone")
-        ratio = ""
+        ratio, tall = "", False
         if st_dev["shots"] and dv != "phone":
             rw, rh = png_size(st_dev["shots"][0])
-            ratio = f' style="--st-ratio: {rw} / {rh}"'
+            tall = rh > rw          # a page longer than a window: show the top of it
+            ratio = ' style="--st-ratio: 1440 / 900"' if tall else f' style="--st-ratio: {rw} / {rh}"'
         live = " is-live" if si == 0 else ""
+        if tall:
+            dv += " from-top"
         o.append(f'<div class="st-device {e(dv)}{live}"><div class="st-screen"{ratio}>')
         for i, sh in enumerate(st_dev["shots"]):
             w, h = png_size(sh)
             on = " is-on" if (si == 0 and i == 0) else ""
-            o.append(f'<img class="st-shot{on}" src="{e(sh)}" width="{w//2}" height="{h//2}" alt="" loading="lazy">')
+            o.append(f'<img class="st-shot{on}" src="{e(sh)}" width="{w//2}" height="{h//2}" alt="" decoding="async">')
         o.append('</div></div>')
     o.append('</div></div>')
     o.append('<ol class="st-copy">')

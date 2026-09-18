@@ -23,9 +23,16 @@ sec = sections[which]
 
 sec = sec.replace(' is-on', '').replace(' is-live', '')  # clean slate; every state gets set below
 steps = re.findall(r'<li class="st-step".*?</li>', sec, re.S)
-devices = re.findall(r'<div class="st-device [^"]*">.*?(?=<div class="st-device |</div></div>$)', sec, re.S)
+# split the stage on its device tags, so each device keeps its own shots
+# split the stage on its device tags, so each device keeps its own shots
 device_tags = re.findall(r'<div class="st-device [^"]*">', sec)
-shots_by_device = [re.findall(r'<img class="st-shot[^>]*>', d) for d in devices] or [re.findall(r'<img class="st-shot[^>]*>', sec)]
+if device_tags:
+    marks = [sec.index(t) for t in device_tags]
+    chunks = [sec[start:(marks[k + 1] if k + 1 < len(marks) else len(sec))]
+              for k, start in enumerate(marks)]
+    shots_by_device = [re.findall(r'<img class="st-shot[^>]*>', ch) for ch in chunks]
+else:
+    shots_by_device = [re.findall(r'<img class="st-shot[^>]*>', sec)]
 
 VIEW = """
 <style>
