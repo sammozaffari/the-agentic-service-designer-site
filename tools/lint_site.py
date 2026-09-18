@@ -56,6 +56,17 @@ for f in pages:
         tgt = tgt.split('?')[0]
         if not (p.parent / tgt).exists(): errors.append(f'{rel}: missing {tgt}')
 
+# the artefact pages a case study links to are read by the same people, so they
+# are held to the same rules: no em dashes, no blocked vendor names
+for f in sorted(glob.glob(str(ROOT / 'articles/*/artifacts/*.html')) + glob.glob(str(ROOT / 'articles/*/prototypes/*.html'))):
+    p = pathlib.Path(f); s = p.read_text(errors='ignore'); rel = p.relative_to(ROOT); t = text_of(s)
+    n = len(re.findall(r'—', t)) + len(re.findall(r'\\u2014', s))
+    if n:
+        errors.append(f'{rel}: {n} em dashes in a linked artefact')
+    for b in BLOCKED:
+        if re.search(r'\b' + re.escape(b) + r'\b', s):
+            errors.append(f'{rel}: blocked name {b} in a linked artefact')
+
 # --- design system gates -------------------------------------------------
 import subprocess, json as _json
 _ds = []
