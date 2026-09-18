@@ -77,8 +77,7 @@ def notes_block(d):
             o.append(f'<p><b>Decision</b>{e(m["decision"])}</p>')
         if m.get("rejected"):
             o.append(f'<p><b>Rejected</b>{e(m["rejected"])}</p>')
-        if m.get("pattern"):
-            o.append(f'<p class="ref">Checked against {ref_link(m["pattern"])}</p>')
+        # the pattern a decision was checked against stays in the working notes, not on the page
         o.append("</div></div>")
     o.append("</div>")
     return "".join(o)
@@ -109,6 +108,66 @@ def tokens_section():
     o.append("</div>")
     return "".join(o)
 
+
+
+def story_block(mod, notes):
+    """A scroll-driven story: the stage stays, the copy moves past it, the screen
+    changes with the step. Steps come either from the module's own story spec or
+    from its annotation file, in which case each marker becomes a step and its
+    coordinates become the lens."""
+    spec = mod.get("story")
+    if not spec:
+        return ""
+    device = spec.get("device", "phone")
+    align = spec.get("align", "right")
+    shots = spec.get("shots") or ([mod["img"]] if mod.get("img") else [])
+    steps = spec.get("steps")
+    if not steps and notes:
+        steps = []
+        for m in notes["markers"]:
+            steps.append({
+                "shot": 0,
+                "lens": f'{m["x"]:.1f},{m["y"]:.1f},{spec.get("lensRadius", 11)}',
+                "kind": "Design decision" if str(m.get("finding", "")).strip().lower().startswith("design decision") else "Finding",
+                "title": m.get("title", ""),
+                "body": m.get("decision", ""),
+                "quote": "" if str(m.get("finding", "")).strip().lower().startswith("design decision") else m.get("finding", ""),
+                "rejected": m.get("rejected", ""),
+            })
+    if not steps:
+        return ""
+
+    o = [f'<section class="st" data-align="{e(align)}">']
+    o.append('<div class="st-rail"><div class="st-stage">')
+    ratio = ""
+    if shots and device != "phone":
+        rw, rh = png_size(shots[0])
+        ratio = f' style="--st-ratio: {rw} / {rh}"'
+    o.append(f'<div class="st-device {e(device)}"><div class="st-screen"{ratio}>')
+    for i, sh in enumerate(shots):
+        w, h = png_size(sh)
+        o.append(f'<img class="st-shot{" is-on" if i == 0 else ""}" src="{e(sh)}" width="{w//2}" height="{h//2}" alt="" loading="lazy">')
+    o.append('<div class="st-lens"></div>')
+    o.append('</div></div></div></div>')
+    o.append('<ol class="st-copy">')
+    for i, st in enumerate(steps):
+        lens = f' data-lens="{e(st["lens"])}"' if st.get("lens") else ""
+        o.append(f'<li class="st-step" data-shot="{st.get("shot", i)}"{lens}>')
+        o.append(f'<span class="st-n">{i + 1:02d} / {len(steps):02d}</span>')
+        if st.get("kind"):
+            o.append(f'<span class="st-kind">{e(st["kind"])}</span>')
+        o.append(f'<h3>{e(st.get("title", ""))}</h3>')
+        if st.get("body"):
+            o.append(f'<p>{md_inline(st["body"])}</p>')
+        if st.get("quote"):
+            o.append(f'<p class="st-quote">{md_inline(st["quote"])}</p>')
+        if st.get("rejected"):
+            o.append(f'<p class="st-rej"><b>Replaced</b>{md_inline(st["rejected"])}</p>')
+        o.append('</li>')
+    o.append('</ol></section>')
+    return "".join(o)
+
+
 spec = json.loads((SC / "showcase.json").read_text())
 parts = []
 for mod in spec["modules"]:
@@ -122,9 +181,13 @@ for mod in spec["modules"]:
         parts.append(f'<div class="sc-finding"><b>{e(mod.get("findingLabel", "What the research found"))}</b><p>{md_inline(mod["finding"])}</p></div>')
     for p in mod.get("body", []):
         parts.append(f'<p class="sc-prose">{md_inline(p)}</p>')
-    parts.append(shot(img, d["markers"] if d else None, mod.get("phone")))
+    sb = story_block(mod, d)
+    if sb:
+        parts.append(sb)
+    else:
+        parts.append(shot(img, d["markers"] if d else None, mod.get("phone")))
     parts.append(f'<p class="shot-cap"><span class="fignum">{e(mod["figure"])}</span>{md_inline(mod["caption"])}</p>')
-    if d:
+    if d and not sb:
         parts.append(notes_block(d))
     states = [s for s in mod.get("states", []) if (SC / s["img"]).exists()]
     if states:
@@ -142,8 +205,8 @@ for mod in spec["modules"]:
             parts.append(notes_block(sd))
     parts.append("</div></section>")
 
-refs = md_tables([SC / "references.md"] + sorted((SC / "refs").glob("*.md")))
-ref_rows = "".join(
+refs = []  # kept in the repo as working material; not published
+ref_rows = "" and "".join(
     f'<tr><td data-label="Pattern">{md_inline(r[0])}</td><td data-label="Reference">{md_inline(r[1])}</td>'
     f'<td data-label="Taken">{md_inline(r[2])}</td><td data-label="Rejected">{md_inline(r[3])}</td></tr>' for r in refs)
 
@@ -155,6 +218,7 @@ page = f"""<!doctype html>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../assets/style.css?v=9">
 <link rel="stylesheet" href="../../../assets/showcase.css?v=9">
+<link rel="stylesheet" href="../../../assets/scrollytell.css?v=12">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='8' fill='%23171817'/><text x='50' y='70' font-size='56' text-anchor='middle' fill='%23f8f8f5' font-family='sans-serif' font-weight='600'>S</text></svg>">
 </head><body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -187,16 +251,13 @@ page = f"""<!doctype html>
   {''.join(f'<p class="sc-prose">{md_inline(p)}</p>' for p in spec['system']['body'])}
   {tokens_section()}
 </div></section>
-<section class="sc-sec" id="references"><div class="sc-wrap">
-  <span class="sc-num">{e(spec['refs']['kicker'])}</span><h2>{e(spec['refs']['title'])}</h2>
-  {''.join(f'<p class="sc-prose">{md_inline(p)}</p>' for p in spec['refs']['body'])}
-  <table class="sc-table"><thead><tr><th>Pattern</th><th>Reference</th><th>Taken</th><th>Rejected</th></tr></thead><tbody>{ref_rows}</tbody></table>
-</div></section>
+
 <div class="sc-wrap"><div class="sc-foot-nav">
   <a class="btn-ink" href="../index.html">Back to the case study</a>
   <a class="btn-ghost" href="../prototype/index.html">Open the form prototype</a>
 </div></div>
 </main>
+<script src="../../../assets/scrollytell.js?v=12"></script>
 <footer class="footer">
   <span>Sam Mozaffari · Experience Designer, Sydney.</span>
   <span><a href="../../../library.html">Library</a> · <a href="../../../llms.txt">llms.txt</a> · <a href="https://github.com/sammozaffari" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/sam-mozaffari-210588a7" target="_blank" rel="noopener">LinkedIn</a></span>

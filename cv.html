@@ -41,6 +41,10 @@
     .job ul { padding-left: 14px; }
     .note { font-size: 11px; }
     .print-hide, .note { display: none; }
+    html, body { padding-bottom: 0 !important; margin-bottom: 0 !important; height: auto !important; }
+    body::after, main::after { content: none !important; }
+    .cv-wrap > *:last-child, .cases > p:last-child, .caps > p:last-child { margin-bottom: 0 !important; }
+    #tooling-cases { break-after: avoid; }
     .print-only { display: inline; }
     a { color: inherit; text-decoration: none; }
   }
@@ -67,7 +71,7 @@
 </section>
 
 <div class="cv-wrap">
-  <p style="font-size:16px;max-width:70ch">Experience Designer at KFC South Pacific with seven years across service, experience and product design. I lead and co-lead service-improvement projects end to end: research design, interviews and user testing, service blueprints, workshops where priorities get decided, and reports and roadmaps that executives act on. I work across several hundred restaurants and tens of thousands of team members, on safety reporting, workforce and learning platforms, hiring and onboarding, drive-thru and self-service customer experience, and the manager journey. I build the tools the research needs, with LLM extraction behind a human review gate, and I design the interfaces that come out of it on a design system with tokens, components and contrast checks in the build. I coach the people I work with. Looking for service design, experience design, transformation consulting or applied-AI adoption work in Sydney or remote within Australia.</p>
+  <p style="font-size:16px;max-width:70ch">Experience Designer at KFC South Pacific, seven years across service, experience and product design. I run service-improvement programmes end to end across <span data-scale="network_restaurants">several hundred restaurants</span> and <span data-scale="network_people">tens of thousands of team members</span>: research design, interviews and user testing, multi-lane service blueprints, the workshops where priorities get decided, and the reports and roadmaps executives act on. Safety and compliance reporting, workforce and learning platforms, hiring and onboarding, drive-thru and self-service. I design custom agent harnesses for the parts of that work worth automating, with human gates and out-of-band verification, and I ship the interfaces on a token-based design system whose contrast, component and visual checks fail the build. I coach the people I work with. Looking for service design, experience design, transformation consulting or applied-AI adoption work in Sydney or remote within Australia.</p>
 
   <h2>Experience</h2>
   <div class="job">
@@ -103,7 +107,7 @@
   <div class="job">
     <div class="when">November 2020 to August 2023</div>
     <div>
-      <h3>UX Designer, part-time alongside study</h3>
+      <h3>UX internship</h3>
       <p class="org">Service NSW</p>
       <ul>
         <li>Worked in a team on the redesign of financial-assistance application forms in a regulated government service, to WCAG standards, for a state-wide user base.</li>
@@ -138,7 +142,7 @@
     <p><b>Facilitation and leadership.</b> Discovery, scoping and prioritisation workshops, validation sessions, findings playbacks and roadmap conversations with operations, safety, HR, IT and franchise governance. Coaching and onboarding of colleagues; project and stakeholder leadership.</p>
     <p><b>Design systems, built for agents to work in.</b> Tokens authored in the W3C Design Tokens Community Group format with a build step that emits the stylesheet, so the source is portable to Style Dictionary and Figma. A machine-readable component manifest an agent must search before writing anything, the registry-grounded approach that measures highest for compliance. Four gates that fail the build: tokens in step with their source, contrast at WCAG 2.2 AA, no undeclared component, and visual regression against a committed baseline. Figma MCP and OpenDesign in the loop, with AGENTS.md carrying the rules.</p>
     <p><b>Prototyping.</b> Product screens and flows written in code and drawn in Figma, from wireframe to interactive; internal research tools in Python, SQLite and JavaScript.</p>
-    <p><b>Applied AI and agent workflow design.</b> LLM workflows with human gates: structured extraction into typed records, schema validation, evidence provenance, evaluation fixtures and calibration against outcomes. Out-of-band verification: the critic runs in a separate process with a single-use token, so the agent that drafts can never approve. MCP servers and tool schemas (JSON Schema, zod), including Figma MCP; context engineering with progressive disclosure; Claude Code commands, skills, subagents and headless runs; the Anthropic SDK with prompts stored against outputs.</p>
+    <p><b>Applied AI and agent workflow design.</b> I design custom harnesses and purpose-built agents for specific jobs rather than pointing one general assistant at everything: role definitions, tool schemas, skills, and the gates between them. LLM workflows with human gates: structured extraction into typed records, schema validation, evidence provenance, evaluation fixtures and calibration against outcomes. Out-of-band verification: the critic runs in a separate process with a single-use token, so the agent that drafts can never approve. Model Context Protocol (MCP) servers and tool schemas (JSON Schema, zod), including Figma MCP; context engineering with progressive disclosure; provider SDKs with prompts stored against their outputs; headless agent runs in CI.</p>
     <p><b>Engineering.</b> TypeScript and Node, Python, SQLite, Flask, Next.js and React, Drizzle, vitest and pytest, headless Chromium, GitHub Actions.</p>
   </div>
 
@@ -154,7 +158,7 @@
   <h2>Tooling I have built</h2>
   <div class="cases" id="tooling-cases">
     <p><b>Research and insights tool (employment, 2025).</b> Turns interview transcripts, survey data and field notes into typed insights and journey maps that become the evidence base for UX improvements and prototypes. Python, Flask, SQLite; 50 routes, 37 scripts, 318 commits. A Claude Code extraction command, a schema-validating importer with git checkpoints and batch rollback, a human review step, evidence-trail views, an Anthropic SDK endpoint that drafts recommendations and stores each prompt with its output, and a Miro migrator that rebuilds the board from the records.</p>
-    <p><b>The Agentic Service Designer (personal, 2026).</b> TypeScript, about 12,500 lines across 8 packages. An MCP server exposing 29 tools over JSON-RPC stdio, a CLI, 10 agent roles, 74 method skills and 31 artefact kinds compiled into 10 host packs, with machine-checked acceptance rules, a fact-check that replays every evidence citation, a critic gate on the write path and a CI drift check. Companion book and library; worked examples are fictional.</p>
+    <p><b>A service design harness for small teams (personal, 2026).</b> Service design tooling assumes a research team. This is built for one or two people: an agent harness that takes the first pass at the work a larger team would split up, and holds the gates that stop it going wrong. 10 agent roles, 74 method skills and 31 artefact kinds compiled into 10 host packs, reachable as an MCP server of 29 tools over JSON-RPC stdio or as a CLI. Machine-checked acceptance rules on every artefact, a fact-check that replays each evidence citation, a critic gate on the write path and a CI drift check. TypeScript, about 12,500 lines across 8 packages, with a companion book and library.</p>
     <p class="print-hide"><b>Application and content pipelines (personal, 2026).</b> A job-application tracker (Next.js, Drizzle, SQLite, 13 Claude Code skills, 40 CLI commands) that runs Claude Code headless behind a one-use-token critic gate and scores frozen predictions against outcomes; a content system whose Python gate refuses any post without a passing critic report, tested with bad fixtures.</p>
   </div>
 
