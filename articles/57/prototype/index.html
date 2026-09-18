@@ -3,9 +3,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Mechanism-first incident and hazard reporting form: an interactive concept prototype with states, built from the December 2025 safety reporting research.">
 <title>Mechanism-first incident form · Sam Mozaffari</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#111110;--ink-soft:#4a4a46;--muted:#6e6e69;--line:#bdbdb7;--paper:#fff;--tint:#f4f3ee;--focus:#1d4ed8;--err:#b3261e;--ok:#1f6b3a;--okbg:#eaf4ec;--errbg:#fbeae8}
+:root{--ink:#111110;--ink-soft:#4a4a46;--muted:#6e6e69;--line:#bdbdb7;--paper:#fff;--tint:#f4f3ee;--focus:#1d4ed8;--err:#9b2a21;--ok:#1a6042;--okbg:#ecf4ef;--errbg:#fbf0ef;--brand:#e4002b;--brand-hover:#c40025;--brand-quiet:#fff1f3;--brand-line:#f5bcc6}
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--tint);color:var(--ink);font:15px/1.5 Inter,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 a{color:inherit}
@@ -23,6 +23,7 @@ main{max-width:1180px;margin:0 auto;padding:24px}
 nav.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 20px}
 nav.tabs button{font:inherit;font-size:14px;font-weight:500;padding:8px 12px;border:1px solid var(--line);background:var(--paper);border-radius:6px;cursor:pointer;color:var(--ink)}
 nav.tabs button[aria-selected=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+nav.tabs button[aria-selected=true]::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--brand);margin-right:7px;vertical-align:1px}
 .stage{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:28px;align-items:start}
 @media (max-width:860px){.stage{grid-template-columns:1fr}}
 .phone{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:18px 16px 20px;min-height:640px;box-shadow:0 10px 40px rgba(0,0,0,.06);position:relative}
@@ -50,9 +51,10 @@ textarea{min-height:76px;resize:vertical}
 .photo{border:1px dashed var(--line);border-radius:8px;padding:14px;text-align:center;color:var(--muted);font-size:13.5px;background:var(--tint)}
 .actions{display:flex;gap:8px;justify-content:space-between;margin-top:18px}
 button.primary,button.secondary{font:inherit;font-size:15px;font-weight:600;padding:11px 16px;border-radius:8px;cursor:pointer;border:1px solid var(--ink)}
-button.primary{background:var(--ink);color:#fff}
+button.primary{background:var(--brand);color:#fff;border-color:var(--brand)}
+button.primary:hover{background:var(--brand-hover);border-color:var(--brand-hover)}
 button.secondary{background:#fff;color:var(--ink)}
-button.primary:disabled{opacity:.45;cursor:not-allowed}
+button.primary:disabled{background:#e8e8e6;color:#8a8a83;border-color:#ddddd9;opacity:1;cursor:not-allowed}
 .error{display:none;background:var(--errbg);border-left:4px solid var(--err);color:#5a1a14;padding:8px 12px;border-radius:0 8px 8px 0;font-size:13.5px;margin:0 0 12px}
 .error.show{display:block}
 .field-error{color:var(--err);font-size:13px;margin:4px 0 0;display:none}
@@ -73,6 +75,15 @@ button.primary:disabled{opacity:.45;cursor:not-allowed}
 .side ul{padding-left:18px;margin:0}
 .side .card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px}
 .side .ev{font-size:12.5px;color:var(--muted)}
+.side .live{border:1px solid var(--ink);border-radius:12px;padding:16px 18px;margin-bottom:14px;background:var(--paper);position:sticky;top:16px}
+.side .live .kind{display:block;font-family:'IBM Plex Mono',Menlo,monospace;font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.side .live h2{font-size:16px;margin:0 0 6px}
+.side .live .q{border-left:3px solid var(--brand);padding:2px 0 2px 12px;margin:10px 0;font-size:13.5px;color:var(--ink)}
+.side .live .rej{font-size:13px;color:var(--ink-soft);margin:8px 0 0}
+.side .live .rej b{font-family:'IBM Plex Mono',Menlo,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+.side .dots{display:flex;gap:5px;margin:12px 0 0}
+.side .dots i{width:7px;height:7px;border-radius:50%;background:var(--line);display:block}
+.side .dots i.on{background:var(--brand)}
 .pill{display:inline-block;font-size:12px;border:1px solid var(--line);border-radius:999px;padding:2px 8px;margin:0 6px 6px 0;color:var(--ink-soft);background:#fff}
 .current .old{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#fff;margin:8px 0}
 .current .old p{margin:0;font-size:13.5px;color:var(--ink-soft)}
@@ -85,13 +96,13 @@ footer{max-width:1180px;margin:30px auto 0;padding:14px 24px;color:var(--muted);
 <a class="skip" href="#main">Skip to the prototype</a>
 <header class="top"><div class="row">
   <h1>Mechanism-first incident form</h1>
-  <span class="note">Concept prototype, built September 2026 from the December 2025 research</span>
+  <span class="note">The reporting flow the research proposed, working, with its states</span>
   <a class="back" href="../index.html">Back to the case</a>
 </div></header>
 <main id="main">
   <div class="intro">
-    <p><b>What you are looking at.</b> The incident and hazard reporting flow the safety research proposed, working, with its states. The research found that the live form asked the reporter two things they could not know in the moment: what the outcome of the injury would be, and whether the event was notifiable to the regulator. This design asks what happened in the reporter's own words and moves severity and the regulatory question to the manager's review, after the welfare check.</p>
-    <p>Use the tabs to compare the current form with the proposal, then walk the incident flow, the hazard flow and the manager's review. Field names in the current form are generalised from the research notes; the vendor's product is not reproduced.</p>
+    <p><b>Walk the flow, and the rail on the right tells you why each step looks the way it does.</b> The finding that drove it, what people said, the decision, and the alternative it replaced. The research found that the live form asked the reporter two things they could not know in the moment: what the outcome of the injury would be, and whether the event was notifiable to the regulator. This design asks what happened in the reporter's own words and moves severity and the regulatory question to the manager's review, after the welfare check.</p>
+    <p>Use the tabs to compare the current form with the proposal, then walk the incident flow, the hazard flow and the manager's review.</p>
   </div>
   <nav class="tabs" role="tablist" aria-label="Prototype views">
     <button role="tab" data-view="current" aria-selected="true">Current form</button>
@@ -257,7 +268,7 @@ footer{max-width:1180px;margin:30px auto 0;padding:14px 24px;color:var(--muted);
     <aside class="side" id="side"></aside>
   </div>
 </main>
-<footer>Concept prototype by Sam Mozaffari, September 2026, from the safety reporting research of December 2025. It runs in the browser and saves nothing. The employer's system is not reproduced; the current-form fields are generalised from research notes.</footer>
+<footer>Designed by Sam Mozaffari from the safety reporting research of December 2025. The current-form fields are generalised from the field-by-field walkthroughs with the safety team.</footer>
 
 <script>
 (function(){
@@ -266,6 +277,21 @@ const MECH=[['burn','Burn'],['cut','Cut'],['slip','Slip, trip or fall'],['hit','
 const HOW={burn:['Oil splash while filtering or draining','Contact with a hot surface','Steam from equipment','Hot liquid spill','Other'],cut:['Using a knife','Opening packaging or boxes','Broken equipment or glass','Sharp edge on equipment','Other'],slip:['Wet or greasy floor','Obstacle in a walkway','Uneven surface','Rushing','Other'],manual:['Lifting a heavy item','Repetitive motion','Awkward posture','Carrying or moving stock','Other'],hit:['Hit by a falling object','Walked into an object','Struck by a door or equipment','Caught between objects','Other']};
 const HOW_DEFAULT=['During normal work','During cleaning','During a delivery','Other'];
 const HZ=['Hot surface','Sharp edge','Slip or trip risk','Electrical','Chemical','Equipment','Security risk','Manual handling','Fire risk','Poor lighting','Blocked exit','Other'];
+
+const STEPNOTE={
+ 'current':{kind:'Pain point',title:'The form opened on the question nobody could answer',body:'Incident type came first, with options like first aid or lost time. A burn that looks minor can need treatment two days later, so the reporter was guessing at the one field the data depended on.',quote:'Area safety leads admitted asking the restaurant\u2019s safety champion which option to choose.',rej:'Help text on every field. The categories were the problem, not the wording.'},
+ 'entry':{kind:'Finding',title:'The hesitation is at the very start',body:'Team members stopped at the incident-versus-hazard choice, especially for near misses. One entry point removes the first place people gave up, and the examples resolve the only hesitation the research found.',quote:'People reported to a person, not a platform. The barrier was the form, the phone and the threshold.',rej:'Two separate forms with a chooser in front, which asks the reporter to classify before they have described anything.'},
+ 'incident-1':{kind:'Decision',title:'Mechanism first, outcome later',body:'What happened is the one thing the reporter knows for certain in the moment. Burn, cut, slip. The list is written in the words people used in interviews, not in the platform\u2019s taxonomy.',quote:'Nobody can predict whether it is first aid or lost time while their hand is under the cold tap.',rej:'A single fifteen-option incident-type dropdown, which is the field that got sent back from above.'},
+ 'incident-2':{kind:'Decision',title:'Only the causes that fit',body:'Step two shows the causes that belong to the mechanism chosen at step one. Choosing a burn never shows a vehicle cause. Three or four taps replace scanning a list of everything that can go wrong in a restaurant.',quote:'',rej:'One long cause list for every mechanism, which is faster to build and slower to use.'},
+ 'incident-3':{kind:'Evidence',title:'The fields the safety team actually needs',body:'Body part and equipment are what turn a pile of reports into a pattern. They are optional here, because a report with them missing is still worth far more than a report that never got made.',quote:'',rej:'Making them required, which was one of the reasons reports were abandoned half-finished.'},
+ 'incident-4':{kind:'Decision',title:'When and where, defaulted',body:'Both default to now and to the area the reporter is in, because reports are made standing up, mid-shift, on a personal phone. These are the only two required fields in the whole flow.',quote:'The cost people described was stepping off the floor during a rush.',rej:'A free-text location field, which produced data nobody could group.'},
+ 'incident-5':{kind:'Decision',title:'The promise the old service broke',body:'The confirmation says what was sent and what happens next, ending on the one thing reporters said they never got: being told what changed because they reported it.',quote:'Minor reports were closed without a word, which built the belief that reporting does nothing for anyone else.',rej:'A reference number and nothing else.'},
+ 'hazard':{kind:'Finding',title:'A hazard is a condition, not an event',body:'The live hazard list mixed events into a list that should hold conditions only, so people did not know which form to use. This path asks about a condition and never asks about an injury.',quote:'\u201cThe floor is wet\u201d is a hazard. \u201cSomeone slipped\u201d is an incident.',rej:'One combined form with conditional fields, which still opens on the question the reporter cannot answer.'},
+ 'manager':{kind:'Decision',title:'Classification belongs to whoever knows',body:'Severity is set from the treatment actually required, after the welfare check. The regulator question appears only when the outcome makes it relevant, and the matrix is answered from the record rather than by a person.',quote:'Managers have the context for cause; team members have the context for mechanism.',rej:'Leaving severity with the reporter and correcting it later, which is what taught people that reporting was a way to get something wrong.'}
+};
+function note(key,dots){const n=STEPNOTE[key];if(!n)return;const el=document.getElementById('livenote');if(!el)return;
+ el.innerHTML='<span class="kind">'+n.kind+'</span><h2>'+n.title+'</h2><p>'+n.body+'</p>'+(n.quote?'<p class="q">'+n.quote+'</p>':'')+'<p class="rej"><b>Alternative replaced</b>'+n.rej+'</p>'+(dots?'<div class="dots">'+dots+'</div>':'');}
+function dotsFor(cur,total){let o='';for(let i=1;i<=total;i++)o+='<i class="'+(i<=cur?'on':'')+'"></i>';return o}
 const SIDE={
  current:`<div class="card"><h2>What the research found in the current form</h2><ul><li>Incident type came first, with options like first aid or lost time that nobody can predict in the moment. A burn that looks minor can need treatment later.</li><li>The regulator question sent people to a compliance matrix. Even area safety leads asked the restaurant's safety champion which option to choose.</li><li>Hazard categories mixed events (verbal abuse, attempted assault) into a list that should hold conditions only, so people did not know which form to use.</li><li>Misclassified reports were sent back, and newer managers struggled with the categories.</li></ul><p class="ev">Evidence in the case: dropdown options do not describe what happens in a kitchen; regulatory questions a team member cannot answer; classification errors are common and get sent back; severity assessment varies by manager.</p></div><div class="card"><h3>Alternative considered</h3><p>Help text on each field. Rejected: the categories themselves were the problem, an industrial taxonomy applied to a kitchen. Explaining a wrong question does not make it answerable.</p></div>`,
  entry:`<div class="card"><h2>What changed</h2><ul><li>One starting point for every safety report.</li><li>Plain language instead of the platform's terms.</li><li>Examples show the difference between an incident and a hazard where the confusion actually happens: near misses.</li></ul><h3>Why</h3><p>Team members hesitated at the start because the incident-versus-hazard distinction was not clear to them, especially for near misses. Removing the choice of form removes the first place people gave up.</p><p class="ev">Sources: two team-member interviews and restaurant visit observation.</p></div>`,
@@ -275,14 +301,14 @@ const SIDE={
 };
 function choices(el,name,items){el.innerHTML=items.map((it,i)=>{const [v,l]=Array.isArray(it)?it:[it,it];const id=name+'-'+i;return `<div class="choice"><input type="radio" name="${name}" id="${id}" value="${v}"><label for="${id}">${l}</label></div>`}).join('')}
 choices($('#mech'),'mech',MECH); choices($('#hz'),'hz',HZ);
-function show(view){$$('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.view===view));$$('[data-panel]').forEach(p=>p.hidden=p.dataset.panel!==view);$('#side').innerHTML=SIDE[view];history.replaceState(null,'','#'+view);const h=$('[data-panel="'+view+'"] h2');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}
+function show(view){$$('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.view===view));$$('[data-panel]').forEach(p=>p.hidden=p.dataset.panel!==view);$('#side').innerHTML='<div class="live" id="livenote"></div>'+SIDE[view];note(view==='incident'?'incident-1':view, view==='incident'?dotsFor(1,5):'');history.replaceState(null,'','#'+view);const h=$('[data-panel="'+view+'"] h2');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true})}}
 $$('nav.tabs button').forEach(b=>b.addEventListener('click',()=>show(b.dataset.view)));
 // entry
 $('#entry-next').addEventListener('click',()=>{const v=document.querySelector('input[name=entry]:checked');if(!v){$('#entry-error').classList.add('show');return}$('#entry-error').classList.remove('show');show(v.value==='incident'?'incident':'hazard')});
 $$('input[name=entry]').forEach(r=>r.addEventListener('change',()=>$('#entry-error').classList.remove('show')));
 // incident
 let step=1; const LABELS={1:'What happened?',2:'How did it happen?',3:'Body part and equipment',4:'When and where',5:'Submitted'};
-function inc(n){step=n;$$('#inc-form [data-step]').forEach(d=>d.hidden=+d.dataset.step!==n);$('#inc-count').textContent=n<5?`Step ${n} of 4`:'Done';$('#inc-step-label').textContent=LABELS[n];$('#inc-back').hidden=n===1||n===5;$('#inc-next').textContent=n===4?'Submit report':n===5?'Start a new report':'Next';$('#inc-error').classList.remove('show');$$('.field-error').forEach(e=>e.classList.remove('show'));$$('.invalid').forEach(e=>e.classList.remove('invalid'))}
+function inc(n){step=n;note('incident-'+n,dotsFor(n,5));$$('#inc-form [data-step]').forEach(d=>d.hidden=+d.dataset.step!==n);$('#inc-count').textContent=n<5?`Step ${n} of 4`:'Done';$('#inc-step-label').textContent=LABELS[n];$('#inc-back').hidden=n===1||n===5;$('#inc-next').textContent=n===4?'Submit report':n===5?'Start a new report':'Next';$('#inc-error').classList.remove('show');$$('.field-error').forEach(e=>e.classList.remove('show'));$$('.invalid').forEach(e=>e.classList.remove('invalid'))}
 function err(msg,fieldErr,field){$('#inc-error').textContent=msg;$('#inc-error').classList.add('show');if(fieldErr)$(fieldErr).classList.add('show');if(field)$(field).classList.add('invalid');const f=field?$(field):null;if(f)f.focus()}
 $('#inc-next').addEventListener('click',()=>{
  if(step===1){const m=document.querySelector('input[name=mech]:checked');if(!m)return err('Choose what happened before continuing.','#mech-err');const how=HOW[m.value]||HOW_DEFAULT;choices($('#how'),'how',how);$('#how-hint').textContent=`Causes that fit "${MECH.find(x=>x[0]===m.value)[1].toLowerCase()}".`;return inc(2)}

@@ -1,0 +1,24 @@
+<!-- CANONICAL "How this was made" SECTION.
+     Copy into a case study, change only the first paragraph so it names that
+     project's own artefacts. Every claim below is verifiable from the repos:
+     do not add a tool that is not in this list. -->
+<section class="art-sec" id="sec-made"><span class="sec-kicker">NN</span><h2>How this was made</h2>
+<p><strong>PROJECT SENTENCE GOES HERE.</strong> One line naming what this project produced and which of the steps below it went through.</p>
+
+<h3>From transcripts to typed records</h3>
+<p>Interviews and field notes go in as text. A Claude Code command reads a transcript and emits candidate insights as JSON. A schema validator refuses the batch unless every type, stakeholder, stage, substage and theme resolves, and a git tag is written before the import runs so a bad batch is one command to undo. Then I read every record against its transcript and correct the ones where the extraction flattened what somebody meant. Nothing reaches a report unreviewed.</p>
+
+<h3>From records to artefacts</h3>
+<p>The records are the source and everything else is an output: the service blueprint, the findings report, the evidence trail from a finding to the substage where it happens, and the Miro board, which is pushed out as frames and colour-coded stickies by a migrator and merged back when someone moves something. Because all three are generated from the same records, none of them can drift from the others.</p>
+
+<h3>The design system the screens are built on</h3>
+<p>Tokens are authored in the W3C Design Tokens Community Group format and the stylesheet is built from them, so the source is the JSON rather than the CSS and it is portable to Style Dictionary, Figma or Tokens Studio without a translation layer. There is one mode, because the DTCG resolver module that answers theming is still a preview draft that says not to implement it, and a system should not claim a capability it cannot build.</p>
+<p>Components are declared in a manifest generated from the component file, so it cannot drift, and an agent is required to search it before writing anything new. That is the registry-grounded approach rather than pasting a style guide into a prompt, and it is the one that measures highest for design-system compliance in the published comparison.</p>
+<p>Four gates run in the build and every one of them fails rather than warns: the stylesheet must be in step with the token source, every text pair must clear 4.5 to 1 and every control border 3 to 1, no screen may use a component that is not declared, and every screen is compared against a committed visual baseline. That last gate exists because the failure mode everyone reports with agent-written interfaces is that the agent cannot see what its own code renders. The rules live in an AGENTS.md beside the code: JSON for the contract, Markdown for the guidance.</p>
+
+<h3>Figma, and moving between canvas and code</h3>
+<p>Design work moves between Figma and code without being redrawn in either. The Figma MCP server exposes the file to the agent, so frames, components and variables can be read and written from the same place the code lives, and OpenDesign is used to pull structured design data out of a file for inspection and handover. What a developer or a vendor receives is artboards with a component specification beside them: the states, the tokens and the rules rather than a picture. The prototype ships with its import kit.</p>
+
+<h3>Where AI stops</h3>
+<p>Three jobs are machine work: transcription, first-pass extraction and classification, and first drafts of recommendations through the Anthropic SDK, where the prompt is stored alongside its output so any draft can be traced to what produced it. Every one of those has a human step after it, and the write path is gated: a critic runs as a separate process with a one-use token, so the thing that drafts can never be the thing that approves. That division is the part I can describe field by field, and it is the part that makes the rest usable.</p>
+</section>

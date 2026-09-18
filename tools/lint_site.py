@@ -55,6 +55,27 @@ for f in pages:
         if tgt.startswith(('http', 'mailto', 'tel', 'data:')): continue
         tgt = tgt.split('?')[0]
         if not (p.parent / tgt).exists(): errors.append(f'{rel}: missing {tgt}')
+
+# --- design system gates -------------------------------------------------
+import subprocess, json as _json
+_ds = []
+_r = subprocess.run([sys.executable, str(ROOT / 'tools/build_tokens.py'), '--check'], capture_output=True, text=True)
+if _r.returncode != 0:
+    _ds.append('tokens.css is out of date with tokens.dtcg.json; run tools/build_tokens.py')
+_man = _json.loads((ROOT / 'assets/product/components.manifest.json').read_text())
+_declared = {c['class'] for c in _man['components']}
+for f in glob.glob(str(ROOT / 'articles/*/showcase/screens/*.html')):
+    p = pathlib.Path(f); s2 = p.read_text()
+    style = ' '.join(re.findall(r'<style>(.*?)</style>', s2, re.S))
+    local = set(re.findall(r'\.(p-[a-z0-9-]+)', re.sub(r'\{[^{}]*\}', ' ', style)))
+    used = set(re.findall(r'class="([^"]*)"', s2))
+    names = {c for chunk in used for c in chunk.split() if c.startswith('p-')}
+    undeclared = names - _declared - local
+    for u in sorted(undeclared):
+        _ds.append(f'{p.relative_to(ROOT)}: uses .{u}, which is not in components.manifest.json and not defined locally')
+if _ds:
+    print('DESIGN SYSTEM FAILED'); [print(' -', e) for e in _ds]; sys.exit(1)
+
 if errors:
     print('LINT FAILED'); [print(' -', e) for e in sorted(set(errors))]; sys.exit(1)
 print('LINT OK', len(pages), 'pages')

@@ -1,0 +1,209 @@
+/* Portfolio shell: home, Work index and About.
+   Loads after assets/style.css and reuses its colour tokens. Everything here is
+   layout, type scale and rhythm for the three pages a recruiter lands on first.
+
+   The scale is seven steps. Display sizes carry negative tracking; nothing above
+   20px sits at default tracking. Sections are separated by one rhythm value, so
+   the page has a beat rather than a set of arbitrary paddings. */
+
+:root {
+  /* Type scale */
+  --pf-display: clamp(38px, 5.6vw, 76px);
+  --pf-h1: clamp(32px, 4.4vw, 56px);
+  --pf-h2: clamp(21px, 2.3vw, 30px);
+  --pf-h3: 17px;
+  --pf-lead: clamp(16.5px, 1.5vw, 20px);
+  --pf-body: 15px;
+  --pf-small: 13.5px;
+  --pf-micro: 11px;
+
+  /* Rhythm and measure */
+  --pf-max: 1320px;
+  --pf-section: clamp(56px, 7vw, 104px);
+  --pf-measure: 62ch;
+}
+
+.pf-wrap { max-width: var(--pf-max); margin: 0 auto; padding: 0 var(--pad-d); }
+
+.pf-eyebrow {
+  font-family: var(--mono); font-size: var(--pf-micro); letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--muted); margin: 0 0 22px;
+}
+
+/* ---------- the opening statement ---------- */
+.pf-open { padding: clamp(72px, 9vw, 132px) 0 var(--pf-section); }
+.pf-open h1 {
+  font-size: var(--pf-display); line-height: 1.02; letter-spacing: -0.028em;
+  font-weight: 700; margin: 0 0 30px; max-width: 26ch; text-wrap: balance;
+}
+.pf-open .pf-lead {
+  font-size: var(--pf-lead); line-height: 1.55; color: var(--ink-soft);
+  max-width: var(--pf-measure); margin: 0 0 30px;
+}
+.pf-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.pf-actions .pf-sep { color: var(--line); }
+.pf-meta {
+  margin: 30px 0 0; font-family: var(--mono); font-size: 12px; color: var(--muted);
+  letter-spacing: 0.02em; line-height: 1.7; max-width: 72ch;
+}
+
+/* ---------- page header, for Work and About ---------- */
+.pf-head { padding: clamp(64px, 8vw, 104px) 0 clamp(30px, 4vw, 52px); }
+.pf-head h1 {
+  font-size: var(--pf-h1); line-height: 1.04; letter-spacing: -0.025em;
+  font-weight: 700; margin: 0 0 20px; max-width: 22ch; text-wrap: balance;
+}
+.pf-head .pf-lead {
+  font-size: var(--pf-lead); line-height: 1.55; color: var(--ink-soft);
+  max-width: var(--pf-measure); margin: 0;
+}
+
+/* Work index: title left, facets as quiet text right (MOUTHWASH) */
+.pf-head-split { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 72px); align-items: end; }
+.pf-facets { display: flex; flex-wrap: wrap; gap: 8px 22px; padding-bottom: 6px; }
+.pf-facet {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; color: var(--muted);
+  background: none; border: 0; padding: 2px 0; cursor: pointer; border-bottom: 1px solid transparent;
+}
+.pf-facet:hover { color: var(--ink); }
+.pf-facet[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+
+/* ---------- section head used above a grid ---------- */
+.pf-sec { padding: 0 0 var(--pf-section); }
+.pf-sec-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 24px;
+  flex-wrap: wrap; padding: 0 0 26px; border-bottom: 1px solid var(--line); margin-bottom: 30px;
+}
+.pf-sec-head h2 { font-size: var(--pf-h2); letter-spacing: -0.02em; font-weight: 700; margin: 0; }
+.pf-sec-head .pf-sec-note { font-size: var(--pf-small); color: var(--muted); margin: 0; }
+.pf-sec-head a { border-bottom: 1px solid var(--line-strong); padding-bottom: 1px; font-size: var(--pf-small); }
+.pf-sec-head a:hover { border-bottom-color: var(--ink); }
+
+/* ---------- work grid ---------- */
+.pf-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(26px, 3vw, 44px) clamp(20px, 2.4vw, 32px); }
+.pf-grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.pf-card { display: flex; flex-direction: column; color: inherit; }
+.pf-thumb {
+  display: grid; place-items: center; aspect-ratio: 16 / 11; overflow: hidden;
+  background: var(--paper-tint); border: 1px solid var(--line);
+  border-radius: var(--radius-card); padding: 11px; margin-bottom: 16px;
+  transition: border-color var(--default) var(--ease), background var(--default) var(--ease);
+}
+.pf-thumb img {
+  display: block; width: 100%; height: 100%; object-fit: contain; object-position: center;
+}
+.pf-card:hover .pf-thumb { border-color: var(--ink); background: #fff; }
+.pf-tag {
+  display: block; font-family: var(--mono); font-size: var(--pf-micro); letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 9px;
+}
+.pf-card h3 {
+  font-size: var(--pf-h3); line-height: 1.32; letter-spacing: -0.012em; font-weight: 600;
+  margin: 0 0 8px; text-wrap: balance;
+}
+.pf-card:hover h3 { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+.pf-card p { font-size: var(--pf-small); line-height: 1.55; color: var(--ink-soft); margin: 0 0 10px; }
+.pf-card .pf-role { font-family: var(--mono); font-size: var(--pf-micro); color: var(--muted); margin: auto 0 0; letter-spacing: 0.02em; }
+.pf-card:focus-visible { outline: 2px solid var(--ink); outline-offset: 6px; }
+
+/* ---------- lead case panel ---------- */
+.pf-lead-case { padding: 0 0 var(--pf-section); }
+.pf-panel {
+  background: var(--dark); color: var(--dark-ink); border-radius: var(--radius-card);
+  overflow: hidden; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+}
+.pf-panel-text { padding: clamp(30px, 3.4vw, 52px); display: flex; flex-direction: column; }
+.pf-panel-text .pf-eyebrow { color: rgba(248, 248, 245, 0.6); }
+.pf-panel-text h2 {
+  font-size: clamp(25px, 2.7vw, 38px); line-height: 1.12; letter-spacing: -0.025em;
+  font-weight: 700; margin: 0 0 18px; max-width: 20ch; text-wrap: balance;
+  color: var(--dark-ink);
+}
+.pf-panel-text h2 a { color: inherit; }
+.pf-panel-text h2 a:hover { text-decoration: underline; text-underline-offset: 5px; }
+.pf-panel-text .pf-finding { font-size: var(--pf-body); line-height: 1.6; color: #d7d7d1; margin: 0 0 22px; max-width: 46ch; }
+.pf-facts { margin: 0 0 26px; display: grid; gap: 12px; }
+.pf-facts > div { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 14px; }
+.pf-facts dt { font-family: var(--mono); font-size: var(--pf-micro); letter-spacing: 0.08em; text-transform: uppercase; color: rgba(248, 248, 245, 0.55); padding-top: 2px; }
+.pf-facts dd { margin: 0; font-size: var(--pf-small); line-height: 1.5; color: #e4e4de; }
+.pf-panel-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: auto; }
+.pf-panel-actions .btn-ghost { background: transparent; color: var(--dark-ink); border-color: rgba(255, 255, 255, 0.35); }
+.pf-panel-fig { display: block; background: #f4f3ee; border-left: 1px solid rgba(255, 255, 255, 0.12); }
+.pf-panel-fig img { display: block; width: 100%; height: auto; }
+.pf-caption { font-size: var(--pf-small); color: var(--muted); line-height: 1.55; margin: 14px 0 0; max-width: 78ch; }
+.pf-caption a { border-bottom: 1px solid var(--line-strong); }
+.pf-caption a:hover { border-bottom-color: var(--ink); }
+
+/* ---------- capability columns ---------- */
+.pf-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(28px, 4vw, 64px); }
+.pf-cols h3 { font-size: var(--pf-h3); letter-spacing: -0.01em; margin: 0 0 8px; font-weight: 600; }
+.pf-cols h3 + p { margin-top: 0; }
+.pf-cols p { font-size: var(--pf-body); line-height: 1.62; color: var(--ink-soft); margin: 0 0 22px; max-width: 54ch; }
+.pf-cols > div > *:last-child { margin-bottom: 0; }
+
+.pf-levels { list-style: none; padding: 0; margin: 0; display: grid; }
+.pf-levels li {
+  display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 16px;
+  padding: 13px 0; border-top: 1px solid var(--line); font-size: var(--pf-small); line-height: 1.55;
+}
+.pf-levels li:last-child { border-bottom: 1px solid var(--line); }
+.pf-levels b { font-family: var(--mono); font-size: var(--pf-micro); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding-top: 2px; }
+.pf-levels span { color: var(--ink-soft); }
+
+/* ---------- a quiet closing block ---------- */
+.pf-note { padding: 0 0 var(--pf-section); }
+.pf-note h2 { font-size: var(--pf-h2); letter-spacing: -0.02em; margin: 0 0 14px; font-weight: 700; }
+.pf-note p { font-size: var(--pf-body); line-height: 1.62; color: var(--ink-soft); margin: 0; max-width: var(--pf-measure); }
+.pf-note a { border-bottom: 1px solid var(--line-strong); }
+.pf-note a:hover { border-bottom-color: var(--ink); }
+.pf-rule { border: 0; border-top: 1px solid var(--line); margin: 0 0 var(--pf-section); }
+
+/* ---------- About (Pentagram split) ---------- */
+.pf-about { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(28px, 5vw, 88px); padding: clamp(64px, 8vw, 104px) 0 clamp(34px, 4vw, 56px); align-items: start; }
+.pf-about h1 { font-size: var(--pf-h1); line-height: 1.02; letter-spacing: -0.028em; font-weight: 700; margin: 0; max-width: 12ch; }
+.pf-about-body p { font-size: var(--pf-lead); line-height: 1.58; color: var(--ink-soft); margin: 0 0 20px; max-width: var(--pf-measure); }
+.pf-about-body p:first-child { color: var(--ink); }
+.pf-about-body p:last-child { margin-bottom: 0; }
+
+.pf-portrait {
+  padding: 0 0 var(--pf-section);
+  display: grid; grid-template-columns: minmax(0, 0.62fr) minmax(0, 1.38fr);
+  gap: clamp(28px, 5vw, 88px); align-items: start;
+}
+.pf-portrait-figure { margin: 0; max-width: 360px; }
+.pf-portrait-frame { border: 1px solid var(--line); border-radius: var(--radius-card); overflow: hidden; background: var(--paper-tint); }
+.pf-portrait-frame img { display: block; width: 100%; height: auto; }
+.pf-portrait figcaption { font-family: var(--mono); font-size: var(--pf-micro); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 12px; }
+
+.pf-facts-light { margin: 0; display: grid; }
+.pf-facts-light > div {
+  display: grid; grid-template-columns: 108px minmax(0, 1fr); gap: 18px;
+  padding: 14px 0; border-top: 1px solid var(--line);
+}
+.pf-facts-light > div:last-child { border-bottom: 1px solid var(--line); }
+.pf-facts-light dt { font-family: var(--mono); font-size: var(--pf-micro); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+.pf-facts-light dd { margin: 0; font-size: var(--pf-body); line-height: 1.5; color: var(--ink-soft); }
+
+.pf-book { display: flex; gap: clamp(24px, 3vw, 44px); align-items: flex-start; flex-wrap: wrap; }
+.pf-book img { width: 168px; height: auto; border: 1px solid var(--line); border-radius: var(--radius-card); display: block; }
+.pf-book-text { flex: 1; min-width: 260px; }
+.pf-book-text p { font-size: var(--pf-body); line-height: 1.62; color: var(--ink-soft); margin: 0 0 14px; max-width: 54ch; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 1024px) {
+  .pf-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pf-panel { grid-template-columns: 1fr; }
+  .pf-panel-fig { border-left: 0; border-top: 1px solid rgba(255, 255, 255, 0.12); }
+  .pf-head-split { grid-template-columns: 1fr; align-items: start; }
+  .pf-about, .pf-portrait { grid-template-columns: 1fr; gap: 24px; }
+  .pf-about h1 { max-width: none; }
+  .pf-portrait-figure { max-width: 460px; }
+}
+@media (max-width: 720px) {
+  .pf-grid, .pf-grid.two { grid-template-columns: 1fr; }
+  .pf-cols { grid-template-columns: 1fr; }
+  .pf-facts > div { grid-template-columns: 1fr; gap: 3px; }
+  .pf-levels li { grid-template-columns: 1fr; gap: 4px; }
+  .pf-sec-head { flex-direction: column; align-items: flex-start; gap: 10px; }
+}
