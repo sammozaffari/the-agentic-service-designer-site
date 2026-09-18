@@ -3,8 +3,8 @@
    The stage is held in place by CSS position:sticky, so the page never takes the
    scroll away from the reader. This script does three things on top of that:
    swaps the screen as each step reaches the middle of the viewport, tilts the
-   device in real 3D by how far through the section you are, and opens a lens over
-   the region the current step is talking about.
+   device in real 3D by how far through the section you are, and moves the frame in
+   on the region the current step is talking about.
 
    Everything degrades: the steps are ordinary text, the stage shows the first
    screen without script, and all motion stops under prefers-reduced-motion.
@@ -15,28 +15,30 @@
          <div class="st-device phone">
            <div class="st-screen">
              <img class="st-shot" src="..." alt="">   one per step
-             <div class="st-lens"></div>
            </div>
          </div>
        </div></div>
        <ol class="st-copy">
-         <li class="st-step" data-shot="0" data-lens="62,18,14"> ... </li>
+         <li class="st-step" data-shot="0" data-zoom="62,18,1.9"> ... </li>
        </ol>
      </section>
-   data-shot is the index of the image this step shows.
-   data-lens is "x%,y%,radius%" of the screen to open the lens over; omit for none.
+   data-stage picks the device on the stage; data-shot is the image within it.
+   data-zoom is "x%,y%,scale": the frame moves in on that point. Omit for a full view.
 */
 (function () {
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function setUp(section) {
-    var shots = Array.prototype.slice.call(section.querySelectorAll('.st-shot'));
+    var devices = Array.prototype.slice.call(section.querySelectorAll('.st-device'));
+    var shotsOf = devices.map(function (d) {
+      return Array.prototype.slice.call(d.querySelectorAll('.st-shot'));
+    });
+    var shots = shotsOf.reduce(function (a, b) { return a.concat(b); }, []);
     var steps = Array.prototype.slice.call(section.querySelectorAll('.st-step'));
-    var device = section.querySelector('.st-device');
-    var lens = section.querySelector('.st-lens');
     if (!shots.length || !steps.length) return;
 
-    shots[0].classList.add('is-on');
+    shotsOf[0][0].classList.add('is-on');
+    if (devices[0]) devices[0].classList.add('is-live');
     steps[0].classList.add('is-on');
 
     var ticks = document.createElement('div');
@@ -51,22 +53,29 @@
       if (i === current) return;
       current = i;
       var step = steps[i];
+      var stageIndex = parseInt(step.getAttribute('data-stage') || 0, 10);
+      var local = shotsOf[stageIndex] || shotsOf[0];
       var shotIndex = parseInt(step.getAttribute('data-shot') || i, 10);
-      shots.forEach(function (s, k) { s.classList.toggle('is-on', k === shotIndex); });
+      shotIndex = Math.min(shotIndex, local.length - 1);
+      devices.forEach(function (d, k) { d.classList.toggle('is-live', k === stageIndex); });
+      shots.forEach(function (s) { s.classList.remove('is-on'); });
+      if (local[shotIndex]) local[shotIndex].classList.add('is-on');
       steps.forEach(function (s, k) { s.classList.toggle('is-on', k === i); });
       Array.prototype.forEach.call(ticks.children, function (t, k) { t.classList.toggle('on', k === i); });
 
-      if (lens) {
-        var l = step.getAttribute('data-lens');
-        if (l && !reduce) {
-          var p = l.split(',');
-          lens.style.setProperty('--lx', p[0] + '%');
-          lens.style.setProperty('--ly', p[1] + '%');
-          lens.style.setProperty('--lr', (p[2] || 12) + '%');
-          lens.classList.add('is-on');
-        } else {
-          lens.classList.remove('is-on');
-        }
+      /* the frame moves in on the region this step names */
+      var z = step.getAttribute('data-zoom');
+      shots.forEach(function (sh) {
+        sh.style.removeProperty('--z');
+        sh.style.removeProperty('--zx');
+        sh.style.removeProperty('--zy');
+      });
+      var active = local[shotIndex];
+      if (active && z && !reduce) {
+        var p = z.split(',');
+        active.style.setProperty('--zx', p[0] + '%');
+        active.style.setProperty('--zy', p[1] + '%');
+        active.style.setProperty('--z', p[2] || 1.8);
       }
     }
 
@@ -79,7 +88,7 @@
     steps.forEach(function (s) { io.observe(s); });
 
     /* the tilt: a few degrees across the whole section, not a spin */
-    if (reduce || !device) return;
+    if (reduce || !devices.length) return;
     var ticking = false;
     function frame() {
       ticking = false;
@@ -91,7 +100,8 @@
       var ry = (t - 0.5) * 17;          // rotate through about 17 degrees
       var rx = 5 - Math.abs(t - 0.5) * 7;
       var ty = (0.5 - Math.abs(t - 0.5)) * -14;
-      device.style.transform =
+      var live = section.querySelector('.st-device.is-live') || devices[0];
+      live.style.transform =
         'rotateY(' + ry.toFixed(2) + 'deg) rotateX(' + rx.toFixed(2) + 'deg) translateY(' + ty.toFixed(1) + 'px)';
     }
     function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }

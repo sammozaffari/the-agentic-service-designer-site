@@ -57,17 +57,25 @@ def ref_link(s):
     return e(s)
 
 def shot(img, markers=None, phone=False):
-    cls = "shot phone" if phone else "shot"
     w, h = png_size(img)
-    o = [f'<div class="{cls}"><img src="{e(img)}" width="{w//2}" height="{h//2}" alt="" loading="lazy">']
+    if phone:
+        # a real device frame: the display size, corner radius, island and safe
+        # areas are the iPhone 15 specification scaled, not an eyeballed crop
+        o = [f'<div class="dv-phone"><div class="dv-screen">'
+             f'<img src="{e(img)}" width="{w//2}" height="{h//2}" alt="" loading="lazy">']
+        for m in markers or []:
+            o.append(f'<span class="mk" style="left:{m["x"]:.2f}%;top:{m["y"]:.2f}%">{m["n"]}</span>')
+        o.append("</div></div>")
+        return "".join(o)
+    o = [f'<div class="shot"><img src="{e(img)}" width="{w//2}" height="{h//2}" alt="" loading="lazy">']
     for m in markers or []:
         o.append(f'<span class="mk" style="left:{m["x"]:.2f}%;top:{m["y"]:.2f}%">{m["n"]}</span>')
     o.append("</div>")
     return "".join(o)
 
-def notes_block(d):
+def notes_block(d, limit=None):
     o = ['<div class="notes">']
-    for m in d["markers"]:
+    for m in (d["markers"][:limit] if limit else d["markers"]):
         o.append(f'<div class="note"><span class="n">{m["n"]}</span><div>')
         dd = str(m.get("finding", "")).strip().lower() in ("design decision", "design decision.")
         o.append(f'<h4>{e(m["title"])}{" <span class=\'dd\'>Design decision</span>" if dd else ""}</h4>')
@@ -127,7 +135,7 @@ def story_block(mod, notes):
         for m in notes["markers"]:
             steps.append({
                 "shot": 0,
-                "lens": f'{m["x"]:.1f},{m["y"]:.1f},{spec.get("lensRadius", 11)}',
+                "zoom": f'{m["x"]:.1f},{m["y"]:.1f},{spec.get("zoom", 2.1)}',
                 "kind": "Design decision" if str(m.get("finding", "")).strip().lower().startswith("design decision") else "Finding",
                 "title": m.get("title", ""),
                 "body": m.get("decision", ""),
@@ -137,22 +145,28 @@ def story_block(mod, notes):
     if not steps:
         return ""
 
+    stages = spec.get("devices") or [{"device": device, "shots": shots}]
     o = [f'<section class="st" data-align="{e(align)}">']
-    o.append('<div class="st-rail"><div class="st-stage">')
-    ratio = ""
-    if shots and device != "phone":
-        rw, rh = png_size(shots[0])
-        ratio = f' style="--st-ratio: {rw} / {rh}"'
-    o.append(f'<div class="st-device {e(device)}"><div class="st-screen"{ratio}>')
-    for i, sh in enumerate(shots):
-        w, h = png_size(sh)
-        o.append(f'<img class="st-shot{" is-on" if i == 0 else ""}" src="{e(sh)}" width="{w//2}" height="{h//2}" alt="" loading="lazy">')
-    o.append('<div class="st-lens"></div>')
-    o.append('</div></div></div></div>')
+    o.append(f'<div class="st-rail"><div class="st-stage" data-devices="{len(stages)}">')
+    for si, st_dev in enumerate(stages):
+        dv = st_dev.get("device", "phone")
+        ratio = ""
+        if st_dev["shots"] and dv != "phone":
+            rw, rh = png_size(st_dev["shots"][0])
+            ratio = f' style="--st-ratio: {rw} / {rh}"'
+        live = " is-live" if si == 0 else ""
+        o.append(f'<div class="st-device {e(dv)}{live}"><div class="st-screen"{ratio}>')
+        for i, sh in enumerate(st_dev["shots"]):
+            w, h = png_size(sh)
+            on = " is-on" if (si == 0 and i == 0) else ""
+            o.append(f'<img class="st-shot{on}" src="{e(sh)}" width="{w//2}" height="{h//2}" alt="" loading="lazy">')
+        o.append('</div></div>')
+    o.append('</div></div>')
     o.append('<ol class="st-copy">')
     for i, st in enumerate(steps):
-        lens = f' data-lens="{e(st["lens"])}"' if st.get("lens") else ""
-        o.append(f'<li class="st-step" data-shot="{st.get("shot", i)}"{lens}>')
+        zoom = f' data-zoom="{e(st["zoom"])}"' if st.get("zoom") else ""
+        stg = f' data-stage="{st.get("stage", 0)}"'
+        o.append(f'<li class="st-step" data-shot="{st.get("shot", i)}"{stg}{zoom}>')
         o.append(f'<span class="st-n">{i + 1:02d} / {len(steps):02d}</span>')
         if st.get("kind"):
             o.append(f'<span class="st-kind">{e(st["kind"])}</span>')
@@ -188,7 +202,8 @@ for mod in spec["modules"]:
         parts.append(shot(img, d["markers"] if d else None, mod.get("phone")))
     parts.append(f'<p class="shot-cap"><span class="fignum">{e(mod["figure"])}</span>{md_inline(mod["caption"])}</p>')
     if d and not sb:
-        parts.append(notes_block(d))
+        # a module without a story shows the decisions that carry it, not all of them
+        parts.append(notes_block(d, limit=mod.get("noteLimit", 4)))
     states = [s for s in mod.get("states", []) if (SC / s["img"]).exists()]
     if states:
         parts.append(f'<h3>{e(mod.get("statesTitle", "The states that matter"))}</h3>')

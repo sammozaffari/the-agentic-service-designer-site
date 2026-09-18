@@ -21,9 +21,11 @@ if not sections:
     raise SystemExit("no scroll story in " + str(src))
 sec = sections[which]
 
-sec = sec.replace(' is-on', '')  # start from a clean slate so every state can be set
+sec = sec.replace(' is-on', '').replace(' is-live', '')  # clean slate; every state gets set below
 steps = re.findall(r'<li class="st-step".*?</li>', sec, re.S)
-shots = re.findall(r'<img class="st-shot[^>]*>', sec)
+devices = re.findall(r'<div class="st-device [^"]*">.*?(?=<div class="st-device |</div></div>$)', sec, re.S)
+device_tags = re.findall(r'<div class="st-device [^"]*">', sec)
+shots_by_device = [re.findall(r'<img class="st-shot[^>]*>', d) for d in devices] or [re.findall(r'<img class="st-shot[^>]*>', sec)]
 
 VIEW = """
 <style>
@@ -35,22 +37,31 @@ VIEW = """
   .vp .st-copy { list-style:none; margin:0; padding:0; }
   .vp .st-step { min-height:0; padding:0; }
   .vp .st-step:not(.is-on) { display:none; }
+  .vp .st-stage[data-devices="2"] .st-device:not(.is-live) { display:none; }
 </style>
 """
 
 prefix.parent.mkdir(parents=True, exist_ok=True)
 for i, step in enumerate(steps):
-    shot_i = int((re.search(r'data-shot="(\d+)"', step) or [0, i])[1]) if 'data-shot' in step else i
+    m_shot = re.search(r'data-shot="(\d+)"', step)
+    m_stage = re.search(r'data-stage="(\d+)"', step)
+    shot_i = int(m_shot.group(1)) if m_shot else i
+    stage_i = int(m_stage.group(1)) if m_stage else 0
     body = sec
     body = body.replace(step, step.replace('class="st-step"', 'class="st-step is-on"'), 1)
-    target = shots[min(shot_i, len(shots) - 1)]
+    if device_tags:
+        tag = device_tags[min(stage_i, len(device_tags) - 1)]
+        body = body.replace(tag, tag.replace('class="st-device ', 'class="is-live st-device '), 1)
+    local = shots_by_device[min(stage_i, len(shots_by_device) - 1)]
+    target = local[min(shot_i, len(local) - 1)]
     body = body.replace(target, target.replace('class="st-shot"', 'class="st-shot is-on"'), 1)
     # open the lens if this step declares one
-    lens = re.search(r'data-lens="([^"]+)"', step)
-    if lens:
-        x, y, r = (lens.group(1).split(",") + ["12"])[:3]
-        body = body.replace('<div class="st-lens"></div>',
-                            f'<div class="st-lens is-on" style="--lx:{x}%;--ly:{y}%;--lr:{r}%"></div>')
+    zoom = re.search(r'data-zoom="([^"]+)"', step)
+    if zoom:
+        x, y, z = (zoom.group(1).split(",") + ["1.8"])[:3]
+        body = body.replace(target.replace('class="st-shot"', 'class="st-shot is-on"'),
+                            target.replace('class="st-shot"',
+                                           f'class="st-shot is-on" style="--zx:{x}%;--zy:{y}%;--z:{z}"'), 1)
     out = prefix.with_name(prefix.name + f"-{i + 1}.html")
     out.write_text(f"<!doctype html><html lang=\"en-AU\"><head>{head}{VIEW}</head>"
                    f"<body><div class=\"vp\">{body}</div></body></html>")

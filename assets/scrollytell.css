@@ -35,6 +35,23 @@
   perspective: 1600px;
   perspective-origin: 50% 45%;
 }
+/* More than one device can share a stage. When the story moves from the person
+   who reports to the person who acts, the phone steps back and the manager's
+   screen comes forward, so the handoff is shown rather than described. */
+.st-stage .st-device { grid-area: 1 / 1; }
+.st-stage[data-devices="2"] .st-device {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 560ms var(--st-ease), transform 720ms cubic-bezier(.16,.84,.24,1), filter 560ms var(--st-ease);
+  filter: blur(6px);
+}
+.st-stage[data-devices="2"] .st-device.is-live {
+  opacity: 1;
+  pointer-events: auto;
+  filter: none;
+}
+.st-stage[data-devices="2"] .st-device:not(.is-live).phone { transform: scale(.82) translateX(-8%) rotateY(14deg); }
+.st-stage[data-devices="2"] .st-device:not(.is-live).browser { transform: scale(.86) translateX(8%) rotateY(-12deg); }
 
 /* ---------- the phone ---------- */
 .st-device {
@@ -89,21 +106,22 @@
   width: 100%; height: 100%;
   object-fit: cover; object-position: 50% 0;
   opacity: 0;
-  transform: scale(1.012);
+  transform: scale(1.02);
   transition: opacity var(--st-dur) var(--st-ease), transform var(--st-dur) var(--st-ease);
 }
 .st-shot.is-on { opacity: 1; transform: none; }
 
-/* a lens that opens over the region a step is talking about */
-.st-lens {
-  position: absolute; inset: 0; pointer-events: none;
-  opacity: 0; transition: opacity var(--st-dur) var(--st-ease);
-  background: rgba(17,17,16,.55);
-  -webkit-mask-image: radial-gradient(circle at var(--lx, 50%) var(--ly, 50%), transparent var(--lr, 0%), #000 calc(var(--lr, 0%) + 7%));
-  mask-image: radial-gradient(circle at var(--lx, 50%) var(--ly, 50%), transparent var(--lr, 0%), #000 calc(var(--lr, 0%) + 7%));
-  transition: opacity var(--st-dur) var(--st-ease), -webkit-mask-image var(--st-dur) var(--st-ease), mask-image var(--st-dur) var(--st-ease);
+/* Instead of dimming the screen, the frame moves in on what the step is about.
+   The shot scales about the point named by the step, the device holds still, and
+   the crop happens inside the screen, which is what a camera move looks like. */
+.st-shot.is-on {
+  opacity: 1;
+  transform: scale(var(--z, 1));
+  transform-origin: var(--zx, 50%) var(--zy, 50%);
+  transition: opacity var(--st-dur) var(--st-ease),
+              transform 720ms cubic-bezier(.16,.84,.24,1);
 }
-.st-lens.is-on { opacity: 1; }
+.st-lens { display: none; }
 
 /* ---------- the copy ---------- */
 .st-copy { list-style: none; margin: 0; padding: 0; }
@@ -158,7 +176,6 @@
   .st-device.phone { width: 260px; }
   .st-step { min-height: 0; padding: 18px 0; opacity: 1; }
   .st-ticks { display: none; }
-  .st-lens { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .st-device, .st-shot, .st-step, .st-lens { transition: none !important; }
@@ -168,5 +185,73 @@
   .st { display: block; }
   .st-stage { position: static; height: auto; }
   .st-step { min-height: 0; opacity: 1; }
-  .st-lens, .st-ticks { display: none; }
+  .st-ticks { display: none; }
 }
+
+/* =============================================================
+   v13 · A REAL IPHONE, NOT A ROUNDED CROP
+   iPhone 15 and 16 are 393 x 852 points, with a 54pt status bar and
+   a 34pt bottom safe area (Apple's figures, via useyourloaf.com's
+   screen-size reference). The Dynamic Island is 125 x 36.67pt sitting
+   11pt below the top of the display and the home indicator is
+   139 x 5pt; the display corner radius is taken as 55pt, which is the
+   figure device-frame libraries publish rather than one Apple
+   documents. Every number below is that spec scaled by the width the
+   frame is drawn at, so the proportions hold at any size instead of
+   being eyeballed.
+   ============================================================= */
+.st-device.phone,
+.dv-phone {
+  --sw: 300px;                 /* drawn width of the display */
+  --s: calc(var(--sw) / 393);  /* points to pixels at this size */
+  --bezel: calc(8 * var(--s));
+  --screen-r: calc(55 * var(--s));
+  width: calc(var(--sw) + var(--bezel) * 2);
+  aspect-ratio: auto;
+  height: calc(852 * var(--s) + var(--bezel) * 2);
+  padding: var(--bezel);
+  border-radius: calc(var(--screen-r) + var(--bezel));
+  background: linear-gradient(150deg, #3a3a3e 0%, #101013 34%, #17171b 62%, #45454a 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.14),
+    0 0 0 1px rgba(17,17,16,.22),
+    0 34px 64px -26px rgba(17,17,16,.5),
+    0 90px 130px -70px rgba(17,17,16,.42);
+}
+.st-device.phone .st-screen,
+.dv-phone .dv-screen {
+  border-radius: var(--screen-r);
+  height: 100%;
+  overflow: hidden;
+  background: #fff;
+}
+/* the island sits over the screen, in the gap the status bar leaves for it */
+.st-device.phone::after,
+.dv-phone::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(var(--bezel) + 11 * var(--s));
+  transform: translateX(-50%);
+  width: calc(125 * var(--s));
+  height: calc(36.67 * var(--s));
+  border-radius: calc(18.33 * var(--s));
+  background: #08080a;
+  z-index: 3;
+}
+/* the side buttons, because a phone without them reads as a rectangle */
+.st-device.phone::before,
+.dv-phone::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--bezel) * -0.5);
+  top: calc(120 * var(--s));
+  width: calc(var(--bezel) * 0.5);
+  height: calc(32 * var(--s));
+  border-radius: 2px 0 0 2px;
+  background: #2b2b30;
+  box-shadow: 0 calc(52 * var(--s)) 0 #2b2b30, 0 calc(104 * var(--s)) 0 #2b2b30;
+}
+.st-device.phone .st-shot { object-fit: fill; }
+
+@media (max-width: 900px) { .st-device.phone { --sw: 248px; } }
